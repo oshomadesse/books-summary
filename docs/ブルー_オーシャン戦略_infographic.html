@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ブルー・オーシャン戦略 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #0066cc, セカンダリー #00b8d4, アクセント #ff6b35 -->
+<style>
+:root {
+  --primary: #0066cc;
+  --secondary: #00b8d4;
+  --accent: #ff6b35;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #212529;
+  --text-light: #6c757d;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--secondary);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--secondary);
+  color: var(--primary);
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--secondary);
+  color: white;
+}
+.tab-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+.reason strong {
+  color: var(--accent);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--secondary);
+  padding-bottom: 0.5rem;
+}
+.example-card {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.example-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--secondary);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.quote-card blockquote {
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  font-size: 1.05rem;
+}
+.quote-card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: linear-gradient(135deg, #fff3e0, #ffecb3);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.action-card h4 {
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+.action-card .meta {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+.flow-item .arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.75rem;
+}
+@media (max-width: 768px) {
+  header h1 { font-size: 1.5rem; }
+  .tabs { font-size: 0.85rem; }
+  .tab-btn { padding: 0.6rem 0.8rem; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 ブルー・オーシャン戦略</h1>
+  <p>競争を無意味化し、未開拓市場を創造する戦略フレームワーク</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      競争が激化し成長余地が乏しい市場で、持続的成長をどう実現するか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      競争を避け、差別化と低コストを同時に達成する「ブルー・オーシャン」を設計・開拓する。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      既存市場の供給過剰と模倣競争は収益を浸食する一方、非顧客に潜在需要が眠り、価値—コストのトレードオフは設計次第で打破できるため。
+    </div>
+    <div class="summary-item">
+      <strong>🛠 How（そのためには）</strong>
+      戦略キャンバスで現状の価値曲線を可視化し、四つのアクション/ERRCグリッドで価値要素を再設計、六つのパスで業界境界を再構築、バイヤー効用→価格→コスト→採用の順に妥当性を検証し、公正なプロセスとティッピング・ポイント・リーダーシップで実行障害を克服する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">🧩 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔴 レッド・オーシャン</h3>
+        <ul>
+          <li>既存の市場空間で競争が激しい</li>
+          <li>差別化か低コストの二者択一に陥る</li>
+          <li>供給過剰で収益が浸食される</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>競争前提の戦略では持続的成長が困難になるため、対比概念として重要。</div>
+      </div>
+      <div class="card">
+        <h3>🔵 ブルー・オーシャン</h3>
+        <ul>
+          <li>未開拓の市場空間を創造</li>
+          <li>競争を無意味化する領域</li>
+          <li>需要創造が核心</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>成長の源泉を競争回避と需要創出に置く戦略の目標地点。</div>
+      </div>
+      <div class="card">
+        <h3>💎 バリュー・イノベーション</h3>
+        <ul>
+          <li>買い手価値を飛躍させる</li>
+          <li>コスト構造を同時に抑える</li>
+          <li>差別化と低コストの統合</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>トレードオフを打破する中核原理であり、ブルー・オーシャン創造の基盤。</div>
+      </div>
+      <div class="card">
+        <h3>📊 戦略キャンバス</h3>
+        <ul>
+          <li>重要な競争要素を可視化</li>
+          <li>各社の提供水準を比較</li>
+          <li>価値曲線で戦略を診断</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>現状戦略の課題を一目で把握し、再設計の起点となる。</div>
+      </div>
+      <div class="card">
+        <h3>🔄 四つのアクション（ERRC）</h3>
+        <ul>
+          <li><strong>除去：</strong>不要な要素を削る</li>
+          <li><strong>削減：</strong>過剰な要素を減らす</li>
+          <li><strong>増加：</strong>重要な要素を強化</li>
+          <li><strong>創造：</strong>新しい要素を生む</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>価値要素を体系的に再設計し、トレードオフを崩す実行枠組み。</div>
+      </div>
+      <div class="card">
+        <h3>📋 ERRCグリッド</h3>
+        <ul>
+          <li>Eliminate（除去）項目を列挙</li>
+          <li>Reduce（削減）項目を列挙</li>
+          <li>Raise（増加）項目を列挙</li>
+          <li>Create（創造）項目を列挙</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>四つのアクションを具体化し、実行可能な設計表に落とし込む。</div>
+      </div>
+      <div class="card">
+        <h3>🛤 六つのパス</h3>
+        <ul>
+          <li>代替産業を見る</li>
+          <li>戦略グループを超える</li>
+          <li>買い手を再定義</li>
+          <li>補完物を活用</li>
+          <li>機能/感性志向を転換</li>
+          <li>時間軸で再構築</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>業界の常識を超え、市場境界を再発見する視点を提供。</div>
+      </div>
+      <div class="card">
+        <h3>🗺 バイヤー効用マップ</h3>
+        <ul>
+          <li>購入・使用・廃棄の各段階</li>
+          <li>効用レバー（生産性、簡便性、リスク等）</li>
+          <li>価値機会を網羅的に特定</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>買い手体験全体から価値創出機会を漏れなく抽出する。</div>
+      </div>
+      <div class="card">
+        <h3>✅ 商業的妥当性のシーケンス</h3>
+        <ul>
+          <li>効用：買い手に価値があるか</li>
+          <li>戦略価格：適正価格か</li>
+          <li>コスト：利益が出るか</li>
+          <li>採用障害：実行可能か</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>順番に検証することで事業性を確実に担保する。</div>
+      </div>
+      <div class="card">
+        <h3>👥 非顧客の三層</h3>
+        <ul>
+          <li><strong>第1層：</strong>今は買わない層</li>
+          <li><strong>第2層：</strong>拒否する層</li>
+          <li><strong>第3層：</strong>遠い層</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>潜在需要を段階的に捉え、成長余地を最大化する。</div>
+      </div>
+      <div class="card">
+        <h3>⚖️ 公正なプロセス</h3>
+        <ul>
+          <li>関与：意思決定に参加</li>
+          <li>説明：理由を明確化</li>
+          <li>期待の明確化：役割を共有</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>納得と自発性を引き出し、実行力を高める。</div>
+      </div>
+      <div class="card">
+        <h3>🎯 ティッピング・ポイント・リーダーシップ</h3>
+        <ul>
+          <li>限られた資源を影響点に集中</li>
+          <li>組織変革を臨界点で一気に進める</li>
+          <li>認知・政治・資源・動機の障害を突破</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>一点突破で組織全体を動かし、実行障害を克服する。</div>
+      </div>
+    </div>
+
+    <div class="visual-diagram">
+      <h3 style="color: var(--primary); margin-bottom: 1rem;">🔗 概念間の関係性</h3>
+      <div class="flow-item">
+        <span>戦略キャンバス</span>
+        <span class="arrow">→</span>
+        <span>現状の価値曲線を可視化</span>
+        <span class="arrow">→</span>
+        <span>課題特定</span>
+      </div>
+      <div class="flow-item">
+        <span>四つのアクション/ERRC</span>
+        <span class="arrow">→</span>
+        <span>価値要素再設計</span>
+        <span class="arrow">→</span>
+        <span>バリュー・イノベーション創出</span>
+      </div>
+      <div class="flow-item">
+        <span>六つのパス</span>
+        <span class="arrow">→</span>
+        <span>代替視点で境界再構築</span>
+        <span class="arrow">→</span>
+        <span>ブルー・オーシャン候補抽出</span>
+      </div>
+      <div class="flow-item">
+        <span>バイヤー効用マップ</span>
+        <span class="arrow">→</span>
+        <span>買い手価値の機会特定</span>
+        <span class="arrow">→</span>
+        <span>効用確認</span>
+      </div>
+      <div class="flow-item">
+        <span>商業的妥当性のシーケンス</span>
+        <span class="arrow">→</span>
+        <span>効用→価格→コスト→採用</span>
+        <span class="arrow">→</span>
+        <span>事業性検証</span>
+      </div>
+      <div class="flow-item">
+        <span>非顧客の三層</span>
+        <span class="arrow">→</span>
+        <span>需要創出対象の特定</span>
+        <span class="arrow">→</span>
+        <span>成長余地拡大</span>
+      </div>
+      <div class="flow-item">
+        <span>公正なプロセス・ティッピング・ポイント</span>
+        <span class="arrow">→</span>
+        <span>実行障害突破</span>
+        <span class="arrow">→</span>
+        <span>組織変革</span>
+      </div>
+      <div class="flow-item" style="font-weight: bold; color: var(--accent);">
+        <span>上記全て</span>
+        <span class="arrow">→</span>
+        <span>競争を無意味化</span>
+        <span class="arrow">→</span>
+        <span>持続的収益成長</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">📚 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3>第1章：導入 - レッド対ブルーの対比</h3>
+      <ul>
+        <li>既存市場（レッド・オーシャン）の限界を提示</li>
+        <li>価値—コストの二分法を超える必要性</li>
+        <li>ブルー・オーシャン創造の可能性を示唆</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>競争前提の戦略が限界に達している現状を認識し、新たな戦略思考の必要性を動機づける。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第2章：ツール提示 - 戦略キャンバスと四つのアクション</h3>
+      <ul>
+        <li>戦略キャンバスで現状戦略を可視化</li>
+        <li>四つのアクション（ERRC）で価値要素を再設計</li>
+        <li>トレードオフを崩す具体的手法を提供</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>抽象的な概念を実行可能なツールに落とし込み、戦略設計の実践を可能にする。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第3章：形成編 - 六つのパスで市場境界を再構築</h3>
+      <ul>
+        <li>代替産業、戦略グループ、買い手、補完物、機能/感性、時間の視点</li>
+        <li>業界の常識を超えた市場境界の再発見</li>
+        <li>差別化と低コストの同時化を図る</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>既存の枠組みを超える視点を提供し、ブルー・オーシャン候補を体系的に探索する。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第4章：妥当性編 - 商業的妥当性のシーケンス</h3>
+      <ul>
+        <li>バイヤー効用→戦略価格→コスト→採用障害の順で検証</li>
+        <li>事業性を段階的に確認</li>
+        <li>実現可能性を担保する</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>アイデアを事業として成立させるための検証プロセスを明確化し、失敗リスクを低減する。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第5章：需要編 - 非顧客の三層を特定</h3>
+      <ul>
+        <li>第1層（今は買わない）、第2層（拒否する）、第3層（遠い）を識別</li>
+        <li>潜在需要の解放と拡大を設計</li>
+        <li>成長余地を最大化</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>既存顧客の奪い合いを超え、未開拓の需要層にアプローチすることで市場を拡大する。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第6章：実行編 - 公正なプロセスとティッピング・ポイント</h3>
+      <ul>
+        <li>組織の認知・政治・資源・動機の障害を特定</li>
+        <li>公正なプロセスで納得と自発性を引き出す</li>
+        <li>ティッピング・ポイント・リーダーシップで一点突破</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>優れた戦略も実行されなければ無意味であり、組織変革の実践手法を提供する。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第7章：更新編 - ブルー・オーシャンの持続と再設計</h3>
+      <ul>
+        <li>ブルー・オーシャンのモニタリング</li>
+        <li>模倣や市場変化への対応</li>
+        <li>継続的な価値イノベーションの示唆</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>一度創造したブルー・オーシャンも時間とともに競争化するため、持続的更新の視点が必要。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第8章：ケース - 複数事例での実証</h3>
+      <ul>
+        <li>シルク・ドゥ・ソレイユ、サウスウエスト航空など</li>
+        <li>上記フレームの適用を実証</li>
+        <li>一般化可能性を示す</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>理論を実例で裏付け、読者が自社への適用イメージを持てるようにする。</div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">💡 具体例</h2>
+
+    <div class="example-card">
+      <h4>🎪 事例1：シルク・ドゥ・ソレイユ</h4>
+      <p><strong>背景：</strong>伝統的なサーカス業界は動物ショーや有名パフォーマーに依存し、コスト高・収益低迷に陥っていた。</p>
+      <p><strong>アプローチ：</strong>動物ショーを除去し、テント規模を削減、一方で芸術性・テーマ性・洗練された演出を創造。大人の観客層を開拓。</p>
+      <p><strong>示唆：</strong>差別化（芸術性）と低コスト（動物・スター不要）を同時達成し、競合不在の市場を創出。</p>
+      <div class="reason"><strong>理由：</strong>ERRCの実践例として、業界の常識を覆し新たな価値曲線を描いた典型。</div>
+    </div>
+
+    <div class="example-card">
+      <h4>✈️ 事例2：サウスウエスト航空</h4>
+      <p><strong>背景：</strong>航空業界は機内サービス、ハブ空港、座席クラスで競争し、コスト増と価格競争に苦しんでいた。</p>
+      <p><strong>アプローチ：</strong>機内食・ラウンジ・座席指定を除去、短距離・高頻度運航に特化、低価格と定時性を実現。</p>
+      <p><strong>示唆：</strong>自動車や長距離バスの代替として非顧客を取り込み、新市場を創造。</p>
+      <div class="reason"><strong>理由：</strong>代替産業（自動車）を視野に入れた六つのパスの実例であり、非顧客開拓の成功例。</div>
+    </div>
+
+    <div class="example-card">
+      <h4>🍷 事例3：[yellow tail]ワイン</h4>
+      <p><strong>背景：</strong>ワイン業界は複雑な専門用語、格付け、熟成年数で差別化し、初心者には敷居が高かった。</p>
+      <p><strong>アプローチ：</strong>専門用語・複雑さを除去、親しみやすいラベル・飲みやすい味を創造、ビール・カクテル層を取り込む。</p>
+      <p><strong>示唆：</strong>機能志向から感性志向へ転換し、非顧客（ワイン初心者）を大量に獲得。</p>
+      <div class="reason"><strong>理由：</strong>機能/感性志向の転換と非顧客の三層（第1層）開拓の実例であり、価値再定義の力を示す。</div>
+    </div>
+
+    <div class="example-card">
+      <h4>🏨 事例4：フォーミュラ1ホテル（Accor）</h4>
+      <p><strong>背景：</strong>ホテル業界は設備・サービスの充実度で競争し、低価格帯は質が低く、高価格帯は過剰サービスだった。</p>
+      <p><strong>アプローチ：</strong>レストラン・ロビーを削減、ベッド・清潔さ・静音性に集中、自動チェックイン導入。</p>
+      <p><strong>示唆：</strong>買い手効用マップで「睡眠の質」に焦点を絞り、低価格と高品質を両立。</p>
+      <div class="reason"><strong>理由：</strong>バイヤー効用マップの実践例であり、顧客体験の特定段階に集中する戦略の有効性を示す。</div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">📖 重要な引用</h2>
+
+    <div class="quote-card">
+      <blockquote>"Value innovation is the cornerstone of blue ocean strategy."</blockquote>
+      <p><strong>重要性：</strong>差別化と低コストの同時追求という中核原理を端的に示す。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Make the competition irrelevant."</blockquote>
+      <p><strong>重要性：</strong>競争回避という発想転換が全体設計の起点になる。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Pursue differentiation and low cost simultaneously."</blockquote>
+      <p><strong>重要性：</strong>従来のトレードオフを設計で打破する方向性を明確化。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Reach beyond existing demand."</blockquote>
+      <p><strong>重要性：</strong>非顧客への拡張が成長の源泉であることを示す。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Fair process drives voluntary cooperation."</blockquote>
+      <p><strong>重要性：</strong>実行段階での納得と自発性が成果に直結することを示す。</p>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">🚀 今日のアクション</h2>
+
+    <div class="action-card">
+      <h4>📝 アクション1：競争要素を5つ列挙し可視化する</h4>
+      <p>自社の業界で競争の軸となっている要素（価格、品質、サービス、ブランド等）を5つ書き出し、簡易的な戦略キャンバスを紙に描く。</p>
+      <div class="meta">
+        <span class="badge">目的</span>現状の競争構造を可視化し、課題を特定する。<br>
+        <span class="badge">期待効果</span>自社の価値曲線が競合と似ていることに気づき、再設計の必要性を認識できる。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🔄 アクション2：ERRCグリッドを各1項目埋める</h4>
+      <p>除去・削減・増加・創造の4つの枠を作り、それぞれ1つずつ具体的な要素を書き込む。</p>
+      <div class="meta">
+        <span class="badge">目的</span>価値要素の再設計を具体化し、トレードオフ打破の糸口を見つける。<br>
+        <span class="badge">期待効果</span>実行可能な戦略アイデアの種が生まれ、次のステップに進める。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>👥 アクション3：非顧客3層を各1例書き出す</h4>
+      <p>第1層（今は買わない）、第2層（拒否する）、第3層（遠い）それぞれに該当する具体的な人物像を1つずつ書く。</p>
+      <div class="meta">
+        <span class="badge">目的</span>潜在需要を具体的にイメージし、成長余地を発見する。<br>
+        <span class="badge">期待効果</span>既存顧客の奪い合いを超えた市場拡大の可能性が見え、戦略の視野が広がる。
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 3rem; padding: 2rem; background: var(--card-bg); border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+    <h2 style="color: var(--primary); margin-bottom: 1rem;">📚 関連書籍</h2>
+    <div style="display: grid; gap: 1rem;">
+      <div style="border-left: 3px solid var(--secondary); padding-left: 1rem;">
+        <strong>ブルー・オーシャン・シフト</strong> - W・チャン・キム、レネ・モボルニュ<br>
+        <span style="font-size: 0.9rem; color: var(--text-light);">実行手順とケースを拡充し、移行プロセスを具体化。</span>
+      </div>
+      <div style="border-left: 3px solid var(--secondary); padding-left: 1rem;">
+        <strong>競争の戦略</strong> - マイケル・E・ポーター<br>
+        <span style="font-size: 0.9rem; color: var(--text-light);">レッド・オーシャンの基準理論として対照理解に有用。</span>
+      </div>
+      <div style="border-left: 3px solid var(--secondary); padding-left: 1rem;">
+        <strong>イノベーションのジレンマ</strong> - クレイトン・クリステンセン<br>
+        <span style="font-size: 0.9rem; color: var(--text-light);">非顧客志向や破壊的イノベーションの機序が補完的。</span>
+      </div>
+      <div style="border-left: 3px solid var(--secondary); padding-left: 1rem;">
+        <strong>ジョブ理論</strong> - クレイトン・クリステンセン<br>
+        <span style="font-size: 0.9rem; color: var(--text-light);">買い手効用と価値設計をジョブ視点で精緻化。</span>
+      </div>
+      <div style="border-left: 3px solid var(--secondary); padding-left: 1rem;">
+        <strong>ZERO to ONE</strong> - ピーター・ティール<br>
+        <span style="font-size: 0.9rem; color: var(--text-light);">競争回避と独占の作り方がブルー・オーシャン発想に通じる。</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
