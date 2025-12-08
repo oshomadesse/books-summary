@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>思考は現実化する - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+}
+.summary-item span {
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-button {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-button.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff5f7, #fff);
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+}
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.8rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.action-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.flow-step .circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-right: 1rem;
+}
+.flow-step .text {
+  flex: 1;
+  font-size: 0.9rem;
+}
+.arrow-down {
+  text-align: center;
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--accent);
+}
+.book-card h4 {
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  color: var(--secondary);
+}
+.book-card .author {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 思考は現実化する</h1>
+  <p>ナポレオン・ヒル - 富と成功の13原理</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約（問い×答え×Why×How）</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <span>なぜ一部の人だけが富と成果を得るのか？</span>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <span>強烈な願望を核に、信念・自己暗示で潜在意識を動かし、専門知識と想像力で計画化し、決断・忍耐・協働（マスターマインド）で実行を継続する体系を回しているから。</span>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <span>感情を帯びた反復思考は潜在意識に定着し、注意・選択・行動・習慣を変え、機会認識と資源動員を通じて現実に反映されるため。</span>
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    <span>1) 願望を金額・期限で数値化し紙に書く 2) 自己暗示文を作り毎日朝晩感情を込めて音読 3) 専門知識を収集・統合し具体計画を即断で着手 4) マスターマインドを組成し資源と洞察を補完 5) 逆境を学びに変換し、性エネルギーと想像力を創造へ昇華する。</span>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-button active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="padding:0 0.5rem; margin-bottom:1rem; color:var(--primary);">🧠 主要概念の詳細</h2>
+  
+  <div class="card">
+    <h3>🔥 願望（出発点）</h3>
+    <ul>
+      <li>明確で燃えるような願いが富の出発点</li>
+      <li>金額・期限・対価を具体化し言語化する</li>
+      <li>曖昧な希望ではなく、数値と日付で固定する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 具体性が潜在意識への指令を明確にし、行動の方向性を定めるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💪 信念（確信）</h3>
+    <ul>
+      <li>願望が実現可能だという確信</li>
+      <li>感情を伴う反復で強化される</li>
+      <li>行動の躊躇を除き、機会を掴む力になる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 疑念は行動を止め、確信は行動を加速するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗣️ 自己暗示（刷り込み）</h3>
+    <ul>
+      <li>言葉とイメージを反復し潜在意識に刷り込む技法</li>
+      <li>感情強度が定着を左右する</li>
+      <li>朝晩の音読が効果的</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 潜在意識は感情付き反復でプログラムされ、自動的な行動パターンを形成するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📚 専門的知識（武器化知識）</h3>
+    <ul>
+      <li>目標達成に直結する実践知を外部から収集</li>
+      <li>編成し、行動で価値化する</li>
+      <li>一般教養ではなく、使える知識を集める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 知識は行動に変換されて初めて価値を生むため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💡 想像力（構想力）</h3>
+    <ul>
+      <li>既存要素の新結合で価値ある企画を生む力</li>
+      <li>願望を実行可能な形に具現化する</li>
+      <li>創造的想像力と総合的想像力の2種類</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 抽象的願望を具体的計画に変換する橋渡しとなるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📋 体系的計画（設計と実行）</h3>
+    <ul>
+      <li>実現順序・資源・役割を整理した実行計画</li>
+      <li>着手と修正を前提に運用する</li>
+      <li>失敗は計画改善の材料</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 計画なき行動は無駄が多く、計画は実行で検証されるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ 決断（即断）</h3>
+    <ul>
+      <li>先延ばしを退ける素早い選択</li>
+      <li>小さく変えにくい方針を持つ</li>
+      <li>自律の核心</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 決断の遅れは機会損失を生み、即断は自信と推進力を生むため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏃 忍耐（継続力）</h3>
+    <ul>
+      <li>困難でも一貫して続ける力</li>
+      <li>習慣化により意志負荷を下げる</li>
+      <li>成果を累積する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 大半の成功は忍耐の先にあり、途中放棄が最大の失敗原因だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 マスターマインド（相乗効果）</h3>
+    <ul>
+      <li>共通目的のもとで調和的に協働する集団</li>
+      <li>相互補完により創発を起こす</li>
+      <li>資源・知識・洞察を増幅</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 個人の限界を超え、集団知と資源で成果を加速するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 性衝動の転換（昇華）</h3>
+    <ul>
+      <li>強力な性エネルギーを創造・達成への推進力へ昇華</li>
+      <li>感情の質を変える</li>
+      <li>想像力と忍耐を強化</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 性エネルギーは最も強力な感情源であり、方向転換で創造力が飛躍するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧩 潜在意識（心の変換器）</h3>
+    <ul>
+      <li>反復と感情でプログラムされる</li>
+      <li>行動と機会認識を左右する心の変換層</li>
+      <li>意識的思考を自動行動に変換</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 潜在意識が行動の9割を支配し、現実創造の実行エンジンだから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📡 脳（送受信機）</h3>
+    <ul>
+      <li>思考と感情の送受信装置</li>
+      <li>周囲の刺激や共同体から影響を受け取る</li>
+      <li>マスターマインドで共鳴増幅</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 脳は外部情報を選択的に受信し、思考の質が受信内容を決めるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✨ 第六感（直観）</h3>
+    <ul>
+      <li>経験・知識・潜在意識が統合され現れる直観</li>
+      <li>高次の意思決定を助ける</li>
+      <li>他の12原理の習熟で開花</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 論理を超えた洞察が複雑な状況で最適解を示すため。
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="margin-bottom:1rem; color:var(--secondary);">🔗 概念間の関係性</h3>
+    <div class="flow-step">
+      <div class="circle">1</div>
+      <div class="text"><strong>願望</strong> → 明確な目標設定</div>
+    </div>
+    <div class="arrow-down">↓</div>
+    <div class="flow-step">
+      <div class="circle">2</div>
+      <div class="text"><strong>信念</strong> → 実現可能性の確信</div>
+    </div>
+    <div class="arrow-down">↓</div>
+    <div class="flow-step">
+      <div class="circle">3</div>
+      <div class="text"><strong>自己暗示</strong> → 潜在意識への刷り込み</div>
+    </div>
+    <div class="arrow-down">↓</div>
+    <div class="flow-step">
+      <div class="circle">4</div>
+      <div class="text"><strong>潜在意識</strong> → 行動習慣の変換</div>
+    </div>
+    <div class="arrow-down">↓</div>
+    <div class="flow-step">
+      <div class="circle">5</div>
+      <div class="text"><strong>行動・結果</strong> → 現実化</div>
+    </div>
+    <p style="margin-top:1rem; font-size:0.85rem; color:var(--text-light);">
+      並行して：<strong>専門知識 + 想像力 → 計画 → 決断 → 実行 → 忍耐 → 修正 → 達成</strong><br>
+      増幅要素：<strong>マスターマインド</strong>（資源/アイデア増幅）、<strong>性衝動の転換</strong>（創造エネルギー増加）
+    </p>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="padding:0 0.5rem; margin-bottom:1rem; color:var(--primary);">📖 各章の要約</h2>
+
+  <div class="card">
+    <h3>第1章：前提提示</h3>
+    <ul>
+      <li>思考は現実化する - 基本命題の提示</li>
+      <li>願望は出発点であり、すべての達成の起点</li>
+      <li>成功者の共通パターンを分析</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 読者に「思考→現実」の因果を信じさせ、以降の原理を受け入れる土台を作るため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>第2-7章：原理1〜6（因果連鎖の構築）</h3>
+    <ul>
+      <li>願望 → 信念 → 自己暗示 → 専門的知識 → 想像力 → 体系的計画</li>
+      <li>各原理の定義と実践方法を詳述</li>
+      <li>願望の具体化から計画実行までの流れを体系化</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 思考を現実に変換する6ステップの因果を明示し、再現可能な手順を提供するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>第8-11章：原理7〜10（実行の推進力）</h3>
+    <ul>
+      <li>決断 → 忍耐 → マスターマインド → 性衝動の転換</li>
+      <li>計画を実行し続けるための心理的・社会的資源</li>
+      <li>即断・継続・協働・エネルギー昇華の技法</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 計画だけでは不十分で、実行を支える意志・習慣・協力・エネルギーが成否を分けるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>第12-14章：原理11〜13（内的プロセスと統合）</h3>
+    <ul>
+      <li>潜在意識 → 脳 → 第六感</li>
+      <li>思考がどう内面化され、外界と共鳴し、直観に昇華するか</li>
+      <li>心の仕組みと高次意思決定の説明</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 見えない心のメカニズムを理解することで、原理の信頼性と実践の精度が高まるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>第15-16章：逆境と恐怖</h3>
+    <ul>
+      <li>失敗の原因と恐怖の六大原因を分析</li>
+      <li>貧困・批判・病気・失恋・老い・死への恐怖</li>
+      <li>対策と心構えを提示</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 恐怖は潜在意識を汚染し成果を奪うため、克服が13原理の実践に不可欠だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>第17章：実践章</h3>
+    <ul>
+      <li>誓約・自己暗示文・日課の設計</li>
+      <li>読者が即座に行動に移す手順を提示</li>
+      <li>15〜30分で始められる具体策</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong> 知識は行動で初めて価値を生むため、最後に実践への橋渡しを明示するため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="padding:0 0.5rem; margin-bottom:1rem; color:var(--primary);">💼 具体例</h2>
+
+  <div class="card">
+    <h3>🏭 例1：エジソンの電球開発</h3>
+    <ul>
+      <li><strong>背景：</strong> 1万回の失敗を経て白熱電球を実用化</li>
+      <li><strong>適用原理：</strong> 願望・忍耐・専門知識・マスターマインド</li>
+      <li><strong>示唆：</strong> 失敗は学びであり、忍耐と協働で不可能を可能にする</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong> 明確な願望と忍耐があれば、失敗の数は成功への階段となり、協働で技術的限界を突破できることを証明するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚗 例2：ヘンリー・フォードの大衆車</h3>
+    <ul>
+      <li><strong>背景：</strong> 「誰もが買える車」という願望からT型フォードを開発</li>
+      <li><strong>適用原理：</strong> 願望・想像力・体系的計画・決断</li>
+      <li><strong>示唆：</strong> 明確な願望が革新的な生産方式（流れ作業）を生む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong> 願望の具体化と想像力が既存の枠を超えた計画を生み、即断で実行すれば産業を変革できることを示すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📻 例3：ある若者のラジオ事業</h3>
+    <ul>
+      <li><strong>背景：</strong> 無一文の若者が「ラジオ局を持つ」と決意し実現</li>
+      <li><strong>適用原理：</strong> 願望・信念・自己暗示・マスターマインド</li>
+      <li><strong>示唆：</strong> 資源がなくても信念と協力で目標は達成できる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong> 初期資源の有無ではなく、願望の強度と信念、協力者の獲得が成果を決めることを実証するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎓 例4：聴覚障害の息子</h3>
+    <ul>
+      <li><strong>背景：</strong> 著者の息子が聴覚障害を克服し正常な聴力を獲得</li>
+      <li><strong>適用原理：</strong> 信念・自己暗示・潜在意識</li>
+      <li><strong>示唆：</strong> 信念と反復暗示が身体的制約さえ変える</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong> 潜在意識への刷り込みが生理的現実にまで影響を及ぼし、「不可能」の定義を書き換えることを示すため。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="padding:0 0.5rem; margin-bottom:1rem; color:var(--primary);">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p>"Whatever the mind can conceive and believe, it can achieve."</p>
+    <small><strong>なぜ重要か：</strong> 本書の中心命題を最短で表し、思考→現実の原理を喝破するから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"願望はすべての達成の出発点である。"</p>
+    <small><strong>なぜ重要か：</strong> 13原理の起点を示し、曖昧な願いを具体化する必要性を強調するから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"Successful people make decisions quickly."</p>
+    <small><strong>なぜ重要か：</strong> 先延ばしを断つ即断の習慣が成果の分水嶺であることを示すから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"恐怖は思考を麻痺させ成果を奪う。"</p>
+    <small><strong>なぜ重要か：</strong> 恐怖の克服が潜在意識の健全なプログラムに直結するから。</small>
+  </div>
+
+  <div class="card">
+    <h3>📚 関連書籍</h3>
+    <div class="book-card">
+      <h4>成功哲学</h4>
+      <div class="author">著者：ナポレオン・ヒル</div>
+      <div class="relation">同著者による体系版で、本書の原理の源流と拡張が学べる。</div>
+    </div>
+    <div class="book-card">
+      <h4>思考は現実化する—行動するための実践ノート</h4>
+      <div class="author">著者：監修者多数</div>
+      <div class="relation">原理を日常に落とし込むためのワークが充実。</div>
+    </div>
+    <div class="book-card">
+      <h4>人を動かす</h4>
+      <div class="author">著者：デール・カーネギー</div>
+      <div class="relation">マスターマインドや対人影響の実践に直結する対人原則。</div>
+    </div>
+    <div class="book-card">
+      <h4>ポジティブの力</h4>
+      <div class="author">著者：ノーマン・ヴィンセント・ピール</div>
+      <div class="relation">信念と自己暗示の宗教心理学的側面を補完。</div>
+    </div>
+    <div class="book-card">
+      <h4>大きく考えることの魔術</h4>
+      <div class="author">著者：デヴィッド・J・シュワルツ</div>
+      <div class="relation">願望の拡張と行動への橋渡しを具体策で示す。</div>
+    </div>
+    <div class="book-card">
+      <h4>精神的態度を変えれば人生が変わる（サイコ・サイバネティクス）</h4>
+      <div class="author">著者：マクスウェル・マルツ</div>
+      <div class="relation">自己イメージと潜在意識の再プログラム手法を科学的に補強。</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="padding:0 0.5rem; margin-bottom:1rem; color:var(--primary);">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>📝 アクション1：願望を数値化し期限付きで紙に書く</h4>
+    <p><strong>目的：</strong> 曖昧な願いを具体的な目標に変換し、潜在意識への指令を明確にする。</p>
+    <p><strong>期待効果：</strong> 目標が明確になり、日々の選択と行動の方向性が定まる。注意が目標に向き、機会認識が高まる。</p>
+    <p><strong>所要時間：</strong> 15分</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🗣️ アクション2：自己暗示文を作り感情込めて音読</h4>
+    <p><strong>目的：</strong> 願望を感情付きで反復し、潜在意識に刷り込む。信念を強化する。</p>
+    <p><strong>期待効果：</strong> 自己イメージが変わり、行動の躊躇が減る。習慣化により自動的に目標志向の行動が増える。</p>
+    <p><strong>所要時間：</strong> 朝晩各5分（計10分）</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🤝 アクション3：協力者候補1人に計画の骨子を相談</h4>
+    <p><strong>目的：</strong> マスターマインドの第一歩として、他者の視点と資源を取り込む。</p>
+    <p><strong>期待効果：</strong> 計画の盲点が見つかり、新しいアイデアや協力の可能性が開ける。孤立を防ぎ推進力が増す。</p>
+    <p><strong>所要時間：</strong> 30分</p>
+  </div>
+
+  <div class="action-card">
+    <h4>📖 アクション4：専門知識を1つ収集する</h4>
+    <p><strong>目的：</strong> 目標達成に直結する実践知を外部から取り込み、計画の精度を上げる。</p>
+    <p><strong>期待効果：</strong> 知識が行動の選択肢を増やし、実行の自信と効率が向上する。</p>
+    <p><strong>所要時間：</strong> 20分</p>
+  </div>
+
+  <div class="action-card">
+    <h4>⚡ アクション5：小さな決断を即座に下す練習</h4>
+    <p><strong>目的：</strong> 即断の習慣を身につけ、先延ばしを減らす。</p>
+    <p><strong>期待効果：</strong> 決断速度が上がり、機会損失が減る。自律感と推進力が高まる。</p>
+    <p><strong>所要時間：</strong> 日常の中で随時（意識するだけ）</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetTab = button.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      button.classList.add('active');
+      button.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
