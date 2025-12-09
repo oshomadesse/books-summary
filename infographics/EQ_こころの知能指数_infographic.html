@@ -1,681 +1,750 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EQ こころの知能指数 - インフォグラフィック</title>
-    <!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
-    <style>
-        :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --accent: #f093fb;
-            --text-dark: #2d3748;
-            --text-light: #718096;
-            --bg-light: #f7fafc;
-            --white: #ffffff;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            background: var(--white);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .header .author {
-            font-size: 1.2rem;
-            color: var(--text-light);
-            margin-bottom: 20px;
-        }
-
-        .success-stat {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--accent), var(--primary));
-            color: var(--white);
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
-        }
-
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 30px;
-            justify-content: center;
-        }
-
-        .tab-button {
-            background: var(--white);
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .tab-button.active {
-            background: var(--primary);
-            color: var(--white);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background: var(--white);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card h3 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card ul {
-            list-style: none;
-        }
-
-        .card li {
-            margin-bottom: 8px;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .card li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: bold;
-        }
-
-        .eq-diagram {
-            background: var(--white);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .eq-circle {
-            width: 300px;
-            height: 300px;
-            margin: 0 auto 20px;
-            position: relative;
-        }
-
-        .center-circle {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-
-        .skill-item {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            background: var(--white);
-            border: 3px solid var(--secondary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-align: center;
-            color: var(--secondary);
-        }
-
-        .skill-1 { top: 0; left: 50%; transform: translateX(-50%); }
-        .skill-2 { top: 20%; right: 10%; }
-        .skill-3 { bottom: 20%; right: 10%; }
-        .skill-4 { bottom: 0; left: 50%; transform: translateX(-50%); }
-        .skill-5 { top: 20%; left: 10%; }
-
-        .progress-bars {
-            display: grid;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .progress-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .progress-label {
-            min-width: 120px;
-            font-weight: 600;
-        }
-
-        .progress-bar {
-            flex: 1;
-            height: 20px;
-            background: var(--bg-light);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 10px;
-            transition: width 1s ease;
-        }
-
-        .timeline {
-            position: relative;
-            padding: 20px 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: linear-gradient(to bottom, var(--primary), var(--accent));
-            transform: translateX(-50%);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 30px;
-            width: 45%;
-        }
-
-        .timeline-item:nth-child(odd) {
-            left: 0;
-            text-align: right;
-        }
-
-        .timeline-item:nth-child(even) {
-            left: 55%;
-            text-align: left;
-        }
-
-        .timeline-content {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background: var(--accent);
-            border-radius: 50%;
-            top: 20px;
-        }
-
-        .timeline-item:nth-child(odd)::after {
-            right: -52px;
-        }
-
-        .timeline-item:nth-child(even)::after {
-            left: -52px;
-        }
-
-        .quote-card {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--white);
-            padding: 30px;
-            border-radius: 15px;
-            margin: 20px 0;
-            position: relative;
-        }
-
-        .quote-card::before {
-            content: '"';
-            font-size: 4rem;
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            opacity: 0.3;
-        }
-
-        .quote-text {
-            font-size: 1.2rem;
-            font-style: italic;
-            margin-bottom: 15px;
-            padding-left: 30px;
-        }
-
-        .quote-commentary {
-            font-size: 0.95rem;
-            opacity: 0.9;
-            padding-left: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .eq-circle {
-                width: 250px;
-                height: 250px;
-            }
-            
-            .timeline::before {
-                left: 20px;
-            }
-            
-            .timeline-item {
-                width: calc(100% - 40px);
-                left: 40px !important;
-                text-align: left !important;
-            }
-            
-            .timeline-item::after {
-                left: -32px !important;
-            }
-            
-            .tabs {
-                flex-direction: column;
-            }
-            
-            .tab-button {
-                width: 100%;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EQ（情動知能）インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  margin-left: 1rem;
+  font-size: 0.95rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.3s;
+  position: relative;
+}
+.tab-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  background: var(--card-bg);
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+}
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+}
+.card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+.quote-card::before {
+  content: '"';
+  font-size: 4rem;
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+  font-family: Georgia, serif;
+}
+.quote-card p {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+.quote-card small {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+.action-card {
+  background: var(--card-bg);
+  border: 2px solid var(--accent);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.action-card .meta span {
+  display: block;
+  margin-top: 0.25rem;
+}
+.visual-section {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-section h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: linear-gradient(90deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.05));
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.chapter-section {
+  margin-bottom: 1.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.chapter-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.25rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>📚 EQ こころの知能指数</h1>
-            <div class="author">ダニエル・ゴールマン</div>
-            <div class="success-stat">🎯 人生の成功の80%はEQで決まる</div>
-        </header>
+<header>
+  <h1>📚 EQ（情動知能）完全ガイド</h1>
+  <p>IQだけでは決まらない、人生の成果を左右する「感情の賢さ」</p>
+</header>
 
-        <nav class="tabs" role="tablist">
-            <button class="tab-button active" data-tab="overview" role="tab" aria-selected="true">📖 概要</button>
-            <button class="tab-button" data-tab="eq-model" role="tab" aria-selected="false">🧠 EQモデル</button>
-            <button class="tab-button" data-tab="structure" role="tab" aria-selected="false">📋 構成</button>
-            <button class="tab-button" data-tab="practice" role="tab" aria-selected="false">💡 実践法</button>
-            <button class="tab-button" data-tab="quotes" role="tab" aria-selected="false">💬 名言</button>
-        </nav>
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜIQだけでは成功や幸福を説明できないのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>意思決定・学習・協働は情動の影響下にあり、自己認識・自己制御・共感・社会的スキルを含むEQが成果の質を規定するから。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>脳の扁桃体と前頭前野の相互作用が注意・記憶・判断を左右し、情動調整の巧拙がパフォーマンスと健康に波及することを発達心理学・神経科学・職場研究が示す。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>自己観察→情動ラベリング→呼吸・再評価による自己制御→共感的傾聴と主張の実践→習慣化という段階的トレーニングでEQは伸ばせる。</p>
+    </div>
+  </div>
 
-        <main>
-            <section id="overview" class="tab-content active" role="tabpanel">
-                <div class="cards-grid">
-                    <div class="card">
-                        <h3>🎯 核心メッセージ</h3>
-                        <ul>
-                            <li>IQだけでは人生の成功は決まらない</li>
-                            <li>感情を認識・管理する能力が重要</li>
-                            <li>他者への共感と良好な関係構築力</li>
-                            <li>EQは生涯を通じて向上可能</li>
-                            <li>感情を理性と対立させず賢く活用</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="card">
-                        <h3>📊 成功への影響度</h3>
-                        <div class="progress-bars">
-                            <div class="progress-item">
-                                <div class="progress-label">IQ</div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 20%"></div>
-                                </div>
-                                <span>20%</span>
-                            </div>
-                            <div class="progress-item">
-                                <div class="progress-label">EQ他要因</div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 80%"></div>
-                                </div>
-                                <span>80%</span>
-                            </div>
-                        </div>
-                    </div>
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
 
-                    <div class="card">
-                        <h3>🧬 神経科学的基盤</h3>
-                        <ul>
-                            <li>扁桃体：感情の中枢、警報システム</li>
-                            <li>大脳新皮質：理性・論理的思考</li>
-                            <li>感情が思考より先に反応</li>
-                            <li>扁桃体ハイジャック現象</li>
-                            <li>感情と理性の協調が重要</li>
-                        </ul>
-                    </div>
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🧠 EQ（情動知能）</h3>
+        <p><strong>一言要約：</strong>感情の賢さ</p>
+        <ul>
+          <li>自己と他者の感情を認知・利用・理解・調整する総合的能力</li>
+          <li>IQの補完軸として成果を左右する</li>
+          <li>学習可能で訓練により向上する</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>人生の成果は認知能力だけでなく、感情をどう扱うかで大きく変わるため、EQは現代社会で不可欠な能力となっている。
+        </div>
+      </div>
 
-                    <div class="card">
-                        <h3>🌱 発達可能性</h3>
-                        <ul>
-                            <li>先天的才能ではなく後天的スキル</li>
-                            <li>幼少期の親との関わりが土台</li>
-                            <li>学校での感情教育の必要性</li>
-                            <li>職場でのEQ向上プログラム</li>
-                            <li>社会全体の幸福度向上に貢献</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
+      <div class="card">
+        <h3>👁️ 自己認識</h3>
+        <p><strong>一言要約：</strong>気づく力</p>
+        <ul>
+          <li>瞬間の情動とそのトリガーを把握する</li>
+          <li>自分の価値観・強み・限界を正しく理解する</li>
+          <li>すべてのEQスキルの土台となる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>自分の感情に気づかなければコントロールも改善もできない。自己認識はEQ向上の出発点。
+        </div>
+      </div>
 
-            <section id="eq-model" class="tab-content" role="tabpanel">
-                <div class="eq-diagram">
-                    <h2>🧠 EQの5つの構成要素</h2>
-                    <div class="eq-circle">
-                        <div class="center-circle">EQ</div>
-                        <div class="skill-item skill-1">🔍<br>自己認識</div>
-                        <div class="skill-item skill-2">⚖️<br>自己管理</div>
-                        <div class="skill-item skill-3">🎯<br>動機づけ</div>
-                        <div class="skill-item skill-4">❤️<br>共感</div>
-                        <div class="skill-item skill-5">🤝<br>社会的<br>スキル</div>
-                    </div>
-                </div>
+      <div class="card">
+        <h3>⚖️ 自己制御</h3>
+        <p><strong>一言要約：</strong>整える力</p>
+        <ul>
+          <li>衝動やストレス反応を意図に沿って整える</li>
+          <li>適切な行動を選ぶ力</li>
+          <li>再評価や呼吸法が核となる手段</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>感情に振り回されず、目標に向かって行動を選択できることが、長期的成功と健康の鍵となる。
+        </div>
+      </div>
 
-                <div class="cards-grid">
-                    <div class="card">
-                        <h3>🔍 自己認識</h3>
-                        <ul>
-                            <li>自分の感情をリアルタイムで認識</li>
-                            <li>気分や衝動の理解</li>
-                            <li>他者への影響を把握</li>
-                            <li>客観的な自己評価</li>
-                            <li>全てのEQスキルの土台</li>
-                        </ul>
-                    </div>
+      <div class="card">
+        <h3>🔥 動機づけ（内発）</h3>
+        <p><strong>一言要約：</strong>内から燃える</p>
+        <ul>
+          <li>外的報酬より意味・成長・達成基準に駆動される</li>
+          <li>持続的エネルギーの源泉</li>
+          <li>困難に直面しても粘り強く取り組める</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>外部からの報酬は一時的だが、内発的動機は持続し、深い学習と高い成果を生む。
+        </div>
+      </div>
 
-                    <div class="card">
-                        <h3>⚖️ 自己管理</h3>
-                        <ul>
-                            <li>破壊的感情のコントロール</li>
-                            <li>行動前の思考習慣</li>
-                            <li>ストレス下での冷静さ</li>
-                            <li>変化への柔軟な対応</li>
-                            <li>衝動的行動の抑制</li>
-                        </ul>
-                    </div>
+      <div class="card">
+        <h3>💚 共感</h3>
+        <p><strong>一言要約：</strong>感じ取り寄り添う</p>
+        <ul>
+          <li>他者の感情・視点・文脈を感じ取る</li>
+          <li>認知的・情動的・思いやりの三層構造</li>
+          <li>適切に応答する能力を含む</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>共感は信頼関係の基盤であり、協働・リーダーシップ・顧客対応など対人成果の質を決定する。
+        </div>
+      </div>
 
-                    <div class="card">
-                        <h3>🎯 動機づけ</h3>
-                        <ul>
-                            <li>内的要因による目標追求</li>
-                            <li>達成感と情熱の重視</li>
-                            <li>困難への粘り強さ</li>
-                            <li>楽観的な取り組み姿勢</li>
-                            <li>外的報酬に依存しない</li>
-                        </ul>
-                    </div>
+      <div class="card">
+        <h3>🤝 社会的スキル</h3>
+        <p><strong>一言要約：</strong>関係を動かす</p>
+        <ul>
+          <li>関係構築・影響・説得・協働を促す</li>
+          <li>葛藤解決と交渉のスキル群</li>
+          <li>チームワークとリーダーシップの実践力</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>どれほど優れたアイデアも、人を動かし協力を得られなければ実現しない。社会的スキルは影響力の源泉。
+        </div>
+      </div>
 
-                    <div class="card">
-                        <h3>❤️ 共感</h3>
-                        <ul>
-                            <li>他者の感情と視点の理解</li>
-                            <li>相手の立場で考える能力</li>
-                            <li>非言語的サインの読み取り</li>
-                            <li>表情や声のトーンへの注意</li>
-                            <li>良好な関係構築の基盤</li>
-                        </ul>
-                    </div>
+      <div class="card">
+        <h3>⚡ 扁桃体ハイジャック</h3>
+        <p><strong>一言要約：</strong>感情暴走</p>
+        <ul>
+          <li>強い情動が前頭前野を一時的に乗っ取る現象</li>
+          <li>短絡的行動や後悔する決定を生む</li>
+          <li>自己制御トレーニングで予防可能</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>この現象を理解することで、感情的反応を客観視し、冷静な判断を取り戻す戦略を立てられる。
+        </div>
+      </div>
 
-                    <div class="card">
-                        <h3>🤝 社会的スキル</h3>
-                        <ul>
-                            <li>効果的なコミュニケーション</li>
-                            <li>説得とリーダーシップ</li>
-                            <li>協力と紛争解決</li>
-                            <li>望ましい反応の引き出し</li>
-                            <li>共感を行動に移す力</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <section id="structure" class="tab-content" role="tabpanel">
-                <h2>📚 書籍構成</h2>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>第1部 情動の脳</h3>
-                            <p>🧠 感情が思考に先行する神経科学的メカニズム</p>
-                            <p>扁桃体と大脳新皮質の関係、扁桃体ハイジャックの解説</p>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>第2部 EQの性質</h3>
-                            <p>⭐ EQの5つの主要領域の詳細定義</p>
-                            <p>IQとの違い、各能力の意味と重要性を解説</p>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>第3部 EQの応用</h3>
-                            <p>💼 実生活でのEQ活用事例</p>
-                            <p>夫婦関係、職場マネジメント、医療現場での具体例</p>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>第4部 好機をとらえる</h3>
-                            <p>🌱 EQの学習・発達可能性</p>
-                            <p>幼少期の重要性、生涯学習としてのEQ向上</p>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline-item">
-                        <div class="timeline-content">
-                            <h3>第5部 情動のリテラシー</h3>
-                            <p>🏫 学校教育での感情教育の必要性</p>
-                            <p>社会全体の課題解決に向けた処方箋を提示</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="practice" class="tab-content" role="tabpanel">
-                <h2>💡 EQ向上の実践法</h2>
-                <div class="cards-grid">
-                    <div class="card">
-                        <h3>📝 感情日記をつける</h3>
-                        <ul>
-                            <li>日々の感情を記録・分析</li>
-                            <li>感情パターンの認識</li>
-                            <li>トリガーの特定</li>
-                            <li>客観的な自己理解</li>
-                            <li>自己認識スキルの向上</li>
-                        </ul>
-                    </div>
-
-                    <div class="card">
-                        <h3>⏰ 6秒ルールの実践</h3>
-                        <ul>
-                            <li>強い衝動時に6秒間待つ</li>
-                            <li>深呼吸で心を落ち着ける</li>
-                            <li>扁桃体の興奮を鎮める</li>
-                            <li>前頭前野の機能回復</li>
-                            <li>賢明な判断の選択</li>
-                        </ul>
-                    </div>
-
-                    <div class="card">
-                        <h3>👂 感情に焦点を当てた傾聴</h3>
-                        <ul>
-                            <li>相手の感情状態に注意</li>
-                            <li>表情や声のトーンを観察</li>
-                            <li>感情を言葉で確認</li>
-                            <li>共感的な応答</li>
-                            <li>信頼関係の構築</li>
-                        </ul>
-                    </div>
-
-                    <div class="card">
-                        <h3>📚 関連書籍での学習</h3>
-                        <ul>
-                            <li>7つの習慣（人格主義）</li>
-                            <li>マインドセット（成長思考）</li>
-                            <li>サーチ・インサイド・ユアセルフ</li>
-                            <li>NVC（共感的コミュニケーション）</li>
-                            <li>継続的な学習と実践</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <section id="quotes" class="tab-content" role="tabpanel">
-                <h2>💬 重要な名言</h2>
-                
-                <div class="quote-card">
-                    <div class="quote-text">
-                        結局のところ、人生で成功できるかどうかは、IQで決まる部分が二〇パーセントで、残りの八〇パーセントは他の要因で決まるということになる。
-                    </div>
-                    <div class="quote-commentary">
-                        本書の根幹をなす主張。IQ万能神話に疑問を投げかけ、EQという新たな指標の重要性を強く印象づけた象徴的な一文。
-                    </div>
-                </div>
-
-                <div class="quote-card">
-                    <div class="quote-text">
-                        情動の脳は、思考の脳よりもずっと速く反応する。
-                    </div>
-                    <div class="quote-commentary">
-                        感情が理性に先行することを端的に示した言葉。扁桃体ハイジャックのメカニズムを分かりやすく説明し、衝動的行動の神経科学的根拠を提供。
-                    </div>
-                </div>
-
-                <div class="quote-card">
-                    <div class="quote-text">
-                        子どもたちが自分自身や他人の気持ちを理解し、自分の感情をコントロールし、他人の感情に共感できるよう手助けすることは、民主主義社会の基盤そのものを強化することにつながる。
-                    </div>
-                    <div class="quote-commentary">
-                        本書が単なる自己啓発書ではなく社会変革を目指す書であることを示す重要な引用。EQ教育が個人の成功だけでなく、より共感的で健全な社会を築くための礎であると説いている。
-                    </div>
-                </div>
-            </section>
-        </main>
+      <div class="card">
+        <h3>🌱 情動的素養</h3>
+        <p><strong>一言要約：</strong>EQの土台行動</p>
+        <ul>
+          <li>EQを下支えする習慣化された行動様式</li>
+          <li>傾聴、自己対話、フィードバック活用など</li>
+          <li>日常の小さな実践の積み重ね</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>知識だけでは不十分。日々の習慣として定着させることで、EQは真に機能し始める。
+        </div>
+      </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
+    <div class="visual-section">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-diagram">
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>自己認識 → トリガー把握 → 自己制御の精度向上</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">↑</span>
+          <span>自己制御 ↑ → 扁桃体ハイジャック ↓ → 判断質 ↑</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>内発的動機づけ → 目標持続 → 学習・成果向上</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">+</span>
+          <span>共感 + 社会的スキル → 信頼構築 → 協働・影響力向上</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">⇒</span>
+          <span>EQ（5要素の統合） → 健康・人間関係・業績の三領域に波及</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">🔄</span>
+          <span>練習とフィードバック → 情動的素養の習慣化 → EQの持続的向上</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            tabButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const targetTab = this.getAttribute('data-tab');
-                    
-                    // Remove active class from all buttons and contents
-                    tabButtons.forEach(btn => {
-                        btn.classList.remove('active');
-                        btn.setAttribute('aria-selected', 'false');
-                    });
-                    tabContents.forEach(content => {
-                        content.classList.remove('active');
-                    });
-                    
-                    // Add active class to clicked button and corresponding content
-                    this.classList.add('active');
-                    this.setAttribute('aria-selected', 'true');
-                    document.getElementById(targetTab).classList.add('active');
-                });
-            });
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-section">
+      <div class="chapter-card">
+        <h4>📖 第1章：問題提起 - IQ偏重の限界</h4>
+        <ul>
+          <li>IQだけでは人生の成果（仕事・関係・健康）を説明できない</li>
+          <li>多面的指標が必要であることを提示</li>
+          <li>EQという新しい枠組みの導入</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>従来の知能観の限界を示し、読者にEQの必要性を認識させるため。
+        </div>
+      </div>
 
-            // Animate progress bars when overview tab is active
-            function animateProgressBars() {
-                const progressFills = document.querySelectorAll('.progress-fill');
-                progressFills.forEach(fill => {
-                    const width = fill.style.width;
-                    fill.style.width = '0%';
-                    setTimeout(() => {
-                        fill.style.width = width;
-                    }, 500);
-                });
-            }
+      <div class="chapter-card">
+        <h4>🧬 第2章：脳科学の基盤</h4>
+        <ul>
+          <li>扁桃体と前頭前野の連携メカニズム</li>
+          <li>情動が注意・記憶・意思決定に与える影響</li>
+          <li>神経可塑性によるEQ向上の可能性</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>EQが単なる概念でなく、脳科学的根拠を持つことを示し、信頼性を確立するため。
+        </div>
+      </div>
 
-            // Initial animation
-            animateProgressBars();
+      <div class="chapter-card">
+        <h4>🎯 第3章：EQの枠組み</h4>
+        <ul>
+          <li>自己認識・自己制御・動機づけ・共感・社会的スキルの定義</li>
+          <li>各要素の行動指標と測定方法</li>
+          <li>5要素の相互関係と統合的理解</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>EQを具体的・測定可能な要素に分解し、実践と評価の基盤を提供するため。
+        </div>
+      </div>
 
-            // Re-animate when overview tab is clicked
-            document.querySelector('[data-tab="overview"]').addEventListener('click', function() {
-                setTimeout(animateProgressBars, 100);
-            });
-        });
-    </script>
+      <div class="chapter-card">
+        <h4>👶 第4章：ライフステージ別の影響</h4>
+        <ul>
+          <li>幼少期の養育がEQ形成に与える影響</li>
+          <li>学校教育における情動学習の重要性</li>
+          <li>職場での成否とEQの相関</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>EQが人生全体を通じて作用することを示し、早期介入と継続的育成の価値を訴えるため。
+        </div>
+      </div>
+
+      <div class="chapter-card">
+        <h4>⚠️ 第5章：リスクとコスト</h4>
+        <ul>
+          <li>情動未熟がもたらす暴力・依存・離職</li>
+          <li>疾病と医療コストへの影響</li>
+          <li>社会的コストの定量化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>EQ欠如の深刻な帰結を示し、個人・組織・社会レベルでの投資動機を強化するため。
+        </div>
+      </div>
+
+      <div class="chapter-card">
+        <h4>🎓 第6章：育成戦略</h4>
+        <ul>
+          <li>家庭・学校・企業における情動学習（SEL）</li>
+          <li>トレーニングプログラムの具体策</li>
+          <li>評価とフィードバックの仕組み</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>理論を実践に移すための具体的方法論を提供し、読者が行動を起こせるようにするため。
+        </div>
+      </div>
+
+      <div class="chapter-card">
+        <h4>💼 第7章：職場応用</h4>
+        <ul>
+          <li>リーダーシップにおけるEQの優位性</li>
+          <li>組織文化とEQの相互作用</li>
+          <li>評価・育成・採用への統合</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>ビジネス成果との直接的関連を示し、企業の人材戦略にEQを組み込む根拠を提供するため。
+        </div>
+      </div>
+
+      <div class="chapter-card">
+        <h4>✨ 第8章：結論</h4>
+        <ul>
+          <li>EQは学べるスキルである</li>
+          <li>個人と社会のウェルビーイングを高める投資</li>
+          <li>継続的実践と成長の呼びかけ</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>全体のメッセージを統合し、読者に希望と行動への意欲を与えて締めくくるため。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🏫 具体例1：学校での情動学習プログラム</h3>
+        <ul>
+          <li><strong>背景：</strong>ある小学校で週1回の情動学習（SEL）授業を導入</li>
+          <li><strong>内容：</strong>感情の名前を学び、呼吸法と対話スキルを練習</li>
+          <li><strong>結果：</strong>いじめ件数が40%減少、学業成績も向上</li>
+          <li><strong>示唆：</strong>早期のEQ教育が社会性と学習の両面に好影響</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由（この例が示すこと）：</strong>EQは幼少期から体系的に教えることができ、学校環境全体を改善する力を持つことを実証している。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💼 具体例2：リーダーのEQと組織業績</h3>
+        <ul>
+          <li><strong>背景：</strong>ある企業で管理職のEQ評価を実施</li>
+          <li><strong>内容：</strong>高EQリーダーのチームと低EQリーダーのチームを比較</li>
+          <li><strong>結果：</strong>高EQチームは離職率が半分、生産性が20%高い</li>
+          <li><strong>示唆：</strong>リーダーの情動スキルがチーム全体のパフォーマンスを左右</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由（この例が示すこと）：</strong>EQは個人の資質にとどまらず、組織の成果と文化に直接影響を与える経営資源であることを示している。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🧘 具体例3：呼吸法による扁桃体ハイジャック回避</h3>
+        <ul>
+          <li><strong>背景：</strong>営業担当者が顧客からのクレームで激怒しそうになる</li>
+          <li><strong>内容：</strong>4-7-8呼吸法（4秒吸う、7秒止める、8秒吐く）を実践</li>
+          <li><strong>結果：</strong>冷静さを取り戻し、建設的な対話で問題解決</li>
+          <li><strong>示唆：</strong>簡単な技法で感情暴走を防ぎ、関係を守れる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由（この例が示すこと）：</strong>EQスキルは抽象的な概念ではなく、具体的な技法として即座に実践でき、現実の困難な場面で効果を発揮することを示している。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👨‍👩‍👧 具体例4：家庭での情動コーチング</h3>
+        <ul>
+          <li><strong>背景：</strong>子どもが友達とのトラブルで泣いて帰宅</li>
+          <li><strong>内容：</strong>親が感情を否定せず「悲しかったんだね」と共感し、対処法を一緒に考える</li>
+          <li><strong>結果：</strong>子どもは感情を言語化し、次回は自分で解決策を試す</li>
+          <li><strong>示唆：</strong>親の共感的応答が子どものEQ発達を促進</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由（この例が示すこと）：</strong>EQは特別な訓練施設でなく、日常の親子対話の中で育まれ、生涯にわたる情動スキルの基盤となることを示している。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>成功を左右するのは、賢さに加えて情動を扱う力である。</p>
+      <small><strong>重要性：</strong>IQ万能観を覆し、EQ育成の意義を示す中核命題だから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>強い感情は思考を乗っ取り、愚かな決定を招く。</p>
+      <small><strong>重要性：</strong>扁桃体ハイジャックのリスクを直感的に伝える。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>共感は関係の潤滑油であり、影響力の源泉である。</p>
+      <small><strong>重要性：</strong>対人成果の鍵が技術だけでなく感受性にあると示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>EQは訓練で伸ばせる学習可能な能力である。</p>
+      <small><strong>重要性：</strong>行動変容の余地があることを明確化し、実践動機を与える。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>📝 アクション1：感情日記を15分書く</h4>
+      <p>今日感じた感情を3つ選び、それぞれ「いつ・何が起きて・どう感じたか・なぜそう感じたか」を書き出す。</p>
+      <div class="meta">
+        <span><strong>🎯 目的：</strong>自己認識を高め、感情のトリガーとパターンを把握する</span>
+        <span><strong>✨ 期待効果：</strong>感情の客観視が進み、次回同じ状況で冷静に対処できるようになる</span>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🌬️ アクション2：4-7-8呼吸を15分練習する</h4>
+      <p>静かな場所で座り、4秒かけて鼻から吸い、7秒息を止め、8秒かけて口から吐く。これを5回×3セット繰り返す。</p>
+      <div class="meta">
+        <span><strong>🎯 目的：</strong>自己制御の基礎技法を体得し、ストレス反応を和らげる</span>
+        <span><strong>✨ 期待効果：</strong>扁桃体ハイジャックを予防し、緊張場面でも落ち着きを保てるようになる</span>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>👂 アクション3：最近の会話を傾聴20分実践</h4>
+      <p>家族や同僚との次の会話で、相手の話を遮らず、要約して返し「〇〇と感じたんですね」と感情を言語化する。</p>
+      <div class="meta">
+        <span><strong>🎯 目的：</strong>共感スキルを実地で鍛え、相手の感情を正確に読み取る</span>
+        <span><strong>✨ 期待効果：</strong>信頼関係が深まり、対人トラブルが減り、協力を得やすくなる</span>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🎯 アクション4：今週の小さな目標を設定する</h4>
+      <p>「なぜこれをやりたいか」を明確にし、達成基準を具体的に書く（例：週3回運動→健康で長く働きたいから）。</p>
+      <div class="meta">
+        <span><strong>🎯 目的：</strong>内発的動機づけを意識化し、目標への持続力を高める</span>
+        <span><strong>✨ 期待効果：</strong>外的報酬に依存せず、困難があっても粘り強く取り組めるようになる</span>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🔍 アクション5：自分の強み・弱みリストを作る</h4>
+      <p>EQの5要素（自己認識・自己制御・動機づけ・共感・社会的スキル）それぞれについて、自分の得意・苦手を1つずつ書く。</p>
+      <div class="meta">
+        <span><strong>🎯 目的：</strong>自己認識を深め、成長の優先順位を明確にする</span>
+        <span><strong>✨ 期待効果：</strong>漠然とした不安が減り、具体的な改善行動に集中できるようになる</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
 </body>
 </html>
