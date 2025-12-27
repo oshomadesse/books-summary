@@ -33,29 +33,30 @@ if [ $EXIT_CODE -eq 0 ]; then
     ARTIFACTS_DIR="$REPO_DIR/artifacts"
 
     if [ -d "$ARTIFACTS_DIR" ]; then
-        echo "[$DATE] Moving artifacts to $INBOX_DIR..." >> "$LOG_FILE"
+        echo "[$DATE] Checking artifacts..." >> "$LOG_FILE"
         
-        # Move files instead of copying to avoid duplication
-        # Using mv to move files from artifacts to Inbox
-        mv "$ARTIFACTS_DIR"/Books-*.md "$INBOX_DIR/" 2>> "$LOG_FILE"
-        MOVE_EXIT=$?
+        # Move files if they exist (post-merge hook might have already moved them)
+        if ls "$ARTIFACTS_DIR"/Books-*.md 1> /dev/null 2>&1; then
+            echo "[$DATE] Moving artifacts to $INBOX_DIR..." >> "$LOG_FILE"
+            mv "$ARTIFACTS_DIR"/Books-*.md "$INBOX_DIR/" 2>> "$LOG_FILE"
+        else
+            echo "[$DATE] No artifacts found to move (already moved by hook?)" >> "$LOG_FILE"
+        fi
+
+        # Always try to clean up git (if files are gone from disk but in git index)
+        echo "[$DATE] Cleaning up artifacts from git..." >> "$LOG_FILE"
+        cd "$REPO_DIR" || exit 1
         
-        if [ $MOVE_EXIT -eq 0 ]; then
-            echo "[$DATE] ✅ Move successful." >> "$LOG_FILE"
-            
-            # Clean up artifacts from git to keep the repo clean
-            echo "[$DATE] Cleaning up artifacts from git..." >> "$LOG_FILE"
-            cd "$REPO_DIR" || exit 1
-            
-            # Stage the deletion (since files are already moved/deleted from disk)
-            git add -u artifacts/
-            
-            # Commit and push the deletion
+        # Stage deletions
+        git add -u artifacts/
+        
+        # Commit if there are changes
+        if ! git diff --cached --quiet; then
             git commit -m "🧹 Cleanup artifacts [skip ci]" >> "$LOG_FILE" 2>&1
             git push >> "$LOG_FILE" 2>&1
-            
+            echo "[$DATE] ✅ Git cleanup successful." >> "$LOG_FILE"
         else
-            echo "[$DATE] ❌ Move failed with exit code $MOVE_EXIT." >> "$LOG_FILE"
+            echo "[$DATE] No git cleanup needed." >> "$LOG_FILE"
         fi
     fi
 
