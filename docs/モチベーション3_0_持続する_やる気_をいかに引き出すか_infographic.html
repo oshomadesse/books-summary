@@ -1,663 +1,896 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>モチベーション3.0 - インフォグラフィック</title>
-    <!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
-    <style>
-        :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --accent: #f093fb;
-            --text-dark: #2d3748;
-            --text-light: #718096;
-            --bg-light: #f7fafc;
-            --white: #ffffff;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background: linear-gradient(135deg, var(--bg-light) 0%, #e2e8f0 100%);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            border-radius: 20px;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .summary-block {
-            background: var(--white);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-left: 5px solid var(--accent);
-        }
-
-        .summary-block h2 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
-
-        .qa-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .qa-item {
-            padding: 20px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--bg-light) 0%, #edf2f7 100%);
-        }
-
-        .qa-item h3 {
-            color: var(--secondary);
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-
-        .qa-item p, .qa-item li {
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .qa-item ul {
-            padding-left: 20px;
-        }
-
-        .tabs {
-            margin-bottom: 40px;
-        }
-
-        .tab-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .tab-button {
-            padding: 12px 24px;
-            border: none;
-            background: var(--bg-light);
-            color: var(--text-dark);
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .tab-button.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-        }
-
-        .tab-content {
-            display: none;
-            background: var(--white);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .concept-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .concept-card {
-            background: var(--bg-light);
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 4px solid var(--accent);
-        }
-
-        .concept-card h3 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        .concept-card .tag {
-            display: inline-block;
-            background: var(--accent);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-        }
-
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .flow-diagram {
-            margin: 30px 0;
-            text-align: center;
-        }
-
-        .flow-step {
-            display: inline-block;
-            background: var(--white);
-            padding: 15px 20px;
-            margin: 5px;
-            border-radius: 25px;
-            border: 2px solid var(--primary);
-            position: relative;
-        }
-
-        .flow-step::after {
-            content: '→';
-            position: absolute;
-            right: -25px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        .flow-step:last-child::after {
-            display: none;
-        }
-
-        .venn-diagram {
-            width: 100%;
-            max-width: 400px;
-            height: 300px;
-            margin: 20px auto;
-        }
-
-        .circle {
-            fill-opacity: 0.6;
-            stroke-width: 2;
-        }
-
-        .circle1 { fill: var(--primary); stroke: var(--primary); }
-        .circle2 { fill: var(--secondary); stroke: var(--secondary); }
-        .circle3 { fill: var(--accent); stroke: var(--accent); }
-
-        .action-list {
-            background: linear-gradient(135deg, var(--accent) 0%, #ff9a9e 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 20px 0;
-        }
-
-        .action-list h3 {
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-        }
-
-        .action-list ul {
-            list-style: none;
-        }
-
-        .action-list li {
-            padding: 8px 0;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .action-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-        }
-
-        .book-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .book-card {
-            background: var(--bg-light);
-            padding: 20px;
-            border-radius: 10px;
-            border-top: 3px solid var(--primary);
-        }
-
-        .book-card h4 {
-            color: var(--secondary);
-            margin-bottom: 5px;
-        }
-
-        .book-card .author {
-            font-style: italic;
-            color: var(--text-light);
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .header p {
-                font-size: 1rem;
-            }
-            
-            .qa-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .tab-buttons {
-                justify-content: center;
-            }
-            
-            .tab-button {
-                flex: 1;
-                min-width: 120px;
-            }
-            
-            .concept-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .flow-step {
-                display: block;
-                margin: 10px auto;
-                max-width: 200px;
-            }
-            
-            .flow-step::after {
-                content: '↓';
-                right: 50%;
-                top: 100%;
-                transform: translateX(50%);
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>モチベーション3.0 インフォグラフィック</title>
+<!--
+カラーパレット（メタデータ）:
+  プライマリー: #667eea
+  セカンダリー: #764ba2
+  アクセント: #f093fb
+-->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  flex: 1 1 auto;
+  min-width: 120px;
+  text-align: center;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-left: 4px solid var(--primary);
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.6rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.3rem;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  margin-bottom: 0.7rem;
+  padding-left: 1.8rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-left: 5px solid var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.example-card h4 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+}
+.example-card p {
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--primary);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 4rem;
+  color: var(--accent);
+  opacity: 0.3;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  font-family: Georgia, serif;
+}
+.quote-card blockquote {
+  font-style: italic;
+  font-size: 1.05rem;
+  margin-bottom: 0.8rem;
+  color: var(--text);
+  position: relative;
+  z-index: 1;
+}
+.quote-card cite {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+.action-card h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255,255,255,0.3);
+}
+.visual-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  justify-content: center;
+  align-items: center;
+}
+.flow-item {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  padding: 1rem;
+  min-width: 150px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0.2rem;
+}
+.metric-bar {
+  background: #e0e0e0;
+  border-radius: 10px;
+  height: 24px;
+  margin: 0.5rem 0;
+  overflow: hidden;
+  position: relative;
+}
+.metric-fill {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: width 1s ease-out;
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--secondary);
+}
+.book-item h4 {
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+}
+.book-item .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-item .relation {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    min-width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .flow-item {
+    min-width: 120px;
+    font-size: 0.85rem;
+  }
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>🚀 モチベーション3.0</h1>
-            <p>持続するやる気のサイエンス - ダニエル・H・ピンク</p>
-        </header>
 
-        <section class="summary-block">
-            <h2>📋 エグゼクティブ・サマリー</h2>
-            <div class="qa-grid">
-                <div class="qa-item">
-                    <h3>❓ 問い</h3>
-                    <p>持続するやる気を、アメとムチに頼らずどう引き出すか？</p>
-                </div>
-                <div class="qa-item">
-                    <h3>💡 答え</h3>
-                    <p>内発動機に基づく「モチベーション3.0」（自律性・熟達・目的）へ環境と運用を切り替える。</p>
-                </div>
-                <div class="qa-item">
-                    <h3>🔍 Why（なぜ？）</h3>
-                    <p>行動科学の実証研究は、条件付き報酬が注意を狭め創造性を損なう一方、自律性・熟達・目的は関与度・成果・幸福を高めることを示している。例外的に単純・反復タスクでは外発報酬が有効。</p>
-                </div>
-                <div class="qa-item">
-                    <h3>⚙️ How（どうやって？）</h3>
-                    <ul>
-                        <li>タスクを「アルゴリズム型」と「ヒューリスティック型」に仕分ける</li>
-                        <li>公平な基本給で金銭不満を消し、条件付き報酬をルーチンに限定する</li>
-                        <li>自律性の4T（Task/Time/Technique/Team）で裁量を広げる</li>
-                        <li>熟達：学習目標化・最適挑戦領域・フィードバックで上達設計</li>
-                        <li>目的：仕事を上位の意義に結び、評価指標を目的と整合させる</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+<header>
+  <h1>📚 モチベーション3.0</h1>
+  <p>創造性と知識労働の時代の新しい動機づけ</p>
+</header>
 
-        <div class="tabs">
-            <div class="tab-buttons">
-                <button class="tab-button active" onclick="showTab('concepts')" aria-controls="concepts-tab" aria-selected="true">🧠 主要概念</button>
-                <button class="tab-button" onclick="showTab('structure')" aria-controls="structure-tab" aria-selected="false">📚 構造と展開</button>
-                <button class="tab-button" onclick="showTab('relationships')" aria-controls="relationships-tab" aria-selected="false">🔗 関係性</button>
-                <button class="tab-button" onclick="showTab('quotes')" aria-controls="quotes-tab" aria-selected="false">💬 重要な引用</button>
-                <button class="tab-button" onclick="showTab('actions')" aria-controls="actions-tab" aria-selected="false">⚡ 今日のアクション</button>
-                <button class="tab-button" onclick="showTab('books')" aria-controls="books-tab" aria-selected="false">📖 関連書籍</button>
-            </div>
+<div class="container">
 
-            <div id="concepts-tab" class="tab-content active" role="tabpanel">
-                <h2>🧠 主要概念</h2>
-                <div class="stats-container">
-                    <div class="stat-card">
-                        <div class="stat-number">1.0</div>
-                        <div class="stat-label">生存欲求</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">2.0</div>
-                        <div class="stat-label">条件反射</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">3.0</div>
-                        <div class="stat-label">内発駆動</div>
-                    </div>
-                </div>
-                
-                <div class="concept-grid">
-                    <div class="concept-card">
-                        <span class="tag">基礎</span>
-                        <h3>モチベーション1.0</h3>
-                        <p>生存・安全など生理的欲求に駆動される原初的動機づけ。組織運営の基盤にはならない。</p>
-                    </div>
-                    <div class="concept-card">
-                        <span class="tag">従来型</span>
-                        <h3>モチベーション2.0</h3>
-                        <p>アメとムチ（外発的報酬・罰）で行動を制御するモデル。ルーチンには効くが創造には不適。</p>
-                    </div>
-                    <div class="concept-card">
-                        <span class="tag">新OS</span>
-                        <h3>モチベーション3.0</h3>
-                        <p>自律性・熟達・目的という内発的動機を核に行動を駆動する新OS。知識労働に適合。</p>
-                    </div>
-                    <div class="concept-card">
-                        <span class="tag">外発型</span>
-                        <h3>Type X</h3>
-                        <p>外発的報酬（お金・地位）に主に駆動される行動傾向。短期順応だが持続性に乏しい。</p>
-                    </div>
-                    <div class="concept-card">
-                        <span class="tag">内発型</span>
-                        <h3>Type I</h3>
-                        <p>内発動機を源泉に行動する傾向。成果・健康・満足度が高く、後天的に育成可能。</p>
-                    </div>
-                    <div class="concept-card">
-                        <span class="tag">裁量</span>
-                        <h3>自律性（4T）</h3>
-                        <p>Task/Time/Technique/Teamの4領域で個人に裁量を与えることが関与度を高めるという考え。</p>
-                    </div>
-                    <div class="concept-card">
-                        <span class="tag">上達</span>
-                        <h3>熟達（Mastery）</h3>
-                        <p>到達不能に近い上達の非線形追求。最適挑戦領域と継続的練習、即時フィードバックが要。</p>
-                    </div>
-                    <div class="concept-card">
-                        <span class="tag">意義</span>
-                        <h3>目的（Purpose）</h3>
-                        <p>自分の仕事を価値・貢献と結びつける意義の感覚。粘り強さと満足を生む。</p>
-                    </div>
-                    <div class="concept-card">
-                        <span class="tag">条件付き</span>
-                        <h3>if-then報酬</h3>
-                        <p>「もしXなら報酬Y」の条件付きインセンティブ。創造課題では動機づけ侵食を起こし得る。</p>
-                    </div>
-                    <div class="concept-card">
-                        <span class="tag">事後承認</span>
-                        <h3>now-that承認</h3>
-                        <p>成果後に与える予期しない感謝・称賛・ボーナス。動機侵食が少ない。</p>
-                    </div>
-                    <div class="concept-card">
-                        <span class="tag">難度調整</span>
-                        <h3>最適挑戦領域</h3>
-                        <p>易しすぎず難しすぎない課題難易度。フローと上達を促す。</p>
-                    </div>
-                    <div class="concept-card">
-                        <span class="tag">没入</span>
-                        <h3>フロー</h3>
-                        <p>高集中・高没入の最適体験状態。熟達と最適挑戦領域の交点で生じる。</p>
-                    </div>
-                </div>
-            </div>
+<div class="summary-block">
+  <h2>📌 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    なぜ現代の仕事で従来の報酬ではやる気が続かないのか？どう置き換えるべきか？
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    反復的な作業には外発的報酬は効くが、創造的・ヒューリスティックな課題には害が出やすい。公平なベース報酬を前提に、内発的動機の3要素（自律・熟達・目的）を制度と日々の習慣に組み込む。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    行動科学のメタ研究は、If-Then型の報酬が注意を狭め創造性・長期学習を損なうこと、逆に自律・熟達・目的がエンゲージメントと成果を高めることを示す。
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    自律は4T（課題・時間・手法・チーム）で拡張し、熟達はゴールディロックス課題と即時フィードバックで支援、目的は組織の大義と個人目標を接続する。実践はROWE、20%ルール、FedExデー、進捗日誌などで実装可能。
+  </div>
+</div>
 
-            <div id="structure-tab" class="tab-content" role="tabpanel">
-                <h2>📚 構造と論理展開</h2>
-                <div class="concept-grid">
-                    <div class="concept-card">
-                        <h3>📍 第I部：旧OSの限界</h3>
-                        <ul>
-                            <li>🔧 アメとムチは単純作業には有効だが、創造的課題では逆効果になりうる</li>
-                            <li>🔬 研究事例（創造課題・内発動機・過剰正当化）でミスマッチを実証</li>
-                            <li>🌐 現代の仕事はヒューリスティック化し、2.0では最適化できない</li>
-                        </ul>
-                    </div>
-                    <div class="concept-card">
-                        <h3>🚀 第II部：新OS＝モチベーション3.0の三要素</h3>
-                        <ul>
-                            <li>🎯 自律性：4Tの裁量設計、ROWE、裁量時間の導入事例</li>
-                            <li>📈 熟達：学習目標・継続練習・即時フィードバック・最適挑戦領域</li>
-                            <li>🎪 目的：利益と目的の両立、ミッションと評価指標の整合</li>
-                        </ul>
-                    </div>
-                    <div class="concept-card">
-                        <h3>🛠️ 第III部：実践ツールキット</h3>
-                        <ul>
-                            <li>👤 個人：Type I行動への転換チェック、習慣化の方法</li>
-                            <li>🏢 組織：報酬設計の原則、採用・評価・マネジメントの再設計</li>
-                            <li>🎓 教育・家庭：内発動機を損なわない教え方・育て方</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
 
-            <div id="relationships-tab" class="tab-content" role="tabpanel">
-                <h2>🔗 概念間の関係性</h2>
-                
-                <div class="flow-diagram">
-                    <h3>🔄 モチベーション3.0の核心構造</h3>
-                    <svg class="venn-diagram" viewBox="0 0 400 300">
-                        <circle class="circle circle1" cx="150" cy="120" r="80"/>
-                        <circle class="circle circle2" cx="250" cy="120" r="80"/>
-                        <circle class="circle circle3" cx="200" cy="200" r="80"/>
-                        <text x="120" y="80" fill="white" font-weight="bold" font-size="14">自律性</text>
-                        <text x="260" y="80" fill="white" font-weight="bold" font-size="14">熟達</text>
-                        <text x="180" y="240" fill="white" font-weight="bold" font-size="14">目的</text>
-                        <text x="200" y="140" fill="white" font-weight="bold" font-size="12" text-anchor="middle">最適</text>
-                        <text x="200" y="155" fill="white" font-weight="bold" font-size="12" text-anchor="middle">パフォーマンス</text>
-                    </svg>
-                </div>
-
-                <div class="concept-grid">
-                    <div class="concept-card">
-                        <h3>⚠️ 負の連鎖</h3>
-                        <ul>
-                            <li>if-then報酬 → 注意の焦点が狭まる → 発見的問題解決・創造性↓</li>
-                            <li>Type X環境 → 短期順応/長期疲弊 → 離職・形骸化</li>
-                            <li>ヒューリスティック型タスク × if-then報酬 → 柔軟性↓・内発動機侵食</li>
-                        </ul>
-                    </div>
-                    <div class="concept-card">
-                        <h3>✅ 正の連鎖</h3>
-                        <ul>
-                            <li>公平な基本給 → 金銭不満を除去 → 内発動機が発火しやすい</li>
-                            <li>自律性（4T）↑ → 関与度↑ → パフォーマンス・満足度↑</li>
-                            <li>熟達志向 × 最適挑戦領域 → フロー → 上達と継続学習</li>
-                            <li>目的の明確化 → 仕事の意味づけ → 粘り強さ・幸福感↑</li>
-                        </ul>
-                    </div>
-                    <div class="concept-card">
-                        <h3>🎯 適用条件</h3>
-                        <ul>
-                            <li>アルゴリズム型タスク × if-then報酬 → 速度↑・誤差↓（短期）</li>
-                            <li>Type I環境 → 学習目標・自律性・目的整合 → 持続的高成果</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div id="quotes-tab" class="tab-content" role="tabpanel">
-                <h2>💬 重要な引用</h2>
-                <div class="concept-grid">
-                    <div class="concept-card">
-                        <h3>🎯 適用範囲の重要性</h3>
-                        <p><strong>「アメとムチはルーチンには効くが創造には毒になりうる。」</strong></p>
-                        <p><em>理由：報酬設計の適用範囲を誤ると成果を下げるため。</em></p>
-                    </div>
-                    <div class="concept-card">
-                        <h3>🚀 3要素の力</h3>
-                        <p><strong>「自律性・熟達・目的が高業績と満足を同時に生む。」</strong></p>
-                        <p><em>理由：短期成果と持続可能性を両立する設計原理だから。</em></p>
-                    </div>
-                    <div class="concept-card">
-                        <h3>💰 金銭の位置づけ</h3>
-                        <p><strong>「お金は十分に払って話題から外せ。」</strong></p>
-                        <p><em>理由：金銭不満を除けば内発動機が最大化されるため。</em></p>
-                    </div>
-                    <div class="concept-card">
-                        <h3>🌱 変化の可能性</h3>
-                        <p><strong>「Type Iのふるまいは生まれつきではなく育てられる。」</strong></p>
-                        <p><em>理由：個人と組織が意図的に転換できることを示すため。</em></p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="actions-tab" class="tab-content" role="tabpanel">
-                <h2>⚡ 今日できるアクション</h2>
-                <div class="action-list">
-                    <h3>🎯 15-30分で実行可能</h3>
-                    <ul>
-                        <li>自律性の4Tで明日の仕事を再設計</li>
-                        <li>上達目標と次の練習30分を計画</li>
-                        <li>仕事の目的を一文で書き貼る</li>
-                    </ul>
-                </div>
-                
-                <div class="flow-diagram">
-                    <h3>🔄 実践フロー</h3>
-                    <div class="flow-step">現状分析</div>
-                    <div class="flow-step">4T設計</div>
-                    <div class="flow-step">目標設定</div>
-                    <div class="flow-step">実行</div>
-                    <div class="flow-step">振り返り</div>
-                </div>
-            </div>
-
-            <div id="books-tab" class="tab-content" role="tabpanel">
-                <h2>📖 関連書籍</h2>
-                <div class="book-grid">
-                    <div class="book-card">
-                        <h4>賞罰か、内発的動機づけか</h4>
-                        <p class="author">アルフィー・コーン</p>
-                        <p>外発報酬が学習と創造を損なうメカニズムを掘り下げる。</p>
-                    </div>
-                    <div class="book-card">
-                        <h4>フロー体験入門</h4>
-                        <p class="author">ミハイ・チクセントミハイ</p>
-                        <p>最適挑戦領域と没入が熟達と幸福を生む理論的基盤。</p>
-                    </div>
-                    <div class="book-card">
-                        <h4>GRIT やり抜く力</h4>
-                        <p class="author">アンジェラ・ダックワース</p>
-                        <p>熟達の継続と粘り強さを支える心的要因を補完。</p>
-                    </div>
-                    <div class="book-card">
-                        <h4>大事なことに集中する</h4>
-                        <p class="author">カル・ニューポート</p>
-                        <p>深い仕事が熟達と成果を加速する実践指針。</p>
-                    </div>
-                    <div class="book-card">
-                        <h4>進歩の原則</h4>
-                        <p class="author">テレサ・アマビール, スティーブン・クレイマー</p>
-                        <p>小さな進歩が動機と創造性を高める証拠を提示。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin: 1.5rem 0 1rem;">🧠 主要概念の詳細</h2>
+  
+  <div class="card-grid">
+    <div class="card">
+      <h3>🔄 モチベーション1.0/2.0/3.0</h3>
+      <ul>
+        <li>1.0は生存本能（食・安全）</li>
+        <li>2.0はアメとムチの外発的制御</li>
+        <li>3.0は自律・熟達・目的を核にした内発的動機のOS</li>
+        <li>時代の変化に合わせたOSアップグレードが必要</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>創造的仕事の増加により、2.0の限界が明確になり、3.0への移行が競争優位の源泉となる。
+      </div>
     </div>
 
-    <script>
-        function showTab(tabName) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => {
-                content.classList.remove('active');
-            });
+    <div class="card">
+      <h3>👤 Type X / Type I</h3>
+      <ul>
+        <li>Xは外発的報酬主導（eXtrinsic）</li>
+        <li>Iは内発的好奇心・成長主導（Intrinsic）</li>
+        <li>人は環境設計でIにシフト可能</li>
+        <li>I型は長期的に高パフォーマンス</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>個人の性格は固定ではなく、制度と文化の設計次第でI型行動を引き出せる。
+      </div>
+    </div>
 
-            // Remove active class from all buttons
-            const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => {
-                button.classList.remove('active');
-                button.setAttribute('aria-selected', 'false');
-            });
+    <div class="card">
+      <h3>🎯 自律（4T）</h3>
+      <ul>
+        <li><strong>Task</strong>：何をやるか選べる</li>
+        <li><strong>Time</strong>：いつやるか決められる</li>
+        <li><strong>Technique</strong>：どうやるか工夫できる</li>
+        <li><strong>Team</strong>：誰とやるか選べる</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>裁量の拡大がエンゲージメントと責任感を同時に高め、創造性を解放する。
+      </div>
+    </div>
 
-            // Show selected tab content
-            const selectedTab = document.getElementById(tabName + '-tab');
-            if (selectedTab) {
-                selectedTab.classList.add('active');
-            }
+    <div class="card">
+      <h3>📈 熟達（マスタリー）</h3>
+      <ul>
+        <li>少し難しい課題への継続的練習</li>
+        <li>即時フィードバックで軌道修正</li>
+        <li>腕を磨く果てのない追求</li>
+        <li>心構え・痛み・漸近線の3要素</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>成長実感が内発的満足を生み、長期的な努力の持続を可能にする。
+      </div>
+    </div>
 
-            // Add active class to clicked button
-            const clickedButton = event.target;
-            clickedButton.classList.add('active');
-            clickedButton.setAttribute('aria-selected', 'true');
-        }
+    <div class="card">
+      <h3>🌟 目的（パーパス）</h3>
+      <ul>
+        <li>利益を超えた意義と価値への貢献</li>
+        <li>努力の持続と満足を生む</li>
+        <li>組織の大義と個人目標を接続</li>
+        <li>「なぜそれをやるのか」の明確化</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>意義の認識が困難な状況での回復力と一貫性を支え、燃え尽きを防ぐ。
+      </div>
+    </div>
 
-        // Initialize accessibility attributes
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
+    <div class="card">
+      <h3>🎁 If-Then報酬 / Now-That報酬</h3>
+      <ul>
+        <li>If-Then：条件付き前払いのご褒美</li>
+        <li>創造性を損ねやすい（注意の収束）</li>
+        <li>Now-That：事後の称賛・サプライズ</li>
+        <li>害が少なく、認知を歪めにくい</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>報酬のタイミングと条件設定が、内発的動機を強化するか破壊するかを左右する。
+      </div>
+    </div>
 
-            tabButtons.forEach((button, index) => {
-                button.setAttribute('role', 'tab');
-                button.setAttribute('tabindex', index === 0 ? '0' : '-1');
-            });
+    <div class="card">
+      <h3>⚙️ アルゴリズミック vs ヒューリスティック</h3>
+      <ul>
+        <li>アルゴリズミック：手順固定の作業</li>
+        <li>→外発的報酬が有効</li>
+        <li>ヒューリスティック：発見型課題</li>
+        <li>→内発的動機が必須</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>課題の性質により最適な動機づけ手法が異なり、誤用は逆効果を生む。
+      </div>
+    </div>
 
-            tabContents.forEach(content => {
-                content.setAttribute('role', 'tabpanel');
-            });
-        });
-    </script>
+    <div class="card">
+      <h3>🎨 ソーヤー効果</h3>
+      <ul>
+        <li>本来楽しい活動も報酬で制御されると「仕事化」</li>
+        <li>楽しさと持続が低下</li>
+        <li>内発的動機が外発的報酬に置き換わる</li>
+        <li>報酬停止後に活動が減少</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>報酬による制御が本来の楽しさを奪い、依存構造を生む危険性を示す。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🐻 ゴールディロックス課題</h3>
+      <ul>
+        <li>易しすぎず難しすぎない最適難度</li>
+        <li>没頭と成長を促す</li>
+        <li>退屈と不安の間のスイートスポット</li>
+        <li>個人の能力に応じて調整が必要</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>適切な難度設定がフロー状態を生み、学習と成果を最大化する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌊 フロー</h3>
+      <ul>
+        <li>明確な目標と即時フィードバック</li>
+        <li>適正難度で生じる没入状態</li>
+        <li>時間感覚の喪失と高い集中</li>
+        <li>最高のパフォーマンスと満足を生む</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>没入体験が生産性と幸福感を同時に高め、持続可能な高成果を実現する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏢 ROWE（成果のみ評価）</h3>
+      <ul>
+        <li>勤務時間や場所を問わない</li>
+        <li>成果でのみ評価する設計</li>
+        <li>自律を最大化</li>
+        <li>生産性と満足度が向上</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>時間管理から成果管理への転換が、自律の4Tすべてを実現する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🚀 FedExデー/20%ルール</h3>
+      <ul>
+        <li>短期の自由プロジェクト時間付与</li>
+        <li>自律と革新を実験的に起動</li>
+        <li>FedEx：24時間で何かを届ける</li>
+        <li>20%：週1日を自由研究に</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>小さな自由時間の付与が、大きなイノベーションと文化変革の起点となる。
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔗 概念間の関係性</h3>
+  <div class="visual-flow">
+    <div class="flow-item">If-Then報酬</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">注意の収束↑</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">創造性↓</div>
+  </div>
+  <div class="visual-flow">
+    <div class="flow-item">ベース報酬の公平性</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">金銭の不安除去</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">内発的動機発動</div>
+  </div>
+  <div class="visual-flow">
+    <div class="flow-item">自律（4T）↑</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">エンゲージメント↑</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">熟達への投資↑</div>
+  </div>
+  <div class="visual-flow">
+    <div class="flow-item">ゴールディロックス課題</div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-item">即時フィードバック</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">フロー→熟達加速</div>
+  </div>
+  <div class="visual-flow">
+    <div class="flow-item">目的の明確化</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">行動の一貫性↑</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-item">長期パフォーマンス↑</div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin: 1.5rem 0 1rem;">📖 各章の要約</h2>
+  
+  <div class="chapter-card">
+    <h3>1️⃣ 問題提起：アメとムチの限界</h3>
+    <ul>
+      <li>従来のモチベーション2.0（外発的報酬）が創造的仕事に適合しない</li>
+      <li>実証研究でIf-Then報酬が創造性を損なうことを示す</li>
+      <li>知識労働・ヒューリスティック課題の増加が背景</li>
+      <li>報酬の7つの致命的欠陥を整理</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>現代の仕事環境の変化により、従来の動機づけモデルが機能不全に陥っている現実を認識させる。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>2️⃣ タイプ論：Type XとType I</h3>
+    <ul>
+      <li>外発的報酬主導のType Xと内発的動機主導のType Iを対比</li>
+      <li>Type Iは長期的に高パフォーマンス・高満足</li>
+      <li>環境設計により人はI型にシフト可能</li>
+      <li>採用・評価・学習設計がI型文化を育てる</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>望ましい行動パターンを明示し、それが育成可能であることを示すことで、変革の方向性を提供する。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>3️⃣ 中核モデル：自律・熟達・目的</h3>
+    <ul>
+      <li>内発的動機の3要素を提示</li>
+      <li>各要素の科学的根拠を整理（デシ、チクセントミハイ等）</li>
+      <li>3要素が相互に強化し合う関係</li>
+      <li>持続的モチベーションの設計要件を三語で示す</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>複雑な動機づけ理論をシンプルな3要素に集約し、実践可能な設計指針を提供する。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>4️⃣ 設計原則：4T・ゴールディロックス・即時FB</h3>
+    <ul>
+      <li>自律の4T（Task/Time/Technique/Team）を詳述</li>
+      <li>ゴールディロックス難度と即時フィードバックの重要性</li>
+      <li>目的の接続：組織の大義と個人目標のリンク</li>
+      <li>フロー状態を生む条件の整理</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>抽象的な3要素を具体的な設計パラメータに落とし込み、実装の手がかりを与える。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>5️⃣ 適用範囲：企業・個人・教育</h3>
+    <ul>
+      <li>企業：ROWE、FedExデー、20%ルールの導入事例</li>
+      <li>個人：進捗日誌、ゴール設定、学習習慣の設計</li>
+      <li>教育：親と教師向けのツールセット</li>
+      <li>各領域での具体的実践方法を提示</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>理論を多様な文脈に適用可能であることを示し、読者が自分の状況に引き寄せられるようにする。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>6️⃣ 実装と測定：段階的導入</h3>
+    <ul>
+      <li>ベース賃金の適正化が前提条件</li>
+      <li>自律の実験的導入（小規模から開始）</li>
+      <li>学習サイクル構築（測定・フィードバック・改善）</li>
+      <li>文化変革の長期視点と忍耐</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>一気に変えるのではなく、段階的に実験し学習するアプローチが、現実的な変革を可能にする。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin: 1.5rem 0 1rem;">💡 具体例</h2>
+  
+  <div class="example-card">
+    <h4>🔬 ケース1：ろうそく問題（カール・ドゥンカー）</h4>
+    <p><strong>背景：</strong>ろうそくを壁に固定する課題で、報酬を約束されたグループは解決時間が長くなった。</p>
+    <p><strong>示唆：</strong>If-Then報酬は注意を狭め、創造的な解決（箱を台として使う）を妨げる。</p>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>外発的報酬が認知的柔軟性を低下させ、ヒューリスティック課題では逆効果になることを実証する古典的実験。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🏢 ケース2：Best Buy社のROWE導入</h4>
+    <p><strong>背景：</strong>勤務時間・場所を問わず成果のみで評価する制度を導入。</p>
+    <p><strong>示唆：</strong>生産性35%向上、離職率低下、従業員満足度上昇を達成。自律の4Tすべてを実現。</p>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>時間管理から成果管理への転換が、自律を最大化し、ビジネス成果と従業員幸福を両立できることを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🎨 ケース3：Google 20%ルール</h4>
+    <p><strong>背景：</strong>週の20%を自由研究に使える制度。Gmail、Google Newsなど主要製品が誕生。</p>
+    <p><strong>示唆：</strong>小さな自由時間の付与が、大きなイノベーションと文化変革の起点となる。</p>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>自律の時間領域を拡張することで、創造性が解放され、組織全体の革新力が高まることを実証。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🎯 ケース4：Atlassian社のFedExデー</h4>
+    <p><strong>背景：</strong>24時間で何かを「届ける」自由プロジェクト時間。四半期ごとに実施。</p>
+    <p><strong>示唆：</strong>短期集中の自律時間が、通常業務では生まれないアイデアと製品改善を生む。</p>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>時間制約と自律の組み合わせが、集中力と創造性を同時に引き出し、実用的成果を生むことを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>📚 ケース5：子どもの読書とソーヤー効果</h4>
+    <p><strong>背景：</strong>読書好きな子に報酬を与えると、報酬停止後に読書量が減少。</p>
+    <p><strong>示唆：</strong>本来楽しい活動も報酬で制御すると「仕事化」し、内発的動機が損なわれる。</p>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>外発的報酬が内発的動機を置き換え、報酬依存構造を生む危険性を、教育場面で明確に示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin: 1.5rem 0 1rem;">📜 重要な引用</h2>
+  
+  <div class="quote-card">
+    <blockquote>創造的課題ではアメとムチは逆効果になりうる。</blockquote>
+    <cite>— 要旨</cite>
+    <div class="reason" style="margin-top: 1rem;">
+      <strong>重要性：</strong>報酬設計の誤用が成果を下げるリスクを明示する。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>自律・熟達・目的が持続的モチベーションの核である。</blockquote>
+    <cite>— 要旨</cite>
+    <div class="reason" style="margin-top: 1rem;">
+      <strong>重要性：</strong>制度と習慣づくりの設計要件を三語で示す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>給与は十分に払って話題から外せ。</blockquote>
+    <cite>— 要旨</cite>
+    <div class="reason" style="margin-top: 1rem;">
+      <strong>重要性：</strong>内発的動機を活かす前提条件を端的に示す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>マスタリーは心構え・痛み・漸近線だ。</blockquote>
+    <cite>— 要旨</cite>
+    <div class="reason" style="margin-top: 1rem;">
+      <strong>重要性：</strong>成長には努力と長期視点が不可欠であると釘を刺す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>目標はコンプライアンスではなくエンゲージメントだ。</blockquote>
+    <cite>— 要旨</cite>
+    <div class="reason" style="margin-top: 1rem;">
+      <strong>重要性：</strong>管理から自律支援へのパラダイム転換を促す。
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin: 1.5rem 0 1rem;">✅ 今日のアクション</h2>
+  
+  <div class="action-card">
+    <h4>📝 アクション1：仕事の目的を1文で書く</h4>
+    <p><strong>具体的手順：</strong>今取り組んでいる仕事が「誰の」「どんな問題を」「どう解決するか」を1文（50字以内）で書き出す。</p>
+    <p><strong>目的：</strong>目的の明確化により、日々の作業に意義を接続し、内発的動機を強化する。</p>
+    <div class="meta">
+      <strong>期待効果：</strong>行動の一貫性向上、困難な状況での回復力強化、長期的なエンゲージメント維持。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🎯 アクション2：少し難しい課題に30分集中</h4>
+    <p><strong>具体的手順：</strong>現在のスキルより少し上のレベルの課題を1つ選び、タイマーを30分セットして集中する。終了後、何を学んだか3行でメモ。</p>
+    <p><strong>目的：</strong>ゴールディロックス課題への挑戦でフロー体験を生み、熟達への道筋を体感する。</p>
+    <div class="meta">
+      <strong>期待効果：</strong>没入体験の獲得、成長実感の蓄積、学習習慣の形成。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🔍 アクション3：「もし〜なら」報酬を見直す</h4>
+    <p><strong>具体的手順：</strong>自分や部下に対して使っている条件付き報酬（「これをやったらご褒美」）を1つ挙げ、それを事後の称賛や学習機会に置き換えられないか考える。</p>
+    <p><strong>目的：</strong>If-Then報酬の害を認識し、Now-That報酬や内発的動機を支援する設計に転換する。</p>
+    <div class="meta">
+      <strong>期待効果：</strong>創造性の保護、内発的動機の強化、報酬依存構造の回避。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">📚 関連書籍</h3>
+  <div class="book-list">
+    <div class="book-item">
+      <h4>フロー体験 喜びの現象学</h4>
+      <div class="author">ミハイ・チクセントミハイ</div>
+      <div class="relation">熟達と没入（フロー）が高成果を生む条件を理論化。</div>
+    </div>
+    <div class="book-item">
+      <h4>Measure What Matters</h4>
+      <div class="author">ジョン・ドーア</div>
+      <div class="relation">目的と自律を両立させるOKR運用の実践知。</div>
+    </div>
+    <div class="book-item">
+      <h4>PEAK パフォーマンスが高まる最強の習慣</h4>
+      <div class="author">アンダース・エリクソン</div>
+      <div class="relation">熟達を生む意図的練習のメカニズムを解説。</div>
+    </div>
+    <div class="book-item">
+      <h4>スイッチ！「変われない」を変える方法</h4>
+      <div class="author">チップ・ハース/ダン・ハース</div>
+      <div class="relation">行動変容の設計がType I文化への移行を支援。</div>
+    </div>
+    <div class="book-item">
+      <h4>ご褒美と罰の経済学</h4>
+      <div class="author">ウーリ・ニージー/ジョン・リスト</div>
+      <div class="relation">インセンティブの効き方と副作用を実証研究で検証。</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+  
+  const metricFills = document.querySelectorAll('.metric-fill');
+  metricFills.forEach(fill => {
+    const width = fill.style.width;
+    fill.style.width = '0';
+    setTimeout(() => {
+      fill.style.width = width;
+    }, 100);
+  });
+});
+</script>
+
 </body>
 </html>
