@@ -34,15 +34,26 @@ if [ $EXIT_CODE -eq 0 ]; then
 
     if [ -d "$ARTIFACTS_DIR" ]; then
         echo "[$DATE] Moving artifacts to $INBOX_DIR..." >> "$LOG_FILE"
-        # Copy only today's or recent notes to avoid overwriting older ones if not needed, 
-        # but user said "artifactsから...移動", implying all new ones.
-        # Using cp -n to not overwrite existing files in Inbox if they were already moved/edited?
-        # Or cp -f to force update?
-        # Usually we want the latest.
-        cp -f "$ARTIFACTS_DIR"/Books-*.md "$INBOX_DIR/" 2>> "$LOG_FILE"
+        
+        # Move files instead of copying to avoid duplication
+        # Using mv to move files from artifacts to Inbox
+        mv "$ARTIFACTS_DIR"/Books-*.md "$INBOX_DIR/" 2>> "$LOG_FILE"
         MOVE_EXIT=$?
+        
         if [ $MOVE_EXIT -eq 0 ]; then
             echo "[$DATE] ✅ Move successful." >> "$LOG_FILE"
+            
+            # Clean up artifacts from git to keep the repo clean
+            echo "[$DATE] Cleaning up artifacts from git..." >> "$LOG_FILE"
+            cd "$REPO_DIR" || exit 1
+            
+            # Stage the deletion (since files are already moved/deleted from disk)
+            git add -u artifacts/
+            
+            # Commit and push the deletion
+            git commit -m "🧹 Cleanup artifacts [skip ci]" >> "$LOG_FILE" 2>&1
+            git push >> "$LOG_FILE" 2>&1
+            
         else
             echo "[$DATE] ❌ Move failed with exit code $MOVE_EXIT." >> "$LOG_FILE"
         fi
