@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>伝え方が9割 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー=#667eea セカンダリー=#764ba2 アクセント=#f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.15);
+  border-radius: 0.5rem;
+  border-left: 4px solid white;
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+.tab-btn {
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid #f59e0b;
+}
+.reason-box strong {
+  color: #92400e;
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+.chapter-card .purpose {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-style: italic;
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.3rem 0 0.3rem 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-weight: bold;
+}
+.quote-card {
+  background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  color: var(--primary);
+  opacity: 0.3;
+}
+.quote-card .text {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card .why {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #10b981;
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  color: #065f46;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .detail {
+  font-size: 0.9rem;
+  color: #047857;
+  margin-top: 0.5rem;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.metric-box {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.metric-box .number {
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.metric-box .label {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+.flow-step .step-num {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+.flow-step .step-text {
+  flex: 1;
+  font-size: 0.95rem;
+}
+.example-card {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+.example-card .content {
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+}
+@media (max-width: 640px) {
+  header h1 { font-size: 1.5rem; }
+  .tabs { font-size: 0.85rem; }
+  .tab-btn { padding: 0.6rem 1rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .metric-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📖 伝え方が9割</h1>
+  <p>NoをYesに変える技術と強い言葉の作り方</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>💡 核心メッセージ</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ同じ内容でも、ある言い方は伝わり、別の言い方は伝わらないのか？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      人は自分の利益に反応し、記憶に残る"強い型"で語られたメッセージに動くから。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      脳は損得と新奇性に強く反応し、注意・理解・記憶・行動の各段階で選別が起きる。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      1) 自分の言いたいことを一度捨てる 2) 相手の頭の中（利得・不安）を想像する 3) 相手の得に言い換える＋強い言葉の型（ギャップ・サプライズ・リピート・ナンバー・比喩・体言止め等）で表現する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true">主要概念の詳細</button>
+    <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false">各章の要約</button>
+    <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false">具体例</button>
+    <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false">重要な引用</button>
+    <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false">今日のアクション</button>
+  </div>
+
+  <div id="concepts" class="tab-content active" role="tabpanel">
+    <div class="metric-grid">
+      <div class="metric-box">
+        <div class="number">3</div>
+        <div class="label">Yesに変えるステップ</div>
+      </div>
+      <div class="metric-box">
+        <div class="number">7</div>
+        <div class="label">強い言葉の型</div>
+      </div>
+      <div class="metric-box">
+        <div class="number">∞</div>
+        <div class="label">応用可能な場面</div>
+      </div>
+    </div>
+
+    <div class="flow-diagram">
+      <h3 style="margin-bottom:1rem;color:var(--primary);">🔄 Yesに変える3ステップ</h3>
+      <div class="flow-step">
+        <div class="step-num">1</div>
+        <div class="step-text">自分の主張を一度捨てる（自分基点から離れる）</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">2</div>
+        <div class="step-text">相手の頭の中を想像する（利得・不安・欲求を探る）</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">3</div>
+        <div class="step-text">相手の得に言い換える（ベネフィット化＋強い型）</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>🎯 相手の利益（ベネフィット）</h3>
+        <ul>
+          <li>相手が得られる具体的なリターン</li>
+          <li>負担減・時間短縮・不安解消</li>
+          <li>機能ではなく効果に焦点</li>
+          <li>主語を"自分"から"相手"へ</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 人は自分の得になる言葉に動く。相手基点への転換が承諾率を劇的に高める。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚡ ギャップ法</h3>
+        <ul>
+          <li>現状と理想の差を示す</li>
+          <li>常識と逆説の対比</li>
+          <li>注意を惹きつける</li>
+          <li>例: "これは広告ではない"</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 脳は差異に強く反応する。ギャップが認知を揺らし、メッセージ受容を促進する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎉 サプライズ法</h3>
+        <ul>
+          <li>予想外の切り口や数字</li>
+          <li>認知を揺らし耳目を集める</li>
+          <li>新奇性が記憶を強化</li>
+          <li>例: "1日たった5分で"</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 意外性は注意のフィルターを突破し、情報の優先度を上げる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔁 リピート法</h3>
+        <ul>
+          <li>重要語を繰り返す</li>
+          <li>リズムと記憶定着を生む</li>
+          <li>感情的共鳴を増幅</li>
+          <li>例: "大切なのは、大切なことを大切にすること"</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 反復は記憶の定着率を高め、メッセージの再現性を向上させる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔢 ナンバー法</h3>
+        <ul>
+          <li>数値・順位・分量で具体化</li>
+          <li>信頼性と説得力を担保</li>
+          <li>曖昧さを排除</li>
+          <li>例: "3つの理由"</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 数字は客観性を示し、理解と記憶のコストを下げる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌉 比喩法</h3>
+        <ul>
+          <li>未知を既知に橋渡し</li>
+          <li>理解を一瞬で進める</li>
+          <li>イメージ喚起力が高い</li>
+          <li>例: "人生はマラソン"</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 比喩は認知負荷を下げ、複雑な概念を直感的に伝える。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎭 体言止め</h3>
+        <ul>
+          <li>文末を名詞で止める</li>
+          <li>余韻と強度を作る</li>
+          <li>情動を喚起</li>
+          <li>例: "これが、未来。"</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 余韻が想像を促し、行動意図を高める。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔀 選択肢提示（二択化）</h3>
+        <ul>
+          <li>Yes/NoではなくA/B選択</li>
+          <li>合意可能域を広げる</li>
+          <li>拒否を回避</li>
+          <li>例: "AとB、どちらがいい？"</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 選択肢提示は心理的抵抗を下げ、承諾率を向上させる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🤝 共感・認可</h3>
+        <ul>
+          <li>相手の立場や感情を言語化</li>
+          <li>心理的抵抗を下げる</li>
+          <li>信頼関係を構築</li>
+          <li>例: "お忙しいところ恐縮ですが"</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 認められた感覚が防衛反応を緩め、提案の受容性を高める。
+        </div>
+      </div>
+    </div>
+
+    <div style="background:white;padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <h3 style="color:var(--primary);margin-bottom:1rem;">🔗 概念間の関係性</h3>
+      <svg width="100%" height="200" viewBox="0 0 600 200" style="max-width:600px;margin:0 auto;display:block;">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <rect x="10" y="20" width="120" height="40" rx="5" fill="url(#grad1)"/>
+        <text x="70" y="45" text-anchor="middle" fill="white" font-size="12" font-weight="bold">相手理解</text>
+        <path d="M 130 40 L 170 40" stroke="#667eea" stroke-width="2" marker-end="url(#arrow)"/>
+        <rect x="170" y="20" width="120" height="40" rx="5" fill="url(#grad1)"/>
+        <text x="230" y="45" text-anchor="middle" fill="white" font-size="12" font-weight="bold">ベネフィット抽出</text>
+        <path d="M 290 40 L 330 40" stroke="#667eea" stroke-width="2" marker-end="url(#arrow)"/>
+        <rect x="330" y="20" width="120" height="40" rx="5" fill="url(#grad1)"/>
+        <text x="390" y="45" text-anchor="middle" fill="white" font-size="12" font-weight="bold">言い換え</text>
+        <path d="M 450 40 L 490 40" stroke="#667eea" stroke-width="2" marker-end="url(#arrow)"/>
+        <rect x="490" y="20" width="100" height="40" rx="5" fill="#f093fb"/>
+        <text x="540" y="45" text-anchor="middle" fill="white" font-size="12" font-weight="bold">承諾率↑</text>
+        
+        <rect x="50" y="100" width="140" height="40" rx="5" fill="#a7f3d0"/>
+        <text x="120" y="125" text-anchor="middle" fill="#065f46" font-size="11" font-weight="bold">ギャップ/サプライズ</text>
+        <path d="M 190 120 L 230 120" stroke="#10b981" stroke-width="2" marker-end="url(#arrow2)"/>
+        <rect x="230" y="100" width="100" height="40" rx="5" fill="#a7f3d0"/>
+        <text x="280" y="125" text-anchor="middle" fill="#065f46" font-size="11" font-weight="bold">注意喚起</text>
+        <path d="M 330 120 L 370 120" stroke="#10b981" stroke-width="2" marker-end="url(#arrow2)"/>
+        <rect x="370" y="100" width="120" height="40" rx="5" fill="#10b981"/>
+        <text x="430" y="125" text-anchor="middle" fill="white" font-size="11" font-weight="bold">受容↑</text>
+        
+        <rect x="50" y="160" width="140" height="30" rx="5" fill="#fde68a"/>
+        <text x="120" y="180" text-anchor="middle" fill="#92400e" font-size="10" font-weight="bold">リピート/ナンバー/比喩</text>
+        <path d="M 190 175 L 250 175" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow3)"/>
+        <rect x="250" y="160" width="100" height="30" rx="5" fill="#fde68a"/>
+        <text x="300" y="180" text-anchor="middle" fill="#92400e" font-size="10" font-weight="bold">理解・記憶↑</text>
+        <path d="M 350 175 L 410 175" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow3)"/>
+        <rect x="410" y="160" width="80" height="30" rx="5" fill="#f59e0b"/>
+        <text x="450" y="180" text-anchor="middle" fill="white" font-size="10" font-weight="bold">再現性↑</text>
+        
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#667eea" />
+          </marker>
+          <marker id="arrow2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#10b981" />
+          </marker>
+          <marker id="arrow3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#f59e0b" />
+          </marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <div id="chapters" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📌 序章: なぜ伝え方が9割か</h3>
+      <p class="purpose">目的: 言い方が成果を左右する実例で問題意識を喚起</p>
+      <ul>
+        <li>同じ内容でも成果差が生まれるメカニズムを提示</li>
+        <li>才能ではなく技術として学習可能であることを示す</li>
+        <li>伝え方の重要性を実感させる導入</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 読者に「伝え方は変えられる」という希望と学習意欲を喚起するため。問題の存在を認識させることが行動変容の第一歩。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📌 第1部: Yesに変える技術</h3>
+      <p class="purpose">目的: 拒否が前提の状況で合意を得る基本手順を示す</p>
+      <ul>
+        <li>自分基点→相手基点への転換方法</li>
+        <li>ベネフィット化の具体的手順</li>
+        <li>共感・認可による心理的抵抗の低減</li>
+        <li>二択化・限定による承諾率向上</li>
+        <li>実践的な言い換え例の提示</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 相手の利益に焦点を当てることで、拒否される確率を下げ、Win-Winの関係を構築できる。これが伝え方の核心技術。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📌 第2部: 強いコトバの作り方</h3>
+      <p class="purpose">目的: 記憶に残し行動を促す表現レシピを提供</p>
+      <ul>
+        <li>ギャップ法: 差異で注意を惹く</li>
+        <li>サプライズ法: 意外性で記憶に残す</li>
+        <li>リピート法: 反復でリズムと定着</li>
+        <li>ナンバー法: 数字で具体性と信頼</li>
+        <li>比喩法: 既知への橋渡しで理解促進</li>
+        <li>体言止め: 余韻で情動喚起</li>
+        <li>各技法の実例と応用パターン</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 注意・理解・記憶・行動の各段階で脳の選別が起きる。強い言葉の型はこれらのフィルターを突破し、メッセージの到達率を高める。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📌 第3部: 応用と実践</h3>
+      <p class="purpose">目的: 仕事・恋愛・交渉・プレゼンへの落とし込み</p>
+      <ul>
+        <li>場面別テンプレートの提供</li>
+        <li>実際の添削例で型の当てはめ方を訓練</li>
+        <li>失敗例と成功例の対比</li>
+        <li>状況に応じた技法の選択基準</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 理論だけでは行動変容は起きない。具体的な場面での適用例を示すことで、実践への心理的ハードルを下げる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📌 終章: 習慣化</h3>
+      <p class="purpose">目的: 日常での反復と改善の仕組み化</p>
+      <ul>
+        <li>メモ化→言い換え→検証→改善のループ</li>
+        <li>日常での実践機会の発見</li>
+        <li>継続的な改善サイクルの構築</li>
+        <li>技術の内在化と自動化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 一度の学習では定着しない。習慣化の仕組みを提供することで、技術を無意識レベルまで内在化させ、長期的な成果を生む。
+      </div>
+    </div>
+  </div>
+
+  <div id="examples" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>💼 例1: デートの誘い方</h3>
+      <div class="content">
+        <strong>❌ Before:</strong> 「デートしてください」<br>
+        <strong>✅ After:</strong> 「驚くほど美味しいイタリアンのお店を見つけたんです。一緒に行きませんか？」
+      </div>
+      <div class="reason-box">
+        <strong>背景:</strong> 自分の欲求（デートしたい）を相手の利益（美味しい体験）に変換。<br>
+        <strong>示唆:</strong> サプライズ法（驚くほど）＋ベネフィット（美味しい体験）の組み合わせ。<br>
+        <strong>理由:</strong> この例が示すのは、主語を"自分"から"相手"へ切り替えるだけで承諾率が劇的に変わること。相手の得を先に提示することで心理的抵抗が下がる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📧 例2: メールの件名</h3>
+      <div class="content">
+        <strong>❌ Before:</strong> 「会議のお知らせ」<br>
+        <strong>✅ After:</strong> 「【15分で完了】あなたの意見が必要です - 明日の会議」
+      </div>
+      <div class="reason-box">
+        <strong>背景:</strong> 一方的な通知を、相手の時間価値（15分）と重要性（あなたの意見）で再構成。<br>
+        <strong>示唆:</strong> ナンバー法＋ベネフィット＋限定（明日）の複合技。<br>
+        <strong>理由:</strong> この例が示すのは、時間コストの明示と相手の重要性認識が開封率を高めること。具体的な数字が信頼と行動を促す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🏢 例3: 企画提案</h3>
+      <div class="content">
+        <strong>❌ Before:</strong> 「新しいシステムを導入したいです」<br>
+        <strong>✅ After:</strong> 「このシステムで、毎月20時間の作業時間を削減できます。その時間を戦略業務に充てられます」
+      </div>
+      <div class="reason-box">
+        <strong>背景:</strong> 機能（システム導入）を効果（時間削減＋戦略業務）に変換。<br>
+        <strong>示唆:</strong> ナンバー法＋ベネフィット二段構え（削減＋活用）。<br>
+        <strong>理由:</strong> この例が示すのは、抽象的な提案を具体的な成果に翻訳する重要性。数値化された利益が意思決定を加速させる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🎯 例4: 広告コピー</h3>
+      <div class="content">
+        <strong>❌ Before:</strong> 「高品質な商品です」<br>
+        <strong>✅ After:</strong> 「これは広告ではない。あなたの人生を変える提案だ。」
+      </div>
+      <div class="reason-box">
+        <strong>背景:</strong> 常識（広告）を否定し、ギャップで注意を惹く。<br>
+        <strong>示唆:</strong> ギャップ法＋体言止めで余韻を作る。<br>
+        <strong>理由:</strong> この例が示すのは、常識をズラすことで認知フィルターを突破できること。意外性が記憶と行動を促進する。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>👨‍👩‍👧‍👦 例5: 子どもへの声かけ</h3>
+      <div class="content">
+        <strong>❌ Before:</strong> 「宿題しなさい」<br>
+        <strong>✅ After:</strong> 「宿題が終わったら、一緒にゲームしよう」
+      </div>
+      <div class="reason-box">
+        <strong>背景:</strong> 命令を報酬（一緒の時間）に変換。<br>
+        <strong>示唆:</strong> ベネフィット＋共感（一緒に）の組み合わせ。<br>
+        <strong>理由:</strong> この例が示すのは、義務を楽しみに変えることで内発的動機を引き出せること。相手の欲求に寄り添うことが協力を生む。
+      </div>
+    </div>
+  </div>
+
+  <div id="quotes" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <div class="text">NoをYesに変えるのは、才能ではなく技術。</div>
+      <div class="why"><strong>なぜ重要か:</strong> 学習可能性を示し、実践意欲を高めるから。誰でも習得できるという希望が行動の起点になる。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="text">人は自分の得になる言葉に動く。</div>
+      <div class="why"><strong>なぜ重要か:</strong> 主語を相手に切り替える指針になる。この原則が全ての技法の土台となる。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="text">強い言葉は短い。</div>
+      <div class="why"><strong>なぜ重要か:</strong> 冗長さより簡潔さが記憶と行動を促すため。情報過多の時代に短さは武器になる。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="text">正解は相手の中にある。</div>
+      <div class="why"><strong>なぜ重要か:</strong> 相手理解の徹底が出発点だと示す。自分の主張を押し付けるのではなく、相手の中から答えを引き出す姿勢が成功を生む。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="text">常識をズラすと、人は振り向く。</div>
+      <div class="why"><strong>なぜ重要か:</strong> ギャップとサプライズの核心を端的に表す。予測可能性を破ることが注意獲得の鍵。</div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#e0e7ff,#c7d2fe);padding:1.5rem;border-radius:0.75rem;margin-top:1rem;border-left:4px solid var(--primary);">
+      <h3 style="color:var(--primary);margin-bottom:1rem;">📚 関連書籍</h3>
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:0.5rem 0;border-bottom:1px solid rgba(102,126,234,0.2);">
+          <strong>伝え方が9割 2</strong> - 佐々木圭一<br>
+          <span style="font-size:0.85rem;color:var(--text-light);">同シリーズの拡張版で実践例と型が増える</span>
+        </li>
+        <li style="padding:0.5rem 0;border-bottom:1px solid rgba(102,126,234,0.2);">
+          <strong>影響力の武器</strong> - ロバート・B・チャルディーニ<br>
+          <span style="font-size:0.85rem;color:var(--text-light);">承諾の心理トリガーが伝え方の土台になる</span>
+        </li>
+        <li style="padding:0.5rem 0;border-bottom:1px solid rgba(102,126,234,0.2);">
+          <strong>人を動かす</strong> - デール・カーネギー<br>
+          <span style="font-size:0.85rem;color:var(--text-light);">共感・認可など対人原則が一致</span>
+        </li>
+        <li style="padding:0.5rem 0;border-bottom:1px solid rgba(102,126,234,0.2);">
+          <strong>ザ・コピーライティング</strong> - ジョン・ケープルズ<br>
+          <span style="font-size:0.85rem;color:var(--text-light);">ギャップ・数字・ベネフィットの具体技法が学べる</span>
+        </li>
+        <li style="padding:0.5rem 0;">
+          <strong>影響力の武器 実践編</strong> - ロバート・B・チャルディーニ<br>
+          <span style="font-size:0.85rem;color:var(--text-light);">状況別の適用が伝え方の精度を上げる</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="actions" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>✅ アクション1: お願いを相手利益に言い換える</h3>
+      <p><strong>具体的手順:</strong></p>
+      <ul style="list-style:none;padding-left:0;margin:0.5rem 0;">
+        <li style="padding:0.25rem 0;">1. 今日中に誰かに頼みたいことを1つ選ぶ</li>
+        <li style="padding:0.25rem 0;">2. 「自分が何を得たいか」を書き出す</li>
+        <li style="padding:0.25rem 0;">3. 「相手が何を得られるか」を3つ考える</li>
+        <li style="padding:0.25rem 0;">4. 相手の得を主語にして文章を作る</li>
+        <li style="padding:0.25rem 0;">5. 実際に伝えて反応を観察する</li>
+      </ul>
+      <div class="detail">
+        <strong>目的:</strong> 自分基点→相手基点への転換を体感する<br>
+        <strong>期待効果:</strong> 承諾率の向上と相手との関係性改善。15分の練習で一生使える思考回路が身につく。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション2: ギャップ法で件名を3案作る</h3>
+      <p><strong>具体的手順:</strong></p>
+      <ul style="list-style:none;padding-left:0;margin:0.5rem 0;">
+        <li style="padding:0.25rem 0;">1. 明日送るメールやメッセージを1つ選ぶ</li>
+        <li style="padding:0.25rem 0;">2. 通常の件名を書く（Before）</li>
+        <li style="padding:0.25rem 0;">3. 常識と逆のことを考える</li>
+        <li style="padding:0.25rem 0;">4. 「〜ではない」「実は〜」などでギャップを作る</li>
+        <li style="padding:0.25rem 0;">5. 3パターン作り、最も意外性の高いものを選ぶ</li>
+      </ul>
+      <div class="detail">
+        <strong>目的:</strong> 注意を惹く技法を実践で習得する<br>
+        <strong>期待効果:</strong> 開封率・反応率の向上。20分の練習で差別化されたメッセージが作れるようになる。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション3: 二択の提案文を3通作成</h3>
+      <p><strong>具体的手順:</strong></p>
+      <ul style="list-style:none;padding-left:0;margin:0.5rem 0;">
+        <li style="padding:0.25rem 0;">1. 今週中に提案したいことを1つ選ぶ</li>
+        <li style="padding:0.25rem 0;">2. Yes/Noで聞く文章を書く（Before）</li>
+        <li style="padding:0.25rem 0;">3. 2つの選択肢（AとB）を考える</li>
+        <li style="padding:0.25rem 0;">4. 「AとB、どちらがいいですか？」形式に変換</li>
+        <li style="padding:0.25rem 0;">5. 3パターン作り、相手が選びやすいものを選ぶ</li>
+      </ul>
+      <div class="detail">
+        <strong>目的:</strong> 拒否を回避する選択肢提示の技術を身につける<br>
+        <strong>期待効果:</strong> 承諾率の向上と交渉の円滑化。30分の練習で合意形成力が格段に上がる。
+      </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#fef3c7,#fde68a);padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;border-left:4px solid #f59e0b;">
+      <h3 style="color:#92400e;margin-bottom:1rem;">🔄 習慣化のコツ</h3>
+      <ul style="list-style:none;padding:0;">
+        <li style="padding:0.5rem 0;border-bottom:1px solid rgba(245,158,11,0.2);">
+          <strong>📝 メモ化:</strong> 日常の会話やメールで「もっと良い言い方」を思いついたらすぐメモ
+        </li>
+        <li style="padding:0.5rem 0;border-bottom:1px solid rgba(245,158,11,0.2);">
+          <strong>🔄 言い換え:</strong> 毎日1つ、自分の言葉を型に当てはめて言い換える練習
+        </li>
+        <li style="padding:0.5rem 0;border-bottom:1px solid rgba(245,158,11,0.2);">
+          <strong>📊 検証:</strong> 実際に使った言葉の反応を記録し、効果を測定
+        </li>
+        <li style="padding:0.5rem 0;">
+          <strong>⬆️ 改善:</strong> うまくいった型を増やし、失敗した型を修正するループを回す
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
