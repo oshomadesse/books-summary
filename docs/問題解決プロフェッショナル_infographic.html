@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プロの問題解決 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: rgba(102, 126, 234, 0.08);
+  border-left: 3px solid var(--primary);
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.chapter-card li {
+  padding: 0.35rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--secondary);
+  font-weight: bold;
+}
+
+.example-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(240, 147, 251, 0.05));
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+}
+
+.example-card h4 {
+  font-size: 1.05rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.quote-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.quote-card blockquote {
+  font-size: 1rem;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.quote-card cite {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  display: block;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  opacity: 0.95;
+}
+
+.flow-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow-x: auto;
+}
+
+.flow-diagram svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 0.25rem;
+}
+
+.book-list {
+  list-style: none;
+  padding: 0;
+}
+
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-left: 3px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.book-item strong {
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+.book-item em {
+  color: var(--text-light);
+  font-size: 0.85rem;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.book-item p {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📊 プロの問題解決</h1>
+  <p>良い問いを立て、仮説で構造化し、最小の検証で確度を高め、論理と利害の接点で人を動かす</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 要約：問い×答え×根拠</h2>
+  
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>限られた時間・資源で成果を出す「プロの問題解決」をどう実践するか？</p>
+  </div>
+  
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>イシューからはじめ、仮説で分解と優先を決め、最小限の検証で答えの確度を上げ、ストーリーで合意を得て実行に接続する。</p>
+  </div>
+  
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>分析量では価値は生まれず、問いの質・検証効率・合意形成の設計が成果と再現性を左右するため。</p>
+  </div>
+  
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    <p>1) 目的と制約を踏まえイシュー定義 → 2) 仮説立案と評価基準設定 → 3) ロジックツリーで分解し80:20で優先 → 4) 反証可能な検証設計とデータ収集 → 5) ピラミッドでストーリー化 → 6) ステークホルダー合意と実行計画 → 7) 実行・計測・学習のループを回す</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🧩 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📚 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="margin-bottom:1rem; color: var(--primary);">🧩 主要概念の詳細</h2>
+  
+  <div class="card-grid">
+    <div class="card">
+      <h3>🎯 イシュー（本質的問い）</h3>
+      <ul>
+        <li>成果に最も影響する核心の問い</li>
+        <li>ここを誤ると以降の努力が無駄になる</li>
+        <li>一言要約：問いの質が成果を決める</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>分析前の設計がレバレッジポイントであり、問いの精度が全体の効率と成果を左右する
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📐 スコープ/境界条件</h3>
+      <ul>
+        <li>時間・資源・対象範囲などの制約</li>
+        <li>イシューの粒度と検証方法を規定</li>
+        <li>一言要約：制約が設計図になる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>制約を明示することで現実的な問題設定と検証計画が可能になり、無駄な拡散を防ぐ
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💭 仮説思考</h3>
+      <ul>
+        <li>暫定の答えを先に置く思考法</li>
+        <li>検証で確度を高める</li>
+        <li>意思決定を前倒しする</li>
+        <li>一言要約：先に答えを置く</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>不確実性下で効率的に学習し、検証の方向性を明確化することで時間を短縮できる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔲 MECE/課題分解</h3>
+      <ul>
+        <li>漏れなくダブりなく要素に分ける技法</li>
+        <li>優先順位付けの前提となる</li>
+        <li>一言要約：分けて捉える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>全体を構造的に把握し、重複や見落としを防ぐことで効率的な検証が可能になる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌳 ロジックツリー</h3>
+      <ul>
+        <li>因数分解で因果や構成を可視化</li>
+        <li>検証ポイントを明確化する図</li>
+        <li>一言要約：因果の見取り図</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>複雑な問題を視覚的に整理し、どこに注力すべきかを明確にする
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📊 80:20（パレート）</h3>
+      <ul>
+        <li>成果の大半は一部要因から生まれる経験則</li>
+        <li>集中すべき箇所を特定する</li>
+        <li>一言要約：少数に集中</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>限られた資源で最大の成果を得るため、影響の大きい要因に集中投資する
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔬 反証可能性</h3>
+      <ul>
+        <li>仮説が誤りと判定可能である性質</li>
+        <li>検証設計の質を担保する</li>
+        <li>一言要約：壊せる仮説</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>検証可能な形で仮説を立てることで、客観的な判断と学習が可能になる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📋 ファクトベース</h3>
+      <ul>
+        <li>意見ではなく事実で議論を前進</li>
+        <li>再現性を高める態度・作法</li>
+        <li>一言要約：事実で語る</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>主観を排除し、誰もが検証可能な根拠で議論することで合意形成が加速する
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ 評価基準（クリテリア）</h3>
+      <ul>
+        <li>選択肢を比較する軸</li>
+        <li>効果・実現性・コスト・リスク等を定義</li>
+        <li>一言要約：物差しを先に決める</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>事前に基準を決めることで、バイアスを減らし公平な意思決定が可能になる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📖 ストーリーライン/ピラミッド</h3>
+      <ul>
+        <li>結論→根拠→証拠の階層構造</li>
+        <li>合意獲得の効率を上げる型</li>
+        <li>一言要約：伝わる構造</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>論理的な構造で伝えることで、相手の理解と納得を短時間で得られる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>👥 ステークホルダー・マネジメント</h3>
+      <ul>
+        <li>利害・影響力の異なる関係者を理解</li>
+        <li>合意と協働を設計する実務</li>
+        <li>一言要約：人を動かす設計</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>実行段階で人が動かなければ解決にならず、関係者の理解と協力が成否を分ける
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🗓️ 実行設計/ロードマップ</h3>
+      <ul>
+        <li>Who-What-Whenの具体化</li>
+        <li>クイックウィンとボトルネック対策を織り込む</li>
+        <li>一言要約：動く計画</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>具体的な行動計画がなければ実行に移せず、早期成果で勢いを作る
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📈 KPIツリー/先行指標</h3>
+      <ul>
+        <li>目的→成果指標→先行指標の連鎖</li>
+        <li>実行の健全性を早期に測る</li>
+        <li>一言要約：測れる化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>結果が出る前に軌道修正できる先行指標で、失敗リスクを低減する
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚠️ リスクと前提管理</h3>
+      <ul>
+        <li>不確実性と置いた前提を明示</li>
+        <li>監視・更新する</li>
+        <li>失敗確率を下げる</li>
+        <li>一言要約：見えない前提を出す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>暗黙の前提が崩れた時に対応できず、明示化で早期対処が可能になる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 振り返り/学習ループ</h3>
+      <ul>
+        <li>実行結果から仮説・プロセスを更新</li>
+        <li>継続改善</li>
+        <li>一言要約：回して学ぶ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>一度の成功ではなく、学習を蓄積することで再現性と組織能力が向上する
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="text-align:center; margin-bottom:1rem; color: var(--secondary);">🔗 概念間の関係性フロー</h3>
+    <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      
+      <rect x="10" y="80" width="80" height="40" rx="5" fill="url(#grad1)"/>
+      <text x="50" y="105" text-anchor="middle" fill="white" font-size="12" font-weight="bold">目的</text>
+      
+      <path d="M 90 100 L 110 100" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <rect x="110" y="80" width="80" height="40" rx="5" fill="url(#grad1)"/>
+      <text x="150" y="105" text-anchor="middle" fill="white" font-size="11" font-weight="bold">イシュー</text>
+      
+      <path d="M 190 100 L 210 100" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <rect x="210" y="80" width="80" height="40" rx="5" fill="url(#grad1)"/>
+      <text x="250" y="105" text-anchor="middle" fill="white" font-size="11" font-weight="bold">仮説設定</text>
+      
+      <path d="M 290 100 L 310 100" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <rect x="310" y="80" width="80" height="40" rx="5" fill="url(#grad1)"/>
+      <text x="350" y="105" text-anchor="middle" fill="white" font-size="11" font-weight="bold">分解/優先</text>
+      
+      <path d="M 390 100 L 410 100" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <rect x="410" y="80" width="80" height="40" rx="5" fill="url(#grad1)"/>
+      <text x="450" y="105" text-anchor="middle" fill="white" font-size="11" font-weight="bold">検証</text>
+      
+      <path d="M 490 100 L 510 100" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <rect x="510" y="80" width="80" height="40" rx="5" fill="url(#grad1)"/>
+      <text x="550" y="105" text-anchor="middle" fill="white" font-size="11" font-weight="bold">洞察/答え</text>
+      
+      <path d="M 590 100 L 610 100" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <rect x="610" y="80" width="90" height="40" rx="5" fill="url(#grad1)"/>
+      <text x="655" y="105" text-anchor="middle" fill="white" font-size="10" font-weight="bold">ストーリー化</text>
+      
+      <path d="M 700 100 L 720 100" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <rect x="720" y="70" width="70" height="30" rx="5" fill="#f093fb"/>
+      <text x="755" y="90" text-anchor="middle" fill="white" font-size="10" font-weight="bold">合意/実行</text>
+      
+      <rect x="720" y="110" width="70" height="30" rx="5" fill="#f093fb"/>
+      <text x="755" y="130" text-anchor="middle" fill="white" font-size="10" font-weight="bold">計測/学習</text>
+      
+      <path d="M 755 140 Q 755 170, 150 170 Q 150 150, 150 120" stroke="#f093fb" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#arrowhead2)"/>
+      
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <polygon points="0 0, 10 3, 0 6" fill="#667eea" />
+        </marker>
+        <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <polygon points="0 0, 10 3, 0 6" fill="#f093fb" />
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="card" style="background: rgba(240, 147, 251, 0.1);">
+    <h3>🔑 重要な関係性ポイント</h3>
+    <ul>
+      <li>イシュー定義の精度↑ → 分析量↓・結論の質↑</li>
+      <li>評価基準を先に決める → 選択肢比較のバイアス↓</li>
+      <li>仮説の反証設計が明確 → 検証コスト↓・確度↑</li>
+      <li>ロジックツリーの良否 → 情報収集の打ち手の質を規定</li>
+      <li>ストーリーラインの一貫性↑ → 関係者合意率↑</li>
+      <li>ステークホルダー理解↑ → 実行の摩擦↓・スピード↑</li>
+      <li>KPIツリー整備 → 実行の早期逸脱検知→手当迅速</li>
+      <li>振り返りの頻度↑ → 次サイクルのイシュー精度↑</li>
+    </ul>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem; color: var(--secondary);">📚 各章の要約</h2>
+  
+  <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">📐 全体構造</h3>
+    <p style="font-size: 0.95rem; line-height: 1.7;">土台（目的・イシュー）→ 思考技法（仮説・分解・検証）→ 伝達（ストーリー・資料化）→ 実装（合意・実行・学習）の4ブロックで、<strong>考える→確かめる→伝える→動かす</strong>の順に積み上げる。</p>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎬 導入：問題解決の再定義</h3>
+    <ul>
+      <li>問題解決を「問いの設計」と再定義</li>
+      <li>成果の定義を明確化する重要性</li>
+      <li>分析量ではなく問いの質が成果を決める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>章の理由：</strong>従来の「たくさん調べて考える」アプローチの限界を示し、戦略的な問題設定の重要性を認識させるため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎯 土台：目的とイシューの特定</h3>
+    <ul>
+      <li>目的・制約からイシューを特定する</li>
+      <li>評価基準を事前に合意する</li>
+      <li>スコープと境界条件を明確にする</li>
+      <li>良い問いの条件を理解する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>章の理由：</strong>すべての後続作業の方向性を決める土台であり、ここでの精度が全体効率を左右するため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>💡 思考技法：仮説・分解・優先</h3>
+    <ul>
+      <li>仮説立案：暫定の答えを先に置く</li>
+      <li>MECE分解：漏れなくダブりなく要素に分ける</li>
+      <li>ロジックツリー：因果や構成を可視化</li>
+      <li>80:20の法則：影響の大きい要因に集中</li>
+      <li>当たり所の設定：どこを深掘りするか決める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>章の理由：</strong>複雑な問題を扱いやすい単位に分解し、限られた資源で最大の成果を得る戦略を立てるため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🔬 検証：反証可能な設計とデータ収集</h3>
+    <ul>
+      <li>反証可能な検証計画を立てる</li>
+      <li>必要十分なデータ収集の設計</li>
+      <li>ファクトベースの意思決定</li>
+      <li>分析は意思決定のための最小限でよい</li>
+      <li>仮説の確度を段階的に高める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>章の理由：</strong>仮説を客観的に検証し、過剰分析を避けながら確信度を高める実務的手法を提供するため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📖 伝達：ストーリーと資料化</h3>
+    <ul>
+      <li>ピラミッド構造：結論→根拠→証拠の順</li>
+      <li>ストーリーラインの設計</li>
+      <li>スライド作法とビジュアル化</li>
+      <li>反論への備えと対応</li>
+      <li>相手の関心に合わせた構成</li>
+    </ul>
+    <div class="reason-box">
+      <strong>章の理由：</strong>どれだけ良い分析も伝わらなければ価値がなく、合意獲得の効率を上げる技術が必要なため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>👥 実装：合意・実行・学習</h3>
+    <ul>
+      <li>ステークホルダー分析と影響力マップ</li>
+      <li>ロードマップとマイルストーン設定</li>
+      <li>KPIツリーと先行指標の設計</li>
+      <li>リスクと前提の明示・管理</li>
+      <li>クイックウィンで勢いを作る</li>
+      <li>実行・計測・学習のループ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>章の理由：</strong>人が動かなければ解決ではなく、実行段階の設計と継続的改善が成果の実現に不可欠なため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🔄 終章：ループ学習とナレッジ化</h3>
+    <ul>
+      <li>振り返りの仕組み化</li>
+      <li>学習の蓄積と共有</li>
+      <li>次サイクルへのフィードバック</li>
+      <li>組織能力としての定着</li>
+    </ul>
+    <div class="reason-box">
+      <strong>章の理由：</strong>一度の成功ではなく、再現性と組織能力の向上を実現するため
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem; color: var(--primary);">💼 具体例</h2>
+  
+  <div class="example-card">
+    <h4>📊 例1：売上低迷の原因分析</h4>
+    <p><strong>背景：</strong>小売チェーンの売上が前年比10%減。経営陣は「全店舗の全商品を調査せよ」と指示。</p>
+    <p><strong>プロのアプローチ：</strong>イシューを「売上減の主因は既存客の離反か新規獲得の鈍化か」と設定。顧客データ分析で既存客のリピート率低下が80%を占めると判明。上位20%の商品カテゴリーに絞り、顧客インタビューで品揃え変更への不満を特定。3週間で仮説検証完了。</p>
+    <p><strong>示唆：</strong>全数調査ではなく、イシュー設定と80:20の集中で時間を1/5に短縮し、実行可能な打ち手を導出。</p>
+    <div class="reason-box">
+      <strong>この例が示すこと：</strong>問いの質と優先順位付けが、分析効率と成果の質を劇的に変える
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🏥 例2：病院の待ち時間削減プロジェクト</h4>
+    <p><strong>背景：</strong>外来患者の待ち時間が平均2時間。患者満足度が低下し、改善が急務。</p>
+    <p><strong>プロのアプローチ：</strong>仮説「待ち時間の大半は診察前の検査待ちと会計処理」を立て、ロジックツリーで待ち時間を「受付→検査→診察→会計」に分解。タイムスタディで検査待ちが全体の50%と判明。検査室の予約システム導入と並行処理で待ち時間を40%削減。KPIツリーで「検査待ち時間」を先行指標に設定し、週次でモニタリング。</p>
+    <p><strong>示唆：</strong>全体最適ではなくボトルネックに集中し、先行指標で早期に軌道修正。</p>
+    <div class="reason-box">
+      <strong>この例が示すこと：</strong>構造化と優先順位付け、そして測定可能な指標設計が実行の成否を分ける
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🚀 例3：新製品開発の意思決定</h4>
+    <p><strong>背景：</strong>3つの新製品案があり、どれに投資すべきか経営会議で紛糾。各部門が自部門案を推す。</p>
+    <p><strong>プロのアプローチ：</strong>評価基準を事前合意：「市場規模」「競合優位性」「開発リスク」「投資回収期間」の4軸。各案を定量評価し、ピラミッド構造で「案Bが最適」の結論→3つの根拠→各根拠のファクトを提示。ステークホルダー分析で反対派の懸念（開発リスク）を事前に把握し、リスク低減策を併せて提案。会議1回で合意形成。</p>
+    <p><strong>示唆：</strong>評価基準の事前合意とストーリー設計、ステークホルダー理解が合意形成を加速。</p>
+    <div class="reason-box">
+      <strong>この例が示すこと：</strong>論理だけでなく、人の利害と感情を理解した設計が実行への接続を実現する
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1)); padding: 1.5rem; border-radius: 0.75rem; margin-top: 1.5rem;">
+    <h3 style="color: var(--secondary); margin-bottom: 1rem;">🎓 共通パターン</h3>
+    <div style="display: grid; gap: 0.75rem;">
+      <div style="display: flex; align-items: start; gap: 0.75rem;">
+        <span style="font-size: 1.5rem;">1️⃣</span>
+        <div>
+          <strong>イシュー設定で方向性を定める</strong>
+          <p style="font-size: 0.9rem; margin-top: 0.25rem;">漠然とした問題を具体的な問いに変換</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: start; gap: 0.75rem;">
+        <span style="font-size: 1.5rem;">2️⃣</span>
+        <div>
+          <strong>構造化と優先順位で集中</strong>
+          <p style="font-size: 0.9rem; margin-top: 0.25rem;">全体ではなく影響の大きい部分に資源投下</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: start; gap: 0.75rem;">
+        <span style="font-size: 1.5rem;">3️⃣</span>
+        <div>
+          <strong>ファクトで検証し確度を上げる</strong>
+          <p style="font-size: 0.9rem; margin-top: 0.25rem;">意見ではなく事実で判断</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: start; gap: 0.75rem;">
+        <span style="font-size: 1.5rem;">4️⃣</span>
+        <div>
+          <strong>ストーリーと人の理解で合意</strong>
+          <p style="font-size: 0.9rem; margin-top: 0.25rem;">論理と利害の接点を設計</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: start; gap: 0.75rem;">
+        <span style="font-size: 1.5rem;">5️⃣</span>
+        <div>
+          <strong>測定と学習で改善</strong>
+          <p style="font-size: 0.9rem; margin-top: 0.25rem;">実行しながら軌道修正</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem; color: var(--accent);">💬 重要な引用</h2>
+  
+  <div class="quote-card">
+    <blockquote>"良い答えよりも良い問いが、成果と速度を決める。"</blockquote>
+    <cite>💡 分析前の設計がレバレッジポイントであると示す核心メッセージ</cite>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"仮説は当てるものではなく、反証して磨くために置く。"</blockquote>
+    <cite>🔬 不確実性下での効率的な学習と意思決定の姿勢を示す</cite>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"分析は意思決定のための最小限でよい。"</blockquote>
+    <cite>⚖️ 「量より質」の原則で過剰分析を防ぐ基準になる</cite>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"人が動かなければ、それは解決ではない。"</blockquote>
+    <cite>👥 合意形成と実行設計の重みを強調する実務的視点</cite>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"結論→根拠→証拠の順で語れ。"</blockquote>
+    <cite>📖 伝達の生産性を上げる実践的フォーマットを示す</cite>
+  </div>
+
+  <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); padding: 1.5rem; border-radius: 0.75rem; margin-top: 1.5rem; border-left: 4px solid var(--secondary);">
+    <h3 style="color: var(--secondary); margin-bottom: 1rem;">🎯 引用から読み取れる一貫した哲学</h3>
+    <ul style="list-style: none; padding: 0;">
+      <li style="padding: 0.5rem 0; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        <strong>効率性：</strong>最小の努力で最大の成果を得る設計思考
+      </li>
+      <li style="padding: 0.5rem 0; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        <strong>科学性：</strong>仮説検証と反証可能性による客観的判断
+      </li>
+      <li style="padding: 0.5rem 0; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        <strong>実践性：</strong>分析で終わらず、人を動かし成果を出す
+      </li>
+      <li style="padding: 0.5rem 0; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        <strong>構造性：</strong>論理的な構造で思考と伝達の質を高める
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem; color: var(--primary);">✅ 今日のアクション（15〜30分で実行可能）</h2>
+  
+  <div class="action-card">
+    <h4>📝 アクション1：最重要イシューを1行で書く</h4>
+    <p><strong>目的：</strong>現在取り組んでいる問題の核心を明確化する</p>
+    <p><strong>手順：</strong>「〇〇するために、△△か××かを明らかにする必要がある」の形式で書く</p>
+    <p><strong>期待効果：</strong>問いの質が上がり、以降の分析・検証の方向性が定まる。チーム内の認識のズレも可視化される。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🔬 アクション2：仮説と検証計画をA4に書く</h4>
+    <p><strong>目的：</strong>暫定の答えと、それを確かめる方法を明示する</p>
+    <p><strong>手順：</strong>「仮説：〇〇である」「検証方法：△△のデータを□□の方法で集める」「判断基準：××なら仮説支持、◇◇なら棄却」を記入</p>
+    <p><strong>期待効果：</strong>検証の方向性が明確になり、無駄な情報収集を防げる。反証可能性が担保され、客観的判断が可能になる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>👥 アクション3：関係者マップを手書きで作る</h4>
+    <p><strong>目的：</strong>ステークホルダーの利害と影響力を可視化する</p>
+    <p><strong>手順：</strong>紙の中央に自分のプロジェクトを書き、周囲に関係者を配置。影響力の大きさを円の大きさで、賛成/反対を色分けで表現。各人の関心事をメモ。</p>
+    <p><strong>期待効果：</strong>誰にどう働きかけるべきかが明確になり、合意形成の戦略が立てられる。実行段階での摩擦を事前に予測できる。</p>
+  </div>
+
+  <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 0.75rem; margin-top: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+    <h3 style="color: var(--secondary); margin-bottom: 1rem;">🚀 次のステップ</h3>
+    <div style="display: grid; gap: 1rem;">
+      <div style="display: flex; gap: 1rem; align-items: start;">
+        <span class="metric-badge">Week 1</span>
+        <div>
+          <strong>ロジックツリーで分解</strong>
+          <p style="font-size: 0.9rem; margin-top: 0.25rem;">イシューをMECEに分解し、80:20で当たり所を特定</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; align-items: start;">
+        <span class="metric-badge">Week 2</span>
+        <div>
+          <strong>最小限のデータ収集と検証</strong>
+          <p style="font-size: 0.9rem; margin-top: 0.25rem;">仮説の確度を上げる最小限の情報を集める</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; align-items: start;">
+        <span class="metric-badge">Week 3</span>
+        <div>
+          <strong>ストーリーライン作成</strong>
+          <p style="font-size: 0.9rem; margin-top: 0.25rem;">結論→根拠→証拠の構造で1枚のスライドにまとめる</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 1rem; align-items: start;">
+        <span class="metric-badge">Week 4</span>
+        <div>
+          <strong>関係者との対話と合意形成</strong>
+          <p style="font-size: 0.9rem; margin-top: 0.25rem;">ステークホルダーマップを元に個別に説明し、フィードバックを得る</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 1.5rem; border-radius: 0.75rem; margin-top: 1.5rem; text-align: center;">
+    <h3 style="margin-bottom: 0.75rem;">💪 実践のコツ</h3>
+    <p style="font-size: 0.95rem; line-height: 1.6;">完璧を目指さず、まず手を動かす。仮説は外れて当然。検証と修正のループを回すことで、問題解決の筋力が鍛えられる。</p>
+  </div>
+</div>
+
+<div style="background: var(--card-bg); padding: 1.5rem; border-radius: 0.75rem; margin-top: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📚 関連書籍</h2>
+  <ul class="book-list">
+    <li class="book-item">
+      <strong>📖 イシューからはじめよ</strong>
+      <em>著者：安宅和人</em>
+      <p>問いの質を高める重要性と実践法が補完的。本書の「イシュー」概念をさらに深掘りできる。</p>
+    </li>
+    <li class="book-item">
+      <strong>📖 考える技術・書く技術 ピラミッド原則</strong>
+      <em>著者：バーバラ・ミント</em>
+      <p>ストーリーライン構築の型を体系的に学べる。伝達技術の実践的バイブル。</p>
+    </li>
+    <li class="book-item">
+      <strong>📖 仮説思考</strong>
+      <em>著者：内田和成</em>
+      <p>仮説先行で進める意思決定の実務感を強化。コンサルティング現場の知見が豊富。</p>
+    </li>
+    <li class="book-item">
+      <strong>📖 ロジカル・シンキング</strong>
+      <em>著者：照屋華子・岡田恵美</em>
+      <p>MECEや論理展開の基礎スキルを体系化。思考技法の土台を固められる。</p>
+    </li>
+    <li class="book-item">
+      <strong>📖 実践 行動経済学</strong>
+      <em>著者：リチャード・セイラー 他</em>
+      <p>人を動かす実行段階での介入設計に有用。論理だけでは動かない人間の特性を理解できる。</p>
+    </li>
+  </ul>
+</div>
+
+</div>
+
+<script>
+// タブ切り替え機能
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const targetTab = button.getAttribute('data-tab');
+    
+    // すべてのタブとコンテンツから active クラスを削除
+    tabButtons.forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブとコンテンツに active クラスを追加
+    button.classList.add('active');
+    button.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+
+// アクセシビリティ: キーボードナビゲーション
+tabButtons.forEach((button, index) => {
+  button.addEventListener('keydown', (e) => {
+    let newIndex;
+    if (e.key === 'ArrowRight') {
+      newIndex = (index + 1) % tabButtons.length;
+      tabButtons[newIndex].focus();
+      tabButtons[newIndex].click();
+    } else if (e.key === 'ArrowLeft') {
+      newIndex = (index - 1 + tabButtons.length) % tabButtons.length;
+      tabButtons[newIndex].focus();
+      tabButtons[newIndex].click();
+    }
+  });
+});
+</script>
+
+</body>
+</html>
