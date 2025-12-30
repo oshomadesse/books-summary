@@ -28,22 +28,10 @@ echo "$OUTPUT" >> "$LOG_FILE"
 if [ $EXIT_CODE -eq 0 ]; then
     echo "[$DATE] ✅ Pull successful." >> "$LOG_FILE"
 
-    # Move artifacts to Vault Inbox
-    INBOX_DIR="/Users/seihoushouba/Documents/Oshomadesse-pc/100_Inbox"
+    # Artifacts are moved by .git/hooks/post-merge. Just ensure git state is clean.
     ARTIFACTS_DIR="$REPO_DIR/artifacts"
 
     if [ -d "$ARTIFACTS_DIR" ]; then
-        echo "[$DATE] Checking artifacts..." >> "$LOG_FILE"
-        
-        # Move files if they exist (post-merge hook might have already moved them)
-        if ls "$ARTIFACTS_DIR"/Books-*.md 1> /dev/null 2>&1; then
-            echo "[$DATE] Moving artifacts to $INBOX_DIR..." >> "$LOG_FILE"
-            mv "$ARTIFACTS_DIR"/Books-*.md "$INBOX_DIR/" 2>> "$LOG_FILE"
-        else
-            echo "[$DATE] No artifacts found to move (already moved by hook?)" >> "$LOG_FILE"
-        fi
-
-        # Always try to clean up git (if files are gone from disk but in git index)
         echo "[$DATE] Cleaning up artifacts from git..." >> "$LOG_FILE"
         cd "$REPO_DIR" || exit 1
         
