@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>勉強の哲学 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  font-weight: 600;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+}
+.card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card .emoji {
+  font-size: 1.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.2rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 0.3rem;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.5rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(118, 75, 162, 0.05), rgba(102, 126, 234, 0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card .quote-text {
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+  line-height: 1.7;
+}
+.quote-card .quote-note {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .emoji {
+  font-size: 1.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  opacity: 0.95;
+}
+.action-card .effect {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255,255,255,0.3);
+}
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.visual-section h3 {
+  font-size: 1.15rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+.flow-item {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  font-size: 0.9rem;
+  position: relative;
+}
+.flow-item:after {
+  content: "↓";
+  position: absolute;
+  bottom: -1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+.flow-item:last-child:after {
+  content: "";
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 勉強の哲学</h1>
+  <p>自己を更新する「脱自」の設計論</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ勉強は続かず、何をもって良い学びと言えるのか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      良い学びは自己を変える「脱自」を生み、そのためには没入（オタク）と翻訳・合意形成（コミュ力）を意識的に往復させる設計が必要。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      現代の承認経済はコミュ力偏重を促し没入を掣肘するが、知は外部に自我を開くとき更新されるから。
+    </div>
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      引用→要約→誤読→転用の編集循環を回し、ルーチンと破壊の時間術を組み合わせ、観客（共同体）を設けてフィードバックと規律を外部化する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3><span class="emoji">🔄</span>脱自</h3>
+        <ul>
+          <li>自分の当たり前を一時的に外す</li>
+          <li>他者的視点や新しい規則で自分を作り替える</li>
+          <li>学びの本質は自己更新にある</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>慣れた枠に留まる限り新しい知は入らず、変化なき学びは形骸化するため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="emoji">🎮</span>オタクモード</h3>
+        <ul>
+          <li>対象へ深く没入する態度</li>
+          <li>正しさより面白さを優先</li>
+          <li>探究の深さを確保する</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>没入なしには新規概念の発見も脱自も起きず、学びが表層的になるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="emoji">💬</span>コミュ力モード</h3>
+        <ul>
+          <li>獲得した知を他者へ翻訳</li>
+          <li>合意・関係性・応用を調整</li>
+          <li>社会的接続を実現する</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>翻訳なしには知が閉じたまま影響力を持たず、学びが孤立するため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="emoji">⚡</span>往復運動</h3>
+        <ul>
+          <li>没入と翻訳を意図的に切り替え</li>
+          <li>探究の深さと社会的接続を両立</li>
+          <li>二刀流で学びを最適化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>どちらか一方に偏ると深さか伝達性が欠け、学びの持続性と影響力が損なわれるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="emoji">✂️</span>引用・要約・誤読・転用</h3>
+        <ul>
+          <li>他者のテキストを取り込む（引用）</li>
+          <li>要点化する（要約）</li>
+          <li>創造的にズラす（誤読）</li>
+          <li>新規文脈へ置き換える（転用）</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>創造性は"ゼロ発明"ではなく編集設計であり、この循環が独自性を生むため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="emoji">👍</span>承認経済</h3>
+        <ul>
+          <li>可視的評価（いいね、実績）への志向</li>
+          <li>学びの動機と配分を左右する環境</li>
+          <li>コミュ力偏重を促進</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>承認圧が没入時間を縮小させ、学びを均質化・表層化するため対処が必要。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="emoji">🔧</span>ルール化と破壊</h3>
+        <ul>
+          <li>作業を規格化して効率を上げる</li>
+          <li>惰性化したら意図的に崩す</li>
+          <li>刷新して再ルール化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>規律は生産性を上げるが硬直化も招くため、逸脱による更新が持続性を保つ。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="emoji">🔁</span>習慣化と中断</h3>
+        <ul>
+          <li>短い反復で前進</li>
+          <li>あえて中断して再開時に解釈を更新</li>
+          <li>反復更新の時間術</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>中断は再開時の再解釈を誘発し、思考のズレが脱自を促進するため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="emoji">👥</span>観客（共同体）</h3>
+        <ul>
+          <li>フィードバックをくれる最小単位の他者群</li>
+          <li>規律と評価の外部化装置</li>
+          <li>学びの持続性を支える外部足場</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>内的動機だけでは規律が弱く、外部化により承認圧に流されない環境を整えられるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="emoji">🌱</span>来たるべき学び</h3>
+        <ul>
+          <li>市場化・承認偏重を相対化</li>
+          <li>脱自を核に自己と社会の両面を更新</li>
+          <li>持続可能な学びの設計</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>個の更新と社会的接続を両立する設計こそが、現代の学びの課題への解答だから。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>📊 概念間の関係性</h3>
+      <div class="flow-diagram">
+        <div class="flow-item">
+          <strong>オタクモード</strong> → 脱自を駆動 → 新規概念の発見
+        </div>
+        <div class="flow-item">
+          <strong>コミュ力モード</strong> → 翻訳/合意 → 社会的接続・適用
+        </div>
+        <div class="flow-item">
+          <strong>承認経済 ↑</strong> → コミュ力偏重 → 没入時間縮小 → 脱自が起きにくい
+        </div>
+        <div class="flow-item">
+          <strong>引用→要約→誤読→転用</strong> → 既存知の編集 → 独自性が生成
+        </div>
+        <div class="flow-item">
+          <strong>ルール化（習慣）</strong> → 生産性↑ だが硬直化 → 破壊（逸脱）で刷新
+        </div>
+        <div class="flow-item">
+          <strong>中断</strong> → 再開時の再解釈を誘発 → 思考がズレて更新
+        </div>
+        <div class="flow-item">
+          <strong>観客（共同体）</strong> → フィードバック/規律の外部化 → 学びの持続性↑
+        </div>
+        <div class="flow-item">
+          <strong>往復運動（没入↔翻訳）</strong> → 深さ×伝達の最適化 → 影響の実体化
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>第1章：問題設定</h3>
+      <ul>
+        <li>勉強が「成果/承認」の論理に回収される現状を指摘</li>
+        <li>可視的評価への志向が学びの動機を歪める</li>
+        <li>コミュ力偏重が没入時間を圧迫</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>現代の承認経済が学びを均質化・表層化させる構造的問題を明らかにし、以降の議論の土台とするため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第2章：定義づけ</h3>
+      <ul>
+        <li>勉強＝脱自：自我の枠を外して更新する倫理として提示</li>
+        <li>学びの評価基準を「変化」へ転換</li>
+        <li>自己更新こそが学びの本質</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>学びを成果や承認から切り離し、自己変容という内在的価値へ再定義することで、持続可能な学びの基準を与えるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第3章：モード論</h3>
+      <ul>
+        <li>オタク的没入とコミュ力的翻訳を対置</li>
+        <li>両者の往復を設計原理化</li>
+        <li>深さと伝達性の最適化を実現</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>没入と翻訳の二刀流が学びの持続性と影響力の鍵であり、どちらか一方では不完全だと示すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第4章：技法提示</h3>
+      <ul>
+        <li>引用・要約・誤読・転用の編集循環を解説</li>
+        <li>他者の知を自分化する手順を具体化</li>
+        <li>創造性を編集設計として捉え直す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>独自性は"ゼロ発明"ではなく編集プロセスから生まれることを示し、実践可能な技法を提供するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第5章：時間術</h3>
+      <ul>
+        <li>習慣化と意図的中断を組み合わせる</li>
+        <li>ルール化と破壊の運用法を提案</li>
+        <li>反復と更新のバランスを設計</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>規律は生産性を上げるが硬直化も招くため、逸脱と刷新を組み込むことで持続性を保つ運用法を示すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第6章：社会設計</h3>
+      <ul>
+        <li>観客（共同体）を利用して評価と規律を外部化</li>
+        <li>承認圧に流されない環境を整える</li>
+        <li>フィードバックと規律の外部化装置を構築</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>内的動機だけでは規律が弱く、外部化により学びの持続性を支える足場を作るため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第7章：適用とリスク管理</h3>
+      <ul>
+        <li>燃え尽き/硬直化/迎合の兆候を明確化</li>
+        <li>切り替え基準を提示</li>
+        <li>実践時の落とし穴と対処法を示す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>理論を実践に移す際のリスクを予め示し、持続可能な運用を支援するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第8章：結語</h3>
+      <ul>
+        <li>来たるべき学び＝個の更新と社会的接続を両立</li>
+        <li>持続的デザインとしてまとめる</li>
+        <li>市場化・承認偏重を相対化する学びの提案</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>全体を統合し、脱自を核とした学びの設計が現代の課題への解答であることを示すため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="card">
+      <h3><span class="emoji">📖</span>具体例1：読書における編集循環</h3>
+      <ul>
+        <li><strong>背景：</strong>ある哲学書を読み、気になる一節を引用</li>
+        <li><strong>プロセス：</strong>要約してノートにまとめ、自分の経験と照らして「誤読」し、別の文脈（仕事の企画書）へ転用</li>
+        <li><strong>示唆：</strong>元の文脈から離れることで独自の解釈が生まれ、実践的な応用が可能になる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>引用→要約→誤読→転用の編集循環が、受動的な読書を能動的な創造へ変える具体的プロセスであることを示す。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="emoji">⏰</span>具体例2：ルール化と破壊の時間術</h3>
+      <ul>
+        <li><strong>背景：</strong>毎朝7時に30分の学習時間を設定し習慣化</li>
+        <li><strong>プロセス：</strong>3ヶ月後、惰性を感じたため意図的に時間帯を夜へ変更し、場所もカフェへ移動</li>
+        <li><strong>示唆：</strong>ルーチンが硬直化したら破壊し、新しい刺激で再活性化できる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>規律と逸脱の二重運用が、生産性と刷新のバランスを保ち、学びの持続性を高めることを示す。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="emoji">👥</span>具体例3：観客（共同体）の活用</h3>
+      <ul>
+        <li><strong>背景：</strong>一人で学習を続けるとモチベーションが低下</li>
+        <li><strong>プロセス：</strong>SNSで学習記録を公開し、数名のフォロワーからコメントをもらう仕組みを構築</li>
+        <li><strong>示唆：</strong>外部の視線と評価が規律を外部化し、内的動機だけに頼らない持続性を生む</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>観客（共同体）が規律と評価の外部化装置として機能し、承認圧に流されず学びを持続させる足場となることを示す。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="emoji">🔄</span>具体例4：往復運動（没入↔翻訳）</h3>
+      <ul>
+        <li><strong>背景：</strong>新しい技術を深く学ぶ（オタクモード）</li>
+        <li><strong>プロセス：</strong>一定期間没入した後、チームメンバーへ分かりやすく説明する機会を設ける（コミュ力モード）</li>
+        <li><strong>示唆：</strong>翻訳の過程で理解が深まり、社会的接続も実現する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>没入と翻訳の往復が、深さと伝達性を両立させ、学びの影響力を最大化することを示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <div class="quote-text">
+        「勉強とは自分を外し、別の自分へと作り替える運動である（脱自）。」
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>本書の定義であり、学びの評価基準を「変化」へ転換する軸となる。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「没入と翻訳の切り替えができないと、深さか伝達性のどちらかが欠ける。」
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>往復運動が学びの持続性と影響力の鍵であることを示す。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「引用→要約→誤読→転用という編集循環が独自性を生む。」
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>創造性を"ゼロ発明"ではなく編集設計として捉え直す。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「承認の経済は学びを均質化する。だからこそ私的な没入時間を守る。」
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>環境要因への対処原理を与え、実践の優先順位を明確にする。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3><span class="emoji">✍️</span>学びの目的をノートに3行書く</h3>
+      <p><strong>目的：</strong>自分が何のために学ぶのか、脱自の方向性を明確化する</p>
+      <p><strong>手順：</strong>ノートを開き、「なぜこれを学ぶのか」「どう変わりたいのか」「誰に何を伝えたいのか」を各1行で書く</p>
+      <div class="effect">
+        <strong>期待効果：</strong>目的意識が明確になり、承認圧に流されず自分の学びを設計できる。所要時間15分。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3><span class="emoji">⚖️</span>オタク/コミュ力の比率を決める</h3>
+      <p><strong>目的：</strong>没入と翻訳のバランスを意識的に設計する</p>
+      <p><strong>手順：</strong>今週の学習時間を振り返り、没入（インプット）と翻訳（アウトプット）の時間比率を記録。次週の理想比率を設定する</p>
+      <div class="effect">
+        <strong>期待効果：</strong>往復運動を意識化し、深さと伝達性の最適化が進む。所要時間20分。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3><span class="emoji">📝</span>1テーマで15分要約を書く</h3>
+      <p><strong>目的：</strong>引用→要約の編集循環を実践し、理解を深める</p>
+      <p><strong>手順：</strong>最近読んだ本や記事から1テーマを選び、タイマーを15分セット。要点を3〜5行で要約し、自分の言葉で書き直す</p>
+      <div class="effect">
+        <strong>期待効果：</strong>編集技法の基礎が身につき、受動的な読書が能動的な創造へ変わる。所要時間15分。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3><span class="emoji">🔄</span>学習ルーチンを1つ変える</h3>
+      <p><strong>目的：</strong>ルール化と破壊の運用を体験し、硬直化を防ぐ</p>
+      <p><strong>手順：</strong>現在の学習習慣（時間帯、場所、方法）を1つ選び、意図的に変更する。例：朝→夜、自宅→カフェ、読書→動画</p>
+      <div class="effect">
+        <strong>期待効果：</strong>新しい刺激で思考が活性化し、惰性を打破できる。所要時間30分（設定変更含む）。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3><span class="emoji">👥</span>学習記録を1人に共有する</h3>
+      <p><strong>目的：</strong>観客（共同体）を設け、規律と評価を外部化する</p>
+      <p><strong>手順：</strong>友人やSNSで1人を選び、今日学んだことを3行で報告。相手からのコメントを受け取る</p>
+      <div class="effect">
+        <strong>期待効果：</strong>外部の視線が規律を生み、内的動機だけに頼らない持続性が得られる。所要時間20分。
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
