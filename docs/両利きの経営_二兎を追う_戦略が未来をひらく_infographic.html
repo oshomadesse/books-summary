@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>両利きの経営 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.15);
+  border-radius: 0.5rem;
+  border-left: 4px solid white;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.example-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 5px solid var(--secondary);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--secondary);
+  opacity: 0.2;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+.quote-card blockquote {
+  font-style: italic;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-card .why {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h4 {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+  margin-bottom: 0.3rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-diagram h3 {
+  text-align: center;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+.flow-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+.flow-item {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+.flow-item:after {
+  content: "↓";
+  display: block;
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin-top: 0.5rem;
+}
+.flow-item:last-child:after {
+  content: "";
+}
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin: 0.25rem;
+}
+.book-list {
+  list-style: none;
+  padding: 0;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.book-item h4 {
+  color: var(--primary);
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.book-item .author {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.book-item .relation {
+  font-size: 0.9rem;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    font-size: 0.85rem;
+  }
+  .tab-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 両利きの経営</h1>
+  <p>深化と探索を同時に実現する組織設計の原理</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ成功企業は変化に適応できず失速するのか？どうすれば持続的成長を実現できるのか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      深化（既存の最適化）と探索（新しい成長の創出）を同時に運用する"両利きの経営"を制度化する。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      既存事業に最適化した資源配分・KPI・文化は短期利益を最大化する一方、破壊的変化に対する感度と学習能力を蝕む。研究と多数事例は、構造分離と上位統合を伴う両利き設計が生存率と成長率を高めることを示す。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      探索ユニットを既存組織から構造的に分離し、トップチームが資源再配分と目標矛盾の調停を担う。探索には学習指標と柔軟なプロセス、深化には効率指標と規律を適用。両者を貫く共通の目的・価値観で文化を束ねる。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🔑 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🤝 両利きの経営</h3>
+        <ul>
+          <li>既存事業の深化と新規事業の探索を同時に高レベルで実現</li>
+          <li>構造・プロセス・文化の"分離と統合"が鍵</li>
+          <li>二兎を追う設計原理</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>"二者択一"という誤解を解き、設計課題として扱えることを示す根本概念
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📈 深化（Exploit）</h3>
+        <ul>
+          <li>既存顧客・技術・モデルで効率と収益を最大化</li>
+          <li>KPI：利益率、品質、稼働率</li>
+          <li>稼ぐ力の最適化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>短期的な収益と競争力を維持し、探索への投資原資を生み出す
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔬 探索（Explore）</h3>
+        <ul>
+          <li>新たな市場・技術・モデルを試し学習</li>
+          <li>KPI：学習速度、仮説検証、顧客発見</li>
+          <li>未来の発見と学習</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>破壊的変化への適応力を養い、次の成長エンジンを創出する
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🏗️ 構造的両利き</h3>
+        <ul>
+          <li>探索と深化を組織上分離（人・プロセス・評価）</li>
+          <li>トップが資源と戦略で統合</li>
+          <li>分けて、上で束ねる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>現場の混乱を避けつつ戦略的一体感を保つ実装原理
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎯 上位連結</h3>
+        <ul>
+          <li>経営陣が探索・深化間の資源配分を調停</li>
+          <li>優先順位と目的を共有させる</li>
+          <li>矛盾の統合</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>トップの行動こそが両利き定着の成否を分ける
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚡ 動的ケイパビリティ</h3>
+        <ul>
+          <li>環境変化に応じて資源とルーティンを再構成</li>
+          <li>探索の発見を企業能力に組み込む力</li>
+          <li>変化する力</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>学習を組織能力に転換し、持続的な適応を可能にする
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📊 ガードレールKPI</h3>
+        <ul>
+          <li>学習・市場シグナル・オプション価値など</li>
+          <li>損益以外の進捗管理指標</li>
+          <li>学習の物差し</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>早期学習を可視化し、"打ち切り/継続"判断の質を向上させる
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎭 文化の両利き性</h3>
+        <ul>
+          <li>共通の目的・価値観の下で異なる規範を併存</li>
+          <li>探索：挑戦・許容、深化：規律・品質</li>
+          <li>一体と差異の共存</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>心理的安全性と規律を両立し、実験と実行を同時に促進
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💰 資源再配分メカニズム</h3>
+        <ul>
+          <li>"外れ値予算"やオプション枠で探索に継続投資</li>
+          <li>成果に応じ柔軟に拡縮</li>
+          <li>可変の資金導管</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>小規模実験からトラクション獲得、スケールへの道筋を制度化
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🗣️ 戦略フレーミング</h3>
+        <ul>
+          <li>既存定義（顧客・ジョブ・競争軸）を再設定</li>
+          <li>探索テーマを組織に正当化する語り</li>
+          <li>意味づけの再設計</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>探索への投資を組織全体が納得し、支持する基盤を作る
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-diagram">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-chart">
+        <div class="flow-item">深化KPI偏重</div>
+        <div class="flow-item">探索投資縮小</div>
+        <div class="flow-item">破壊的変化に脆弱</div>
+        <div class="flow-item">成長鈍化</div>
+      </div>
+      <p style="text-align:center; margin-top:1.5rem; font-weight:600; color:var(--secondary);">⬇️ 解決策 ⬇️</p>
+      <div class="flow-chart" style="margin-top:1rem;">
+        <div class="flow-item">構造分離＋上位連結</div>
+        <div class="flow-item">目標衝突の可視化と調停</div>
+        <div class="flow-item">両利きが持続</div>
+      </div>
+      <div style="margin-top:1.5rem; padding:1rem; background:rgba(102,126,234,0.1); border-radius:0.5rem;">
+        <p style="font-size:0.95rem;"><strong>因果の流れ：</strong></p>
+        <p style="font-size:0.9rem; margin-top:0.5rem;">市場変化↑ ⇒ 探索需要↑ → (分離)探索組織/(規律)深化組織 ⇒ (上位統合)資源配分・語り ⇒ 成長持続</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>1️⃣ 問題提起：創造的破壊の加速と"成功の呪い"</h3>
+      <ul>
+        <li>なぜ優良企業が失速するのか</li>
+        <li>既存の成功パターンが変化への障壁になる</li>
+        <li>短期最適化が長期適応力を損なう</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>問題の本質を明確化し、両利きの必要性を動機づける
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>2️⃣ 理論枠組み：深化と探索の二分</h3>
+      <ul>
+        <li>イノベーターのジレンマを解く鍵は同時追求</li>
+        <li>深化と探索は本質的に矛盾するが設計で両立可能</li>
+        <li>組織の注意と資源の配分問題として捉える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>二者択一ではなく設計課題として扱う理論的基盤を提供
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>3️⃣ 証拠：多数企業の比較研究</h3>
+      <ul>
+        <li>両利き設計が収益性・生存率を統計的に高める</li>
+        <li>成功企業と失敗企業の比較分析</li>
+        <li>実証データが設計原理の有効性を裏付ける</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>理論を実証し、実務への適用可能性を示す
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>4️⃣ 設計原理：構造・評価・プロセス・KPI</h3>
+      <ul>
+        <li>構造分離：探索と深化を組織上分ける</li>
+        <li>人事評価とプロセスの差別化</li>
+        <li>ガードレールKPIの導入で学習を可視化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>具体的な実装手法を提示し、行動への移行を可能にする
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>5️⃣ 統合メカニズム：トップの役割</h3>
+      <ul>
+        <li>経営トップによる資源再配分</li>
+        <li>目標矛盾の調停と優先順位の設定</li>
+        <li>共通目的の語りで組織を束ねる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>リーダーシップが両利き定着の成否を分けることを明確化
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>6️⃣ 文化：共通価値と異なる規範の併存</h3>
+      <ul>
+        <li>共通の目的・価値観で一体感を醸成</li>
+        <li>探索と深化で異なる行動規範を許容</li>
+        <li>心理的安全性の確保</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>文化設計が実験と実行の両立を支える基盤となる
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>7️⃣ 実装：機会選定から学習、スケールへ</h3>
+      <ul>
+        <li>小さく始める：初期投資を抑えリスクを管理</li>
+        <li>指標で学習：ガードレールKPIで進捗を測定</li>
+        <li>スケール/ピボット/停止の意思決定</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>実践的なロードマップを示し、実行の具体性を高める
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>8️⃣ 事例：成功/失敗パターンから学ぶ</h3>
+      <ul>
+        <li>既存大手の成功事例と失敗事例</li>
+        <li>実践要件と落とし穴の明確化</li>
+        <li>多様な業界・状況での適用例</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>具体的な事例が理論の実践可能性を証明し、学習を促進
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>9️⃣ ロードマップ：初期90日〜12か月</h3>
+      <ul>
+        <li>初期アクションの具体化</li>
+        <li>組織能力としての定着化プロセス</li>
+        <li>継続的な改善と学習のサイクル</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>時間軸を明示し、段階的な実装を支援する
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>🏢 事例1：既存大手の探索ユニット分離</h4>
+      <p><strong>背景：</strong>成熟市場で高収益を上げていた製造業大手が、デジタル化の波に対応するため、本社から物理的・組織的に分離した探索ユニットを設立。</p>
+      <p><strong>実施内容：</strong>探索ユニットには独自の予算枠、KPI（顧客インタビュー数、プロトタイプ検証回数）、採用基準を設定。本社とは四半期ごとに経営陣が統合会議を開催。</p>
+      <p><strong>結果：</strong>3年で新規サービスが既存事業の10%の売上を創出。本社の効率指標も維持。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>構造分離と上位統合が機能すれば、既存事業を損なわず新規成長を実現できる
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>📉 事例2：探索を既存組織に統合した失敗</h4>
+      <p><strong>背景：</strong>小売大手が新規ECプラットフォームを既存店舗運営部門内で立ち上げ。</p>
+      <p><strong>実施内容：</strong>同じ評価制度（店舗売上・在庫回転率）を適用。探索チームは短期利益を求められ、実験予算が削減。</p>
+      <p><strong>結果：</strong>2年で撤退。探索チームのモチベーション低下、学習機会の喪失。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>深化のKPIと文化を探索に適用すると、学習が阻害され失敗する
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🚀 事例3：ガードレールKPIによる学習加速</h4>
+      <p><strong>背景：</strong>金融サービス企業が新規フィンテック事業を探索。従来の収益指標では進捗が見えず、経営陣が不安視。</p>
+      <p><strong>実施内容：</strong>「顧客問題の検証数」「MVP利用者数」「ユニットエコノミクスの改善率」をガードレールKPIに設定。月次で経営陣に報告。</p>
+      <p><strong>結果：</strong>学習の可視化により経営陣の信頼を獲得。18か月で黒字化し、本格投資を決定。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>学習指標が探索の進捗を可視化し、継続投資の判断を支える
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🌐 事例4：文化の両利き性による心理的安全性</h4>
+      <p><strong>背景：</strong>テクノロジー企業が探索チームに「失敗を称賛する」文化を導入。一方、深化チームには「品質第一」を徹底。</p>
+      <p><strong>実施内容：</strong>共通の目的「顧客価値の最大化」を掲げつつ、探索は「学習速度」、深化は「品質と効率」を評価軸に設定。</p>
+      <p><strong>結果：</strong>探索チームの実験回数が2倍に増加。深化チームの品質指標も向上。両チーム間の相互理解が深まる。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>共通目的の下で異なる規範を併存させることで、実験と実行が両立する
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <blockquote>"探索と深化は本質的に矛盾するが、設計とリーダーシップで両立できる。"</blockquote>
+      <p class="why"><strong>なぜ重要か：</strong>"二者択一"という誤解を解き、設計課題として扱えると示す。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"構造分離と上位連結が両利きの中核である。"</blockquote>
+      <p class="why"><strong>なぜ重要か：</strong>現場の混乱を避けつつ戦略的一体感を保つ実装原理を示す。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"成熟期の成功指標は転換期には失敗要因になりうる。"</blockquote>
+      <p class="why"><strong>なぜ重要か：</strong>KPIの見直しの必要性を端的に示し、学習指標の導入を促す。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"リーダーは資源の再配分者であり、意味を与える語り手である。"</blockquote>
+      <p class="why"><strong>なぜ重要か：</strong>トップの行動こそが両利き定着の成否を分けると明確化する。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"小さく賭け、早く学び、うまく拡大せよ。"</blockquote>
+      <p class="why"><strong>なぜ重要か：</strong>探索の実行原則を短句で示し、行動への移行を容易にする。</p>
+    </div>
+
+    <div style="margin-top:2rem; padding:1.5rem; background:linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1)); border-radius:0.75rem;">
+      <h3 style="color:var(--primary); margin-bottom:1rem;">📚 関連書籍</h3>
+      <ul class="book-list">
+        <li class="book-item">
+          <h4>イノベーションのジレンマ</h4>
+          <p class="author">著：クレイトン・M・クリステンセン</p>
+          <p class="relation"><strong>関連性：</strong>両利きが解こうとする根本問題を提示する古典。</p>
+        </li>
+        <li class="book-item">
+          <h4>デュアル・トランスフォーメーション</h4>
+          <p class="author">著：スコット・D・アンソニー 他</p>
+          <p class="relation"><strong>関連性：</strong>既存事業の再定義と新事業創出を同時に進める実践枠組み。</p>
+        </li>
+        <li class="book-item">
+          <h4>Zone to Win</h4>
+          <p class="author">著：ジェフリー・ムーア</p>
+          <p class="relation"><strong>関連性：</strong>成熟企業が新規事業に資源を振り向ける組織設計を詳述。</p>
+        </li>
+        <li class="book-item">
+          <h4>リーン・スタートアップ</h4>
+          <p class="author">著：エリック・リース</p>
+          <p class="relation"><strong>関連性：</strong>探索側の学習指標と検証プロセスの具体手法。</p>
+        </li>
+        <li class="book-item">
+          <h4>組織文化とリーダーシップ</h4>
+          <p class="author">著：エドガー・H・シャイン</p>
+          <p class="relation"><strong>関連性：</strong>両利きの前提となる文化設計と変革の理論。</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>✅ アクション1：探索/深化の現状比率を試算する</h4>
+      <p><strong>目的：</strong>自社の資源配分の現状を可視化し、両利きのバランスを診断する</p>
+      <p><strong>実行方法：</strong>過去1年の予算・人員・時間を「既存事業の最適化」と「新規機会の探索」に分類し、比率を算出（15分）</p>
+      <p><strong>期待効果：</strong>深化偏重の実態が明らかになり、探索投資の必要性を定量的に示せる</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション2：来期の探索テーマを3件書き出す</h4>
+      <p><strong>目的：</strong>探索の具体的な方向性を明確化し、議論の土台を作る</p>
+      <p><strong>実行方法：</strong>市場変化・顧客ニーズ・技術トレンドから、自社が探索すべき機会を3つリストアップ（20分）</p>
+      <p><strong>期待効果：</strong>探索テーマが具体化され、経営陣や関係者との対話が始まる</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション3：探索用KPIと予算の仮案を作る</h4>
+      <p><strong>目的：</strong>探索を制度化するための具体的な枠組みを設計する</p>
+      <p><strong>実行方法：</strong>探索テーマごとに「学習指標（顧客インタビュー数、検証回数など）」と「初期予算（既存予算の1〜3%）」を設定（30分）</p>
+      <p><strong>期待効果：</strong>探索の実行可能性が高まり、経営陣への提案資料として活用できる</p>
+    </div>
+
+    <div style="margin-top:2rem; padding:1.5rem; background:var(--card-bg); border-radius:0.75rem; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <h3 style="color:var(--secondary); margin-bottom:1rem;">🎯 実行のヒント</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">▸</span>
+          まずは小さく始める：完璧を目指さず、15分でできることから着手
+        </li>
+        <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">▸</span>
+          結果を共有する：試算や仮案を同僚や上司と共有し、対話を生む
+        </li>
+        <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">▸</span>
+          継続的に見直す：月次で探索の進捗を振り返り、学習を蓄積
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
