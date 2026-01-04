@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work Rules! インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.75rem;
+}
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.2rem;
+  position: relative;
+  font-size: 0.88rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border: 2px solid var(--primary);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--accent);
+  opacity: 0.3;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-card small {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 10px rgba(102,126,234,0.3);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.88rem;
+  margin-bottom: 0.4rem;
+  opacity: 0.95;
+}
+.action-card small {
+  font-size: 0.82rem;
+  opacity: 0.85;
+  display: block;
+  margin-top: 0.3rem;
+}
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.visual-section h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  text-align: center;
+}
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+.flow-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.metric-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  border: 2px solid var(--primary);
+}
+.metric-box .number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary);
+  display: block;
+}
+.metric-box .label {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.3rem;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--accent);
+}
+.book-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.3rem;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card p {
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+@media (max-width: 600px) {
+  header h1 { font-size: 1.5rem; }
+  .tabs { margin: 0.5rem; }
+  .tab-btn { font-size: 0.85rem; padding: 0.6rem 0.75rem; min-width: 100px; }
+  .card, .chapter-card, .example-card { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 Work Rules! インフォグラフィック</h1>
+  <p>人は唯一の持続的競争優位 — データと信頼で組織を変える</p>
+</header>
+
+<div class="summary-block">
+  <h2>📌 要約 = 問い × 答え × 根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>どうすれば組織は継続的に高い成果とイノベーションを生むか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    <p>人を信頼して裁量と透明性を与え、ピープル・アナリティクスで意思決定し、採用・目標・評価・報酬・マネジメントを実験で磨き続ける。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>データに基づく検証で、構造化面接やマネージャー行動、裁量・開示・ナッジが動機づけ・生産性・定着を高めると示されたため。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠 How（そのためには）</strong>
+    <p>高い採用基準と委員会運用、OKRによる整合と自律、Project Oxygenの行動基準でマネージャーを育成、トップ人材へ非対称報酬、ナッジ設計と全社実験、オープンな情報共有とフィードバックを制度化する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">関連書籍</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="visual-section">
+    <h3>🔗 概念間の関係性</h3>
+    <div class="flow-diagram">
+      <div class="flow-item">
+        <div class="flow-box">構造化面接</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">採用品質↑</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">透明性+裁量</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">自律動機↑</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">OKR</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">整合+自律</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">良い上司</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">生産性↑</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">心理的安全性</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box">イノベーション↑</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔬 ピープル・アナリティクス</h3>
+    <ul>
+      <li><strong>定義:</strong> 人事や職場施策をデータで設計・検証する枠組み</li>
+      <li><strong>方法:</strong> 経験則を仮説に置き換え、実験で因果を見極める</li>
+      <li><strong>効果:</strong> 神話を壊し、継続的改善サイクルを回す</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 経験や直感ではなく、検証可能な証拠に基づいて人事施策を最適化できるため、組織全体の成果を科学的に高められる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 高い採用基準と採用委員会</h3>
+    <ul>
+      <li><strong>仕組み:</strong> 現場単独決定を避け、標準化指標と第三者委員会で採否を決定</li>
+      <li><strong>原則:</strong> 短期充足より長期品質を優先</li>
+      <li><strong>結果:</strong> バイアス低減と基準一貫性の向上</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 採用は組織の人材密度を決める最重要プロセス。景気に左右されず高い基準を維持することで、長期的な競争優位を築ける。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📋 構造化面接（行動・課題）</h3>
+    <ul>
+      <li><strong>手法:</strong> 同一質問と評価基準を用い、行動事例や実務課題で能力を測定</li>
+      <li><strong>利点:</strong> バイアスとノイズを低減し、予測精度を向上</li>
+      <li><strong>実装:</strong> 評価者トレーニングと採点ガイドの標準化</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 非構造化面接は予測力が低く、印象や相性に左右される。構造化により採用の質と公平性を同時に高められる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 OKR（Objectives and Key Results）</h3>
+    <ul>
+      <li><strong>構造:</strong> 野心的な目的（O）と測定可能な主要成果（KR）</li>
+      <li><strong>特徴:</strong> ストレッチ目標で学習を促進、進捗は透明に共有</li>
+      <li><strong>効果:</strong> フォーカスと組織整合を作り、自律と責任を両立</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 達成可能性より挑戦と学習を重視することで、イノベーションと成長を加速できる。透明性が協働を促す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👔 Project Oxygen（マネージャー行動）</h3>
+    <ul>
+      <li><strong>発見:</strong> 優れたマネージャーの行動を特定した実証研究</li>
+      <li><strong>行動基準:</strong> コーチング、権限委譲、キャリア支援、心理的安全性の提供</li>
+      <li><strong>成果:</strong> エンゲージメント向上、離職低減、生産性向上</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 「マネージャーは重要でない」という神話をデータで覆し、上司の質が組織成果を左右することを証明した。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🛡 心理的安全性</h3>
+    <ul>
+      <li><strong>定義:</strong> リスクある発言や試行が罰されない安心感</li>
+      <li><strong>前提:</strong> 学習・連携・イノベーションの必須条件</li>
+      <li><strong>構築:</strong> 失敗の共有、質問の奨励、多様な意見の尊重</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 安全がなければ人は沈黙し、問題は隠蔽され、学習は止まる。発言の安全地帯が創造性の源泉となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔓 透明性（Default to Open）</h3>
+    <ul>
+      <li><strong>原則:</strong> 情報を原則公開し、例外だけをクローズにする</li>
+      <li><strong>効果:</strong> 自律と責任を促し、意思決定の質と速度を向上</li>
+      <li><strong>実践:</strong> OKR・会議メモ・データへのアクセス開放</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 情報の非対称性が権力と依存を生む。開示が力を分散し、全員が最良の判断を下せる環境を作る。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏰ 20%ルール</h3>
+    <ul>
+      <li><strong>制度:</strong> 職務時間の一部を自発プロジェクトに充てられる慣行</li>
+      <li><strong>狙い:</strong> 内発的動機と探索行動を高める</li>
+      <li><strong>成果:</strong> Gmail、Google Newsなど主要製品の源泉</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 自律的探索が創造性を解放し、予期しないイノベーションを生む。裁量が動機の核心である。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💰 非対称報酬（Pay Unfairly）</h3>
+    <ul>
+      <li><strong>原則:</strong> アウトプットの分布に合わせ、例外的成果に例外的報酬を与える</li>
+      <li><strong>根拠:</strong> 価値創出は正規分布せず、トップ人材の貢献は桁違い</li>
+      <li><strong>効果:</strong> トップ人材の維持と高付加価値創出</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 平均主義は優秀層の流出を招く。価値に報いることで、組織全体の成果を最大化できる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎨 ナッジ（選択アーキテクチャ）</h3>
+    <ul>
+      <li><strong>手法:</strong> 選択肢の並べ方等で望ましい行動を後押し</li>
+      <li><strong>特徴:</strong> 強制せず、自由を保ちながら成果と健康を両立</li>
+      <li><strong>例:</strong> カフェテリアの配置変更、デフォルト設定の最適化</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 小さな設計変更が日々の選択を改善し、組織全体の健康・倫理・生産性に波及する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 二つの裾（Two Tails）</h3>
+    <ul>
+      <li><strong>戦略:</strong> トップとボトム双方に焦点を当てる</li>
+      <li><strong>施策:</strong> トップ抜擢 + ボトム集中支援</li>
+      <li><strong>結果:</strong> 分布全体を押し上げ、組織能力を底上げ</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 平均に注力しても分布は動かない。端を動かすことで、全体の水準を効率的に引き上げられる。
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>序章: 仕事を良くする使命</h3>
+    <ul>
+      <li>仕事を良くするという使命の宣言</li>
+      <li>経験ではなくデータで人事を運営する立場</li>
+      <li>信頼と透明性を前提とした組織設計</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 本書全体の哲学と立場を明確にし、読者に「人事は科学である」という視点転換を促すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第1章: 文化 — 意味・信頼・透明性</h3>
+    <ul>
+      <li>仕事の意味付けが動機の源泉</li>
+      <li>信頼を前提にルールを最小化</li>
+      <li>裁量が内発的動機を生む</li>
+      <li>透明性が自律と責任を促進</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 統制より信頼がコストと摩擦を下げ、創造性と速度を高めることを示し、文化が競争優位の基盤であることを証明するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章: 採用 — 高い基準と構造化</h3>
+    <ul>
+      <li>採用のハードルは景気に左右させない</li>
+      <li>構造化面接でバイアスとノイズを低減</li>
+      <li>採用委員会による第三者チェック</li>
+      <li>長期的に優れた人材密度を作る</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 採用は組織の人材密度を決める最重要プロセスであり、短期充足より長期品質が成果を左右することを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章: オンボーディング — 初期体験の設計</h3>
+    <ul>
+      <li>初日から生産的な環境を整備</li>
+      <li>早期のエンゲージメントと帰属意識を醸成</li>
+      <li>文化と期待の明確な伝達</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 最初の90日が定着と成果を左右する。設計された体験が早期離職を防ぎ、生産性を加速するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章: 目標管理 — OKRで整合と自律</h3>
+    <ul>
+      <li>野心的な目的と測定可能な主要成果</li>
+      <li>ストレッチ目標で学習を促進</li>
+      <li>進捗の透明な共有で協働を促す</li>
+      <li>組織全体の整合とフォーカスを担保</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 達成可能性より挑戦と学習を重視することで、イノベーションと成長を加速し、自律と責任を両立できることを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章: マネジメント — Project Oxygenの知見</h3>
+    <ul>
+      <li>優れたマネージャーの行動を特定</li>
+      <li>コーチング、権限委譲、キャリア支援を行動基準化</li>
+      <li>マネージャー育成でチーム成果を引き上げ</li>
+      <li>「上司は重要」という実証</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 「マネージャーは重要でない」という神話をデータで覆し、上司の質が組織成果を左右することを証明するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章: 評価とフィードバック — 学習ループ</h3>
+    <ul>
+      <li>データとキャリブレーションで公正性を高める</li>
+      <li>継続的フィードバックで学習を促進</li>
+      <li>評価の透明性と説明責任</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 評価が学習と成長のループを回す仕組みであり、公正性と透明性が信頼の基盤であることを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7章: 報酬 — 非対称と認知</h3>
+    <ul>
+      <li>成果の分散に合わせた非対称報酬</li>
+      <li>トップ人材へ例外的報酬を与える</li>
+      <li>称賛と認知で動機づけを最適化</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 平均主義は優秀層の流出を招く。価値に報いることで、組織全体の成果を最大化できることを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第8章: 行動設計と実験 — ナッジと検証</h3>
+    <ul>
+      <li>ナッジで望ましい日々の選択を後押し</li>
+      <li>全社実験で小さな変更を積み重ね</li>
+      <li>健康・倫理・生産性を改善</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 小さな設計変更が日々の選択を改善し、組織全体の成果に波及することを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>終章: 原則の移植と継続的検証</h3>
+    <ul>
+      <li>原則を他組織へ移植する方法</li>
+      <li>継続的に仮説検証する姿勢の重要性</li>
+      <li>人事の科学化を組織文化に埋め込む</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 本書の知見が特定企業に限らず、あらゆる組織で応用可能であることを示し、実践への橋渡しをするため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🔍 例1: 構造化面接の導入</h3>
+    <p><strong>背景:</strong> 非構造化面接では面接官の印象や相性に左右され、採用の予測精度が低かった。</p>
+    <p><strong>施策:</strong> 同一質問セット、行動事例質問、評価基準の標準化、採用委員会による第三者レビューを導入。</p>
+    <p><strong>結果:</strong> 採用品質が向上し、バイアスが低減。長期的に優れた人材密度を実現。</p>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 構造化により採用の質と公平性を同時に高められ、組織の長期的競争優位を築けることを実証している。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🔍 例2: Project Oxygen — マネージャーの重要性</h3>
+    <p><strong>背景:</strong> 「マネージャーは重要でない」という仮説を検証するため、データ分析を実施。</p>
+    <p><strong>発見:</strong> 優れたマネージャーの下ではエンゲージメント・生産性・定着率が顕著に高いことが判明。</p>
+    <p><strong>施策:</strong> 8つの行動基準を特定し、マネージャー育成プログラムを設計。</p>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 経験則や神話をデータで検証し、上司の質が組織成果を左右することを証明。マネジメント投資の正当性を示した。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🔍 例3: カフェテリアのナッジ設計</h3>
+    <p><strong>背景:</strong> 従業員の健康的な食事選択を促したいが、強制は避けたい。</p>
+    <p><strong>施策:</strong> 健康的な食品を目線の高さに配置し、不健康な食品を低い位置に移動。デフォルトの選択肢を最適化。</p>
+    <p><strong>結果:</strong> 健康的な食事の選択率が向上し、従業員の健康指標が改善。</p>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 小さな環境設計の変更が日々の行動を改善し、組織全体の健康と生産性に波及することを示している。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🔍 例4: OKRによる整合と自律</h3>
+    <p><strong>背景:</strong> 組織が大きくなるにつれ、方向性の整合と個人の自律を両立する必要があった。</p>
+    <p><strong>施策:</strong> 野心的な目的（O）と測定可能な主要成果（KR）を設定し、全社で透明に共有。</p>
+    <p><strong>結果:</strong> フォーカスと協働が促進され、自律と責任が両立。イノベーションが加速。</p>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> ストレッチ目標と透明性が学習と挑戦を促し、組織全体の成長を加速することを実証している。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🔍 例5: 非対称報酬の実践</h3>
+    <p><strong>背景:</strong> トップ人材の貢献は桁違いだが、平均主義的報酬では流出リスクが高い。</p>
+    <p><strong>施策:</strong> 例外的成果に例外的報酬を与え、価値創出に連動した報酬設計を実施。</p>
+    <p><strong>結果:</strong> トップ人材の定着率が向上し、高付加価値創出が持続。</p>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 価値に報いることで優秀層を維持し、組織全体の成果を最大化できることを示している。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>人を信頼すれば、ルールは最小で済む。</p>
+    <small><strong>重要性:</strong> 統制より信頼がコストと摩擦を同時に下げる原理を示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>採用のハードルは景気に左右させない。</p>
+    <small><strong>重要性:</strong> 短期充足より人材密度が長期成果を左右することを強調する。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>データはマネジメントの神話を壊す。</p>
+    <small><strong>重要性:</strong> Project Oxygenの知見を通じ、経験則より検証を優先すべき根拠になる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>目標は達成可能でなくとも価値がある。</p>
+    <small><strong>重要性:</strong> OKRの"ストレッチ"が学習と革新を促す理由を示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>報酬は平均ではなく価値に連動させる。</p>
+    <small><strong>重要性:</strong> 非対称報酬の正当性と、トップ人材維持の重要性を示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>小さなナッジが大きな行動変容を生む。</p>
+    <small><strong>重要性:</strong> 日常の設計変更が組織成果に波及する因果を示す。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>✅ アクション1: 次回1on1の質問を3つ設計する</h3>
+    <p><strong>具体的手順:</strong></p>
+    <p>• 行動事例を引き出す質問を1つ（例: 最近直面した困難とどう対処したか）</p>
+    <p>• キャリア志向を探る質問を1つ（例: 3年後どうなっていたいか）</p>
+    <p>• フィードバックを求める質問を1つ（例: 私のサポートで改善できることは）</p>
+    <small><strong>目的:</strong> Project Oxygenの行動基準を実践し、コーチングとキャリア支援を強化する。</small>
+    <small><strong>期待効果:</strong> エンゲージメント向上、信頼関係の深化、離職リスクの低減。</small>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション2: プロジェクトのOKRを仮設定する</h3>
+    <p><strong>具体的手順:</strong></p>
+    <p>• 野心的な目的（O）を1文で書く（例: ユーザー体験を革新する）</p>
+    <p>• 測定可能な主要成果（KR）を3つ設定（例: NPS +20pt、離脱率 -30%、導入率 50%）</p>
+    <p>• チームと共有し、フィードバックを得る</p>
+    <small><strong>目的:</strong> フォーカスと整合を作り、自律と責任を両立させる。</small>
+    <small><strong>期待効果:</strong> 方向性の明確化、進捗の可視化、協働の促進。</small>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション3: 面接質問を行動事例型に書く</h3>
+    <p><strong>具体的手順:</strong></p>
+    <p>• 評価したい能力を1つ選ぶ（例: 問題解決力）</p>
+    <p>• 「具体的な状況・行動・結果」を引き出す質問を作る（例: 複雑な問題をどう解決したか、具体例を教えてください）</p>
+    <p>• 評価基準（良い回答の要素）を3つ書き出す</p>
+    <small><strong>目的:</strong> 構造化面接を実践し、採用の予測精度と公平性を高める。</small>
+    <small><strong>期待効果:</strong> バイアス低減、採用品質向上、長期的な人材密度の向上。</small>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション4: チームの透明性を1つ高める</h3>
+    <p><strong>具体的手順:</strong></p>
+    <p>• 現在クローズにしている情報を1つ選ぶ（例: プロジェクト進捗、意思決定の背景）</p>
+    <p>• 開示のリスクと利益を評価する</p>
+    <p>• 開示方法を決め、チームに共有する（例: 週次レポート、共有ドキュメント）</p>
+    <small><strong>目的:</strong> 透明性を高め、自律と責任を促進する。</small>
+    <small><strong>期待効果:</strong> 意思決定の質と速度の向上、信頼関係の強化。</small>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション5: 小さなナッジを1つ設計する</h3>
+    <p><strong>具体的手順:</strong></p>
+    <p>• 改善したい行動を1つ選ぶ（例: 会議の時間厳守、健康的な休憩）</p>
+    <p>• 環境や選択肢の並べ方を変える案を考える（例: 会議開始5分前にリマインダー、休憩スペースを目立つ場所に）</p>
+    <p>• 1週間試し、効果を観察する</p>
+    <small><strong>目的:</strong> 行動設計で望ましい選択を後押しする。</small>
+    <small><strong>期待効果:</strong> 小さな変更が日々の行動を改善し、生産性や健康に波及する。</small>
+  </div>
+</div>
+
+<div id="tab6" class="tab-content" role="tabpanel">
+  <div class="book-card">
+    <h4>📖 Measure What Matters</h4>
+    <p class="author">著者: John Doerr</p>
+    <p><strong>関連性:</strong> OKRの実践事例と導入方法を詳解し、目標管理章の補完となる。GoogleやIntelでの具体的な運用例を通じ、OKRの効果と実装のポイントを学べる。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 No Rules Rules</h4>
+    <p class="author">著者: Reed Hastings, Erin Meyer</p>
+    <p><strong>関連性:</strong> 信頼と自由の文化・人事原則をNetflixの事例で示し、透明性と裁量の効果を比較できる。高い人材密度と率直なフィードバック文化の構築方法を学べる。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 Drive</h4>
+    <p class="author">著者: Daniel H. Pink</p>
+    <p><strong>関連性:</strong> 自律・熟達・目的の動機づけ理論が、本書の裁量と意味付けの根拠を補強する。内発的動機の科学的背景を理解できる。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 Nudge</h4>
+    <p class="author">著者: Richard H. Thaler, Cass R. Sunstein</p>
+    <p><strong>関連性:</strong> 選択アーキテクチャの理論背景を提供し、職場ナッジ設計の理解を深める。行動経済学の知見を人事施策に応用する方法を学べる。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 First, Break All the Rules</h4>
+    <p class="author">著者: Marcus Buckingham, Curt Coffman</p>
+    <p><strong>関連性:</strong> 優れたマネージャー行動の実証研究で、Project Oxygenと相互補完的。Gallupの大規模調査に基づくマネジメントの原則を学べる。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 Radical Candor</h4>
+    <p class="author">著者: Kim Scott</p>
+    <p><strong>関連性:</strong> 率直で思いやりあるフィードバック手法が、心理的安全性とマネージャーの行動基準に直結する。具体的なコミュニケーション技術を学べる。</p>
+  </div>
+</div>
+
+<script>
+// タブ切り替え機能
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    // すべてのタブとコンテンツから active を削除
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブとコンテンツに active を追加
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
