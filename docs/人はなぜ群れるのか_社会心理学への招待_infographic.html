@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>社会心理学インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  border-bottom: 2px solid #e0e0e0;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, #f093fb22, #667eea22);
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  border-left: 3px solid var(--accent);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 4rem;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  opacity: 0.3;
+}
+.quote-card p {
+  font-size: 1rem;
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+.quote-card small {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--accent);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.diagram {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.diagram h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-item {
+  background: linear-gradient(135deg, #667eea22, #f093fb22);
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  text-align: center;
+  border: 2px solid var(--primary);
+}
+.arrow {
+  text-align: center;
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0.25rem 0;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.book-card h4 {
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 社会心理学の全体像</h1>
+  <p>状況と自己正当化が行動を形づくる</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>人はなぜ群れ、時に非合理な判断や不道徳な行動に流されるのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>私たちは所属と承認を求め、状況の規範に同調しやすく、同時に自尊心を守るために認知的不協和を自己正当化で低減するから。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>① 状況の力が個人差を凌駕する同調・服従の実証<br>
+      ② 不協和・自己正当化が記憶・態度を再構成<br>
+      ③ カテゴリー化がステレオタイプと偏見を生む<br>
+      ④ 責任拡散が援助行動を阻害</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>① 規範の可視化と少数者の一貫した主張で同調を修正<br>
+      ② メタ認知で不協和の兆候を点検し再解釈<br>
+      ③ 協同目標・対等接触で偏見を低減<br>
+      ④ 説得は中心/周辺ルートを設計し、抵抗は事前コミットと逆フレーミングで強化</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🧠 認知的不協和</h3>
+        <ul>
+          <li>相矛盾する信念・行動が同時に存在するときに生じる不快感</li>
+          <li>人は整合性回復のために態度や記憶を変える</li>
+          <li>一言要約：不快な矛盾の自己調整装置</li>
+        </ul>
+        <div class="reason">💡 理由：自尊心を守るため、私たちは無意識に矛盾を解消しようとする。これが意思決定や記憶を歪める根本原因。</div>
+      </div>
+      <div class="card">
+        <h3>🛡️ 自己正当化</h3>
+        <ul>
+          <li>自尊心を守るために、自分の選択や行為を合理化して意味づけし直す心理過程</li>
+          <li>一言要約：自尊心の防衛メカニズム</li>
+        </ul>
+        <div class="reason">💡 理由：失敗や不道徳な行為後も「よい私」でいたい欲求が、事実の再解釈を促し、偏見や誤りを固定化させる。</div>
+      </div>
+      <div class="card">
+        <h3>👥 同調</h3>
+        <ul>
+          <li>集団規範や他者の判断に合わせて自分の態度・行動を変えること</li>
+          <li>情報的同調（正しさを求める）と規範的同調（受容を求める）がある</li>
+          <li>一言要約：みんなに合わせる力</li>
+        </ul>
+        <div class="reason">💡 理由：所属欲求と不確実性回避が同調を駆動。状況の力が個人差を凌駕する実証が多数存在。</div>
+      </div>
+      <div class="card">
+        <h3>⚖️ 服従</h3>
+        <ul>
+          <li>権威からの命令に従って行動すること</li>
+          <li>責任拡散や段階的コミットが増強要因</li>
+          <li>一言要約：権威への従い</li>
+        </ul>
+        <div class="reason">💡 理由：役割と制度が個人の道徳判断を上書きし、非人道的行為さえ正当化される危険を示す。</div>
+      </div>
+      <div class="card">
+        <h3>🔍 原因帰属</h3>
+        <ul>
+          <li>行動の原因を個人内（性格）か状況に求める推論</li>
+          <li>基本的帰属の誤り（他者は性格、自分は状況）や自己奉仕バイアスが起こる</li>
+          <li>一言要約：原因の解釈癖</li>
+        </ul>
+        <div class="reason">💡 理由：帰属の偏りが偏見や対立を生む。状況要因を見落とすと介入設計を誤る。</div>
+      </div>
+      <div class="card">
+        <h3>🏷️ ステレオタイプ／偏見</h3>
+        <ul>
+          <li>カテゴリー化による過度の一般化と、それに基づく感情・評価</li>
+          <li>内集団ひいきと外集団同質性が関与</li>
+          <li>一言要約：ラベルが生む歪み</li>
+        </ul>
+        <div class="reason">💡 理由：認知の効率化が差別を生む。知識だけでなく動機と接触条件の改善が必要。</div>
+      </div>
+      <div class="card">
+        <h3>🤝 接触仮説</h3>
+        <ul>
+          <li>対等性・協同目標・制度的支援などの条件が整う接触は偏見を低減する</li>
+          <li>一言要約：正しい出会いは偏見を減らす</li>
+        </ul>
+        <div class="reason">💡 理由：単なる接触では不十分。構造化された協働が外集団への共感と再評価を促す。</div>
+      </div>
+      <div class="card">
+        <h3>💬 説得（中心/周辺ルート）</h3>
+        <ul>
+          <li>論拠精査による態度変容（中心）と、好意・権威・希少性など手がかりによる変容（周辺）</li>
+          <li>一言要約：考えるか、感じるか</li>
+        </ul>
+        <div class="reason">💡 理由：動機と能力が低いと周辺ルートが効く。持続的変容には中心ルートが必要。</div>
+      </div>
+      <div class="card">
+        <h3>👀 傍観者効果</h3>
+        <ul>
+          <li>他者の存在が援助行動を抑制する現象</li>
+          <li>多元的無知と責任の拡散が鍵</li>
+          <li>一言要約：誰かがやるの罠</li>
+        </ul>
+        <div class="reason">💡 理由：緊急時に行動しない理由を理解すれば、責任の明確化で援助率を高められる。</div>
+      </div>
+      <div class="card">
+        <h3>⚡ 攻撃性</h3>
+        <ul>
+          <li>他者に害を与える意図的行動</li>
+          <li>刺激（痛み・挫折）と認知評価、規範が相互作用</li>
+          <li>一言要約：害意の発火条件</li>
+        </ul>
+        <div class="reason">💡 理由：攻撃は本能ではなく学習と状況の産物。規範と認知介入で抑制可能。</div>
+      </div>
+      <div class="card">
+        <h3>❤️ 利他行動／共感</h3>
+        <ul>
+          <li>見返りを求めず他者を助ける行為</li>
+          <li>共感と規範、コスト・便益の認知が規定</li>
+          <li>一言要約：思いやりの条件</li>
+        </ul>
+        <div class="reason">💡 理由：共感を活性化し、コストを下げ、規範を可視化すれば利他行動は増える。</div>
+      </div>
+      <div class="card">
+        <h3>🎭 自己呈示（印象管理）</h3>
+        <ul>
+          <li>他者に望ましい自己像を示す戦略</li>
+          <li>状況や聴衆により調整される</li>
+          <li>一言要約：見せたい私</li>
+        </ul>
+        <div class="reason">💡 理由：社会的承認欲求が行動を方向づける。自己呈示の理解は説得や交渉に応用できる。</div>
+      </div>
+      <div class="card">
+        <h3>📈 集団極性化／集団思考</h3>
+        <ul>
+          <li>討議で意見がより極端化する現象と、凝集性や同質性が批判を抑えて誤った意思決定を招く状態</li>
+          <li>一言要約：話すほど極端、異論が消える</li>
+        </ul>
+        <div class="reason">💡 理由：集団の意思決定は個人より賢明とは限らない。多様性と悪魔の代弁者が必要。</div>
+      </div>
+      <div class="card">
+        <h3>🎬 役割と状況</h3>
+        <ul>
+          <li>与えられた役割や制度的文脈が行動を強く方向づける</li>
+          <li>脱個人化が促進されやすい</li>
+          <li>一言要約：立場が人を動かす</li>
+        </ul>
+        <div class="reason">💡 理由：性格より役割が行動を予測する。制度設計が倫理的行動を左右する。</div>
+      </div>
+      <div class="card">
+        <h3>🌟 自尊心の維持</h3>
+        <ul>
+          <li>自分を有能で道徳的だと感じたい欲求</li>
+          <li>多くのバイアスの駆動源</li>
+          <li>一言要約：よい私でいたい</li>
+        </ul>
+        <div class="reason">💡 理由：自尊心維持が不協和・帰属・偏見の根底にある。メタ認知で自覚すれば修正可能。</div>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-item">自尊心維持</div>
+      <div class="arrow">⬇️</div>
+      <div class="flow-item">認知的不協和</div>
+      <div class="arrow">⬇️</div>
+      <div class="flow-item">自己正当化</div>
+      <div class="arrow">⬇️</div>
+      <div class="flow-item">態度・記憶の再構成</div>
+      <div style="margin: 1.5rem 0; text-align: center; color: var(--text-light);">───</div>
+      <div class="flow-item">社会的規範・状況圧力</div>
+      <div class="arrow">⬇️</div>
+      <div class="flow-item">同調/服従</div>
+      <div class="arrow">⬇️</div>
+      <div class="flow-item">行動 → 事後合理化 → 態度変容</div>
+      <div style="margin: 1.5rem 0; text-align: center; color: var(--text-light);">───</div>
+      <div class="flow-item">カテゴリー化 → ステレオタイプ → 偏見/差別</div>
+      <div class="arrow">⬇️</div>
+      <div class="flow-item">対等接触+協同目標+制度支援 → 偏見低減</div>
+      <div style="margin: 1.5rem 0; text-align: center; color: var(--text-light);">───</div>
+      <div class="flow-item">多数他者+多元的無知+責任拡散 → 傍観者効果</div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 導入：社会心理学の視座</h3>
+      <ul>
+        <li>性格より状況、直観より実証を重視</li>
+        <li>実験/観察の方法と倫理的配慮</li>
+        <li>人間行動の予測と介入の基盤を築く</li>
+      </ul>
+      <div class="reason">💡 理由：個人差に頼る説明は限界がある。状況要因の理解が効果的な介入設計の出発点。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🧩 自己と整合性：認知的不協和と自己正当化</h3>
+      <ul>
+        <li>選択・努力・不正行為後の態度変容メカニズム</li>
+        <li>不協和低減が記憶や信念を再構成する</li>
+        <li>自己正当化が偏見や誤りを固定化</li>
+      </ul>
+      <div class="reason">💡 理由：人は合理的でなく合理化する。この理解なしに説得や教育は効果を持たない。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>💡 説得と態度変容</h3>
+      <ul>
+        <li>中心/周辺ルート、恐怖喚起、コミットメントと一貫性</li>
+        <li>動機と能力が処理ルートを決定</li>
+        <li>持続的変容には中心ルートが必要</li>
+      </ul>
+      <div class="reason">💡 理由：説得技法の理解は、マーケティング・教育・政治コミュニケーションすべてに応用できる。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>👥 社会的影響：同調と服従</h3>
+      <ul>
+        <li>規範、権威、役割、段階的要請が行動をどう動かすか</li>
+        <li>ミルグラム実験とスタンフォード監獄実験の教訓</li>
+        <li>少数者の一貫した主張が規範を変える</li>
+      </ul>
+      <div class="reason">💡 理由：状況の力を軽視すると、悪を個人の性格に帰属し、制度改革を怠る危険がある。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔍 対人認知：帰属、ステレオタイプ、偏見</h3>
+      <ul>
+        <li>カテゴリー化とバイアス、修正の条件</li>
+        <li>基本的帰属の誤りと自己奉仕バイアス</li>
+        <li>内集団ひいきと外集団同質性</li>
+      </ul>
+      <div class="reason">💡 理由：偏見は知識不足だけでなく動機の産物。接触条件と制度設計が鍵。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>❤️ 人間関係：好意・愛着・利他と攻撃</h3>
+      <ul>
+        <li>近接性・類似性・共感と、敵意の触媒</li>
+        <li>利他行動の条件と傍観者効果</li>
+        <li>攻撃性は学習と状況の産物</li>
+      </ul>
+      <div class="reason">💡 理由：援助と攻撃の心理を理解すれば、暴力抑制と協力促進の介入が可能になる。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🏢 集団過程：規範、役割、集団極性化/思考</h3>
+      <ul>
+        <li>意思決定の落とし穴と防止策</li>
+        <li>集団極性化と集団思考のメカニズム</li>
+        <li>多様性と悪魔の代弁者の重要性</li>
+      </ul>
+      <div class="reason">💡 理由：集団は個人より賢明とは限らない。構造化された討議が質を高める。</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🛠️ 応用と実践</h3>
+      <ul>
+        <li>偏見低減、暴力抑制、教育・組織・司法への示唆</li>
+        <li>倫理を踏まえた介入設計</li>
+        <li>理論を現場に翻訳する方法論</li>
+      </ul>
+      <div class="reason">💡 理由：理論の実践応用が社会問題の解決と政策立案に直結する。</div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🔬 例1：ミルグラムの服従実験</h3>
+      <p><strong>背景：</strong>権威者の指示で、被験者は「学習者」に電気ショックを与える役割を担う。実際にはショックは流れないが、被験者の65%が最大電圧まで従った。</p>
+      <p><strong>示唆：</strong>善良な市民でも、権威と段階的コミットメントがあれば非人道的行為に加担しうる。</p>
+      <div class="reason">💡 この例が示すこと：状況の力が個人の道徳判断を上書きする。制度設計と責任の明確化が倫理的行動を守る。</div>
+    </div>
+
+    <div class="example-card">
+      <h3>🏫 例2：ジグソー教室</h3>
+      <p><strong>背景：</strong>人種統合後の学校で偏見が残る中、協同学習（各生徒が異なる情報を持ち、協力しないと課題が完成しない）を導入。</p>
+      <p><strong>示唆：</strong>対等な立場での協同目標が、外集団への共感と偏見低減を促した。</p>
+      <div class="reason">💡 この例が示すこと：接触だけでは不十分。構造化された協働が偏見を減らす実証。</div>
+    </div>
+
+    <div class="example-card">
+      <h3>💰 例3：不十分な正当化と態度変容</h3>
+      <p><strong>背景：</strong>退屈な作業後、「面白かった」と嘘をつくよう依頼。報酬が少ない群ほど、後で本当に面白かったと信じるようになった。</p>
+      <p><strong>示唆：</strong>外的報酬が小さいと、不協和を低減するために内的態度を変える。</p>
+      <div class="reason">💡 この例が示すこと：行動が態度を形作る。小さな一歩の技法や習慣化の理論的根拠。</div>
+    </div>
+
+    <div class="example-card">
+      <h3>🚨 例4：傍観者効果（キティ・ジェノヴィーズ事件）</h3>
+      <p><strong>背景：</strong>多数の目撃者がいたにもかかわらず、誰も助けなかった殺人事件。多元的無知と責任拡散が原因。</p>
+      <p><strong>示唆：</strong>他者の存在が援助行動を抑制する。責任を明確化すれば援助率が上がる。</p>
+      <div class="reason">💡 この例が示すこと：緊急時に行動しない理由を理解すれば、介入設計で援助を促せる。</div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>人は理性的というより合理化する存在だ。</p>
+      <small>💡 重要性：自己正当化と不協和低減が意思決定を歪める核心を突く。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>状況の力はしばしば性格を凌駕する。</p>
+      <small>💡 重要性：行動予測や介入設計で個人差より文脈重視が有効である。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>態度は行動だけでなく、行動によっても形作られる。</p>
+      <small>💡 重要性：小さな一歩の技法や習慣化の理論的根拠となる。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>偏見は知識不足だけでなく所属と動機の産物でもある。</p>
+      <small>💡 重要性：教育に加えて接触条件と制度設計が必要だと示す。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>📝 アクション1：最近の失敗を自己正当化なく記録</h3>
+      <p>最近の失敗や後悔した選択を1つ選び、「自分を守るための言い訳」を書き出す。次に、客観的な原因（状況要因を含む）を3つ挙げる。</p>
+      <div class="meta">
+        <span class="badge">⏱️ 15分</span>
+        <strong>目的：</strong>自己正当化のパターンに気づく<br>
+        <strong>期待効果：</strong>メタ認知が高まり、次回の意思決定で不協和を早期発見できる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>👥 アクション2：他者に同調した場面を3つ書く</h3>
+      <p>過去1週間で「みんながそうしているから」従った場面を3つ挙げ、それぞれ情報的同調か規範的同調かを判定する。</p>
+      <div class="meta">
+        <span class="badge">⏱️ 20分</span>
+        <strong>目的：</strong>同調の自覚と分類<br>
+        <strong>期待効果：</strong>無意識の同調を意識化し、次回は主体的選択ができる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>📺 アクション3：説得に遭遇した広告を分析</h3>
+      <p>今日見た広告を1つ選び、中心ルート（論拠）と周辺ルート（好意・権威・希少性など）の要素を書き出す。どちらが強いか判定する。</p>
+      <div class="meta">
+        <span class="badge">⏱️ 15分</span>
+        <strong>目的：</strong>説得技法の可視化<br>
+        <strong>期待効果：</strong>説得への抵抗力が高まり、衝動的購買を減らせる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🤝 アクション4：偏見を持つ対象との接触を設計</h3>
+      <p>自分が無意識に偏見を持つ集団を1つ挙げ、対等な立場で協同できる機会（ボランティア、勉強会など）を1つ探してメモする。</p>
+      <div class="meta">
+        <span class="badge">⏱️ 30分</span>
+        <strong>目的：</strong>接触仮説の実践準備<br>
+        <strong>期待効果：</strong>偏見低減の第一歩を踏み出せる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🔍 アクション5：帰属の誤りを点検</h3>
+      <p>最近イライラした他者の行動を1つ選び、「性格のせい」と思った理由を書く。次に、状況要因（時間・疲労・制約など）を3つ挙げて再評価する。</p>
+      <div class="meta">
+        <span class="badge">⏱️ 15分</span>
+        <strong>目的：</strong>基本的帰属の誤りの自覚<br>
+        <strong>期待効果：</strong>対人関係の摩擦が減り、共感が高まる
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <h2 style="color: var(--primary); margin-bottom: 1rem;">📚 関連書籍</h2>
+    <div class="book-card">
+      <h4>影響力の武器</h4>
+      <div class="author">ロバート・B・チャルディーニ</div>
+      <div class="relation">同調・説得の周辺ルート手法を体系化し実務に直結。</div>
+    </div>
+    <div class="book-card">
+      <h4>服従の心理</h4>
+      <div class="author">スタンレー・ミルグラム</div>
+      <div class="relation">権威への服従という状況の力を実証し本書の主張を補強。</div>
+    </div>
+    <div class="book-card">
+      <h4>認知的不協和の理論</h4>
+      <div class="author">レオン・フェスティンガー</div>
+      <div class="relation">自己正当化と態度変容の基盤理論を原典で深掘りできる。</div>
+    </div>
+    <div class="book-card">
+      <h4>ルシファー・エフェクト</h4>
+      <div class="author">フィリップ・ジンバルドー</div>
+      <div class="relation">役割と状況が善悪の境界を越えさせる過程を詳細に検討。</div>
+    </div>
+    <div class="book-card">
+      <h4>ファスト&スロー</h4>
+      <div class="author">ダニエル・カーネマン</div>
+      <div class="relation">直観と熟慮の二重過程が説得・不協和と相補的に理解できる。</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabContents.forEach(c => {
+        c.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetId).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
