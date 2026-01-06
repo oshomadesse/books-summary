@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>発想法（KJ法）インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.summary-item span {
+  display: block;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  padding: 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--secondary);
+  font-style: italic;
+}
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.quote-card small {
+  display: block;
+  color: var(--text-light);
+  font-style: normal;
+  font-size: 0.85rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow-x: auto;
+}
+.flow-diagram svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  margin: 0.25rem;
+  font-size: 0.9rem;
+}
+.chapter-section {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-section h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 1.15rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.5rem;
+}
+.chapter-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-section li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-section li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+@media (max-width: 640px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    margin: 0.5rem;
+  }
+  .tab-btn {
+    font-size: 0.8rem;
+    padding: 0.6rem 0.75rem;
+    min-width: 100px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 発想法（KJ法）完全ガイド</h1>
+  <p>混沌から意味を立ち上げる創造的思考技法</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 核心メッセージ</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <span>バラバラの情報から新しい発想や納得可能な結論をどう生むか？</span>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <span>事実を一枚カード化して群化・見出し化・関係図化・文章化するKJ法で、混沌から秩序ある意味構造を抽出する。</span>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <span>現場の具体的事実を素材に手と目を使って構造化すると、先入観や言語差を越えてパターンが露出し、合意しやすい仮説が立つ。</span>
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    <span>フィールドワーク→カード化→無言群化→見出しづくり→関係図→要約文の順で発散と収束を往復し、図解を媒介に議論し合意を形成する。</span>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🎨 KJ法</h3>
+      <ul>
+        <li>多様な事実をカード化</li>
+        <li>群化・命名・図解・文章化で統合</li>
+        <li>創造と合意形成を両立</li>
+        <li>質的統合法の代表格</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 混沌とした情報を構造化し、新しい発見と共通理解を同時に生み出すため</div>
+    </div>
+    
+    <div class="card">
+      <h3>📝 事実カード</h3>
+      <ul>
+        <li>観察・データ・意見を一事実一枚で記述</li>
+        <li>簡潔に書く（長文禁止）</li>
+        <li>素材の等価化を実現</li>
+        <li>バイアス低減に寄与</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 情報を均質化し、権威や言語差の影響を排除して公平な議論を可能にするため</div>
+    </div>
+    
+    <div class="card">
+      <h3>🔗 グルーピング（群化）</h3>
+      <ul>
+        <li>意味の近さで無言でカードをまとめる</li>
+        <li>小集団を形成</li>
+        <li>隠れたパターンを露出</li>
+        <li>分析ではなく統合</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 言語化前の直観を活かし、予想外の関係性を発見するため</div>
+    </div>
+    
+    <div class="card">
+      <h3>🏷️ 見出しづくり</h3>
+      <ul>
+        <li>各群の共通性を象徴する言葉を付与</li>
+        <li>解釈の核を定める</li>
+        <li>短く本質を捉える</li>
+        <li>意味命名のプロセス</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 暗黙の構造を明示的な概念に変換し、議論と記憶を容易にするため</div>
+    </div>
+    
+    <div class="card">
+      <h3>🗺️ 図解化（関係図）</h3>
+      <ul>
+        <li>群同士の関係を矢印や配置で可視化</li>
+        <li>因果・対立・階層を表現</li>
+        <li>全体像を一目で把握</li>
+        <li>焦点を明確化</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 複雑な関係を空間的に整理し、問題の本質と解決の糸口を見えやすくするため</div>
+    </div>
+    
+    <div class="card">
+      <h3>✍️ 文章化（物語化）</h3>
+      <ul>
+        <li>図解の要点を要約文へ展開</li>
+        <li>ストーリーに落とし込む</li>
+        <li>仮説や提案を形成</li>
+        <li>言語化で共有可能に</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 視覚情報を言語に変換し、報告・説得・実行計画に使える形にするため</div>
+    </div>
+    
+    <div class="card">
+      <h3>🔄 発散と収束</h3>
+      <ul>
+        <li>素材収集で広げる（発散）</li>
+        <li>群化〜文章化で絞る（収束）</li>
+        <li>往復運動を繰り返す</li>
+        <li>創造のリズムを作る</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 多様性と焦点化のバランスを取り、創造性と実用性を両立させるため</div>
+    </div>
+    
+    <div class="card">
+      <h3>🌀 混沌の尊重</h3>
+      <ul>
+        <li>初期の無秩序を保持</li>
+        <li>曖昧さを避けない</li>
+        <li>早すぎる解釈を抑制</li>
+        <li>新奇性の源泉</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 既存の枠組みに当てはめず、素材から新しい構造を立ち上げるため</div>
+    </div>
+    
+    <div class="card">
+      <h3>🔬 フィールドワーク</h3>
+      <ul>
+        <li>現場に入り一次情報を採集</li>
+        <li>抽象論に偏らない</li>
+        <li>発想の土台を作る</li>
+        <li>事実に仕える姿勢</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 机上の空論を避け、現実に根ざした発想と検証を可能にするため</div>
+    </div>
+    
+    <div class="card">
+      <h3>💭 直観の合理化</h3>
+      <ul>
+        <li>手を動かす操作で暗黙知を外化</li>
+        <li>検討・共有可能にする</li>
+        <li>直観を検証する</li>
+        <li>チームで扱える知に変換</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 個人の感覚を客観的プロセスに乗せ、再現性と説明責任を確保するため</div>
+    </div>
+    
+    <div class="card">
+      <h3>🤝 合意形成</h3>
+      <ul>
+        <li>カードと図解を媒介に議論</li>
+        <li>複数人で意味と方針を共有</li>
+        <li>可視化が納得を促進</li>
+        <li>共同操作で一体感</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 視覚的共通基盤が対立を減らし、建設的な合意を加速するため</div>
+    </div>
+  </div>
+  
+  <div class="flow-diagram">
+    <h3 style="text-align:center; color: var(--primary); margin-bottom: 1rem;">📊 概念間の関係フロー</h3>
+    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+        </linearGradient>
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <polygon points="0 0, 10 3, 0 6" fill="#764ba2" />
+        </marker>
+      </defs>
+      
+      <rect x="50" y="50" width="140" height="60" rx="8" fill="url(#grad1)" opacity="0.9"/>
+      <text x="120" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">フィールドワーク</text>
+      
+      <rect x="230" y="50" width="120" height="60" rx="8" fill="url(#grad1)" opacity="0.9"/>
+      <text x="290" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">事実カード</text>
+      
+      <rect x="390" y="50" width="100" height="60" rx="8" fill="url(#grad1)" opacity="0.9"/>
+      <text x="440" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">群化</text>
+      
+      <rect x="530" y="50" width="100" height="60" rx="8" fill="url(#grad1)" opacity="0.9"/>
+      <text x="580" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">見出し</text>
+      
+      <rect x="670" y="50" width="100" height="60" rx="8" fill="url(#grad1)" opacity="0.9"/>
+      <text x="720" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">図解</text>
+      
+      <rect x="320" y="180" width="120" height="60" rx="8" fill="url(#grad1)" opacity="0.9"/>
+      <text x="380" y="215" text-anchor="middle" fill="white" font-size="14" font-weight="bold">文章化</text>
+      
+      <rect x="500" y="180" width="140" height="60" rx="8" fill="url(#grad1)" opacity="0.9"/>
+      <text x="570" y="215" text-anchor="middle" fill="white" font-size="14" font-weight="bold">行動設計</text>
+      
+      <rect x="50" y="310" width="140" height="60" rx="8" fill="#f093fb" opacity="0.8"/>
+      <text x="120" y="345" text-anchor="middle" fill="white" font-size="14" font-weight="bold">混沌の尊重</text>
+      
+      <rect x="230" y="310" width="160" height="60" rx="8" fill="#f093fb" opacity="0.8"/>
+      <text x="310" y="335" text-anchor="middle" fill="white" font-size="13" font-weight="bold">新規パターン</text>
+      <text x="310" y="355" text-anchor="middle" fill="white" font-size="13" font-weight="bold">発見↑</text>
+      
+      <rect x="430" y="310" width="160" height="60" rx="8" fill="#f093fb" opacity="0.8"/>
+      <text x="510" y="335" text-anchor="middle" fill="white" font-size="13" font-weight="bold">発散⇄収束</text>
+      <text x="510" y="355" text-anchor="middle" fill="white" font-size="13" font-weight="bold">フィードバック</text>
+      
+      <rect x="630" y="310" width="140" height="60" rx="8" fill="#f093fb" opacity="0.8"/>
+      <text x="700" y="335" text-anchor="middle" fill="white" font-size="13" font-weight="bold">合意形成</text>
+      <text x="700" y="355" text-anchor="middle" fill="white" font-size="13" font-weight="bold">効率↑</text>
+      
+      <line x1="190" y1="80" x2="225" y2="80" stroke="#764ba2" stroke-width="3" marker-end="url(#arrowhead)"/>
+      <line x1="350" y1="80" x2="385" y2="80" stroke="#764ba2" stroke-width="3" marker-end="url(#arrowhead)"/>
+      <line x1="490" y1="80" x2="525" y2="80" stroke="#764ba2" stroke-width="3" marker-end="url(#arrowhead)"/>
+      <line x1="630" y1="80" x2="665" y2="80" stroke="#764ba2" stroke-width="3" marker-end="url(#arrowhead)"/>
+      <line x1="720" y1="110" x2="720" y2="140" stroke="#764ba2" stroke-width="3"/>
+      <line x1="720" y1="140" x2="440" y2="140" stroke="#764ba2" stroke-width="3"/>
+      <line x1="440" y1="140" x2="440" y2="175" stroke="#764ba2" stroke-width="3" marker-end="url(#arrowhead)"/>
+      <line x1="380" y1="180" x2="380" y2="160" stroke="#764ba2" stroke-width="3"/>
+      <line x1="380" y1="160" x2="495" y2="160" stroke="#764ba2" stroke-width="3" marker-end="url(#arrowhead)"/>
+      
+      <line x1="120" y1="310" x2="120" y2="290" stroke="#f093fb" stroke-width="2"/>
+      <line x1="120" y1="290" x2="310" y2="290" stroke="#f093fb" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="510" y1="310" x2="510" y2="270" stroke="#f093fb" stroke-width="2"/>
+      <line x1="510" y1="270" x2="440" y2="270" stroke="#f093fb" stroke-width="2"/>
+      <line x1="440" y1="270" x2="440" y2="240" stroke="#f093fb" stroke-width="2" marker-end="url(#arrowhead)"/>
+    </svg>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-section">
+    <h3>第1章: 問題提起</h3>
+    <ul>
+      <li>既存の論理展開だけでは新しい発想が生まれにくい</li>
+      <li>現場の壁: 合意形成の困難</li>
+      <li>多様な情報を統合する方法の必要性</li>
+      <li>創造性と実用性の両立が課題</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 従来の演繹的・分析的手法では複雑な現実に対応できず、新しい統合的アプローチが求められるため</div>
+  </div>
+  
+  <div class="chapter-section">
+    <h3>第2章: 背景と思想</h3>
+    <ul>
+      <li>文化人類学・野外科学の方法論を導入</li>
+      <li>事実尊重の原則</li>
+      <li>現場主義の意義</li>
+      <li>帰納的アプローチの重要性</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 理論先行ではなく現場の事実から出発することで、生きた知識と実践可能な解決策が生まれるため</div>
+  </div>
+  
+  <div class="chapter-section">
+    <h3>第3章: KJ法の核心</h3>
+    <ul>
+      <li>事実カードの作り方</li>
+      <li>発散と収束の基本原理</li>
+      <li>一事実一枚の原則</li>
+      <li>混沌を保持する態度</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> カード化と発散収束のサイクルが、個人の思考の枠を超えた新しい構造の発見を可能にするため</div>
+  </div>
+  
+  <div class="chapter-section">
+    <h3>第4章: 手順詳細</h3>
+    <ul>
+      <li>無言群化のコツと注意点</li>
+      <li>見出しづくりの技法</li>
+      <li>関係図の描き方</li>
+      <li>文章化のプロセス</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 各ステップの具体的技法を習得することで、誰でも再現可能な形で創造的思考を実践できるため</div>
+  </div>
+  
+  <div class="chapter-section">
+    <h3>第5章: 多人数適用</h3>
+    <ul>
+      <li>合議・ワークショップでの進め方</li>
+      <li>役割分担の設計</li>
+      <li>ルール設定の重要性</li>
+      <li>ファシリテーションの技術</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 集団での実施により多様な視点が統合され、個人では到達できない深い洞察と強い合意が得られるため</div>
+  </div>
+  
+  <div class="chapter-section">
+    <h3>第6章: 可視化の効用</h3>
+    <ul>
+      <li>図解による焦点化のメカニズム</li>
+      <li>仮説形成プロセス</li>
+      <li>合意形成の加速</li>
+      <li>視覚的共通基盤の力</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 視覚化が言語の壁を越え、直観と論理を橋渡しして、迅速で質の高い意思決定を支援するため</div>
+  </div>
+  
+  <div class="chapter-section">
+    <h3>第7章: 事例と応用</h3>
+    <ul>
+      <li>調査研究への適用</li>
+      <li>商品企画での活用</li>
+      <li>組織課題の解決</li>
+      <li>多様な分野での成功例</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 実際の成功事例が手法の有効性を実証し、読者が自分の文脈に応用するイメージを持てるため</div>
+  </div>
+  
+  <div class="chapter-section">
+    <h3>第8章: 心得と落とし穴</h3>
+    <ul>
+      <li>早期結論の危険性</li>
+      <li>言葉の独り歩きを避ける</li>
+      <li>権威勾配の罠</li>
+      <li>継続的な振り返りの重要性</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> よくある失敗パターンを知ることで、手法の形骸化を防ぎ、本質的な効果を持続的に引き出せるため</div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🏭 事例1: 製造業の品質改善プロジェクト</h3>
+    <ul>
+      <li><strong>背景:</strong> 不良品率が高く原因が特定できない状況</li>
+      <li><strong>実践:</strong> 現場作業員50名が観察事実を200枚カード化</li>
+      <li><strong>群化:</strong> 無言で15群に整理、「設備老朽化」「手順の曖昧さ」「コミュニケーション不足」等の見出しが出現</li>
+      <li><strong>図解:</strong> 関係図で「手順曖昧→個人判断→ばらつき→不良」の因果連鎖を可視化</li>
+      <li><strong>結果:</strong> 標準作業手順書の整備と定期ミーティング導入で不良率30%削減</li>
+    </ul>
+    <div class="reason"><strong>この例が示すこと:</strong> 現場の暗黙知をカード化することで、管理者が気づかなかった構造的問題が露出し、的確な対策につながる</div>
+  </div>
+  
+  <div class="card">
+    <h3>🛍️ 事例2: 新商品コンセプト開発</h3>
+    <ul>
+      <li><strong>背景:</strong> 若年層向け飲料の企画で方向性が定まらない</li>
+      <li><strong>実践:</strong> ユーザーインタビュー・SNS分析・競合調査を100枚カード化</li>
+      <li><strong>群化:</strong> 「健康志向」「SNS映え」「時短ニーズ」「個性表現」等8群に収束</li>
+      <li><strong>図解:</strong> 「健康×SNS映え」の交点に未開拓ゾーンを発見</li>
+      <li><strong>結果:</strong> カラフルで栄養機能表示のあるスムージーシリーズを開発、初年度目標120%達成</li>
+    </ul>
+    <div class="reason"><strong>この例が示すこと:</strong> 多様な情報源を統合し図解で可視化すると、単独では見えない市場機会（ホワイトスペース）が発見できる</div>
+  </div>
+  
+  <div class="card">
+    <h3>🏫 事例3: 教育機関のカリキュラム改革</h3>
+    <ul>
+      <li><strong>背景:</strong> 教員間で教育方針の認識がバラバラで改革が進まない</li>
+      <li><strong>実践:</strong> 全教員が「理想の卒業生像」「現状の課題」を各自10枚ずつカード化</li>
+      <li><strong>群化:</strong> 合同ワークショップで無言群化、「批判的思考力」「協働力」「自律性」等の共通テーマが浮上</li>
+      <li><strong>図解:</strong> 3つの柱と各科目の関係を図示し、重複・欠落を明確化</li>
+      <li><strong>結果:</strong> 全員が納得する新カリキュラムを3ヶ月で策定、実施後の学生満足度15ポイント向上</li>
+    </ul>
+    <div class="reason"><strong>この例が示すこと:</strong> 立場や専門が異なるメンバーでも、カードと図解を媒介にすることで共通言語が生まれ、短期間で強い合意が形成される</div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>「混沌をして語らしめよ。」</p>
+    <small><strong>重要性:</strong> 曖昧さを保持して素材に語らせる態度が新しい構造の発見につながる。早期の枠組み適用は創造性を殺す。</small>
+  </div>
+  
+  <div class="quote-card">
+    <p>「事実に仕えよ。仮説は事実から生まれ、事実に照らして鍛えられる。」</p>
+    <small><strong>重要性:</strong> 現場データ先行の原則が恣意的結論を避け、納得可能性を高める。理論先行は現実との乖離を生む。</small>
+  </div>
+  
+  <div class="quote-card">
+    <p>「考えるとは手と目を動かすことである。」</p>
+    <small><strong>重要性:</strong> 操作を通じた外化が直観を検証可能にし、チームで共有できる知に変える。頭の中だけでは限界がある。</small>
+  </div>
+  
+  <div class="quote-card">
+    <p>「群化は分析ではなく統合である。」</p>
+    <small><strong>重要性:</strong> 部分を切り分けるのではなく関係を結び直すことがKJ法の核心であると示す。分解ではなく再構成が創造を生む。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>📝 アクション1: 関心事を20枚カード化する</h4>
+    <p><strong>目的:</strong> 頭の中の漠然とした考えを外化し、素材として扱える状態にする</p>
+    <p><strong>方法:</strong> 今抱えている課題や気になることを、一つの事実・意見につき一枚のカード（付箋でも可）に書き出す</p>
+    <p><strong>期待効果:</strong> 思考の可視化により、自分が何に関心を持っているか客観的に把握でき、次のステップへの準備が整う</p>
+    <p><strong>所要時間:</strong> 15分</p>
+  </div>
+  
+  <div class="action-card">
+    <h4>🔗 アクション2: 無言で4群にまとめ命名する</h4>
+    <p><strong>目的:</strong> カードの関係性を直観的に把握し、隠れたパターンを発見する</p>
+    <p><strong>方法:</strong> 作成した20枚のカードを机に広げ、言葉で考えず手の感覚で似たものを4つのグループにまとめ、各群に短い見出しを付ける</p>
+    <p><strong>期待効果:</strong> 言語化前の直観が働き、予想外の共通点や新しい視点が見えてくる。思考の整理が進む</p>
+    <p><strong>所要時間:</strong> 10分</p>
+  </div>
+  
+  <div class="action-card">
+    <h4>🗺️ アクション3: 群の関係図を手描きする</h4>
+    <p><strong>目的:</strong> 群同士の関係を空間的に整理し、全体像と優先順位を明確にする</p>
+    <p><strong>方法:</strong> 紙に4つの群を配置し、矢印や線で因果関係・対立・補完などの関係を描く。中心に置くべき群、周辺の群を考える</p>
+    <p><strong>期待効果:</strong> 問題の構造が一目で分かり、どこから手を付けるべきか、何が本質かが見えてくる。次のアクションが明確になる</p>
+    <p><strong>所要時間:</strong> 15分</p>
+  </div>
+  
+  <div style="background: white; padding: 1.5rem; border-radius: 10px; margin-top: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">📚 関連書籍</h3>
+    <div style="display: grid; gap: 1rem;">
+      <div style="border-left: 3px solid var(--accent); padding-left: 1rem;">
+        <strong>続・発想法</strong> / 川喜田二郎<br>
+        <small style="color: var(--text-light);">KJ法の応用・深化と具体事例を補強する続編。</small>
+      </div>
+      <div style="border-left: 3px solid var(--accent); padding-left: 1rem;">
+        <strong>KJ法—渾沌をして語らしめる</strong> / 川喜田二郎<br>
+        <small style="color: var(--text-light);">KJ法の思想と実践を体系化した解説。</small>
+      </div>
+      <div style="border-left: 3px solid var(--accent); padding-left: 1rem;">
+        <strong>アイデアのつくり方</strong> / ジェームス・W・ヤング<br>
+        <small style="color: var(--text-light);">発想プロセスの基本原則がKJ法の発散・熟成と響き合う。</small>
+      </div>
+      <div style="border-left: 3px solid var(--accent); padding-left: 1rem;">
+        <strong>ラテラル・シンキング</strong> / エドワード・デ・ボノ<br>
+        <small style="color: var(--text-light);">定型思考を外す側面発想が群化前の発散や再構成に有効。</small>
+      </div>
+      <div style="border-left: 3px solid var(--accent); padding-left: 1rem;">
+        <strong>デザイン思考が世界を変える</strong> / ティム・ブラウン<br>
+        <small style="color: var(--text-light);">人間中心・可視化・反復という枠組みがKJ法の実践と親和的。</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetTab = button.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      button.classList.add('active');
+      button.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
