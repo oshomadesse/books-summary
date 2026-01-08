@@ -1,738 +1,762 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>国富論 - インフォグラフィック</title>
-    <!-- カラーパレット: プライマリー #2563eb, セカンダリー #64748b, アクセント #f59e0b -->
-    <style>
-        :root {
-            --primary: #2563eb;
-            --secondary: #64748b;
-            --accent: #f59e0b;
-            --bg-light: #f8fafc;
-            --text-dark: #1e293b;
-            --border: #e2e8f0;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background: var(--bg-light);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-        }
-        
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .header .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        .summary-block {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-left: 5px solid var(--accent);
-        }
-        
-        .summary-block h2 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-        
-        .summary-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-        
-        .summary-item {
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid var(--border);
-        }
-        
-        .summary-item.question {
-            background: linear-gradient(135deg, #eff6ff, #dbeafe);
-            border-color: var(--primary);
-        }
-        
-        .summary-item.answer {
-            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-            border-color: #22c55e;
-        }
-        
-        .summary-item.why {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-color: var(--accent);
-        }
-        
-        .summary-item.how {
-            background: linear-gradient(135deg, #fdf2f8, #fce7f3);
-            border-color: #ec4899;
-        }
-        
-        .summary-item h3 {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--border);
-        }
-        
-        .tab-button {
-            background: none;
-            border: none;
-            padding: 12px 20px;
-            cursor: pointer;
-            border-radius: 8px 8px 0 0;
-            font-size: 1rem;
-            transition: all 0.3s;
-            color: var(--secondary);
-        }
-        
-        .tab-button.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            border-top: 4px solid var(--primary);
-        }
-        
-        .card h3 {
-            color: var(--primary);
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .card ul {
-            list-style: none;
-        }
-        
-        .card li {
-            margin-bottom: 8px;
-            padding-left: 20px;
-            position: relative;
-        }
-        
-        .card li::before {
-            content: "▶";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-        }
-        
-        .concept-card {
-            border-top-color: var(--accent);
-        }
-        
-        .concept-card .tag {
-            background: var(--accent);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            margin-left: auto;
-        }
-        
-        .flow-diagram {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        .flow-diagram h3 {
-            text-align: center;
-            color: var(--primary);
-            margin-bottom: 30px;
-            font-size: 1.4rem;
-        }
-        
-        .flow-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .flow-step {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-            border-radius: 10px;
-            border-left: 4px solid var(--primary);
-        }
-        
-        .flow-step .step-number {
-            background: var(--primary);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-        
-        .flow-arrow {
-            text-align: center;
-            color: var(--accent);
-            font-size: 1.5rem;
-            margin: 10px 0;
-        }
-        
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        
-        .metric-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            border-top: 4px solid var(--accent);
-        }
-        
-        .metric-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-        
-        .metric-label {
-            color: var(--secondary);
-            font-size: 0.9rem;
-        }
-        
-        .quote-section {
-            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-            border-radius: 15px;
-            padding: 30px;
-            margin: 30px 0;
-            border-left: 5px solid var(--primary);
-        }
-        
-        .quote {
-            font-style: italic;
-            font-size: 1.1rem;
-            color: var(--text-dark);
-            margin-bottom: 15px;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            position: relative;
-        }
-        
-        .quote::before {
-            content: """;
-            font-size: 3rem;
-            color: var(--primary);
-            position: absolute;
-            top: -10px;
-            left: 10px;
-        }
-        
-        .quote-importance {
-            font-size: 0.9rem;
-            color: var(--secondary);
-            margin-top: 10px;
-        }
-        
-        .action-items {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 30px 0;
-        }
-        
-        .action-items h3 {
-            color: var(--text-dark);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .action-list {
-            display: grid;
-            gap: 10px;
-        }
-        
-        .action-item {
-            background: white;
-            padding: 12px 15px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .action-item::before {
-            content: "✓";
-            background: var(--accent);
-            color: white;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            flex-shrink: 0;
-        }
-        
-        .related-books {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .book-card {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            border-left: 4px solid var(--secondary);
-        }
-        
-        .book-title {
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-        
-        .book-author {
-            color: var(--secondary);
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-        }
-        
-        .book-relation {
-            font-size: 0.85rem;
-            color: var(--text-dark);
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .tabs {
-                flex-direction: column;
-            }
-            
-            .tab-button {
-                border-radius: 8px;
-                margin-bottom: 5px;
-            }
-            
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .flow-steps {
-                gap: 15px;
-            }
-            
-            .flow-step {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .summary-grid {
-                gap: 15px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国富論 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #2c5aa0, セカンダリー #f4a261, アクセント #e76f51 -->
+<style>
+:root {
+  --primary: #2c5aa0;
+  --secondary: #f4a261;
+  --accent: #e76f51;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333;
+  --text-light: #666;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), #1e3a6f);
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.25rem;
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+}
+.summary-block h2 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 0.75rem;
+}
+.summary-item strong {
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #ddd;
+  margin: 1rem 1rem 0;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.875rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f9f9f9;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: #f0f4ff;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.card h3 {
+  font-size: 1.05rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 1.5rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.badge {
+  display: inline-block;
+  background: var(--secondary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f0f4ff, #e8f0ff);
+  border-left: 4px solid var(--primary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff5e6, #ffe8cc);
+  border-left: 4px solid var(--accent);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+.action-card h4 {
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.visual-box {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.flow-item {
+  background: linear-gradient(90deg, var(--primary), #4a7bc8);
+  color: white;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-align: center;
+  position: relative;
+}
+.flow-item:after {
+  content: "↓";
+  display: block;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 0.25rem;
+}
+.flow-item:last-child:after {
+  content: "";
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: #f9f9f9;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+.metric-label {
+  font-size: 0.85rem;
+  color: var(--text);
+  font-weight: 600;
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 0.75rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--secondary), var(--accent));
+  border-radius: 4px;
+  transition: width 1s ease;
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+}
+.chapter-card h3 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.chapter-card .reason {
+  background: #f0f4ff;
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.reason strong {
+  color: var(--accent);
+}
+.book-card {
+  background: white;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  border-left: 3px solid var(--secondary);
+}
+.book-card h4 {
+  font-size: 0.95rem;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+.book-card .author {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+@media (min-width: 768px) {
+  .tabs {
+    margin: 1.5rem auto 0;
+    max-width: 1200px;
+  }
+  .tab-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+  .summary-block {
+    max-width: 1200px;
+    margin: 1.5rem auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>📚 国富論</h1>
-            <div class="subtitle">アダム・スミス - 市場経済の原理と国家の役割</div>
-        </header>
 
-        <section class="summary-block">
-            <h2>🎯 エグゼクティブ・サマリー</h2>
-            <div class="summary-grid">
-                <div class="summary-item question">
-                    <h3>❓ 問い</h3>
-                    <p>国の富は何から生まれ、どうすれば持続的に増えるのか？</p>
-                </div>
-                <div class="summary-item answer">
-                    <h3>💡 答え</h3>
-                    <p>分業と資本蓄積が生産力を押し上げ、競争的市場での自利追求が価格シグナルを通じて効率的配分を生む。国家は司法・防衛・公共財に注力し、特権や保護貿易などの歪みを最小化するべきである。</p>
-                </div>
-                <div class="summary-item why">
-                    <h3>🔍 Why（なぜそうなのか）</h3>
-                    <p>分業は熟練の深化・時間節約・機械化を促し、資本蓄積は労働の装備を高める。競争は市場価格を自然価格へ収斂させ、資源を高価値用途へ移す。一方、関税・独占は競争を阻害し、価格歪みと非効率をもたらす。</p>
-                </div>
-                <div class="summary-item how">
-                    <h3>⚙️ How（そのためには）</h3>
-                    <p>関税・独占特権の撤廃と自由貿易の推進、法の支配と契約執行の強化、教育・インフラ等の公共事業の整備、簡素で公平な課税を実施する。</p>
-                </div>
-            </div>
-        </section>
+<header>
+  <h1>📚 国富論</h1>
+  <p>アダム・スミス - 市場と国家の役割を問う古典</p>
+</header>
 
-        <div class="tabs">
-            <button class="tab-button active" onclick="showTab('concepts')" aria-label="主要概念タブ">🧠 主要概念</button>
-            <button class="tab-button" onclick="showTab('structure')" aria-label="構造・論理タブ">🏗️ 構造・論理</button>
-            <button class="tab-button" onclick="showTab('quotes')" aria-label="重要引用タブ">💬 重要引用</button>
-            <button class="tab-button" onclick="showTab('actions')" aria-label="アクションタブ">✅ アクション</button>
-            <button class="tab-button" onclick="showTab('books')" aria-label="関連書籍タブ">📖 関連書籍</button>
-        </div>
+<div class="summary-block">
+  <h2>📌 要約 - 問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>国はどうすれば持続的に富むのか</p>
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    <p>競争的市場を通じて分業と資本蓄積を促し、自由貿易と公正な制度基盤を整備する</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>分業は市場の範囲によって深化し、技能向上・時間短縮・機械化で生産性を飛躍させる。自利に基づく交換は見えざる手により価格シグナルを通じて資源を効率配分する。関税・独占・行商統制など重商主義的政策は価格を歪め、労働と資本を不生産的用途へ誘導する。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（実現方法）</strong>
+    <p>司法と治安の確立、公共事業と基礎教育の整備、簡素・公平・確実・便利の税制、独占特権と過度の関税の撤廃、交通・貿易の自由化で市場範囲を拡大する</p>
+  </div>
+</div>
 
-        <div id="concepts" class="tab-content active">
-            <div class="cards-grid">
-                <div class="card concept-card">
-                    <h3>⚙️ 分業 <span class="tag">生産性の源</span></h3>
-                    <ul>
-                        <li>作業を工程ごとに専門化</li>
-                        <li>各人が特定タスクに集中</li>
-                        <li>生産性が飛躍的に向上</li>
-                        <li>市場の広さによって深さが決まる</li>
-                    </ul>
-                </div>
-                <div class="card concept-card">
-                    <h3>🌐 市場の広さ <span class="tag">分業の限界</span></h3>
-                    <ul>
-                        <li>取引相手や需要の規模</li>
-                        <li>分業の可能性を制約</li>
-                        <li>市場拡大で分業深化</li>
-                        <li>貿易・インフラが鍵</li>
-                    </ul>
-                </div>
-                <div class="card concept-card">
-                    <h3>💰 自然価格と市場価格 <span class="tag">価格の錨</span></h3>
-                    <ul>
-                        <li>自然価格：長期均衡価格</li>
-                        <li>市場価格：短期変動価格</li>
-                        <li>賃金・利潤・地代を十分に賄う</li>
-                        <li>需給変動で上下する</li>
-                    </ul>
-                </div>
-                <div class="card concept-card">
-                    <h3>👁️ 見えざる手 <span class="tag">自生的調整</span></h3>
-                    <ul>
-                        <li>自利の追求が社会利益に</li>
-                        <li>競争的環境が前提</li>
-                        <li>意図せざる結果</li>
-                        <li>市場の調整機能</li>
-                    </ul>
-                </div>
-                <div class="card concept-card">
-                    <h3>🏭 資本と資本蓄積 <span class="tag">装備の強化</span></h3>
-                    <ul>
-                        <li>将来の生産のための留保</li>
-                        <li>機械化・分業深化を可能に</li>
-                        <li>生産性を高める</li>
-                        <li>投資と成長の源泉</li>
-                    </ul>
-                </div>
-                <div class="card concept-card">
-                    <h3>💵 賃金・利潤・地代 <span class="tag">分配の三本柱</span></h3>
-                    <ul>
-                        <li>所得分配の三大要素</li>
-                        <li>価格の構成要素</li>
-                        <li>自然価格を規定</li>
-                        <li>経済発展で変化</li>
-                    </ul>
-                </div>
-            </div>
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🔑 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📖 各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💡 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">📜 重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">🎯 今日のアクション</button>
+</div>
 
-            <div class="flow-diagram">
-                <h3>🔄 経済成長の循環メカニズム</h3>
-                <div class="flow-steps">
-                    <div class="flow-step">
-                        <div class="step-number">1</div>
-                        <div>市場の広さ → 分業の深化</div>
-                    </div>
-                    <div class="flow-arrow">⬇️</div>
-                    <div class="flow-step">
-                        <div class="step-number">2</div>
-                        <div>熟練・時間節約・機械化 → 生産性向上</div>
-                    </div>
-                    <div class="flow-arrow">⬇️</div>
-                    <div class="flow-step">
-                        <div class="step-number">3</div>
-                        <div>余剰拡大 → 交換の活発化</div>
-                    </div>
-                    <div class="flow-arrow">⬇️</div>
-                    <div class="flow-step">
-                        <div class="step-number">4</div>
-                        <div>市場の広さ拡大（正の循環）</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="structure" class="tab-content">
-            <div class="cards-grid">
-                <div class="card">
-                    <h3>📖 第I編 - 生産力の原因</h3>
-                    <ul>
-                        <li>釘工場の例で分業効果を実証</li>
-                        <li>賃金・利潤・地代が価格構成</li>
-                        <li>自然価格と市場価格の区別</li>
-                        <li>競争による価格調整機能</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>🏦 第II編 - ストック（資本）</h3>
-                    <ul>
-                        <li>資本の循環・蓄積・利子</li>
-                        <li>貨幣と実物資本の違い</li>
-                        <li>貯蓄が投資と成長を支援</li>
-                        <li>生産的労働と非生産的労働</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>🏛️ 第III編 - 富の進展の歴史</h3>
-                    <ul>
-                        <li>都市と農村の発展順序</li>
-                        <li>制度と政策の長期影響</li>
-                        <li>歴史的発展パターン分析</li>
-                        <li>自然的進歩と人為的阻害</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>⚖️ 第IV編 - 経済体系の批判</h3>
-                    <ul>
-                        <li>重商主義と重農主義の比較</li>
-                        <li>保護貿易・独占特権の弊害</li>
-                        <li>自然自由の体制を擁護</li>
-                        <li>絶対優位と自由貿易論</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>🏛️ 第V編 - 主権者の歳入</h3>
-                    <ul>
-                        <li>政府の正当な職務範囲</li>
-                        <li>防衛・司法・公共事業・教育</li>
-                        <li>課税原則（公平・確実・便宜・最小徴税費）</li>
-                        <li>制度設計の実務的指針</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-value">5</div>
-                    <div class="metric-label">編構成</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">10</div>
-                    <div class="metric-label">主要概念</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">3</div>
-                    <div class="metric-label">政府の役割</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-value">4</div>
-                    <div class="metric-label">課税原則</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="quotes" class="tab-content">
-            <div class="quote-section">
-                <div class="quote">
-                "It is not from the benevolence of the butcher, the brewer, or the baker that we expect our dinner, but from their regard to their own interest."
-                <div class="quote-importance">💡 自利が交換を動機づけ、結果として相互利益と供給を生む市場の根本原理を示す。</div>
-                </div>
-                
-                <div class="quote">
-                "The greatest improvements in the productive powers of labour… have been the effects of the division of labour."
-                <div class="quote-importance">💡 成長の一次因が分業であることを明確化し、政策の焦点を生産性に据える根拠となる。</div>
-                </div>
-                
-                <div class="quote">
-                "The division of labour is limited by the extent of the market."
-                <div class="quote-importance">💡 市場拡大（貿易・インフラ）が分業深化と生産性向上の鍵である因果連鎖を端的に表す。</div>
-                </div>
-                
-                <div class="quote">
-                "He intends only his own gain… and he is in this, as in many other cases, led by an invisible hand…"
-                <div class="quote-importance">💡 競争的環境で自利が社会的利益へと転化する仕組みの核心を示す概念的支点。</div>
-                </div>
-                
-                <div class="quote">
-                "Little else is requisite to carry a state to the highest degree of opulence… but peace, easy taxes, and a tolerable administration of justice."
-                <div class="quote-importance">💡 繁栄の政策要件を簡潔に示し、限定政府・法の支配・簡素課税の重要性を凝縮する。</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="actions" class="tab-content">
-            <div class="action-items">
-                <h3>🎯 今日できるアクション（15-30分）</h3>
-                <div class="action-list">
-                    <div class="action-item">自分の仕事の分業を洗い出す</div>
-                    <div class="action-item">近所のスーパーの価格要因を列挙する</div>
-                    <div class="action-item">家庭の購買で比較可能な品を3つ選ぶ</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="books" class="tab-content">
-            <div class="related-books">
-                <div class="book-card">
-                    <div class="book-title">経済学および課税の原理</div>
-                    <div class="book-author">デヴィッド・リカード</div>
-                    <div class="book-relation">古典派を発展させ、分配理論と貿易理論を精緻化。</div>
-                </div>
-                <div class="book-card">
-                    <div class="book-title">資本論</div>
-                    <div class="book-author">カール・マルクス</div>
-                    <div class="book-relation">古典派の価値・分配論を批判的に継承し体系化。</div>
-                </div>
-                <div class="book-card">
-                    <div class="book-title">資本主義と自由</div>
-                    <div class="book-author">ミルトン・フリードマン</div>
-                    <div class="book-relation">限定政府と市場の役割を20世紀の文脈で再定式化。</div>
-                </div>
-                <div class="book-card">
-                    <div class="book-title">自由の条件</div>
-                    <div class="book-author">フリードリヒ・ハイエク</div>
-                    <div class="book-relation">自生的秩序と市場の情報機能を理論化。</div>
-                </div>
-                <div class="book-card">
-                    <div class="book-title">大転換</div>
-                    <div class="book-author">カール・ポランニー</div>
-                    <div class="book-relation">自己調整的市場観への歴史的・制度的批判を提示。</div>
-                </div>
-                <div class="book-card">
-                    <div class="book-title">雇用・利子および貨幣の一般理論</div>
-                    <div class="book-author">ジョン・メイナード・ケインズ</div>
-                    <div class="book-relation">古典派的均衡観に対するマクロ経済学的対抗軸。</div>
-                </div>
-                <div class="book-card">
-                    <div class="book-title">21世紀の資本</div>
-                    <div class="book-author">トマ・ピケティ</div>
-                    <div class="book-relation">資本蓄積と不平等の長期データ分析で古典的論点を再検討。</div>
-                </div>
-            </div>
-        </div>
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🔧 分業</h3>
+      <ul>
+        <li><strong>定義:</strong> 生産工程を専門化して分割し、技能熟練・段取り短縮・機械化を可能にする</li>
+        <li><strong>効果:</strong> 生産性を爆発的に高める</li>
+        <li><strong>制約:</strong> 市場の広がりがその深さの上限を決める</li>
+        <li><strong>理由:</strong> 専門化により習熟が進み、無駄な切替時間が減り、機械導入の余地が生まれるため</li>
+      </ul>
+      <span class="badge">専門化が生産性を爆発</span>
     </div>
+    <div class="card">
+      <h3>🌍 市場の範囲</h3>
+      <ul>
+        <li><strong>定義:</strong> 地理的・制度的に到達可能な取引相手の広がり</li>
+        <li><strong>効果:</strong> 市場が広いほど分業が深化し、規模の経済が実現</li>
+        <li><strong>要因:</strong> 交通インフラ、貿易制度、法の支配</li>
+        <li><strong>理由:</strong> 販路が広がれば専門化した製品でも十分な需要が確保でき、投資回収が可能になるため</li>
+      </ul>
+      <span class="badge">広い市場が分業を深める</span>
+    </div>
+    <div class="card">
+      <h3>🤝 自利と見えざる手</h3>
+      <ul>
+        <li><strong>定義:</strong> 各人が自己の利益を追求する行動が競争と価格メカニズムを通じて社会的利益に結実</li>
+        <li><strong>メカニズム:</strong> 価格シグナルが需給を調整し、資源を効率配分</li>
+        <li><strong>前提:</strong> 競争的市場と法の支配</li>
+        <li><strong>理由:</strong> 利益を求める行動が競争下では消費者ニーズに応える方向へ誘導されるため</li>
+      </ul>
+      <span class="badge">自利が公益を導く</span>
+    </div>
+    <div class="card">
+      <h3>💰 自然価格と市場価格</h3>
+      <ul>
+        <li><strong>自然価格:</strong> 賃金・利潤・地代をカバーする長期均衡価格</li>
+        <li><strong>市場価格:</strong> 短期的需給で乖離するが競争により自然価格へ回帰</li>
+        <li><strong>調整:</strong> 超過利潤は新規参入を招き、損失は退出を促す</li>
+        <li><strong>理由:</strong> 競争が価格を生産コストに収束させ、資源配分を最適化するため</li>
+      </ul>
+      <span class="badge">短期の揺れは長期均衡へ戻る</span>
+    </div>
+    <div class="card">
+      <h3>💼 資本の蓄積</h3>
+      <ul>
+        <li><strong>固定資本:</strong> 機械・建物など長期使用される資本</li>
+        <li><strong>流動資本:</strong> 在庫・原材料など短期で回転する資本</li>
+        <li><strong>源泉:</strong> 貯蓄が投資に回る</li>
+        <li><strong>理由:</strong> 資本が労働を補完し、一人当たり生産量を増やすため成長の鍵となる</li>
+      </ul>
+      <span class="badge">貯蓄が機械化を促す</span>
+    </div>
+    <div class="card">
+      <h3>📊 賃金・利潤・地代</h3>
+      <ul>
+        <li><strong>賃金:</strong> 労働への報酬</li>
+        <li><strong>利潤:</strong> 資本提供への報酬（利子含む）</li>
+        <li><strong>地代:</strong> 土地所有への報酬</li>
+        <li><strong>理由:</strong> 生産物価値はこの三要素で構成され、分配が投資・消費行動を決定するため</li>
+      </ul>
+      <span class="badge">価格は三所得で構成</span>
+    </div>
+    <div class="card">
+      <h3>⚙️ 生産的労働と不生産的労働</h3>
+      <ul>
+        <li><strong>生産的:</strong> 資本を増殖させる労働（製造業など）</li>
+        <li><strong>不生産的:</strong> 即時に消費され資本に還元されない労働（サービス業など）</li>
+        <li><strong>注意:</strong> 歴史的区分であり現代では再解釈が必要</li>
+        <li><strong>理由:</strong> 資本蓄積が成長の源泉とみなされた時代の分類基準</li>
+      </ul>
+      <span class="badge">資本を増やす労働が鍵</span>
+    </div>
+    <div class="card">
+      <h3>🚫 重商主義</h3>
+      <ul>
+        <li><strong>定義:</strong> 貿易差額の黒字や金銀蓄積を富の源とみなす政策体系</li>
+        <li><strong>手段:</strong> 独占特許、関税、輸出補助金</li>
+        <li><strong>問題:</strong> 価格を歪め、資源配分を非効率化</li>
+        <li><strong>理由:</strong> 貨幣を富そのものと誤認し、消費者利益を犠牲にして特定産業を保護するため</li>
+      </ul>
+      <span class="badge">金銀偏重の統制主義</span>
+    </div>
+    <div class="card">
+      <h3>🌐 自由貿易</h3>
+      <ul>
+        <li><strong>定義:</strong> 関税・独占・航法制限を撤廃し、競争を通じて資源配分を最適化</li>
+        <li><strong>効果:</strong> 国際的な分業と消費者利益の最大化</li>
+        <li><strong>根拠:</strong> 比較優位により各国が得意分野に特化</li>
+        <li><strong>理由:</strong> 開放が競争を促し、価格低下と品質向上をもたらすため</li>
+      </ul>
+      <span class="badge">開放が富を拡大</span>
+    </div>
+    <div class="card">
+      <h3>🏛️ 国家の役割</h3>
+      <ul>
+        <li><strong>防衛:</strong> 外敵からの保護</li>
+        <li><strong>司法:</strong> 契約履行と財産権保護</li>
+        <li><strong>公共事業:</strong> 道路・港湾など市場が供給しにくいインフラ</li>
+        <li><strong>教育:</strong> 基礎的な知識と技能の普及</li>
+        <li><strong>理由:</strong> これらは市場の失敗領域であり、国家が補完しないと経済成長が阻害されるため</li>
+      </ul>
+      <span class="badge">最小限だが不可欠</span>
+    </div>
+    <div class="card">
+      <h3>📋 税の四原則</h3>
+      <ul>
+        <li><strong>公平:</strong> 能力に応じた負担</li>
+        <li><strong>確実:</strong> 恣意的でない明確な課税</li>
+        <li><strong>便宜:</strong> 納税者にとって支払いやすい時期・方法</li>
+        <li><strong>経済:</strong> 徴税コストを最小化</li>
+        <li><strong>理由:</strong> 簡素で公正な税制が経済活動を阻害せず、信頼を維持するため</li>
+      </ul>
+      <span class="badge">簡素公正な税</span>
+    </div>
+    <div class="card">
+      <h3>🌾 農業と都市の発展順序</h3>
+      <ul>
+        <li><strong>自然:</strong> 農村から都市へという発展経路</li>
+        <li><strong>現実:</strong> 政策が都市と独占を過度に保護して歪める</li>
+        <li><strong>影響:</strong> 資源配分の非効率と成長鈍化</li>
+        <li><strong>理由:</strong> 政治的圧力が経済合理性を歪め、特定セクターへの過剰投資を招くため</li>
+      </ul>
+      <span class="badge">政策が発展順序を歪む</span>
+    </div>
+  </div>
 
-    <script>
-        function showTab(tabName) {
-            // すべてのタブコンテンツを非表示
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // すべてのタブボタンを非アクティブ
-            const buttons = document.querySelectorAll('.tab-button');
-            buttons.forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // 選択されたタブを表示
-            document.getElementById(tabName).classList.add('active');
-            
-            // 対応するボタンをアクティブ
-            event.target.classList.add('active');
-        }
-        
-        // アクセシビリティ: キーボードナビゲーション
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Tab') {
-                const focusedElement = document.activeElement;
-                if (focusedElement.classList.contains('tab-button')) {
-                    focusedElement.setAttribute('aria-selected', 'true');
-                }
-            }
-        });
-        
-        // タブボタンにaria属性を設定
-        document.querySelectorAll('.tab-button').forEach((button, index) => {
-            button.setAttribute('role', 'tab');
-            button.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
-            button.setAttribute('tabindex', index === 0 ? '0' : '-1');
-        });
-        
-        // タブコンテンツにaria属性を設定
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.setAttribute('role', 'tabpanel');
-            content.setAttribute('aria-hidden', content.classList.contains('active') ? 'false' : 'true');
-        });
-    </script>
+  <div class="visual-box">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">🔗 概念間の因果関係</h3>
+    <div class="flow-diagram">
+      <div class="flow-item">市場範囲の拡大</div>
+      <div class="flow-item">分業の深化</div>
+      <div class="flow-item">技能向上・機械化</div>
+      <div class="flow-item">生産性上昇</div>
+      <div class="flow-item">国富増大</div>
+    </div>
+  </div>
+
+  <div class="visual-box">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">📈 成長を支える要素</h3>
+    <div class="metric">
+      <span class="metric-label">司法・治安</span>
+      <div class="metric-bar"><div class="metric-fill" style="width: 95%;"></div></div>
+    </div>
+    <div class="metric">
+      <span class="metric-label">資本蓄積</span>
+      <div class="metric-bar"><div class="metric-fill" style="width: 90%;"></div></div>
+    </div>
+    <div class="metric">
+      <span class="metric-label">競争の活性化</span>
+      <div class="metric-bar"><div class="metric-fill" style="width: 85%;"></div></div>
+    </div>
+    <div class="metric">
+      <span class="metric-label">教育・公共事業</span>
+      <div class="metric-bar"><div class="metric-fill" style="width: 80%;"></div></div>
+    </div>
+    <div class="metric">
+      <span class="metric-label">自由貿易</span>
+      <div class="metric-bar"><div class="metric-fill" style="width: 88%;"></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📘 第I編 - 労働の生産力の改善と配分</h3>
+    <ul>
+      <li>分業のメカニズムと生産性向上の原理</li>
+      <li>価格の構成要素（賃金・利潤・地代）</li>
+      <li>自然価格と市場価格の関係</li>
+      <li>賃金や利潤決定の要因分析</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 分業が生産性を高め、その成果が価格と分配を通じて経済主体に伝わる過程を解明することで、市場経済の基礎メカニズムを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📗 第II編 - 資本の本性、蓄積、使用</h3>
+    <ul>
+      <li>貯蓄と資本蓄積の関係</li>
+      <li>固定資本と流動資本の区別</li>
+      <li>利子率と信用の役割</li>
+      <li>国家の浪費批判と節約の重要性</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 節約と投資が生産的労働を雇用し、資本が生産性を押し上げる仕組みを提示することで、成長の源泉を明らかにするため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📙 第III編 - 各国の繁栄の異なる進路</h3>
+    <ul>
+      <li>農業主体から都市商工業への自然な発展経路</li>
+      <li>政策による発展順序の逆転と歪み</li>
+      <li>歴史的事例の比較分析</li>
+      <li>制度と政策が成長に与える影響</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 歴史的比較で制度と政策が成長経路を左右することを示し、政策の重要性と限界を明らかにするため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📕 第IV編 - 経済学説史と政策批判</h3>
+    <ul>
+      <li>重商主義の検討と批判</li>
+      <li>重農主義の評価</li>
+      <li>自由貿易の擁護論</li>
+      <li>独占・関税の弊害分析</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 誤った富の観（貨幣偏重）を退け、交換自由の理路を確立することで、政策の方向性を示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📔 第V編 - 主権者・国家の歳入</h3>
+    <ul>
+      <li>国家の正統な機能（防衛・司法・公共事業・教育）</li>
+      <li>税の四原則（公平・確実・便宜・経済）</li>
+      <li>公共財の供給と受益者負担</li>
+      <li>財政の簡素・公平・効率設計</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 市場が苦手な領域で国家が補完しつつ、財政は簡素・公平・効率に設計されるべきと結論づけ、国家の役割を明確化するため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🏭 具体例1: ピン工場の分業</h3>
+    <ul>
+      <li><strong>背景:</strong> 18世紀のピン製造工程を10段階に分割</li>
+      <li><strong>結果:</strong> 1人1日20本→10人で48,000本（2,400倍）</li>
+      <li><strong>要因:</strong> 技能熟練、段取り短縮、専用工具の開発</li>
+      <li><strong>示唆:</strong> 専門化が生産性を劇的に高める実証</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> この例は分業の威力を数値で示し、市場範囲拡大の重要性を直感的に理解させるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🍞 具体例2: 肉屋・醸造家・パン屋の交換</h3>
+    <ul>
+      <li><strong>背景:</strong> 各人が自己利益を追求して専門化</li>
+      <li><strong>結果:</strong> 交換を通じて全員が多様な財を享受</li>
+      <li><strong>要因:</strong> 自利が交換を駆動し、見えざる手が調整</li>
+      <li><strong>示唆:</strong> 慈善ではなく自利が市場を機能させる</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> この例は市場経済の根本原理（自利と公益の一致）を日常的な場面で説明し、理論の実践性を示すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚢 具体例3: 航法条例と重商主義の弊害</h3>
+    <ul>
+      <li><strong>背景:</strong> イギリスが植民地貿易を自国船に制限</li>
+      <li><strong>結果:</strong> 輸送コスト上昇、消費者負担増、資源配分の歪み</li>
+      <li><strong>要因:</strong> 独占保護が競争を阻害</li>
+      <li><strong>示唆:</strong> 保護主義は短期的利益を特定集団に与えるが長期的には国全体の富を減らす</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> この例は政策介入の負の側面を具体的に示し、自由貿易の優位性を裏付けるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌾 具体例4: 農業と都市の発展順序</h3>
+    <ul>
+      <li><strong>背景:</strong> 自然な発展は農村余剰→都市工業の順</li>
+      <li><strong>現実:</strong> 政策が都市独占を保護し順序を逆転</li>
+      <li><strong>結果:</strong> 農業投資不足、都市への過剰集中</li>
+      <li><strong>示唆:</strong> 政治的圧力が経済合理性を歪める</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> この例は制度と政策が成長経路を左右することを歴史的に示し、政策設計の重要性を強調するため。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>「我々の食卓は肉屋や醸造家やパン屋の慈善ではなく、彼らが自らの利益を追求するから満たされる。」</p>
+    <small><strong>重要性:</strong> 自利が交換を駆動し、公益に資するという市場の根本原理を端的に示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「分業は市場の広がりによって限界づけられる。」</p>
+    <small><strong>重要性:</strong> インフラ・制度・貿易が生産性の天井を決めるという政策含意を与える。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「各人は自らの利益のみを意図するが、見えざる手に導かれて社会の利益を推進することがある。」</p>
+    <small><strong>重要性:</strong> 価格シグナルと競争を通じた自発的秩序の働きを表現する古典的洞察。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「国家を最高の繁栄へ導くのに必要なのは平和、軽い税、そして公正な司法である。」</p>
+    <small><strong>重要性:</strong> 国家の役割を簡潔に要約し、制度の質が成長の基盤であることを強調する。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>🔧 アクション1: 身近な作業を3段階に分業設計</h4>
+    <p><strong>目的:</strong> 分業の効果を体感する</p>
+    <p><strong>方法:</strong> 日常の家事や仕事のタスクを3つの専門工程に分け、各工程の所要時間を測定する</p>
+    <p><strong>期待効果:</strong> 専門化による時間短縮と品質向上を実感し、市場範囲拡大の重要性を理解する</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🛒 アクション2: 最近の購入を価値連鎖で分解</h4>
+    <p><strong>目的:</strong> 市場の見えざる手を可視化する</p>
+    <p><strong>方法:</strong> 最近買った商品（例: スマホ）の原材料→製造→流通→販売の各段階を調べ、関わる人々と価格構成を書き出す</p>
+    <p><strong>期待効果:</strong> 自利に基づく分業と交換が複雑な製品を生み出す仕組みを理解する</p>
+  </div>
+
+  <div class="action-card">
+    <h4>💰 アクション3: 家計支出を労働/資本/地代で仕分け</h4>
+    <p><strong>目的:</strong> 価格構成の三要素を実感する</p>
+    <p><strong>方法:</strong> 今月の支出を「人件費（賃金）」「設備・在庫（利潤）」「場所代（地代）」に大まかに分類する</p>
+    <p><strong>期待効果:</strong> 価格が所得分配の結果であることを理解し、経済政策の影響を考える視点を得る</p>
+  </div>
+
+  <div class="action-card">
+    <h4>📚 アクション4: 関連書籍を1冊選んで目次を読む</h4>
+    <p><strong>目的:</strong> 国富論の思想的系譜を把握する</p>
+    <p><strong>方法:</strong> 下記の関連書籍から1冊選び、目次と序文を15分で読む</p>
+    <p><strong>期待効果:</strong> スミスの議論が現代にどう継承・発展されたかを知り、理解を深める</p>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">📚 関連書籍</h3>
+    <div class="book-card">
+      <h4>道徳感情論</h4>
+      <p class="author">アダム・スミス</p>
+      <p>自利と共感の倫理基盤を補完し、市場秩序の道徳的前提を示す。</p>
+    </div>
+    <div class="book-card">
+      <h4>経済学および課税の原理</h4>
+      <p class="author">デヴィッド・リカード</p>
+      <p>スミスを継承しつつ分配理論と国際貿易（比較優位）を精緻化。</p>
+    </div>
+    <div class="book-card">
+      <h4>経済学原理</h4>
+      <p class="author">アルフレッド・マーシャル</p>
+      <p>需要供給と期間分析で自然価格概念を再定式化。</p>
+    </div>
+    <div class="book-card">
+      <h4>資本主義と自由</h4>
+      <p class="author">ミルトン・フリードマン</p>
+      <p>政府の限界と市場の役割を20世紀的に展開し、自由貿易を擁護。</p>
+    </div>
+    <div class="book-card">
+      <h4>隷属への道</h4>
+      <p class="author">フリードリヒ・ハイエク</p>
+      <p>自発的秩序と計画経済批判でスミスの自由主義的直系を示す。</p>
+    </div>
+    <div class="book-card">
+      <h4>国際経済学</h4>
+      <p class="author">ポール・クルーグマン、モーリス・オブストフェルド、マルク・メリッツ</p>
+      <p>現代の貿易理論と政策分析で自由貿易論の射程と限界を更新。</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => {
+      c.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+
+window.addEventListener('load', () => {
+  const fills = document.querySelectorAll('.metric-fill');
+  fills.forEach(fill => {
+    const width = fill.style.width;
+    fill.style.width = '0';
+    setTimeout(() => {
+      fill.style.width = width;
+    }, 100);
+  });
+});
+</script>
+
 </body>
 </html>
