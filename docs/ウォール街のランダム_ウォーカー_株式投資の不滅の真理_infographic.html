@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ランダム・ウォーク理論 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー=#667eea セカンダリー=#764ba2 アクセント=#f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 32px 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 20px;
+  margin: 24px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 12px;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 4px;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0 16px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  position: relative;
+  bottom: -2px;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 5px solid var(--secondary);
+  padding: 16px;
+  margin: 12px 0;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.quote-card blockquote {
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+.quote-card .importance {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  padding-left: 12px;
+  border-left: 2px solid var(--accent);
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 12px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h4 {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin: 4px 0;
+}
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.diagram {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin: 12px 0;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.2rem;
+  margin: 0 8px;
+}
+.chapter-section {
+  background: var(--card-bg);
+  padding: 20px;
+  margin: 16px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--primary);
+}
+.chapter-section h3 {
+  color: var(--secondary);
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+.chapter-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-section li {
+  padding: 6px 0 6px 24px;
+  position: relative;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+.chapter-section li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.book-card {
+  background: var(--card-bg);
+  padding: 16px;
+  border-radius: 8px;
+  margin: 12px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  border-top: 3px solid var(--accent);
+}
+.book-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  color: var(--text);
+  padding-left: 12px;
+  border-left: 2px solid var(--primary);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📊 ランダム・ウォーク理論</h1>
+  <p>市場を打ち負かす最善策は、市場平均を安く確実に取ること</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      個人は市場を安定的に打ち負かせるか？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      ほぼ不可能で、最適解は低コストの市場インデックスを長期で保有すること。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      価格は利用可能情報を迅速に織り込み短期変動はランダム、手数料・税は確実に複利を削る、実証的にアクティブは長期で生存・生還バイアスを除くと劣後するため。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      ライフサイクルに応じた株債比率を決め、広範分散の低コスト指数商品で定期積立し、税・手数料を最小化しつつ機械的にリバランスする。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="margin:20px 0 16px; color:var(--secondary);">🧠 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🎲 ランダム・ウォーク仮説</h3>
+        <ul>
+          <li>株価の短期的変動は独立的</li>
+          <li>過去のパターンから将来を当てるのは困難</li>
+          <li>予測不能性が前提</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>短期は読めないという前提が、タイミング戦略の難しさと積立・分散の必要性を支えるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚡ 効率的市場仮説（EMH）</h3>
+        <ul>
+          <li>公開情報は迅速に価格へ反映</li>
+          <li>系統的な裁定余地は小さい</li>
+          <li>弱・半強・強の3形式</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>情報が即時に価格化されるため、恒常的な超過収益は困難であり、インデックス投資の合理性を支える。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📐 現代ポートフォリオ理論（MPT）</h3>
+        <ul>
+          <li>分散により同期待リターン当たりのリスクを最小化</li>
+          <li>効率的フロンティア上の組合せを求める</li>
+          <li>分散は無料の昼食</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>固有リスクを低減し、市場全体を保有する理論的根拠を提供するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📈 CAPM（資本資産価格モデル）</h3>
+        <ul>
+          <li>期待超過リターンは市場感応度（ベータ）で説明</li>
+          <li>市場ポートフォリオが効率的</li>
+          <li>報われるのは市場リスク</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>ベータのみが長期に報われやすいという洞察が、市場全体保有の正当性を示すため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎯 インデックス投資</h3>
+        <ul>
+          <li>市場全体を低コストで保有</li>
+          <li>市場平均の成果を確実に取る</li>
+          <li>受動的運用</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>平均を確実に取ることが、長期的に最も合理的な戦略であるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎪 アクティブ運用</h3>
+        <ul>
+          <li>銘柄選択や市場タイミングで超過収益を狙う</li>
+          <li>手数料・課税と予測誤差で不利になりやすい</li>
+          <li>勝てば官軍、継続困難</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>短期的な成功はあっても、長期的には生存・生還バイアスを除くと劣後するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💎 基礎的価値説と空中の城説</h3>
+        <ul>
+          <li>前者は内在価値に価格が収斂</li>
+          <li>後者は期待や流行が価格を押し上げる</li>
+          <li>価値か人気か</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>価格形成の二つの視点を理解することで、バブルと価値投資の力学を把握できるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💰 ドルコスト平均法</h3>
+        <ul>
+          <li>一定額を定期的に投資</li>
+          <li>価格変動に対する平均購入単価を平準化</li>
+          <li>行動ミスを抑える</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>時間分散の規律により、市場タイミングの失敗確率を下げるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚖️ リバランス</h3>
+        <ul>
+          <li>目標資産配分からの乖離を定期・規則で元に戻す</li>
+          <li>リスクを一定化しつつ逆張りを機械化</li>
+          <li>自動の買い下がり</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>感情に流されない投資を助け、期待リスク調整後リターンを安定化するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔄 ライフサイクル投資</h3>
+        <ul>
+          <li>年齢・人的資本・目標に応じて株式と債券の比率を調整</li>
+          <li>リスク許容度の変化を配分に反映</li>
+          <li>年齢でリスク調整</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>個人差に適応する実践設計の軸であり、破綻確率を抑制するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💸 コストの複利影響</h3>
+        <ul>
+          <li>信託報酬や売買手数料・課税は確実に複利を蝕む</li>
+          <li>長期成績に大差を生む確定要因</li>
+          <li>低コストは正義</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>手数料と税は確実で超過収益は不確実なため、コスト最小化が長期成績の鍵となる。
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <h3 style="color:var(--secondary); margin-bottom:16px;">🔗 概念間の関係性</h3>
+      <div class="flow-item">
+        <span>効率的市場仮説（EMH）</span>
+        <span class="flow-arrow">→</span>
+        <span>予測困難</span>
+        <span class="flow-arrow">→</span>
+        <span>アクティブの恒常的優位は希薄</span>
+        <span class="flow-arrow">→</span>
+        <span>低コストインデックスが合理的</span>
+      </div>
+      <div class="flow-item">
+        <span>ランダム・ウォーク仮説</span>
+        <span class="flow-arrow">≒</span>
+        <span>EMH弱形式の帰結</span>
+        <span class="flow-arrow">→</span>
+        <span>過去パターンで超過収益は難しい</span>
+      </div>
+      <div class="flow-item">
+        <span>MPT/CAPM</span>
+        <span class="flow-arrow">→</span>
+        <span>市場ポートフォリオが効率的</span>
+        <span class="flow-arrow">→</span>
+        <span>市場全体を保有する理論的根拠</span>
+      </div>
+      <div class="flow-item">
+        <span>分散投資</span>
+        <span class="flow-arrow">→</span>
+        <span>固有リスクの低減</span>
+        <span class="flow-arrow">→</span>
+        <span>ベータのみが長期に報われやすい</span>
+      </div>
+      <div class="flow-item">
+        <span>手数料・税コスト↑</span>
+        <span class="flow-arrow">→</span>
+        <span>複利↓</span>
+        <span class="flow-arrow">→</span>
+        <span>長期の成績格差が拡大</span>
+      </div>
+      <div class="flow-item">
+        <span>行動バイアス（過信・群集）</span>
+        <span class="flow-arrow">→</span>
+        <span>バブル/高値掴み</span>
+        <span class="flow-arrow">→</span>
+        <span>規律的積立・リバランスで緩和</span>
+      </div>
+      <div class="flow-item">
+        <span>ライフサイクル戦略</span>
+        <span class="flow-arrow">→</span>
+        <span>リスク許容度の変化を配分に反映</span>
+        <span class="flow-arrow">→</span>
+        <span>破綻確率の抑制</span>
+      </div>
+      <div class="flow-item">
+        <span>リバランス</span>
+        <span class="flow-arrow">→</span>
+        <span>リスク一定化＋逆張りの自動化</span>
+        <span class="flow-arrow">→</span>
+        <span>期待リスク調整後リターンの安定化</span>
+      </div>
+      <div class="flow-item">
+        <span>市場タイミング依存</span>
+        <span class="flow-arrow">→</span>
+        <span>失敗確率高</span>
+        <span class="flow-arrow">→</span>
+        <span>ドルコスト平均で代替</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="margin:20px 0 16px; color:var(--secondary);">📚 各章の要約</h2>
+    
+    <div class="chapter-section">
+      <h3>序章：ランダム・ウォークの直観</h3>
+      <ul>
+        <li>「ダーツ」の比喩で予測困難の前提を提示</li>
+        <li>短期の株価変動は本質的にランダム</li>
+        <li>専門家も市場を恒常的に打ち負かせない</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>本書全体の前提となる「予測困難性」を読者に直観的に理解させ、以降の議論の土台を築くため。
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>第I部：株式市場の歴史的バブル</h3>
+      <ul>
+        <li>チューリップ・バブル、南海バブル、1929年大恐慌</li>
+        <li>ITバブル、住宅バブルの実例</li>
+        <li>価格形成の実像と群集心理の力学</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>歴史的事例を通じて、価格が内在価値から乖離する現実を示し、空中の城説の妥当性を補強するため。
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>第II部：価格理論の二本柱</h3>
+      <ul>
+        <li>基礎的価値説 vs 空中の城説</li>
+        <li>テクニカル分析の限界を実証で検証</li>
+        <li>ファンダメンタル分析も恒常的優位は困難</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>価格決定の二つの視点を整理し、どちらも恒常的な超過収益を保証しないことを示すため。
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>第III部：リスクとリターンの計測</h3>
+      <ul>
+        <li>現代ポートフォリオ理論（MPT）とCAPMの解説</li>
+        <li>ファクター投資の功罪を整理</li>
+        <li>市場ポートフォリオの効率性</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>理論的枠組みを提供し、市場全体を保有する合理性を学術的に裏付けるため。
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>第IV部：行動ファイナンスの洞察</h3>
+      <ul>
+        <li>効率性の境界とバブルの力学を補完</li>
+        <li>過信・群集心理・アンカリングなどのバイアス</li>
+        <li>非合理な投資行動の実態</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>EMHの限界を認めつつ、行動バイアスに対抗する規律的運用の重要性を示すため。
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>第V部：個人投資家の実践ガイド</h3>
+      <ul>
+        <li>ライフサイクル資産配分の設計</li>
+        <li>商品選定、税・コスト管理</li>
+        <li>積立とリバランスの実行</li>
+        <li>保険・住宅の位置付け</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>理論を実践に落とし込み、読者が今日から実行できる具体的な行動指針を提供するため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="margin:20px 0 16px; color:var(--secondary);">💡 具体例</h2>
+    
+    <div class="card">
+      <h3>🌷 チューリップ・バブル（1637年）</h3>
+      <ul>
+        <li><strong>背景：</strong>オランダでチューリップの球根価格が異常高騰</li>
+        <li><strong>経緯：</strong>希少品種への投機熱が群集心理を煽り、実需を超えた価格形成</li>
+        <li><strong>結末：</strong>突然の暴落で多くの投資家が破綻</li>
+        <li><strong>示唆：</strong>価格は内在価値から大きく乖離しうる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>空中の城説の典型例であり、群集心理と期待が価格を支配する危険性を歴史的に証明するため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💻 ITバブル（1990年代後半〜2000年）</h3>
+      <ul>
+        <li><strong>背景：</strong>インターネット関連企業への過度な期待</li>
+        <li><strong>経緯：</strong>収益性のない企業も高PERで評価され、株価が急騰</li>
+        <li><strong>結末：</strong>2000年以降の暴落でナスダック指数は半減以下</li>
+        <li><strong>示唆：</strong>短期の期待は長期の価値を保証しない</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>現代でもバブルは繰り返され、市場タイミングの難しさと分散・長期保有の重要性を再確認させるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📊 インデックスファンドの長期優位性</h3>
+      <ul>
+        <li><strong>背景：</strong>1970年代にバンガード社が初の個人向けインデックスファンドを設立</li>
+        <li><strong>経緯：</strong>低コスト・広範分散で市場平均を確実に取る戦略</li>
+        <li><strong>結果：</strong>長期的にアクティブファンドの大半を上回る成績</li>
+        <li><strong>示唆：</strong>コスト最小化と分散が長期成績の鍵</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>理論が実践で証明された事例であり、本書の核心メッセージを具体的に裏付けるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎲 ダーツ投げ実験</h3>
+      <ul>
+        <li><strong>背景：</strong>ウォール・ストリート・ジャーナルの企画</li>
+        <li><strong>経緯：</strong>専門家の銘柄選択 vs ダーツでランダム選択を比較</li>
+        <li><strong>結果：</strong>長期的にはほぼ互角、専門家の優位は統計的に有意でない</li>
+        <li><strong>示唆：</strong>銘柄選択の難しさと予測の限界</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>ランダム・ウォーク仮説を象徴的に示し、専門家でも市場を恒常的に打ち負かせない現実を可視化するため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="margin:20px 0 16px; color:var(--secondary);">📖 重要な引用</h2>
+    
+    <div class="quote-card">
+      <blockquote>
+        「市場平均を打ち負かす最善策は、市場平均を安く確実に取ることだ。」
+      </blockquote>
+      <div class="importance">
+        <strong>重要性：</strong>逆説的に聞こえるが、インデックス投資の合理性を一言で示す中核命題だから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        「短期の価格はニュースと期待に敏感で、方向性は本質的にランダムだ。」
+      </blockquote>
+      <div class="importance">
+        <strong>重要性：</strong>タイミング戦略の難しさと、積立・分散の必要性を支える前提だから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        「手数料と税は確実で、超過収益は不確実である。」
+      </blockquote>
+      <div class="importance">
+        <strong>重要性：</strong>コスト最小化の優先順位を明確化し、長期成績の鍵を示すため。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        「規律あるリバランスは、感情に流されない投資を助ける。」
+      </blockquote>
+      <div class="importance">
+        <strong>重要性：</strong>行動バイアスに対抗する具体的な手順として重要だから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        「ライフサイクルに応じた資産配分が、リスクと目標の整合をもたらす。」
+      </blockquote>
+      <div class="importance">
+        <strong>重要性：</strong>個人差に適応する実践設計の軸であり、汎用性が高いから。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="margin:20px 0 16px; color:var(--secondary);">🚀 今日のアクション</h2>
+    
+    <div class="action-card">
+      <h4>🔍 保有商品の信託報酬を確認</h4>
+      <p><strong>目的：</strong>現在のコスト構造を把握し、改善余地を見つける</p>
+      <p><strong>期待効果：</strong>長期的な複利効果を最大化するための第一歩。年率0.5%の差が30年で大きな差を生む。</p>
+      <p><strong>所要時間：</strong>15分</p>
+    </div>
+
+    <div class="action-card">
+      <h4>📊 指数連動投信を1本調べて記録</h4>
+      <p><strong>目的：</strong>低コスト・広範分散の商品を具体的に知る</p>
+      <p><strong>期待効果：</strong>インデックス投資の選択肢を増やし、次の投資判断に活かせる。</p>
+      <p><strong>所要時間：</strong>20分</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🎯 年齢に応じた株債比率を試算</h4>
+      <p><strong>目的：</strong>自分のライフサイクルに合った資産配分を設計する</p>
+      <p><strong>期待効果：</strong>リスク許容度と目標の整合を取り、破綻確率を抑制できる。</p>
+      <p><strong>所要時間：</strong>25分</p>
+    </div>
+
+    <div class="action-card">
+      <h4>📅 定期積立の設定を確認・開始</h4>
+      <p><strong>目的：</strong>ドルコスト平均法を実践し、市場タイミングのリスクを回避</p>
+      <p><strong>期待効果：</strong>感情に左右されず、規律的に資産形成を進められる。</p>
+      <p><strong>所要時間：</strong>30分</p>
+    </div>
+
+    <div class="action-card">
+      <h4>⚖️ リバランスのルールを決める</h4>
+      <p><strong>目的：</strong>目標配分からの乖離を自動的に修正する仕組みを作る</p>
+      <p><strong>期待効果：</strong>リスクを一定化し、逆張りを機械化して期待リターンを安定化。</p>
+      <p><strong>所要時間：</strong>20分</p>
+    </div>
+  </div>
+
+  <div style="margin-top:40px;">
+    <h2 style="color:var(--secondary); margin-bottom:16px;">📚 関連書籍</h2>
+    <div class="book-card">
+      <h4>敗者のゲーム</h4>
+      <div class="author">著者：チャールズ・エリス</div>
+      <div class="relation">市場平均を打ち負かす難しさと低コスト運用の優位を実務的に補強する。</div>
+    </div>
+    <div class="book-card">
+      <h4>インデックス投資は勝者のゲーム</h4>
+      <div class="author">著者：ジョン・C・ボーグル</div>
+      <div class="relation">低コスト・分散・長期保有の哲学と実務が本書の実践章を深化させる。</div>
+    </div>
+    <div class="book-card">
+      <h4>賢明なる投資家</h4>
+      <div class="author">著者：ベンジャミン・グレアム</div>
+      <div class="relation">価値投資の古典で、EMHとの対比を通じ市場観の幅を与える。</div>
+    </div>
+    <div class="book-card">
+      <h4>ファスト&スロー</h4>
+      <div class="author">著者：ダニエル・カーネマン</div>
+      <div class="relation">行動バイアスの心理学的基礎を学べ、バブルや投資判断の誤りを理解できる。</div>
+    </div>
+    <div class="book-card">
+      <h4>ブラック・スワン</h4>
+      <div class="author">著者：ナシーム・ニコラス・タレブ</div>
+      <div class="relation">極端事象とモデルの限界を認識し、分散とリスク管理の重要性を補強する。</div>
+    </div>
+    <div class="book-card">
+      <h4>行動経済学の逆襲</h4>
+      <div class="author">著者：リチャード・セイラー</div>
+      <div class="relation">非合理な投資行動と市場の歪みを実例で学び、規律的運用の意義を確認できる。</div>
+    </div>
+  </div>
+
+  <div style="margin-top:40px; padding:20px; background:linear-gradient(135deg, var(--primary), var(--secondary)); color:white; border-radius:8px; text-align:center;">
+    <h3 style="margin-bottom:12px;">🎯 核心的メッセージ</h3>
+    <p style="font-size:1rem; line-height:1.8;">
+      短期の株価は本質的に予測困難で、恒常的に市場平均を上回るのは難しい。ゆえに、低コスト・広範分散のインデックス運用を土台に、ライフサイクルに沿った資産配分・積立・リバランスを規律的に実行することが最良の戦略である。
+    </p>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabs = document.querySelectorAll('.tab-btn');
+  const contents = document.querySelectorAll('.tab-content');
+  
+  tabs.forEach(tab => {
+    tab.addEventListener('click', function() {
+      const targetId = this.getAttribute('data-tab');
+      
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      contents.forEach(c => {
+        c.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetId).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
