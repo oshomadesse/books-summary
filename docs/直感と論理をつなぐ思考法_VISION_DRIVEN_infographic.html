@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VISION DRIVEN インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+}
+.tab-content.active {
+  display: block;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 1.5rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.visual-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.visual-card {
+  flex: 1;
+  min-width: 140px;
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.visual-card .number {
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.visual-card .label {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.quote-block {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+.quote-block .why {
+  margin-top: 0.5rem;
+  font-style: normal;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 10px rgba(102,126,234,0.3);
+}
+.action-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  opacity: 0.95;
+  line-height: 1.5;
+}
+.flow-diagram {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+.flow-step .arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+.book-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  border-left: 3px solid var(--accent);
+}
+.book-card .title {
+  font-weight: bold;
+  color: var(--secondary);
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+.book-card .author {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tab-btn {
+    font-size: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    min-width: 100px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 VISION DRIVEN</h1>
+  <p>直感起点で未来を描き、プロトタイプと対話で実装する価値創造法</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>なぜ"問題解決"だけではブレークスルーが生まれず、どうすれば革新的価値を生めるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>直感で立てたビジョンを核に、ピース収集→編集→プロトタイプ→対話を反復する"VISION DRIVEN"へ切り替える。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>問題解決は過去データに閉じ最適化に陥る一方、未知の価値は違和感や妄想など主観的資源からしか立ち上がらない。ビジョンは人と資源を惹きつける磁場として機能する。</p>
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    <p>1) 違和感をピース化して可視化、2) 世界観をインストールして選択眼を変える、3) 物語を編集しビジョンスケッチ化、4) 低解像度でも形にし、対話で検証しつつ反復する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">関連書籍</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card">
+    <h3>🚀 VISION DRIVEN</h3>
+    <ul>
+      <li>直感起点でビジョンを掲げ、論理と実験で磨き込む価値創造法</li>
+      <li>到達点から逆算して行動する</li>
+      <li>未来の可能性を先に描き、そこへ向かう道筋を探索する</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>過去の延長では生まれない非連続な価値を創出するため、未来起点の思考が不可欠。ビジョンが行動の羅針盤となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔧 PROBLEM DRIVEN</h3>
+    <ul>
+      <li>既存課題の原因分析と解決に閉じた最適化思考</li>
+      <li>過去の延長に強いが新奇性に弱い</li>
+      <li>データと論理で効率化を追求するが、革新には限界がある</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>問題解決は重要だが、それだけでは既存の枠内での改善に留まり、市場を創る新価値は生まれにくい。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧩 ビジョンのピース</h3>
+    <ul>
+      <li>興味・違和感・記憶・事例など創造の素材として切り出した断片</li>
+      <li>後で編集可能に貯める</li>
+      <li>多様なピースが組み合わさることで独自のビジョンが生まれる</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>創造は無から生まれず、素材の蓄積と組み合わせから生まれる。ピース化することで編集可能性が高まる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💭 妄想</h3>
+    <ul>
+      <li>根拠が薄いが強い欲望で支えられた未来像</li>
+      <li>新価値の種になる</li>
+      <li>主観的だからこそ独自性と情熱を持つ</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>論理だけでは既存の枠を超えられない。妄想は非合理に見えても、新しい可能性の入口となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔬 解像度</h3>
+    <ul>
+      <li>ビジョンの具体性と多面的理解の度合い</li>
+      <li>行動と対話で上がる</li>
+      <li>高解像度ほど実装可能性と説得力が増す</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>曖昧なビジョンは行動に移せない。具体化と検証を繰り返すことで、実現可能な形に近づく。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✂️ 編集</h3>
+    <ul>
+      <li>バラバラのピースに意味付けと関係づけを施し、物語として統合する行為</li>
+      <li>文脈を与えることで価値が生まれる</li>
+      <li>編集眼が独自性を決定する</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>素材だけでは意味を持たない。編集によって初めて一貫した物語とビジョンが立ち上がる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🛠️ プロトタイピング</h3>
+    <ul>
+      <li>低コストで形にして反応を得る学習ループ</li>
+      <li>思考を前に押し出す装置</li>
+      <li>失敗を早く安く経験し、学習速度を上げる</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>頭の中だけでは検証できない。形にすることで初めて見える課題と可能性がある。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌍 世界観のインストール</h3>
+    <ul>
+      <li>参照枠を意図的に入れ替え、見えるものと選択眼を刷新すること</li>
+      <li>新しいレンズで世界を見直す</li>
+      <li>注意の範囲が広がり、ピースの質と量が変わる</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>同じ世界でも見る枠組みが変われば、気づく情報と可能性が劇的に変わる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ 違和感</h3>
+    <ul>
+      <li>常識からのズレが生む微細な感情信号</li>
+      <li>創造の入口</li>
+      <li>見過ごさず言語化することで、ピースになる</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>違和感は未解決の問いや新しい価値の兆候。感度を高めることが創造の第一歩。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 対話による社会化</h3>
+    <ul>
+      <li>他者の文脈と往復し、私的ビジョンを共鳴可能な物語へ拡張する</li>
+      <li>フィードバックで盲点を発見し、解像度を上げる</li>
+      <li>共感を得ることで資源と協力者を引き寄せる</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>独りよがりのビジョンは実装できない。対話で磨き、共鳴を生むことで社会実装が可能になる。
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="margin-bottom:1rem;color:var(--secondary);">🔄 概念間の関係性</h3>
+    <div class="flow-step">
+      <span>違和感</span><span class="arrow">→</span><span>ピース収集</span><span class="arrow">→</span><span>編集</span>
+    </div>
+    <div class="flow-step">
+      <span>編集</span><span class="arrow">→</span><span>妄想/ビジョン形成</span><span class="arrow">→</span><span>スケッチ/プロトタイプ</span>
+    </div>
+    <div class="flow-step">
+      <span>プロトタイプ</span><span class="arrow">→</span><span>対話</span><span class="arrow">→</span><span>フィードバック</span>
+    </div>
+    <div class="flow-step">
+      <span>フィードバック</span><span class="arrow">→</span><span>解像度向上</span><span class="arrow">→</span><span>実装</span>
+    </div>
+    <p style="margin-top:1rem;font-size:0.85rem;color:var(--text-light);">
+      ※ PROBLEM DRIVENは過去依存→差分最適化に収束；VISION DRIVENは未来起点→非連続な価値に拡張
+    </p>
+    <p style="font-size:0.85rem;color:var(--text-light);">
+      ※ 世界観のインストールが注意の範囲を広げ、ピースの量と多様性を増やし、編集の質を高める
+    </p>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>📖 導入：問題解決偏重の限界</h3>
+    <ul>
+      <li>問題解決だけでは過去の延長線の答えしか出ない</li>
+      <li>直感と論理をつなぐ必要性を提起</li>
+      <li>非連続な価値創造には発想の起点変更が不可欠</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（なぜこの章が必要か）：</strong>現状の思考法の限界を認識させ、新しいアプローチへの動機づけを行うため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 転換：VISION DRIVENの枠組み</h3>
+    <ul>
+      <li>ビジョン起点での思考・行動原理を提示</li>
+      <li>未来から逆算する発想法</li>
+      <li>直感と論理の往復が価値を生む</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（章のメッセージの根拠）：</strong>問題解決との対比で、ビジョン起点の優位性と実践可能性を示すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👁️ 実践1：視座準備</h3>
+    <ul>
+      <li>世界観のインストールで見える世界を変える</li>
+      <li>違和感の感度を高める訓練</li>
+      <li>ピース収集の習慣化（興味・事例・記憶を断片化）</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（なぜこの章が必要か）：</strong>創造の素材を集める準備段階。視座が変わらなければ新しいピースは見えない。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✍️ 実践2：編集と物語化</h3>
+    <ul>
+      <li>ピースを関係づけ、意味を編集する</li>
+      <li>ビジョンの物語とスケッチに落とす</li>
+      <li>妄想を抑えず、素材化して統合する</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（章のメッセージの根拠）：</strong>バラバラの素材を一貫した物語にすることで、ビジョンが伝達可能になる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔨 実践3：形にして学ぶ</h3>
+    <ul>
+      <li>低解像度でもプロトタイプ化する</li>
+      <li>観察・計測可能な問いで検証する</li>
+      <li>失敗を早く安く経験し、学習を加速する</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（なぜこの章が必要か）：</strong>思考だけでは進まない。形にすることで初めて検証と学習が始まる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌐 実践4：社会化と反復</h3>
+    <ul>
+      <li>対話で外部文脈に接続する</li>
+      <li>共鳴と資源を得ながらビジョンを更新する</li>
+      <li>フィードバックループで解像度を上げ続ける</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（章のメッセージの根拠）：</strong>独りよがりを脱し、社会実装可能なビジョンへ進化させるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏢 適用：個人/組織へのインストール</h3>
+    <ul>
+      <li>個人と組織でのVISION DRIVEN導入方法</li>
+      <li>陥穽（正しさ依存・過剰分析など）の回避策</li>
+      <li>習慣化と文化への組み込み</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（なぜこの章が必要か）：</strong>理論を実践に移すための具体的な方法と注意点を提供するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎓 結語：直感×論理の往復</h3>
+    <ul>
+      <li>学習の加速と長期ビジョンの意義を強調</li>
+      <li>継続的な実践がもたらす変化</li>
+      <li>未来を創る主体としての自覚</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（章のメッセージの根拠）：</strong>一過性の技法ではなく、生涯にわたる思考習慣として定着させるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🎨 具体例1：デザイン思考とプロトタイピング</h3>
+    <ul>
+      <li><strong>背景：</strong>IDEOなどのデザインファームは、顧客の潜在ニーズを観察し、素早くプロトタイプを作って検証する</li>
+      <li><strong>示唆：</strong>完璧な計画より、不完全でも形にして学ぶ方が早く正解に近づく</li>
+      <li><strong>実践：</strong>紙やダンボールで試作し、ユーザーの反応を観察する</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>低解像度プロトタイプでも対話と検証が可能であり、学習速度が劇的に上がることを実証している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚗 具体例2：テスラのビジョン駆動</h3>
+    <ul>
+      <li><strong>背景：</strong>イーロン・マスクは「持続可能なエネルギー社会」というビジョンを先に掲げ、EVや太陽光発電を統合</li>
+      <li><strong>示唆：</strong>ビジョンが明確だと、技術・人材・資金が磁石のように集まる</li>
+      <li><strong>実践：</strong>長期ビジョンを公開し、共鳴する人々を巻き込む</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>ビジョンが資源を引き寄せる磁場として機能し、実装を加速させる力を持つことを示している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📱 具体例3：iPhoneの誕生</h3>
+    <ul>
+      <li><strong>背景：</strong>スティーブ・ジョブズは「ポケットに入るコンピュータ」という妄想から出発し、既存の携帯電話の問題解決ではなく新体験を設計</li>
+      <li><strong>示唆：</strong>問題解決ではなく、理想の体験を描くことで市場を創造できる</li>
+      <li><strong>実践：</strong>「こうあるべき」という主観的理想を起点に、技術を後から集める</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>妄想と直感が、既存市場を破壊する非連続なイノベーションの起点になることを証明している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎬 具体例4：ピクサーの物語編集</h3>
+    <ul>
+      <li><strong>背景：</strong>ピクサーは「ブレイントラスト」という対話の場で、何度も物語を編集し直す</li>
+      <li><strong>示唆：</strong>初期アイデアは不完全でも、対話と反復で解像度が上がる</li>
+      <li><strong>実践：</strong>安全な場で率直なフィードバックを得る仕組みを作る</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>対話による社会化と編集の反復が、ビジョンの質を高める実践的プロセスであることを示している。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-block">
+    <p>「要旨: 問題解決だけでは過去の延長線の答えしか出ない。」</p>
+    <div class="why">💡 なぜ重要か：非連続な価値には発想の起点変更が不可欠だから。</div>
+  </div>
+
+  <div class="quote-block">
+    <p>「要旨: 妄想を抑えず素材化・編集して解像度を上げよ。」</p>
+    <div class="why">💡 なぜ重要か：主観的欲望が新規性の源泉になるため。</div>
+  </div>
+
+  <div class="quote-block">
+    <p>「要旨: ビジョンは人と資源を惹きつける磁場になる。」</p>
+    <div class="why">💡 なぜ重要か：実装段階での動員力と持続性の根拠になるから。</div>
+  </div>
+
+  <div class="quote-block">
+    <p>「要旨: まず描き、すぐ形にし、対話で学べ。」</p>
+    <div class="why">💡 なぜ重要か：思考を前進させる最短経路がプロトタイプと対話だから。</div>
+  </div>
+
+  <div class="visual-row">
+    <div class="visual-card">
+      <div class="number">4</div>
+      <div class="label">重要引用数</div>
+    </div>
+    <div class="visual-card">
+      <div class="number">10</div>
+      <div class="label">主要概念</div>
+    </div>
+    <div class="visual-card">
+      <div class="number">8</div>
+      <div class="label">実践ステップ</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>📝 アクション1：違和感メモを10個書き出す</h4>
+    <p><strong>目的：</strong>日常の中で見過ごしている創造の種を可視化する</p>
+    <p><strong>期待効果：</strong>違和感への感度が上がり、ピース収集の習慣が身につく。自分だけの視点が明確になる。</p>
+    <p><strong>実行方法：</strong>今日1日を振り返り、「なんか変だな」「もっとこうならないかな」と感じた瞬間を10個メモする（各1行でOK）</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🧩 アクション2：興味のピースを20個集める</h4>
+    <p><strong>目的：</strong>ビジョンの素材となる多様な断片を蓄積する</p>
+    <p><strong>期待効果：</strong>編集可能な素材が増え、独自の組み合わせが生まれやすくなる。世界観のインストールが進む。</p>
+    <p><strong>実行方法：</strong>SNS、記事、会話、風景など、心が動いた瞬間を写真・メモ・スクショで20個保存する（ジャンル問わず）</p>
+  </div>
+
+  <div class="action-card">
+    <h4>✏️ アクション3：ビジョンスケッチを1枚描く</h4>
+    <p><strong>目的：</strong>頭の中の妄想を外部化し、対話可能な形にする</p>
+    <p><strong>期待効果：</strong>曖昧だったビジョンが具体化し、他者に伝えられるようになる。プロトタイプの第一歩となる。</p>
+    <p><strong>実行方法：</strong>紙とペンで「3年後にこうなっていたい」風景を絵と短い言葉で描く（絵の上手さは不問、イメージ優先）</p>
+  </div>
+
+  <div class="card" style="margin-top:1rem;">
+    <h3>⏱️ 実行のコツ</h3>
+    <ul>
+      <li>完璧を目指さず、15〜30分で終わらせる</li>
+      <li>誰にも見せなくてOK、まずは自分のために</li>
+      <li>毎日続けることで、VISION DRIVENの習慣が身につく</li>
+    </ul>
+  </div>
+</div>
+
+<div id="tab6" class="tab-content" role="tabpanel">
+  <div class="book-card">
+    <div class="title">📚 世界のエリートはなぜ「美意識」を鍛えるのか?</div>
+    <div class="author">著者：山口周</div>
+    <div class="relation">直感/美意識を意思決定に統合する重要性を補強する。論理だけでは差別化できない時代に、感性が競争力になることを示す。</div>
+  </div>
+
+  <div class="book-card">
+    <div class="title">📚 デザイン思考が世界を変える</div>
+    <div class="author">著者：ティム・ブラウン</div>
+    <div class="relation">プロトタイピング重視の実践がVISION DRIVENのHowを具体化。観察→試作→検証のループが学習を加速させる方法論を提供。</div>
+  </div>
+
+  <div class="book-card">
+    <div class="title">📚 リーン・スタートアップ</div>
+    <div class="author">著者：エリック・リース</div>
+    <div class="relation">仮説検証と学習ループでビジョンを検証する方法論が近い。MVP（最小実行可能プロダクト）の考え方がプロトタイピングと直結。</div>
+  </div>
+
+  <div class="book-card">
+    <div class="title">📚 クリエイティブ・コンフィデンス</div>
+    <div class="author">著者：トム・ケリー／デイヴィッド・ケリー</div>
+    <div class="relation">直感的創造性を行動に変える心構えと技法を提供。誰もが創造的になれるという信念がVISION DRIVENの前提と重なる。</div>
+  </div>
+
+  <div class="book-card">
+    <div class="title">📚 アイデアのつくり方</div>
+    <div class="author">著者：ジェームス・W・ヤング</div>
+    <div class="relation">素材収集と無意識活用などピース編集の基礎と通底。アイデアは既存要素の新しい組み合わせという原則がピース思考と一致。</div>
+  </div>
+
+  <div class="book-card">
+    <div class="title">📚 13歳からのアート思考</div>
+    <div class="author">著者：末永幸歩</div>
+    <div class="relation">自分の問いを起点に価値を生む姿勢がビジョン起点思考と接続。正解を探すのではなく、自分なりの答えを創る姿勢を育む。</div>
+  </div>
+</div>
+
+<script>
+// タブ切り替え
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => {
+      c.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
