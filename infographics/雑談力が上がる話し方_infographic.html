@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>雑談力インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  margin-left: 1rem;
+  font-size: 0.95rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+}
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.example-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(240, 147, 251, 0.05));
+  border-left: 4px solid var(--primary);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+.action-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.95;
+}
+.action-card small {
+  display: block;
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin-top: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+.flow-arrow {
+  margin: 0 0.75rem;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 雑談力は鍛えられる対人スキル</h1>
+  <p>観察・共感・具体化・自己開示の型で、誰でも信頼と成果につながる会話を生み出せる</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>💡 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜ雑談力が重要で、どうすれば上がるのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      <p>雑談は人間関係の潤滑油であり、観察→共感→具体質問→自己開示の型を回すことで再現的に上達する。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>雑談は心理的距離を縮め、協力や情報交換のコストを下げる。脳は共感や同調に報酬を感じ、共通点の発見が好意を増幅するため、型に沿った振る舞いが相手の好意と信頼を生む。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>1) 相手の手掛かりを観察し話題化 2) あいづち・オウム返しで共感を示す 3) 具体化質問で深掘り 4) 小さな自己開示で往復を作る 5) YES-ANDで話をのせる 6) 声量・笑顔・うなずき等の非言語を整える 7) 日々のニュース/場所/人を話題ストック化する。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>💬 雑談力</h3>
+        <ul>
+          <li>初対面や日常の会話で心理的距離を縮める能力</li>
+          <li>関係を前進させる技術</li>
+          <li>再現可能な型と練習で伸びる</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>目的は雑談そのものではなく、成果を生む関係の地ならしだから</div>
+      </div>
+      <div class="card">
+        <h3>👀 観察力</h3>
+        <ul>
+          <li>服装・持ち物・表情・文脈から手掛かりを抽出</li>
+          <li>問いの質を決める入口</li>
+          <li>話題の発掘源</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>相手に関心を示す最初のステップであり、会話の立ち上がり成功率を決めるから</div>
+      </div>
+      <div class="card">
+        <h3>🤝 共感のあいづち</h3>
+        <ul>
+          <li>相手の感情と内容を受け止める短い反応</li>
+          <li>安心感と話す動機を高める</li>
+          <li>安心の合図</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>受容を先に置くことで相手の発話量と安心感が上がり、会話が続くから</div>
+      </div>
+      <div class="card">
+        <h3>🔁 オウム返し</h3>
+        <ul>
+          <li>相手のキーワードを反射的に返す</li>
+          <li>必要に応じて一語添えて促進</li>
+          <li>受け止めて促す技法</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>相手の発話量を増やし、具体化質問が効く余地を作るから</div>
+      </div>
+      <div class="card">
+        <h3>🔍 具体化質問</h3>
+        <ul>
+          <li>いつ・どこで・誰と・なぜ・どのように等で深掘り</li>
+          <li>抽象を具体へ導く</li>
+          <li>会話が深く長くなる鍵</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>具体性が増すほど共感と記憶が強化され、関係が深まるから</div>
+      </div>
+      <div class="card">
+        <h3>🗣️ 自己開示の適量</h3>
+        <ul>
+          <li>小さな失敗談や好みを相手の開示量に合わせて示す</li>
+          <li>信頼の相互性を生む</li>
+          <li>信頼の往復</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>自己開示は返報性を生み、相手も開示しやすくなり信頼が構築されるから</div>
+      </div>
+      <div class="card">
+        <h3>✅ YES-AND</h3>
+        <ul>
+          <li>まず受容（YES）し、価値を足して展開（AND）</li>
+          <li>否定の摩擦を避ける</li>
+          <li>受容でのせる姿勢</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>否定感情を下げ、相手の自己効力感を上げることで会話が広がるから</div>
+      </div>
+      <div class="card">
+        <h3>🛡️ クッション言葉</h3>
+        <ul>
+          <li>「もし差し支えなければ」「お伺いしたいのですが」等の前置き</li>
+          <li>配慮を示し摩擦を軽減</li>
+          <li>配慮の前置き</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>摩擦・反発を下げ、建設的対話を維持するから</div>
+      </div>
+      <div class="card">
+        <h3>📰 話題ストック</h3>
+        <ul>
+          <li>時事・地元・天気・食・移動・予定・趣味など汎用話題を仕入れる</li>
+          <li>会話の種</li>
+          <li>準備の有無が立ち上がりの成否を決める</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>ネタは日常に転がっており、事前に仕入れれば即戦力になるから</div>
+      </div>
+      <div class="card">
+        <h3>🎭 非言語コミュニケーション</h3>
+        <ul>
+          <li>声量・速さ・間・笑顔・姿勢・うなずき</li>
+          <li>内容以上に印象を左右</li>
+          <li>印象の土台</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>非言語の好感度が上がると内容の受容性が上がり、提案・依頼の成功率が上がるから</div>
+      </div>
+      <div class="card">
+        <h3>🔗 共通点探索</h3>
+        <ul>
+          <li>出身・嗜好・経験などの重なりを見つける</li>
+          <li>好意と会話の推進力になる</li>
+          <li>つながりの発見</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>共通点の発見が好意の返報性を上げ、継続的関係へつながるから</div>
+      </div>
+    </div>
+
+    <div class="visual-diagram">
+      <h2 style="color: var(--primary); margin-bottom: 1.5rem;">🔄 概念間の関係性フロー</h2>
+      <div class="flow-item">
+        <span class="badge">観察</span>
+        <span class="flow-arrow">→</span>
+        <span class="badge">共感のあいづち</span>
+        <span class="flow-arrow">→</span>
+        <span>心理的安全性↑</span>
+        <span class="flow-arrow">→</span>
+        <span>自己開示↑</span>
+        <span class="flow-arrow">→</span>
+        <span>信頼構築</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge">話題ストック</span>
+        <span class="flow-arrow">×</span>
+        <span class="badge">観察</span>
+        <span class="flow-arrow">→</span>
+        <span>入口話題の即時生成</span>
+        <span class="flow-arrow">→</span>
+        <span>会話の立ち上がり成功率↑</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge">オウム返し</span>
+        <span class="flow-arrow">→</span>
+        <span>相手の発話量↑</span>
+        <span class="flow-arrow">→</span>
+        <span class="badge">具体化質問</span>
+        <span class="flow-arrow">→</span>
+        <span>深掘り</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge">YES-AND</span>
+        <span class="flow-arrow">→</span>
+        <span>否定感情↓</span>
+        <span class="flow-arrow">→</span>
+        <span>相手の自己効力感↑</span>
+        <span class="flow-arrow">→</span>
+        <span>会話が広がる</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge">非言語の好感度↑</span>
+        <span class="flow-arrow">→</span>
+        <span>内容の受容性↑</span>
+        <span class="flow-arrow">→</span>
+        <span>提案・依頼の成功率↑</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge">クッション言葉</span>
+        <span class="flow-arrow">→</span>
+        <span>摩擦・反発↓</span>
+        <span class="flow-arrow">→</span>
+        <span>建設的対話維持</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge">共通点探索</span>
+        <span class="flow-arrow">→</span>
+        <span>好意の返報性↑</span>
+        <span class="flow-arrow">→</span>
+        <span>継続的関係へ</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 序：雑談の効用</h3>
+      <ul>
+        <li>雑談は信頼・情報・機会を生む社会技術</li>
+        <li>本題の前に関係の地ならしをする「場づくり」</li>
+        <li>才能ではなく鍛えられるスキル</li>
+      </ul>
+      <div class="reason"><strong>理由（章のメッセージ）：</strong>雑談の目的は雑談そのものではなく、成果を生む関係構築であることを明確にするため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔧 基礎：観察・あいづち・オウム返し・具体化質問</h3>
+      <ul>
+        <li>観察で相手の手掛かりを発見し話題化</li>
+        <li>あいづちで受け止め、オウム返しで促進</li>
+        <li>具体化質問で深掘りし会話を長く深くする</li>
+      </ul>
+      <div class="reason"><strong>理由（章のメッセージ）：</strong>再現可能な基本スキルを提示し、誰でも実践できる土台を作るため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎯 型：ほめる→尋ねる→のせる、YES-AND、クッション言葉</h3>
+      <ul>
+        <li>ほめる→尋ねる→のせるの順で会話を回す</li>
+        <li>YES-ANDで受容し価値を足して展開</li>
+        <li>クッション言葉で配慮を示し摩擦を軽減</li>
+      </ul>
+      <div class="reason"><strong>理由（章のメッセージ）：</strong>会話の型を示すことで、再現性と成功率を高めるため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📚 話題：日常からネタを収集・編集する話題ストック化</h3>
+      <ul>
+        <li>時事・地元・天気・食・移動・予定・趣味を仕入れる</li>
+        <li>日常に転がっているネタを事前に準備</li>
+        <li>準備の有無が立ち上がりの成否を決める</li>
+      </ul>
+      <div class="reason"><strong>理由（章のメッセージ）：</strong>ネタ切れを防ぎ、即戦力の話題を常に持つ習慣を作るため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎭 非言語：声・表情・姿勢・間の調整</h3>
+      <ul>
+        <li>声量・速さ・間で印象を最適化</li>
+        <li>笑顔・姿勢・うなずきで好感度を上げる</li>
+        <li>内容以上に印象を左右する要素</li>
+      </ul>
+      <div class="reason"><strong>理由（章のメッセージ）：</strong>非言語が内容の受容性を決めるため、印象の土台を整える重要性を示すため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🌍 場面別：初対面、目上・同僚、オンライン、本題への橋渡し</h3>
+      <ul>
+        <li>初対面では観察と共通点探索を優先</li>
+        <li>目上にはクッション言葉と敬意を示す</li>
+        <li>オンラインでは非言語を意識的に強化</li>
+        <li>雑談から本題へスムーズに移行する技法</li>
+      </ul>
+      <div class="reason"><strong>理由（章のメッセージ）：</strong>場面ごとの最適解を示し、実践の幅を広げるため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🏃 実践：15分練習メニューと自己チェック</h3>
+      <ul>
+        <li>日々15分の練習で習慣化</li>
+        <li>自己チェックで改善点を発見</li>
+        <li>小さな成功体験を積み重ねる</li>
+      </ul>
+      <div class="reason"><strong>理由（章のメッセージ）：</strong>知識を行動に変え、継続的な上達を促すため</div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🎯 具体例1：観察から話題を生む</h3>
+      <p><strong>背景：</strong>初対面の商談相手のデスクに地元の写真が飾られていた。</p>
+      <p><strong>実践：</strong>「この写真、〇〇ですよね？私も以前訪れたことがあります」と観察から話題化。相手が笑顔で「そうなんです、地元なんです」と応答し、共通点が見つかり会話が弾んだ。</p>
+      <p><strong>示唆：</strong>観察は相手への関心を示す最初のステップであり、共通点探索のきっかけになる。</p>
+      <div class="reason"><strong>理由（この例が示すこと）：</strong>観察力が話題の発掘源となり、会話の立ち上がり成功率を決めることを実証するから</div>
+    </div>
+
+    <div class="example-card">
+      <h3>🎯 具体例2：YES-ANDで会話をのせる</h3>
+      <p><strong>背景：</strong>同僚が「最近忙しくて疲れた」と愚痴をこぼした。</p>
+      <p><strong>実践：</strong>「そうだよね、本当に大変だったよね（YES）。でも、あのプロジェクトが終わったら少し落ち着くんじゃない？（AND）」と受容しつつ前向きな視点を添えた。同僚は「そうだね、もう少しだ」と前向きになった。</p>
+      <p><strong>示唆：</strong>否定せず受容することで相手の自己効力感が上がり、会話が建設的に展開する。</p>
+      <div class="reason"><strong>理由（この例が示すこと）：</strong>YES-ANDが否定感情を下げ、相手の自己効力感を上げることで会話が広がることを示すから</div>
+    </div>
+
+    <div class="example-card">
+      <h3>🎯 具体例3：具体化質問で深掘り</h3>
+      <p><strong>背景：</strong>友人が「週末に旅行に行った」と話した。</p>
+      <p><strong>実践：</strong>「どこに行ったの？」「誰と？」「何が一番楽しかった？」と具体化質問を重ねた。友人は詳細を語り、会話が15分続いた。</p>
+      <p><strong>示唆：</strong>具体化質問は抽象を具体へ導き、共感と記憶を強化し、関係を深める。</p>
+      <div class="reason"><strong>理由（この例が示すこと）：</strong>具体化質問が会話を深く長くし、関係を深める鍵であることを実証するから</div>
+    </div>
+
+    <div class="example-card">
+      <h3>🎯 具体例4：非言語で印象を変える</h3>
+      <p><strong>背景：</strong>オンライン会議で提案が通りにくかった。</p>
+      <p><strong>実践：</strong>声量を上げ、笑顔を意識し、うなずきを増やした。次回の会議では同じ提案が好意的に受け入れられた。</p>
+      <p><strong>示唆：</strong>非言語が内容の受容性を決め、提案・依頼の成功率を左右する。</p>
+      <div class="reason"><strong>理由（この例が示すこと）：</strong>非言語の好感度が内容の受容性を上げることを実証するから</div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>「雑談は本題の前に信頼をつくる『場づくり』である。」</p>
+      <small><strong>理由：</strong>目的は雑談そのものではなく、成果を生む関係の地ならしだと示すから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「会話は『受け止める→広げる』の順に回すと途切れない。」</p>
+      <small><strong>理由：</strong>先に受容を置くことで相手の発話量と安心感が上がるため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「ネタは日常に転がっており、事前に仕入れれば即戦力になる。」</p>
+      <small><strong>理由：</strong>準備の有無が立ち上がりの成否を決めることを強調するため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「観察は相手への関心を示す最初のステップであり、話題の発掘源となる。」</p>
+      <small><strong>理由：</strong>観察力が会話の立ち上がり成功率を決める入口であることを示すため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「非言語が内容の受容性を決め、提案・依頼の成功率を左右する。」</p>
+      <small><strong>理由：</strong>印象の土台が整うことで内容が受け入れられやすくなることを強調するため。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>📰 アクション1：身近なニュースを3本メモし要約</h3>
+      <p><strong>目的：</strong>話題ストックを増やし、会話の立ち上がり成功率を上げる</p>
+      <p><strong>実行方法：</strong>今日のニュースから3本選び、各1行で要約してメモする</p>
+      <small><strong>期待効果：</strong>即戦力の話題が手に入り、ネタ切れを防げる。15分で完了。</small>
+    </div>
+
+    <div class="action-card">
+      <h3>🗣️ アクション2：ほめる→尋ねる→のせるを10回練習</h3>
+      <p><strong>目的：</strong>会話の型を体に染み込ませ、再現性を高める</p>
+      <p><strong>実行方法：</strong>家族や友人との会話で「ほめる→尋ねる→のせる」を意識的に10回実践する</p>
+      <small><strong>期待効果：</strong>型が自然に出るようになり、会話が途切れにくくなる。20分で完了。</small>
+    </div>
+
+    <div class="action-card">
+      <h3>🛡️ アクション3：クッション言葉を5個書き出し暗唱</h3>
+      <p><strong>目的：</strong>配慮を示す前置きを自然に使えるようにし、摩擦を軽減する</p>
+      <p><strong>実行方法：</strong>「もし差し支えなければ」「お伺いしたいのですが」等を5個書き出し、声に出して暗唱する</p>
+      <small><strong>期待効果：</strong>建設的対話が維持され、提案・依頼の成功率が上がる。15分で完了。</small>
+    </div>
+
+    <div class="action-card">
+      <h3>👀 アクション4：観察力トレーニング</h3>
+      <p><strong>目的：</strong>相手の手掛かりを発見する力を鍛え、話題の発掘源を増やす</p>
+      <p><strong>実行方法：</strong>今日会った人の服装・持ち物・表情を3つメモする</p>
+      <small><strong>期待効果：</strong>観察が習慣化し、会話の立ち上がりが楽になる。15分で完了。</small>
+    </div>
+
+    <div class="action-card">
+      <h3>🎭 アクション5：非言語チェック</h3>
+      <p><strong>目的：</strong>声量・笑顔・うなずきを意識し、印象の土台を整える</p>
+      <p><strong>実行方法：</strong>鏡の前で笑顔を作り、声量を上げて話す練習を5分行う</p>
+      <small><strong>期待効果：</strong>非言語の好感度が上がり、内容の受容性が高まる。15分で完了。</small>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
