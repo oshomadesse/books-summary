@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HARD THINGS - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+}
+
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1rem;
+}
+
+.summary-item p, .summary-item ul {
+  font-size: 0.95rem;
+  color: var(--text);
+  margin-left: 0.5rem;
+}
+
+.summary-item ul {
+  list-style: none;
+  padding-left: 1rem;
+}
+
+.summary-item li {
+  margin-bottom: 0.5rem;
+  position: relative;
+  padding-left: 1.2rem;
+}
+
+.summary-item li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 2rem 0 1rem;
+  overflow-x: auto;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--primary);
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.card li {
+  margin-bottom: 0.6rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+
+.reason strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+
+.chapter-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.chapter-card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.chapter-card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.example-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(240,147,251,0.05));
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  border: 2px solid var(--border);
+}
+
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.quote-card {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.quote-card blockquote {
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+}
+
+.quote-card .quote-meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  border-top: 1px solid var(--border);
+  padding-top: 0.5rem;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+
+.action-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.95;
+}
+
+.action-card .action-meta {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.visual-section h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.priority-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+}
+
+.priority-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 120px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+.priority-box .number {
+  font-size: 2rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.priority-box .label {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.arrow {
+  font-size: 2rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.flow-item {
+  background: linear-gradient(90deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.flow-item:before {
+  content: "→";
+  font-size: 1.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+
+.book-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.75rem;
+}
+
+.book-card .relation {
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  header p {
+    font-size: 0.9rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    font-size: 0.85rem;
+  }
+  
+  .tab-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .priority-visual {
+    flex-direction: column;
+  }
+  
+  .arrow {
+    transform: rotate(90deg);
+  }
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-light);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 HARD THINGS</h1>
+  <p>答えがない難問と困難に立ち向かう経営者のための実践ガイド</p>
+</header>
+
+<div class="container">
+  
+  <div class="summary-block">
+    <h2>📌 要約：問い×答え×根拠</h2>
+    
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>答えのない難問に直面した経営者・リーダーは、どう会社を生き延びさせ成長へ導くか？</p>
+    </div>
+    
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>人・プロダクト・利益の順で優先し、平時/戦時を見極め、鉛の弾丸（地道な反復実行）で解を作る。CEOは心理を管理し、採用・解雇・情報の流れ・資金繰りの決断を自ら行い、実行のリズムを設計する。</p>
+    </div>
+    
+    <div class="summary-item">
+      <strong>🔍 Why＝なぜそうなのか？</strong>
+      <p>市場や競合は不確実で唯一の正解は存在しないが、著者がNetscape/LOUDCLOUD/OPSWAREでの危機を生還させた原理（人→製品→利益、戦時思考、実行の徹底）は再現性が高く、普遍的に通用するから。</p>
+    </div>
+    
+    <div class="summary-item">
+      <strong>⚙️ How＝そのためには？</strong>
+      <ul>
+        <li>戦時モードでは意思決定の速度と集中を最優先にする</li>
+        <li>レイオフは尊厳を守り一日でやり切る</li>
+        <li>1on1と定例で現場情報を上げ、OKR等でフォーカスを合わせる</li>
+        <li>幹部は成果基準と文化適合で採用・即時更迭</li>
+        <li>キャッシュアウトを避けるため資金調達/コスト削減を先に打つ</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>🎯 正しい優先順位</h3>
+    <div class="priority-visual">
+      <div class="priority-box">
+        <span class="number">1</span>
+        <span class="label">👥 人</span>
+      </div>
+      <span class="arrow">→</span>
+      <div class="priority-box">
+        <span class="number">2</span>
+        <span class="label">📦 プロダクト</span>
+      </div>
+      <span class="arrow">→</span>
+      <div class="priority-box">
+        <span class="number">3</span>
+        <span class="label">💰 利益</span>
+      </div>
+    </div>
+    <p style="text-align:center; color: var(--text-light); font-size: 0.9rem; margin-top: 1rem;">まず人を大切にし、良い製品を作り、その結果として利益が生まれる</p>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true">主要概念の詳細</button>
+    <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false">各章の要約</button>
+    <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false">具体例</button>
+    <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false">重要な引用</button>
+    <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false">今日のアクション</button>
+  </nav>
+
+  <div id="concepts" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      
+      <div class="card">
+        <h3>🔥 ハードシングス</h3>
+        <ul>
+          <li>教科書的な正解がない現実の経営課題</li>
+          <li>痛みを伴う意思決定を迫る難問</li>
+          <li>逃げられない"答えがない"状況</li>
+        </ul>
+        <div class="reason">
+          <strong>💡 なぜ重要か：</strong> 経営の本質は正解のない問いに向き合い続けることだから
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌑 ザ・ストラグル</h3>
+        <ul>
+          <li>会社が傾き孤独と恐怖に苛まれる時期</li>
+          <li>自分の判断すべてが疑わしく見える</li>
+          <li>多くの偉大な企業が通る通過儀礼</li>
+        </ul>
+        <div class="reason">
+          <strong>💡 なぜ重要か：</strong> 暗闇を言語化することで耐える意味と希望を与えるから
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚔️ 戦時CEO/平時CEO</h3>
+        <ul>
+          <li>破壊的変化や存亡の危機では"戦時"モード</li>
+          <li>規律とスピードを最重視</li>
+          <li>安定局面では創造と最適化を重視</li>
+        </ul>
+        <div class="reason">
+          <strong>💡 なぜ重要か：</strong> 局面で経営スタイルを切り替えないと組織が崩壊するから
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔫 鉛の弾丸</h3>
+        <ul>
+          <li>派手な特効薬（銀の弾丸）ではない</li>
+          <li>仮説検証と改善を地道に繰り返す</li>
+          <li>勝利は反復から生まれる</li>
+        </ul>
+        <div class="reason">
+          <strong>💡 なぜ重要か：</strong> 魔法ではなく反復実行が唯一の勝ち筋だから
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎯 人・プロダクト・利益の順</h3>
+        <ul>
+          <li>まず人を大切にする</li>
+          <li>良い製品を作る</li>
+          <li>その結果として利益が生まれる</li>
+        </ul>
+        <div class="reason">
+          <strong>💡 なぜ重要か：</strong> 正しい優先順位が意思決定の羅針盤になるから
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👔 CEOの仕事</h3>
+        <ul>
+          <li>会社が死なないようにする（生存の責任者）</li>
+          <li>キャッシュと顧客の確保</li>
+          <li>組織設計・方針・人事の最終決断</li>
+        </ul>
+        <div class="reason">
+          <strong>💡 なぜ重要か：</strong> 正解なき環境で最終責任を負うのはCEOだけだから
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔄 コミュニケーションのリズム</h3>
+        <ul>
+          <li>1on1、定例、レビューで情報を上げる</li>
+          <li>意思決定を加速する仕組み</li>
+          <li>組織の血流を設計する</li>
+        </ul>
+        <div class="reason">
+          <strong>💡 なぜ重要か：</strong> 情報の流れが止まると判断が遅れ顧客を失うから
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎓 幹部採用と交代</h3>
+        <ul>
+          <li>成果要件と文化適合を明確化</li>
+          <li>入社後の成果が出なければ迅速に配置転換</li>
+          <li>フィット最優先で解任も辞さない</li>
+        </ul>
+        <div class="reason">
+          <strong>💡 なぜ重要か：</strong> 誤った幹部採用は組織全体の実行力を低下させるから
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>✂️ レイオフの原則</h3>
+        <ul>
+          <li>尊厳を守り情報の一貫性を保つ</li>
+          <li>迅速に一度でやり切る</li>
+          <li>中間管理職から先に伝え法務と実務を緻密に準備</li>
+        </ul>
+        <div class="reason">
+          <strong>💡 なぜ重要か：</strong> 不適切なレイオフは残った社員の信頼を破壊するから
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🏛️ 文化は行動</h3>
+        <ul>
+          <li>掲げる価値観ではなく実際の基準が文化</li>
+          <li>昇進・解雇・評価の実際が文化を形作る</li>
+          <li>価値観の実装こそが重要</li>
+        </ul>
+        <div class="reason">
+          <strong>💡 なぜ重要か：</strong> 言葉と行動が一致しないと組織は崩壊するから
+        </div>
+      </div>
+
+    </div>
+
+    <div class="visual-section">
+      <h3>🔗 概念間の因果関係</h3>
+      <div class="flow-diagram">
+        <div class="flow-item">環境変化/危機発生 → 戦時モード切替 → 意思決定速度↑・集中↑ → 生存確率↑</div>
+        <div class="flow-item">銀の弾丸期待 × → 鉛の弾丸（反復実行） → 製品価値向上 → 顧客維持/成長</div>
+        <div class="flow-item">誤った幹部採用 → 目標不一致・情報断絶 → 実行力低下 → 追加の人事/再編が必要</div>
+        <div class="flow-item">1on1/定例不足 → 現場情報欠如 → 遅延と迷走 → 顧客喪失 → キャッシュ圧迫</div>
+        <div class="flow-item">文化の不一致放置 → 採用/昇進のバラツキ → ノイズ増大 → 戦時に崩壊</div>
+        <div class="flow-item">CEO心理の乱れ → 楽観/悲観の振れ幅拡大 → 誤判断 → 組織の疲弊</div>
+        <div class="flow-item">人→製品→利益（優先順）を徹底 → エンゲージメント↑ → 製品品質↑ → 収益性↑</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="chapters" class="tab-content" role="tabpanel">
+    
+    <div class="chapter-card">
+      <h3>📖 導入：答えがない難問とは何か</h3>
+      <ul>
+        <li>教科書にない現実の経営課題を事例で提示</li>
+        <li>"正解"ではなく原理と実践で戦う姿勢を提示</li>
+        <li>ハードシングスの定義と向き合い方</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜこの章が必要か：</strong> 読者に「正解がない」前提を受け入れさせ、実践的アプローチへの心構えを作るため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🌑 ザ・ストラグルとCEOの心理</h3>
+      <ul>
+        <li>孤独・恐怖・罪悪感への対処法</li>
+        <li>心のマネジメントが意思決定の前提</li>
+        <li>なぜ始めたかを自問する重要性</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜこの章が必要か：</strong> CEOの心理的負荷を言語化し、暗闇を乗り越える意味と方法を示すため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎯 CEOの仕事：人・プロダクト・利益</h3>
+      <ul>
+        <li>優先順位の明確化</li>
+        <li>情報の流れ設計、目標設定、レビューのリズム</li>
+        <li>運営の骨格となる原則を提示</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜこの章が必要か：</strong> 日々の意思決定を支える実務的な枠組みを提供するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>👥 組織と人事：採用・評価・解雇</h3>
+      <ul>
+        <li>幹部要件の明確化とOnboarding</li>
+        <li>成果が出ない時の交代プロセス</li>
+        <li>レイオフのやり方まで具体策を解説</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜこの章が必要か：</strong> 人事は最も難しく重要な決断であり、具体的な手順が必要だから
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>⚔️ 戦時と危機対応</h3>
+      <ul>
+        <li>戦時CEOの原則（フォーカス・規律・スピード）</li>
+        <li>資金繰り、競合対応、顧客維持策</li>
+        <li>存亡の危機を乗り越える実践手法</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜこの章が必要か：</strong> 危機時には通常の経営手法が通用せず、特別な対応が求められるから
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📋 付録・実務ツール</h3>
+      <ul>
+        <li>Good PM/Bad PM等の実務チェックリスト</li>
+        <li>日々の判断を支援する具体的ツール</li>
+        <li>原理を具体化した実践ガイド</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜこの章が必要か：</strong> 抽象的な原理を日々の業務に落とし込むための橋渡しをするため
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>📊 全体の論理構造</h3>
+      <div class="flow-diagram">
+        <div class="flow-item">体験談（著者の危機体験）</div>
+        <div class="flow-item">原理（人・製品・利益、戦時/平時、鉛の弾丸）</div>
+        <div class="flow-item">実践手引き（採用、解雇、1on1、資金繰り）</div>
+        <div class="flow-item">ツール（チェックリスト、テンプレート）</div>
+      </div>
+      <p style="text-align:center; color: var(--text-light); font-size: 0.9rem; margin-top: 1rem;">抽象から具体へ落とし込み、再現可能性を高める構成</p>
+    </div>
+
+  </div>
+
+  <div id="examples" class="tab-content" role="tabpanel">
+    
+    <div class="example-card">
+      <h3>💼 例1：LOUDCLOUD危機とIPO</h3>
+      <p><strong>背景：</strong> ドットコムバブル崩壊直後、資金調達が困難な中でIPOを強行。株価は初日から下落し続け、会社存続の危機に直面。</p>
+      <p><strong>対応：</strong> 戦時モードに切り替え、コスト削減と顧客維持に集中。幹部を入れ替え、情報の流れを再設計。最終的にOpswareへの事業転換で生き残る。</p>
+      <div class="reason">
+        <strong>💡 この例が示すこと：</strong> 危機時には平時の経営手法を捨て、生存に集中する戦時思考が不可欠であること
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🔄 例2：幹部の即時交代</h3>
+      <p><strong>背景：</strong> 採用した営業責任者が成果を出せず、チームの士気が低下。著者は数ヶ月待ったが改善せず。</p>
+      <p><strong>対応：</strong> 成果基準と文化適合の両面で評価し、即座に配置転換を決断。新責任者を迅速に採用し、チームを立て直す。</p>
+      <div class="reason">
+        <strong>💡 この例が示すこと：</strong> 幹部のミスマッチは組織全体に波及するため、迅速な決断が必要であること
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>✂️ 例3：大規模レイオフの実行</h3>
+      <p><strong>背景：</strong> 資金繰りの悪化により、従業員の大幅削減が避けられない状況に。</p>
+      <p><strong>対応：</strong> 一日で全員に通知し、尊厳を守るため丁寧な説明と手厚い退職パッケージを用意。中間管理職から先に伝え、情報の一貫性を保つ。</p>
+      <div class="reason">
+        <strong>💡 この例が示すこと：</strong> レイオフは避けられない時もあるが、やり方次第で残った社員の信頼を守れること
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🔫 例4：鉛の弾丸による製品改善</h3>
+      <p><strong>背景：</strong> 競合が派手な新機能を発表し、市場の注目を集める。社内から「銀の弾丸」的な対抗策を求める声。</p>
+      <p><strong>対応：</strong> 著者は派手な対抗策ではなく、顧客の声を聞き、地道に製品を改善し続ける「鉛の弾丸」アプローチを選択。結果的に顧客満足度が向上し、競合に勝利。</p>
+      <div class="reason">
+        <strong>💡 この例が示すこと：</strong> 魔法の解決策はなく、反復実行こそが唯一の勝ち筋であること
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🎯 例5：人→製品→利益の優先順位</h3>
+      <p><strong>背景：</strong> 短期的な利益を優先し、優秀なエンジニアを解雇する選択肢が浮上。</p>
+      <p><strong>対応：</strong> 著者は「人→製品→利益」の原則に従い、エンジニアを守り、製品改善に集中。結果的に製品品質が向上し、長期的な利益につながる。</p>
+      <div class="reason">
+        <strong>💡 この例が示すこと：</strong> 正しい優先順位を守ることが、長期的な成功につながること
+      </div>
+    </div>
+
+  </div>
+
+  <div id="quotes" class="tab-content" role="tabpanel">
+    
+    <div class="quote-card">
+      <blockquote>"There are no silver bullets, only lead bullets."</blockquote>
+      <div class="quote-meta">
+        <strong>💡 なぜ重要か：</strong> 魔法ではなく反復実行が唯一の勝ち筋であると示す核心メッセージ
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Take care of the people, the products, and the profits—in that order."</blockquote>
+      <div class="quote-meta">
+        <strong>💡 なぜ重要か：</strong> 正しい優先順位が意思決定の羅針盤になるため
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"The Struggleは、なぜ始めたか自問する時だ。"</blockquote>
+      <div class="quote-meta">
+        <strong>💡 なぜ重要か：</strong> 誰もが通る暗闇を言語化し、耐える意味を与える
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"戦時CEOは規律と速度、平時CEOは創造と最適化。"</blockquote>
+      <div class="quote-meta">
+        <strong>💡 なぜ重要か：</strong> 局面で経営スタイルを切り替える必要を示す
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"CEOの仕事は、会社が死なないようにすること。"</blockquote>
+      <div class="quote-meta">
+        <strong>💡 なぜ重要か：</strong> 経営者の最優先事項を明確にする
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"文化は、あなたが何を言うかではなく、誰を昇進させ、誰を解雇するかで決まる。"</blockquote>
+      <div class="quote-meta">
+        <strong>💡 なぜ重要か：</strong> 言葉と行動の一致が組織文化を作ることを示す
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"レイオフは一日でやり切れ。尊厳を守れ。"</blockquote>
+      <div class="quote-meta">
+        <strong>💡 なぜ重要か：</strong> 最も困難な決断の実行原則を示す
+      </div>
+    </div>
+
+  </div>
+
+  <div id="actions" class="tab-content" role="tabpanel">
+    
+    <div class="action-card">
+      <h3>💰 アクション1：キャッシュ残存月数を確認する</h3>
+      <p>現在の現金残高と月次の支出を確認し、何ヶ月分のキャッシュが残っているかを計算する。</p>
+      <div class="action-meta">
+        <strong>🎯 目的：</strong> 資金繰りの危機を事前に察知し、対策を打つ時間を確保する<br>
+        <strong>✨ 期待効果：</strong> キャッシュアウトのリスクを回避し、会社の生存確率を高める
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🗣️ アクション2：次回1on1の必須質問を3つ決める</h3>
+      <p>「今週最も困っていることは？」「私が助けられることは？」「チームの士気はどうか？」など、現場の情報を引き出す質問を準備する。</p>
+      <div class="action-meta">
+        <strong>🎯 目的：</strong> 現場の情報を上げ、意思決定の精度を高める<br>
+        <strong>✨ 期待効果：</strong> 問題の早期発見と迅速な対応が可能になる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>📋 アクション3：幹部採用の合否基準を書き出す</h3>
+      <p>次に採用する幹部に求める成果要件（例：売上目標、チーム構築）と文化適合（例：誠実さ、実行力）を明文化する。</p>
+      <div class="action-meta">
+        <strong>🎯 目的：</strong> 採用のミスマッチを防ぎ、組織の実行力を高める<br>
+        <strong>✨ 期待効果：</strong> 適切な人材を迅速に見極め、採用後の成果を最大化する
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>⚔️ アクション4：平時/戦時の判断基準を書く</h3>
+      <p>自社が今「平時」か「戦時」かを判断する基準（例：キャッシュ残存月数、競合の動き、顧客離反率）をリスト化する。</p>
+      <div class="action-meta">
+        <strong>🎯 目的：</strong> 経営スタイルを適切に切り替えるトリガーを明確にする<br>
+        <strong>✨ 期待効果：</strong> 危機への対応が遅れず、生存確率が高まる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🔄 アクション5：今週の「鉛の弾丸」を1つ決める</h3>
+      <p>派手な施策ではなく、地道に反復すべき改善（例：顧客インタビュー、製品バグ修正、営業プロセス改善）を1つ選び、実行する。</p>
+      <div class="action-meta">
+        <strong>🎯 目的：</strong> 反復実行の習慣を作り、製品価値を着実に高める<br>
+        <strong>✨ 期待効果：</strong> 小さな改善の積み重ねが大きな成果につながる
+      </div>
+    </div>
+
+  </div>
+
+  <div class="visual-section" style="margin-top: 3rem;">
+    <h3>📚 関連書籍</h3>
+    <div class="book-grid">
+      
+      <div class="book-card">
+        <h4>High Output Management</h4>
+        <div class="author">アンドリュー・S・グローブ</div>
+        <div class="relation">1on1や生産システムなど、本書の実務を補完する管理の定石。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>Only the Paranoid Survive</h4>
+        <div class="author">アンドリュー・S・グローブ</div>
+        <div class="relation">戦時の戦略転換（戦略的転換点）をどう乗り切るかの指針。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>Measure What Matters</h4>
+        <div class="author">ジョン・ドーア</div>
+        <div class="relation">OKRでフォーカスと実行のリズムを作る方法を提供。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>ZERO to ONE</h4>
+        <div class="author">ピーター・ティール</div>
+        <div class="relation">0→1の創造に焦点。本書の"生存と実行"と補完関係。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>What You Do Is Who You Are</h4>
+        <div class="author">ベン・ホロウィッツ</div>
+        <div class="relation">文化は行動で作るという本書の主張を深掘りする続編的内容。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>Lean Startup</h4>
+        <div class="author">エリック・リース</div>
+        <div class="relation">鉛の弾丸＝反復検証の実践枠組み（MVP/学習ループ）。</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>📘 HARD THINGS インフォグラフィック | カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb</p>
+</footer>
+
+<script>
+// タブ切り替え機能
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const targetTab = button.getAttribute('data-tab');
+    
+    // すべてのタブボタンとコンテンツから active クラスを削除
+    tabButtons.forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブボタンとコンテンツに active クラスを追加
+    button.classList.add('active');
+    button.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
