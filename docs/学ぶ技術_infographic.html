@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学習の技法 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--secondary);
+}
+.chapter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.chapter {
+  background: var(--card-bg);
+  border-left: 4px solid var(--secondary);
+  padding: 1.2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter h3 {
+  color: var(--primary);
+  margin-bottom: 0.6rem;
+  font-size: 1.05rem;
+}
+.chapter ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter li {
+  padding: 0.3rem 0;
+  padding-left: 1.2rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.example-card h3 {
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+  font-size: 1.05rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.6rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 4px solid var(--primary);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.quote-card small {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--accent), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 0.4rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.visual-diagram h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.book-item {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--secondary);
+}
+.book-item h4 {
+  color: var(--primary);
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+.book-item p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.3rem;
+}
+.book-item small {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 学習の技法</h1>
+  <p>卓越は設計された学習から生まれる</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      どうすればどの分野でも卓越した学習者になれるか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      失敗を投資と捉え、技能を最小単位に分解して深く統合し、ストレス下でも機能する集中・回復の仕組み（トリガー）を構築する。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      著者はチェスと太極拳で同一の学習原理を適用し世界レベルの成果を再現した。原理は人間の注意・感情・記憶の働きに合致し、転用可能性が高い。
+    </div>
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      ①投資としての敗北でフィードバック回路を強化、②小さな円を作るで重要信号を抽出し再現性を高め、③スローダウン・タイムで知覚を拡張、④トリガーとリカバリーで集中を意図的に起動・維持する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">関連書籍</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>💰 投資としての敗北</h3>
+        <ul>
+          <li>短期的な負けを受け入れる</li>
+          <li>誤りの原因を特定・修正</li>
+          <li>長期的な実力を底上げ</li>
+          <li>失敗回避より学習最大化</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>失敗を授業料と捉えることで、フィードバック回路が強化され、改善の速度が飛躍的に向上する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎯 小さな円を作る</h3>
+        <ul>
+          <li>技能を最小の本質要素に絞る</li>
+          <li>密度高く反復して身体化</li>
+          <li>重要信号を抽出</li>
+          <li>核心の濃縮で力を増す</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>複雑さを削ぎ落とし核心だけを磨くことで、再現性と応用力が同時に高まる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⏱️ スローダウン・タイム</h3>
+        <ul>
+          <li>高圧状況で主観的時間を拡張</li>
+          <li>情報処理を精緻化</li>
+          <li>知覚の訓練で実現</li>
+          <li>注意制御とソフトゾーンが基盤</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>時間感覚を伸ばすことで、本番の混乱下でも冷静な判断と実行が可能になる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔄 数により数を離れる</h3>
+        <ul>
+          <li>形式知の反復で型を習得</li>
+          <li>意識せず直観で運用</li>
+          <li>型から無我へ移行</li>
+          <li>知識の内面化と熟達</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>反復が自動化を生み、意識的努力なしに高度な技能を発揮できる段階へ到達する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌊 ソフトゾーン</h3>
+        <ul>
+          <li>予測外の揺らぎを受容</li>
+          <li>集中を保つ柔軟な精神状態</li>
+          <li>しなやかな集中</li>
+          <li>ストレスを味方に変える</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>硬直した集中は脆く、柔軟性があるからこそ不確実性に対応できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎬 トリガーとリカバリー</h3>
+        <ul>
+          <li>望む集中状態へ入る合図</li>
+          <li>乱れた後に素早く整える手順</li>
+          <li>意図的ゾーンの設計</li>
+          <li>本番再現性を高める</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>集中を偶然に任せず、意図的に起動・維持できることが高圧下のパフォーマンスを支える。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🧩 漸進的学習（分解と統合）</h3>
+        <ul>
+          <li>複雑技能を分解して習得</li>
+          <li>場面想定や負荷で統合</li>
+          <li>実戦化するプロセス</li>
+          <li>分解→反復→合成</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>段階的アプローチが認知負荷を管理し、確実な習得と応用を可能にする。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚡ 逆境の活用</h3>
+        <ul>
+          <li>環境ノイズを取り入れる</li>
+          <li>プレッシャーで耐性を鍛える</li>
+          <li>ノイズを味方に</li>
+          <li>競技・本番適応力の強化</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>快適な環境だけでは本番の混乱に対応できず、ストレス免疫の形成が不可欠。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-diagram">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-item">
+        <span>投資としての敗北</span>
+        <span class="flow-arrow">→</span>
+        <span>具体的誤差の把握</span>
+        <span class="flow-arrow">→</span>
+        <span>分解学習の題材</span>
+      </div>
+      <div class="flow-item">
+        <span>小さな円を作る</span>
+        <span class="flow-arrow">→</span>
+        <span>重要信号の抽出</span>
+        <span class="flow-arrow">→</span>
+        <span>直観化</span>
+      </div>
+      <div class="flow-item">
+        <span>スローダウン・タイム</span>
+        <span class="flow-arrow">←</span>
+        <span>注意制御 × 知覚訓練</span>
+        <span class="flow-arrow">←</span>
+        <span>ソフトゾーン</span>
+      </div>
+      <div class="flow-item">
+        <span>トリガーとリカバリー</span>
+        <span class="flow-arrow">→</span>
+        <span>集中の起動・維持</span>
+        <span class="flow-arrow">→</span>
+        <span>高圧下の再現性</span>
+      </div>
+      <div class="flow-item">
+        <span>逆境の活用</span>
+        <span class="flow-arrow">→</span>
+        <span>ストレス免疫</span>
+        <span class="flow-arrow">→</span>
+        <span>本番適応力</span>
+      </div>
+      <div class="flow-item">
+        <span>分解と統合</span>
+        <span class="flow-arrow">↔</span>
+        <span>直観化の進行</span>
+        <span class="flow-arrow">↔</span>
+        <span>パフォーマンス安定</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-list">
+      <div class="chapter">
+        <h3>📖 導入：天賦型ではなく学習設計型</h3>
+        <ul>
+          <li>幼少期のチェス経験から出発</li>
+          <li>才能神話を否定し、設計された学習の有効性を提示</li>
+          <li>誰でも卓越に到達できる道筋を示唆</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>生まれつきの才能ではなく、学習方法の質が成果を決めることを明示し、読者に希望を与える。
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3>🧱 基礎原理：失敗・分解・調律</h3>
+        <ul>
+          <li>失敗を投資と捉える姿勢の確立</li>
+          <li>分解→反復→統合の漸進学習フレーム</li>
+          <li>注意・感情の自己調律技法</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>全ての学習に共通する基盤原理を提示し、領域横断的な適用可能性を保証する。
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3>♟️ 実践展開（チェス）：誤りから直観へ</h3>
+        <ul>
+          <li>誤りの検盤で弱点を特定</li>
+          <li>パターン認識の育成</li>
+          <li>型を通じた直観化までの道筋</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>抽象原理を具体的な競技場面で検証し、実践可能性を示す。
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3>🥋 横展開（太極拳）：身体技法への転用</h3>
+        <ul>
+          <li>チェスでの原理を身体技法へ適用</li>
+          <li>「小さな円」「スローダウン・タイム」を検証</li>
+          <li>異分野でも同一原理が機能することを実証</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>知的技能と身体技能の両方で成果を出すことで、原理の普遍性を証明する。
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3>🔥 高圧下の最適化：ノイズを訓練に</h3>
+        <ul>
+          <li>競技環境のノイズを訓練に組み込む</li>
+          <li>ソフトゾーンとトリガー設計</li>
+          <li>本番再現性を高める技法</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>練習と本番のギャップを埋め、実戦で機能する学習を実現する。
+        </div>
+      </div>
+
+      <div class="chapter">
+        <h3>🌐 統合：領域横断的スキルへ</h3>
+        <ul>
+          <li>学習原理を領域横断的フレームに帰結</li>
+          <li>どの分野にも適用可能な設計図を提供</li>
+          <li>読者自身の領域への転用を促す</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>個別事例を超えた普遍的学習モデルを提示し、読者の自律的応用を支援する。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🎯 例1：チェスの誤り検盤</h3>
+      <p><strong>背景：</strong>著者は対局後、負けた試合を盤面に再現し、どの手が敗因だったかを徹底分析した。</p>
+      <p><strong>示唆：</strong>失敗を放置せず、具体的な誤差を特定することで次回の改善点が明確になる。</p>
+      <div class="reason">
+        <strong>理由：</strong>この例は「投資としての敗北」の実践形であり、フィードバック回路の強化が学習速度を加速することを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🥋 例2：太極拳の「小さな円」</h3>
+      <p><strong>背景：</strong>著者は複雑な型を最小の動作要素に分解し、その核心だけを何千回も反復した。</p>
+      <p><strong>示唆：</strong>技能の本質を抽出し密度高く練習することで、応用範囲が広がり直観的な実行が可能になる。</p>
+      <div class="reason">
+        <strong>理由：</strong>この例は「小さな円を作る」の具体化であり、核心の濃縮が力の源泉であることを証明する。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>⏱️ 例3：スローダウン・タイムの訓練</h3>
+      <p><strong>背景：</strong>著者は高圧の試合中、呼吸と注意制御で主観的時間を拡張し、相手の動きが遅く見えるようになった。</p>
+      <p><strong>示唆：</strong>知覚の訓練により、混乱した状況でも冷静に情報を処理し最適な判断を下せる。</p>
+      <div class="reason">
+        <strong>理由：</strong>この例は「スローダウン・タイム」の実現可能性を示し、本番での再現性向上の鍵となる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🎬 例4：トリガーの設計</h3>
+      <p><strong>背景：</strong>著者は試合前に特定の音楽と呼吸法を組み合わせ、集中状態へ入る合図（トリガー）を構築した。</p>
+      <p><strong>示唆：</strong>集中を偶然に任せず、意図的に起動できる仕組みを持つことで本番のパフォーマンスが安定する。</p>
+      <div class="reason">
+        <strong>理由：</strong>この例は「トリガーとリカバリー」の実践であり、高圧下でも機能する集中の再現性を保証する。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>「卓越は長期的で有機的な学習過程の受容から生まれる。」</p>
+      <small><strong>重要性：</strong>短期成果偏重を戒め、設計された反復の価値を示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「敗北は投資であり、改善のコストだ。」</p>
+      <small><strong>重要性：</strong>失敗回避から学習最大化への視点転換を促す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「核心を小さく深くするほど力は増す。」</p>
+      <small><strong>重要性：</strong>分解と集中の方略が成果のレバーであることを示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「ストレスは訓練で味方にできる。」</p>
+      <small><strong>重要性：</strong>本番の不確実性を学習資源へ変換する戦略を支える。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「型を身につけ、やがて型から自由になる。」</p>
+      <small><strong>重要性：</strong>知識の内面化と直観的熟達の移行を端的に表す。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>✍️ アクション1：直近の失敗を3件書き学び化</h3>
+      <p><strong>目的：</strong>失敗を投資と捉える姿勢を体得する</p>
+      <p><strong>方法：</strong>過去1週間の失敗を3つ書き出し、各失敗から得られる具体的な学びを1文で記述する</p>
+      <p><strong>期待効果：</strong>失敗回避から学習最大化へのマインドセット転換が始まり、フィードバック回路が強化される</p>
+      <span class="badge">15分</span>
+    </div>
+
+    <div class="action-card">
+      <h3>🎯 アクション2：集中トリガーを1つ決め練習</h3>
+      <p><strong>目的：</strong>意図的に集中状態へ入る仕組みを構築する</p>
+      <p><strong>方法：</strong>特定の音楽・呼吸法・姿勢のいずれかを選び、5分間の集中作業の前に毎回実行する</p>
+      <p><strong>期待効果：</strong>集中の再現性が高まり、本番や重要タスクでのパフォーマンスが安定する</p>
+      <span class="badge">20分</span>
+    </div>
+
+    <div class="action-card">
+      <h3>🔬 アクション3：技術を分解し1要素だけ反復</h3>
+      <p><strong>目的：</strong>小さな円を作る技法を体験する</p>
+      <p><strong>方法：</strong>習得したい技能を3〜5の要素に分解し、最も重要な1要素だけを10回反復する</p>
+      <p><strong>期待効果：</strong>核心の濃縮により再現性が向上し、応用範囲が広がる</p>
+      <span class="badge">30分</span>
+    </div>
+  </div>
+
+  <div id="tab6" class="tab-content" role="tabpanel">
+    <div class="book-list">
+      <div class="book-item">
+        <h4>📘 マインドセット 「やればできる」の研究</h4>
+        <p><strong>著者：</strong>キャロル・S・ドゥエック</p>
+        <small>成長マインドセットが「投資としての敗北」を支える心理基盤。</small>
+      </div>
+
+      <div class="book-item">
+        <h4>📗 Peak: Expertiseの新科学</h4>
+        <p><strong>著者：</strong>アンデシュ・エリクソン</p>
+        <small>意図的練習が「小さな円」と分解・統合の科学的裏付けを与える。</small>
+      </div>
+
+      <div class="book-item">
+        <h4>📙 Deep Work</h4>
+        <p><strong>著者：</strong>カル・ニューポート</p>
+        <small>高密度の集中と環境設計はトリガーと再現性の要点と一致。</small>
+      </div>
+
+      <div class="book-item">
+        <h4>📕 インナー・ゲーム: テニス</h4>
+        <p><strong>著者：</strong>W・ティモシー・ガルウェイ</p>
+        <small>自己対話を整えゾーンに入る技法がソフトゾーンと呼応。</small>
+      </div>
+
+      <div class="book-item">
+        <h4>📔 Ultralearning</h4>
+        <p><strong>著者：</strong>スコット・ヤング</p>
+        <small>自律的かつ攻めの学習設計が横断的適用の実例を提供。</small>
+      </div>
+
+      <div class="book-item">
+        <h4>📓 弓と禅</h4>
+        <p><strong>著者：</strong>オイゲン・ヘリゲル</p>
+        <small>型から無心への移行が「数により数を離れる」と重なる。</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
