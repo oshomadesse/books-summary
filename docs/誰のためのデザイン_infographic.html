@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>誰のためのデザイン？ - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  margin-left: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0 1rem;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 1.2rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.quote-card blockquote {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+.quote-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  opacity: 0.95;
+}
+.action-card .meta {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  font-size: 0.85rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-diagram h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin: 0.75rem 0;
+  font-size: 0.9rem;
+  gap: 0.75rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.metric-badge {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.metric-badge .number {
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.metric-badge .label {
+  font-size: 0.85rem;
+  opacity: 0.95;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 誰のためのデザイン？</h1>
+  <p>認知科学者が解く、人間中心設計の原則</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 核心メッセージ</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜ日常の製品やUIは使いにくいのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>デザインが人の心的モデル・注意資源・学習特性と不整合で、発見可能性・理解可能性・誤り耐性が不足するから。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>人の行為は「目標→意図→行為仕様→実行→知覚→解釈→評価」の7段階をたどり、その間に実行の溝と評価の溝が生じる。可視性が低い・マッピングが悪い・シグニファイアが曖昧だと誤操作とフラストレーションを誘発する。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>アフォーダンスを明確化し、適切なシグニファイア・ナチュラルマッピング・即時のフィードバック・多層の制約（物理/意味/文化/論理）・エラーに強い仕組み（フォース機能/インターロック/ロックイン）を設け、観察→仮説→プロトタイピング→ユーザテスト→反復のHCDプロセスで磨き込む。</p>
+    </div>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-badge">
+      <span class="number">7</span>
+      <span class="label">行為の段階</span>
+    </div>
+    <div class="metric-badge">
+      <span class="number">4</span>
+      <span class="label">制約の種類</span>
+    </div>
+    <div class="metric-badge">
+      <span class="number">12</span>
+      <span class="label">主要概念</span>
+    </div>
+    <div class="metric-badge">
+      <span class="number">8</span>
+      <span class="label">章構成</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true" aria-controls="tab-concepts">主要概念の詳細</button>
+    <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false" aria-controls="tab-chapters">各章の要約</button>
+    <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false" aria-controls="tab-examples">具体例</button>
+    <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false" aria-controls="tab-quotes">重要な引用</button>
+    <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false" aria-controls="tab-actions">今日のアクション</button>
+  </div>
+
+  <div id="tab-concepts" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🎨 人間中心設計（HCD）</h3>
+        <ul>
+          <li>観察とテストに基づく反復設計</li>
+          <li>人の目標・文脈・制約に合わせる</li>
+          <li>機能より人間に焦点を当てる</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 技術起点でなく人起点で設計することで、実際の使用文脈での成功率と満足度が向上する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🤲 アフォーダンス</h3>
+        <ul>
+          <li>環境や物が提供する可能な行為</li>
+          <li>ユーザが何ができるかを規定</li>
+          <li>本来的な性質（押せる、引ける等）</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 物理的・デジタル的特性が行為の可能性を決めるため、設計の出発点となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🏷️ シグニファイア</h3>
+        <ul>
+          <li>どの行為がどこで可能かを示す手掛かり</li>
+          <li>ラベル、形、音、色などで伝達</li>
+          <li>アフォーダンスを可視化する</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> アフォーダンスが存在しても知覚できなければ使えない。シグニファイアが発見可能性を実現する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🗺️ ナチュラルマッピング</h3>
+        <ul>
+          <li>制御と結果の対応が直感的</li>
+          <li>空間や論理の類似で配置</li>
+          <li>学習不要で操作できる</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 人の空間認知や因果推論と整合すると、記憶負荷なく即座に操作できる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔔 フィードバック</h3>
+        <ul>
+          <li>操作の結果を即時・意味ある形で返す</li>
+          <li>状態と因果を可視化</li>
+          <li>評価の溝を埋める</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 行為の結果が見えないと、ユーザは次の行動を決められず不安とエラーが増える。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🚧 制約（物理/意味/文化/論理）</h3>
+        <ul>
+          <li>不適切な行為を防ぐ仕組み</li>
+          <li>選択肢を絞り、誤りを減らす</li>
+          <li>学習負荷を軽減</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 誤った操作を物理的・論理的に不可能にすることで、安全性と効率が向上する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🧠 概念モデル</h3>
+        <ul>
+          <li>ユーザが心中に持つシステムの動作モデル</li>
+          <li>設計側のモデルと一致が重要</li>
+          <li>因果関係の理解を支える</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> ユーザの心的モデルと設計意図が一致すると、予測可能性が高まりエラーが減る。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔍 発見しやすさ</h3>
+        <ul>
+          <li>何ができるか・どう操作するかが見てわかる</li>
+          <li>シグニファイアとマッピングの総合</li>
+          <li>学習時間を最小化</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 初見のユーザでも迷わず使えることが、普及と満足度の鍵となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔄 行為の7段階</h3>
+        <ul>
+          <li>目標→意図→行為仕様→実行→知覚→解釈→評価</li>
+          <li>各段階で障害が起きる</li>
+          <li>実行と評価の溝を特定</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 行為プロセスを分解することで、どこに設計介入が必要かを診断できる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚡ 実行の溝／評価の溝</h3>
+        <ul>
+          <li>実行の溝: 目標から行為への隔たり</li>
+          <li>評価の溝: 世界の状態を解釈する隔たり</li>
+          <li>よいデザインは両方を橋渡し</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 溝が広いほど学習コストとエラー率が上がるため、設計の最優先課題となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>❌ スリップとミステイク</h3>
+        <ul>
+          <li>スリップ: 意図は正しいが実行で誤る</li>
+          <li>ミステイク: 意図・判断自体が誤る</li>
+          <li>それぞれ異なる対策が必要</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> エラーの種類を区別することで、制約やフィードバックの設計を最適化できる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🛡️ エラーに強い設計</h3>
+        <ul>
+          <li>誤りを防止・軽減し、復帰を容易に</li>
+          <li>フォース機能、インターロック、ロックイン</li>
+          <li>重大事故の確率・影響を低減</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 人は必ず誤るため、システム側で誤りを吸収する仕組みが安全性の要となる。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-diagram">
+      <h3>📊 概念間の関係性</h3>
+      <div class="flow-item">
+        <span>アフォーダンス + シグニファイア</span>
+        <span class="flow-arrow">→</span>
+        <span>発見しやすさ↑</span>
+        <span class="flow-arrow">→</span>
+        <span>実行の溝が狭まる</span>
+      </div>
+      <div class="flow-item">
+        <span>ナチュラルマッピング + 制約</span>
+        <span class="flow-arrow">→</span>
+        <span>誤操作↓</span>
+        <span class="flow-arrow">→</span>
+        <span>学習時間↓</span>
+      </div>
+      <div class="flow-item">
+        <span>フィードバックの即時性・意味性↑</span>
+        <span class="flow-arrow">→</span>
+        <span>評価の溝が狭まる</span>
+        <span class="flow-arrow">→</span>
+        <span>メンタルモデル整合</span>
+      </div>
+      <div class="flow-item">
+        <span>概念モデル（設計者=ユーザ）一致</span>
+        <span class="flow-arrow">→</span>
+        <span>スリップ/ミステイク↓</span>
+      </div>
+      <div class="flow-item">
+        <span>知識（世界の中）を増やす</span>
+        <span class="flow-arrow">→</span>
+        <span>記憶負荷↓</span>
+        <span class="flow-arrow">→</span>
+        <span>エラー率↓</span>
+      </div>
+      <div class="flow-item">
+        <span>エラーに強い設計</span>
+        <span class="flow-arrow">→</span>
+        <span>重大事故の確率・影響↓</span>
+      </div>
+      <div class="flow-item">
+        <span>HCDの反復（観察→プロトタイプ→テスト）</span>
+        <span class="flow-arrow">→</span>
+        <span>不適合の早期検出</span>
+        <span class="flow-arrow">→</span>
+        <span>品質向上・コスト低減</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-chapters" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>第1章: 日常に潜む使いにくさ</h3>
+      <p>身近な失敗例から、可視性・マッピング・フィードバック欠如が問題の根と指摘。ユーザ非難ではなく設計の責任を強調。</p>
+      <div class="reason">
+        <strong>理由:</strong> 使いにくさの責任を設計に置くことで、改善の起点を明確にし、ユーザ体験向上の動機づけを与える。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>第2章: 行為の心理学</h3>
+      <p>行為の7段階と実行/評価の溝を提示。よいデザインはこの二つの溝を橋渡しする。</p>
+      <div class="reason">
+        <strong>理由:</strong> 認知プロセスを分解することで、設計介入のポイントを科学的に特定できる。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>第3章: 頭の中と世界の中の知識</h3>
+      <p>指示・制約・標準化など、世界側の支援で記憶負荷を減らし、操作を容易にする戦略を解説。</p>
+      <div class="reason">
+        <strong>理由:</strong> 外部化・標準化により、ユーザの認知負荷を下げ、誤りと学習時間を削減できる。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>第4章: 何をすべきかをわからせる仕組み</h3>
+      <p>アフォーダンス、シグニファイア、制約、ナチュラルマッピングを体系化。発見可能性の設計法を示す。</p>
+      <div class="reason">
+        <strong>理由:</strong> 発見可能性を高めることで、初見ユーザでも迷わず使える製品を実現できる。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>第5章: 人は誤る</h3>
+      <p>スリップ/ミステイクの分類と誘発要因を説明。エラーに強い設計（フォース機能、インターロック、ロックイン）を提案。</p>
+      <div class="reason">
+        <strong>理由:</strong> エラーを前提とした設計により、安全性と信頼性を大幅に向上できる。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>第6章: デザイン思考とプロセス</h3>
+      <p>観察・仮説・プロトタイピング・ユーザテストの反復を中心とするHCDの具体プロセスを提示。</p>
+      <div class="reason">
+        <strong>理由:</strong> 反復的な検証サイクルにより、不適合を早期発見し、品質とコストを最適化できる。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>第7章: ビジネスと組織の現実</h3>
+      <p>コスト・スケジュール・マーケティングなど組織制約下で原則を適用する方法と妥協の指針を論じる。</p>
+      <div class="reason">
+        <strong>理由:</strong> 理想と現実のバランスを取る方法を示すことで、実務での実践可能性を高める。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>第8章: 複雑化する世界のデザイン</h3>
+      <p>ネットワーク化・自律化時代における可視性、責任、説明可能性の重要性を展望。</p>
+      <div class="reason">
+        <strong>理由:</strong> 技術進化に伴う新たな課題に対し、人間中心設計の原則を拡張・適用する必要性を示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-examples" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🚪 例1: ドアの押す/引くの混乱</h3>
+      <p><strong>背景:</strong> 多くのドアは押すべきか引くべきか見ただけではわからず、ユーザは試行錯誤を強いられる。</p>
+      <p><strong>示唆:</strong> ハンドルの形状（平板=押す、取っ手=引く）というシグニファイアが不適切だと、アフォーダンスが伝わらない。</p>
+      <div class="reason">
+        <strong>理由:</strong> この例は、シグニファイアとナチュラルマッピングの不一致が日常的なフラストレーションを生む典型を示す。
+      </div>
+    </div>
+    <div class="example-card">
+      <h3>🔥 例2: コンロのつまみ配置</h3>
+      <p><strong>背景:</strong> 4つのコンロに対し、つまみが一列に並んでいると、どのつまみがどのコンロを制御するか直感的にわからない。</p>
+      <p><strong>示唆:</strong> つまみをコンロの空間配置と対応させる（ナチュラルマッピング）ことで、誤操作と学習負荷が激減する。</p>
+      <div class="reason">
+        <strong>理由:</strong> 空間的対応の欠如が誤操作を誘発し、安全性と効率を損なうことを具体的に示す。
+      </div>
+    </div>
+    <div class="example-card">
+      <h3>💾 例3: 保存ボタンのフィードバック欠如</h3>
+      <p><strong>背景:</strong> ユーザが保存ボタンを押しても、視覚的・音声的フィードバックがないと、本当に保存されたか不安になり、何度も押してしまう。</p>
+      <p><strong>示唆:</strong> 即時のフィードバック（チェックマーク、音、メッセージ）が評価の溝を埋め、安心感と効率を高める。</p>
+      <div class="reason">
+        <strong>理由:</strong> フィードバックの有無が、ユーザの確信と次の行動決定に直結することを示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-quotes" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <blockquote>"使い手を責めるな。責めるべきは悪いデザインだ。"</blockquote>
+      <p><strong>重要性:</strong> 責任の所在を設計に置き、改善の起点を明確にする。</p>
+    </div>
+    <div class="quote-card">
+      <blockquote>"よいデザインは使い方を説明不要にする。"</blockquote>
+      <p><strong>重要性:</strong> 発見可能性とナチュラルマッピングの目標状態を示す。</p>
+    </div>
+    <div class="quote-card">
+      <blockquote>"人は必ず誤る。だからシステムを誤りに強くせよ。"</blockquote>
+      <p><strong>重要性:</strong> ヒューマンエラー前提の安全設計を促す。</p>
+    </div>
+    <div class="quote-card">
+      <blockquote>"知識は頭の中だけでなく世界の中にも置ける。"</blockquote>
+      <p><strong>重要性:</strong> 外部化・標準化で記憶負荷を下げる方策を正当化する。</p>
+    </div>
+    <div class="quote-card">
+      <blockquote>"観察し、つくり、試し、学び、またつくる。"</blockquote>
+      <p><strong>重要性:</strong> HCDの反復サイクルの核心を簡潔に示す。</p>
+    </div>
+  </div>
+
+  <div id="tab-actions" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>🚪 アクション1: ドア1枚のシグニファイアを点検</h3>
+      <p>自宅や職場のドアを1つ選び、押す/引くの手掛かり（ハンドル形状、ラベル、視覚的手掛かり）を観察し、改善案をメモする。</p>
+      <div class="meta">
+        <strong>目的:</strong> シグニファイアとアフォーダンスの関係を体感的に理解する。<br>
+        <strong>期待効果:</strong> 日常の使いにくさを設計の視点で分析する習慣が身につく。
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>📱 アクション2: よく使うアプリのフィードバック確認</h3>
+      <p>スマホアプリで1つの操作（保存、送信、削除等）を行い、フィードバック（視覚、音、振動）の有無と質を評価する。</p>
+      <div class="meta">
+        <strong>目的:</strong> フィードバックが評価の溝を埋める役割を実感する。<br>
+        <strong>期待効果:</strong> 自分の設計にフィードバックを意識的に組み込めるようになる。
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>📝 アクション3: 自作タスクの7段階を紙に書く</h3>
+      <p>今日行う1つのタスク（例: メール送信）を「目標→意図→行為仕様→実行→知覚→解釈→評価」の7段階に分解し、どこに障害があるか特定する。</p>
+      <div class="meta">
+        <strong>目的:</strong> 行為の7段階モデルを実践的に理解する。<br>
+        <strong>期待効果:</strong> 設計時に実行と評価の溝を意識し、介入ポイントを見つけられるようになる。
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabContents.forEach(c => c.classList.remove('active'));
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById('tab-' + targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
