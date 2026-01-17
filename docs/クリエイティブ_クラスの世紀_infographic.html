@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>クリエイティブ・クラス インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333;
+  --text-light: #666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  border-bottom: 2px solid #e0e0e0;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, #f093fb22, #667eea22);
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.reason strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary)11, var(--secondary)11);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+.quote-card .text {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+.quote-card .note {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: var(--card-bg);
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+.action-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0.25rem;
+}
+.chart-container {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.bar {
+  display: flex;
+  align-items: center;
+  margin: 0.75rem 0;
+}
+.bar-label {
+  min-width: 120px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.bar-fill {
+  height: 24px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+.flow-diagram {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--card-bg);
+  border-radius: 8px;
+}
+.flow-node {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.flow-arrow {
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+@media (max-width: 768px) {
+  header h1 { font-size: 1.5rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .tabs { font-size: 0.85rem; }
+  .tab-btn { padding: 0.6rem 0.75rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎨 クリエイティブ・クラスの時代</h1>
+  <p>21世紀の成長を決める「3T」と「場の質」の科学</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 要約 = 問い × 答え × 根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    なぜ一部の都市・組織だけが継続的にイノベーションと成長を生むのか？
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    クリエイティブ・クラスが集積・定着できる「3T（技術・才能・寛容）」とクオリティ・オブ・プレイスを備え、開放的ネットワークを有するため。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    創造労働は自律性・多様性・刺激的な場に反応し、集積が知識スピルオーバーを加速して生産性を非線形に押し上げるから。
+  </div>
+  <div class="summary-item">
+    <strong>🛠 How（そのためには）</strong>
+    人材重視（ピープル・クライメート）へ政策と企業戦略を転換し、技術基盤・才能育成/誘致・寛容性の制度/文化を同時投資。歩ける都市、混在用途、サードプレイス、ナイトライフ、文化・LGBTQ+・ボヘミアンの受容など"居場所の質"を設計する。
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true">主要概念の詳細</button>
+  <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false">各章の要約</button>
+  <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false">具体例</button>
+  <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false">重要な引用</button>
+  <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false">今日のアクション</button>
+</div>
+
+<div id="concepts" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🎓 クリエイティブ・クラス</h3>
+      <ul>
+        <li>新しい知識・デザイン・問題解決で価値を生む職能群</li>
+        <li>科学者、エンジニア、アーティスト、デザイナー、知識専門職</li>
+        <li>経済成長の推進軸</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 創造性が経済の主エンジンとなり、才能が場所を選ぶ時代の主役だから</div>
+    </div>
+    <div class="card">
+      <h3>🔺 3T（Technology・Talent・Tolerance）</h3>
+      <ul>
+        <li>技術基盤・高度人材・寛容性の三位一体</li>
+        <li>イノベーションの土台を形成</li>
+        <li>どれか欠けると成長は頭打ち</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 単独要素では不十分で、3つの同時達成が非線形な成長を生むから</div>
+    </div>
+    <div class="card">
+      <h3>🏙 クオリティ・オブ・プレイス</h3>
+      <ul>
+        <li>生活の質を超えた「居場所の質」</li>
+        <li>何がある（アメニティ）、誰がいる（多様性）、何が起きている（活動密度）の総体</li>
+        <li>人材の定着を左右</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 採用と定着の決定要因であり、企業が人に追随する時代の競争軸だから</div>
+    </div>
+    <div class="card">
+      <h3>👥 ピープル・クライメート</h3>
+      <ul>
+        <li>企業誘致より人材誘致を優先する戦略</li>
+        <li>開放性・文化・都市体験重視</li>
+        <li>人が企業を呼ぶ</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 税控除中心のビジネス・クライメートより投資効率が高く、持続的成長を生むから</div>
+    </div>
+    <div class="card">
+      <h3>👔 ノーカラー・ワーク</h3>
+      <ul>
+        <li>服装や時間より成果と創造性を重視</li>
+        <li>自律・柔軟・プロジェクト型</li>
+        <li>成果主義の自律労働</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> クリエイティブ・クラスの価値観と生産性を最大化する働き方だから</div>
+    </div>
+    <div class="card">
+      <h3>📍 スパイキー・ワールド</h3>
+      <ul>
+        <li>創造と成長は一様でなく"尖り"に集中</li>
+        <li>都市クラスターへの偏在</li>
+        <li>平均ではなく極に注目すべき</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 成長の地理的偏在を認識し、クラスター戦略を導く現実認識だから</div>
+    </div>
+    <div class="card">
+      <h3>🔗 弱いつながり</h3>
+      <ul>
+        <li>疎なネットワークが新情報と機会の橋渡し</li>
+        <li>創造の再組み合わせを促進</li>
+        <li>強い紐帯より多様性をもたらす</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 新情報アクセスと起業・転職流動性を高め、イノベーション確率を上げるから</div>
+    </div>
+    <div class="card">
+      <h3>🏳️‍🌈 ゲイ・インデックス／ボヘミアン・インデックス</h3>
+      <ul>
+        <li>LGBTQ+やアーティスト集積の代理指標</li>
+        <li>寛容性と創造的経済の関連を示唆</li>
+        <li>高技術成長と相関</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 寛容性を"倫理"ではなく"成長戦略"として測定可能にするから</div>
+    </div>
+    <div class="card">
+      <h3>🔌 プラグ・アンド・プレイ・コミュニティ</h3>
+      <ul>
+        <li>外来者が即接続できる開放的ネットワーク</li>
+        <li>多層な構造で迅速な適応と協働を可能に</li>
+        <li>即参画の街</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 外来者受容が多様性と新結合を加速し、イノベーションを促進するから</div>
+    </div>
+    <div class="card">
+      <h3>💡 知識スピルオーバー</h3>
+      <ul>
+        <li>近接と交流により暗黙知が漏れ伝わる</li>
+        <li>イノベーション確率が上がる現象</li>
+        <li>集積の魔法</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 密度と多様性が生産性を非線形に押し上げる物理的メカニズムだから</div>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <h3 style="margin-bottom:1rem; color: var(--primary);">📊 3Tの相互補完性</h3>
+    <div class="bar">
+      <div class="bar-label">技術基盤</div>
+      <div class="bar-fill" style="width:90%;">90%</div>
+    </div>
+    <div class="bar">
+      <div class="bar-label">才能集積</div>
+      <div class="bar-fill" style="width:85%;">85%</div>
+    </div>
+    <div class="bar">
+      <div class="bar-label">寛容性</div>
+      <div class="bar-fill" style="width:80%;">80%</div>
+    </div>
+    <p style="font-size:0.85rem; margin-top:1rem; color: var(--text-light);">※ 3つが揃うことで成長が非線形に加速</p>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-node">寛容性↑</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">外来者受容↑</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">多様性↑</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">新結合↑</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">イノベーション↑</div>
+  </div>
+</div>
+
+<div id="chapters" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>📖 第1章: 問題提起</h3>
+    <ul>
+      <li>産業経済から創造経済へのパラダイム転換</li>
+      <li>成長の地理的偏在（スパイキー・ワールド）</li>
+      <li>従来の企業誘致戦略の限界</li>
+    </ul>
+    <div class="reason"><strong>章の理由:</strong> 旧来の成長モデルが機能しなくなった現実を示し、新しい視点の必要性を訴える</div>
+  </div>
+  <div class="card">
+    <h3>📖 第2章: クリエイティブ・クラスの定義</h3>
+    <ul>
+      <li>創造で稼ぐ職能群の範囲と規模</li>
+      <li>価値観: 自律性・柔軟性・成果主義</li>
+      <li>働き方: ノーカラー・ワーク、プロジェクト型</li>
+    </ul>
+    <div class="reason"><strong>章の理由:</strong> 成長の主語を企業から人材へ転換し、その特性を明確化する</div>
+  </div>
+  <div class="card">
+    <h3>📖 第3章: 立地要因—3Tフレームワーク</h3>
+    <ul>
+      <li>技術・才能・寛容の三位一体</li>
+      <li>相互補完性と同時達成の必要性</li>
+      <li>単独要素では成長が頭打ちになる実証</li>
+    </ul>
+    <div class="reason"><strong>章の理由:</strong> 成長の条件を体系化し、政策と戦略の設計図を提供する</div>
+  </div>
+  <div class="card">
+    <h3>📖 第4章: 指標と実証</h3>
+    <ul>
+      <li>ゲイ・インデックス、ボヘミアン・インデックスの提示</li>
+      <li>寛容性指標と高技術成長の相関分析</li>
+      <li>データによる因果関係の示唆</li>
+    </ul>
+    <div class="reason"><strong>章の理由:</strong> 寛容性を測定可能にし、"倫理"から"成長戦略"へ位置づけ直す</div>
+  </div>
+  <div class="card">
+    <h3>📖 第5章: 場の力—クオリティ・オブ・プレイス</h3>
+    <ul>
+      <li>何がある・誰がいる・何が起きているの総体</li>
+      <li>サードプレイス、歩行可能性、ナイトライフの役割</li>
+      <li>採用・定着率への直接的影響</li>
+    </ul>
+    <div class="reason"><strong>章の理由:</strong> ハードとソフトの都市投資の優先順位を再配置する根拠を示す</div>
+  </div>
+  <div class="card">
+    <h3>📖 第6章: ネットワークの構造</h3>
+    <ul>
+      <li>弱いつながりが新情報と機会を橋渡し</li>
+      <li>外来者受容とプラグ・アンド・プレイ構造</li>
+      <li>知識スピルオーバーの促進メカニズム</li>
+    </ul>
+    <div class="reason"><strong>章の理由:</strong> 開放性と多様性が創造を加速する物理的・社会的メカニズムを解明する</div>
+  </div>
+  <div class="card">
+    <h3>📖 第7章: 企業と人材のダイナミクス</h3>
+    <ul>
+      <li>人が企業を選ぶ時代—人材が集まる場所へ企業が移動</li>
+      <li>ピープル・クライメート vs ビジネス・クライメート</li>
+      <li>投資効率の逆転</li>
+    </ul>
+    <div class="reason"><strong>章の理由:</strong> 政策の重心を企業誘致から人材誘致へ移す実務的根拠を提供する</div>
+  </div>
+  <div class="card">
+    <h3>📖 第8章: 都市間競争とクラスター形成</h3>
+    <ul>
+      <li>スパイキー・ワールドでの"尖り"の形成</li>
+      <li>地域間格差の拡大</li>
+      <li>クラスター戦略の必要性</li>
+    </ul>
+    <div class="reason"><strong>章の理由:</strong> 成長の偏在を認識し、平均ではなく極に注目する戦略を導く</div>
+  </div>
+  <div class="card">
+    <h3>📖 第9章: 政策示唆</h3>
+    <ul>
+      <li>企業誘致型から人材誘致型への転換</li>
+      <li>教育、文化、多様性、公共空間への投資</li>
+      <li>歩ける都市、混在用途、サードプレイスの設計</li>
+    </ul>
+    <div class="reason"><strong>章の理由:</strong> 実務家と政策立案者に具体的な投資優先順位を示す</div>
+  </div>
+  <div class="card">
+    <h3>📖 第10章: 含意と課題</h3>
+    <ul>
+      <li>成長の裏面: 住宅費上昇、排除リスク</li>
+      <li>包摂・アクセシビリティの設計</li>
+      <li>持続可能な成長のための制度設計</li>
+    </ul>
+    <div class="reason"><strong>章の理由:</strong> 成長の副作用に対処し、包摂的な繁栄を実現する道筋を示す</div>
+  </div>
+</div>
+
+<div id="examples" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🌉 事例1: シリコンバレーの開放的ネットワーク</h3>
+    <ul>
+      <li><strong>背景:</strong> 1970年代以降、スタンフォード周辺に技術者・起業家が集積</li>
+      <li><strong>特徴:</strong> 転職・起業が頻繁で、弱いつながりが知識を拡散</li>
+      <li><strong>結果:</strong> 継続的なイノベーションと産業クラスター形成</li>
+      <li><strong>示唆:</strong> 開放性と流動性が創造経済の土台となる</li>
+    </ul>
+    <div class="reason"><strong>この例が示すこと:</strong> プラグ・アンド・プレイ構造と弱いつながりが知識スピルオーバーを加速し、非線形な成長を生む実証</div>
+  </div>
+  <div class="card">
+    <h3>🎨 事例2: オースティンの文化・音楽シーンと技術成長</h3>
+    <ul>
+      <li><strong>背景:</strong> 1990年代、音楽祭（SXSW）と大学が文化的土壌を形成</li>
+      <li><strong>特徴:</strong> ボヘミアン・インデックスとゲイ・インデックスが高く、寛容性が顕著</li>
+      <li><strong>結果:</strong> テック企業と人材が流入し、急成長</li>
+      <li><strong>示唆:</strong> 文化と寛容性が技術人材を引き寄せる</li>
+    </ul>
+    <div class="reason"><strong>この例が示すこと:</strong> クオリティ・オブ・プレイスと寛容性が人材誘致の決定打となり、企業が人に追随する実例</div>
+  </div>
+  <div class="card">
+    <h3>🏙 事例3: ポートランドの歩行可能性と混在用途</h3>
+    <ul>
+      <li><strong>背景:</strong> 1970年代から都市計画で歩行・自転車・公共交通を優先</li>
+      <li><strong>特徴:</strong> 混在用途、サードプレイス（カフェ・書店）、ナイトライフが充実</li>
+      <li><strong>結果:</strong> クリエイティブ・クラスの定着率が高く、生活満足度も上昇</li>
+      <li><strong>示唆:</strong> 場の質が採用と定着を左右する</li>
+    </ul>
+    <div class="reason"><strong>この例が示すこと:</strong> ハードとソフトの都市投資が人材の定着を決め、ピープル・クライメート戦略の有効性を示す</div>
+  </div>
+  <div class="card">
+    <h3>🔬 事例4: ボストン vs シリコンバレー（サクセニアンの研究）</h3>
+    <ul>
+      <li><strong>背景:</strong> 1980年代、両地域とも技術基盤を持つが成長に差</li>
+      <li><strong>特徴:</strong> ボストンは閉鎖的企業文化、シリコンバレーは開放的ネットワーク</li>
+      <li><strong>結果:</strong> シリコンバレーが圧倒的に成長</li>
+      <li><strong>示唆:</strong> 寛容と弱いつながりが技術基盤を活性化する</li>
+    </ul>
+    <div class="reason"><strong>この例が示すこと:</strong> 技術だけでは不十分で、寛容性とネットワーク構造が成長を決定づける実証</div>
+  </div>
+</div>
+
+<div id="quotes" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <div class="text">「創造性は経済成長の主エンジンであり、才能は場所を選ぶ。」</div>
+    <div class="note"><strong>重要性:</strong> 成長の主語を企業から人材と場に転換する羅針盤になる。</div>
+  </div>
+  <div class="quote-card">
+    <div class="text">「都市の繁栄は技術・才能・寛容の交差点で生まれる。」</div>
+    <div class="note"><strong>重要性:</strong> 単独要素では不十分という3Tの同時達成原則を示す。</div>
+  </div>
+  <div class="quote-card">
+    <div class="text">「企業はインセンティブではなく人材のいる場所へ向かう。」</div>
+    <div class="note"><strong>重要性:</strong> 政策の重心をビジネス・クライメートからピープル・クライメートへ移す根拠。</div>
+  </div>
+  <div class="quote-card">
+    <div class="text">「クオリティ・オブ・プレイスが採用と定着を決める。」</div>
+    <div class="note"><strong>重要性:</strong> ハードとソフトの都市投資の優先順位を再配置する。</div>
+  </div>
+  <div class="quote-card">
+    <div class="text">「多様性の受容はイノベーションの前提条件である。」</div>
+    <div class="note"><strong>重要性:</strong> 開放性を"倫理"ではなく"成長戦略"として位置づける。</div>
+  </div>
+</div>
+
+<div id="actions" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>✅ アクション1: 生活圏の3Tを10点満点で採点</h4>
+    <p>自分の住む地域・働く組織の技術基盤・才能集積・寛容性をそれぞれ10点満点で評価し、弱点を特定する。</p>
+    <div class="meta">
+      <strong>目的:</strong> 現状認識と改善ポイントの可視化<br>
+      <strong>期待効果:</strong> 自分の環境が成長に適しているか判断でき、次の行動（転職・移住・提案）の根拠になる
+    </div>
+  </div>
+  <div class="action-card">
+    <h4>✅ アクション2: 弱いつながり3人に近況を送信</h4>
+    <p>しばらく連絡していない異業種・異分野の知人3人に短いメッセージを送り、近況を共有する。</p>
+    <div class="meta">
+      <strong>目的:</strong> 弱いつながりの活性化と新情報アクセス<br>
+      <strong>期待効果:</strong> 新しい機会・視点・協働の種が生まれ、知識スピルオーバーの実感を得る
+    </div>
+  </div>
+  <div class="action-card">
+    <h4>✅ アクション3: 地元の多様性イベントを1件検索</h4>
+    <p>LGBTQ+、アート、異文化交流など、多様性を体現するイベントを1件見つけて参加予定に入れる。</p>
+    <div class="meta">
+      <strong>目的:</strong> 寛容性の体感とクオリティ・オブ・プレイスの確認<br>
+      <strong>期待効果:</strong> 自分の地域の開放性を実感し、プラグ・アンド・プレイ・コミュニティへの接続点を得る
+    </div>
+  </div>
+  <div class="action-card">
+    <h4>✅ アクション4: 歩ける範囲のサードプレイスを1つ訪問</h4>
+    <p>自宅・職場から徒歩圏のカフェ・書店・公園など、偶発的な出会いが起きる場所を訪れる。</p>
+    <div class="meta">
+      <strong>目的:</strong> 場の質の体感と弱いつながりの種まき<br>
+      <strong>期待効果:</strong> 歩行可能性と混在用途の価値を実感し、日常に創造的刺激を組み込む
+    </div>
+  </div>
+  <div class="action-card">
+    <h4>✅ アクション5: 自分の働き方を「ノーカラー度」で評価</h4>
+    <p>自律性・柔軟性・成果主義の3軸で現在の働き方を5段階評価し、改善余地を1つ特定する。</p>
+    <div class="meta">
+      <strong>目的:</strong> 創造的働き方への適合度チェック<br>
+      <strong>期待効果:</strong> 自分の生産性と満足度を高める具体的な改善点が見つかり、交渉や転職の材料になる
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:2rem; padding:1.5rem; background: var(--card-bg); border-radius:8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+  <h3 style="color: var(--primary); margin-bottom:1rem;">📚 関連書籍</h3>
+  <div style="display:grid; gap:1rem;">
+    <div style="border-left:3px solid var(--accent); padding-left:1rem;">
+      <strong>雇用の地理学</strong> — エンリコ・モレッティ<br>
+      <span style="font-size:0.85rem; color: var(--text-light);">技能集積と賃金プレミアムをデータで示し、創造クラスターの波及を補強する。</span>
+    </div>
+    <div style="border-left:3px solid var(--accent); padding-left:1rem;">
+      <strong>都市の勝利</strong> — エドワード・グレイザー<br>
+      <span style="font-size:0.85rem; color: var(--text-light);">都市の密度と生産性の因果を論じ、近接による知識スピルオーバーを理論化する。</span>
+    </div>
+    <div style="border-left:3px solid var(--accent); padding-left:1rem;">
+      <strong>アメリカの大都市の死と生</strong> — ジェイン・ジェイコブズ<br>
+      <span style="font-size:0.85rem; color: var(--text-light);">混在用途・歩行可能性・多様性の都市原則で"場の質"の基礎を提供。</span>
+    </div>
+    <div style="border-left:3px solid var(--accent); padding-left:1rem;">
+      <strong>Regional Advantage</strong> — アナリー・サクセニアン<br>
+      <span style="font-size:0.85rem; color: var(--text-light);">シリコンバレーの開放的ネットワークとボストンの対比で、寛容と弱いつながりの効用を実証。</span>
+    </div>
+    <div style="border-left:3px solid var(--accent); padding-left:1rem;">
+      <strong>The Creative City</strong> — チャールズ・ランドリー<br>
+      <span style="font-size:0.85rem; color: var(--text-light);">都市政策として創造性を設計する視点を提供し、フロリダの実務的補完となる。</span>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:2rem; padding:1rem; text-align:center; font-size:0.85rem; color: var(--text-light);">
+  <p>🎨 カラーパレット: プライマリー <span class="badge">#667eea</span> / セカンダリー <span class="badge">#764ba2</span> / アクセント <span class="badge">#f093fb</span></p>
+</div>
+
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab-btn');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    
+    tabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    contents.forEach(c => c.classList.remove('active'));
+    
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    document.getElementById(target).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
