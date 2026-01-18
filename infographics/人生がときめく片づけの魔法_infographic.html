@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人生がときめく片づけの魔法 - インフォグラフィック</title>
+<style>
+/* カラーパレット
+   プライマリー: #667eea
+   セカンダリー: #764ba2
+   アクセント: #f093fb
+*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #333;
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+h1 {
+  font-size: 1.5rem;
+  color: #667eea;
+  margin-bottom: 0.5rem;
+}
+.summary-box {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+.summary-box h2 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666;
+  transition: all 0.3s;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(102,126,234,0.3);
+}
+.tab-content {
+  display: none;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 10px;
+  padding: 1.25rem;
+  border-left: 4px solid #667eea;
+  transition: transform 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(102,126,234,0.2);
+}
+.card h3 {
+  font-size: 1.1rem;
+  color: #667eea;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #667eea;
+  font-weight: bold;
+}
+.reason-box {
+  background: rgba(102,126,234,0.1);
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid #f093fb;
+}
+.reason-box strong {
+  color: #764ba2;
+}
+.chapter-item {
+  background: white;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 5px solid #764ba2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.chapter-item h3 {
+  color: #764ba2;
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+}
+.chapter-item ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-item li {
+  padding: 0.3rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-item li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #764ba2;
+}
+.example-card {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-top: 4px solid #f093fb;
+}
+.example-card h3 {
+  color: #764ba2;
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 5px solid #667eea;
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: rgba(102,126,234,0.3);
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+}
+.quote-card small {
+  display: block;
+  font-size: 0.85rem;
+  color: #555;
+  padding-left: 1.5rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-top: 4px solid #667eea;
+}
+.action-card h3 {
+  color: #667eea;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: #667eea;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.flow-diagram {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.flow-item .arrow {
+  color: #667eea;
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.stat-box {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  margin: 0.5rem;
+  min-width: 120px;
+}
+.stat-box .number {
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: block;
+}
+.stat-box .label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+.book-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #f093fb;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.book-card h4 {
+  color: #764ba2;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.9rem;
+  color: #333;
+}
+@media (max-width: 768px) {
+  h1 { font-size: 1.3rem; }
+  .tabs { flex-direction: column; }
+  .tab-btn { min-width: 100%; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 人生がときめく片づけの魔法</h1>
+<p style="color:#666;font-size:0.9rem;">手元に残す基準を「ときめき」に切り替え、カテゴリ順に一気に片づけて定位置化すれば、空間と心は本質に集中し、二度と散らからない。</p>
+<div class="summary-box">
+<h2>💡 要約：問い×答え×根拠</h2>
+<div class="summary-item">
+<strong>❓ 問い</strong>
+<p>なぜ片づけは続かず、どうすれば一生散らからないのか？</p>
+</div>
+<div class="summary-item">
+<strong>✅ 答え</strong>
+<p>「残す基準＝ときめき」に一本化し、衣類→本→書類→小物→思い出品の順で"祭り"のように一気に完了させ、定位置を決めて戻すだけにする。</p>
+</div>
+<div class="summary-item">
+<strong>🔍 Why（なぜそうなのか）</strong>
+<p>感情に根ざした基準は決断疲労を減らし価値観に直結するためブレない。カテゴリ一括は比較が効き重複や過剰が可視化され、総量が減ると維持が容易になる。一度の集中的完了は『片づけ済みの自己像』を形成し行動が自然に変わる。</p>
+</div>
+<div class="summary-item">
+<strong>🛠️ How（そのためには）</strong>
+<p>全出し→手に取る→ときめき判定→感謝して手放す→残す物の定位置化。順序は衣類→本→書類→小物→思い出品。収納は"立てる""見える"を原則に簡素化し、買い物は"ときめき"と収納余白で制御する。</p>
+</div>
+</div>
+</header>
+
+<div class="tabs" role="tablist">
+<button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+<button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+<button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+<button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+<button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">🔑 主要概念の詳細</h2>
+<div class="card-grid">
+<div class="card">
+<h3>✨ ときめき</h3>
+<ul>
+<li>手に取った瞬間に心が軽く高揚する感覚</li>
+<li>残す判断の唯一の基準とする</li>
+<li>感情ベースで迷いを排除</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>判断基準を一本化することで決断疲労を減らし、自分の価値観に直結した選択ができるため、後悔やブレが生じない。
+</div>
+</div>
+<div class="card">
+<h3>🎉 一気に片づける（祭り）</h3>
+<ul>
+<li>短期集中で完了までやり切る</li>
+<li>環境と自己認識を一度にリセット</li>
+<li>儀式的な完了体験を作る</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>完了体験が「片づけ済みの自己像」を形成し、行動が自然に変わる。小出しでは変化が見えず挫折しやすい。
+</div>
+</div>
+<div class="card">
+<h3>📋 カテゴリ別×順序</h3>
+<ul>
+<li>場所別でなくカテゴリで進める</li>
+<li>衣類→本→書類→小物→思い出品</li>
+<li>判断難度を段階的に上げる設計</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>カテゴリ一括で総量を比較でき重複が見える。易しいものから始めることで判断力が鍛えられ、思い出品で迷わなくなる。
+</div>
+</div>
+<div class="card">
+<h3>📦 全出し</h3>
+<ul>
+<li>対象カテゴリを一箇所に集める</li>
+<li>総量を可視化する</li>
+<li>重複と不要を見抜く起点</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>散在していると総量が把握できず、同じ物を複数持っていることに気づかない。可視化が正確な判断を可能にする。
+</div>
+</div>
+<div class="card">
+<h3>🏠 定位置化</h3>
+<ul>
+<li>残す物すべてに"住所"を与える</li>
+<li>使ったら元に戻すだけにする</li>
+<li>探す時間をゼロにする仕組み</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>定位置がないと「とりあえず置く」が発生し再び散らかる。住所管理で維持コストが劇的に下がる。
+</div>
+</div>
+<div class="card">
+<h3>📐 立てる収納</h3>
+<ul>
+<li>中身が一目で見えるように立てる</li>
+<li>出し入れの摩擦を最小化</li>
+<li>重ねず、触れやすく配置</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>重ねると下の物が死蔵され、存在を忘れて無駄買いが発生。立てることで全体が見え、利用頻度が上がる。
+</div>
+</div>
+<div class="card">
+<h3>🙏 感謝とお別れ</h3>
+<ul>
+<li>役目を終えた物へ感謝を示す</li>
+<li>罪悪感を解き、前に進む</li>
+<li>健全な手放しの態度</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>「もったいない」という罪悪感が手放しを妨げる。感謝の儀式で執着を解除し、心理的負担なく手放せる。
+</div>
+</div>
+<div class="card">
+<h3>🛒 買い物リテラシー</h3>
+<ul>
+<li>"ときめき"と収納余白を基準に選ぶ</li>
+<li>流入を制御し総量を維持</li>
+<li>衝動買いを防ぐ態度</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>片づけても流入が続けば再び溢れる。入口を制御することで、片づけた状態が持続する。
+</div>
+</div>
+</div>
+
+<div class="flow-diagram">
+<h3 style="color:#667eea;margin-bottom:1rem;">🔄 概念間の関係性</h3>
+<div class="flow-item">
+<span>ときめき基準</span><span class="arrow">→</span><span>所有の最適化</span><span class="arrow">→</span><span>満足度↑・迷い↓</span>
+</div>
+<div class="flow-item">
+<span>カテゴリ別×全出し</span><span class="arrow">→</span><span>比較判断↑</span><span class="arrow">→</span><span>重複発見</span><span class="arrow">→</span><span>総量減</span>
+</div>
+<div class="flow-item">
+<span>一気に片づける</span><span class="arrow">→</span><span>リセット点の形成</span><span class="arrow">→</span><span>行動変容の持続</span>
+</div>
+<div class="flow-item">
+<span>定位置化</span><span class="arrow">→</span><span>探す/片づける時間↓</span><span class="arrow">→</span><span>再散らかり防止</span>
+</div>
+<div class="flow-item">
+<span>立てる収納</span><span class="arrow">→</span><span>可視性↑</span><span class="arrow">→</span><span>利用頻度↑</span><span class="arrow">→</span><span>無駄買い↓</span>
+</div>
+<div class="flow-item">
+<span>感謝とお別れ</span><span class="arrow">→</span><span>罪悪感/執着↓</span><span class="arrow">→</span><span>手放し容易</span>
+</div>
+<div class="flow-item">
+<span>総量減 × 流入制御</span><span class="arrow">→</span><span>余白創出</span><span class="arrow">→</span><span>集中力/自己効力感↑</span>
+</div>
+</div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+<h2 style="color:#764ba2;margin-bottom:1rem;">📖 各章の要約</h2>
+
+<div class="chapter-item">
+<h3>第1章：問題提起</h3>
+<ul>
+<li>片づけが続かない根本原因を明らかにする</li>
+<li>基準不在・場所別対応・小手先収納の問題点</li>
+<li>リバウンドのメカニズムを解説</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>従来の方法がなぜ失敗するかを理解することで、新しいアプローチの必然性が腹落ちする。問題認識が変革の起点。
+</div>
+</div>
+
+<div class="chapter-item">
+<h3>第2章：原理</h3>
+<ul>
+<li>唯一の判断基準としての『ときめき』を提示</li>
+<li>感情に根ざす合理性を説明</li>
+<li>価値観の明確化と決断疲労の削減</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>感情ベースの基準は直感的で迷いが少なく、自分の本質的な価値観と一致するため、長期的に持続可能な判断ができる。
+</div>
+</div>
+
+<div class="chapter-item">
+<h3>第3章：プロセス設計</h3>
+<ul>
+<li>"祭り"として一気にやる意義を定義</li>
+<li>全出しによる総量可視化の重要性</li>
+<li>感謝の姿勢で手放す心理的技法</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>短期集中の完了体験が自己像を変え、日常行動が自然に変わる。プロセス設計が成功率を左右する。
+</div>
+</div>
+
+<div class="chapter-item">
+<h3>第4章：手順と順序</h3>
+<ul>
+<li>衣類→本→書類→小物→思い出品の順序</li>
+<li>手に取り判定→手放す→残すを繰り返す</li>
+<li>難易度を段階的に上げる設計の意図</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>易しいカテゴリで判断力を鍛え、最も感情的な思い出品を最後にすることで、迷わず決断できる状態を作る。
+</div>
+</div>
+
+<div class="chapter-item">
+<h3>第5章：収納原則</h3>
+<ul>
+<li>立てる・見える・触れるの設計</li>
+<li>定位置化によるメンテナンス容易性</li>
+<li>シンプルな収納で複雑さを排除</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>収納が複雑だと維持できない。シンプルで可視性の高い収納が、日々の"戻すだけ"運用を可能にする。
+</div>
+</div>
+
+<div class="chapter-item">
+<h3>第6章：効果と内面の変化</h3>
+<ul>
+<li>時間・お金・人間関係・キャリアへの波及効果</li>
+<li>価値観の明確化と自己効力感の向上</li>
+<li>空間の余白が生む心理的余裕</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>片づけは単なる整理ではなく、人生全体の質を向上させる。内面の変化が外的成果を生む好循環を示す。
+</div>
+</div>
+
+<div class="chapter-item">
+<h3>第7章：定着と再発防止</h3>
+<ul>
+<li>流入制御（買い物基準）の確立</li>
+<li>日々は"戻すだけ"運用への移行</li>
+<li>リバウンドしない仕組みの完成</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>片づけた状態を維持するには、入口（買い物）と出口（戻す）の両方を制御する必要がある。仕組み化が継続の鍵。
+</div>
+</div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+<h2 style="color:#f093fb;margin-bottom:1rem;">💡 具体例</h2>
+
+<div class="example-card">
+<h3>例1：衣類の全出しで見えた重複</h3>
+<p><strong>背景：</strong>クローゼット・タンス・収納ボックスに分散していた衣類を一箇所に集めたところ、同じようなデザインの黒いTシャツが15枚、似たようなジーンズが8本あることが判明。</p>
+<p><strong>示唆：</strong>場所別に管理していると総量が見えず、「足りない」と錯覚して同じ物を買い続けてしまう。全出しで可視化することで、本当に必要な量が明確になる。</p>
+<div class="reason-box">
+<strong>理由（この例が示すこと）：</strong>カテゴリ一括と全出しの威力。散在していると重複に気づかず、無駄な消費が続く。可視化が正確な判断の前提。
+</div>
+</div>
+
+<div class="example-card">
+<h3>例2：思い出品を最後にする理由</h3>
+<p><strong>背景：</strong>最初に思い出のアルバムや手紙に手をつけた人は、感傷に浸って判断が進まず挫折。一方、衣類→本→書類と進めた人は、思い出品でも迷わず「ときめき」で判定できた。</p>
+<p><strong>示唆：</strong>判断力は筋肉のように鍛えられる。感情的負荷の低いカテゴリで練習を積むことで、最も難しい思い出品でもスムーズに決断できる。</p>
+<div class="reason-box">
+<strong>理由（この例が示すこと）：</strong>順序設計の重要性。難易度を段階的に上げることで、判断疲労を防ぎ、最後まで完走できる。
+</div>
+</div>
+
+<div class="example-card">
+<h3>例3：定位置化で探す時間がゼロに</h3>
+<p><strong>背景：</strong>鍵・財布・スマホを毎朝探していた人が、玄関に専用トレイを設置し「帰宅したら必ずここに置く」とルール化。探す時間が週30分→0分に。</p>
+<p><strong>示唆：</strong>「とりあえず置く」が散らかりの元凶。定位置を決めて戻すだけにすることで、探す時間と精神的ストレスが消える。</p>
+<div class="reason-box">
+<strong>理由（この例が示すこと）：</strong>定位置化の効果。住所管理が日常の摩擦を劇的に減らし、時間と心理的余裕を生む。
+</div>
+</div>
+
+<div class="example-card">
+<h3>例4：立てる収納で死蔵を防ぐ</h3>
+<p><strong>背景：</strong>引き出しに重ねて収納していた服は、下の方が完全に忘れられていた。立てる収納に変えたところ、全ての服が見えるようになり、着る服のバリエーションが増加。</p>
+<p><strong>示唆：</strong>重ねると下が死蔵され、存在を忘れて新しい物を買ってしまう。立てることで全体が見え、持ち物を最大限活用できる。</p>
+<div class="reason-box">
+<strong>理由（この例が示すこと）：</strong>可視性が利用頻度を左右する。見えない物は存在しないのと同じ。立てる収納が無駄買いを防ぐ。
+</div>
+</div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">📝 重要な引用</h2>
+
+<div class="quote-card">
+<p>残す基準は『ときめくかどうか』である。</p>
+<small><strong>なぜ重要か：</strong>判断基準を一本化し、迷いと後悔を減らす核心だから。</small>
+</div>
+
+<div class="quote-card">
+<p>片づけは"祭り"のように一気に終える。</p>
+<small><strong>なぜ重要か：</strong>完了体験が自己像を変え、継続的な行動を生むため。</small>
+</div>
+
+<div class="quote-card">
+<p>場所別ではなくカテゴリ別で片づける。</p>
+<small><strong>なぜ重要か：</strong>全体量を比較しやすく、重複と過剰を正確に把握できる。</small>
+</div>
+
+<div class="quote-card">
+<p>物には役目があり、役目を終えたら感謝して手放す。</p>
+<small><strong>なぜ重要か：</strong>罪悪感を解消し、健全な手放しを可能にする態度を示す。</small>
+</div>
+
+<div style="margin-top:2rem;">
+<h3 style="color:#764ba2;margin-bottom:1rem;">📊 重要な数値・指標</h3>
+<div style="text-align:center;">
+<div class="stat-box">
+<span class="number">5</span>
+<span class="label">カテゴリ順序</span>
+</div>
+<div class="stat-box">
+<span class="number">1</span>
+<span class="label">判断基準</span>
+</div>
+<div class="stat-box">
+<span class="number">100%</span>
+<span class="label">完了目標</span>
+</div>
+</div>
+<p style="margin-top:1rem;font-size:0.9rem;color:#666;">衣類→本→書類→小物→思い出品の5カテゴリを、「ときめき」という1つの基準で、100%完了するまで一気に進める。</p>
+</div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">🚀 今日のアクション（15〜30分で実行可能）</h2>
+
+<div class="action-card">
+<h3>⚡ アクション1：衣類トップスを一箇所に集める</h3>
+<p>クローゼット・タンス・洗濯カゴなど、家中のトップス（Tシャツ・シャツ・セーター等）をベッドや床の一箇所に全て集める。</p>
+<div class="meta">
+<span class="badge">目的</span>総量を可視化し、重複や過剰を認識する<br>
+<span class="badge">期待効果</span>「こんなに持っていたのか」という気づきが判断の起点になり、次のステップへの動機が生まれる
+</div>
+</div>
+
+<div class="action-card">
+<h3>⚡ アクション2：一枚ずつ手に取りときめき判定</h3>
+<p>集めたトップスを一枚ずつ手に取り、「これを着ると嬉しいか？心が軽くなるか？」と自問し、ときめくものだけを残す山に分ける。</p>
+<div class="meta">
+<span class="badge">目的</span>「ときめき」基準での判断を体験し、感覚を掴む<br>
+<span class="badge">期待効果</span>判断基準が明確になり、迷いが減る。残す物への愛着が高まり、満足度が上がる
+</div>
+</div>
+
+<div class="action-card">
+<h3>⚡ アクション3：残す物の定位置を一つ決める</h3>
+<p>ときめいて残したトップスを収納する場所を一つ決め、立てて並べる。引き出しやボックスに「トップス専用」とラベルを貼る。</p>
+<div class="meta">
+<span class="badge">目的</span>定位置化と立てる収納を実践し、維持しやすい仕組みを作る<br>
+<span class="badge">期待効果</span>全体が見えるようになり、朝の服選びが楽になる。戻す場所が明確なので散らからない
+</div>
+</div>
+
+<div style="background:linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%);border-radius:10px;padding:1.5rem;margin-top:1.5rem;">
+<h3 style="color:#764ba2;margin-bottom:1rem;">🎯 次のステップ</h3>
+<ul style="list-style:none;padding:0;">
+<li style="padding:0.5rem 0;padding-left:1.5rem;position:relative;"><span style="position:absolute;left:0;">1️⃣</span>トップス以外の衣類（ボトムス・下着・靴下等）も同様に進める</li>
+<li style="padding:0.5rem 0;padding-left:1.5rem;position:relative;"><span style="position:absolute;left:0;">2️⃣</span>本→書類→小物→思い出品の順で全カテゴリを完了させる</li>
+<li style="padding:0.5rem 0;padding-left:1.5rem;position:relative;"><span style="position:absolute;left:0;">3️⃣</span>買い物時に「ときめくか？収納場所はあるか？」を自問する習慣をつける</li>
+</ul>
+</div>
+
+<div style="margin-top:2rem;">
+<h3 style="color:#667eea;margin-bottom:1rem;">📚 関連書籍</h3>
+<div class="book-card">
+<h4>新・片づけ術 断捨離</h4>
+<div class="author">著者：やましたひでこ</div>
+<div class="relation"><strong>関連性：</strong>手放す基準を磨く実践フレームで補完。</div>
+</div>
+<div class="book-card">
+<h4>ガラクタ捨てれば自分が見える</h4>
+<div class="author">著者：カレン・キングストン</div>
+<div class="relation"><strong>関連性：</strong>空間と心の関係を示し、"余白"の効用を補強。</div>
+</div>
+<div class="book-card">
+<h4>ぼくたちに、もうモノは必要ない。</h4>
+<div class="author">著者：佐々木典士</div>
+<div class="relation"><strong>関連性：</strong>最小限主義の生活設計が維持フェーズに有効。</div>
+</div>
+<div class="book-card">
+<h4>エッセンシャル思考 最少の時間で成果を最大にする</h4>
+<div class="author">著者：グレッグ・マキューン</div>
+<div class="relation"><strong>関連性：</strong>"選択と集中"の思考がときめき基準と親和。</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+// タブ切替
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => {
+      c.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
