@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>孫子の兵法 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.15);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+}
+
+.summary-item ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.summary-item li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.25rem;
+}
+
+.summary-item li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  color: var(--primary);
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding-left: 1.25rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.card .reason {
+  margin-top: 0.75rem;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.chapter-card p {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid var(--accent);
+  position: relative;
+}
+
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--accent);
+  opacity: 0.3;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+
+.quote-card blockquote {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  color: var(--text);
+}
+
+.quote-card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  padding-left: 1rem;
+}
+
+.action-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 2px solid var(--accent);
+}
+
+.action-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.visual-section {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.visual-section h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.05));
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.flow-arrow {
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.stat-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  margin: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.book-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+
+.book-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.book-card .relation {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 孫子の兵法</h1>
+  <p>戦わずして勝つ - 最小コストで確実に勝利する戦略の全体像</p>
+</header>
+
+<div class="container">
+  
+  <div class="summary-block">
+    <h2>💡 要約 - 問い×答え×根拠</h2>
+    
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>どうすれば最小の損害で確実に勝てるのか？</p>
+    </div>
+    
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      <p>徹底した事前評価と情報優位を軸に、正攻と奇策を組み合わせて勢を創り、敵の弱点のみを素早く叩き、条件不利なら戦わない。</p>
+    </div>
+    
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか？）</strong>
+      <ul>
+        <li>戦争は国家資源を消耗し長期化は必ず不利（作戦篇）</li>
+        <li>勝敗は戦前の計算と準備で大勢が決まる（始計篇）</li>
+        <li>最上は敵を戦わず屈服させること（謀攻篇）</li>
+      </ul>
+    </div>
+    
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには？）</strong>
+      <ul>
+        <li>五事七計で自他を定量・定性評価し勝算を判定する</li>
+        <li>正攻で拘束し奇策で決める構えで勢を創出する</li>
+        <li>用間で敵情を常時更新し虚実を転換させる</li>
+        <li>不利な地形・時機では交戦を避け資源を温存する</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🎯 主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📚 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">📜 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">🚀 今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      
+      <div class="card">
+        <h3>🏛️ 五事（道・天・地・将・法）</h3>
+        <ul>
+          <li><strong>道</strong>：民心の一致</li>
+          <li><strong>天</strong>：時節・気候</li>
+          <li><strong>地</strong>：地形・距離</li>
+          <li><strong>将</strong>：統率・徳</li>
+          <li><strong>法</strong>：編制・規律・補給</li>
+        </ul>
+        <div class="reason">💡 理由：勝敗を左右する前提条件を体系化し、評価の抜け漏れを防ぐ</div>
+      </div>
+
+      <div class="card">
+        <h3>📊 七計</h3>
+        <ul>
+          <li>君主の徳、将の能力</li>
+          <li>天地の利、法令の順守</li>
+          <li>兵力・訓練・賞罰の明確さ</li>
+          <li>敵味方を比較し勝算を定量化</li>
+        </ul>
+        <div class="reason">💡 理由：主観を排し客観的な勝算を測る物差しを提供する</div>
+      </div>
+
+      <div class="card">
+        <h3>🧮 廟算</h3>
+        <ul>
+          <li>出兵前に多面的に計算</li>
+          <li>勝敗を予断するプロセス</li>
+          <li>算多ければ勝ち、少なければ負ける</li>
+        </ul>
+        <div class="reason">💡 理由：戦前評価の質が戦果を決定づけるため、準備段階が最重要</div>
+      </div>
+
+      <div class="card">
+        <h3>⚔️ 正と奇</h3>
+        <ul>
+          <li><strong>正</strong>：定石・正攻法</li>
+          <li><strong>奇</strong>：予期せぬ変化・奇襲</li>
+          <li>相互に転化し続ける</li>
+          <li>組合せで無限の変化を生む</li>
+        </ul>
+        <div class="reason">💡 理由：定石で拘束し奇策で決める二段構えが勝利の鍵</div>
+      </div>
+
+      <div class="card">
+        <h3>🌊 勢</h3>
+        <ul>
+          <li>配置・資源・士気・時間の組合せ</li>
+          <li>一方向の優位な力学を創出</li>
+          <li>小力を大力に転化する技法</li>
+        </ul>
+        <div class="reason">💡 理由：流れを作ることで個々の力以上の成果を引き出せる</div>
+      </div>
+
+      <div class="card">
+        <h3>🛡️ 形</h3>
+        <ul>
+          <li>備えと布陣で生まれる攻守の態勢</li>
+          <li>最善は無形で弱点を見せない</li>
+          <li>勝機が来るまで破綻しない</li>
+        </ul>
+        <div class="reason">💡 理由：態勢設計で敵に付け入る隙を与えず主導権を保持</div>
+      </div>
+
+      <div class="card">
+        <h3>🎯 虚実</h3>
+        <ul>
+          <li>敵の空隙（虚）を打つ</li>
+          <li>強点（実）を避ける</li>
+          <li>誘導で虚実を入れ替える</li>
+          <li>行動の自由を確保</li>
+        </ul>
+        <div class="reason">💡 理由：弱点主義で最小コストの勝利を実現する核心原理</div>
+      </div>
+
+      <div class="card">
+        <h3>⚡ 速戦</h3>
+        <ul>
+          <li>長期戦は国家に不利</li>
+          <li>補給線を守りつつ短時間で決着</li>
+          <li>経済負担の軽減</li>
+        </ul>
+        <div class="reason">💡 理由：時間は資源であり、長期化は必ず不利になる</div>
+      </div>
+
+      <div class="card">
+        <h3>🎭 伐謀・伐交</h3>
+        <ul>
+          <li><strong>伐謀</strong>：敵の戦略を崩す</li>
+          <li><strong>伐交</strong>：敵の同盟を崩す</li>
+          <li>戦わずに目的を達する</li>
+          <li>戦略優先順位の最上位</li>
+        </ul>
+        <div class="reason">💡 理由：戦闘以前の段階で勝負を決めることが最も効率的</div>
+      </div>
+
+      <div class="card">
+        <h3>🕵️ 用間</h3>
+        <ul>
+          <li>五間：郷・内・反・死・生</li>
+          <li>情報活動で決心の質を高める</li>
+          <li>敵情を常時更新</li>
+        </ul>
+        <div class="reason">💡 理由：情報優位が知彼知己を実現し、危殆を除去する</div>
+      </div>
+
+      <div class="card">
+        <h3>🗺️ 地形・九地</h3>
+        <ul>
+          <li>六地形：通・挂・支・隘・険・遠</li>
+          <li>九地：散・軽・争・交・衢・重・圮・囲・死</li>
+          <li>地理と局面に応じた行動原則</li>
+        </ul>
+        <div class="reason">💡 理由：状況適応で行軍・配置・補給を最適化する</div>
+      </div>
+
+      <div class="card">
+        <h3>🏃 軍争</h3>
+        <ul>
+          <li>機動・先取りの重要性</li>
+          <li>補給線の奪取</li>
+          <li>急所の争点を制する難しさ</li>
+        </ul>
+        <div class="reason">💡 理由：機動主導で要点を先に押さえることが勝利の条件</div>
+      </div>
+
+      <div class="card">
+        <h3>💪 士気・規律</h3>
+        <ul>
+          <li>将の徳と法の運用</li>
+          <li>秩序を保ち継戦能力を確保</li>
+          <li>統制が作戦の一貫性を生む</li>
+        </ul>
+        <div class="reason">💡 理由：統率の核が戦略の実効性を支える基盤となる</div>
+      </div>
+
+      <div class="card">
+        <h3>🎪 欺き（詭道）</h3>
+        <ul>
+          <li>真偽を反転して敵の認知を歪める</li>
+          <li>虚実を創出する</li>
+          <li>主導権を握る手段</li>
+        </ul>
+        <div class="reason">💡 理由：認知戦で敵の判断を誤らせ、有利な状況を作り出す</div>
+      </div>
+
+      <div class="card">
+        <h3>🔬 知彼知己</h3>
+        <ul>
+          <li>敵情と自軍の実力を正確に知る</li>
+          <li>危殆を除去する基本原理</li>
+          <li>百戦不殆の条件</li>
+        </ul>
+        <div class="reason">💡 理由：自己と敵の把握が全ての戦略判断の出発点</div>
+      </div>
+
+    </div>
+
+    <div class="visual-section">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-diagram">
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>五事・七計 → 廟算 → 勝敗予測 → 交戦/不交戦の意思決定</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>用間（情報） → 知彼知己の精度向上 → 虚実の識別 → 最小コストの勝利</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>形（備え） → 正攻の安定供給 → 奇（変化）の機会創出 → 勢の加速</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>地形・九地の理解 → 行軍・配置・補給最適化 → 速戦の実現性向上</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>将の徳と法（規律） → 統制・士気維持 → 作戦の一貫性 → 戦略の実効性</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>作戦の短期化 → 経済負担の軽減 → 継戦余力確保 → 交渉力上昇</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>伐謀・伐交 → 敵の同盟弱体化 → 無血の勝利確率増大</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    
+    <div class="chapter-card">
+      <h3>📖 始計</h3>
+      <p><strong>要点：</strong>五事七計で自他を評価し、廟算で勝算を判定。戦前に勝敗の大勢を決める。</p>
+      <div class="reason">💡 理由：戦前の計算量と質が勝敗を決定づけるため、この章が全体の基盤となる</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>⚙️ 作戦</h3>
+      <p><strong>要点：</strong>戦争の経済と補給を説き、短期決戦の必要を強調。長期化の損失を警告。</p>
+      <div class="reason">💡 理由：資源の有限性を認識し、速戦志向を正当化する経済的根拠を提供</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎯 謀攻</h3>
+      <p><strong>要点：</strong>最上は伐謀、次に伐交、次に伐兵、下が攻城。不戦屈人を理想とする。</p>
+      <div class="reason">💡 理由：戦略の優先順位を明確化し、無血の勝利が最善であることを示す</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🛡️ 形</h3>
+      <p><strong>要点：</strong>守勢の堅固化と無形の態勢づくり。勝機が来るまで破綻しない形を保つ。</p>
+      <div class="reason">💡 理由：防御の完成が攻撃の前提であり、態勢設計の重要性を教える</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🌊 勢</h3>
+      <p><strong>要点：</strong>正と奇の組合せで勢いを創出し、小力を大力に転化する技法。</p>
+      <div class="reason">💡 理由：力の増幅メカニズムを示し、劣勢でも勝てる方法論を提供</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎯 虚実</h3>
+      <p><strong>要点：</strong>敵の実を避け虚を撃つ。誘導で虚実を転換し、行動の自由を確保。</p>
+      <div class="reason">💡 理由：弱点主義の実践法を示し、最小コストの勝利を実現する核心</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🏃 軍争</h3>
+      <p><strong>要点：</strong>要点の先取り・線路（補給線）の確保・機動の難しさと対策。</p>
+      <div class="reason">💡 理由：機動戦の実務を教え、先手必勝の条件を明らかにする</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔄 九変</h3>
+      <p><strong>要点：</strong>定石に固執せず、状況に応じて法令・作戦を柔軟に変化させる。</p>
+      <div class="reason">💡 理由：硬直的な運用を戒め、状況適応の必要性を強調する</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🚶 行軍</h3>
+      <p><strong>要点：</strong>地形・天候・民心から敵情を察知する観察法と行軍上の禁忌。</p>
+      <div class="reason">💡 理由：情報収集の実務を示し、知彼知己の具体的手法を提供</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🗺️ 地形</h3>
+      <p><strong>要点：</strong>六地形の特性（通・挂・支・隘・険・遠）に応じた取るべき行動。</p>
+      <div class="reason">💡 理由：地理的条件への適応法を体系化し、行動選択の基準を与える</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🌍 九地</h3>
+      <p><strong>要点：</strong>作戦局面を九類型に分け、各々の指導原則と士卒統御の勘所を提示。</p>
+      <div class="reason">💡 理由：局面ごとの最適戦術を示し、状況判断の精度を高める</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔥 火攻</h3>
+      <p><strong>要点：</strong>火攻の五法と天時・風向の条件管理、攻撃後の処置。</p>
+      <div class="reason">💡 理由：特殊攻撃の運用法を示し、条件管理の重要性を教える</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🕵️ 用間</h3>
+      <p><strong>要点：</strong>五間の運用で情報を統合し、戦略決定の確度を最大化する。</p>
+      <div class="reason">💡 理由：情報戦の集大成として、全ての戦略判断の質を決定づける</div>
+    </div>
+
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    
+    <div class="card">
+      <h3>💼 具体例1：廟算による不戦の決断</h3>
+      <ul>
+        <li><strong>背景：</strong>ある国が隣国との紛争を検討</li>
+        <li><strong>実践：</strong>五事七計で評価した結果、自国の補給線が脆弱で天候も不利と判明</li>
+        <li><strong>結果：</strong>出兵を中止し、外交交渉に切り替えて資源を温存</li>
+        <li><strong>示唆：</strong>戦前評価で不利を認識し、戦わない選択が最善となる</li>
+      </ul>
+      <div class="reason">💡 この例が示すこと：廟算の精度が無駄な損失を防ぎ、国力を保全する</div>
+    </div>
+
+    <div class="card">
+      <h3>💼 具体例2：虚実の転換による勝利</h3>
+      <ul>
+        <li><strong>背景：</strong>劣勢の軍が優勢な敵と対峙</li>
+        <li><strong>実践：</strong>主力を隠し、囮部隊で敵を誘導。敵が分散したところで本隊が虚を突く</li>
+        <li><strong>結果：</strong>敵の強点を避け、弱点のみを集中攻撃して勝利</li>
+        <li><strong>示唆：</strong>欺きと誘導で虚実を入れ替え、劣勢を覆せる</li>
+      </ul>
+      <div class="reason">💡 この例が示すこと：情報操作と機動で数的劣勢を戦術的優位に転換できる</div>
+    </div>
+
+    <div class="card">
+      <h3>💼 具体例3：用間による戦略的勝利</h3>
+      <ul>
+        <li><strong>背景：</strong>敵国の内部情報が不明で作戦立案が困難</li>
+        <li><strong>実践：</strong>五間を駆使して敵の補給計画・将の性格・同盟関係を把握</li>
+        <li><strong>結果：</strong>敵の同盟を事前に崩し（伐交）、孤立した敵が降伏</li>
+        <li><strong>示唆：</strong>情報優位が戦略レベルの勝利を可能にする</li>
+      </ul>
+      <div class="reason">💡 この例が示すこと：用間による知彼知己が無血の勝利を実現する最短経路</div>
+    </div>
+
+    <div class="card">
+      <h3>💼 具体例4：正と奇の組合せ</h3>
+      <ul>
+        <li><strong>背景：</strong>正面攻撃では敵の防御が堅固</li>
+        <li><strong>実践：</strong>正攻で敵を拘束しつつ、別働隊が側面から奇襲</li>
+        <li><strong>結果：</strong>敵の注意が正面に集中した隙に側面が崩壊</li>
+        <li><strong>示唆：</strong>定石と変化の二段構えで勢を創出</li>
+      </ul>
+      <div class="reason">💡 この例が示すこと：正と奇の相互作用が小力を大力に転化する</div>
+    </div>
+
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    
+    <div class="quote-card">
+      <blockquote>兵者，詭道也。</blockquote>
+      <p><strong>重要性：</strong>戦の本質を認知戦と位置づけ、欺きで主導権を取る原則を示す。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>不戰而屈人之兵，善之善者也。</blockquote>
+      <p><strong>重要性：</strong>最小コストの勝利という本書の到達点を端的に示す。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>知彼知己，百戰不殆；不知彼而知己，一勝一負；不知彼不知己，每戰必殆。</blockquote>
+      <p><strong>重要性：</strong>情報優位が生死を分けるという普遍法則を定式化する。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>其疾如風，其徐如林，侵掠如火，不動如山。</blockquote>
+      <p><strong>重要性：</strong>機動と統制の理想状態を具体的な運用リズムとして描く。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>夫未戰而廟算勝者，得算多也；未戰而廟算不勝者，得算少也。</blockquote>
+      <p><strong>重要性：</strong>勝敗の多くが戦前の計算量と質で決すると教える。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>上兵伐謀，其次伐交，其次伐兵，其下攻城。</blockquote>
+      <p><strong>重要性：</strong>攻撃の優先順位を定め、無血の戦略を優先する規範を与える。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>兵久而利者，未之有也。</blockquote>
+      <p><strong>重要性：</strong>長期戦は国家に利益なしと断じ、速戦志向を正当化する。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>故形人而我無形，則我專而敵分。</blockquote>
+      <p><strong>重要性：</strong>無形の運用で敵を分散させ、自らは集中する要諦を示す。</p>
+    </div>
+
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    
+    <div class="action-card">
+      <h3>✍️ アクション1：目的・勝利条件を紙に書く</h3>
+      <p>現在取り組んでいるプロジェクトや課題について、「何を達成すれば勝ちか」を3つ以内で明文化する。</p>
+      <div class="meta">
+        <strong>目的：</strong>廟算の第一歩として目標を明確化<br>
+        <strong>期待効果：</strong>不要な戦いを避け、資源を集中できる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>📊 アクション2：自他の強弱を3項で比較する</h3>
+      <p>競合や対立相手と自分を、「情報量」「資源」「時間」の3軸で比較し、優劣を可視化する。</p>
+      <div class="meta">
+        <strong>目的：</strong>七計の簡易版で勝算を判定<br>
+        <strong>期待効果：</strong>客観的な現状認識で戦略の精度が上がる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🚪 アクション3：撤退基準を3つ定義する</h3>
+      <p>「この条件になったら撤退する」という具体的な基準を3つ設定し、書き留める。</p>
+      <div class="meta">
+        <strong>目的：</strong>不利な戦いを避ける判断基準の確立<br>
+        <strong>期待効果：</strong>損失の拡大を防ぎ、資源を温存できる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🔍 アクション4：情報源を1つ追加する</h3>
+      <p>現在の課題について、新たな情報源（人・データ・観察）を1つ特定し、今週中にアクセスする。</p>
+      <div class="meta">
+        <strong>目的：</strong>用間の実践で知彼知己の精度向上<br>
+        <strong>期待効果：</strong>盲点が減り、虚実の識別が正確になる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>⚡ アクション5：15分で実行できる奇策を1つ考える</h3>
+      <p>定石（正攻）に加えて、相手が予期しない小さな変化（奇）を1つ設計し、実行する。</p>
+      <div class="meta">
+        <strong>目的：</strong>正と奇の組合せで勢を創出<br>
+        <strong>期待効果：</strong>小さな変化が大きな流れを生む可能性
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <div class="visual-section">
+      <h3>📚 関連書籍</h3>
+      
+      <div class="book-card">
+        <h4>呉子</h4>
+        <div class="author">著者：呉起</div>
+        <div class="relation">同時代の兵法書で統治と軍紀を重視し、孫子の実務面を補完する。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>六韜三略</h4>
+        <div class="author">著者：太公望（伝）/黄石公（伝）</div>
+        <div class="relation">王道と覇道、用兵の幅広い原理を示し、孫子の概念を拡張する。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>戦争論</h4>
+        <div class="author">著者：カール・フォン・クラウゼヴィッツ</div>
+        <div class="relation">摩擦・重心・政治の延長としての戦争など、近代的枠組みで対応概念を提供。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>君主論</h4>
+        <div class="author">著者：ニッコロ・マキァヴェッリ</div>
+        <div class="relation">権力維持の現実主義が詭道と不戦の思想と交差する。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>孫臏兵法</h4>
+        <div class="author">著者：孫臏</div>
+        <div class="relation">孫子と伝承的に関係し、計略と奇策の運用に焦点を当てる。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>良い戦略、悪い戦略</h4>
+        <div class="author">著者：リチャード・P・ルメルト</div>
+        <div class="relation">診断・方針・施策の核を通じ、孫子の廟算と焦点化を現代経営に接続する。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
