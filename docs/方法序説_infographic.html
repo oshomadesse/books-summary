@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>方法序説 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fef5e7, #fdebd0);
+  border-left: 4px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, #e8eaf6, #c5cae9);
+  border-left: 4px solid var(--secondary);
+  padding: 1.2rem;
+  border-radius: 0.8rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.quote-card .importance {
+  font-style: normal;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+.action-card {
+  background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+  border-left: 4px solid var(--primary);
+  padding: 1.2rem;
+  border-radius: 0.8rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.5rem 0;
+  padding-left: 1.8rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin: 0.8rem 0;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 0.8rem;
+  text-align: center;
+}
+.metric-box .number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.metric-box .label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 方法序説</h1>
+  <p>ルネ・デカルト - 確実な知を築く近代的方法</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 核心サマリー</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>確実な知識をいかに得て、誤謬を避けつつ生と学問を前進させるか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>方法的懐疑により動かしがたい出発点（コギト）を見出し、明晰判明の規準と四つの方法則に従って知を構築し、暫定道徳で実践を維持する。神の存在と真理の保証を媒介に、数学化された自然学へ展開する。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>権威や感覚は誤りうるが、思考する自己の存在は疑いえない。この確実性から真理の規準が得られ、それを満たす観念は神の保証により信頼できる。</p>
+    </div>
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      <p>1) 証拠の明証性を求める 2) 問題を分割する 3) 単純から複雑へ秩序立てる 4) 漏れなき総覧で確認する。生活面では暫定道徳を定め、研究と生を両立させる。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">🧠 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔎 方法的懐疑</h3>
+        <ul>
+          <li>誤謬の可能性がある一切の信念を一旦停止</li>
+          <li>疑いえない基礎だけを残す探究手順</li>
+          <li>懐疑は破壊ではなく再構築の準備</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 確実な土台なしに積み上げた知識は崩れやすい。一度すべてを疑うことで、揺るがぬ出発点を見出せる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💭 コギト（我思う、ゆえに我あり）</h3>
+        <ul>
+          <li>疑う行為そのものが思考主体の存在を即時的に確証</li>
+          <li>自己明証的命題</li>
+          <li>懐疑を突き詰めても消えない出発点</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> すべてを疑っても、疑っている「私」の存在だけは否定できない。これが哲学の絶対的基盤となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>✨ 明晰判明観念（明証性）</h3>
+        <ul>
+          <li>注意深い直観において明らかで区別可能に把握される観念</li>
+          <li>真理の規準として採用</li>
+          <li>曖昧さや混乱がない状態</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 真偽を判定する客観的基準が必要。明晰判明な観念だけが確実な知識の構成要素となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📋 四つの方法則</h3>
+        <ul>
+          <li>①明証性の原理：明証なものだけを真とする</li>
+          <li>②分割の原理：問題を要素に分解</li>
+          <li>③秩序：単純から複雑へ段階的に</li>
+          <li>④完全な総覧と再検査：漏れなく確認</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 誤謬を減らし推論を組み立てる手順を明確化。誰もが再現可能な方法として機能する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔧 分析と総合</h3>
+        <ul>
+          <li>複雑な問題を単純要素へ還元（分析）</li>
+          <li>順序立てて再構築（総合）</li>
+          <li>数学的解法の一般化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 複雑な問題も要素に分ければ理解可能。再構築により全体像を透明化できる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🛡️ 暫定道徳</h3>
+        <ul>
+          <li>探究期間中の行動規範</li>
+          <li>慣習遵守、断固として行動、自己の欲望の統御</li>
+          <li>最善の生業選択</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 知的革命と生活の安定を両立。理論的懐疑中も実践的に行動できる枠組みを提供。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🧩 心身二元論</h3>
+        <ul>
+          <li>思考する心（延長なき実体）</li>
+          <li>空間的に延長する身体（機械的実体）</li>
+          <li>本性は異なるが相互作用は想定</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 心と身体を区別することで、科学的説明と精神の自由を両立させる基盤を作る。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌟 神の存在と真理の保証</h3>
+        <ul>
+          <li>完全無限の観念の原因は神のみ</li>
+          <li>神は欺かないため明晰判明観念は真</li>
+          <li>認識の確実性の担保</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 人間の認識能力の信頼性を最終的に保証する存在として神を位置づける。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🧬 生得観念</h3>
+        <ul>
+          <li>経験に依存せず心に本来的に備わる観念</li>
+          <li>例：神、数学的真理</li>
+          <li>方法の起点として機能</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> すべてが経験由来なら確実性は得られない。先天的枠組みが知の出発点となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚙️ 機械論的自然観</h3>
+        <ul>
+          <li>自然と身体を数量化可能な機械として説明</li>
+          <li>因果と法則で自然を把握</li>
+          <li>目的論を排除</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 自然を数学的に記述可能にし、近代科学の基礎を築く。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📐 解析幾何</h3>
+        <ul>
+          <li>幾何に代数を適用</li>
+          <li>図形を方程式で扱う技法</li>
+          <li>自然の数学化の実例</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 方法の具体的応用例として、数学と幾何の統合を実現し、科学的記述の道を開く。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚖️ 良識（理性）の平等性</h3>
+        <ul>
+          <li>理性は人々に広く等しく分配</li>
+          <li>正しい方法があれば誰もが進歩可能</li>
+          <li>権威依存からの解放</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 方法は特権階級のものではなく、万人に開かれた知的ツールであることを宣言。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-diagram">
+      <h3 style="color:var(--secondary);margin-bottom:1rem;">🔗 概念間の関係性</h3>
+      <div class="flow-item">
+        <span>方法的懐疑</span>
+        <span class="flow-arrow">→</span>
+        <span>コギトの確立</span>
+        <span class="flow-arrow">→</span>
+        <span>明晰判明の規準</span>
+      </div>
+      <div class="flow-item">
+        <span>明晰判明の規準 + 原因論</span>
+        <span class="flow-arrow">→</span>
+        <span>神の存在</span>
+        <span class="flow-arrow">→</span>
+        <span>真理の保証</span>
+      </div>
+      <div class="flow-item">
+        <span>四つの方法則</span>
+        <span class="flow-arrow">→</span>
+        <span>誤謬低減と知の累積</span>
+      </div>
+      <div class="flow-item">
+        <span>分析（分割）</span>
+        <span class="flow-arrow">→</span>
+        <span>総合（再構成）</span>
+        <span class="flow-arrow">→</span>
+        <span>問題解決の透明化</span>
+      </div>
+      <div class="flow-item">
+        <span>暫定道徳</span>
+        <span class="flow-arrow">→</span>
+        <span>社会的安定</span>
+        <span class="flow-arrow">→</span>
+        <span>研究の継続可能性</span>
+      </div>
+      <div class="flow-item">
+        <span>心身二元論</span>
+        <span class="flow-arrow">→</span>
+        <span>身体の機械論 + 心の自由</span>
+        <span class="flow-arrow">→</span>
+        <span>科学と倫理の分業</span>
+      </div>
+      <div class="flow-item">
+        <span>数学的モデリング</span>
+        <span class="flow-arrow">→</span>
+        <span>解析幾何の創出</span>
+        <span class="flow-arrow">→</span>
+        <span>自然の数学化</span>
+      </div>
+      <div class="flow-item">
+        <span>権威依存からの自立</span>
+        <span class="flow-arrow">→</span>
+        <span>個人的方法の確立</span>
+        <span class="flow-arrow">→</span>
+        <span>近代的主体の誕生</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">📖 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3>第I部 - 教育と学問の限界</h3>
+      <ul>
+        <li>教育と学問の限界を反省</li>
+        <li>良識の普遍性と自己の経験から方法の必要を宣言</li>
+        <li>権威からの自立を表明</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（なぜこの章が必要か）:</strong> 既存の学問体系への批判的検討が、新しい方法を求める動機を明確にする。権威に頼らず自ら考える姿勢の重要性を示す。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第II部 - 四つの方法則</h3>
+      <ul>
+        <li>四つの方法則を提示（明証性・分割・秩序・総覧）</li>
+        <li>分析と総合の手順を定式化</li>
+        <li>数学的推論を知の一般的モデルとする</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（なぜこの章が必要か）:</strong> 具体的な方法論を提示することで、誰もが実践可能な知的ツールを提供。数学の確実性を他分野にも適用する道を開く。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第III部 - 暫定道徳</h3>
+      <ul>
+        <li>探究中の秩序を保つための暫定道徳を定める</li>
+        <li>慣習遵守、断行、自己統御、最善の生業</li>
+        <li>理論と実践の両立</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（なぜこの章が必要か）:</strong> 知的探究中も日常生活を維持する必要がある。理論的懐疑と実践的行動の矛盾を解消する枠組みを提供。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第IV部 - 形而上学の基礎</h3>
+      <ul>
+        <li>方法的懐疑からコギトへ</li>
+        <li>明晰判明の規準を確立</li>
+        <li>神の存在と魂の区別（不死性）を論証</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（なぜこの章が必要か）:</strong> 知識の確実性を保証する形而上学的基盤を構築。コギトから神へ、神から真理の保証へという論理的連鎖を示す。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第V部 - 自然哲学と生理学</h3>
+      <ul>
+        <li>自然哲学と生理学を機械論で説明</li>
+        <li>天体・物体運動・動物機械</li>
+        <li>人体と自然の法則を数量的に扱う方向を示す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（なぜこの章が必要か）:</strong> 方法の自然科学への応用を実演。機械論的説明により、自然現象を数学的に記述可能にする道筋を示す。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第VI部 - 研究計画と公表</h3>
+      <ul>
+        <li>研究計画の公表理由と協働の要請</li>
+        <li>実用的成果への志向を述べる</li>
+        <li>付論として『光学』『気象学』『幾何学』を提示</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（なぜこの章が必要か）:</strong> 方法の具体的応用例を示し、知識の実用性と社会的貢献を強調。協働による知の発展を呼びかける。
+      </div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-box">
+        <span class="number">6</span>
+        <span class="label">部構成</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">4</span>
+        <span class="label">方法則</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">3</span>
+        <span class="label">付論（応用例）</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">💡 具体例</h2>
+    
+    <div class="card">
+      <h3>🕯️ 例1: 蝋の考察</h3>
+      <ul>
+        <li><strong>背景:</strong> 固体の蝋を熱すると液体に変化し、色・形・匂いなど感覚的性質がすべて変わる</li>
+        <li><strong>示唆:</strong> 感覚では本質を捉えられず、延長・可変性・可動性という知性的把握のみが確実</li>
+        <li><strong>応用:</strong> 物質の本質は数学的性質（延長）にあり、感覚的性質は二次的</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 感覚に頼らず理性的思考で本質を把握する必要性を具体的に示す。機械論的自然観の基礎となる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏛️ 例2: 建築のメタファー</h3>
+      <ul>
+        <li><strong>背景:</strong> 一人の建築家が設計した建物は、多数の職人が継ぎ足した建物より調和的</li>
+        <li><strong>示唆:</strong> 知識体系も一貫した方法で一人が構築する方が、伝統の寄せ集めより優れる</li>
+        <li><strong>応用:</strong> 既存の学問を一旦解体し、統一的方法で再構築する正当性</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 方法的懐疑と再構築の必要性を日常的比喩で説得的に示す。一貫性の価値を強調。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌳 例3: 木のメタファー</h3>
+      <ul>
+        <li><strong>背景:</strong> 哲学全体を木に喩え、根=形而上学、幹=物理学、枝=応用諸科学（医学・機械学・道徳）</li>
+        <li><strong>示唆:</strong> 確実な基礎（根）なしに実用的成果（果実）は得られない</li>
+        <li><strong>応用:</strong> 形而上学的基礎づけが自然科学と実践的知の前提となる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 知識の階層構造と相互依存を視覚的に示す。基礎研究の重要性を強調。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔢 例4: 数学的確実性の拡張</h3>
+      <ul>
+        <li><strong>背景:</strong> 幾何学と代数学は明証的で確実だが、応用範囲が限定的に見える</li>
+        <li><strong>示唆:</strong> その方法（分析・総合・秩序）を一般化すれば、あらゆる問題に適用可能</li>
+        <li><strong>応用:</strong> 解析幾何の創出により、図形問題を代数的に解く道を開く</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 数学的方法の普遍性を実証し、自然科学の数学化への道を具体的に示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">📜 重要な引用</h2>
+    
+    <div class="quote-card">
+      <p><strong>原文:</strong> "Le bon sens est la chose du monde la mieux partagée."</p>
+      <p><strong>訳:</strong> 良識は世界で最も公平に分配されている</p>
+      <div class="importance">
+        <strong>重要性:</strong> 理性の普遍性を宣言し、方法が万人に開かれていることを示す起点となる。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <p><strong>原文:</strong> "Je pense, donc je suis."</p>
+      <p><strong>訳:</strong> 我思う、ゆえに我あり</p>
+      <div class="importance">
+        <strong>重要性:</strong> 懐疑の極から得られる自己明証の基礎で、認識論全体の土台を提供する。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <p><strong>要旨:</strong> 真と認めるのは明証なものだけにせよ／問題を分割せよ／単純から複雑へ秩序立てよ／完全に総覧せよ（四つの方法則）</p>
+      <div class="importance">
+        <strong>重要性:</strong> 誤謬回避と知の構築のための操作原理を簡潔に規定する。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <p><strong>要旨:</strong> 探究の間は法と慣習に従い、決断して行動し、欲望より自己を征服せよ（暫定道徳）</p>
+      <div class="importance">
+        <strong>重要性:</strong> 理論的懐疑と日常生活の安定を両立させる実践的枠組みを与える。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <p><strong>要旨:</strong> 身体は機械のように説明できるが、思考する心は本質的に異なる（心身二元論）</p>
+      <div class="importance">
+        <strong>重要性:</strong> 近代科学の機械論と心の哲学の出発点を同時に確立する。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">✅ 今日のアクション</h2>
+    
+    <div class="action-card">
+      <h4>🔍 アクション1: 確実と思う信念を3つ徹底的に疑う</h4>
+      <p><strong>目的:</strong> 方法的懐疑を実践し、自分の思考の基盤を点検する</p>
+      <p><strong>手順:</strong> 日常的に「当然」と思っている信念を3つ選び、「本当にそうか？」「根拠は何か？」「反例はないか？」と問い続ける</p>
+      <p><strong>期待効果:</strong> 無批判に受け入れていた前提に気づき、より確実な根拠を求める習慣が身につく。思考の明晰さが向上する。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>📊 アクション2: 身近な課題を要素に分解して整理</h4>
+      <p><strong>目的:</strong> 分析の方法則を実践し、複雑な問題を扱いやすくする</p>
+      <p><strong>手順:</strong> 仕事や生活の課題を1つ選び、紙に書き出す。それを「これ以上分けられない」レベルまで小さな要素に分割し、それぞれに優先順位をつける</p>
+      <p><strong>期待効果:</strong> 漠然とした問題が明確になり、どこから手をつけるべきか見えてくる。解決への道筋が立てやすくなる。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✔️ アクション3: 四つの方法則で情報を評価</h4>
+      <p><strong>目的:</strong> 日常的に接する情報の質を判定する習慣をつける</p>
+      <p><strong>手順:</strong> ニュース記事やSNS投稿を1つ選び、①明証性（根拠は明確か）②分割（論点は整理されているか）③秩序（論理は順序立っているか）④総覧（見落としはないか）の観点でチェックする</p>
+      <p><strong>期待効果:</strong> 情報の信頼性を見極める力が向上し、誤情報に惑わされにくくなる。批判的思考力が鍛えられる。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>📝 アクション4: 暫定道徳を自分用にカスタマイズ</h4>
+      <p><strong>目的:</strong> 不確実な状況でも行動できる指針を持つ</p>
+      <p><strong>手順:</strong> デカルトの暫定道徳（慣習遵守・断行・自己統御・最善の選択）を参考に、自分の現状に合った3〜4つの行動原則を書き出す</p>
+      <p><strong>期待効果:</strong> 迷いや不安が減り、一貫した行動がとれるようになる。長期的な探究と日常生活のバランスが改善する。</p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
