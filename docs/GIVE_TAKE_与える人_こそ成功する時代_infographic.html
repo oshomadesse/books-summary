@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIVE & TAKE インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.35rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.88rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+.example-card .context {
+  font-size: 0.88rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-light);
+}
+.example-card .insight {
+  background: rgba(240,147,251,0.15);
+  padding: 0.6rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  margin-top: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--accent);
+  opacity: 0.3;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+.quote-card blockquote {
+  font-style: italic;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  color: var(--text);
+}
+.quote-card .importance {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  padding-left: 1rem;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border: 2px solid var(--accent);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .purpose {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  margin-bottom: 0.4rem;
+}
+.action-card .effect {
+  background: rgba(102,126,234,0.1);
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.visual-diagram {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.visual-diagram h3 {
+  text-align: center;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.88rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  border-left: 3px solid var(--primary);
+}
+.book-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.3rem;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.4rem;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    margin: 0.5rem;
+  }
+  .tab-btn {
+    font-size: 0.8rem;
+    padding: 0.6rem 0.75rem;
+    min-width: 100px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 GIVE & TAKE</h1>
+  <p>「与える人」こそ成功する時代</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 核心メッセージ</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>組織とキャリアで誰が最も成功するのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    <p>自分を守りつつ他者を助ける「他者志向的ギバー」</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>小さな支援の連鎖が信頼・評判・ネットワークの質を高め、機会と情報の流入を増幅する。弱さの開示や質問中心の対話が影響力を強める。テイカーは短期利得は得ても信頼を失い長期で不利。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>5分間の恩送り、休眠関係の再活性化、質問と感謝を標準化するチーム規範、搾取回避のガードレール（境界線設定・優先順位・NOの技術）、レシプロシティの輪などの制度化で、燃え尽きを避けつつ与える行動を継続する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card">
+    <h3>🎁 ギバー（Giver）</h3>
+    <ul>
+      <li><strong>定義:</strong> 他者の利益や学習を優先し、見返りを即座に求めずに資源・知識・支援を提供する人</li>
+      <li><strong>特徴:</strong> 短期は損でも長期で信頼を資本化する</li>
+      <li><strong>一言:</strong> 与える人</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜ重要か）:</strong> 信頼・評判・協力の蓄積が長期的な成功の基盤となり、機会と情報の流入を増やすため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚫 テイカー（Taker）</h3>
+    <ul>
+      <li><strong>定義:</strong> 自己利益の最大化を優先し、他者の資源を引き出すことに注力する人</li>
+      <li><strong>特徴:</strong> 短期利得は大きいが信頼を失いやすい</li>
+      <li><strong>一言:</strong> 奪う人</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜ重要か）:</strong> 短期的な成果は得られても、評判の低下により長期的には孤立し機会を失うリスクが高いため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ マッチャー（Matcher）</h3>
+    <ul>
+      <li><strong>定義:</strong> 与える・受け取るのバランスと公平な交換を志向する人</li>
+      <li><strong>特徴:</strong> 組織文化の規範を左右する中間層</li>
+      <li><strong>一言:</strong> 等価交換派</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜ重要か）:</strong> 組織の大多数を占め、テイカーを罰しギバーを守る規範を形成する役割を担うため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🛡️ 他者志向的ギバー（Otherish Giver）</h3>
+    <ul>
+      <li><strong>定義:</strong> 他者を助けつつ自分の目標と健康を守るギバー</li>
+      <li><strong>特徴:</strong> 優先順位と境界線で搾取を避ける</li>
+      <li><strong>一言:</strong> 戦略的に与える</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜ重要か）:</strong> 燃え尽きを防ぎながら持続的に与え続けることで、最大の成果と幸福を実現できるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>😰 自己犠牲的ギバー</h3>
+    <ul>
+      <li><strong>定義:</strong> NOが言えず過剰に時間・エネルギーを投じて燃え尽きやすいギバー</li>
+      <li><strong>特徴:</strong> 成果も幸福感も下がりやすい</li>
+      <li><strong>一言:</strong> 無防備な与え方</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜ重要か）:</strong> 与える行動が持続不可能になり、本人も周囲も損失を被るリスクを示すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏱️ 5分間の恩送り（5-minute favor）</h3>
+    <ul>
+      <li><strong>定義:</strong> 自分が得意な形で短時間の支援を提供し、見返りではなく連鎖を生む実践</li>
+      <li><strong>特徴:</strong> 小さな親切が大きなネットワーク効果を生む</li>
+      <li><strong>一言:</strong> 小さな親切の習慣</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜ重要か）:</strong> 低コストで実行でき、信頼と評判の蓄積を加速させる実践的手法だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💤 休眠関係（Dormant Ties）</h3>
+    <ul>
+      <li><strong>定義:</strong> 以前つながりがあったが疎遠になった相手</li>
+      <li><strong>特徴:</strong> 信頼の土台を保ちながら新鮮な情報と機会をもたらす</li>
+      <li><strong>一言:</strong> 眠る資産</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜ重要か）:</strong> 既存の強いつながりでは得られない新規性ある情報と機会を提供するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>❓ パワーレス・コミュニケーション</h3>
+    <ul>
+      <li><strong>定義:</strong> 断言より質問・弱さの開示・相談を使い、相手の能動性を引き出して影響力を高める手法</li>
+      <li><strong>特徴:</strong> 信頼と合意形成を促進する</li>
+      <li><strong>一言:</strong> 質問で動かす</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜ重要か）:</strong> 力の誇示より協働を促す対話が、持続的な影響力とリーダーシップを生むため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏢 ギバー文化</h3>
+    <ul>
+      <li><strong>定義:</strong> 助け合い・感謝・依頼の可視化が規範化された組織文化</li>
+      <li><strong>特徴:</strong> 心理的安全性とパフォーマンスを同時に高める</li>
+      <li><strong>一言:</strong> 助け合いを制度化</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜ重要か）:</strong> 個人の善意に依存せず、仕組みで協力を促進し組織全体の成果を最大化するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 レシプロシティの輪</h3>
+    <ul>
+      <li><strong>定義:</strong> メンバーが具体的な依頼を出し合い、集団で助ける仕組み</li>
+      <li><strong>特徴:</strong> 与える行動を見える化し連鎖させる</li>
+      <li><strong>一言:</strong> 助け合いの場</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜ重要か）:</strong> 助けを求めやすくし、与える機会を増やすことで、ギバー文化を実装する具体的手段となるため。
+    </div>
+  </div>
+
+  <div class="visual-diagram">
+    <h3>🔗 概念間の関係性</h3>
+    <div class="flow-item">
+      <span>ギバー（無防備）</span>
+      <span class="flow-arrow">→</span>
+      <span>搾取・過負荷</span>
+      <span class="flow-arrow">→</span>
+      <span>燃え尽き・短期低成果</span>
+    </div>
+    <div class="flow-item">
+      <span>ギバー（他者志向）+ 境界線</span>
+      <span class="flow-arrow">→</span>
+      <span>信頼・評判・協力</span>
+      <span class="flow-arrow">→</span>
+      <span>長期高成果</span>
+    </div>
+    <div class="flow-item">
+      <span>テイカー</span>
+      <span class="flow-arrow">→</span>
+      <span>短期利得↑</span>
+      <span class="flow-arrow">→</span>
+      <span>評判↓</span>
+      <span class="flow-arrow">→</span>
+      <span>長期低成果</span>
+    </div>
+    <div class="flow-item">
+      <span>マッチャー多数 × テイカー出現</span>
+      <span class="flow-arrow">→</span>
+      <span>テイカーを罰する規範</span>
+      <span class="flow-arrow">→</span>
+      <span>ギバーが守られる</span>
+    </div>
+    <div class="flow-item">
+      <span>5分間の恩送り</span>
+      <span class="flow-arrow">→</span>
+      <span>弱い/休眠関係の活性化</span>
+      <span class="flow-arrow">→</span>
+      <span>新規情報・機会流入</span>
+    </div>
+    <div class="flow-item">
+      <span>パワーレス・コミュニケーション</span>
+      <span class="flow-arrow">→</span>
+      <span>信頼・合意形成↑</span>
+      <span class="flow-arrow">→</span>
+      <span>影響力・リーダーシップ↑</span>
+    </div>
+    <div class="flow-item">
+      <span>ギバー文化（感謝・依頼の可視化）</span>
+      <span class="flow-arrow">→</span>
+      <span>心理的安全性↑</span>
+      <span class="flow-arrow">→</span>
+      <span>学習・協働↑</span>
+      <span class="flow-arrow">→</span>
+      <span>組織成果↑</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📌 序章: 成功のパズル</h3>
+    <ul>
+      <li>人を3つの互恵スタイル（ギバー/テイカー/マッチャー）に整理</li>
+      <li>ギバーが成功分布の最下位と最上位の両極に現れるパズルを提示</li>
+      <li>与え方の質が成果を分ける核心的問いを設定</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの章が必要か）:</strong> 読者に「与える人が成功する」という直感に反する現実を示し、探求の動機を与えるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📌 第1部: コストと利益</h3>
+    <ul>
+      <li>ギバーは短期的に損をするが、評判・信頼・ネットワーク資本が累積</li>
+      <li>長期で報われるメカニズムを解説</li>
+      <li>無防備な与え方のリスク（搾取・燃え尽き）も明示</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの章が必要か）:</strong> 与える行動の経済性を理解し、短期損失を受け入れる根拠を提供するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📌 第2部-ネットワーキング: つながりの質</h3>
+    <ul>
+      <li>休眠関係・弱いつながりを活用するギバーは新規性ある情報を得る</li>
+      <li>機会が増える仕組みを実証</li>
+      <li>強いつながりだけでは得られない価値を説明</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの章が必要か）:</strong> ネットワークの「量」より「質」と「多様性」が重要であることを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📌 第2部-コラボレーション: 知識共有</h3>
+    <ul>
+      <li>ギバーは知識共有と他者の成功促進を通じてチーム成果を高める</li>
+      <li>時間配分の管理が鍵</li>
+      <li>協働の質が個人成果を超える価値を生む</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの章が必要か）:</strong> 個人の成功が他者の成功と相互依存する現代の働き方を反映するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📌 第2部-影響力: 質問の力</h3>
+    <ul>
+      <li>断言より質問・謙虚さ・弱さの開示が説得を強化</li>
+      <li>パワーレス・コミュニケーションの効果を実証</li>
+      <li>相手の能動性を引き出す対話技術</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの章が必要か）:</strong> 影響力は力の誇示ではなく協働を促す対話から生まれることを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📌 第2部-リーダーシップ: サーバント型</h3>
+    <ul>
+      <li>サーバント型のギバーは信頼を醸成</li>
+      <li>持続的なコミットメントを引き出す</li>
+      <li>短期的な命令より長期的な動機づけが有効</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの章が必要か）:</strong> リーダーシップの本質が支配ではなく奉仕にあることを明らかにするため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📌 第3部: 持続可能な与え方</h3>
+    <ul>
+      <li>他者志向的ギバーの原則（境界線、優先順位、NOの技術、バッチ処理）</li>
+      <li>燃え尽きを防ぐ具体的戦略</li>
+      <li>自己犠牲と他者志向の違いを明確化</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの章が必要か）:</strong> 与える行動を持続可能にする実践的ガイドラインを提供するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📌 制度設計: ギバー文化の構築</h3>
+    <ul>
+      <li>レシプロシティの輪、感謝の習慣、助けの依頼を促す仕組み</li>
+      <li>個人の善意に依存しない組織設計</li>
+      <li>心理的安全性とパフォーマンスの両立</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの章が必要か）:</strong> 個人の行動変容だけでなく、組織全体の文化変革の道筋を示すため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🌟 例1: 5分間の紹介メール</h3>
+    <div class="context">
+      <strong>背景:</strong> あるギバーは毎日5分だけ、自分のネットワーク内で互いに役立ちそうな2人を紹介するメールを送る習慣を持っていた。
+    </div>
+    <div class="insight">
+      <strong>💡 この例が示すこと（理由）:</strong> 小さな親切の連鎖が信頼と評判を蓄積し、後に予期しない機会（仕事の紹介、情報提供、協力者の出現）として返ってくる。低コストで高リターンの与え方の典型。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🌟 例2: 休眠関係の再活性化</h3>
+    <div class="context">
+      <strong>背景:</strong> 転職を考えていた人が、10年前の同僚に連絡を取ったところ、その人が新しい業界の最新トレンドと求人情報を持っていた。
+    </div>
+    <div class="insight">
+      <strong>💡 この例が示すこと（理由）:</strong> 休眠関係は信頼の土台を保ちながら、既存の強いつながりでは得られない新鮮な情報と機会をもたらす。ネットワークの「多様性」が価値を生む。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🌟 例3: 質問で動かすリーダー</h3>
+    <div class="context">
+      <strong>背景:</strong> あるマネージャーは部下に指示を出す代わりに「どう思う？」「何が必要？」と質問し、弱さを開示して相談する姿勢を取った。
+    </div>
+    <div class="insight">
+      <strong>💡 この例が示すこと（理由）:</strong> パワーレス・コミュニケーションは相手の能動性と当事者意識を引き出し、命令より強い影響力と持続的なコミットメントを生む。力の誇示より協働が効果的。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🌟 例4: レシプロシティの輪</h3>
+    <div class="context">
+      <strong>背景:</strong> ある組織は月1回、メンバーが具体的な依頼を出し合い、誰かが助ける「レシプロシティの輪」を制度化した。
+    </div>
+    <div class="insight">
+      <strong>💡 この例が示すこと（理由）:</strong> 助けを求めやすくし、与える機会を増やす仕組みが、個人の善意に依存せずギバー文化を実装する。心理的安全性と協働の質が向上する。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <blockquote>最も成功するのはギバーであり、最も失敗するのもギバーだ。</blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> 与え方の質（他者志向か自己犠牲か）が成果を分ける核心を示す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>小さな助けは思いがけず大きく返る。</blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> 5分の親切がネットワーク効果で機会を増幅する因果を表す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>弱さの開示は信頼を生む。</blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> 影響力は力の誇示より協働を促す対話から生まれることを示す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>休眠関係は新しい情報の宝庫だ。</blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> 既存の強いつながりだけでは得られない新規性の価値を説明する。
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>✅ アクション1: 恩送りの5分メールを3通送る</h3>
+    <div class="purpose">
+      <strong>🎯 目的:</strong> 自分のネットワーク内で互いに役立ちそうな2人を紹介し、小さな親切の連鎖を開始する。
+    </div>
+    <div class="effect">
+      <strong>📈 期待効果:</strong> 信頼と評判の蓄積が始まり、後に予期しない機会として返ってくる。低コストで高リターンの与え方を体験できる。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション2: 休眠関係者1人に近況を聞く</h3>
+    <div class="purpose">
+      <strong>🎯 目的:</strong> 以前つながりがあったが疎遠になった相手に連絡を取り、近況を尋ねる。
+    </div>
+    <div class="effect">
+      <strong>📈 期待効果:</strong> 信頼の土台を保ちながら新鮮な情報と機会を得られる。ネットワークの多様性が価値を生むことを実感できる。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション3: 会議で質問を3つ用意する</h3>
+    <div class="purpose">
+      <strong>🎯 目的:</strong> 次の会議で断言や指示の代わりに、相手の考えを引き出す質問を3つ用意する。
+    </div>
+    <div class="effect">
+      <strong>📈 期待効果:</strong> パワーレス・コミュニケーションの効果を体験し、相手の能動性と当事者意識を引き出す。影響力が強まることを実感できる。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション4: 感謝を1日1回言語化する</h3>
+    <div class="purpose">
+      <strong>🎯 目的:</strong> 誰かの助けに対して具体的に感謝を伝える習慣を始める。
+    </div>
+    <div class="effect">
+      <strong>📈 期待効果:</strong> 感謝の可視化が助け合いの規範を強化し、ギバー文化の土台を作る。心理的安全性が向上する。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション5: 自分の境界線を1つ設定する</h3>
+    <div class="purpose">
+      <strong>🎯 目的:</strong> 「この時間帯は依頼を受けない」「この種の依頼は断る」など、1つの境界線を明確にする。
+    </div>
+    <div class="effect">
+      <strong>📈 期待効果:</strong> 燃え尽きを防ぎ、持続可能な与え方を実現する。他者志向的ギバーへの第一歩となる。
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1)); padding: 1.5rem; border-radius: 10px; margin-top: 1rem;">
+    <h3 style="color: var(--primary); margin-bottom: 0.75rem;">📚 関連書籍</h3>
+    
+    <div class="book-card">
+      <h4>ORIGINALS 誰もが「人と違うこと」ができる時代</h4>
+      <div class="author">著者: アダム・グラント</div>
+      <div class="relation">創造性とリスク選好の研究が、ギバーの影響力や組織文化づくりと接続する。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>The Go-Giver 与える人ほど成功する</h4>
+      <div class="author">著者: ボブ・バーグ／ジョン・D・マン</div>
+      <div class="relation">「与える成功哲学」を物語形式で提示し、行動原則を補強する。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>モチベーション3.0</h4>
+      <div class="author">著者: ダニエル・ピンク</div>
+      <div class="relation">自律・熟達・目的が高い内発動機づけは、ギバー文化の基盤と合致する。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>影響力の武器</h4>
+      <div class="author">著者: ロバート・B・チャルディーニ</div>
+      <div class="relation">互恵性などの社会心理学原理を理解し、テイカーの戦術への対処にも役立つ。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>Never Eat Alone</h4>
+      <div class="author">著者: キース・フェラッツィ</div>
+      <div class="relation">寛大さに基づくネットワーキングの実践法が、本書の恩送りや休眠関係の活用と重なる。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>人を助けるとはどういうことか</h4>
+      <div class="author">著者: エドガー・H・シャイン</div>
+      <div class="relation">援助関係の力学を解き、健全な与え方・頼み方の設計に示唆を与える。</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
