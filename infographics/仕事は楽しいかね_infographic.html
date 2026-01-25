@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>仕事は楽しいかね？ - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー=#667eea セカンダリー=#764ba2 アクセント=#f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+.tab-btn {
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.3rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.3rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fef5e7, #fdebd0);
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  border-left: 3px solid #f39c12;
+}
+.reason-box strong {
+  color: #d68910;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.3rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.8rem;
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, #e8eaf6, #c5cae9);
+  border-radius: 0.8rem;
+  padding: 1.3rem;
+  margin-bottom: 1rem;
+  border-left: 5px solid var(--primary);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  color: var(--primary);
+  opacity: 0.3;
+}
+.quote-card p {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.quote-card small {
+  display: block;
+  color: var(--text-light);
+  font-size: 0.85rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+  border-radius: 0.8rem;
+  padding: 1.3rem;
+  margin-bottom: 1rem;
+  border-left: 5px solid #00acc1;
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+  color: #00838f;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.3rem 0.7rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-metric {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+  border-radius: 0.8rem;
+}
+.metric-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--secondary);
+  min-width: 80px;
+  text-align: center;
+}
+.metric-label {
+  font-size: 0.95rem;
+  color: var(--text);
+}
+.flow-diagram {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: white;
+  border-radius: 0.8rem;
+}
+.flow-item {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 120px;
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+@media (max-width: 768px) {
+  header h1 { font-size: 1.5rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .tabs { flex-wrap: nowrap; }
+  .flow-diagram { flex-direction: column; }
+  .flow-arrow { transform: rotate(90deg); }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 仕事は楽しいかね？</h1>
+  <p>実験思考で仕事を変える</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>💡 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ仕事は楽しくないのか、どうすれば楽しく成果が出るのか？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      仕事を遊び心ある実験として捉え、たくさん試し、うまくいったものを育てる。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      変化が常態の環境では唯一の正解は事前に分からず、試す人に偶然(運)と学習が集まるため。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      今日から小さな仮説→試行→学習を回し、失敗を歓迎し、他者が驚く価値を見せて検証し、当たった芽に資源を集中する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔬 試すこと（たくさん試す）</h3>
+        <ul>
+          <li>小さなリスクで多様な実験を重ねる</li>
+          <li>当たったものを拡張する姿勢</li>
+          <li>量が質を生む原理</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>正解が事前に分からない環境では、試行回数が成果の確率を決定づけるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📚 失敗の活用</h3>
+        <ul>
+          <li>失敗をデータとして扱う</li>
+          <li>次の仮説修正に資する学習サイクル</li>
+          <li>失敗＝教材という認識</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>失敗から学ぶことで、アイデアの質が漸進的に向上し、成功への距離が縮まるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🍀 セレンディピティの設計</h3>
+        <ul>
+          <li>試行の数・幅・接点を増やす</li>
+          <li>幸運との遭遇確率を高める</li>
+          <li>運を設計する発想</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>偶然は行動する人にのみ訪れ、試行が多いほど予期せぬ価値に出会えるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎮 遊び心</h3>
+        <ul>
+          <li>好奇心と余白で仕事をゲーム化</li>
+          <li>創造性と継続力を引き出す</li>
+          <li>楽しさが燃料になる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>遊び心が試行コストの心理的負担を下げ、継続的な実験を可能にするから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎯 差別化（人と違うことをする）</h3>
+        <ul>
+          <li>常識的な最適化ではなく意外性で価値を生む</li>
+          <li>逆張りで価値を創出</li>
+          <li>競争を避け独自の領域を開拓</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>同じことをしても埋もれるだけで、差別化こそが市場での存在価値を生むから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>😲 顧客の驚き</h3>
+        <ul>
+          <li>顧客が言語化できないニーズに対応</li>
+          <li>試作品を見せて反応で確かめる</li>
+          <li>見せて検証する手法</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>人は見せられるまで自分の欲しいものを知らず、実地検証が最速の学習手段だから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📈 小さな成功の積み上げ</h3>
+        <ul>
+          <li>毎日の一歩を可視化</li>
+          <li>モメンタムと自己効力感を育てる</li>
+          <li>日々の一勝を重ねる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>小さな勝利が自信と習慣を生み、大きな成果への道筋を作るから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💼 アイデア・ポートフォリオ</h3>
+        <ul>
+          <li>リスク・確度の異なる複数案を並行運用</li>
+          <li>全体の期待値を上げる分散投資</li>
+          <li>一つに賭けないリスク管理</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>複数の試みを並行することで、失敗のダメージを抑え、当たりの確率を高められるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔄 習慣化</h3>
+        <ul>
+          <li>実験・記録・ふりかえりを日課化</li>
+          <li>自動的に回る仕組みにする</li>
+          <li>仕組みで回す持続性</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>習慣化により意志力に頼らず継続でき、長期的な成果が安定するから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌱 自分を変える決意</h3>
+        <ul>
+          <li>「明日は今日と違う自分になる」というコミット</li>
+          <li>継続的変化の誓い</li>
+          <li>日々の更新を前提とする</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>変化へのコミットが行動の起点となり、停滞を防ぎ成長を促すから。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-metric">
+      <div class="metric-number">∞</div>
+      <div class="metric-label"><strong>試行の数</strong><br>量が質を生み、偶然を呼び込む</div>
+    </div>
+
+    <div class="flow-diagram">
+      <div class="flow-item">変化が前提</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">正解は不明</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">試行が必須</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">学習と運</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">成果</div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>序章：吹雪の夜の出会い</h3>
+      <ul>
+        <li>空港で足止めされた主人公が老紳士と出会う</li>
+        <li>「仕事は楽しいかね？」という核心の問いが投げかけられる</li>
+        <li>この問いが全編を貫くテーマとなる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>読者に自分の仕事への姿勢を問い直させ、変化への動機づけを行うため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>第1部：正解探しの限界</h3>
+      <ul>
+        <li>目標設定や計画に頼る従来の方法論の限界を指摘</li>
+        <li>変化が激しい環境では事前の正解は存在しない</li>
+        <li>「まず試す」という原則が提示される</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>計画偏重の思考を解体し、実験思考への転換を促すため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>第2部：失敗と偶然の活用</h3>
+      <ul>
+        <li>失敗を恐れない態度の重要性</li>
+        <li>偶然（セレンディピティ）を活かす方法</li>
+        <li>差別化の価値と人と違うことをする勇気</li>
+        <li>対話と逸話で具体的に展開</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>失敗と偶然を味方にする心構えと行動原理を示し、試行のハードルを下げるため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>第3部：顧客の驚きと小さな成功</h3>
+      <ul>
+        <li>顧客が言語化できないニーズを見つける方法</li>
+        <li>試作品を見せて反応で確かめる実地検証</li>
+        <li>小さな成功を積み上げてモメンタムを作る</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>市場での検証手法と継続のための心理的報酬設計を具体化するため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>第4部：ポートフォリオと習慣化</h3>
+      <ul>
+        <li>アイデア・ポートフォリオでリスク分散</li>
+        <li>実験・記録・ふりかえりを日課にする習慣化</li>
+        <li>試行を持続可能にする設計</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>一時的な行動ではなく、長期的に回る仕組みを構築するため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>終章：明日は今日と違う自分に</h3>
+      <ul>
+        <li>「明日は今日と違う自分になる」という決意</li>
+        <li>今すぐ動く行動課題で締めくくり</li>
+        <li>継続的変化へのコミットを促す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>読後すぐに行動を起こさせ、学びを実践に移すきっかけを作るため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="card">
+      <h3>🔬 例1：エジソンの実験精神</h3>
+      <p><span class="badge">背景</span>エジソンは電球のフィラメント素材を見つけるため、数千回の実験を繰り返した。</p>
+      <p><span class="badge">示唆</span>「失敗ではなく、うまくいかない方法を発見した」という姿勢が成功を生んだ。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>試行の量と失敗の活用が、画期的な発明につながることを実証している。
+      </div>
+    </div>
+    <div class="card">
+      <h3>🎨 例2：ポストイットの偶然</h3>
+      <p><span class="badge">背景</span>3M社の研究者が失敗作の弱い接着剤を、別の用途（付箋）として活用した。</p>
+      <p><span class="badge">示唆</span>失敗を捨てずに別の文脈で試すことで、予期せぬヒット商品が生まれた。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>セレンディピティは試行と柔軟な視点の組み合わせで設計できることを示す。
+      </div>
+    </div>
+    <div class="card">
+      <h3>🍔 例3：マクドナルドの差別化</h3>
+      <p><span class="badge">背景</span>マクドナルド兄弟は既存のレストランと違う「スピード」と「システム」に賭けた。</p>
+      <p><span class="badge">示唆</span>常識を疑い、人と違うことをする勇気が新市場を開拓した。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>差別化と実験的アプローチが、業界の常識を覆し巨大な成功を生むことを証明している。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>仕事は『実験』だ。やってみて、学んで、変える。</p>
+      <small><span class="badge">要旨</span>本書の方法論を端的に表す中核命題</small>
+    </div>
+    <div class="quote-card">
+      <p>完璧を目指すより、多くを試す。</p>
+      <small><span class="badge">要旨</span>試行の量が成果の確率を押し上げる原理を示す</small>
+    </div>
+    <div class="quote-card">
+      <p>明日は今日と違う自分になろう。</p>
+      <small><span class="badge">要旨</span>継続的な変化を促す行動指針であり、日々の実践に落ちる</small>
+    </div>
+    <div class="quote-card">
+      <p>人は見せられるまで自分の欲しいものを知らない。</p>
+      <small><span class="badge">要旨</span>市場調査より早い実地検証の重要性を示す</small>
+    </div>
+    <div class="quote-card">
+      <p>運は『試す人』の肩にとまる。</p>
+      <small><span class="badge">要旨</span>偶然を呼び込む行動原理を明確にする</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>✏️ アクション1：小さな実験案を10個書き出す</h3>
+      <p><strong>目的：</strong>試行の候補を可視化し、実験思考のスタート地点を作る</p>
+      <p><strong>期待効果：</strong>アイデアの量が増え、選択肢が広がり、行動のハードルが下がる</p>
+      <p><strong>所要時間：</strong>15分</p>
+    </div>
+    <div class="action-card">
+      <h3>🛠️ アクション2：机上プロトを1つ作り同僚に見せる</h3>
+      <p><strong>目的：</strong>顧客の驚きを設計し、実地検証の第一歩を踏み出す</p>
+      <p><strong>期待効果：</strong>フィードバックから学び、仮説の精度が上がり、次の試行が明確になる</p>
+      <p><strong>所要時間：</strong>30分</p>
+    </div>
+    <div class="action-card">
+      <h3>📅 アクション3：今週の仮説検証30分枠を3つ予約</h3>
+      <p><strong>目的：</strong>実験を習慣化し、継続的な試行サイクルを回す仕組みを作る</p>
+      <p><strong>期待効果：</strong>意志力に頼らず自動的に実験が進み、学習速度が加速する</p>
+      <p><strong>所要時間：</strong>5分（予約作業）+ 各30分（実験）</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
