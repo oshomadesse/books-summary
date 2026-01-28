@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Things Done インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--primary);
+}
+
+.reason-box strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+
+.chapter-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+
+.quote-card .quote-text {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.quote-card .quote-reason {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-top: 0.5rem;
+}
+
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin: 0.25rem;
+}
+
+.flow-diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.flow-step {
+  display: flex;
+  align-items: center;
+  margin: 0.75rem 0;
+  font-size: 0.9rem;
+}
+
+.flow-step .arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--accent);
+}
+
+.book-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.book-card .relation {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 Getting Things Done (GTD)</h1>
+  <p>ストレスフリーの仕事術 - 頭を空にして成果を出す</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    なぜ仕事はストレスになり、どうすれば平常心で成果を出せるのか？
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    脳の保管作業をやめ、外部システムに預けて曖昧さを潰し、明確な「次の行動」に基づいて選択するGTDの5ステップを回す。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    人間の脳は情報の保持に不向きで、曖昧な約束（オープンループ）が注意資源を奪い不安を生む。外部化と明確化で安心感と制御感が回復する。
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    収集→明確化→整理→レビュー→実行を徹底し、2分ルール・コンテキスト別リスト・プロジェクトの成果定義・週次レビュー・自然な計画モデルで運用の質を高める。
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🧠 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📚 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💡 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">🚀 今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--secondary);">🧠 主要概念の詳細</h2>
+  
+  <div class="card-grid">
+    <div class="card">
+      <h3>📥 インボックス／収集</h3>
+      <ul>
+        <li>頭の中の気になることを全件捕まえる</li>
+        <li>物理・デジタルの受け皿を1〜数個用意</li>
+        <li>考える前にまず漏れなく出す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>脳は保管に不向き。外部化で注意資源を解放し、不安を減らす土台を作る。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔍 明確化（Clarify）</h3>
+      <ul>
+        <li>「これは何か」を判定</li>
+        <li>「自分が関与すべきか」を決める</li>
+        <li>「次の物理的行動は何か」まで落とす</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>曖昧さが停滞とストレスの源。明確化で実行可能性が生まれる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 次の行動（Next Action）</h3>
+      <ul>
+        <li>対象を前進させる最小の具体的行為</li>
+        <li>「誰が・どこで・何を」まで定義</li>
+        <li>動ける一手に分解する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>行動の具体性が実行の障壁を下げ、前進を保証する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📂 プロジェクト</h3>
+      <ul>
+        <li>望む成果を得るのに複数ステップが必要</li>
+        <li>必ず少なくとも1つの次の行動を持つ</li>
+        <li>成果を明確に定義する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>複数手の塊を管理し、次の行動で常に前進可能にする。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📍 コンテキスト</h3>
+      <ul>
+        <li>状況や資源の分類（@オフィス, @自宅, @電話等）</li>
+        <li>その場で可能な行動を選びやすくする</li>
+        <li>場で選ぶ効率を上げる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>状況に応じた選択肢の絞り込みで、実行の迷いを減らす。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⏱️ 2分ルール</h3>
+      <ul>
+        <li>明確化時、2分以内で終わるなら即実行</li>
+        <li>リストに入れる手間より早い</li>
+        <li>即断即処理で流れを作る</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>小さなタスクの滞留を防ぎ、システムの流動性を保つ。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🗂️ 整理（Organize）</h3>
+      <ul>
+        <li>カレンダー／次の行動／プロジェクト一覧</li>
+        <li>待ち／いつか・たぶん／参照資料に配置</li>
+        <li>置き場を決めて迷いをなくす</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>決まった場所への配置で検索コストを下げ、信頼性を高める。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 週次レビュー</h3>
+      <ul>
+        <li>全リストとカレンダーを見渡す</li>
+        <li>最新・完了・明確の状態に戻す</li>
+        <li>信頼の回復を定期実施</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>システムの鮮度を保ち、心的負荷を下げて実行の質を上げる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌱 自然な計画モデル</h3>
+      <ul>
+        <li>目的・原則→ビジョン→ブレインストーミング</li>
+        <li>整理→次の行動という自然な流れ</li>
+        <li>人間の思考に沿って計画する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>無理のない計画プロセスで成果の明確化と行動の具体化を両立。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏔️ 焦点の地平（Horizons of Focus）</h3>
+      <ul>
+        <li>日々の行動から目的・価値観までの階層</li>
+        <li>上位が下位の選択を導く</li>
+        <li>上位整合で一貫性を保つ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>長期の整合性が日々の選択の質を高め、意味ある成果につながる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📅 カレンダー</h3>
+      <ul>
+        <li>日時が固定された約束・締切のみ</li>
+        <li>「神聖」な場所として信頼性の核</li>
+        <li>時間の金庫として守る</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>カレンダーの純度が日々の選択のノイズを下げ、過負荷を防ぐ。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔓 オープンループ</h3>
+      <ul>
+        <li>頭に引っかかる未完了の約束や懸念</li>
+        <li>捕捉と明確化で注意の漏れを止める</li>
+        <li>未完の負債を解消する対象</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>未完了が注意資源を奪う。外部化で心的負荷を下げる。
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="margin-bottom:1rem;color:var(--secondary);">🔗 概念間の関係性</h3>
+    <div class="flow-step">
+      未処理の約束（オープンループ）<span class="arrow">→</span>注意資源の浪費・ストレス
+    </div>
+    <div class="flow-step">
+      収集が不十分<span class="arrow">→</span>抜け漏れ不安<span class="arrow">→</span>システム不信
+    </div>
+    <div class="flow-step">
+      収集<span class="arrow">→</span>明確化<span class="arrow">→</span>整理<span class="arrow">→</span>レビュー<span class="arrow">→</span>実行
+    </div>
+    <div class="flow-step">
+      プロジェクト<span class="arrow">→</span>次の行動を少なくとも1つ<span class="arrow">→</span>前進が保証
+    </div>
+    <div class="flow-step">
+      コンテキスト×時間×エネルギー×優先<span class="arrow">→</span>その時選ぶ行動が決まる
+    </div>
+    <div class="flow-step">
+      カレンダーの純度↑<span class="arrow">→</span>日々の選択のノイズ↓
+    </div>
+    <div class="flow-step">
+      週次レビュー<span class="arrow">→</span>システム更新<span class="arrow">→</span>心的負荷↓<span class="arrow">→</span>実行の質↑
+    </div>
+    <div class="flow-step">
+      自然な計画モデル<span class="arrow">→</span>成果の明確化<span class="arrow">→</span>行動の具体化
+    </div>
+    <div class="flow-step">
+      焦点の地平（上位）<span class="arrow">→</span>プロジェクト群<span class="arrow">→</span>次の行動（下位）へ一貫性を伝達
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--secondary);">📚 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>第1章：導入 - なぜストレスが生まれるか</h3>
+    <ul>
+      <li>現代の知的労働は境界が曖昧で終わりが見えない</li>
+      <li>頭の中の未処理が注意を奪い続ける</li>
+      <li>GTDはコントロールと展望を回復する原理</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>問題の本質を示し、解決の方向性（外部化と明確化）を提示するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章：原理編 - 5ステップのワークフロー</h3>
+    <ul>
+      <li>収集・明確化・整理・レビュー・実行の全体像</li>
+      <li>各ステップの役割と相互関係</li>
+      <li>システム全体の信頼性を構築する設計</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>GTDの骨格を理解し、各要素がどう連携するかを把握するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章：実践編 - 初期セットアップと処理</h3>
+    <ul>
+      <li>全量収集の手順（机・引き出し・デジタル）</li>
+      <li>リスト設計（カレンダー／次の行動／プロジェクト／待ち／いつか）</li>
+      <li>2分ルールと明確化の実際</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>具体的な開始手順を示し、初回の障壁を下げて実行を促すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章：計画編 - 自然な計画モデル</h3>
+    <ul>
+      <li>目的・原則→ビジョン→ブレインストーミング→整理→次の行動</li>
+      <li>プロジェクトの成果を明確に定義する方法</li>
+      <li>行動への落とし込みで前進を保証</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>計画の質が実行の質を決める。自然な流れで成果と行動を結ぶため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章：運用編 - 週次レビューとメンテナンス</h3>
+    <ul>
+      <li>週次レビューの構え・頻度・チェックリスト</li>
+      <li>システムの鮮度を保つ定期点検</li>
+      <li>信頼性の維持が心的負荷を下げる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>システムの劣化を防ぎ、長期運用の質を保つため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章：視座編 - 焦点の地平</h3>
+    <ul>
+      <li>目的・価値→目標→責任領域→プロジェクト→行動の階層</li>
+      <li>上位の整合性が下位の選択を導く</li>
+      <li>日々の行動と長期の意味を結ぶ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>短期の効率だけでなく、長期の意味ある成果につなげるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7章：応用と維持 - 個人差と立て直し</h3>
+    <ul>
+      <li>ツール選択・職場適用・個人差への対応</li>
+      <li>崩れた時の立て直し方</li>
+      <li>習慣化のコツと継続の工夫</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>現実の多様性に対応し、挫折からの回復力を高めるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--secondary);">💡 具体例</h2>
+
+  <div class="card">
+    <h3>📧 例1：メール処理の明確化</h3>
+    <ul>
+      <li><strong>背景：</strong>受信トレイに100通のメールが溜まり、何から手をつけるか分からない</li>
+      <li><strong>適用：</strong>各メールを「これは何か」「次の行動は何か」で判定し、2分以内なら即返信、それ以外は次の行動リストへ</li>
+      <li><strong>結果：</strong>受信トレイがゼロになり、実行すべき行動が明確なリストに変わる</li>
+      <li><strong>示唆：</strong>曖昧な「メールの山」が具体的な行動に変換され、心的負荷が激減</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>日常的な情報過多の状況で、明確化と2分ルールの威力を示す典型例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏠 例2：引っ越しプロジェクトの分解</h3>
+    <ul>
+      <li><strong>背景：</strong>「引っ越し」という大きな塊が頭にあり、何から始めるか分からず先延ばし</li>
+      <li><strong>適用：</strong>成果を「新居で快適に生活している」と定義し、次の行動を「不動産サイトで条件を入力して検索」に分解</li>
+      <li><strong>結果：</strong>最初の一手が明確になり、実際に動き出せる</li>
+      <li><strong>示唆：</strong>プロジェクトの成果定義と次の行動の具体化が停滞を解消</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>複数ステップの塊を行動に落とす自然な計画モデルの実例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 例3：週次レビューで信頼を回復</h3>
+    <ul>
+      <li><strong>背景：</strong>1週間システムを放置し、リストが古くなり信頼できなくなった</li>
+      <li><strong>適用：</strong>金曜午後に全リスト・カレンダー・プロジェクトを見渡し、完了・更新・次の行動の追加を実施</li>
+      <li><strong>結果：</strong>システムが最新状態に戻り、月曜から安心して選択できる</li>
+      <li><strong>示唆：</strong>定期メンテナンスがシステムの信頼性と心の平穏を保つ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>週次レビューの実践的価値と、信頼性維持の重要性を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📍 例4：コンテキスト別リストで効率化</h3>
+    <ul>
+      <li><strong>背景：</strong>外出先で「あれもこれも」と思い出すが、その場でできることが分からない</li>
+      <li><strong>適用：</strong>@電話、@外出、@PC、@自宅などコンテキスト別にリストを分け、その場で見るリストを絞る</li>
+      <li><strong>結果：</strong>移動中は@電話リストだけ見て電話をかけ、オフィスでは@PCリストに集中</li>
+      <li><strong>示唆：</strong>状況に応じた選択肢の絞り込みで、実行の迷いと時間の無駄が減る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>コンテキストの力で実行効率を上げる具体的な運用例。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--secondary);">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      "頭の中はアイデアを生む場所であり、保管場所ではない。"
+    </div>
+    <div class="quote-reason">
+      <strong>なぜ重要か：</strong>外部化の必然性を端的に示し、収集の動機を与える。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      "次の物理的行動を定義せよ。"
+    </div>
+    <div class="quote-reason">
+      <strong>なぜ重要か：</strong>曖昧さを行動に変換し、停滞を断つ核心原理だから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      "カレンダーは神聖な場所だ。"
+    </div>
+    <div class="quote-reason">
+      <strong>なぜ重要か：</strong>時間資源の信頼性を守り、過負荷を防ぐ基準を示す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      "未完了は注意を引き寄せる。"
+    </div>
+    <div class="quote-reason">
+      <strong>なぜ重要か：</strong>オープンループの心理的コストを自覚させ、捕捉の必要性を裏付ける。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      "信頼できるシステムが心の平穏をもたらす。"
+    </div>
+    <div class="quote-reason">
+      <strong>なぜ重要か：</strong>仕組み化がストレス低減の直接要因であることを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--secondary);">🚀 今日のアクション</h2>
+
+  <div class="action-card">
+    <h3>📥 アクション1：机上にインボックスを1つ作る</h3>
+    <p><strong>目的：</strong>物理的な収集の受け皿を用意し、頭の外に出す習慣の第一歩を踏む。</p>
+    <p><strong>期待効果：</strong>紙・メモ・小物が散乱せず、一箇所に集まることで処理の起点ができる。</p>
+  </div>
+
+  <div class="action-card">
+    <h3>✍️ アクション2：気になることを15分書き出す</h3>
+    <p><strong>目的：</strong>頭の中のオープンループを可視化し、外部化の効果を体感する。</p>
+    <p><strong>期待効果：</strong>書き出すだけで心が軽くなり、次の明確化ステップへの準備が整う。</p>
+  </div>
+
+  <div class="action-card">
+    <h3>🎯 アクション3：3件の次の行動を決めて記録</h3>
+    <p><strong>目的：</strong>書き出した項目から3つ選び、「次の物理的行動」を定義して実行可能にする。</p>
+    <p><strong>期待効果：</strong>曖昧な懸念が具体的な行動に変わり、すぐに動き出せる状態になる。</p>
+  </div>
+
+  <div style="margin-top:2rem;padding:1.5rem;background:linear-gradient(135deg,rgba(102,126,234,0.1),rgba(240,147,251,0.1));border-radius:0.75rem;">
+    <h3 style="color:var(--secondary);margin-bottom:1rem;">📖 関連書籍</h3>
+    
+    <div class="book-card">
+      <h4>エッセンシャル思考 最少の時間で成果を最大にする</h4>
+      <div class="author">グレッグ・マキューン</div>
+      <div class="relation">優先度の絞り込みがGTDの実行選択を強化する。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>DEEP WORK 大事なことに集中する</h4>
+      <div class="author">カル・ニューポート</div>
+      <div class="relation">コンテキスト管理と深い集中の設計が補完関係にある。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>7つの習慣</h4>
+      <div class="author">スティーブン・R・コヴィー</div>
+      <div class="relation">焦点の地平と同様に上位目的から行動を整合させる。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>ジェームズ・クリアー式 複利で伸びる1つの習慣</h4>
+      <div class="author">ジェームズ・クリアー</div>
+      <div class="relation">小さな行動の設計と習慣化が次の行動の定着に役立つ。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>Make Time 仕事と人生を本当に大切なことに集中する方法</h4>
+      <div class="author">ジェイク・ナップ／ジョン・ゼラツキー</div>
+      <div class="relation">日次のフォーカス設計がGTDの実行フェーズを後押しする。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>デジタル・ミニマリスト</h4>
+      <div class="author">カル・ニューポート</div>
+      <div class="relation">情報過多を減らし、収集と実行の雑音を下げる。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>整理HACKS!</h4>
+      <div class="author">小山龍介</div>
+      <div class="relation">日本的文脈での情報整理術がGTD運用のヒントになる。</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// タブ切り替え
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
