@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Never Split the Difference - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #2c3e50, セカンダリー #e74c3c, アクセント #3498db -->
+<style>
+:root {
+  --primary: #2c3e50;
+  --secondary: #e74c3c;
+  --accent: #3498db;
+  --bg: #ecf0f1;
+  --card-bg: #ffffff;
+  --text: #2c3e50;
+  --text-light: #7f8c8d;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--secondary);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  color: var(--secondary);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+}
+
+.summary-item strong {
+  color: var(--primary);
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+
+.summary-item p {
+  margin-left: 1rem;
+  color: var(--text);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--card-bg);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.tab-button {
+  flex: 1 1 auto;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  transition: all 0.3s;
+}
+
+.tab-button:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.tab-button.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-top: 4px solid var(--accent);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--secondary);
+}
+
+.reason strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--accent);
+}
+
+.chapter-card h3 {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.chapter-card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.example-card {
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+
+.example-card h3 {
+  color: var(--secondary);
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.example-card p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.quote-card {
+  background: var(--primary);
+  color: white;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.quote-card:before {
+  content: """;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  font-size: 6rem;
+  opacity: 0.1;
+  font-family: Georgia, serif;
+}
+
+.quote-card blockquote {
+  font-size: 1.1rem;
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-card p {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--accent), #5dade2);
+  color: white;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.action-card li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+
+.action-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--secondary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.visual-flow {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.visual-flow h3 {
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f8f9fa, #ffffff);
+  border-radius: 0.5rem;
+  border-left: 4px solid var(--accent);
+}
+
+.flow-arrow {
+  text-align: center;
+  color: var(--secondary);
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.metric-card {
+  background: linear-gradient(135deg, var(--accent), #5dade2);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.metric-card .number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.metric-card .label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .tabs {
+    flex-direction: column;
+  }
+  
+  .tab-button {
+    min-width: 100%;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 Never Split the Difference</h1>
+  <p>クリス・ヴォス著 - 交渉は感情が動かす</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 エグゼクティブ・サマリー</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>どうすれば相手に譲歩を促しつつ関係を損なわない交渉ができるか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>戦術的共感を軸にミラーリング・ラベリング・校正質問を用い、相手に主導感を与えながら未知情報を引き出して意思決定の設計空間を広げる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか？）</strong>
+    <p>交渉は情報戦かつ感情の科学であり、人は理解されたと感じたときに安心して開示・譲歩する。否定的感情を先に解消すると抵抗が下がり、創造的選択肢が生まれる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには？）</strong>
+    <p>1) ミラーリングで会話を延ばす、2) ラベリングで感情を可視化する、3) 「どうすれば/何が」の校正質問で相手に解決策を語らせる、4) Ackermanモデルで譲歩を設計する、5) ブラック・スワン探索で前提を再定義する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-button active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🧠 主要概念</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📚 各章の要約</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🎯 戦術的共感</h3>
+      <ul>
+        <li>相手の感情や視点を正確に理解</li>
+        <li>それを言語化して相手に伝える技術</li>
+        <li>説得ではなく心理的安全の醸成が目的</li>
+        <li>一言要約：理解は最大の影響力</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>人は理解されたと感じたときに初めて心を開き、情報を開示し、譲歩を検討する。共感は信頼の土台。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🪞 ミラーリング</h3>
+      <ul>
+        <li>相手の最後の数語を穏やかに反復</li>
+        <li>沈黙とともに続きの発話を引き出す</li>
+        <li>傾聴スキルの基本技術</li>
+        <li>一言要約：続きを促す鏡</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>反復は相手に「聞いている」サインを送り、自然に詳細を語らせる。情報収集の最も簡単な方法。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏷️ ラベリング</h3>
+      <ul>
+        <li>「〜のように聞こえます」で感情に名前を付ける</li>
+        <li>否定的感情を鎮める効果</li>
+        <li>感情の可視化で安心感を生む</li>
+        <li>一言要約：感情に名を与え鎮静</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>感情を言語化すると脳の扁桃体が鎮静化し、理性的対話が可能になる。抵抗を減らす鍵。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>❓ 校正質問</h3>
+      <ul>
+        <li>How/Whatで始める協力誘発型の問い</li>
+        <li>相手に考えさせ主導感を持たせる</li>
+        <li>障害や制約を語らせる</li>
+        <li>一言要約：相手に動いてもらう質問</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>命令ではなく質問で相手に解決策を考えさせると、自発的な協力と責任感が生まれる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔍 非難監査</h3>
+      <ul>
+        <li>相手が抱く最悪の印象を先回りで列挙</li>
+        <li>感情の毒を抜く予防策</li>
+        <li>言語化で否定感情を無力化</li>
+        <li>一言要約：先に毒を抜く</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>相手の懸念を先に言語化すると、相手は防御を解き、建設的対話に移行できる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🚫 「No」は出発点</h3>
+      <ul>
+        <li>Noは拒絶ではなく安全と境界の表明</li>
+        <li>本音の開示を促すトリガー</li>
+        <li>Noから真の会話が始まる</li>
+        <li>一言要約：Noが本当の会話を開く</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>Noを言える環境は心理的安全を示し、相手は制約や本音を語りやすくなる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>✅ 「That's right」反応</h3>
+      <ul>
+        <li>相手が世界観を正確に理解されたと感じた合図</li>
+        <li>実質合意の前段階</li>
+        <li>「You're right」とは異なる真の同意</li>
+        <li>一言要約：理解一致のサイン</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>形だけの同意ではなく、相手の内面が正確に映されたときに出る言葉。合意の質を測る指標。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📊 Ackermanモデル</h3>
+      <ul>
+        <li>目標価格→初回提案→段階的譲歩</li>
+        <li>非金銭要素で締める数量交渉の手順</li>
+        <li>設計された譲歩戦略</li>
+        <li>一言要約：設計された譲歩戦略</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>譲歩を計画的に行うと相手に誠実さと限界を示し、最適な合意点に到達しやすい。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚓ アンカリング</h3>
+      <ul>
+        <li>初期の基準点を提示</li>
+        <li>以後の判断をその近傍に引き寄せる</li>
+        <li>心理操作の基本技術</li>
+        <li>一言要約：基準点の支配</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>最初の数字が交渉の範囲を決定づける。戦略的な基準設定が結果を左右する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🦢 ブラック・スワン</h3>
+      <ul>
+        <li>合意を一変させる未知の重要情報</li>
+        <li>発見が前提を覆す</li>
+        <li>交渉力を劇的に高める鍵</li>
+        <li>一言要約：前提を変える鍵情報</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>未知情報の発見は問題を再定義し、創造的な解決策と圧倒的優位をもたらす。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎤 声の使い分け</h3>
+      <ul>
+        <li>落ち着いた低いトーンや温かい声色</li>
+        <li>情動とテンポを制御</li>
+        <li>場の雰囲気を支配する技術</li>
+        <li>一言要約：声で場を制す</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>声のトーンは相手の情動に直接作用し、全ての技法の成功率を高める基盤となる。
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-flow">
+    <h3>🔄 概念間の関係性</h3>
+    <div class="flow-item">戦術的共感 → 心理的安全 → 情報開示 ↑</div>
+    <div class="flow-arrow">⬇️</div>
+    <div class="flow-item">ミラーリング/ラベリング = 戦術的共感の実装手段</div>
+    <div class="flow-arrow">⬇️</div>
+    <div class="flow-item">非難監査 → 否定感情の低減 → 抵抗の減少 → 校正質問が刺さる</div>
+    <div class="flow-arrow">⬇️</div>
+    <div class="flow-item">校正質問 → 相手の主導感・責任感 → 協力・譲歩の増加</div>
+    <div class="flow-arrow">⬇️</div>
+    <div class="flow-item">「No」受容 → 境界明確化 → 本音抽出 → 「That's right」到達</div>
+    <div class="flow-arrow">⬇️</div>
+    <div class="flow-item">ブラック・スワン発見 → 問題再定義 → 交渉案の革新</div>
+    <div class="flow-arrow">⬇️</div>
+    <div class="flow-item">アンカリング + Ackerman → 数量面の最適化（情報量↑で精度↑）</div>
+    <div class="flow-arrow">⬇️</div>
+    <div class="flow-item">声の使い分け → 情動調整 → 全技法の成功率向上</div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📖 序章</h3>
+    <ul>
+      <li>現場の人質交渉から得た教訓を提示</li>
+      <li>合理主義だけの限界を指摘</li>
+      <li>感情中心のパラダイムを導入</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>交渉は理性だけでは動かない。感情が意思決定の核心であることを実例で示し、新しいアプローチの必要性を説く。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🆕 新しいルール</h3>
+    <ul>
+      <li>戦術的共感を交渉の中核に据える</li>
+      <li>相手の世界観理解が成果に直結</li>
+      <li>従来の合理的交渉理論との違いを明示</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>感情を無視した交渉は失敗する。相手を理解することが影響力の源泉であり、新しい交渉の基盤となる。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>👂 聴く技術</h3>
+    <ul>
+      <li>ミラーリング・沈黙・声の使い分けを解説</li>
+      <li>相手に話させる技術</li>
+      <li>情報収集の土台を作る</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>話すより聴くことが交渉の武器。相手が語るほど情報が集まり、信頼が深まる。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>😌 感情の処理</h3>
+    <ul>
+      <li>ラベリングと非難監査で否定的感情を解毒</li>
+      <li>信頼を醸成する技術</li>
+      <li>感情の可視化で抵抗を減らす</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>否定的感情を先に処理すると、相手は防御を解き建設的対話に移行できる。感情処理が合意への道を開く。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🚫 Noの再解釈</h3>
+    <ul>
+      <li>Noを安全のサインとして受け止める</li>
+      <li>本音を引き出す技術</li>
+      <li>Noから真の交渉が始まる</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>Noは拒絶ではなく境界の表明。Noを歓迎することで相手は安心し、制約や本音を語り始める。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>✅ 合意の合図</h3>
+    <ul>
+      <li>「You're right」と「That's right」の違い</li>
+      <li>真の合意の徴候を見極める</li>
+      <li>形だけの同意を避ける</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>表面的な同意は後で崩れる。「That's right」は相手の世界観が正確に理解された証であり、持続的合意の基盤。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>❓ 質問で動かす</h3>
+    <ul>
+      <li>校正質問で相手に課題と次の一手を語らせる</li>
+      <li>協力を引き出す技術</li>
+      <li>命令ではなく質問で主導感を与える</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>質問は相手に考えさせ、自発的な協力を生む。命令は抵抗を生むが、質問は責任感を育てる。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>💰 数字と譲歩設計</h3>
+    <ul>
+      <li>アンカリングとAckermanモデルを解説</li>
+      <li>価格・条件交渉をシステマティックに行う</li>
+      <li>譲歩の設計で最適な合意点に到達</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>数字の交渉は感情と戦略の両方が必要。計画的な譲歩は誠実さを示し、相手の信頼を得る。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>⚠️ 交渉の罠</h3>
+    <ul>
+      <li>デッドラインや「フェア」訴求の罠を解説</li>
+      <li>対処法を提示</li>
+      <li>心理的トリックを見抜く</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>交渉には心理的罠が潜む。罠を認識し対処することで、不利な合意を避けられる。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🦢 ブラック・スワン</h3>
+    <ul>
+      <li>未知情報の探索法を解説</li>
+      <li>合意を再構築する力を事例で示す</li>
+      <li>前提を覆す情報の価値</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>未知情報の発見は交渉を根本から変える。ブラック・スワンを探すことで、創造的解決策と圧倒的優位が得られる。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🔗 統合</h3>
+    <ul>
+      <li>現場での統合運用を解説</li>
+      <li>日常・ビジネスへの適用手順</li>
+      <li>全技法を組み合わせた実践</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>個別技法を統合して初めて真の交渉力が生まれる。実践での組み合わせ方が成功の鍵。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🏦 銀行強盗の人質交渉</h3>
+    <p><strong>背景：</strong>武装した銀行強盗が人質を取り立てこもり。従来の強硬策では人質の命が危険。</p>
+    <p><strong>適用技術：</strong>戦術的共感とラベリングで犯人の恐怖と怒りを言語化。「追い詰められているように聞こえます」と繰り返し、犯人の感情を鎮静化。</p>
+    <p><strong>結果：</strong>犯人は徐々に心を開き、最終的に武器を置いて投降。人質全員無事。</p>
+    <p><strong>示唆：</strong>極限状況でも感情の理解が暴力を防ぎ、合意を生む。理性的説得より共感が効く。</p>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>感情を無視した交渉は失敗する。共感が最も危険な状況でも人を動かす力を持つことを証明。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>💼 給与交渉での校正質問</h3>
+    <p><strong>背景：</strong>転職オファーの給与が期待より低い。直接的な要求は関係を損なうリスク。</p>
+    <p><strong>適用技術：</strong>「どうすればこの金額を上げることができますか？」と校正質問。相手に制約と可能性を語らせる。</p>
+    <p><strong>結果：</strong>採用側が予算の制約を説明しつつ、サインオンボーナスと早期昇給レビューを提案。当初より良い条件で合意。</p>
+    <p><strong>示唆：</strong>質問は相手に解決策を考えさせ、創造的な代替案を引き出す。命令より協力を生む。</p>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>校正質問が相手の主導感を保ちながら、より良い条件を引き出す力を持つことを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🏠 不動産交渉でのブラック・スワン</h3>
+    <p><strong>背景：</strong>売主が市場価格より高い価格を譲らない。通常の価格交渉では膠着。</p>
+    <p><strong>適用技術：</strong>雑談と傾聴で売主の背景を探索。売主が離婚調停中で、特定の日付までに現金が必要と判明（ブラック・スワン）。</p>
+    <p><strong>結果：</strong>迅速なクロージングと現金決済を提案し、価格を大幅に下げることに成功。</p>
+    <p><strong>示唆：</strong>未知情報の発見が交渉の前提を変え、双方に利益をもたらす解決策を生む。</p>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>ブラック・スワンの発見が交渉を根本から再設計し、Win-Winを実現する力を持つことを証明。
+    </div>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <span class="number">3</span>
+      <span class="label">核心技術<br>（共感・質問・探索）</span>
+    </div>
+    <div class="metric-card">
+      <span class="number">11</span>
+      <span class="label">主要概念<br>（実践可能な技法）</span>
+    </div>
+    <div class="metric-card">
+      <span class="number">∞</span>
+      <span class="label">適用範囲<br>（人質交渉〜日常会話）</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <blockquote>"Never split the difference."</blockquote>
+    <p><strong>なぜ重要か：</strong>安易な妥協は価値を捨てる行為であり、最良案の設計が交渉の本質だから。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"No is the start of the negotiation."</blockquote>
+    <p><strong>なぜ重要か：</strong>Noを安全サインとして扱うと本音と制約が引き出せるため。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"Tactical empathy is understanding, not agreement."</blockquote>
+    <p><strong>なぜ重要か：</strong>共感は譲歩ではなく、影響力を得るための土台であることを明確にする。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"That's right" beats "You're right."</blockquote>
+    <p><strong>なぜ重要か：</strong>形だけの同意ではなく、世界観の一致が合意の兆候であるから。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>Labeling negatives deactivates them.</blockquote>
+    <p><strong>なぜ重要か：</strong>否定的感情の言語化が抵抗を減らし、対話を前進させるため。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>Black Swans change everything.</blockquote>
+    <p><strong>なぜ重要か：</strong>未知情報の発見が交渉の設計空間を根本から広げるため。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>🎯 今日から始める3つのアクション</h3>
+    <ul>
+      <li><strong>ミラーリングを15分練習する</strong><br>目的: 傾聴スキルの基礎を体得<br>期待効果: 会話が自然に延び、相手が詳細を語り始める</li>
+      <li><strong>非難監査を箇条書きにする</strong><br>目的: 次の重要な交渉で相手の懸念を先回りで解消<br>期待効果: 相手の防御が下がり、建設的対話がスムーズに始まる</li>
+      <li><strong>校正質問を5つ作成する</strong><br>目的: 命令ではなく質問で協力を引き出す準備<br>期待効果: 相手が自発的に解決策を考え、主導感を持って動く</li>
+    </ul>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>📝 ミラーリング練習</h3>
+      <ul>
+        <li>家族や同僚との会話で試す</li>
+        <li>相手の最後の2〜3語を穏やかに反復</li>
+        <li>沈黙を恐れず、相手の続きを待つ</li>
+        <li>15分で3回以上実践する</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🔍 非難監査の作成</h3>
+      <ul>
+        <li>次の交渉相手が抱く懸念をリスト化</li>
+        <li>「あなたは〜と思うかもしれません」形式で書く</li>
+        <li>最悪の印象を5〜7個列挙</li>
+        <li>交渉の冒頭で読み上げる準備をする</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>❓ 校正質問の準備</h3>
+      <ul>
+        <li>「どうすれば〜できますか？」形式で5つ作成</li>
+        <li>「何が〜を妨げていますか？」も含める</li>
+        <li>Yes/Noで答えられない質問にする</li>
+        <li>相手に解決策を考えさせる設計</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="visual-flow">
+    <h3>🚀 実践ロードマップ</h3>
+    <div class="flow-item"><strong>Week 1:</strong> ミラーリングとラベリングを日常会話で練習</div>
+    <div class="flow-arrow">⬇️</div>
+    <div class="flow-item"><strong>Week 2:</strong> 校正質問を小さな交渉で試す（会議・家庭）</div>
+    <div class="flow-arrow">⬇️</div>
+    <div class="flow-item"><strong>Week 3:</strong> 非難監査を重要な交渉で実践</div>
+    <div class="flow-arrow">⬇️</div>
+    <div class="flow-item"><strong>Week 4:</strong> Ackermanモデルで価格交渉を設計</div>
+    <div class="flow-arrow">⬇️</div>
+    <div class="flow-item"><strong>継続:</strong> ブラック・スワン探索を習慣化</div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// タブ切り替え機能
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const targetTab = button.getAttribute('data-tab');
+    
+    // すべてのタブボタンとコンテンツから active クラスを削除
+    tabButtons.forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブボタンとコンテンツに active クラスを追加
+    button.classList.add('active');
+    button.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+
+// スムーズスクロール
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// カードのホバーエフェクト強化（モバイル対応）
+const cards = document.querySelectorAll('.card, .chapter-card, .example-card');
+cards.forEach(card => {
+  card.addEventListener('touchstart', function() {
+    this.style.transform = 'translateY(-4px)';
+  });
+  card.addEventListener('touchend', function() {
+    this.style.transform = 'translateY(0)';
+  });
+});
+</script>
+
+</body>
+</html>
