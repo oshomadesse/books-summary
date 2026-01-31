@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人間性の心理学 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 0.75rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0 1rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-radius: 8px 8px 0 0;
+  transition: all 0.3s;
+  position: relative;
+}
+.tab-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  background: var(--card-bg);
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+}
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-top: 3px solid var(--primary);
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.05rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.35rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.88rem;
+}
+.chapter-card li::before {
+  content: '•';
+  position: absolute;
+  left: 0.5rem;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: linear-gradient(135deg, #ffffff, #f7fafc);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.example-card p {
+  font-size: 0.88rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--primary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.quote-card blockquote {
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+.quote-card .why {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+.action-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(240,147,251,0.15));
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.action-card h4 {
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.88rem;
+  margin-bottom: 0.4rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-section h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.hierarchy-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.hierarchy-item {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hierarchy-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.1);
+  transform: translateX(-100%);
+  transition: transform 0.3s;
+}
+.hierarchy-item:hover::before {
+  transform: translateX(0);
+}
+.relation-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.flow-item {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 0.88rem;
+  position: relative;
+  padding-left: 2.5rem;
+}
+.flow-item::before {
+  content: '→';
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.metric-box .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.metric-box .label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 人間性の心理学</h1>
+  <p>健全さの科学 - 成長動機とB価値が拓く自己実現への道</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約 = 問い × 答え × 根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      人間を健康で創造的にする動機とは何か？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      欠乏動機を超えた成長動機（メタ動機）が自己実現を駆動し、B価値に沿った認知と行為が幸福と健全性をもたらす。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      自己実現者の観察・臨床研究から、基礎的欲求が満たされるほど成長志向が顕在化し、ピーク体験やB愛が精神的健康と統合感を支えることが示された。
+    </div>
+    <div class="summary-item">
+      <strong>🛠 How（そのためには）</strong>
+      欠乏状態を低減し、B価値（真・善・美・統一など）を日常に具現化する場づくりとセルフワーク（再神聖化の練習、内省、ヨナ・コンプレックスの自覚と乗り越え）を設計・実践する。
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>📊 核心メッセージの構造</h3>
+    <div class="metric-grid">
+      <div class="metric-box">
+        <span class="number">12</span>
+        <span class="label">主要概念</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">8</span>
+        <span class="label">論理展開</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">14</span>
+        <span class="label">B価値</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🌱 人間性心理学（第三勢力）</h3>
+        <ul>
+          <li>行動主義・精神分析の限界を補完</li>
+          <li>健康で創造的な人間の可能性を研究</li>
+          <li>病理ではなく健全さに焦点</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 学問の焦点を欠陥から可能性へ転換し、実践の指針を変えるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚠️ 欠乏動機（D動機）</h3>
+        <ul>
+          <li>安全・所属・尊重など不足の穴埋め</li>
+          <li>満たされると弱まる</li>
+          <li>外的報酬に依存しやすい</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 基礎的安全が確保されないと成長動機が立ち上がらないことを示すため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🚀 成長動機／メタ動機（B動機）</h3>
+        <ul>
+          <li>存在をよりよく実現する内発的衝動</li>
+          <li>満たされるほど強まる</li>
+          <li>B価値に導かれる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 人間の本質的な成長志向を理解し、環境設計に活かすため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌟 自己実現</h3>
+        <ul>
+          <li>潜在能力を統合的・創造的に発揮</li>
+          <li>B価値と整合する生き方</li>
+          <li>成熟段階の到達点</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 健全性の指標を明確化し、発達の方向性を示すため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⛰️ ピーク体験</h3>
+        <ul>
+          <li>時間・自己境界が薄れる至高体験</li>
+          <li>価値や意味を直覚する</li>
+          <li>行為の動機づけを再編</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 一回の深い経験が長期の動機づけと人格統合を促すことを示すため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>👁️ B認知（存在認知）</h3>
+        <ul>
+          <li>評価や欠乏のフィルタ抜き</li>
+          <li>対象をあるがまま全体として観る</li>
+          <li>ピーク体験で顕在化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 認知様式の転換が価値観と行動を根本から変えるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💎 B価値（メタニーズ）</h3>
+        <ul>
+          <li>真・善・美・統一・生気・独自性</li>
+          <li>完全性・公正・単純・豊穣</li>
+          <li>容易さ・遊び・自足</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 存在の質を高める普遍的価値群を具体化し、実践可能にするため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>❤️ D愛とB愛</h3>
+        <ul>
+          <li>D愛: 欠乏補填の依存的な愛</li>
+          <li>B愛: 相手の成長を願う成熟した愛</li>
+          <li>関係性の質が人格発達を左右</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 愛の質が自己と他者の成長を相互強化することを示すため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🦠 メタ病理</h3>
+        <ul>
+          <li>B価値が阻害された結果の苦悩</li>
+          <li>空虚・愚劣感・シニシズム</li>
+          <li>環境・文化的要因が影響</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 価値剥奪が精神的病理を生むメカニズムを理解するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>😨 ヨナ・コンプレックス</h3>
+        <ul>
+          <li>自らの偉大さや使命への恐れ</li>
+          <li>成長を回避する傾向</li>
+          <li>リスク回避・自己縮小</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 外的障壁だけでなく内的抵抗が成長を妨げることを自覚させるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>✨ 再神聖化</h3>
+        <ul>
+          <li>日常や対象から価値と畏敬を再発見</li>
+          <li>B認知を取り戻す態度・実践</li>
+          <li>意図的な注意の向け方</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 日常でB認知を維持し、メタ動機を持続させる実践法を提供するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📈 欲求階層</h3>
+        <ul>
+          <li>生理・安全・所属・尊重の充足</li>
+          <li>自己実現や超越へ移行</li>
+          <li>満たして昇る構造</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 発達の前提条件と順序を明確化し、介入の優先順位を示すため。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="relation-flow">
+        <div class="flow-item">基礎的安全の充足 → 欠乏動機の低減 → 成長動機の顕在化</div>
+        <div class="flow-item">成長動機の顕在化 → B認知の増加 → B価値の内在化</div>
+        <div class="flow-item">B価値の内在化 → ピーク体験の頻度・深度が上がる → 自己実現が加速</div>
+        <div class="flow-item">B愛の経験 → 関係性の成熟 → 自己と他者の成長が相互強化</div>
+        <div class="flow-item">B価値の阻害（環境・文化） → メタ病理の発生 → シニシズム・空虚感</div>
+        <div class="flow-item">ヨナ・コンプレックス → リスク回避・自己縮小 → 自己実現の停滞</div>
+        <div class="flow-item">再神聖化の実践 → B認知の回復 → メタ動機の持続</div>
+        <div class="flow-item">D認知（評価・欠乏フィルタ）優勢 → 不安・競争の増幅 → B認知の低下</div>
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>🪜 欲求階層の視覚化</h3>
+      <div class="hierarchy-visual">
+        <div class="hierarchy-item" style="width: 100%;">🌌 超越・自己実現</div>
+        <div class="hierarchy-item" style="width: 90%;">🏆 尊重の欲求</div>
+        <div class="hierarchy-item" style="width: 80%;">👥 所属と愛の欲求</div>
+        <div class="hierarchy-item" style="width: 70%;">🛡️ 安全の欲求</div>
+        <div class="hierarchy-item" style="width: 60%;">🍎 生理的欲求</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>第1章: 既存心理学の限界と新たな視座</h3>
+      <ul>
+        <li>病理中心・還元主義の限界を指摘</li>
+        <li>健康と可能性に焦点を移すべきと宣言</li>
+        <li>第三勢力としての人間性心理学の位置づけ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 学問のパラダイムシフトを促し、実践の方向性を根本から変えるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第2章: 欠乏動機と成長動機の区別</h3>
+      <ul>
+        <li>D動機（欠乏動機）の性質と限界</li>
+        <li>B動機（成長動機）の内発性と持続性</li>
+        <li>欲求階層の枠組みを提示</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 動機の質的差異を理解し、環境設計と介入の基盤を築くため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第3章: 自己実現者の特徴</h3>
+      <ul>
+        <li>健全性の指標を具体的に記述</li>
+        <li>創造性・自律性・統合性の観察</li>
+        <li>B価値との整合性</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 健康の基準を明確化し、発達目標を可視化するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第4章: ピーク体験・B認知・B愛</h3>
+      <ul>
+        <li>ピーク体験の性質と変容効果</li>
+        <li>B認知（存在認知）の特徴</li>
+        <li>B愛が関係性と人格を成熟させる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 深い体験が長期的な動機づけと統合を促すメカニズムを示すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第5章: メタ動機とB価値の体系</h3>
+      <ul>
+        <li>真・善・美・統一など14のB価値</li>
+        <li>B価値の相互強化と統合</li>
+        <li>メタニーズとしての位置づけ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 存在の質を高める普遍的価値を体系化し、実践可能にするため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第6章: 成長阻害の力学</h3>
+      <ul>
+        <li>メタ病理（価値剥奪の苦悩）</li>
+        <li>ヨナ・コンプレックス（偉大さへの恐れ）</li>
+        <li>文化的・環境的要因の分析</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 内的・外的障壁を理解し、介入ポイントを特定するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第7章: 再神聖化と応用原理</h3>
+      <ul>
+        <li>日常でB認知を取り戻す実践</li>
+        <li>教育・治療・組織への応用</li>
+        <li>場づくりとセルフワークの設計</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 理論を具体的な実践に落とし込み、持続可能な成長を支援するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第8章: 方法論と今後の課題</h3>
+      <ul>
+        <li>健康者研究の重要性</li>
+        <li>質的・臨床的観察の価値</li>
+        <li>実証研究との統合の必要性</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 研究方法の妥当性を確保し、学問的発展の方向性を示すため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>🎨 例1: 芸術家のピーク体験</h4>
+      <p><strong>背景:</strong> 創作中に時間感覚が消失し、作品と一体化する体験。自己と対象の境界が溶け、美と真理を直覚する。</p>
+      <p><strong>示唆:</strong> この体験後、芸術家は作品への動機が外的評価から内的必然へ移行し、創造性が持続的に高まる。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> ピーク体験がB認知を開き、メタ動機を強化して自己実現を加速させることを具体的に示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🌳 例2: 自然体験による再神聖化</h4>
+      <p><strong>背景:</strong> 都市生活で疲弊した人が森林浴で木々の生命力に畏敬を感じ、日常の小さな美に気づくようになる。</p>
+      <p><strong>示唆:</strong> 意図的に自然と向き合うことでB認知が回復し、価値剥奪によるメタ病理が軽減される。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 再神聖化の実践が日常でB認知を維持し、メタ動機を持続させる具体的方法を示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>👨‍👩‍👧 例3: B愛による相互成長</h4>
+      <p><strong>背景:</strong> 親が子の成長を無条件に支援し、子も親の自己実現を尊重する関係。互いの可能性を信じ、依存ではなく自律を促す。</p>
+      <p><strong>示唆:</strong> B愛の関係では双方が成長動機を強化し合い、自己実現が相互に加速する。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 愛の質が自己と他者の成長を相互強化し、関係性が人格発達の基盤となることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🏢 例4: 組織におけるメタ病理</h4>
+      <p><strong>背景:</strong> 効率と利益のみを追求する企業文化で、従業員が意味や美を感じられず、空虚感とシニシズムに陥る。</p>
+      <p><strong>示唆:</strong> B価値（公正・創造性・自律）が阻害される環境はメタ病理を生み、生産性と幸福度を低下させる。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 環境がB価値を阻害すると精神的病理が発生し、組織設計の重要性を示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🎓 例5: 教育におけるヨナ・コンプレックス</h4>
+      <p><strong>背景:</strong> 優秀な学生が「期待に応えられない恐れ」から挑戦を避け、安全な選択肢に留まる。</p>
+      <p><strong>示唆:</strong> 内的抵抗（偉大さへの恐れ）を自覚し、小さな挑戦を積み重ねることで成長が再開する。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 外的障壁だけでなく内的抵抗が成長を妨げ、自覚と段階的実践が必要であることを示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <blockquote>
+        「心理学は病理だけでなく、最も健康で創造的な人々を主要な研究対象にすべきだ。」
+      </blockquote>
+      <div class="why">
+        <strong>なぜ重要か:</strong> 学問の焦点を欠陥から可能性へ転換し、実践の指針を変えるから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        「安全・所属・尊重が十分に満たされると、人は自己実現へ向かう成長動機に切り替わる。」
+      </blockquote>
+      <div class="why">
+        <strong>なぜ重要か:</strong> 環境設計と政策が成長の前提条件を整える重要性を示すから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        「ピーク体験は世界をB認知で見る扉を開き、価値（B価値）を内在化させる。」
+      </blockquote>
+      <div class="why">
+        <strong>なぜ重要か:</strong> 一回の深い経験が長期の動機づけと人格統合を促すことを示すから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        「人はしばしば自らの偉大さを恐れ（ヨナ・コンプレックス）、成長を回避する。」
+      </blockquote>
+      <div class="why">
+        <strong>なぜ重要か:</strong> 外的障壁だけでなく内的抵抗が成長を妨げることを自覚させるから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        「B価値（真・善・美・統一など）は相互に強化し合い、存在の質を高める。」
+      </blockquote>
+      <div class="why">
+        <strong>なぜ重要か:</strong> 価値の体系化が実践可能な指針を提供し、日常に統合できるから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        「B愛は相手の成長を願う成熟した愛であり、依存ではなく自律を促す。」
+      </blockquote>
+      <div class="why">
+        <strong>なぜ重要か:</strong> 愛の質が自己と他者の成長を相互強化し、関係性の設計指針となるから。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>📝 アクション1: 欠乏と成長の動機を各3つ書く</h4>
+      <p><strong>目的:</strong> 自分の動機の質を自覚し、成長動機を意識的に強化する。</p>
+      <p><strong>期待効果:</strong> D動機とB動機の区別が明確になり、日常の選択基準が変わる。</p>
+      <p><strong>実行方法:</strong> ノートに「今週の欠乏動機3つ」「今週の成長動機3つ」を書き出し、後者を優先する時間を1日15分確保する。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>⛰️ アクション2: 最近のピーク体験を3分記録</h4>
+      <p><strong>目的:</strong> ピーク体験を言語化し、B認知のパターンを自覚する。</p>
+      <p><strong>期待効果:</strong> 体験の再現条件が明確になり、意図的にB認知を引き出せるようになる。</p>
+      <p><strong>実行方法:</strong> 過去1ヶ月で「時間を忘れた瞬間」「深い充足を感じた瞬間」を思い出し、状況・感覚・その後の変化を3分で記録する。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>💎 アクション3: 今日のB価値を1つ選び実行</h4>
+      <p><strong>目的:</strong> B価値を日常に具現化し、メタ動機を強化する。</p>
+      <p><strong>期待効果:</strong> 価値が抽象概念から具体的行為に変わり、存在の質が高まる。</p>
+      <p><strong>実行方法:</strong> 真・善・美・統一・生気・独自性・完全性・公正・単純・豊穣・容易さ・遊び・自足から1つ選び、今日中に小さく実践する（例: 美→部屋に花を飾る、公正→誰かの貢献を認める）。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✨ アクション4: 再神聖化の練習（5分）</h4>
+      <p><strong>目的:</strong> 日常の対象から価値と畏敬を再発見し、B認知を回復する。</p>
+      <p><strong>期待効果:</strong> 価値剥奪によるメタ病理が軽減され、日常の充足感が高まる。</p>
+      <p><strong>実行方法:</strong> 身近な対象（コーヒー、木、人）を5分間じっくり観察し、その存在の奇跡・複雑さ・美を言葉にする。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🔍 アクション5: ヨナ・コンプレックスの自覚</h4>
+      <p><strong>目的:</strong> 偉大さへの恐れを自覚し、小さな挑戦を設計する。</p>
+      <p><strong>期待効果:</strong> 内的抵抗が明確になり、段階的に成長を再開できる。</p>
+      <p><strong>実行方法:</strong> 「避けている挑戦」を1つ書き出し、「最小の一歩」（15分でできること）を今日実行する。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>❤️ アクション6: B愛の実践（1回）</h4>
+      <p><strong>目的:</strong> 相手の成長を願う行為を通じて、関係性の質を高める。</p>
+      <p><strong>期待効果:</strong> 依存的な愛から成熟した愛へ移行し、相互成長が加速する。</p>
+      <p><strong>実行方法:</strong> 身近な人の「可能性」を1つ見つけ、それを支援する具体的行動を1つ実行する（例: 励まし、情報提供、時間の確保）。</p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
