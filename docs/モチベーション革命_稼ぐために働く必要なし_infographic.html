@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>稼ぐために働く必要なし - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--primary);
+}
+
+.reason-box strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+
+.chapter-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 2px solid var(--accent);
+}
+
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+
+.example-card .context {
+  background: rgba(240,147,251,0.1);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin: 0.75rem 0;
+  font-size: 0.9rem;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+
+.quote-card .quote-text {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.quote-card .quote-why {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card .action-detail {
+  background: rgba(255,255,255,0.15);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.flow-arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.metric-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.metric-label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.book-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.book-item h4 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--secondary);
+}
+
+.book-item .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.book-item .relation {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+
+.visual-concept {
+  margin: 1.5rem 0;
+}
+
+.concept-viz {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+}
+
+.emoji-large {
+  font-size: 2.5rem;
+  margin: 0 1rem;
+}
+
+.concept-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.concept-node {
+  background: white;
+  padding: 0.75rem 1rem;
+  border-radius: 2rem;
+  border: 2px solid var(--primary);
+  font-weight: 500;
+}
+
+.arrow-emoji {
+  font-size: 1.5rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 稼ぐために働く必要なし</h1>
+  <p>乾けない世代が動く、新しい働き方の地図</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    なぜ「稼ぐために働く必要がない」と言えるのか、では何を動機に働けばよいのか。
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    物質的不足が少ない社会では、お金よりも「意味合い・没頭・つながり・成長」が持続的な動機となり、評価経済の下では「与えること（Give）」が信用を生み、その信用が機会と報酬を連れてくる。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    高度成長期の成功方程式（長時間×根性×金銭動機）は、飽和とデジタル化により限界が露呈。可視化される評判・つながり・成果物が、新しい「資本」として価値を持つため。
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    1) 小さな没頭を日常に組み込む（15分の集中やプロジェクト化） 2) Giveを先行させ、価値提供と学びを循環させる 3) 越境（副業/コミュニティ）で弱い紐帯を育てる 4) マネジメントは命令から伴走へ（任せて支える/目的合意）に転換する。
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">関連書籍</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="visual-concept">
+    <div class="concept-viz">
+      <div class="concept-flow">
+        <div class="concept-node">物質的飽和</div>
+        <span class="arrow-emoji">→</span>
+        <div class="concept-node">乾けない世代</div>
+        <span class="arrow-emoji">→</span>
+        <div class="concept-node">意味合い重視</div>
+        <span class="arrow-emoji">→</span>
+        <div class="concept-node">評価経済</div>
+        <span class="arrow-emoji">→</span>
+        <div class="concept-node">Give循環</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>🌱 乾けない世代</h3>
+      <ul>
+        <li>物質的不足が少ない環境で育つ</li>
+        <li>お金や地位より意味合い・つながり・成長で動く</li>
+        <li>外発的動機より内発的動機に反応</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>満たされた環境が価値基準を変え、動機づけと人事設計の前提を根本から変えるから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💼 乾いている世代</h3>
+      <ul>
+        <li>高度成長を生き、お金・出世・所有で報われた</li>
+        <li>努力=報酬の直結を経験</li>
+        <li>金銭動機の成功体験を持つ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>旧来の成功方程式を体現し、世代間ギャップの理解に不可欠だから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⭐ 評価経済（信用資本）</h3>
+      <ul>
+        <li>評判・信頼・貢献履歴が可視化される</li>
+        <li>機会や報酬に直結する経済環境</li>
+        <li>信用が通貨化する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>デジタル化で信用が主要資本となり、新しい勝ち筋を示すから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎁 Give（先行価値提供）</h3>
+      <ul>
+        <li>見返りを前提にせず価値を先に渡す</li>
+        <li>学びと関係資本を増やす振る舞い</li>
+        <li>長期で機会が還流する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>評価経済で長期的に最適化され、信用蓄積の起点となるから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 没頭（フロー）</h3>
+      <ul>
+        <li>難易度と能力が釣り合う集中状態</li>
+        <li>時間感覚を忘れる体験</li>
+        <li>小さな単位で設計可能</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>誰もが再現可能に生産性と幸福度を同時に上げられるから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 意味合い（Why）</h3>
+      <ul>
+        <li>自分や社会にとっての目的・理由の明確化</li>
+        <li>内発的動機のエンジン</li>
+        <li>行動の持続性を高める</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>目的が力となり、自律性と創造性を引き出す基盤だから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌉 越境/スラッシュキャリア</h3>
+      <ul>
+        <li>複数のコミュニティ・役割を横断</li>
+        <li>弱い紐帯から学習と機会を得る</li>
+        <li>偶発性とイノベーションを高める</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>文脈取得とキャリア耐性を強化し、新規機会を創出するから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🤝 任せて支えるマネジメント</h3>
+      <ul>
+        <li>やり方の指示ではなく目的合意</li>
+        <li>資源提供・障害除去で伴走</li>
+        <li>自律性を最大化する管理</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>命令より伴走が、自律性と創造性を引き出すマネジメントの要点だから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧪 小さく試す（リーン実践）</h3>
+      <ul>
+        <li>仮説を小規模に検証</li>
+        <li>素早い学習で価値と適合を高める</li>
+        <li>大きな投資のリスク低減</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>早い失敗と学習で、不確実性下の前進を可能にするから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📚 リスキリング/アップデート</h3>
+      <ul>
+        <li>技術・文脈の変化に合わせ学び直し</li>
+        <li>市場価値と内的充足を更新</li>
+        <li>陳腐化を防ぐ継続学習</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>評価経済での可視価値を持続させ、長期キャリアを支えるから。
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram">
+    <h3 style="margin-bottom:1rem; color: var(--secondary);">🔗 概念間の関係性</h3>
+    <div class="flow-item">
+      <span>物質的飽和</span>
+      <span class="flow-arrow">→</span>
+      <span>乾けない世代の台頭</span>
+      <span class="flow-arrow">→</span>
+      <span>金銭/地位の動機低下</span>
+    </div>
+    <div class="flow-item">
+      <span>デジタル可視化</span>
+      <span class="flow-arrow">→</span>
+      <span>評価経済の進行</span>
+      <span class="flow-arrow">→</span>
+      <span>信用が機会/報酬に変換</span>
+    </div>
+    <div class="flow-item">
+      <span>Giveの継続</span>
+      <span class="flow-arrow">→</span>
+      <span>信用蓄積</span>
+      <span class="flow-arrow">→</span>
+      <span>弱い紐帯拡張</span>
+      <span class="flow-arrow">→</span>
+      <span>新規プロジェクト/学習機会</span>
+    </div>
+    <div class="flow-item">
+      <span>没頭の設計</span>
+      <span class="flow-arrow">→</span>
+      <span>生産性/幸福の同時向上</span>
+      <span class="flow-arrow">→</span>
+      <span>自己効力感上昇</span>
+      <span class="flow-arrow">→</span>
+      <span>さらなる挑戦</span>
+    </div>
+    <div class="flow-item">
+      <span>意味合いの共有（Why）</span>
+      <span class="flow-arrow">→</span>
+      <span>自律性の向上</span>
+      <span class="flow-arrow">→</span>
+      <span>任せて支えるマネジメントが有効化</span>
+    </div>
+    <div class="flow-item">
+      <span>越境実践</span>
+      <span class="flow-arrow">→</span>
+      <span>文脈取得/偶発性増加</span>
+      <span class="flow-arrow">→</span>
+      <span>イノベーションとキャリア耐性強化</span>
+    </div>
+    <div class="flow-item">
+      <span>小さく試す</span>
+      <span class="flow-arrow">→</span>
+      <span>早い失敗/学習</span>
+      <span class="flow-arrow">→</span>
+      <span>大きな投資のリスク低減</span>
+    </div>
+    <div class="flow-item">
+      <span>リスキリング</span>
+      <span class="flow-arrow">→</span>
+      <span>陳腐化回避</span>
+      <span class="flow-arrow">→</span>
+      <span>評価経済での可視価値が持続</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📖 序論：挑発的命題の提示</h3>
+    <ul>
+      <li>「稼ぐために働く必要なし」という宣言</li>
+      <li>価値観の地殻変動を示唆</li>
+      <li>読者の前提を揺さぶる導入</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>旧来の成功方程式への疑問を喚起し、新しい視点への扉を開くため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📊 現状診断：世代間ギャップの整理</h3>
+    <ul>
+      <li>乾けない世代と乾いている世代の差分を明確化</li>
+      <li>旧来の成功方程式（長時間×根性×金銭動機）の限界を提示</li>
+      <li>動機づけの構造変化を診断</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>現状認識を共有し、なぜ変化が必要かの根拠を示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🌐 環境要因：評価経済の進展</h3>
+    <ul>
+      <li>デジタル化・プラットフォーム化の影響</li>
+      <li>評価経済で信用が資本化する構造</li>
+      <li>可視化される評判・つながり・成果物</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>テクノロジーが働き方の前提を変えた背景を理解するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>💡 動機の再定義：新しいモチベーション</h3>
+    <ul>
+      <li>意味合い・没頭・つながり・成長が源泉</li>
+      <li>内発的動機の重要性</li>
+      <li>金銭以外の報酬設計</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>持続可能な動機づけの新しい軸を提示し、個人と組織の設計を変えるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🚀 個人戦略：機会の自走的創出</h3>
+    <ul>
+      <li>Giveの実践で信用を蓄積</li>
+      <li>小さな没頭を日常に組み込む</li>
+      <li>越境・副業・コミュニティ参加で弱い紐帯を育てる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>個人が主体的にキャリアと幸福を設計する具体的方法を示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🏢 組織戦略：マネジメントの転換</h3>
+    <ul>
+      <li>任せて支えるマネジメント</li>
+      <li>目的合意と資源提供</li>
+      <li>評価の再設計（成果物・学習・貢献の可視化）</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>組織が自律性と創造性を引き出す仕組みを構築するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🛠️ 実装と事例：具体的手法</h3>
+    <ul>
+      <li>デジタルツール活用</li>
+      <li>プロジェクト型学習</li>
+      <li>スモールベットの成功則</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>理論を実践に落とし込む具体的ツールと事例を提供するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎯 結論：循環の構築</h3>
+    <ul>
+      <li>Giveが信用を生む</li>
+      <li>信用が機会を生む</li>
+      <li>幸福と成果の両立</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>全体のメッセージを統合し、持続可能な成功の循環を示すため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🎯 事例1：副業コミュニティでのGive実践</h3>
+    <div class="context">
+      <strong>背景：</strong>あるエンジニアが、本業の傍ら技術コミュニティで無償の勉強会を主催。初心者向けに丁寧な資料を公開し、質問対応も積極的に行った。
+    </div>
+    <ul>
+      <li>半年後、参加者から新規プロジェクトへの誘いが複数届く</li>
+      <li>信用が蓄積され、弱い紐帯が強化される</li>
+      <li>結果的に本業以上の収入機会と学習機会を獲得</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>先行価値提供（Give）が評価経済で信用を生み、長期的に機会と報酬を連れてくる循環を実証している。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🧘 事例2：15分の没頭タイマー導入</h3>
+    <div class="context">
+      <strong>背景：</strong>あるマーケターが、集中力の低下に悩み、ポモドーロ・テクニック（25分作業+5分休憩）を15分単位に短縮して試した。
+    </div>
+    <ul>
+      <li>小さな達成感が積み重なり、1日の生産性が30%向上</li>
+      <li>没頭状態を意図的に設計できることを実感</li>
+      <li>幸福度と成果が同時に上がる体験を得る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>没頭は才能ではなく環境と設計でつくれることを示し、誰もが再現可能な生産性向上の方法を提供している。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🌉 事例3：越境学習による新規事業立ち上げ</h3>
+    <div class="context">
+      <strong>背景：</strong>ある企業の営業担当が、週末にデザイン思考のワークショップに参加。異業種の参加者と交流し、新しい視点を獲得。
+    </div>
+    <ul>
+      <li>本業では得られない文脈とスキルを習得</li>
+      <li>偶発的な出会いから共同プロジェクトが発生</li>
+      <li>社内で新規事業提案が採用され、キャリアが大きく転換</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>越境が文脈取得と偶発性を高め、イノベーションとキャリア耐性を強化することを実証している。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🤝 事例4：任せて支えるマネジメントの転換</h3>
+    <div class="context">
+      <strong>背景：</strong>あるチームリーダーが、細かい指示を止め、メンバーに目的だけを伝えて手段を任せる方針に転換。
+    </div>
+    <ul>
+      <li>メンバーの自律性と創造性が向上</li>
+      <li>チームの生産性が20%向上</li>
+      <li>メンバーの満足度とエンゲージメントが大幅に改善</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>命令より伴走が、自律性と創造性を引き出すマネジメントの要点であることを示している。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <div class="quote-text">
+      「要旨: 乾けない世代は、モノよりも『意味合い』で動く。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>動機づけと人事/教育設計の前提を根本から変えるから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「要旨: Giveを先にする人が、評価経済で長期的に最適化される。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>信用が主要資本となる時代の勝ち筋を示すから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「要旨: 没頭は才能ではなく、環境と設計でつくれる。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>誰もが再現可能に生産性と幸福度を上げられるから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「要旨: 上司の役割は、命令よりも『任せて支える』こと。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>自律性と創造性を引き出すマネジメントの要点だから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「要旨: 『稼ぐために働く必要なし』は、価値創出の結果として稼げるという逆説である。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>短期利得より長期の価値創出へ意思決定を反転させるから。
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="metric-value">15分</div>
+      <div class="metric-label">実行時間目安</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">3+</div>
+      <div class="metric-label">アクション数</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">今日</div>
+      <div class="metric-label">開始タイミング</div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>⏱️ アクション1：没頭タスクを15分タイマーで試す</h3>
+    <div class="action-detail">
+      <strong>目的：</strong>没頭状態を意図的に設計し、集中力と生産性を体感する<br>
+      <strong>期待効果：</strong>小さな達成感の積み重ねで、1日の生産性が向上し、幸福度も上がる
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>🎁 アクション2：Give先3名に助け提案メッセージ送付</h3>
+    <div class="action-detail">
+      <strong>目的：</strong>先行価値提供を実践し、信用蓄積のサイクルを開始する<br>
+      <strong>期待効果：</strong>弱い紐帯が強化され、長期的に機会と学習が還流する
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>📝 アクション3：仕事のWhyを1件メモに書き出す</h3>
+    <div class="action-detail">
+      <strong>目的：</strong>意味合い（Why）を明確化し、内発的動機を強化する<br>
+      <strong>期待効果：</strong>行動の持続性が高まり、自律性と創造性が向上する
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>🌉 アクション4：越境学習の場を1つ探す</h3>
+    <div class="action-detail">
+      <strong>目的：</strong>異なるコミュニティや役割を見つけ、文脈取得の準備をする<br>
+      <strong>期待効果：</strong>偶発的な出会いと学習機会が増え、キャリア耐性が強化される
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>🧪 アクション5：小さな仮説を1つ立てて検証する</h3>
+    <div class="action-detail">
+      <strong>目的：</strong>リーン実践を体験し、素早い学習サイクルを回す<br>
+      <strong>期待効果：</strong>大きな投資のリスクを低減し、不確実性下での前進が可能になる
+    </div>
+  </div>
+</div>
+
+<div id="tab6" class="tab-content" role="tabpanel">
+  <div class="book-list">
+    <div class="book-item">
+      <h4>📘 モチベーション3.0</h4>
+      <div class="author">著者：ダニエル・ピンク</div>
+      <div class="relation">
+        <strong>関連性：</strong>内発的動機（自律性・熟達・目的）の理論的裏付け。
+      </div>
+    </div>
+
+    <div class="book-item">
+      <h4>📗 GIVE & TAKE</h4>
+      <div class="author">著者：アダム・グラント</div>
+      <div class="relation">
+        <strong>関連性：</strong>与える行動が長期成果をもたらすエビデンスを提供。
+      </div>
+    </div>
+
+    <div class="book-item">
+      <h4>📙 LIFE SHIFT</h4>
+      <div class="author">著者：リンダ・グラットン、アンドリュー・スコット</div>
+      <div class="relation">
+        <strong>関連性：</strong>長寿化時代のキャリア設計と学び直しの必要性を補強。
+      </div>
+    </div>
+
+    <div class="book-item">
+      <h4>📕 評価経済社会</h4>
+      <div class="author">著者：岡田斗司夫</div>
+      <div class="relation">
+        <strong>関連性：</strong>信用・評判が資本化する社会像の先駆的考察。
+      </div>
+    </div>
+
+    <div class="book-item">
+      <h4>📔 フロー体験 喜びの現象学</h4>
+      <div class="author">著者：M.チクセントミハイ</div>
+      <div class="relation">
+        <strong>関連性：</strong>没頭が幸福と成果を高めるメカニズムの基礎理論。
+      </div>
+    </div>
+
+    <div class="book-item">
+      <h4>📓 ニュータイプの時代</h4>
+      <div class="author">著者：山口周</div>
+      <div class="relation">
+        <strong>関連性：</strong>意味創出・問いの力が価値になる時代精神を共有。
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// タブ切り替え機能
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const targetTab = button.getAttribute('data-tab');
+    
+    // すべてのタブボタンとコンテンツから active クラスを削除
+    tabButtons.forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブボタンとコンテンツに active クラスを追加
+    button.classList.add('active');
+    button.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
