@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マインドフルネス実践ガイド - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+.subtitle {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid #f59e0b;
+}
+.reason-box strong {
+  color: #92400e;
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid var(--primary);
+}
+.example-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+  font-style: italic;
+}
+.quote-card .quote-text {
+  font-size: 1.05rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+}
+.quote-card .quote-why {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid #10b981;
+}
+.action-card h4 {
+  color: #065f46;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .action-detail {
+  font-size: 0.9rem;
+  color: #047857;
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.flow-diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.75rem;
+}
+.book-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.book-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+}
+.book-card .author {
+  color: var(--text-light);
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  h1 { font-size: 1.5rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .tabs { font-size: 0.85rem; }
+  .tab-btn { padding: 0.6rem 0.75rem; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📿 マインドフルネス実践ガイド</h1>
+  <p class="subtitle">「いま、ここ」への気づきで人生を変える</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>💡 要約：問い × 答え × 根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      途切れない思考とストレスの中で、どうすれば穏やかさと明晰さを取り戻せるか？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      「いま、ここ」への非判断的な注意＝マインドフルネスを日常動作と正式瞑想で反復し、反応ではなく選択から生きる力を養う。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      注意の質が体験の質を規定し、評価・自動反応を手放すと情動の波に呑まれにくくなることが臨床・実践で繰り返し示されている。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      呼吸・身体感覚をアンカーにした座る瞑想/ボディスキャン/歩行瞑想を毎日短時間でも継続し、食事・会話・移動など日常行為に気づきを拡張する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🧘 マインドフルネス</h3>
+        <ul>
+          <li>意図的に現在の体験へ注意を向ける</li>
+          <li>評価せずに観察する心の姿勢</li>
+          <li>集中と受容を併せ持つ</li>
+          <li>一言要約：<strong>気づきの土台</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>注意の質が人生の質を決定し、自動操縦から目覚めた選択へ移行する基盤となるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚖️ 非判断</h3>
+        <ul>
+          <li>好き/嫌い・良い/悪いのレッテルを保留</li>
+          <li>事実として体験を観る態度</li>
+          <li>評価の連鎖を断つ</li>
+          <li>一言要約：<strong>レッテル停止</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>判断が即座の反応を生み、ストレスを増幅するため、中立的観察が自由をもたらす。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌊 受容</h3>
+        <ul>
+          <li>抵抗や回避をやめる</li>
+          <li>今起きていることをそのまま認める</li>
+          <li>変化の出発点になる</li>
+          <li>一言要約：<strong>あるがまま</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>抵抗がエネルギーを消耗し問題を固定化するが、受容が柔軟な対応を可能にする。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌱 初心（ビギナーズ・マインド）</h3>
+        <ul>
+          <li>馴れや先入観を外す</li>
+          <li>毎瞬を初めての体験として観る</li>
+          <li>開かれた好奇心を保つ</li>
+          <li>一言要約：<strong>新鮮な目</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>固定観念が新しい可能性を遮断するため、初心が創造性と発見を促す。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎯 非努力（Non-striving）</h3>
+        <ul>
+          <li>結果を急いで「何かにしよう」としない</li>
+          <li>今ここに留まること自体を目的とする</li>
+          <li>達成志向を手放す</li>
+          <li>一言要約：<strong>目的から在り方へ</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>努力のパラドックス（変えようとすると抵抗が生まれる）を回避し、自然な変容を許す。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚓ アンカー（呼吸・身体）</h3>
+        <ul>
+          <li>注意が彷徨ったときに戻る基点</li>
+          <li>呼吸や足裏などの安定した感覚</li>
+          <li>現在への帰還ポイント</li>
+          <li>一言要約：<strong>戻る場所</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>心は自然に彷徨うため、具体的な感覚アンカーが集中を維持し気づきを深める。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔍 ボディスキャン</h3>
+        <ul>
+          <li>身体部位を順番に丁寧に感じ取る</li>
+          <li>正式瞑想の一形態</li>
+          <li>鈍麻や過敏のパターンに気づく</li>
+          <li>一言要約：<strong>全身の気づき</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>身体は常に現在にあり、身体感覚への注意が思考の支配から解放する入口となる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🚶 歩行瞑想</h3>
+        <ul>
+          <li>歩く動作の微細感覚に注意を置く</li>
+          <li>移動時間を練習の場にする</li>
+          <li>動的な気づきの実践</li>
+          <li>一言要約：<strong>動く瞑想</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>座る瞑想だけでは日常に統合しにくいため、動作中の気づきが実生活への橋渡しとなる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⏸️ 自動反応から応答へ</h3>
+        <ul>
+          <li>刺激に即応する癖を観察</li>
+          <li>間(スペース)をつくる</li>
+          <li>選択的に行動する転換</li>
+          <li>一言要約：<strong>間を育てる</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>自動反応が後悔や悪循環を生むが、気づきの間が賢明な選択を可能にする。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🏛️ 態度の七要素</h3>
+        <ul>
+          <li>非判断・忍耐・初心・信頼</li>
+          <li>非努力・受容・手放す</li>
+          <li>実践を支える根本姿勢</li>
+          <li>一言要約：<strong>実践の柱</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>技法だけでは形骸化するため、態度が実践の深さと持続性を保証する。
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-diagram">
+      <h3 style="color: var(--primary); margin-bottom: 1rem;">🔄 概念間の関係性</h3>
+      <div class="flow-item">
+        <span>注意の質↑</span>
+        <span class="flow-arrow">→</span>
+        <span>体験の明晰さ↑</span>
+        <span class="flow-arrow">→</span>
+        <span>自動反応↓</span>
+        <span class="flow-arrow">→</span>
+        <span>選択的応答↑</span>
+      </div>
+      <div class="flow-item">
+        <span>アンカー（呼吸/身体）</span>
+        <span class="flow-arrow">→</span>
+        <span>注意の安定</span>
+        <span class="flow-arrow">→</span>
+        <span>非判断・受容が働く</span>
+      </div>
+      <div class="flow-item">
+        <span>非努力 × 受容</span>
+        <span class="flow-arrow">→</span>
+        <span>期待/焦り緩和</span>
+        <span class="flow-arrow">→</span>
+        <span>継続性向上</span>
+      </div>
+      <div class="flow-item">
+        <span>初心</span>
+        <span class="flow-arrow">→</span>
+        <span>知覚バイアス↓</span>
+        <span class="flow-arrow">→</span>
+        <span>新選択肢発見↑</span>
+      </div>
+      <div class="flow-item">
+        <span>正式瞑想</span>
+        <span class="flow-arrow">→</span>
+        <span>集中力・気づき筋力形成</span>
+        <span class="flow-arrow">→</span>
+        <span>日常実践へ汎化</span>
+      </div>
+      <div class="flow-item">
+        <span>気づきの間形成</span>
+        <span class="flow-arrow">→</span>
+        <span>情動の波観察</span>
+        <span class="flow-arrow">→</span>
+        <span>衝動行動抑制</span>
+      </div>
+      <div class="flow-item">
+        <span>継続習慣</span>
+        <span class="flow-arrow">→</span>
+        <span>神経可塑性促進</span>
+        <span class="flow-arrow">→</span>
+        <span>ストレス反応再条件づけ</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 導入：マインドフルネスとは何か</h3>
+      <ul>
+        <li>マインドフルネスの定義と誤解の解消</li>
+        <li>宗教や技巧ではなく在り方の実践</li>
+        <li>現代生活における必要性</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>誤解（リラクゼーション技法や宗教儀式）を解き、科学的・実践的基盤を示すことで、読者の抵抗を減らし実践への動機を高める。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🧩 基礎：注意・意図・態度</h3>
+      <ul>
+        <li>注意の質が体験を形作る仕組み</li>
+        <li>意図的な気づきの重要性</li>
+        <li>非判断/受容などの態度の相互作用</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>マインドフルネスの三要素を理解することで、単なる集中訓練ではなく、態度と意図を含む全体的実践であることを明確にする。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🪷 正式な実践：瞑想の手引き</h3>
+      <ul>
+        <li>座る瞑想の具体的手順</li>
+        <li>ボディスキャンの実施方法</li>
+        <li>歩行瞑想の技法</li>
+        <li>よくある障害（眠気・焦燥・痛み）への対処</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>理論だけでは変化が起きないため、実践可能な具体的手順と障害対処法を提示し、継続を支援する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>💎 態度編：七要素の深掘り</h3>
+      <ul>
+        <li>非判断・忍耐・初心・信頼の詳細</li>
+        <li>非努力・受容・手放すの意味</li>
+        <li>実践が形骸化しないための指針</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>技法を機械的に行うと効果が薄れるため、各態度の深い理解が実践の質と持続性を保証する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🌍 日常への拡張</h3>
+      <ul>
+        <li>食事・会話・仕事での気づき</li>
+        <li>育児・自然とのふれあいを練習の場に</li>
+        <li>非公式実践の統合方法</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>瞑想クッションの上だけでは人生は変わらないため、日常すべてを実践の場にする方法が真の変容をもたらす。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🩺 応用と効果</h3>
+      <ul>
+        <li>ストレス・痛み・不安への応用</li>
+        <li>反応性から応答性への変容モデル</li>
+        <li>臨床的エビデンスの紹介</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>具体的な問題解決への応用を示すことで、実践の実用性と科学的裏付けを提供し、信頼性を高める。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>⏳ 持続可能性</h3>
+      <ul>
+        <li>時間のつくり方と優先順位</li>
+        <li>習慣化の工夫とリマインダー</li>
+        <li>自己優しさとコミュニティの重要性</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>多くの実践が三日坊主で終わるため、長期継続のための現実的戦略と心理的サポートが不可欠。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>🍇 例1：レーズン瞑想</h4>
+      <p><strong>背景：</strong>一粒のレーズンを5分かけて観察・味わう実践。視覚・触覚・嗅覚・味覚すべてで体験する。</p>
+      <p><strong>示唆：</strong>普段は自動操縦で食べているが、注意を向けると豊かな体験が現れる。日常の「当たり前」が新鮮になる。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>マインドフルネスは特別な場所や時間を必要とせず、日常の小さな行為に気づきを向けるだけで体験の質が劇的に変わることを体感させる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🌊 例2：波のサーフィン</h4>
+      <p><strong>背景：</strong>「波を止めることはできないが、サーフィンを学ぶことはできる」というメタファー。ストレスや感情を波に喩える。</p>
+      <p><strong>示唆：</strong>困難を排除しようとせず、関わり方を変えることで乗りこなせる。抵抗ではなく受容と技術。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>マインドフルネスの本質は問題の消去ではなく関係性の変容であり、困難との新しい付き合い方を学ぶ姿勢が核心であることを明示する。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🚗 例3：赤信号での気づき</h4>
+      <p><strong>背景：</strong>運転中の赤信号を「イライラの原因」ではなく「呼吸に戻るリマインダー」として使う実践。</p>
+      <p><strong>示唆：</strong>日常の「邪魔」を練習の機会に変換できる。環境を変えずに体験を変える力。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>特別な時間を確保できなくても、既存の日常イベントをトリガーにすることで、気づきの実践を生活に織り込める実用性を示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🧒 例4：子どもの泣き声への応答</h4>
+      <p><strong>背景：</strong>子どもが泣いたとき、即座に「うるさい」と反応するのではなく、自分の呼吸を3回感じてから対応する。</p>
+      <p><strong>示唆：</strong>間（スペース）が自動反応を選択的応答に変え、親子関係の質を変える。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>気づきの間が衝動的反応を防ぎ、関係性の中で賢明な選択を可能にする具体的メカニズムを示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <div class="quote-text">
+        「どこへ行こうとも、あなたはそこにいる。」
+      </div>
+      <div class="quote-why">
+        <strong>なぜ重要か：</strong>外的条件を変えるより、気づきの質を変えることが自由につながる核心を示す。場所や状況ではなく、在り方が体験を決定する。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「波を止めることはできないが、サーフィンを学ぶことはできる。」
+      </div>
+      <div class="quote-why">
+        <strong>なぜ重要か：</strong>ストレスや思考を排除せず、関わり方を学ぶという実践の姿勢を端的に表す。問題解決ではなく関係性の変容。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「評価せずに注意を向ける、という訓練。」
+      </div>
+      <div class="quote-why">
+        <strong>なぜ重要か：</strong>マインドフルネスの操作的定義を簡潔に提示し、実践の焦点を明確にする。技法の核心を一文で捉える。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「何も変えようとしないことが、変化を可能にする。（要旨）」
+      </div>
+      <div class="quote-why">
+        <strong>なぜ重要か：</strong>非努力と受容が逆説的に持続的な変容を促す点を強調する。努力のパラドックスを解く鍵。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>🧘‍♀️ アクション1：呼吸瞑想を15分行う</h4>
+      <p>静かな場所で座り、呼吸の感覚（鼻先・胸・腹）に注意を向ける。心が彷徨ったら優しく呼吸に戻す。</p>
+      <div class="action-detail">
+        <strong>目的：</strong>注意の筋力を鍛え、気づきのアンカーを確立する。<br>
+        <strong>期待効果：</strong>心の彷徨いパターンに気づき、集中力の基礎が形成される。継続により自動反応が減少する。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🔍 アクション2：ボディスキャンを20分行う</h4>
+      <p>横になり、足先から頭頂まで身体各部位を順に感じ取る。緊張や感覚の有無を評価せず観察する。</p>
+      <div class="action-detail">
+        <strong>目的：</strong>身体感覚への気づきを深め、思考優位から身体性へシフトする。<br>
+        <strong>期待効果：</strong>身体に蓄積された緊張パターンに気づき、心身の統合感が高まる。ストレス反応の早期発見が可能になる。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🚶‍♂️ アクション3：歩行瞑想を15分行う</h4>
+      <p>ゆっくり歩きながら、足裏の感覚・体重移動・筋肉の動きに注意を向ける。目的地ではなくプロセスに集中。</p>
+      <div class="action-detail">
+        <strong>目的：</strong>動作中の気づきを養い、座る瞑想と日常の橋渡しをする。<br>
+        <strong>期待効果：</strong>移動時間が練習機会になり、日常動作への気づきが自然に拡張される。身体と心の協調が向上する。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🍽️ アクション4：マインドフル・イーティング（10分）</h4>
+      <p>一食の最初の3口を完全に集中して味わう。色・香り・食感・味の変化を観察する。</p>
+      <div class="action-detail">
+        <strong>目的：</strong>日常行為に気づきを統合し、自動操縦パターンを中断する。<br>
+        <strong>期待効果：</strong>食事の満足度が上がり、過食傾向が減少。日常の豊かさに気づく入口になる。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>📝 アクション5：気づきジャーナル（5分）</h4>
+      <p>今日気づいた自動反応を1つ書き出す。「状況→思考→感情→行動」の流れを観察する。</p>
+      <div class="action-detail">
+        <strong>目的：</strong>自動反応パターンを可視化し、気づきの間を育てる。<br>
+        <strong>期待効果：</strong>反応の連鎖が明確になり、介入ポイントが見える。メタ認知能力が向上する。
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 0.75rem; color: white;">
+    <h3 style="margin-bottom: 1rem;">📚 関連書籍</h3>
+    <div style="display: grid; gap: 1rem;">
+      <div class="book-card" style="background: rgba(255,255,255,0.95); color: var(--text);">
+        <h4>マインドフルネスストレス低減法</h4>
+        <div class="author">著：ジョン・カバット・ジン</div>
+        <div class="relation">本書の理論的背景と臨床プログラム（MBSR）の詳細が学べる。</div>
+      </div>
+      <div class="book-card" style="background: rgba(255,255,255,0.95); color: var(--text);">
+        <h4>マインドフルネスの奇跡</h4>
+        <div class="author">著：ティク・ナット・ハン</div>
+        <div class="relation">日常生活への気づきの適用を詩的かつ具体的に示す。</div>
+      </div>
+      <div class="book-card" style="background: rgba(255,255,255,0.95); color: var(--text);">
+        <h4>禅マインド ビギナーズ・マインド</h4>
+        <div class="author">著：鈴木俊隆</div>
+        <div class="relation">初心の姿勢と坐禅の精神が本書の態度面を補強する。</div>
+      </div>
+      <div class="book-card" style="background: rgba(255,255,255,0.95); color: var(--text);">
+        <h4>サーチ・インサイド・ユアセルフ</h4>
+        <div class="author">著：チャディー・メン・タン</div>
+        <div class="relation">職場でのマインドフルネスの実装と情動調整を実務的に学べる。</div>
+      </div>
+      <div class="book-card" style="background: rgba(255,255,255,0.95); color: var(--text);">
+        <h4>10%ハッピアー</h4>
+        <div class="author">著：ダン・ハリス</div>
+        <div class="relation">懐疑的な視点からの瞑想実践と効果のリアルな記録。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
