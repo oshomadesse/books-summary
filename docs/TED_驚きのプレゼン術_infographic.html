@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TED TALKS 世界最高のプレゼン術 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333;
+  --text-light: #666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: white;
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+}
+.tab-content.active {
+  display: block;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+}
+.quote-card .quote-text {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card .quote-why {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: white;
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.visual-section {
+  margin: 1.5rem 0;
+}
+.bar-chart {
+  margin: 1rem 0;
+}
+.bar-item {
+  margin-bottom: 1rem;
+}
+.bar-label {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.bar-bg {
+  background: #e0e0e0;
+  height: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: width 1s ease;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  margin: 0.25rem;
+  font-size: 0.9rem;
+}
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+  gap: 0.5rem;
+}
+.flow-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  flex: 1;
+  min-width: 100px;
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+.book-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+.book-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+@media (min-width: 768px) {
+  header h1 {
+    font-size: 2.5rem;
+  }
+  .tabs {
+    margin: 2rem auto;
+    max-width: 900px;
+  }
+  .tab-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  .summary-block {
+    max-width: 900px;
+    margin: 2rem auto;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📊 TED TALKS 世界最高のプレゼン術</h1>
+  <p>人を魅了し行動させる9つの原則</p>
+</header>
+
+<div class="summary-block">
+  <h2>📌 要約：問い × 答え × 根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    どうすれば聴衆を惹きつけ、理解と共感を生み、行動につなげるプレゼンができるか？
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    TEDのトップ登壇者に共通する「情熱・ストーリー・会話調」「新規性・驚き・ユーモア」「18分・マルチセンサリー・反復練習」の9原則を取り入れる。
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    神経科学（感情が記憶と意思決定を駆動、ドーパミンが学習を促進、認知負荷の最適化など）と、数多くのTEDトークの分析・登壇者インタビューが原則の汎用性と効果を示す。
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    3部構成で設計する—1) Emotional: 自分の情熱を核に物語と会話調で届ける、2) Novel: 新しい視点・驚きの瞬間・適切な笑いで脳を刺激する、3) Memorable: 18分の制約下で視覚・デモ等の多感覚表現と徹底練習で定着させる。
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card">
+    <h3>❤️ 情熱（心）</h3>
+    <ul>
+      <li>自分が最も信じるテーマと個人的意義を核に据える</li>
+      <li>熱量と信頼を生む源泉</li>
+      <li>説得の起点となる</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>情熱がなければ情熱は伝わらず、信憑性と感染力が失われるため。</div>
+  </div>
+
+  <div class="card">
+    <h3>📖 ストーリーテリング（物語）</h3>
+    <ul>
+      <li>事実を物語の形で提示</li>
+      <li>共感と理解を同時に喚起</li>
+      <li>感情記憶を形成し定着を促す</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>物語は事実に意味と感情を与え、データ単体よりも記憶と共感を同時に生むため。</div>
+  </div>
+
+  <div class="card">
+    <h3>💬 会話調デリバリー（自然体）</h3>
+    <ul>
+      <li>聴衆と対話するような自然体の口調</li>
+      <li>間合いと抑揚で届ける</li>
+      <li>信頼と親近感を醸成</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>形式張った話法は距離を生み、自然体が受容性と注意維持を高めるため。</div>
+  </div>
+
+  <div class="card">
+    <h3>🆕 新規性（発見）</h3>
+    <ul>
+      <li>意外性や新発見を提供</li>
+      <li>注意と学習意欲を引き出す</li>
+      <li>ドーパミン分泌を促進</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>脳は新しい情報に反応し、学習速度と保持率が向上するため。</div>
+  </div>
+
+  <div class="card">
+    <h3>😲 驚きの瞬間（驚き）</h3>
+    <ul>
+      <li>デモ・強力なデータ・演出で感情のピークを作る</li>
+      <li>記憶に杭を打つ</li>
+      <li>話全体の想起フックになる</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>感情ピークが記憶の錨となり、プレゼン全体を思い出すトリガーになるため。</div>
+  </div>
+
+  <div class="card">
+    <h3>😄 ユーモア（笑い）</h3>
+    <ul>
+      <li>軽やかな笑いで緊張を和らげる</li>
+      <li>好意と受容性を高める</li>
+      <li>聴衆との心理的距離を縮める</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>笑いは防衛心を解き、メッセージへの開放性を生むため。</div>
+  </div>
+
+  <div class="card">
+    <h3>⏱️ 18分ルール（制約）</h3>
+    <ul>
+      <li>認知的集中の持続時間に合わせる</li>
+      <li>情報過多を避ける最適な制約</li>
+      <li>理解度と満足度を最大化</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>認知負荷を最適化し、コアメッセージの浸透を促すため。</div>
+  </div>
+
+  <div class="card">
+    <h3>🎨 マルチセンサリー表現（映像化）</h3>
+    <ul>
+      <li>視覚・聴覚・体験（デモ）を併用</li>
+      <li>理解と想起を強化</li>
+      <li>二重符号化で再生確率を上げる</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>複数の感覚チャネルが記憶の複数経路を作り、想起しやすくなるため。</div>
+  </div>
+
+  <div class="card">
+    <h3>🔁 反復練習（稽古）</h3>
+    <ul>
+      <li>徹底リハーサルで内容と動線を身体化</li>
+      <li>自然で力強い表現にする</li>
+      <li>余裕が生まれ非言語が洗練される</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>偉大なスピーチは才能ではなく準備と練習の産物であり、再現可能性が高いため。</div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 一点集中メッセージ（焦点）</h3>
+    <ul>
+      <li>聴衆に持ち帰らせたい核心を一句に凝縮</li>
+      <li>全体をその支持データで支える</li>
+      <li>内容選択とビジュアル設計を統御</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>明確な焦点が構成全体を整理し、記憶と行動を促すため。</div>
+  </div>
+
+  <div class="card">
+    <h3>📊 ビジュアル経済性（簡潔）</h3>
+    <ul>
+      <li>スライドは大きな画像と少ない語で要点のみ</li>
+      <li>話し手に注意を戻す</li>
+      <li>視覚的ノイズを排除</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>過剰な文字は注意を分散させ、シンプルな視覚が理解を助けるため。</div>
+  </div>
+
+  <div class="visual-section">
+    <h3 style="color: var(--secondary); margin-bottom: 1rem;">🔗 概念間の関係性</h3>
+    <div class="flow-diagram">
+      <div class="flow-box">Emotional<br>情熱/物語/会話</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Novel<br>新規性/驚き/笑い</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">Memorable<br>18分/多感覚/練習</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">行動</div>
+    </div>
+    <div class="card" style="margin-top: 1rem;">
+      <ul>
+        <li>情熱 → 信頼・熱量 ↑ → 注意維持・行動意図 ↑</li>
+        <li>ストーリー → 共感形成 → 記憶定着（感情記憶）</li>
+        <li>新規性 → ドーパミン分泌 → 学習速度・保持率 ↑</li>
+        <li>驚きの瞬間 → 感情のピーク → 想起トリガー化</li>
+        <li>ユーモア → 緊張緩和・好意形成 → 受容性 ↑</li>
+        <li>18分ルール → 認知負荷最適化 → 理解度・満足度 ↑</li>
+        <li>マルチセンサリー → 二重符号化 → 再生確率 ↑</li>
+        <li>反復練習 → 自動化・余裕創出 → 会話調と非言語が洗練</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>📘 序章：TEDの規範</h3>
+    <ul>
+      <li>TEDが示した「人を動かす短時間プレゼン」の規範</li>
+      <li>分析対象と方法を提示</li>
+      <li>9原則の全体像を示す</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>本書の分析基盤と信頼性を明示し、読者に学習の地図を提供するため。</div>
+  </div>
+
+  <div class="card">
+    <h3>❤️ 第I部：Emotional（感情を動かす基盤）</h3>
+    <ul>
+      <li><strong>1) 情熱を核に据える：</strong>自分が信じるテーマで熱量を生む</li>
+      <li><strong>2) 物語化する：</strong>事実を共感可能な物語に変換</li>
+      <li><strong>3) 会話調で届ける：</strong>自然体の口調で信頼を築く</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>感情が記憶と意思決定を駆動するため、まず心を動かす基盤を作る必要がある。</div>
+  </div>
+
+  <div class="card">
+    <h3>🆕 第II部：Novel（脳を刺激し続ける）</h3>
+    <ul>
+      <li><strong>4) 新しい視点を教える：</strong>学習価値で満足度を高める</li>
+      <li><strong>5) 驚きの瞬間を設計：</strong>感情ピークで記憶に杭を打つ</li>
+      <li><strong>6) ユーモアで受容性を高める：</strong>笑いで心理的距離を縮める</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>新規性とドーパミンが学習を促進し、注意を維持するため。</div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 第III部：Memorable（忘れさせない設計）</h3>
+    <ul>
+      <li><strong>7) 18分の制約を守る：</strong>認知負荷を最適化</li>
+      <li><strong>8) 多感覚で描写：</strong>視覚・聴覚・体験で理解を強化</li>
+      <li><strong>9) 徹底練習：</strong>リハーサルで自然体と余裕を生む</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>記憶定着と想起のしやすさが行動変容の前提となるため。</div>
+  </div>
+
+  <div class="card">
+    <h3>✅ 終章：実践への適用</h3>
+    <ul>
+      <li>9原則を自分の題材・業界に適用するチェックリスト</li>
+      <li>実践上の注意点と調整方法</li>
+      <li>継続的改善のヒント</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>原則を汎用的に使えるツールに変換し、読者の行動を促すため。</div>
+  </div>
+
+  <div class="visual-section">
+    <h3 style="color: var(--secondary); margin-bottom: 1rem;">📊 構造の可視化</h3>
+    <div class="bar-chart">
+      <div class="bar-item">
+        <div class="bar-label">序章：規範と分析</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 10%;">10%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">第I部：Emotional</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 30%;">30%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">第II部：Novel</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 30%;">30%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">第III部：Memorable</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 30%;">30%</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🎤 具体例1：ブライアン・スティーブンソンのTED</h3>
+    <ul>
+      <li><strong>背景：</strong>人権弁護士が不正義と闘う物語を語る</li>
+      <li><strong>手法：</strong>祖母との個人的エピソードから始め、統計と感情を織り交ぜる</li>
+      <li><strong>結果：</strong>スタンディングオベーションと100万ドル超の寄付</li>
+      <li><strong>示唆：</strong>情熱と物語が行動を生む実証</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>個人的物語が共感を生み、統計が正当性を与え、情熱が行動意図を喚起することを示す。</div>
+  </div>
+
+  <div class="card">
+    <h3>🔬 具体例2：ジル・ボルト・テイラーの脳卒中体験</h3>
+    <ul>
+      <li><strong>背景：</strong>脳科学者が自身の脳卒中を研究者視点で語る</li>
+      <li><strong>手法：</strong>実物の人間の脳を持ち込み、驚きの瞬間を演出</li>
+      <li><strong>結果：</strong>TED史上最も視聴されたトークの一つ</li>
+      <li><strong>示唆：</strong>驚きとマルチセンサリーが記憶を強化</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>視覚的衝撃と個人的体験の組み合わせが、感情ピークと記憶定着を同時に実現することを示す。</div>
+  </div>
+
+  <div class="card">
+    <h3>💡 具体例3：サー・ケン・ロビンソンの教育改革</h3>
+    <ul>
+      <li><strong>背景：</strong>教育システムの問題を指摘</li>
+      <li><strong>手法：</strong>ユーモアと具体的エピソードで堅いテーマを親しみやすく</li>
+      <li><strong>結果：</strong>TED史上最多視聴回数を記録</li>
+      <li><strong>示唆：</strong>ユーモアが受容性を高め、メッセージの拡散を促す</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>笑いが防衛心を解き、難しいテーマでも共感と理解を生むことを実証する。</div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 具体例4：18分制約の効果</h3>
+    <ul>
+      <li><strong>背景：</strong>TEDが18分を標準時間に設定</li>
+      <li><strong>手法：</strong>認知科学に基づく集中持続時間の最適化</li>
+      <li><strong>結果：</strong>聴衆満足度と内容定着率の向上</li>
+      <li><strong>示唆：</strong>制約が創造性と焦点を生む</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>情報過多を防ぎ、コアメッセージに集中させることで理解と記憶を最大化することを示す。</div>
+  </div>
+
+  <div class="visual-section">
+    <h3 style="color: var(--secondary); margin-bottom: 1rem;">🏆 成功要因の可視化</h3>
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1rem;">
+      <span class="badge">情熱</span>
+      <span class="badge">物語</span>
+      <span class="badge">驚き</span>
+      <span class="badge">ユーモア</span>
+      <span class="badge">18分</span>
+      <span class="badge">視覚化</span>
+      <span class="badge">練習</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <div class="quote-text">"情熱がなければ、情熱は伝わらない。"</div>
+    <div class="quote-why">💡 なぜ重要か：信憑性と感染力の源泉であり、説得の起点になるため。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"物語は事実に意味と感情を与える最良の入れ物である。"</div>
+    <div class="quote-why">💡 なぜ重要か：データ単体よりも記憶と共感を同時に生む手段だから。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"聴衆に『新しい何か』を持ち帰らせよ。"</div>
+    <div class="quote-why">💡 なぜ重要か：学習価値の体験が満足度と共有意欲を高めるから。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"驚きの瞬間を設計せよ。"</div>
+    <div class="quote-why">💡 なぜ重要か：感情ピークが話全体の想起フックになるから。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"18分は集中を最大化するための賢い制約である。"</div>
+    <div class="quote-why">💡 なぜ重要か：情報過多を防ぎ、コアメッセージの浸透を促すため。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"偉大なスピーチは才能ではなく準備と練習の産物だ。"</div>
+    <div class="quote-why">💡 なぜ重要か：再現可能性が高く誰でも上達できることを示すから。</div>
+  </div>
+
+  <div class="visual-section">
+    <h3 style="color: var(--secondary); margin-bottom: 1rem;">📚 関連書籍</h3>
+    
+    <div class="book-card">
+      <h4>📖 TEDトーク 世界最高のプレゼン術</h4>
+      <div class="author">著者：クリス・アンダーソン</div>
+      <div class="relation">TEDキュレーターが語る原理と舞台裏で、Galloの原則を補完。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>📖 プレゼンテーションZen</h4>
+      <div class="author">著者：ガー・レイノルズ</div>
+      <div class="relation">シンプルで視覚的なスライド設計がマルチセンサリー原則を実装。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>📖 スティーブ・ジョブズ 驚異のプレゼン</h4>
+      <div class="author">著者：カーマイン・ガロ</div>
+      <div class="relation">事例特化で驚きの瞬間・ストーリー・視覚表現の実践法が学べる。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>📖 Resonate: プレゼンテーションが世界を変える</h4>
+      <div class="author">著者：ナンシー・デュアルテ</div>
+      <div class="relation">物語構造と聴衆の旅路設計が、ストーリー原則を深掘り。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>📖 アイデアのちから</h4>
+      <div class="author">著者：チップ・ハース, ダン・ハース</div>
+      <div class="relation">単純明快・意外性・具体性など、記憶に残るメッセージ設計と一致。</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>✅ アクション1：18分プレゼンの骨子を3部で書く</h4>
+    <p>次回のプレゼンテーマを選び、Emotional（情熱・物語・会話）、Novel（新規性・驚き・笑い）、Memorable（18分・多感覚・練習）の3部構成で骨子を箇条書きする。</p>
+    <div class="meta">
+      <strong>目的：</strong>9原則の全体像を自分の題材に適用する<br>
+      <strong>期待効果：</strong>構成の明確化と、各部に必要な要素の洗い出し（15分）
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>✅ アクション2：自己紹介3分を録音し改善する</h4>
+    <p>スマホで自己紹介を3分録音し、再生して「情熱が伝わるか」「会話調か」「間合いは適切か」をチェック。1つ改善点を決めて再録音する。</p>
+    <div class="meta">
+      <strong>目的：</strong>会話調デリバリーと自然体の感覚を掴む<br>
+      <strong>期待効果：</strong>客観視による即座のフィードバックと改善（20分）
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>✅ アクション3：驚きデータ1件で1枚スライド作成</h4>
+    <p>自分の専門分野で「意外な統計」や「驚きの事実」を1つ選び、大きな数字と短いキャッチコピーだけのスライドを1枚作る。</p>
+    <div class="meta">
+      <strong>目的：</strong>驚きの瞬間とビジュアル経済性を体験する<br>
+      <strong>期待効果：</strong>シンプルな視覚表現の威力を実感（15分）
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>✅ アクション4：個人的物語を1つ書き出す</h4>
+    <p>自分のテーマに関連する個人的エピソード（失敗・転機・発見）を1つ選び、「状況→葛藤→解決→学び」の4段階で200字程度にまとめる。</p>
+    <div class="meta">
+      <strong>目的：</strong>ストーリーテリングの型を習得する<br>
+      <strong>期待効果：</strong>共感を生む物語の骨格を手に入れる（20分）
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>✅ アクション5：次回プレゼンの「一点集中メッセージ」を一文で書く</h4>
+    <p>次回のプレゼンで聴衆に持ち帰ってほしいメッセージを、ツイート（140字以内）で書く。家族や同僚に見せて「何を言いたいか分かるか」確認する。</p>
+    <div class="meta">
+      <strong>目的：</strong>焦点の明確化と伝達テスト<br>
+      <strong>期待効果：</strong>構成全体を統御する核心の獲得（15分）
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3 style="color: var(--secondary); margin-bottom: 1rem;">🎯 実践の流れ</h3>
+    <div class="flow-diagram">
+      <div class="flow-box">骨子作成</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">録音改善</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">スライド試作</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">物語執筆</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">核心確認</div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+  
+  setTimeout(() => {
+    const barFills = document.querySelectorAll('.bar-fill');
+    barFills.forEach(bar => {
+      const width = bar.style.width;
+      bar.style.width = '0%';
+      setTimeout(() => {
+        bar.style.width = width;
+      }, 100);
+    });
+  }, 500);
+});
+</script>
+
+</body>
+</html>
