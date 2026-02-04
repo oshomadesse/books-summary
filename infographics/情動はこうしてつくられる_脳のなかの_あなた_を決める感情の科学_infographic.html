@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>情動はつくられる インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  margin-left: 1rem;
+  font-size: 0.95rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 2rem 0 1rem;
+  border-bottom: 2px solid var(--primary);
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  margin-bottom: 0.4rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 5px solid var(--primary);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+}
+.quote-card blockquote {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+.quote-card p {
+  font-size: 0.85rem;
+  font-style: normal;
+  color: var(--text-light);
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--accent);
+}
+.action-card h3 {
+  font-size: 1.05rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-diagram h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  margin: 0 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 情動はつくられる</h1>
+  <p>脳が予測で構成する情動の科学と、私たちができる設計</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>情動はどこから生まれ、私たちはそれをどこまで変えられるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>情動は脳の予測が体内感覚と外部文脈を概念で分類した「構成物」であり、言語・概念・身体予算・社会的実在を介して相当程度デザイン可能。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>情動に普遍的な生理・表情の「指紋」は見つからず、脳は予測器として変動しやすい信号を概念で束ねる（多様同型）。内受容と身体予算が情動の基調を規定し、文化と言語が概念境界を形づくる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>①情動語彙を増やし粒度を高める（再カテゴライズ）②睡眠・栄養・運動で身体予算を最適化③予測の更新（反証的情報を取り入れる）④社会的実在（規範・ラベル）の再設計（職場・教育・法制度）で情動の生起条件を変える。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🧠 構成された情動理論</h3>
+      <ul>
+        <li>情動は固定回路ではなく脳の予測が作る</li>
+        <li>体内感覚と外部情報を概念で分類</li>
+        <li>普遍的な指紋は存在しない</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>本書の中心命題で、固定的情動観からの転換点を示す</div>
+    </div>
+    <div class="card">
+      <h3>🔮 予測と誤差最小化</h3>
+      <ul>
+        <li>脳は過去経験から次の入力を予測</li>
+        <li>誤差を最小化するよう調整</li>
+        <li>先回り制御で効率化</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>情動生成の神経計算メカニズムを説明し、介入可能性の基盤となる</div>
+    </div>
+    <div class="card">
+      <h3>💓 内受容（インターセプション）</h3>
+      <ul>
+        <li>心拍・呼吸・腸活動など体内信号</li>
+        <li>情動の基調を形成</li>
+        <li>快・不快の基礎</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>情動が「身体から」生まれる生理的根拠を示す</div>
+    </div>
+    <div class="card">
+      <h3>💰 身体予算（ボディ・バジェット）</h3>
+      <ul>
+        <li>代謝・エネルギー・ホルモンの管理</li>
+        <li>赤字は不快を増幅</li>
+        <li>短絡的行動を招く</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>睡眠・栄養・運動が情動に直結する科学的根拠を提供</div>
+    </div>
+    <div class="card">
+      <h3>🏷️ 情動カテゴリー／概念</h3>
+      <ul>
+        <li>文化・学習で獲得した意味づけ枠組み</li>
+        <li>「怒り」「悲しみ」などのラベル</li>
+        <li>予測のテンプレートとなる</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>言語と文化が情動の境界を決める仕組みを明示</div>
+    </div>
+    <div class="card">
+      <h3>🔬 情動の粒度</h3>
+      <ul>
+        <li>情動を細かく区別・命名する能力</li>
+        <li>高いほど調整戦略が増える</li>
+        <li>成果向上につながる</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>語彙拡張が実践的介入として有効な理由を示す</div>
+    </div>
+    <div class="card">
+      <h3>🌈 感情的リアリズム</h3>
+      <ul>
+        <li>自分の感情を外界の性質と誤認</li>
+        <li>不安=危険と感じる傾向</li>
+        <li>予測が現実を染める</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>情動が判断を歪める認知バイアスの源泉を説明</div>
+    </div>
+    <div class="card">
+      <h3>🌀 多様同型（ディジェネラシー）</h3>
+      <ul>
+        <li>同じ機能が異なるパターンで実現</li>
+        <li>普遍指紋の不在を説明</li>
+        <li>個人差と文脈依存性の根拠</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>表情読み取り技術の限界を科学的に示す</div>
+    </div>
+    <div class="card">
+      <h3>🤝 社会的実在</h3>
+      <ul>
+        <li>共有される概念・規範・ラベル</li>
+        <li>情動の存在様式を現実化</li>
+        <li>集団で作る情動の境界</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>制度・教育・職場設計が情動を変える根拠を提供</div>
+    </div>
+    <div class="card">
+      <h3>📊 バレンスと覚醒</h3>
+      <ul>
+        <li>快・不快（バレンス）の軸</li>
+        <li>高・低覚醒の軸</li>
+        <li>二軸から概念で細分化</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>情動の基調構造を単純化し理解を助ける</div>
+    </div>
+  </div>
+
+  <div class="visual-diagram">
+    <h3>🔗 概念間の関係性</h3>
+    <div class="flow-item">
+      <span>過去経験</span><span class="flow-arrow">→</span><span>概念の獲得</span><span class="flow-arrow">→</span><span>予測テンプレ化</span>
+    </div>
+    <div class="flow-item">
+      <span>予測＋内受容信号＋文脈</span><span class="flow-arrow">→</span><span>再カテゴライズ</span><span class="flow-arrow">→</span><span>情動の成立</span>
+    </div>
+    <div class="flow-item">
+      <span>言語の習得</span><span class="flow-arrow">→</span><span>概念境界の精緻化</span><span class="flow-arrow">→</span><span>情動の粒度↑</span><span class="flow-arrow">→</span><span>対処行動の選択肢↑</span>
+    </div>
+    <div class="flow-item">
+      <span>身体予算の黒字/赤字</span><span class="flow-arrow">→</span><span>内受容の快/不快バイアス</span><span class="flow-arrow">→</span><span>予測の方向性を変える</span>
+    </div>
+    <div class="flow-item">
+      <span>多様同型</span><span class="flow-arrow">→</span><span>同一情動の生理・表情が多様</span><span class="flow-arrow">→</span><span>普遍指紋の仮説を否定</span>
+    </div>
+    <div class="flow-item">
+      <span>社会的実在</span><span class="flow-arrow">→</span><span>共有ラベルと規範</span><span class="flow-arrow">→</span><span>情動カテゴリーの安定度↑/変化</span>
+    </div>
+    <div class="flow-item">
+      <span>誤差最小化</span><span class="flow-arrow">→</span><span>概念更新 or 行動修正</span><span class="flow-arrow">→</span><span>学習による将来予測の改良</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📌 導入</h3>
+    <ul>
+      <li>古典的情動観（普遍表情・固定回路）を提示</li>
+      <li>その限界を問題提起</li>
+      <li>新しい視点への導入</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>読者の既存認識を揺さぶり、本書の問いを明確化するため</div>
+  </div>
+  <div class="chapter-card">
+    <h3>📊 変動性の証拠</h3>
+    <ul>
+      <li>表情・生理・脳活動の大きな個人差</li>
+      <li>文脈依存性のデータ</li>
+      <li>多様同型で普遍指紋説を崩す</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>古典理論の実証的反証を積み上げ、新理論の必要性を示すため</div>
+  </div>
+  <div class="chapter-card">
+    <h3>🧠 予測する脳</h3>
+    <ul>
+      <li>脳の予測アーキテクチャを説明</li>
+      <li>内受容・身体予算の役割</li>
+      <li>情動生成の生理基盤を描く</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>構成理論の神経科学的基盤を提供し、メカニズムを理解可能にするため</div>
+  </div>
+  <div class="chapter-card">
+    <h3>🗣️ 概念・言語・文化</h3>
+    <ul>
+      <li>概念学習と言語が情動の粒度を形成</li>
+      <li>カテゴリー境界の文化差</li>
+      <li>社会的実在が情動を安定化</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>情動の可塑性と文化的多様性を示し、介入の方向性を明示するため</div>
+  </div>
+  <div class="chapter-card">
+    <h3>🛠️ 応用と含意</h3>
+    <ul>
+      <li>法医学・ヘルスケア・教育・職場での誤用を批判</li>
+      <li>表情読み取り技術の限界</li>
+      <li>実践的介入（再カテゴライズ、身体予算管理、環境設計）を提案</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>理論を現実の問題解決に接続し、読者の行動変容を促すため</div>
+  </div>
+  <div class="chapter-card">
+    <h3>🌟 結語</h3>
+    <ul>
+      <li>情動は作れるという可塑性を強調</li>
+      <li>個人と社会の責任あるデザインへの呼びかけ</li>
+      <li>未来への展望</li>
+    </ul>
+    <div class="reason"><strong>理由：</strong>読者にエンパワーメントと責任感を与え、実践への動機づけを完成させるため</div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🎭 例1：表情の多様性</h3>
+    <p><strong>背景：</strong>同じ「怒り」でも、ある人は顔を赤らめ、別の人は冷静な表情を保つ。文化によっても表情パターンは異なる。</p>
+    <p><strong>示唆：</strong>表情から情動を一意に読み取ることはできず、文脈と個人差を考慮する必要がある。</p>
+    <div class="reason"><strong>理由：</strong>普遍表情仮説の限界を具体的に示し、多様同型の概念を実感させる</div>
+  </div>
+  <div class="example-card">
+    <h3>🏃 例2：身体予算の赤字と短絡行動</h3>
+    <p><strong>背景：</strong>睡眠不足や空腹時には些細なことでイライラし、衝動的な判断をしやすくなる。</p>
+    <p><strong>示唆：</strong>情動の質は生理状態に強く依存し、身体予算の管理が情動調整の基盤となる。</p>
+    <div class="reason"><strong>理由：</strong>身体予算の概念を日常経験と結びつけ、実践的介入の重要性を示す</div>
+  </div>
+  <div class="example-card">
+    <h3>📚 例3：情動語彙の拡張と対処力</h3>
+    <p><strong>背景：</strong>「不安」を「焦燥」「懸念」「緊張」と細分化できる人は、状況に応じた対処（深呼吸、計画見直し、相談）を選べる。</p>
+    <p><strong>示唆：</strong>情動の粒度を高めることで、行動の選択肢が増え、適応力が向上する。</p>
+    <div class="reason"><strong>理由：</strong>言語と概念が情動調整に直結する実例を示し、語彙学習の動機づけを強化する</div>
+  </div>
+  <div class="example-card">
+    <h3>⚖️ 例4：法廷での表情読み取りの誤用</h3>
+    <p><strong>背景：</strong>被告の表情から「反省していない」と判断されるケースがあるが、文化や個人差で表情は多様。</p>
+    <p><strong>示唆：</strong>表情を情動の確実な指標とする前提は危険で、制度設計の見直しが必要。</p>
+    <div class="reason"><strong>理由：</strong>理論の社会的含意を示し、誤用のリスクを具体化する</div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <blockquote>「情動は脳が予測して作り上げる現実である。」</blockquote>
+    <p><strong>補足：</strong>本書の中心命題で、固定的情動観からの転換点を示す。</p>
+  </div>
+  <div class="quote-card">
+    <blockquote>「感情に普遍的な生理・表情の指紋はない。」</blockquote>
+    <p><strong>補足：</strong>古典的理論や表情読み取り技術の前提を覆す。</p>
+  </div>
+  <div class="quote-card">
+    <blockquote>「言語は情動の粒度を高め、行動の選択肢を増やす。」</blockquote>
+    <p><strong>補足：</strong>介入可能性を示し、実践へ直結する示唆を与える。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>✍️ アクション1：感情語を10個書き出し定義する</h3>
+    <p>今感じている、または最近感じた情動を10個の異なる言葉で表現し、それぞれ1文で定義する。</p>
+    <div class="meta">
+      <span class="badge">15分</span>
+      <strong>目的：</strong>情動の粒度を高める<br>
+      <strong>期待効果：</strong>自分の情動を細かく区別でき、適切な対処法を選びやすくなる
+    </div>
+  </div>
+  <div class="action-card">
+    <h3>🧘 アクション2：体内感覚を5分スキャン記録する</h3>
+    <p>静かに座り、心拍・呼吸・胃腸の感覚を順に観察し、気づいたことをメモする。</p>
+    <div class="meta">
+      <span class="badge">5分</span>
+      <strong>目的：</strong>内受容の精度を上げる<br>
+      <strong>期待効果：</strong>身体信号への気づきが高まり、情動の早期察知と調整が可能になる
+    </div>
+  </div>
+  <div class="action-card">
+    <h3>🔄 アクション3：今日の出来事を3感情で再ラベル</h3>
+    <p>今日起きた1つの出来事を、最初に感じた情動とは異なる3つの情動語で再解釈してみる。</p>
+    <div class="meta">
+      <span class="badge">10分</span>
+      <strong>目的：</strong>再カテゴライズの練習<br>
+      <strong>期待効果：</strong>情動の柔軟性が増し、固定的な反応パターンから脱却できる
+    </div>
+  </div>
+  <div class="action-card">
+    <h3>😴 アクション4：今夜の睡眠時間を30分増やす計画</h3>
+    <p>就寝時刻を30分早めるために、今日のスケジュールを調整する。</p>
+    <div class="meta">
+      <span class="badge">5分</span>
+      <strong>目的：</strong>身体予算の改善<br>
+      <strong>期待効果：</strong>翌日の情動安定性と判断力が向上する
+    </div>
+  </div>
+  <div class="action-card">
+    <h3>📖 アクション5：関連書籍を1冊選び目次を読む</h3>
+    <p>下記の関連書籍から1冊選び、目次と序章を読んで本書との接続点を探す。</p>
+    <div class="meta">
+      <span class="badge">20分</span>
+      <strong>目的：</strong>理解の深化と視野拡張<br>
+      <strong>期待効果：</strong>構成理論の位置づけが明確になり、批判的思考が育つ
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => c.classList.remove('active'));
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
