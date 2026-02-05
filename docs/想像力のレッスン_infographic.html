@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>創造性の習慣 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--accent);
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.concept-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .concept-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.concept-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+}
+.concept-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.concept-card .tag {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.concept-card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+.quote-card blockquote {
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.quote-card .why {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+.chart-container {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.chart-container h3 {
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.bar-label {
+  min-width: 100px;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.bar-visual {
+  flex: 1;
+  height: 24px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--accent);
+}
+.book-card h4 {
+  font-size: 0.95rem;
+  color: var(--primary);
+  margin-bottom: 0.3rem;
+}
+.book-card .author {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.flow-diagram {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+.flow-item .arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0.25rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 創造性の習慣</h1>
+  <p>才能ではなく、習慣・視点・環境で誰でも創造的になれる</p>
+</header>
+
+<div class="summary-block">
+  <h2>💡 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    どうすれば凡庸な日常から創造的成果を安定的に生み出せるか？
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    創造性を「習慣・プロセス・視点」の3点で設計し、量を重ねつつ逸脱と組合せを意図的に行うこと。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    歴史上の創造者の実例は、制約・失敗・反復が質を高めることを示す。
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    ①量産→選択、②制約設定→探索、③逆転思考→盲点発見、④多様入力→新結合、⑤継続習慣→出力の安定化。
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="concept-grid">
+    <div class="concept-card">
+      <h4>🔁 創造的習慣</h4>
+      <span class="tag">習慣が才能を上回る</span>
+      <p>毎日の時間・リズム・儀式を固定し、発想を偶然ではなく再現可能にする実践の型。長期的に創造力を底上げする。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>意志力に頼らず、環境と習慣で創造活動を自動化できるから。
+      </div>
+    </div>
+    <div class="concept-card">
+      <h4>📊 量から質</h4>
+      <span class="tag">数は質に転化する</span>
+      <p>アイデアの大量生成と反復を通じて、選択と改良で質が生まれるという原則。初期品質より出力量を優先する。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>完璧主義を退け、試行回数を増やすことで偶然の発見と学習が加速するから。
+      </div>
+    </div>
+    <div class="concept-card">
+      <h4>🎯 制約の力</h4>
+      <span class="tag">枠は跳躍台</span>
+      <p>時間・素材・ルールなどの制約が探索範囲を狭め、むしろ独創性を促進する。自由過多は迷走を招く。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>制約が焦点を与え、創造的解決への集中を生むから。
+      </div>
+    </div>
+    <div class="concept-card">
+      <h4>🔄 逆転思考</h4>
+      <span class="tag">前提を壊す</span>
+      <p>前提・常識・順序を意図的にひっくり返して盲点をあぶり出す。異端視点から価値を生む。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>常識の外に未開拓の価値領域があり、逆転が新視点を開くから。
+      </div>
+    </div>
+    <div class="concept-card">
+      <h4>🌟 逸脱の価値</h4>
+      <span class="tag">違いは資産</span>
+      <p>平均や同調から外れる行為を恐れず、差異を資産として活用する姿勢。模倣からの離脱が独自性を生む。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>差別化が競争優位を生み、独自性が価値の源泉になるから。
+      </div>
+    </div>
+    <div class="concept-card">
+      <h4>🧩 組合せの創造</h4>
+      <span class="tag">新結合で生む</span>
+      <p>異分野・異素材・異文化の要素を再配置し新結合をつくる。オリジナリティは既存要素の新配置から生まれる。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>完全な新規は稀で、組合せが現実的な独創性の手段だから。
+      </div>
+    </div>
+    <div class="concept-card">
+      <h4>❌ 失敗の活用</h4>
+      <span class="tag">失敗は資源</span>
+      <p>失敗をデータとして扱い、素早い学習と改良の燃料にする。感情ではなく実験の結果として記録する。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>失敗から学ぶ速度が成長速度を決め、恐れが実験を止めるから。
+      </div>
+    </div>
+    <div class="concept-card">
+      <h4>🎮 遊びと実験</h4>
+      <span class="tag">遊んで試す</span>
+      <p>成果を急がず、遊戯的態度で試行することで意外性が立ち上がる。安全な失敗環境が探索を広げる。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>心理的安全が実験回数を増やし、偶然の発見を促すから。
+      </div>
+    </div>
+    <div class="concept-card">
+      <h4>👁️ 観察と盗用の倫理</h4>
+      <span class="tag">盗んで変える</span>
+      <p>他者の優れた手法を観察し要素を抽出、変形・融合して自分の文脈に再配置する。単純模倣は避ける。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>先人の知恵を活用しつつ独自性を加えることで効率と独創を両立できるから。
+      </div>
+    </div>
+    <div class="concept-card">
+      <h4>🏗️ 環境設計</h4>
+      <span class="tag">場が行動を決める</span>
+      <p>道具・時間割・人間関係を整え、創造活動の摩擦を減らす。意志力ではなく環境で継続を支える。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>環境が行動を自動化し、継続の負担を劇的に下げるから。
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <h3>📈 創造性を高める要素の重要度</h3>
+    <div class="bar-chart">
+      <div class="bar-item">
+        <div class="bar-label">習慣化</div>
+        <div class="bar-visual" style="width:95%;">95%</div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">量の確保</div>
+        <div class="bar-visual" style="width:90%;">90%</div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">制約設定</div>
+        <div class="bar-visual" style="width:85%;">85%</div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">失敗活用</div>
+        <div class="bar-visual" style="width:80%;">80%</div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">組合せ</div>
+        <div class="bar-visual" style="width:88%;">88%</div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">環境設計</div>
+        <div class="bar-visual" style="width:92%;">92%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3>🔗 概念間の因果関係</h3>
+    <div class="flow-item">
+      <span class="badge">制約設定</span>
+      <span class="arrow">→</span>
+      <span class="badge">探索の集中</span>
+      <span class="arrow">→</span>
+      <span class="badge">独創的解決</span>
+    </div>
+    <div class="flow-item">
+      <span class="badge">量産</span>
+      <span class="arrow">→</span>
+      <span class="badge">反復</span>
+      <span class="arrow">→</span>
+      <span class="badge">選択</span>
+      <span class="arrow">→</span>
+      <span class="badge">質の向上</span>
+    </div>
+    <div class="flow-item">
+      <span class="badge">失敗記録</span>
+      <span class="arrow">→</span>
+      <span class="badge">学習</span>
+      <span class="arrow">→</span>
+      <span class="badge">改良加速</span>
+    </div>
+    <div class="flow-item">
+      <span class="badge">多様な入力</span>
+      <span class="arrow">→</span>
+      <span class="badge">新結合</span>
+      <span class="arrow">→</span>
+      <span class="badge">新奇性創出</span>
+    </div>
+    <div class="flow-item">
+      <span class="badge">習慣×環境</span>
+      <span class="arrow">→</span>
+      <span class="badge">継続容易化</span>
+      <span class="arrow">→</span>
+      <span class="badge">出力安定化</span>
+    </div>
+    <div class="flow-item">
+      <span class="badge">逸脱許容</span>
+      <span class="arrow">→</span>
+      <span class="badge">独自性確立</span>
+      <span class="arrow">→</span>
+      <span class="badge">価値創出</span>
+    </div>
+    <div class="flow-item">
+      <span class="badge">遊び心</span>
+      <span class="arrow">→</span>
+      <span class="badge">心理的安全</span>
+      <span class="arrow">→</span>
+      <span class="badge">実験増</span>
+      <span class="arrow">→</span>
+      <span class="badge">偶然の発見</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>📖 第1部：創造性の再定義</h3>
+    <ul>
+      <li>創造性は才能神話ではなく、習慣と姿勢で構築できる</li>
+      <li>思い込みを解体し、誰でも創造的になれると示す</li>
+      <li>日常の小さな実践が長期的な創造力を育てる</li>
+      <li>環境と習慣が意志力を上回る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>創造性を民主化し、行動の出発点を与えるため。才能依存の誤解を解くことで、誰もが実践可能になる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🛠️ 第2部：発想の技法</h3>
+    <ul>
+      <li>量を出す：大量生成→選択→改良のサイクル</li>
+      <li>制約を設定：枠が焦点を生み、独創性を促進</li>
+      <li>逆転思考：前提を壊して盲点を発見</li>
+      <li>観察と盗用：他者の手法を変形・融合</li>
+      <li>組合せ：異質な要素の新結合で新奇性を生む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>具体的なプロセスを提示し、再現可能な創造活動を設計するため。技法が行動を導く。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚧 第3部：障害の乗り越え</h3>
+    <ul>
+      <li>失敗をデータとして扱い、学習を加速</li>
+      <li>批判と恐れへの対処法</li>
+      <li>完璧主義を退け、実験回数を増やす</li>
+      <li>心理的安全を確保し、遊び心を保つ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>創造活動を阻む心理的・社会的障壁を取り除き、継続を可能にするため。恐れが最大の敵だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌱 第4部：実装と維持</h3>
+    <ul>
+      <li>継続のための環境設計と道具の整備</li>
+      <li>時間割と儀式で習慣を自動化</li>
+      <li>人間関係と多様性の活用</li>
+      <li>長期的成長の指針と振り返り</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>短期の成果ではなく、長期的な創造力の底上げを実現するため。継続が質を決める。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📚 全体の論理展開</h3>
+    <p style="padding-left:1.5rem; font-size:0.9rem; color:var(--text-light);">
+      本書は約90の短章からなるエッセイ集で、各章は「反直観的な原則 → 歴史/現代の創造者の逸話 → 実務への含意」というミニ論証で構成される。全体の流れは概ね、1) 創造性は才能神話ではなく習慣と姿勢であると再定義（思い込みの解体）、2) 発想の量・制約・逆転・観察・組合せなど具体技法を提示（プロセス設計）、3) 失敗・批判・完璧主義・恐れといった阻害要因への対処（障害の乗り越え）、4) 継続と実行、環境づくり、長期的成長の指針（実装と維持）へと展開する。章相互は独立性が高く、どこからでも読めるが、通読すると「創造性を再現可能にする原理群」が網羅的に立ち上がる。
+    </p>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🎨 具体例1：陶芸クラスの実験</h3>
+    <ul>
+      <li><strong>背景：</strong>ある陶芸クラスで、学生を「量」グループと「質」グループに分けた</li>
+      <li><strong>量グループ：</strong>とにかく多くの作品を作ることを目標にした</li>
+      <li><strong>質グループ：</strong>完璧な1作品を作ることを目標にした</li>
+      <li><strong>結果：</strong>最終的に最も優れた作品は「量」グループから生まれた</li>
+      <li><strong>示唆：</strong>試行回数が技術と判断力を磨き、質は量の副産物として現れる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>完璧主義より実験回数が重要であり、量が質に転化する原理を実証している。行動を先行させることの価値を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎬 具体例2：映画監督の制約活用</h3>
+    <ul>
+      <li><strong>背景：</strong>低予算・限られた撮影日数・少ない機材という制約下での映画制作</li>
+      <li><strong>対応：</strong>制約を逆手に取り、1つの場所・少数の登場人物に焦点を絞った</li>
+      <li><strong>結果：</strong>密度の高い脚本と演出が生まれ、高評価を獲得</li>
+      <li><strong>示唆：</strong>制約が創造的解決を強制し、焦点が独創性を生む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>自由過多ではなく制約が創造性の跳躍台になることを示し、限界を味方にする姿勢の重要性を教える。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎵 具体例3：音楽の新結合</h3>
+    <ul>
+      <li><strong>背景：</strong>異なるジャンル（クラシック×ヒップホップ、民族音楽×エレクトロニカ）の融合</li>
+      <li><strong>対応：</strong>既存要素を分解し、新しい文脈で再配置</li>
+      <li><strong>結果：</strong>新ジャンルの誕生と独自の音楽スタイル確立</li>
+      <li><strong>示唆：</strong>オリジナリティは既存要素の新結合から生まれる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>完全な新規は稀で、組合せが現実的な独創性の手段であることを示す。多様な入力が創造の源泉になる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔬 具体例4：科学者の失敗活用</h3>
+    <ul>
+      <li><strong>背景：</strong>実験の失敗を記録し、パターンを分析</li>
+      <li><strong>対応：</strong>失敗を感情ではなくデータとして扱い、次の仮説に活用</li>
+      <li><strong>結果：</strong>予期しない発見（ペニシリン、ポストイットなど）</li>
+      <li><strong>示唆：</strong>失敗は学習の燃料であり、素早い改良サイクルが成長を加速する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>失敗を恐れず資源として扱う姿勢が、偶然の発見と学習速度を高めることを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <blockquote>"創造性は才能でなく、毎日の習慣で鍛えられる。"</blockquote>
+    <div class="why"><strong>なぜ重要か：</strong>努力と設計で誰でも創造力を伸ばせると示す出発点だから。</div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"まず量を出せ。質は選択と改良で生まれる。"</blockquote>
+    <div class="why"><strong>なぜ重要か：</strong>完璧主義を退け、行動を先行させる実務原則だから。</div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"制約は創造性の敵ではなく、跳躍台だ。"</blockquote>
+    <div class="why"><strong>なぜ重要か：</strong>限界が焦点を与え、独創的解を誘発する逆説を示すから。</div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"失敗は終点ではなく、学習データである。"</blockquote>
+    <div class="why"><strong>なぜ重要か：</strong>恐れを減らし実験回数を増やす認知の転換を促すから。</div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"異質なもの同士を組み合わせ、新しい価値を作れ。"</blockquote>
+    <div class="why"><strong>なぜ重要か：</strong>新奇性の源泉が再結合にあることを端的に示すから。</div>
+  </div>
+
+  <div class="card">
+    <h3>💬 引用の補足</h3>
+    <p style="padding-left:1.5rem; font-size:0.9rem; color:var(--text-light);">
+      これらの引用は本書の核心原則を凝縮しており、創造性を再現可能にするための実務指針として機能します。各引用は「才能神話の解体」「行動優先」「制約の活用」「失敗の再定義」「組合せの力」という5つの柱を表しています。
+    </p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>✏️ アクション1：発想する（10案出し）</h4>
+    <p><strong>内容：</strong>テーマを1つ決め、10分で10個のアイデアを書き出す。質は問わず、とにかく量を出す。</p>
+    <p><strong>目的：</strong>量産の習慣を体感し、完璧主義を退ける。</p>
+    <p><strong>期待効果：</strong>発想の筋肉が鍛えられ、アイデア出しへの抵抗が減る。後半に意外な案が出やすい。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🎯 アクション2：制約を設定する</h4>
+    <p><strong>内容：</strong>今抱えている課題に対し、3つの制約（時間・素材・ルール）を設定し、その枠内で解決策を考える。</p>
+    <p><strong>目的：</strong>制約が焦点を生み、独創的解を促すことを体験する。</p>
+    <p><strong>期待効果：</strong>自由過多の迷走を避け、集中した探索で新しい視点が得られる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🔄 アクション3：逆転思考を試す</h4>
+    <p><strong>内容：</strong>日常の前提を1つ選び、それを逆にした場合のアイデアを10個書き出す（例：「顧客が店に来る」→「店が顧客に行く」）。</p>
+    <p><strong>目的：</strong>常識の外に価値があることを発見する。</p>
+    <p><strong>期待効果：</strong>盲点が明らかになり、新しい価値提案や問題解決の糸口が見つかる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🧩 アクション4：異分野を組み合わせる</h4>
+    <p><strong>内容：</strong>自分の専門分野と全く異なる分野を1つ選び、両者の要素を組み合わせた新しいアイデアを3つ考える。</p>
+    <p><strong>目的：</strong>新結合による独創性を体験する。</p>
+    <p><strong>期待効果：</strong>既存要素の新配置で新奇性が生まれることを実感し、組合せ思考が身につく。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>📝 アクション5：失敗を記録する</h4>
+    <p><strong>内容：</strong>最近の失敗を1つ選び、「何が起きたか」「なぜ起きたか」「次に何を試すか」を3行で書く。</p>
+    <p><strong>目的：</strong>失敗を感情ではなくデータとして扱う習慣をつける。</p>
+    <p><strong>期待効果：</strong>失敗への恐れが減り、学習サイクルが加速する。実験回数が増える。</p>
+  </div>
+
+  <div class="card">
+    <h3>🎯 アクション実行のコツ</h3>
+    <ul>
+      <li>タイマーを15分にセットし、時間内に完了させる</li>
+      <li>完璧を求めず、ラフなメモで十分</li>
+      <li>毎日1つずつ試し、習慣化する</li>
+      <li>結果を記録し、1週間後に振り返る</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>📚 関連書籍</h3>
+    <div class="book-card">
+      <h4>📖 アイデアのつくり方</h4>
+      <div class="author">著：ジェームス・W・ヤング</div>
+      <div class="relation">少量の原理で「新結合」を体系化し、本書の組合せ思考を補強する。</div>
+    </div>
+    <div class="book-card">
+      <h4>📖 クリエイティブ・マインドセット</h4>
+      <div class="author">著：デイヴィッド・ケリー, トム・ケリー</div>
+      <div class="relation">創造性は習得可能という前提と、実験と失敗の文化を実務に落とす。</div>
+    </div>
+    <div class="book-card">
+      <h4>📖 スティール・ライク・アーティスト</h4>
+      <div class="author">著：オースティン・クレオン</div>
+      <div class="relation">観察と盗用の倫理を平易に解説し、新結合の具体手法を示す。</div>
+    </div>
+    <div class="book-card">
+      <h4>📖 クリエイティビティ・インク</h4>
+      <div class="author">著：エド・キャットムル</div>
+      <div class="relation">創造的組織の環境設計と失敗の扱いを経営視点から補完する。</div>
+    </div>
+    <div class="book-card">
+      <h4>📖 発想法</h4>
+      <div class="author">著：川喜田二郎</div>
+      <div class="relation">KJ法による発散・収束の技法が量から質への転換を具体化する。</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
