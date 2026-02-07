@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自省録 - インフォグラフィック</title>
+<!--
+カラーパレット（メタデータ）:
+プライマリー: #667eea
+セカンダリー: #764ba2
+アクセント: #f093fb
+-->
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#333;line-height:1.6;padding-bottom:2rem;}
+.container{max-width:900px;margin:0 auto;padding:1rem;}
+header{background:#fff;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+h1{font-size:1.8rem;color:#667eea;margin-bottom:0.5rem;}
+.subtitle{font-size:0.95rem;color:#666;margin-bottom:1rem;}
+.summary-box{background:linear-gradient(135deg,#f093fb 0%,#667eea 100%);color:#fff;padding:1.2rem;border-radius:8px;margin-top:1rem;}
+.summary-box h2{font-size:1.1rem;margin-bottom:0.8rem;border-bottom:2px solid rgba(255,255,255,0.3);padding-bottom:0.4rem;}
+.summary-item{margin-bottom:0.7rem;padding-left:1rem;border-left:3px solid rgba(255,255,255,0.5);}
+.summary-item strong{display:block;margin-bottom:0.2rem;font-size:0.9rem;}
+.summary-item span{font-size:0.85rem;line-height:1.5;}
+.tabs{display:flex;flex-wrap:wrap;gap:0.5rem;background:#fff;padding:0.8rem;border-radius:8px;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+.tab-btn{flex:1 1 auto;min-width:120px;padding:0.7rem 1rem;border:none;background:#f0f0f0;color:#555;border-radius:6px;cursor:pointer;font-size:0.85rem;font-weight:600;transition:all 0.3s;}
+.tab-btn:hover{background:#e0e0e0;}
+.tab-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.tab-content{display:none;background:#fff;border-radius:8px;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+.tab-content.active{display:block;}
+.card{background:#f9f9f9;border-left:4px solid #667eea;padding:1rem;margin-bottom:1rem;border-radius:6px;}
+.card h3{font-size:1rem;color:#667eea;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem;}
+.card ul{list-style:none;padding-left:0;}
+.card li{padding:0.3rem 0;font-size:0.9rem;position:relative;padding-left:1.2rem;}
+.card li:before{content:'▸';position:absolute;left:0;color:#764ba2;font-weight:bold;}
+.badge{display:inline-block;background:#f093fb;color:#fff;padding:0.2rem 0.6rem;border-radius:12px;font-size:0.75rem;margin-left:0.5rem;}
+.chart-container{margin:1.5rem 0;}
+.bar-chart{display:flex;flex-direction:column;gap:0.8rem;}
+.bar-item{display:flex;align-items:center;gap:0.8rem;}
+.bar-label{min-width:100px;font-size:0.85rem;font-weight:600;color:#555;}
+.bar-bg{flex:1;background:#e0e0e0;border-radius:8px;height:24px;position:relative;overflow:hidden;}
+.bar-fill{height:100%;background:linear-gradient(90deg,#667eea,#764ba2);border-radius:8px;display:flex;align-items:center;justify-content:flex-end;padding-right:0.5rem;color:#fff;font-size:0.75rem;font-weight:bold;}
+.quote-box{background:linear-gradient(135deg,#764ba2,#667eea);color:#fff;padding:1rem;border-radius:8px;margin-bottom:1rem;font-style:italic;position:relative;padding-left:2.5rem;}
+.quote-box:before{content:'"';position:absolute;left:0.5rem;top:0.2rem;font-size:3rem;opacity:0.3;}
+.quote-box .source{display:block;margin-top:0.5rem;font-size:0.8rem;font-style:normal;opacity:0.9;}
+.action-card{background:linear-gradient(135deg,#f093fb,#764ba2);color:#fff;padding:1rem;border-radius:8px;margin-bottom:1rem;}
+.action-card h4{font-size:0.95rem;margin-bottom:0.4rem;}
+.action-card p{font-size:0.85rem;line-height:1.5;}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;}
+.flow-diagram{background:#f0f0f0;padding:1rem;border-radius:8px;margin:1rem 0;}
+.flow-item{display:flex;align-items:center;margin-bottom:0.5rem;font-size:0.85rem;}
+.flow-arrow{margin:0 0.5rem;color:#667eea;font-weight:bold;}
+@media(max-width:600px){
+h1{font-size:1.5rem;}
+.tab-btn{min-width:100px;font-size:0.8rem;padding:0.6rem 0.8rem;}
+.concept-grid{grid-template-columns:1fr;}
+.bar-label{min-width:80px;font-size:0.8rem;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📖 自省録 - マルクス・アウレリウス</h1>
+<p class="subtitle">外界ではなく自らの判断を鍛え、理性と自然に一致した徳を日々実践することで、共同体に奉仕しつつ動揺なき平静を得よ。</p>
+<div class="summary-box">
+<h2>🎯 要約 = 問い × 答え × 根拠</h2>
+<div class="summary-item">
+<strong>❓ 問い</strong>
+<span>逆境や動揺の中でいかに善く生きるか？</span>
+</div>
+<div class="summary-item">
+<strong>✅ 答え</strong>
+<span>自然と理性に一致した徳を実践し、外的事象への判断を統御して内的平静を保つ。</span>
+</div>
+<div class="summary-item">
+<strong>🔍 Why（なぜそうなのか）</strong>
+<span>人間は理性的・社会的存在で、真の善悪は魂の選択にのみ宿り、外部は無差別だから。</span>
+</div>
+<div class="summary-item">
+<strong>🛠 How（そのためには）</strong>
+<span>印象を吟味し同意を保留する、役割義務に専念する、コントロールの二分法で関心を仕分ける、日々の省察で習慣化する。</span>
+</div>
+</div>
+</header>
+
+<div class="tabs" role="tablist">
+<button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+<button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+<button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+<button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+<button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">🧠 主要概念の詳細</h2>
+<div class="concept-grid">
+<div class="card">
+<h3>🌌 ロゴス（宇宙理性）<span class="badge">宇宙法</span></h3>
+<ul>
+<li>宇宙を秩序づける理性原理</li>
+<li>人間の理性はその一部</li>
+<li>これに一致することが善い生</li>
+<li><strong>理由:</strong> 宇宙全体の調和に参加することで個人の行為が意味を持つ</li>
+</ul>
+</div>
+<div class="card">
+<h3>⚖️ 徳（四徳）<span class="badge">善の核心</span></h3>
+<ul>
+<li>知恵・勇気・節制・正義</li>
+<li>唯一の善であり生の目的</li>
+<li>外的成功とは無関係</li>
+<li><strong>理由:</strong> 魂の卓越のみが真の幸福をもたらす</li>
+</ul>
+</div>
+<div class="card">
+<h3>🎭 印象と同意<span class="badge">判断のレバー</span></h3>
+<ul>
+<li>刺激に対する心像（印象）</li>
+<li>同意/不同意を与える能力</li>
+<li>情動は同意の産物</li>
+<li><strong>理由:</strong> 感情をコントロールする唯一の実践的手段</li>
+</ul>
+</div>
+<div class="card">
+<h3>🎯 コントロールの二分法<span class="badge">焦点化</span></h3>
+<ul>
+<li>自分に委ねられる事柄と委ねられない事柄を峻別</li>
+<li>前者にのみエネルギーを注ぐ</li>
+<li>無駄な心配を排除</li>
+<li><strong>理由:</strong> 限られた資源を最大効果に振り向ける</li>
+</ul>
+</div>
+<div class="card">
+<h3>👥 役割義務<span class="badge">社会奉仕</span></h3>
+<ul>
+<li>家族・市民・統治者など各役割</li>
+<li>共同体に貢献する責務</li>
+<li>人間本性の実現</li>
+<li><strong>理由:</strong> 社会的存在として生きることが自然に適う</li>
+</ul>
+</div>
+<div class="card">
+<h3>🌿 自然に従う生<span class="badge">合致</span></h3>
+<ul>
+<li>人間の本性と宇宙秩序に合致</li>
+<li>選択を重ねる態度</li>
+<li>理性的判断の基準</li>
+<li><strong>理由:</strong> 自然法則に逆らわず生きることで摩擦が減る</li>
+</ul>
+</div>
+<div class="card">
+<h3>🏰 内的城壁<span class="badge">心の要塞</span></h3>
+<ul>
+<li>外界から自己を守る理性の砦</li>
+<li>判断領域の自律</li>
+<li>侵されない領域の確保</li>
+<li><strong>理由:</strong> 外的圧力に屈しない精神的独立を保つ</li>
+</ul>
+</div>
+<div class="card">
+<h3>💀 無常と死の省察<span class="badge">メメント・モリ</span></h3>
+<ul>
+<li>万物流転と死を想起</li>
+<li>執着と恐れを和らげる訓練</li>
+<li>現在への集中を促す</li>
+<li><strong>理由:</strong> 有限性の自覚が優先順位を明確にする</li>
+</ul>
+</div>
+<div class="card">
+<h3>🌍 普遍的共同体<span class="badge">世界市民</span></h3>
+<ul>
+<li>理性的存在は皆同一の都市の市民</li>
+<li>相互扶助すべき視座</li>
+<li>国境を超えた連帯</li>
+<li><strong>理由:</strong> 狭い利己心を超え普遍的正義を実現する</li>
+</ul>
+</div>
+<div class="card">
+<h3>⏱ 今ここの作業<span class="badge">現前行</span></h3>
+<ul>
+<li>現在の課題に単純・誠実・完全に取り組む</li>
+<li>集中実践</li>
+<li>反芻と先取り不安の排除</li>
+<li><strong>理由:</strong> 過去未来への散漫を防ぎ実効性を高める</li>
+</ul>
+</div>
+</div>
+
+<div class="chart-container">
+<h3 style="color:#667eea;margin-bottom:1rem;">📊 概念の重要度（相対的影響力）</h3>
+<div class="bar-chart">
+<div class="bar-item">
+<div class="bar-label">徳（四徳）</div>
+<div class="bar-bg"><div class="bar-fill" style="width:100%;">100%</div></div>
+</div>
+<div class="bar-item">
+<div class="bar-label">印象と同意</div>
+<div class="bar-bg"><div class="bar-fill" style="width:95%;">95%</div></div>
+</div>
+<div class="bar-item">
+<div class="bar-label">二分法</div>
+<div class="bar-bg"><div class="bar-fill" style="width:90%;">90%</div></div>
+</div>
+<div class="bar-item">
+<div class="bar-label">役割義務</div>
+<div class="bar-bg"><div class="bar-fill" style="width:85%;">85%</div></div>
+</div>
+<div class="bar-item">
+<div class="bar-label">今ここの作業</div>
+<div class="bar-bg"><div class="bar-fill" style="width:80%;">80%</div></div>
+</div>
+</div>
+</div>
+
+<div class="flow-diagram">
+<h3 style="color:#667eea;margin-bottom:0.8rem;">🔄 概念間の因果関係</h3>
+<div class="flow-item">ロゴスの認識<span class="flow-arrow">→</span>自然に従う生<span class="flow-arrow">→</span>徳の実践<span class="flow-arrow">→</span>内的平静</div>
+<div class="flow-item">印象の吟味と同意の保留<span class="flow-arrow">→</span>不適切な情動の弱化<span class="flow-arrow">→</span>判断の明晰化</div>
+<div class="flow-item">コントロールの二分法<span class="flow-arrow">→</span>努力の最適化<span class="flow-arrow">→</span>無力感の低減</div>
+<div class="flow-item">役割義務の遂行<span class="flow-arrow">→</span>共同体の調和<span class="flow-arrow">→</span>正義の実現</div>
+<div class="flow-item">無常と死の省察<span class="flow-arrow">→</span>執着の低減<span class="flow-arrow">→</span>柔軟な受容</div>
+<div class="flow-item">今ここの作業<span class="flow-arrow">→</span>反芻の減少<span class="flow-arrow">→</span>生産性と徳の一貫性</div>
+<div class="flow-item">内的城壁の形成<span class="flow-arrow">→</span>外的出来事の影響縮小<span class="flow-arrow">→</span>自主性の強化</div>
+<div class="flow-item">普遍的共同体の視点<span class="flow-arrow">→</span>他者への寛容<span class="flow-arrow">→</span>対人葛藤の緩和</div>
+</div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">📚 各章の要約</h2>
+<div class="card">
+<h3>📘 巻 I</h3>
+<ul>
+<li>恩義と師からの教訓の列挙</li>
+<li>徳の実例を基盤として自らの規範を確立</li>
+<li>感謝と学びの記録</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 具体的な人物を通じて徳を可視化し、抽象論を実践に接続する基盤を作る。</p>
+</div>
+<div class="card">
+<h3>📘 巻 II</h3>
+<ul>
+<li>朝の決意と外的障害への心構え</li>
+<li>自然と一致する生活を誓う</li>
+<li>一日の始まりの儀式</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 日々の開始時に意図を設定することで、惰性と反応的行動を防ぐ。</p>
+</div>
+<div class="card">
+<h3>📘 巻 III</h3>
+<ul>
+<li>本質主義と雑念の排除</li>
+<li>現在の課題への集中を強調</li>
+<li>シンプルさの追求</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 複雑さと散漫が判断を曇らせるため、焦点を絞ることで明晰さを保つ。</p>
+</div>
+<div class="card">
+<h3>📘 巻 IV</h3>
+<ul>
+<li>宇宙観と死の受容を展開</li>
+<li>因果連関と無常の理解から平静を導く</li>
+<li>大局的視点の獲得</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 個別事象を宇宙全体の文脈に置くことで、恐怖と執着を相対化する。</p>
+</div>
+<div class="card">
+<h3>📘 巻 V</h3>
+<ul>
+<li>起床の励ましと職務遂行を促す</li>
+<li>共同体奉仕を人間本性として位置づけ</li>
+<li>社会的責任の自覚</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 孤立した個人ではなく共同体の一員として生きることが自然に適うと示す。</p>
+</div>
+<div class="card">
+<h3>📘 巻 VI</h3>
+<ul>
+<li>判断の主権を説く</li>
+<li>印象への同意管理が情動を規定すると示す</li>
+<li>内的自由の確立</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 外部に支配されない自律的な精神状態を実現する鍵を提供する。</p>
+</div>
+<div class="card">
+<h3>📘 巻 VII</h3>
+<ul>
+<li>宇宙の変化と他者の不徳への態度を整理</li>
+<li>自己の選択に集中させる</li>
+<li>他者への寛容</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 他者の行動は制御不能であり、自分の反応のみが制御可能だと再確認する。</p>
+</div>
+<div class="card">
+<h3>📘 巻 VIII</h3>
+<ul>
+<li>誠実・単純・謙虚の実践を反復</li>
+<li>自己監督を強化</li>
+<li>日々の点検</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 反復による習慣化が徳の定着に不可欠であることを示す。</p>
+</div>
+<div class="card">
+<h3>📘 巻 IX</h3>
+<ul>
+<li>寛容と相互扶助を再確認</li>
+<li>悪意への非攻撃的応答を勧める</li>
+<li>共感と理解</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 報復の連鎖を断ち、共同体の調和を維持する実践的方法を提示する。</p>
+</div>
+<div class="card">
+<h3>📘 巻 X</h3>
+<ul>
+<li>受容と節制を統合</li>
+<li>名声や他評の無意味さを指摘</li>
+<li>内的基準の確立</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 外的評価に依存しない自己評価軸を持つことで精神的独立を達成する。</p>
+</div>
+<div class="card">
+<h3>📘 巻 XI</h3>
+<ul>
+<li>表象の吟味と認識の点検を細部まで適用</li>
+<li>思考の衛生を保つ</li>
+<li>精密な自己観察</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 微細な判断の積み重ねが人格を形成するため、細部への注意が重要。</p>
+</div>
+<div class="card">
+<h3>📘 巻 XII</h3>
+<ul>
+<li>総括として自然合致と死の平静を確認</li>
+<li>道徳的一貫性を締めくくる</li>
+<li>全体の統合</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 全巻を通じた主題を再統合し、実践の持続を促す。</p>
+</div>
+<div class="card" style="border-left-color:#f093fb;">
+<h3>🔄 横断的流れ</h3>
+<ul>
+<li>格言的メモを反復し螺旋的に深化させる構成</li>
+<li>倫理（行為）—物理（自然観）—論理（判断）が相互補強</li>
+<li>日々の省察が実践を定着させる</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由:</strong> 一度の理解ではなく反復による内面化を促す構造が、実践哲学として機能する。</p>
+</div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">💡 具体例</h2>
+<div class="card">
+<h3>🌅 例1: 朝の起床時の葛藤</h3>
+<ul>
+<li><strong>背景:</strong> 寒い朝、温かい寝床から出たくない気持ちが湧く</li>
+<li><strong>適用:</strong> 「人は共同体のために働くよう生まれた」と自分に言い聞かせ、役割義務を想起する</li>
+<li><strong>結果:</strong> 惰性を打破し、一日の始まりに意図を持って取り組む</li>
+<li><strong>示唆:</strong> 小さな選択の積み重ねが徳の習慣を形成する</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由（この例が示すこと）:</strong> 日常の些細な瞬間こそが、理性と本能の戦場であり、そこでの勝利が人格を鍛える。</p>
+</div>
+<div class="card">
+<h3>⚖️ 例2: 他者の不正への怒り</h3>
+<ul>
+<li><strong>背景:</strong> 同僚が不誠実な行動を取り、怒りが湧く</li>
+<li><strong>適用:</strong> 「他人の過ちは無知ゆえ」と印象を吟味し、同意を保留する</li>
+<li><strong>結果:</strong> 怒りが和らぎ、建設的な対話や距離の取り方を選択できる</li>
+<li><strong>示唆:</strong> 情動は判断の産物であり、判断を変えれば情動も変わる</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由（この例が示すこと）:</strong> 他者の行動は制御不能だが、自分の反応は制御可能であり、そこに自由がある。</p>
+</div>
+<div class="card">
+<h3>💀 例3: 重要なプロジェクトの失敗</h3>
+<ul>
+<li><strong>背景:</strong> 長期間取り組んだプロジェクトが頓挫し、絶望感に襲われる</li>
+<li><strong>適用:</strong> コントロールの二分法で「結果は外的、努力と誠実さは内的」と仕分ける</li>
+<li><strong>結果:</strong> 自己評価を外的成功から切り離し、徳の実践に焦点を戻す</li>
+<li><strong>示唆:</strong> 真の善は魂の行為にのみあり、外的成果に依存しない</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由（この例が示すこと）:</strong> 外的失敗は内的価値を損なわず、評価軸を内面化することで揺るがない平静を得る。</p>
+</div>
+<div class="card">
+<h3>🕰 例4: 過去の後悔と未来の不安</h3>
+<ul>
+<li><strong>背景:</strong> 過去の失敗を反芻し、未来の不確実性に不安を感じる</li>
+<li><strong>適用:</strong> 「今ここの作業」に集中し、現在の課題に単純・誠実に取り組む</li>
+<li><strong>結果:</strong> 反芻と先取り不安が減少し、生産性と精神的安定が向上</li>
+<li><strong>示唆:</strong> 過去と未来は制御不能、現在の選択のみが実在する</li>
+</ul>
+<p style="margin-top:0.5rem;font-size:0.85rem;color:#555;"><strong>理由（この例が示すこと）:</strong> 時間の散漫が苦悩の源であり、現在への集中が唯一の実践的解決策である。</p>
+</div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">📜 重要な引用</h2>
+<div class="quote-box">
+朝にためらう心に向かって「人は共同体のために働くよう生まれた」と思い出せ。
+<span class="source">なぜ重要か: 役割義務と動機づけを結びつけ、惰性を打破する起点となる。</span>
+</div>
+<div class="quote-box">
+人を悩ますのは事柄そのものではなく、それに下す判断である。
+<span class="source">なぜ重要か: 判断の主権を自覚させ、情動の再評価という実践を可能にする。</span>
+</div>
+<div class="quote-box">
+今この瞬間の仕事に心を尽くし、単純に善を行え。
+<span class="source">なぜ重要か: 現在志向を確立し、散漫と過剰思考を抑える。</span>
+</div>
+<div class="quote-box">
+他人の過ちは無知ゆえであり、同胞として寛く扱え。
+<span class="source">なぜ重要か: 世界市民の視座から寛容と正義の実践につなげる。</span>
+</div>
+<div class="quote-box">
+死は自然の一部であり、恐れるのでなく理解し受け入れよ。
+<span class="source">なぜ重要か: 無常観によって恐怖と執着を軽減し、選択の自由度を高める。</span>
+</div>
+<div class="quote-box">
+善は自分の魂の行為にのみあり、外的成功や評判にはない。
+<span class="source">なぜ重要か: 評価基準を内面化し、ブレない意思決定を支える。</span>
+</div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">✅ 今日のアクション（15〜30分で実行可能）</h2>
+<div class="action-card">
+<h4>📋 アクション1: 課題を二分法で仕分ける</h4>
+<p><strong>目的:</strong> 制御可能/不可能を明確化し、無駄な心配を排除する</p>
+<p><strong>手順:</strong> 紙を2列に分け、左に「自分に委ねられる事柄」、右に「委ねられない事柄」を書き出す。左の項目にのみ行動計画を立てる。</p>
+<p><strong>期待効果:</strong> 焦点が絞られ、無力感が減少し、エネルギーが最適化される。</p>
+</div>
+<div class="action-card">
+<h4>👔 アクション2: 今日の役割義務を3つ書く</h4>
+<p><strong>目的:</strong> 社会的責任を自覚し、共同体奉仕の意図を設定する</p>
+<p><strong>手順:</strong> 朝、自分の役割（親、同僚、市民など）を3つ挙げ、各役割で今日果たすべき具体的行動を1つずつ書く。</p>
+<p><strong>期待効果:</strong> 一日の行動に方向性が生まれ、惰性と自己中心性が減る。</p>
+</div>
+<div class="action-card">
+<h4>🖊 アクション3: 否定的印象に反論を書く</h4>
+<p><strong>目的:</strong> 印象への同意を保留し、情動を再評価する訓練</p>
+<p><strong>手順:</strong> 今日感じた否定的感情を1つ選び、「印象（例:上司が無能だ）」と「反論（例:彼も制約の中で最善を尽くしている）」を書く。</p>
+<p><strong>期待効果:</strong> 自動的な判断が減り、柔軟で建設的な視点が育つ。</p>
+</div>
+<div class="action-card">
+<h4>🌅 アクション4: 朝の5分間、死を想起する</h4>
+<p><strong>目的:</strong> 有限性を自覚し、優先順位を明確にする</p>
+<p><strong>手順:</strong> 静かに座り、「今日が最後の日だとしたら何を大切にするか」を問い、3つ書き出す。</p>
+<p><strong>期待効果:</strong> 些事への執着が減り、本質的な価値に集中できる。</p>
+</div>
+<div class="action-card">
+<h4>📖 アクション5: 夜の省察ジャーナル</h4>
+<p><strong>目的:</strong> 日々の行動を振り返り、徳の実践を定着させる</p>
+<p><strong>手順:</strong> 寝る前に「今日うまくいったこと」「改善できること」「明日の意図」を各1行ずつ書く。</p>
+<p><strong>期待効果:</strong> 自己監督が強化され、反復による習慣化が進む。</p>
+</div>
+
+<div style="margin-top:2rem;padding:1rem;background:#f0f0f0;border-radius:8px;">
+<h3 style="color:#667eea;margin-bottom:0.8rem;">📚 関連書籍</h3>
+<ul style="list-style:none;padding:0;">
+<li style="margin-bottom:0.8rem;padding:0.5rem;background:#fff;border-radius:4px;">
+<strong>エンキリディオン（提要）</strong> - エピクテトス<br>
+<span style="font-size:0.85rem;color:#666;">コントロールの二分法など実践綱領を簡潔に示す。</span>
+</li>
+<li style="margin-bottom:0.8rem;padding:0.5rem;background:#fff;border-radius:4px;">
+<strong>エピクテトス語録</strong> - エピクテトス<br>
+<span style="font-size:0.85rem;color:#666;">ストア派実践哲学の源流で、本書の思考法の基盤。</span>
+</li>
+<li style="margin-bottom:0.8rem;padding:0.5rem;background:#fff;border-radius:4px;">
+<strong>人生の短さについて</strong> - セネカ<br>
+<span style="font-size:0.85rem;color:#666;">時間観と徳の実践が通底し、日常応用が学べる。</span>
+</li>
+<li style="margin-bottom:0.8rem;padding:0.5rem;background:#fff;border-radius:4px;">
+<strong>ニコマコス倫理学</strong> - アリストテレス<br>
+<span style="font-size:0.85rem;color:#666;">徳倫理の理論的基盤として補完的に理解を深める。</span>
+</li>
+<li style="margin-bottom:0.8rem;padding:0.5rem;background:#fff;border-radius:4px;">
+<strong>ソクラテスの弁明</strong> - プラトン<br>
+<span style="font-size:0.85rem;color:#666;">内省と徳の優先という主題が共鳴する。</span>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+
+<script>
+const tabs=document.querySelectorAll('.tab-btn');
+const contents=document.querySelectorAll('.tab-content');
+tabs.forEach(tab=>{
+tab.addEventListener('click',()=>{
+const target=tab.dataset.tab;
+tabs.forEach(t=>{
+t.classList.remove('active');
+t.setAttribute('aria-selected','false');
+});
+contents.forEach(c=>{
+c.classList.remove('active');
+});
+tab.classList.add('active');
+tab.setAttribute('aria-selected','true');
+document.getElementById(target).classList.add('active');
+});
+});
+</script>
+</body>
+</html>
