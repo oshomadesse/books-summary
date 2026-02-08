@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スタンフォードの自分を変える教室 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.75rem;
+}
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.88rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--primary);
+  font-weight: bold;
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+.example-card p {
+  font-size: 0.88rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--accent);
+  opacity: 0.3;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+.quote-card blockquote {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  font-size: 0.95rem;
+}
+.quote-card .why {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h4 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.88rem;
+  margin-bottom: 0.25rem;
+  opacity: 0.95;
+}
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  text-align: center;
+}
+.bar-chart {
+  margin: 1rem 0;
+}
+.bar-item {
+  margin-bottom: 1rem;
+}
+.bar-label {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+.bar-bg {
+  background: var(--border);
+  height: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  height: 100%;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: width 1s ease-out;
+}
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.flow-item {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.88rem;
+  text-align: center;
+  position: relative;
+}
+.flow-item:not(:last-child):after {
+  content: "↓";
+  display: block;
+  text-align: center;
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0.25rem 0;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    font-size: 0.85rem;
+  }
+  .tab-btn {
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 スタンフォードの自分を変える教室</h1>
+  <p>意志力を科学する - ケリー・マクゴニガル</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約=問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ人はやるべきことを続けられないのか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      意志力は有限な生理資源かつ注意・感情・社会影響に左右されるからで、鍛錬と設計で改善できる。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      自律神経やドーパミン、現在バイアス、道徳的ライセンシングが失敗を誘発する科学的証拠がある。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      I will/I won't/I wantの明確化、呼吸瞑想・睡眠・運動での基盤強化、誘惑の距離化・事前コミットメント、自己コンパッションと進捗可視化で再現性高く行動が変わる。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🧠 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🎯 I will / I won't / I want 目標</h3>
+        <ul>
+          <li>「やる」「やらない」「本当に望む」の三系統で行動を定義</li>
+          <li>意思決定の基準を明確化する枠組み</li>
+          <li>迷いを減らし一貫性を高める</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 意志力の三本柱として、選択の軸を統一し実行力を向上させるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💪 意志力は筋力</h3>
+        <ul>
+          <li>注意・自己制御は生理的資源に依存</li>
+          <li>練習で向上するが一時的に消耗もする</li>
+          <li>回復と鍛錬のサイクルが重要</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 固定観念を壊し、練習に投資する動機を与えるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🧘 マインドフルネス</h3>
+        <ul>
+          <li>現在の衝動・感情・身体反応を評価抜きで観察</li>
+          <li>反射的行動を断ち切る技法</li>
+          <li>気づきで間を作り選択の自由を得る</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 自動反応を止め、意図的な選択を可能にするため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>😰 ストレス反応とHRV</h3>
+        <ul>
+          <li>ストレスは前頭前野の自己制御を弱める</li>
+          <li>心拍変動(HRV)の向上は意志力回復の指標</li>
+          <li>呼吸・睡眠・運動で改善可能</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 落ち着きが力になり、対策の優先順位を明確にするため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🍭 ドーパミンの罠（wanting≠liking）</h3>
+        <ul>
+          <li>欲求の強化は満足と別物</li>
+          <li>報酬予測が過大化すると誘惑に弱くなる</li>
+          <li>欲しさと満足を区別する必要がある</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 誘惑設計と報酬見直しの着眼点を得るため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⏰ 現在バイアス</h3>
+        <ul>
+          <li>即時の快と将来利益を不均衡に評価</li>
+          <li>先延ばしや過食などを誘発</li>
+          <li>今を過大評価する認知の歪み</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 時間割引の仕組みを理解し、対策を講じるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>😇 道徳的ライセンシング</h3>
+        <ul>
+          <li>よい行いの後に自制心が緩む</li>
+          <li>自己免罪で過剰に許容してしまう心理</li>
+          <li>善行の後の油断が失敗を招く</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 進捗後の油断パターンを認識し、中和策を取るため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👥 社会的感染</h3>
+        <ul>
+          <li>周囲の行動・規範・感情が自己制御に波及</li>
+          <li>良くも悪くも模倣が起きる</li>
+          <li>行動はうつる性質を持つ</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 環境と人間関係を味方につけ、継続を支援するため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💖 自己コンパッション</h3>
+        <ul>
+          <li>失敗時に自分を責めず学びに焦点</li>
+          <li>次の一手に集中することで継続率を高める</li>
+          <li>優しさは継続の燃料</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 挫折後の再開率を最大化し、長期継続に直結するため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🏗️ 環境設計と事前コミットメント</h3>
+        <ul>
+          <li>誘惑への物理・時間・社会的バリアを先に設ける</li>
+          <li>意思決定を自動化する</li>
+          <li>先回りで勝つ戦略</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 意志力依存を減らし、選択の自由度を最適化するため。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-diagram">
+        <div class="flow-item">ストレス↑ → 前頭前野機能↓ → 衝動行動↑</div>
+        <div class="flow-item">マインドフルネス↑ → 注意制御↑ → 誘惑への反応性↓</div>
+        <div class="flow-item">睡眠/運動↑ → HRV↑ → 意志力回復↑</div>
+        <div class="flow-item">ドーパミン予測誤差↑ → wanting↑（likingは一定）→ 満足しない反復行動↑</div>
+        <div class="flow-item">現在バイアス↑ → 先延ばし↑ → 目標未達→自己非難↑→さらにストレス↑</div>
+        <div class="flow-item">自己コンパッション↑ → 罪悪感ループ↓ → 再開率↑</div>
+        <div class="flow-item">社会的感染（良）↑ → 規範強化→自制行動↑</div>
+        <div class="flow-item">環境設計/事前コミットメント → 選択の自由度を最適化 → 意志力依存↓</div>
+        <div class="flow-item">I will/I won't/I wantの整合性↑ → 目標選択の一貫性↑ → 実行力↑</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📘 導入: 意志力を科学する</h3>
+      <ul>
+        <li>自己実験としての10週間プログラムを提示</li>
+        <li>意志力は生まれつきではなく鍛えられるスキル</li>
+        <li>科学的根拠に基づく実践的アプローチ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 読者に実験的マインドセットを持たせ、変化への期待を高めるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第1段: I will/I won't/I wantを定義</h3>
+      <ul>
+        <li>挑戦を一つに絞る重要性</li>
+        <li>三つの軸で目標を明確化</li>
+        <li>意思決定の基準を統一</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 焦点を絞ることで実行力を最大化し、成功体験を積むため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第2段: マインドフルネスで衝動と距離をとる</h3>
+      <ul>
+        <li>呼吸・注意訓練の実践</li>
+        <li>自動反応を止める技法</li>
+        <li>気づきの力を養う</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 反射的行動を断ち、意図的選択を可能にする基盤を作るため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第3段: 生理の基盤整備</h3>
+      <ul>
+        <li>睡眠・運動・栄養でHRVと前頭前野機能を底上げ</li>
+        <li>身体的リソースの最適化</li>
+        <li>意志力の土台を強化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 生理的基盤なしに心理技法は機能しないため、優先順位を明確にする。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第4段: ストレスの再評価</h3>
+      <ul>
+        <li>脅威反応を挑戦反応へ転換</li>
+        <li>ストレスを味方につける認知再構成</li>
+        <li>自制を保つメンタルモデル</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> ストレスは避けられないため、解釈を変えることで意志力を維持するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第5段: 報酬とドーパミン</h3>
+      <ul>
+        <li>wantingとlikingを見分ける</li>
+        <li>報酬設計を最適化</li>
+        <li>誘惑メカニズムの理解</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 欲求と満足の違いを知ることで、誘惑への対処法を設計できるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第6段: 先延ばし</h3>
+      <ul>
+        <li>現在バイアスを断つ実践（5分着手、実行意図）</li>
+        <li>時間割引の罠を回避</li>
+        <li>即時行動を促す仕組み</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 先延ばしは最も一般的な失敗パターンであり、具体的対策が必要なため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第7段: 道徳的ライセンシング</h3>
+      <ul>
+        <li>善行後の油断をモニタ</li>
+        <li>規則で中和する仕組み</li>
+        <li>進捗の罠を回避</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 成功体験が次の失敗を招くパラドックスを防ぐため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第8段: 社会的感染</h3>
+      <ul>
+        <li>模倣と規範を味方にする</li>
+        <li>コミットメントを公開</li>
+        <li>環境と人間関係の最適化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 人は社会的存在であり、周囲を味方につけることで継続率が飛躍的に向上するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第9段: 自己コンパッション</h3>
+      <ul>
+        <li>失敗から学び、再開コストを下げる</li>
+        <li>自己批判ループを断つ</li>
+        <li>優しさで継続を支える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 挫折は避けられないため、再開の速度が長期成功を決定するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第10段: 環境設計と統合</h3>
+      <ul>
+        <li>事前コミット・トラッキングで習慣化を固定化</li>
+        <li>すべての技法を統合</li>
+        <li>持続可能なシステムを構築</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 個別技法を統合し、自動化することで意志力依存を最小化するため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>🍫 ケース1: チョコレート誘惑実験</h4>
+      <p><strong>背景:</strong> 被験者にチョコレートを見せ、食べないよう指示。一部にはマインドフルネス訓練を事前実施。</p>
+      <p><strong>結果:</strong> 訓練群は衝動を観察し、食べずに済んだ割合が有意に高かった。</p>
+      <p><strong>示唆:</strong> 気づきの訓練が反射的行動を止める力を与える。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> マインドフルネスは理論ではなく、実測可能な行動変化をもたらす技法であることを証明。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>💳 ケース2: クレジットカードと現金の支払い</h4>
+      <p><strong>背景:</strong> 同じ商品をクレジットカードと現金で購入する際の支出額を比較。</p>
+      <p><strong>結果:</strong> クレジットカード使用時は平均支出が約2倍に増加。</p>
+      <p><strong>示唆:</strong> 即時の痛みが薄れると現在バイアスが強まり、自制が効かなくなる。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 環境設計（支払い方法）が意志力を補完し、行動を自動的に制御できることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🏃 ケース3: 運動後の食事選択</h4>
+      <p><strong>背景:</strong> ジムで運動した後、健康的な食事と不健康な食事の選択率を調査。</p>
+      <p><strong>結果:</strong> 運動直後は不健康な食事を選ぶ割合が増加（道徳的ライセンシング）。</p>
+      <p><strong>示唆:</strong> 善行の後は自己免罪が働き、目標と矛盾する行動を取りやすくなる。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 進捗自体が次の失敗を招くパラドックスを認識し、モニタリングの重要性を示す。
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>📊 意志力に影響する要因の重要度</h3>
+      <div class="bar-chart">
+        <div class="bar-item">
+          <div class="bar-label">睡眠の質</div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="width: 95%;">95%</div>
+          </div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label">ストレスレベル</div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="width: 90%;">90%</div>
+          </div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label">運動習慣</div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="width: 85%;">85%</div>
+          </div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label">マインドフルネス実践</div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="width: 80%;">80%</div>
+          </div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label">環境設計</div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="width: 75%;">75%</div>
+          </div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label">社会的サポート</div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="width: 70%;">70%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <blockquote>意志力は鍛えられる能力である。</blockquote>
+      <p class="why"><strong>なぜ重要か:</strong> 固定観念を壊し、練習に投資する動機を与えるから。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>I will/I won't/I wantを明確にせよ。</blockquote>
+      <p class="why"><strong>なぜ重要か:</strong> 行動選択の基準が統一され、迷いが減るから。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>ストレスは意志力の最大の敵だ。</blockquote>
+      <p class="why"><strong>なぜ重要か:</strong> 対策（呼吸・睡眠・運動）を優先づける根拠になるから。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>欲しさと満足は同じではない。</blockquote>
+      <p class="why"><strong>なぜ重要か:</strong> 誘惑設計と報酬見直しの着眼点が得られるから。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>自分を責めずに次の一手を計画せよ。</blockquote>
+      <p class="why"><strong>なぜ重要か:</strong> 挫折後の再開率を最大化し、長期継続に直結するから。</p>
+    </div>
+
+    <div class="visual-section">
+      <h3>💡 核心的メッセージ</h3>
+      <p style="font-size: 0.95rem; line-height: 1.8; padding: 1rem; background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1)); border-radius: 0.5rem;">
+        意志力は生まれつきの性質ではなく、<strong>注意・感情・生理をデザインすることで日々鍛えられるスキル</strong>である。I will/I won't/I wantを軸に、ストレスを下げ、誘惑との距離を取り、自己への思いやりを持って反復すれば、望む行動は持続可能になる。
+      </p>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>🧘‍♀️ アクション1: 呼吸瞑想を15分実践する</h4>
+      <p><strong>目的:</strong> マインドフルネスの基礎を体験し、注意制御の感覚を掴む。</p>
+      <p><strong>期待効果:</strong> 衝動への気づきが高まり、反射的行動を止める力が養われる。</p>
+      <p><strong>実行方法:</strong> 静かな場所で座り、呼吸に注意を向ける。雑念が浮かんだら優しく呼吸に戻す。タイマーを15分にセット。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>📝 アクション2: 今週の目標(I will/I won't/I want)を記す</h4>
+      <p><strong>目的:</strong> 意志力の三本柱を明確化し、意思決定の基準を統一する。</p>
+      <p><strong>期待効果:</strong> 選択の迷いが減り、一貫した行動が取れるようになる。</p>
+      <p><strong>実行方法:</strong> ノートに「I will（やること）」「I won't（やらないこと）」「I want（本当に望むこと）」を各1つずつ書き出す。毎朝見返す。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🏗️ アクション3: 誘惑を避ける環境を20分整える</h4>
+      <p><strong>目的:</strong> 環境設計で意志力依存を減らし、自動的に良い選択ができる状態を作る。</p>
+      <p><strong>期待効果:</strong> 誘惑への露出が減り、目標達成率が向上する。</p>
+      <p><strong>実行方法:</strong> スマホアプリを削除/制限、お菓子を見えない場所に移動、運動着を目立つ場所に配置など、物理的バリアを設ける。</p>
+    </div>
+
+    <div class="visual-section">
+      <h3>📚 関連書籍</h3>
+      <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+        <div style="background: var(--card-bg); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid var(--primary);">
+          <strong>📖 スタンフォードのストレスを力に変える教科書</strong>
+          <p style="font-size: 0.85rem; margin: 0.25rem 0;">著者: ケリー・マクゴニガル</p>
+          <p style="font-size: 0.85rem; color: var(--text-light);">関連性: ストレス認知の再評価が意志力維持に直結する。</p>
+        </div>
+        <div style="background: var(--card-bg); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid var(--primary);">
+          <strong>📖 習慣の力</strong>
+          <p style="font-size: 0.85rem; margin: 0.25rem 0;">著者: チャールズ・デュヒッグ</p>
+          <p style="font-size: 0.85rem; color: var(--text-light);">関連性: キュー–ルーチン–報酬の設計で意志力依存を減らせる。</p>
+        </div>
+        <div style="background: var(--card-bg); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid var(--primary);">
+          <strong>📖 Atomic Habits</strong>
+          <p style="font-size: 0.85rem; margin: 0.25rem 0;">著者: ジェームズ・クリアー</p>
+          <p style="font-size: 0.85rem; color: var(--text-light);">関連性: 小さな習慣と環境設計で継続を自動化する実践が補完的。</p>
+        </div>
+        <div style="background: var(--card-bg); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid var(--primary);">
+          <strong>📖 予想どおりに不合理</strong>
+          <p style="font-size: 0.85rem; margin: 0.25rem 0;">著者: ダン・アリエリー</p>
+          <p style="font-size: 0.85rem; color: var(--text-light);">関連性: 現在バイアスや自己制御の錯覚を行動経済学から解明。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// タブ切替
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => {
+      c.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+
+// バーチャートアニメーション
+window.addEventListener('load', () => {
+  const bars = document.querySelectorAll('.bar-fill');
+  bars.forEach(bar => {
+    const width = bar.style.width;
+    bar.style.width = '0%';
+    setTimeout(() => {
+      bar.style.width = width;
+    }, 300);
+  });
+});
+</script>
+</body>
+</html>
