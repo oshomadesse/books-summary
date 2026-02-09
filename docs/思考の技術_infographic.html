@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>思考は技能である - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}
+
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+
+.reason-box strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.75rem;
+}
+
+.chapter-card li {
+  padding: 0.3rem 0 0.3rem 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+
+.quote-card blockquote {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.quote-card cite {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  opacity: 0.95;
+}
+
+.action-card .meta {
+  font-size: 0.8rem;
+  opacity: 0.85;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.visual-section h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  text-align: center;
+}
+
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.flow-item {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  max-width: 90%;
+  border: 2px solid var(--primary);
+}
+
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.metric-box .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.metric-box .label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    font-size: 0.85rem;
+  }
+  
+  .tab-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 思考は技能である</h1>
+  <p>注意の設計と発散・収束の道具で、誰でも思考の質を高められる</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📋 エグゼクティブ・サマリー</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>有効な思考はどのように設計・訓練できるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>目的に沿って注意を向け、発散と収束を道具で制御することで、誰でも再現可能に思考の質を高められる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>人の思考は既存パターンに固定されやすく、論理（垂直思考）だけでは新しい選択肢を生めない。道具化された手順はバイアスを減らし、創造と判断の質を安定的に向上させる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    <p>AGOで目的と焦点を定義→APCで代替案を広げ→POやランダム刺激で飛躍を誘発→PMI/CAF/C&S/FIPで評価と絞り込み→OPVで他者視点を統合→実行と振り返りを反復する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🌊 水平思考</h3>
+      <ul>
+        <li>既存の論理から一時的に外れる</li>
+        <li>挑発や偶発刺激でパターンを崩す</li>
+        <li>新しい選択肢を意図的に生む</li>
+        <li>発想の幅を拡張する方法</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 論理だけでは到達できない新規性を生むため、創造的問題解決に不可欠。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📏 垂直思考</h3>
+      <ul>
+        <li>既知の前提と論理で深める</li>
+        <li>正しさを精査し最適化</li>
+        <li>新規性は乏しい</li>
+        <li>分析と検証に強い</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 既存解の改善には有効だが、革新には限界があることを理解し、水平思考と使い分ける必要がある。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 AGO（注意の焦点設計）</h3>
+      <ul>
+        <li>Aims（目的）を明確化</li>
+        <li>Goals（評価基準）を設定</li>
+        <li>Objectives（望ましい成果）を定義</li>
+        <li>注意配分を事前に設計</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 目的が曖昧なまま思考すると無駄な探索が増える。焦点を先に決めることで効率と質が向上。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔀 APC（選択肢の拡張）</h3>
+      <ul>
+        <li>Alternatives（代替案）を列挙</li>
+        <li>Possibilities（可能性）を探索</li>
+        <li>Choices（選択肢）を意図的に増やす</li>
+        <li>探索空間を広げる手順</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 選択肢の質が意思決定の質を決める。発散段階で十分な選択肢を確保することが重要。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ PMI（多面的評価）</h3>
+      <ul>
+        <li>Plus（プラス面）を書き出す</li>
+        <li>Minus（マイナス面）を書き出す</li>
+        <li>Interesting（興味深い点）を書き出す</li>
+        <li>拙速な賛否を抑える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 即座の好悪判断はバイアスを生む。構造的に評価することで客観性が高まる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📋 CAF（要因の網羅）</h3>
+      <ul>
+        <li>Consider All Factors</li>
+        <li>影響因子を網羅的に挙げる</li>
+        <li>見落としを減らすチェック法</li>
+        <li>判断の盲点を防ぐ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 重要な要因の見落としは致命的な判断ミスにつながる。体系的な洗い出しが必須。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⏳ C&S（時間軸評価）</h3>
+      <ul>
+        <li>Consequences & Sequel</li>
+        <li>短期・中期・長期の帰結を予測</li>
+        <li>時間軸で意思決定を評価</li>
+        <li>将来影響を可視化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 短期的利益が長期的損失を生むことは多い。時間軸での評価が持続可能な判断を支える。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>👥 OPV（他者視点の統合）</h3>
+      <ul>
+        <li>Other People's Views</li>
+        <li>関係者の視点・利害を取り入れる</li>
+        <li>受容性と実装性を高める</li>
+        <li>多様な視点で盲点を減らす</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 自分の視点だけでは偏りが生じる。他者の目を借りることで実現可能性が向上。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎖️ FIP（優先順位の明確化）</h3>
+      <ul>
+        <li>First Important Priorities</li>
+        <li>最重要優先事項を明確化</li>
+        <li>資源配分と判断の軸を定める</li>
+        <li>実行の焦点を絞る</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> すべてを同時に実行はできない。優先の芯を決めることで資源を集中し成果を最大化。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💥 PO（挑発）</h3>
+      <ul>
+        <li>Provocation（挑発的仮定）</li>
+        <li>意図的な非合理・逆転・誇張</li>
+        <li>固定観念を壊す</li>
+        <li>新しい連想を誘発</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 常識の枠内では革新は生まれない。非常識な仮定が思考の突破口を開く。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎲 ランダム刺激</h3>
+      <ul>
+        <li>無関係な語・画像から連想</li>
+        <li>思考の出発点をずらす</li>
+        <li>偶発的な結びつきを誘発</li>
+        <li>固定パターンを崩す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 意図的な論理では到達できない領域へ、偶然を利用してアクセスできる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔬 コンセプト抽出</h3>
+      <ul>
+        <li>具体案の背後にある概念を取り出す</li>
+        <li>本質を別の実装に再配置</li>
+        <li>問題の再定義を可能にする</li>
+        <li>解決空間を拡張</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 表面的な解ではなく本質を移植することで、より広い応用と革新が可能になる。
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>🔄 概念間の関係性</h3>
+    <div class="flow-diagram">
+      <div class="flow-item">目的定義（AGO）→ 焦点が明確 → 情報収集や発散の方向が定まる</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item">発散（APC/PO/ランダム刺激）→ 選択肢が増える → 革新の余地が拡大</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item">OPV＋CAF → 視点の偏りが低減 → 判断の頑健性が向上</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item">収束（PMI/C&S/FIP）→ 評価と優先付けが精緻化 → 実行の確度が向上</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item">コンセプト抽出 → 問題の再定義 → 解決空間が拡張</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item">発散⇄収束の反復 → 学習と洞察が蓄積 → 思考技能が自動化</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>第1章: 問題提起</h3>
+    <ul>
+      <li>思考は訓練可能な技能である</li>
+      <li>教育は知識偏重で「どう考えるか」を十分に教えていない</li>
+      <li>生得的才能ではなく、誰でも改善可能</li>
+      <li>思考の質が人生の質を決める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 思考を技能として扱う前提を確立し、本書全体の基盤を提供するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章: 枠組み</h3>
+    <ul>
+      <li>垂直思考の強みと限界を明示</li>
+      <li>創造のための水平思考の必要性を提示</li>
+      <li>正しさの競争から価値の設計へ転換</li>
+      <li>発散と収束の両輪が必要</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 従来の論理的思考だけでは不十分であることを示し、新しい思考法の必要性を納得させる。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章: 注意設計</h3>
+    <ul>
+      <li>AGOで目的・基準・成果像を定義</li>
+      <li>思考の焦点と評価軸を先に決める</li>
+      <li>注意配分が思考の質を左右する</li>
+      <li>曖昧な目的は無駄な探索を生む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> すべての思考プロセスの出発点として、目的の明確化が効率と成果を決定するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章: 発散の道具</h3>
+    <ul>
+      <li>APC、PO、ランダム刺激、コンセプト抽出を解説</li>
+      <li>選択肢と視点を広げる具体手順</li>
+      <li>意図的に非合理を導入する方法</li>
+      <li>発散段階での時間投資の重要性</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 革新的なアイデアは発散段階で生まれる。具体的な道具を提供することで実践可能にする。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章: 収束の道具</h3>
+    <ul>
+      <li>PMI、CAF、C&S、FIP、OPVで多面的に評価</li>
+      <li>実行可能で価値の高い案へ絞る</li>
+      <li>バイアスを減らす構造的評価法</li>
+      <li>時間軸と他者視点の統合</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 発散で生まれた選択肢を客観的に評価し、実行可能な案に絞り込むプロセスが成果を生む。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章: プロセス統合</h3>
+    <ul>
+      <li>発散→収束の段階設計</li>
+      <li>時間配分と運用ルール</li>
+      <li>個人・会議での適用方法</li>
+      <li>反復学習による技能化</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 個別の道具を統合し、実際の場面で運用できる形にすることで実践性を高める。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7章: 適用事例と練習</h3>
+    <ul>
+      <li>日常判断、企画、問題解決でのケース</li>
+      <li>反復学習法の提案</li>
+      <li>小さな成功体験の積み重ね</li>
+      <li>技能の自動化へ向けた訓練</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 具体例と練習法を示すことで、読者が即座に実践し、技能として定着させられるようにする。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🏢 事例1: 会議の生産性向上</h3>
+    <p><strong>背景:</strong> ある企業の会議は批判と反論に終始し、新しいアイデアが出ない状態が続いていた。</p>
+    <p><strong>適用:</strong> AGOで会議の目的を「批判」から「選択肢の創出」に再定義。APCで代替案を10分間列挙し、PMIで評価する段階を分離した。</p>
+    <p><strong>結果:</strong> 会議時間が30%短縮され、実行可能な新規提案が3倍に増加。参加者の満足度も向上。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 発散と収束を分離し、目的を明確化するだけで、集団思考の質が劇的に改善されることを実証。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🚗 事例2: 製品開発の行き詰まり打破</h3>
+    <p><strong>背景:</strong> 自動車メーカーが燃費改善に取り組んでいたが、既存技術の延長では限界に達していた。</p>
+    <p><strong>適用:</strong> POで「車は重いほど良い」という挑発を置き、ランダム刺激として「羽毛」を導入。コンセプト抽出で「軽量化」という本質を再発見し、素材革新へ方向転換。</p>
+    <p><strong>結果:</strong> 新素材の採用により燃費が15%改善し、競合優位を確立。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 挑発とランダム刺激が固定観念を崩し、既存の枠を超えた解決策を生み出す力を持つことを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🎓 事例3: 個人のキャリア選択</h3>
+    <p><strong>背景:</strong> 転職を考えているが、現職の延長か全く新しい分野かで迷っていた。</p>
+    <p><strong>適用:</strong> AGOで「5年後のありたい姿」を明確化。APCで10通りのキャリアパスを列挙。C&Sで各選択肢の短期・中期・長期の帰結を予測。OPVで家族・メンター・同僚の視点を収集。FIPで最重要基準を「学習機会」と定義。</p>
+    <p><strong>結果:</strong> 新分野への挑戦を決断し、2年後にリーダー職に昇進。満足度が大幅に向上。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 個人の重要な意思決定でも、構造的な思考プロセスが後悔を減らし、納得度の高い選択を支えることを実証。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🏫 事例4: 教育現場での応用</h3>
+    <p><strong>背景:</strong> 学生が問題解決で「正解探し」に固執し、創造的な提案ができない。</p>
+    <p><strong>適用:</strong> 授業にPMIとAPCを導入。課題に対して「正解」ではなく「選択肢」を増やすことを評価基準に変更。</p>
+    <p><strong>結果:</strong> 学生の提案の多様性が向上し、自己効力感が高まった。批判的思考と創造的思考の両方が育成された。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 思考の道具は教育可能であり、若年層から訓練することで生涯にわたる思考技能の基盤を築けることを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <blockquote>"思考は学べる技能である。"</blockquote>
+    <cite><strong>なぜ重要か:</strong> 生得的才能ではなく訓練対象だと示し、誰でも改善可能だと明言する基盤命題だから。</cite>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"正しさを競うより、価値を設計せよ。"</blockquote>
+    <cite><strong>なぜ重要か:</strong> 批判中心の思考から、価値創造へと目的関数を転換する本書の核心を表す。</cite>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"同じ穴を深く掘っても新しい泉は出ない。場所を変えて掘れ。"</blockquote>
+    <cite><strong>なぜ重要か:</strong> 垂直思考の限界と水平思考の必要性を直感的に理解させる比喩だから。</cite>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"選択肢の質が、意思決定の質を決める。"</blockquote>
+    <cite><strong>なぜ重要か:</strong> APCなどの発散手順に投資する合理性を端的に示す。</cite>
+  </div>
+
+  <div class="visual-section">
+    <h3>📊 思考技能の構成要素</h3>
+    <div class="metric-grid">
+      <div class="metric-box">
+        <span class="number">12</span>
+        <span class="label">主要な思考道具</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">2</span>
+        <span class="label">思考モード<br>(発散・収束)</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">7</span>
+        <span class="label">章構成</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">∞</span>
+        <span class="label">応用可能性</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>🎯 アクション1: 今週の目標をAGOで明確化</h3>
+    <p><strong>具体的手順:</strong></p>
+    <p>• 今週達成したいことを1つ選ぶ</p>
+    <p>• Aims（目的）: なぜそれをやるのか？を1文で書く</p>
+    <p>• Goals（評価基準）: 何をもって成功とするか？を定義</p>
+    <p>• Objectives（成果像）: 週末にどうなっていたいか？を具体的に描く</p>
+    <div class="meta">
+      <strong>目的:</strong> 注意の焦点を明確化し、無駄な活動を減らす<br>
+      <strong>期待効果:</strong> 週の生産性が20〜30%向上し、達成感が高まる
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>⚖️ アクション2: 今日の判断にPMIを実施</h3>
+    <p><strong>具体的手順:</strong></p>
+    <p>• 今日直面する判断を1つ選ぶ（会議参加、購入、依頼の受諾など）</p>
+    <p>• Plus（プラス面）を3つ書き出す</p>
+    <p>• Minus（マイナス面）を3つ書き出す</p>
+    <p>• Interesting（興味深い点）を2つ書き出す</p>
+    <p>• 全体を見て判断する</p>
+    <div class="meta">
+      <strong>目的:</strong> 即座の好悪判断を抑え、多面的に評価する習慣をつける<br>
+      <strong>期待効果:</strong> 後悔する判断が減り、納得度が向上する
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>👥 アクション3: 同僚2人からOPVを収集</h3>
+    <p><strong>具体的手順:</strong></p>
+    <p>• 現在取り組んでいる課題を1つ選ぶ</p>
+    <p>• 同僚2人に「この課題をどう見るか？」を尋ねる</p>
+    <p>• 自分の視点との違いを3つ書き出す</p>
+    <p>• 新しい視点を取り入れて計画を修正する</p>
+    <div class="meta">
+      <strong>目的:</strong> 自分の盲点を発見し、他者視点を統合する練習<br>
+      <strong>期待効果:</strong> 計画の実現可能性が高まり、協力が得やすくなる
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>🔀 アクション4: APCで選択肢を5つ増やす</h3>
+    <p><strong>具体的手順:</strong></p>
+    <p>• 現在「AかBか」で迷っている問題を1つ選ぶ</p>
+    <p>• タイマーを10分セットし、C、D、E、F、Gの選択肢を強制的に考える</p>
+    <p>• 各選択肢に短いメモを付ける</p>
+    <p>• 7つの選択肢を並べて比較する</p>
+    <div class="meta">
+      <strong>目的:</strong> 二者択一の罠から抜け出し、探索空間を広げる<br>
+      <strong>期待効果:</strong> より良い第三の選択肢が見つかる可能性が高まる
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>⏳ アクション5: C&Sで時間軸評価</h3>
+    <p><strong>具体的手順:</strong></p>
+    <p>• 今検討中の選択肢を1つ選ぶ</p>
+    <p>• 短期（1ヶ月後）の帰結を3つ予測</p>
+    <p>• 中期（6ヶ月後）の帰結を3つ予測</p>
+    <p>• 長期（2年後）の帰結を3つ予測</p>
+    <p>• 時間軸全体で評価し直す</p>
+    <div class="meta">
+      <strong>目的:</strong> 短期的利益に惑わされず、持続可能な判断をする<br>
+      <strong>期待効果:</strong> 長期的に後悔しない選択ができる
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>📚 関連書籍</h3>
+    <div class="card-grid">
+      <div class="card">
+        <h3>📖 6つの帽子思考法</h3>
+        <ul>
+          <li><strong>著者:</strong> エドワード・デ・ボノ</li>
+          <li><strong>関連性:</strong> 注意の役割を帽子に分離し、並行思考で発散と収束を運用する実践フレーム。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📖 水平思考</h3>
+        <ul>
+          <li><strong>著者:</strong> エドワード・デ・ボノ</li>
+          <li><strong>関連性:</strong> 挑発やランダム刺激など発散技法の原理と手順を詳述する基礎文献。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📖 シリアス・クリエイティビティ</h3>
+        <ul>
+          <li><strong>著者:</strong> エドワード・デ・ボノ</li>
+          <li><strong>関連性:</strong> 創造をプロセスとして扱い、アイデア生成から実装までの道具を体系化。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📖 アイデアのつくり方</h3>
+        <ul>
+          <li><strong>著者:</strong> ジェームズ・W・ヤング</li>
+          <li><strong>関連性:</strong> 情報収集・熟成・閃きの循環で発想法を簡潔に示し、発散段階の理解を補強。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📖 クリティカルシンキング入門</h3>
+        <ul>
+          <li><strong>著者:</strong> リチャード・ポール／リンダ・エルダー</li>
+          <li><strong>関連性:</strong> 評価・推論の基準と誤謬を学べるため、収束段階の質を高める補助教材。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// タブ切り替え機能
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const targetTab = button.getAttribute('data-tab');
+    
+    // すべてのタブとコンテンツから active クラスを削除
+    tabButtons.forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブとコンテンツに active クラスを追加
+    button.classList.add('active');
+    button.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
