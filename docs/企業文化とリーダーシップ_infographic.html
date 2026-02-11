@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>組織文化とリーダーシップ - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.35rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--secondary);
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card small {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+  margin-top: 0.5rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  opacity: 0.95;
+}
+.action-card small {
+  display: block;
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin-top: 0.25rem;
+}
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 0.25rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.flow-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-diagram h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  text-align: center;
+}
+.flow-item {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  text-align: center;
+  position: relative;
+}
+.flow-item:after {
+  content: "↓";
+  display: block;
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-top: 0.5rem;
+}
+.flow-item:last-child:after {
+  content: "";
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.book-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--primary);
+}
+.book-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+.book-card small {
+  font-size: 0.8rem;
+  color: var(--text);
+  display: block;
+  margin-top: 0.5rem;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 組織文化とリーダーシップ</h1>
+  <p>エドガー・H・シャイン</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ優れた戦略や制度があっても組織は期待どおりに動かないのか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      共有された基本的仮定としての「文化」が人々の注意・判断・行動のデフォルトを規定し、戦略や制度の効果を上書きするから。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      文化は成功体験から形成・強化され、アーティファクト→標榜価値→基本的仮定の序列で深層に埋め込まれるため、表層施策だけでは抵抗に遭う。リーダーの注目・測定・配分・ロールモデリングなどの埋め込みメカニズムが、その規定力を日々再生産する。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      ①三層モデルで文化を診断し、表層と深層の不整合を特定する ②不確認（危機感）と心理的安全を同時に高め、学習不安を下げる ③実験・フィードバックで新しい意味づけを共同構築し、選抜・評価・儀式・物理環境・物語にまで整合させて再埋め込みする。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🏛️ 組織文化</h3>
+        <ul>
+          <li>集団が問題解決で学んだ共有の基本的仮定</li>
+          <li>十分にうまく機能したため「正しいやり方」として教えられる</li>
+          <li>新成員へ伝達され、知覚・思考・感情を無自覚に方向づける</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>文化は戦略や制度より深層で作用し、組織の行動パターンを根本から規定するため、変革の最重要対象となる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎯 三層モデル</h3>
+        <ul>
+          <li><strong>アーティファクト：</strong>見える現象（服装・儀式・空間）</li>
+          <li><strong>標榜価値：</strong>語られる理念・戦略・目標</li>
+          <li><strong>基本的仮定：</strong>無自覚に前提化された信念</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>表層だけ変えても深層の仮定が変わらなければ元に戻るため、三層を整合させる診断が不可欠。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔧 埋め込みメカニズム（一次）</h3>
+        <ul>
+          <li>リーダーが何に注意を払うか</li>
+          <li>何を測定し報酬・評価するか</li>
+          <li>危機時にどう対応するか</li>
+          <li>ロールモデルとして何を示すか</li>
+          <li>人材選抜・昇進の基準</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>リーダーの日常行動が文化を形成・強化する最強の手段であり、言葉より行動が信じられるから。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚙️ 埋め込みメカニズム（二次）</h3>
+        <ul>
+          <li>組織設計・制度・プロセス</li>
+          <li>儀式・物語・シンボル</li>
+          <li>物理的空間デザイン</li>
+          <li>公式声明・理念文書</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>一次メカニズムを補強し、文化を制度・環境に固定化することで持続性を高める。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌍 外部適応と内部統合</h3>
+        <ul>
+          <li><strong>外部適応：</strong>環境への生存・成長戦略</li>
+          <li><strong>内部統合：</strong>役割・権限・関係性の秩序化</li>
+          <li>両者のバランスが文化の健全性を決める</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>文化が解くべき二大課題を示し、診断時に外部・内部どちらに問題があるか特定する枠組みとなる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔀 サブカルチャー</h3>
+        <ul>
+          <li><strong>オペレーター：</strong>現場実行・安全重視</li>
+          <li><strong>エンジニア：</strong>設計・技術完璧性</li>
+          <li><strong>エグゼクティブ：</strong>財務・株主価値</li>
+          <li>機能領域で異なる仮定が生まれる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>サブカルチャー間の衝突が協働を阻害するため、対話で全社原則を再定義する必要がある。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>😰 学習不安と生存不安</h3>
+        <ul>
+          <li><strong>学習不安：</strong>現状を変えることへの恐れ</li>
+          <li><strong>生存不安：</strong>変えないことで生じる危機感</li>
+          <li>生存不安 > 学習不安 で変革が進む</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>変革の力学を示し、心理的安全を高めて学習不安を下げることが変革成功の鍵となる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔄 解凍–変化–再凍結</h3>
+        <ul>
+          <li><strong>解凍：</strong>既存仮定を揺らし不確認を高める</li>
+          <li><strong>変化：</strong>新しい認知枠組みを実験的に学ぶ</li>
+          <li><strong>再凍結：</strong>制度・物語で定着させる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>変革プロセスの全体像を示し、各段階で必要な施策を設計する指針となる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🩺 臨床的アプローチ</h3>
+        <ul>
+          <li>コンサルタントと当事者が対話で意味を共創</li>
+          <li>観察・問い・実験で文化を明らかにする</li>
+          <li>共同診断により当事者の学習を促す</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>外部者の一方的診断では抵抗を生むため、協働探究で当事者の納得と学習を同時に実現する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>✅ 整合性（言行一致）</h3>
+        <ul>
+          <li>掲げる価値と実際の振る舞いの一致度</li>
+          <li>配分・評価基準との整合</li>
+          <li>乖離は不信と学習阻害を生む</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>言行不一致は信頼を破壊し、変革への抵抗を増大させるため、整合性確保が最優先課題となる。
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-diagram">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-item">創業者の仮定 → 初期選抜/社会化 → 初期文化の固定化</div>
+      <div class="flow-item">成功体験 → 基本的仮定の強化 → 代替案への盲点拡大</div>
+      <div class="flow-item">リーダーの注目・測定 → メンバーの注意配分 → 日常行動パターン → 文化の再生産</div>
+      <div class="flow-item">外部環境の変化 ↑ → 既存仮定と現実の乖離 → 不確認の高まり</div>
+      <div class="flow-item">心理的安全 ↑ → 学習不安 ↓ → 実験・フィードバック ↑ → 新仮定の採用</div>
+      <div class="flow-item">サブカルチャー間の衝突 → 協働設計/対話 → 全社原則の再定義</div>
+      <div class="flow-item">エスパウズド価値 ≠ 実践 → 信頼低下 → 変革抵抗増大</div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 第1部：文化の定義と三層モデル</h3>
+      <ul>
+        <li>文化を共有仮定として定義</li>
+        <li>アーティファクト・標榜価値・基本的仮定の分析枠組みを提示</li>
+        <li>観察だけでは意味が解釈できないことを示す</li>
+        <li>文化は学習の産物であり、成功体験で強化される</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>文化の本質を定義し、表層施策の限界を示すことで、深層への介入の必要性を明確化するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第2部：文化の生成と創業者の役割</h3>
+      <ul>
+        <li>創業者の信念と初期の成功が文化を形づくる</li>
+        <li>選抜・社会化で固定化されるプロセス</li>
+        <li>初期メンバーの共有体験が基本的仮定を生む</li>
+        <li>成功が繰り返されると仮定は無自覚化する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>文化の起源を示し、創業期の介入が最も効果的であることを論証するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第3部：リーダーによる埋め込みメカニズム</h3>
+      <ul>
+        <li>一次・二次の埋め込みメカニズムを列挙</li>
+        <li>何に注目し何を測るかが文化に最も強く影響</li>
+        <li>危機対応・ロールモデリング・報酬・人材選抜の重要性</li>
+        <li>制度・儀式・空間が一次メカニズムを補強</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>リーダーの具体的行動が文化を形成する手段を示し、実践可能な介入点を提供するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第4部：サブカルチャーと全社文化の相互作用</h3>
+      <ul>
+        <li>オペレーター・エンジニア・エグゼクティブの視座差</li>
+        <li>機能領域で異なる仮定が生まれる理由</li>
+        <li>協働設計の必要性を提示</li>
+        <li>全社原則の再定義プロセス</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>サブカルチャー間の衝突が協働を阻害する現実を示し、対話による統合の道筋を示すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第5部：診断と臨床的アプローチ</h3>
+      <ul>
+        <li>面談・観察・アーティファクト分析の方法</li>
+        <li>共同ワークショップによる文化診断</li>
+        <li>当事者との対話で意味を共創</li>
+        <li>外部者の一方的診断の限界</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>実践的な診断手法を具体化し、当事者の学習と納得を同時に実現する方法を示すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第6部：文化変革のダイナミクス</h3>
+      <ul>
+        <li>不確認、学習不安、心理的安全を軸に変革を設計</li>
+        <li>解凍–変化–再凍結の設計と実行上の注意</li>
+        <li>生存不安を高め学習不安を下げる施策</li>
+        <li>実験・フィードバックで新仮定を採用</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>変革の力学を示し、心理的安全確保が変革成功の前提条件であることを明確化するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第7部：ケースと実践インプリケーション</h3>
+      <ul>
+        <li>成功・失敗事例から学ぶ</li>
+        <li>言行一致、リーダーの一貫性の重要性</li>
+        <li>制度設計との整合の必要性</li>
+        <li>長期的視点での文化変革の設計</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>理論を実践に落とし込み、成功要因と失敗要因を具体的に示すことで実行可能性を高めるため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>💼 例1：創業者の仮定が文化を固定化</h3>
+      <p><strong>背景：</strong>あるテック企業の創業者は「顧客の声を直接聞くことが最優先」という信念を持ち、全社員に週1回の顧客訪問を義務化した。初期の成功でこの習慣は「正しいやり方」として定着し、10年後も継続されている。</p>
+      <p><strong>示唆：</strong>創業者の行動が初期の成功体験と結びつくと、基本的仮定として無自覚化され、環境が変わっても維持される。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>この例は、創業期の介入が文化形成に最も強く影響し、後の変革コストを大きく左右することを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🔬 例2：サブカルチャー間の衝突</h3>
+      <p><strong>背景：</strong>製造業の現場（オペレーター）は「安全第一」を最優先し、設計部門（エンジニア）は「技術的完璧性」を、経営層（エグゼクティブ）は「財務効率」を重視。新製品開発で三者の優先順位が衝突し、プロジェクトが停滞した。</p>
+      <p><strong>示唆：</strong>機能領域ごとに異なる基本的仮定が生まれ、協働を阻害する。対話で全社原則を再定義する必要がある。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>この例は、サブカルチャーの存在を認識し、対話による統合が不可欠であることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🚨 例3：言行不一致が信頼を破壊</h3>
+      <p><strong>背景：</strong>ある企業は「チャレンジを奨励する」と標榜しながら、失敗したプロジェクトのリーダーを降格させた。以降、社員は新規提案を避け、保守的な行動が増えた。</p>
+      <p><strong>示唆：</strong>掲げる価値と実際の評価・報酬が乖離すると、信頼が失われ、変革への抵抗が増大する。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>この例は、整合性（言行一致）が文化変革の前提条件であり、乖離が学習を阻害することを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🌱 例4：心理的安全が変革を促進</h3>
+      <p><strong>背景：</strong>ある組織は、変革前に「失敗を共有する場」を設け、リーダー自身が過去の失敗を語った。メンバーは安心して新しい方法を試し、3ヶ月で新仮定が採用された。</p>
+      <p><strong>示唆：</strong>心理的安全を高めることで学習不安が下がり、実験・フィードバックが促進される。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>この例は、心理的安全が変革成功の鍵であり、リーダーの自己開示が効果的であることを示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>「文化は集団の学習の産物であり、いったん有効だと学ばれると新参者に正しいと教えられる。」</p>
+      <small><strong>なぜ重要か：</strong>文化の源泉と伝播の仕組みを一文で押さえ、介入点（学習）を示すから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「リーダーは文化の産物であると同時に、その主要な形成者でもある。」</p>
+      <small><strong>なぜ重要か：</strong>リーダーシップと文化の相互依存を示し、責任と可能性を明確化するから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「心理的安全がなければ、人は既存の仮定を手放さない。」</p>
+      <small><strong>なぜ重要か：</strong>変革の前提条件を示し、施策の優先順位づけに直結するから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「基本的仮定は無自覚に前提化されているため、観察だけでは意味が解釈できない。」</p>
+      <small><strong>なぜ重要か：</strong>表層施策の限界を示し、深層への介入の必要性を明確化するから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「成功体験が繰り返されると、仮定は無自覚化され、代替案への盲点が拡大する。」</p>
+      <small><strong>なぜ重要か：</strong>文化の固定化メカニズムを示し、変革の困難さの根拠を提供するから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「リーダーが何に注目し何を測るかが、文化に最も強く影響する。」</p>
+      <small><strong>なぜ重要か：</strong>リーダーの具体的行動が文化形成の最強手段であることを示すから。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>✅ アクション1：職場の目に見える習慣を5件列挙</h3>
+      <p>会議の開始方法、服装、挨拶、意思決定の場、情報共有の手段など、日常の「当たり前」を書き出す。</p>
+      <small><strong>目的：</strong>アーティファクト層を可視化し、文化診断の第一歩とする。</small>
+      <small><strong>期待効果：</strong>無自覚な習慣に気づき、深層の仮定を探る手がかりを得る。</small>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション2：会議で重視される指標を3つ書く</h3>
+      <p>売上、顧客満足度、納期、品質、コストなど、会議で最も時間を割いて議論される指標を特定する。</p>
+      <small><strong>目的：</strong>リーダーの注目点を明らかにし、埋め込みメカニズムを診断する。</small>
+      <small><strong>期待効果：</strong>標榜価値と実践の整合性を確認し、乖離があれば修正の起点とする。</small>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション3：採用評価の暗黙前提を1つ言語化</h3>
+      <p>「協調性を重視する」「挑戦志向を評価する」など、採用・昇進で無自覚に前提とされる基準を1つ書く。</p>
+      <small><strong>目的：</strong>基本的仮定を言語化し、選抜メカニズムが文化を再生産する構造を認識する。</small>
+      <small><strong>期待効果：</strong>意図しない文化の固定化に気づき、選抜基準の見直しを検討できる。</small>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション4：最近の失敗を1つ共有する場を設ける</h3>
+      <p>チーム内で「失敗から学んだこと」を5分間共有し、リーダー自身が先に語る。</p>
+      <small><strong>目的：</strong>心理的安全を高め、学習不安を下げる。</small>
+      <small><strong>期待効果：</strong>メンバーが新しい方法を試しやすくなり、実験・フィードバックが促進される。</small>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション5：標榜価値と実践の乖離を1つ特定</h3>
+      <p>「顧客第一」と掲げながら社内調整に時間を割いているなど、言行不一致を1つ書き出す。</p>
+      <small><strong>目的：</strong>整合性の欠如を認識し、信頼回復の起点とする。</small>
+      <small><strong>期待効果：</strong>乖離を修正することで、変革への抵抗を減らし、メンバーの納得を得る。</small>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <h2 style="font-size:1.3rem; margin-bottom:1rem; color:var(--primary);">📚 関連書籍</h2>
+    <div class="book-card">
+      <h4>企業文化と業績</h4>
+      <p>著者：ジョン・P・コッター／ジェームズ・L・ヘスケット</p>
+      <small><strong>関連性：</strong>文化が長期業績に与える影響を実証的に示し、シャインの理論に実証的裏付けを与える。</small>
+    </div>
+    <div class="book-card">
+      <h4>組織文化を変える</h4>
+      <p>著者：キム・S・キャメロン／ロバート・E・クイン</p>
+      <small><strong>関連性：</strong>OCAI/競合価値モデルで文化診断と変革の実務手法を提供し、三層モデルの応用に役立つ。</small>
+    </div>
+    <div class="book-card">
+      <h4>企業変革力</h4>
+      <p>著者：ジョン・P・コッター</p>
+      <small><strong>関連性：</strong>変革の8段階が、解凍–変化–再凍結と補完的に機能し実行設計の指針を与える。</small>
+    </div>
+    <div class="book-card">
+      <h4>異文化理解力</h4>
+      <p>著者：エリン・メイヤー</p>
+      <small><strong>関連性：</strong>国・社会レベルの文化差を可視化し、企業内サブカルチャー間の差異理解にも示唆を与える。</small>
+    </div>
+    <div class="book-card">
+      <h4>問いかける技術</h4>
+      <p>著者：エドガー・H・シャイン</p>
+      <small><strong>関連性：</strong>臨床的アプローチの基盤となる対話・質問の技法を解説し、文化診断と変革の実践力を高める。</small>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem; text-align:center;">
+    <div class="metric-badge">🎨 プライマリー: #667eea</div>
+    <div class="metric-badge">🎨 セカンダリー: #764ba2</div>
+    <div class="metric-badge">🎨 アクセント: #f093fb</div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
