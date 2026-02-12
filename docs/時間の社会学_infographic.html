@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時間の社会学 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 6px solid var(--accent);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  margin-left: 1rem;
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  border-bottom: 2px solid #e0e0e0;
+  margin: 2rem 0 1rem;
+  padding-bottom: 0;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-top: 4px solid var(--primary);
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.15rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, #fff5f7, #ffe8f0);
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, #f5f7ff, #e8ecff);
+  border-left: 5px solid var(--primary);
+  padding: 1.25rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  font-style: italic;
+  color: var(--text);
+}
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.quote-card small {
+  display: block;
+  margin-top: 0.5rem;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.85rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+.action-card h3 {
+  color: white;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin: 0.25rem 0;
+}
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+.visual-section h3 {
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f5f7ff, #fff);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+.concept-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  margin: 0.25rem;
+  font-weight: 600;
+}
+.metric-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #fff, #f5f7ff);
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 0.75rem 0;
+  border: 2px solid var(--primary);
+}
+.metric-label {
+  font-size: 0.9rem;
+  color: var(--text);
+  font-weight: 600;
+}
+.metric-value {
+  font-size: 1.5rem;
+  color: var(--primary);
+  font-weight: bold;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    font-size: 0.85rem;
+  }
+  .tab-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⏰ 時間の社会学</h1>
+  <p>時間は物ではなく、社会が作り出した象徴的合成である</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>時間とは何か／どのように社会で機能し、人間の行為と自己をどう形成するか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>時間は変化の系列を関係づける象徴であり、相互依存の連鎖を調整するための社会的標準として歴史的に成立・精密化し、個人の感情・行動へ自己規律として内面化される。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>社会の分業化とネットワークの拡大は、より厳密な同期と予見可能性を要求し、天体運動や機械振動などの参照系列が標準化され、制度・権力を通じて公的時間となり、やがて個人の時間意識に浸透するから。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>時間の実体視を避け、参照系列の選択と標準化の系譜をたどる／制度・技術（暦・時計）と権力の関係を分析する／日常のリズムと身体的・感情的内面化を観察する／科学的時間と社会的時間の接合を吟味する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🧩 主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📖 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">📜 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🌐 社会的時間</h3>
+      <ul>
+        <li>多様な変化の系列を関係づける</li>
+        <li>行為を同期・配列するための共有標準</li>
+        <li>自然現象や機械の変化を参照して成立</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>社会が複雑化するほど、共通の時間軸がないと調整不可能になるため、標準化された時間が必須となる。
+      </div>
+      <div class="concept-badge">共有の調整装置</div>
+    </div>
+
+    <div class="card">
+      <h3>📏 参照系列（標準）</h3>
+      <ul>
+        <li>他の変化を測る基準として選ばれた変化系列</li>
+        <li>例：太陽運行、振り子、原子遷移</li>
+        <li>選択は社会的要請に依存する</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>時間を測るには「何か一定の変化」を基準にする必要があり、その選択が社会の精度要求と技術水準を反映する。
+      </div>
+      <div class="concept-badge">時間の物差し</div>
+    </div>
+
+    <div class="card">
+      <h3>🔣 象徴的合成</h3>
+      <ul>
+        <li>言語・記号で複数の変化を統合</li>
+        <li>「時間」として把握する過程</li>
+        <li>時間は物ではなく関係の記号化</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>時間を実体視せず、人間が作り出した概念装置として理解することで、その社会的機能と歴史的生成を分析可能にする。
+      </div>
+      <div class="concept-badge">関係の記号化</div>
+    </div>
+
+    <div class="card">
+      <h3>🕸️ 相互依存の連鎖</h3>
+      <ul>
+        <li>人々や集団が互いの行為に依存し合う連関</li>
+        <li>連鎖の拡大・複雑化が精密な同期を要請</li>
+        <li>フィギュレーション（関係の網の目）</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>分業と交換が進むほど、他者の行動を予測し調整する必要が高まり、厳密な時間標準が社会的に要求される。
+      </div>
+      <div class="concept-badge">関係の網の目</div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 同期／同調</h3>
+      <ul>
+        <li>複数の行為・制度・装置が同じ標準に合わせる</li>
+        <li>時間的整合を保つこと</li>
+        <li>予見可能性を高める</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>同期がなければ協働・交通・通信が成立せず、近代社会の効率性と秩序が維持できない。
+      </div>
+      <div class="concept-badge">歩調合わせ</div>
+    </div>
+
+    <div class="card">
+      <h3>🧠 内面化（時間規律）</h3>
+      <ul>
+        <li>外在的な時間標準・規律が習慣・感情構造として個人に取り込まれる</li>
+        <li>自発的自己拘束を生む</li>
+        <li>時間意識の形成</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>制度的強制が繰り返されると、個人は外圧なしに時間を守るようになり、自己規律が社会秩序の基盤となる。
+      </div>
+      <div class="concept-badge">自己規律化</div>
+    </div>
+
+    <div class="card">
+      <h3>⚠️ 実体視（時間の再物象化）</h3>
+      <ul>
+        <li>関係としての時間を独立した物のように扱う誤認</li>
+        <li>歴史的生成と社会的機能を不可視化</li>
+        <li>時間を自然の所与と錯覚</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>実体視は時間秩序を変更不可能な自然法則と見なし、社会的選択と権力関係を隠蔽してしまう。
+      </div>
+      <div class="concept-badge">時間の誤解</div>
+    </div>
+
+    <div class="card">
+      <h3>🔬 科学的時間と日常時間の連関</h3>
+      <ul>
+        <li>科学の精密測時は社会的標準に依拠</li>
+        <li>逆に日常や制度へ波及して精度要求を高める</li>
+        <li>相互作用のループ</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>科学と社会は時間標準を共有し、互いに精度を高め合うことで、測時技術と社会秩序が共進化する。
+      </div>
+      <div class="concept-badge">相互強化ループ</div>
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>🔗 概念間の関係性</h3>
+    <div class="flow-diagram">
+      <div class="flow-item">
+        <span>相互依存の連鎖の拡大</span>
+        <span class="flow-arrow">→</span>
+        <span>参照系列の選択と標準化</span>
+      </div>
+      <div class="flow-item">
+        <span>標準化の定着</span>
+        <span class="flow-arrow">→</span>
+        <span>制度的強制（学校・工場・国家）</span>
+      </div>
+      <div class="flow-item">
+        <span>規律の習得</span>
+        <span class="flow-arrow">→</span>
+        <span>内面化（自己規律）</span>
+      </div>
+      <div class="flow-item">
+        <span>内面化の進展</span>
+        <span class="flow-arrow">→</span>
+        <span>行為の予見可能性向上</span>
+      </div>
+      <div class="flow-item">
+        <span>予見可能性向上</span>
+        <span class="flow-arrow">→</span>
+        <span>さらなる相互依存の拡大（正のフィードバック）</span>
+      </div>
+      <div class="flow-item">
+        <span>自然の変化（天体・生体・機械）</span>
+        <span class="flow-arrow">→</span>
+        <span>象徴化（言語・記号）</span>
+        <span class="flow-arrow">→</span>
+        <span>社会的時間（関係の合成）</span>
+      </div>
+      <div class="flow-item">
+        <span>権力関係・中心—周辺構造</span>
+        <span class="flow-arrow">→</span>
+        <span>どの標準が公的化されるかを決定</span>
+      </div>
+      <div class="flow-item">
+        <span>科学的測時 ⇄ 社会的需要（交通・通信・市場）</span>
+      </div>
+      <div class="flow-item">
+        <span>実体視の克服</span>
+        <span class="flow-arrow">→</span>
+        <span>生成過程の可視化</span>
+        <span class="flow-arrow">→</span>
+        <span>時間秩序の再設計</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📘 導入：時間の実体視を批判</h3>
+    <ul>
+      <li>時間を物ではなく関係概念として再定義</li>
+      <li>象徴的合成としての時間を提示</li>
+      <li>問題提起：時間はどのように社会で機能するか</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>実体視を退けることで、時間の社会的生成と機能を分析可能にし、本書全体の理論的土台を築く。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📘 理論基礎：参照系列と標準</h3>
+    <ul>
+      <li>時間を測るとは変化を他の変化に照合すること</li>
+      <li>参照系列の概念を提示</li>
+      <li>標準化のメカニズムを論証</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>時間測定の本質を明らかにし、技術と社会的選択の関係を理解する基盤を提供する。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📘 歴史的生成：暦・機械時計の発達</h3>
+    <ul>
+      <li>暦と時計の制度化を跡づける</li>
+      <li>社会の分業化・国家形成と標準時の成立を関連づける</li>
+      <li>権力と時間標準の関係を示す</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>時間標準が歴史的・社会的に構築されたことを実証し、自然の所与ではないことを明示する。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📘 近代の精密化：交通・通信・産業・科学</h3>
+    <ul>
+      <li>精密測時の要求が高まる過程を示す</li>
+      <li>秒・ミリ秒単位への標準の高度化</li>
+      <li>技術と社会需要の相互作用</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>近代社会の複雑化が測時精度を駆動し、逆に精密時間が社会を再編成する相互強化を描く。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📘 ミクロ連関：規律の内面化</h3>
+    <ul>
+      <li>外在的規律が習慣・感情構造へ内面化されるメカニズム</li>
+      <li>自己拘束・時間意識として機能</li>
+      <li>個人の主体形成と社会秩序の接合</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>マクロな制度とミクロな主体を架橋し、時間規律が個人の感情と行動を形成する過程を解明する。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📘 学際的接続：物理学と社会学</h3>
+    <ul>
+      <li>物理学の時間と社会的時間の関係を整理</li>
+      <li>いずれも参照系列への依拠と社会的実践を共有</li>
+      <li>科学的時間も社会的構築物であることを示す</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>自然科学と社会科学の時間概念を統合し、時間の普遍的な社会的性格を強調する。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📘 結語：実践的示唆</h3>
+    <ul>
+      <li>時間を関係として捉え直す</li>
+      <li>同期様式・規律・制度設計を再検討できる</li>
+      <li>時間秩序の再設計への道を開く</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>理論的洞察を実践に接続し、読者が自らの時間秩序を意識的に再構築できる視座を提供する。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🏭 工場の時間規律</h3>
+    <ul>
+      <li>産業革命期、工場労働者は時計に合わせて出勤・作業・休憩を強制された</li>
+      <li>農業社会の自然リズムから機械的時間への転換</li>
+      <li>遅刻への罰則と時間給制度が規律を内面化</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>外在的な時計時間が労働者の身体と感情に浸透し、自己規律として定着する過程を具体的に示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚂 鉄道と標準時の成立</h3>
+    <ul>
+      <li>19世紀、各地の地方時が鉄道運行の障害に</li>
+      <li>鉄道会社が標準時を導入し、国家が法制化</li>
+      <li>時刻表と時計の同期が全国的に強制される</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>交通網の拡大が精密な同期を要求し、権力と技術が結びついて公的時間標準が成立する典型例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📱 スマートフォンと時間の加速</h3>
+    <ul>
+      <li>通知・SNS・即時応答が秒単位の同期を日常化</li>
+      <li>個人の時間意識がリアルタイム化し、待機時間への耐性が低下</li>
+      <li>時間の精密化が生活リズムと感情構造を再編</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>現代の技術が時間の精密化と内面化をさらに推し進め、社会的時間の進化が継続していることを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>「時間は物ではなく、変化の関係を示すために人々が作り出した象徴的合成である。」</p>
+    <small><strong>なぜ重要か：</strong>実体視を退け、社会的生成と機能に分析を向けさせる本書の土台だから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「時計は時間を生み出さない。一定の変化系列を他の出来事の参照基準として提供する装置である。」</p>
+    <small><strong>なぜ重要か：</strong>技術の役割を神秘化せず、標準化と同期の仕組みを明確化するから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「相互依存が増すほど、より厳密な同調と予見可能性が要請される。」</p>
+    <small><strong>なぜ重要か：</strong>社会構造の変化が測時精度と規律化を駆動する因果を示すから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「社会の時間標準は、やがて個人の感情構造に内面化され、自己拘束として働く。」</p>
+    <small><strong>なぜ重要か：</strong>マクロな制度とミクロな主体形成を架橋する核心命題だから。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>✏️ 現在使う時間基準を10個書く</h3>
+    <p><strong>目的：</strong>自分が依拠する参照系列（時計・カレンダー・通知・習慣）を可視化する</p>
+    <p><strong>期待効果：</strong>時間標準の多様性と社会的選択を自覚し、実体視を脱する第一歩となる</p>
+  </div>
+
+  <div class="action-card">
+    <h3>⏱️ 時計を隠し15分集中して測る</h3>
+    <p><strong>目的：</strong>外在的時間標準なしで活動し、内面化された時間感覚を観察する</p>
+    <p><strong>期待効果：</strong>時計への依存度と自己規律の程度を体感し、時間意識の形成過程を理解する</p>
+  </div>
+
+  <div class="action-card">
+    <h3>📅 週予定を目的別に色分けする</h3>
+    <p><strong>目的：</strong>自分の時間配分を視覚化し、どの活動が優先されているかを確認する</p>
+    <p><strong>期待効果：</strong>時間の使い方が社会的役割と内面化された規律を反映していることに気づき、再設計の余地を発見する</p>
+  </div>
+</div>
+
+<div class="visual-section">
+  <h3>📚 関連書籍</h3>
+  <div class="card-grid">
+    <div class="card">
+      <h3>📖 時間と社会理論</h3>
+      <p><strong>著者：</strong>バーバラ・アダム</p>
+      <p><strong>関連性：</strong>社会学における時間概念の体系化。本書の理論的射程を拡張。</p>
+    </div>
+    <div class="card">
+      <h3>📖 近代の帰結</h3>
+      <p><strong>著者：</strong>アンソニー・ギデンズ</p>
+      <p><strong>関連性：</strong>時空間の引き離しと抽象的体系の分析が、標準時と同期の社会的作用を補完。</p>
+    </div>
+    <div class="card">
+      <h3>📖 時間、労働規律と産業資本主義</h3>
+      <p><strong>著者：</strong>E.P.トムソン</p>
+      <p><strong>関連性：</strong>近代的時間規律の歴史的形成を労働現場から実証。内面化の過程を具体化。</p>
+    </div>
+    <div class="card">
+      <h3>📖 社会的加速</h3>
+      <p><strong>著者：</strong>ハルトムート・ローザ</p>
+      <p><strong>関連性：</strong>時間の加速と生活世界の変容を分析。精密化・同期需要の帰結を検討。</p>
+    </div>
+    <div class="card">
+      <h3>📖 文明化の過程</h3>
+      <p><strong>著者：</strong>ノルベルト・エリアス</p>
+      <p><strong>関連性：</strong>自己拘束と感情構造の長期的変化を論じ、本書の内面化論を広い文脈で支える。</p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
