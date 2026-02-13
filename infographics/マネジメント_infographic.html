@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マネジメント - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 1.1rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  border-left: 3px solid var(--primary);
+}
+
+.reason-box strong {
+  color: var(--secondary);
+  font-size: 0.9rem;
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+
+.chapter-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.chapter-card li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 2px solid var(--accent);
+}
+
+.example-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.quote-card small {
+  display: block;
+  color: var(--text-light);
+  font-style: normal;
+  margin-top: 0.5rem;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.action-card small {
+  display: block;
+  opacity: 0.9;
+  margin-top: 0.5rem;
+}
+
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  margin: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.flow-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow-x: auto;
+}
+
+.flow-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.related-books {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.book-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+
+.book-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.book-card small {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  display: block;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 マネジメント</h1>
+  <p>顧客価値の創造を通じて外部に成果を生む経営の本質</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 要約=問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    経営は何を目的とし、どのように成果を生むのか？
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    目的は顧客価値の創造であり、真正の成果は外部にある。成果を生むには、使命に基づく目標（MBO）と測定、分権化と責任設計、知識労働者の生産性向上、そしてマーケティングとイノベーションの統合を継続的に運用する。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    市場と社会が価値を決め、利益は結果の条件であって目的ではない。外部環境は変化し、既存の強みや事業は陳腐化するため、顧客起点と学習による適応が不可欠。
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    1) 使命を言語化し、数個の成果領域とKPIに落とす（MBO）<br>
+    2) 結果に最も近い現場へ権限を移し、責任と測定を一致させる（分権化）<br>
+    3) 人材は強みによって任用し、仕事の定義・自律・継続学習で知識労働の生産性を設計する<br>
+    4) 体系的廃棄で資源を再配分し、マーケティング洞察とイノベーション投資に集中する<br>
+    5) 意思決定は仮説・代替案・リスク・実行者・フィードバックまで設計する
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🎯 主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📚 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="margin-bottom:1.5rem;color:var(--secondary);">🎯 主要概念の詳細</h2>
+  
+  <div class="card-grid">
+    <div class="card">
+      <h3>🎯 顧客の創造</h3>
+      <ul>
+        <li>組織の正当な目的は顧客が価値と認める成果を生み出し続けること</li>
+        <li>利益はその結果を持続させる条件</li>
+        <li>内部の活動ではなく外部の評価が成果を決める</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 市場と社会が価値を決定するため、外部志向が成果の前提となる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📊 成果は外にある</h3>
+      <ul>
+        <li>組織の成果は市場・顧客・社会といった外部で測られる</li>
+        <li>内部の活動量は成果の代替にならない</li>
+        <li>評価基準を外部に置くことで真の価値創造が可能</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 内部効率は手段であり、外部成果こそが組織の存在意義を証明する
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📈 マーケティング</h3>
+      <ul>
+        <li>顧客・市場を理解し、需要を創造する活動</li>
+        <li>価値提案と選好形成が中心</li>
+        <li>販売ではなく顧客起点の価値設計</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 顧客理解なしに価値創造は不可能であり、需要設計が成果の起点となる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💡 イノベーション</h3>
+      <ul>
+        <li>新結合によって価値を飛躍させる変化の実践</li>
+        <li>資源をより生産的にする</li>
+        <li>既存の陳腐化に対抗する唯一の手段</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 外部環境の変化により既存の強みは陳腐化するため、継続的な価値飛躍が必須
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 目標による管理（MBO）</h3>
+      <ul>
+        <li>使命から重要目標を定め、成果指標と責任を明確化</li>
+        <li>自己管理で達成する仕組み</li>
+        <li>目的→目標→測定の一貫性を保つ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 曖昧な目的は行動を生まず、測定可能な目標が成果を設計する
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔑 成果領域（KRA）</h3>
+      <ul>
+        <li>組織の目的実現に直結する少数の領域</li>
+        <li>例: 顧客、イノベーション、生産性、人的資源、財務</li>
+        <li>資源配分と測定の焦点を定める</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 全てを追えば何も達成できない。焦点が成果を生む
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏢 分権化</h3>
+      <ul>
+        <li>結果に最も近い単位に権限と資源を委ねる</li>
+        <li>責任と測定を一致させる設計原則</li>
+        <li>意思決定の速度と質を高める</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 現場が最も顧客に近く、迅速な適応と学習が可能だから
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧠 知識労働者の生産性</h3>
+      <ul>
+        <li>目標の明確化、自律、継続学習で高まる</li>
+        <li>質の測定、強み活用が中心課題</li>
+        <li>現代の競争優位の源泉</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 知識経済では人の知的成果が価値の大半を生み、その設計が決定的
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💪 強みによる任用</h3>
+      <ul>
+        <li>人は弱点の是正ではなく強みの最大化で成果を上げる</li>
+        <li>配置と仕事設計が決定的</li>
+        <li>弱みの管理ではなく強みの活用</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 知識労働の時代に最大のレバレッジが人の強みにあるため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🤔 意思決定</h3>
+      <ul>
+        <li>仮説と代替案を比較し、リスクと境界条件を明確化</li>
+        <li>実行責任とフィードバックを設計するプロセス</li>
+        <li>意見の対立を歓迎し、最良の選択を導く</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 質の高い意思決定が戦略実行の成否を分け、組織の適応力を決める
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🗑️ 体系的廃棄</h3>
+      <ul>
+        <li>陳腐化した製品・サービス・工程・慣行を計画的にやめる</li>
+        <li>資源を成長領域へ再配分する</li>
+        <li>イノベーションの前提条件</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 資源は有限であり、過去への執着が未来の機会を奪うから
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>👔 トップマネジメントの役割</h3>
+      <ul>
+        <li>使命・戦略・価値基準の設定</li>
+        <li>資源配分、組織能力の構築</li>
+        <li>外部との関係管理を担う</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 全体最適と長期視点は現場では設計できず、トップの責務だから
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌍 マネジメントの社会的責任</h3>
+      <ul>
+        <li>法令順守を超え、社会的影響・倫理・信頼を成果と両立</li>
+        <li>長期的な正統性の確保</li>
+        <li>ステークホルダーとの信頼構築</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 社会的信頼なしに持続的な成果は不可能であり、正統性が資本コストを下げる
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="margin-bottom:1rem;color:var(--secondary);">🔄 概念間の関係性</h3>
+    <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+        </linearGradient>
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <polygon points="0 0, 10 3, 0 6" fill="#667eea" />
+        </marker>
+      </defs>
+      
+      <rect x="50" y="20" width="140" height="60" rx="8" fill="url(#grad1)" opacity="0.9"/>
+      <text x="120" y="55" text-anchor="middle" fill="white" font-size="14" font-weight="bold">使命</text>
+      
+      <rect x="250" y="20" width="140" height="60" rx="8" fill="url(#grad1)" opacity="0.9"/>
+      <text x="320" y="55" text-anchor="middle" fill="white" font-size="14" font-weight="bold">目標（MBO）</text>
+      
+      <rect x="450" y="20" width="140" height="60" rx="8" fill="url(#grad1)" opacity="0.9"/>
+      <text x="520" y="55" text-anchor="middle" fill="white" font-size="14" font-weight="bold">成果領域（KRA）</text>
+      
+      <rect x="650" y="20" width="120" height="60" rx="8" fill="url(#grad1)" opacity="0.9"/>
+      <text x="710" y="55" text-anchor="middle" fill="white" font-size="14" font-weight="bold">測定</text>
+      
+      <rect x="50" y="140" width="160" height="60" rx="8" fill="#f093fb" opacity="0.8"/>
+      <text x="130" y="165" text-anchor="middle" fill="white" font-size="13" font-weight="bold">マーケティング</text>
+      <text x="130" y="185" text-anchor="middle" fill="white" font-size="11">(顧客理解)</text>
+      
+      <rect x="250" y="140" width="160" height="60" rx="8" fill="#f093fb" opacity="0.8"/>
+      <text x="330" y="165" text-anchor="middle" fill="white" font-size="13" font-weight="bold">イノベーション</text>
+      <text x="330" y="185" text-anchor="middle" fill="white" font-size="11">(価値飛躍)</text>
+      
+      <rect x="450" y="140" width="140" height="60" rx="8" fill="#667eea" opacity="0.8"/>
+      <text x="520" y="165" text-anchor="middle" fill="white" font-size="13" font-weight="bold">顧客価値</text>
+      <text x="520" y="185" text-anchor="middle" fill="white" font-size="11">(創造)</text>
+      
+      <rect x="630" y="140" width="140" height="60" rx="8" fill="#667eea" opacity="0.8"/>
+      <text x="700" y="175" text-anchor="middle" fill="white" font-size="13" font-weight="bold">外部成果</text>
+      
+      <rect x="150" y="260" width="140" height="60" rx="8" fill="#764ba2" opacity="0.8"/>
+      <text x="220" y="285" text-anchor="middle" fill="white" font-size="13" font-weight="bold">分権化</text>
+      <text x="220" y="305" text-anchor="middle" fill="white" font-size="11">(権限委譲)</text>
+      
+      <rect x="330" y="260" width="160" height="60" rx="8" fill="#764ba2" opacity="0.8"/>
+      <text x="410" y="285" text-anchor="middle" fill="white" font-size="13" font-weight="bold">強みによる任用</text>
+      <text x="410" y="305" text-anchor="middle" fill="white" font-size="11">(人材配置)</text>
+      
+      <rect x="530" y="260" width="160" height="60" rx="8" fill="#764ba2" opacity="0.8"/>
+      <text x="610" y="280" text-anchor="middle" fill="white" font-size="12" font-weight="bold">知識労働者の</text>
+      <text x="610" y="300" text-anchor="middle" fill="white" font-size="12" font-weight="bold">生産性</text>
+      
+      <rect x="250" y="380" width="140" height="60" rx="8" fill="#f093fb" opacity="0.8"/>
+      <text x="320" y="405" text-anchor="middle" fill="white" font-size="13" font-weight="bold">体系的廃棄</text>
+      <text x="320" y="425" text-anchor="middle" fill="white" font-size="11">(資源再配分)</text>
+      
+      <rect x="430" y="380" width="140" height="60" rx="8" fill="#667eea" opacity="0.8"/>
+      <text x="500" y="405" text-anchor="middle" fill="white" font-size="13" font-weight="bold">意思決定</text>
+      <text x="500" y="425" text-anchor="middle" fill="white" font-size="11">(実行設計)</text>
+      
+      <line x1="190" y1="50" x2="245" y2="50" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="390" y1="50" x2="445" y2="50" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="590" y1="50" x2="645" y2="50" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <line x1="210" y1="170" x2="245" y2="170" stroke="#f093fb" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="410" y1="170" x2="445" y2="170" stroke="#f093fb" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="590" y1="170" x2="625" y2="170" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <line x1="220" y1="260" x2="320" y2="200" stroke="#764ba2" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="410" y1="260" x2="520" y2="200" stroke="#764ba2" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="610" y1="260" x2="610" y2="205" stroke="#764ba2" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <line x1="320" y1="380" x2="320" y2="205" stroke="#f093fb" stroke-width="2" marker-end="url(#arrowhead)"/>
+      <line x1="500" y1="380" x2="520" y2="205" stroke="#667eea" stroke-width="2" marker-end="url(#arrowhead)"/>
+      
+      <path d="M 710 80 Q 750 250 610 380" stroke="#667eea" stroke-width="2" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5"/>
+      <text x="720" y="240" fill="#667eea" font-size="11">フィードバック</text>
+    </svg>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1.5rem;color:var(--secondary);">📚 各章の要約</h2>
+  
+  <div class="chapter-card">
+    <h3>第1部: マネジメントの本質と目的</h3>
+    <ul>
+      <li>成果は外部（市場・顧客・社会）にあり、内部の活動量は成果の代替にならない</li>
+      <li>顧客価値の創造が組織の正当な目的であり、利益は条件であって目的ではない</li>
+      <li>有効性（正しいことをする）が効率（正しくやる）に先行する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（なぜこの章が必要か）:</strong> 組織の存在意義と評価基準を外部に置くことで、内向きの最適化ではなく真の価値創造に焦点を当てるため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2部: 成果領域と結果設計</h3>
+    <ul>
+      <li>顧客・イノベーション・生産性・人的資源・財務などの成果領域（KRA）を特定</li>
+      <li>目標による管理（MBO）で使命を測定可能な目標に変換し、責任を明確化</li>
+      <li>測定とフィードバックで学習と改善のサイクルを回す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）:</strong> 曖昧な目的は行動を生まず、測定可能な目標と責任設計が成果を実現する唯一の方法だから
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3部: 組織設計と分権化</h3>
+    <ul>
+      <li>責任と測定が一致する単位に権限を置く（分権化の原則）</li>
+      <li>組織構造は戦略と外部要求から設計し、機能間の統合を図る</li>
+      <li>意思決定の速度と質を高め、市場適応力を向上させる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）:</strong> 現場が最も顧客に近く、迅速な適応と学習が可能であり、中央集権では変化に対応できないため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4部: 人と仕事のマネジメント</h3>
+    <ul>
+      <li>強みによる任用で人材を配置し、弱みの管理ではなく強みの最大化を図る</li>
+      <li>仕事の定義、自律、継続学習の機会設計で知識労働者の生産性を高める</li>
+      <li>質の測定と成果への貢献を明確にする</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）:</strong> 知識経済では人の知的成果が価値の大半を生み、その設計が競争優位の源泉となるため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5部: 意思決定と情報</h3>
+    <ul>
+      <li>仮説・代替案・境界条件・リスク・実行責任・フィードバックまでを設計</li>
+      <li>意見の対立を歓迎し、最良の選択を導く</li>
+      <li>情報は意思決定を支援する道具であり、目的ではない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）:</strong> 質の高い意思決定が戦略実行の成否を分け、組織の適応力と学習能力を決定するため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6部: イノベーションと企業家精神</h3>
+    <ul>
+      <li>体系的廃棄で陳腐化した資源を解放し、成長機会に集中投資</li>
+      <li>既存事業と新規事業の分離と両立を設計</li>
+      <li>マーケティング洞察とイノベーション投資を統合</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）:</strong> 外部環境の変化により既存の強みは陳腐化するため、継続的な価値飛躍が持続的成果の前提となるから
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7部: ガバナンスと社会的責任</h3>
+    <ul>
+      <li>価値基準の設定、コンプライアンス、社会的信頼の確立を長期成果と統合</li>
+      <li>法令順守を超えた倫理と社会的影響への配慮</li>
+      <li>ステークホルダーとの信頼構築が正統性を生む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）:</strong> 社会的信頼なしに持続的な成果は不可能であり、正統性が資本コストを下げ、機会を拡大するため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第8部: 統合と実行</h3>
+    <ul>
+      <li>使命→目標→組織→人→意思決定→イノベーションの循環を運用</li>
+      <li>外部成果で検証し、学習によって更新する</li>
+      <li>全体最適と長期視点をトップマネジメントが設計</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）:</strong> 各要素は相互依存しており、統合された運用と継続的な学習サイクルが成果を持続させるため
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1.5rem;color:var(--secondary);">💼 具体例</h2>
+  
+  <div class="example-card">
+    <h3>🏭 例1: 製造業における成果領域の設定</h3>
+    <p><strong>背景:</strong> ある製造企業が「売上高」だけを追い、顧客満足度と従業員の離職率が悪化していた。</p>
+    <p><strong>実践:</strong> 成果領域を「顧客満足度」「イノベーション投資比率」「従業員エンゲージメント」「財務健全性」の4つに再定義し、各領域に測定指標と目標を設定。四半期ごとにレビューし、資源配分を調整した。</p>
+    <p><strong>結果:</strong> 2年後、顧客満足度が30%向上し、離職率が半減。売上も結果として15%増加した。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 単一指標の追求は全体最適を損ない、バランスの取れた成果領域設定が持続的成果を生む
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🚀 例2: 分権化による意思決定の迅速化</h3>
+    <p><strong>背景:</strong> あるIT企業が中央集権的な承認プロセスで市場機会を逃し続けていた。</p>
+    <p><strong>実践:</strong> 製品ラインごとに独立した事業単位を設け、予算と人事の権限を委譲。各単位に明確な成果指標（顧客獲得数、収益性、イノベーション件数）を設定し、四半期ごとに結果を測定。</p>
+    <p><strong>結果:</strong> 意思決定のスピードが3倍に向上し、新製品の市場投入期間が半減。市場シェアが20%拡大した。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 権限を現場に委ねることで、顧客に最も近い場所で迅速な適応と学習が可能になる
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🗑️ 例3: 体系的廃棄による資源再配分</h3>
+    <p><strong>背景:</strong> ある小売企業が20年前の製品ラインを維持し続け、利益率が低下していた。</p>
+    <p><strong>実践:</strong> 全製品を「成長性」「収益性」「戦略適合性」の3軸で評価し、下位20%を3年計画で廃止。解放された資源（人材・予算・店舗スペース）を成長カテゴリーとデジタル投資に再配分した。</p>
+    <p><strong>結果:</strong> 利益率が10ポイント改善し、新規カテゴリーが全体売上の30%を占めるまで成長。従業員の士気も向上した。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 過去への執着が未来の機会を奪い、計画的な廃棄が成長への資源を生む
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>💪 例4: 強みによる任用の実践</h3>
+    <p><strong>背景:</strong> あるコンサルティング会社が「万能型」人材育成に注力し、個々の強みが活かされていなかった。</p>
+    <p><strong>実践:</strong> 各メンバーの強み（分析力、対人関係構築、戦略立案、実行推進など）を評価し、プロジェクトチームを強みの組み合わせで編成。弱みの克服ではなく、強みの最大化に研修予算を集中した。</p>
+    <p><strong>結果:</strong> プロジェクト成功率が40%向上し、顧客満足度が大幅に改善。メンバーのエンゲージメントスコアも過去最高を記録した。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 知識労働の時代、人の強みこそが最大のレバレッジであり、配置と仕事設計が成果を決める
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1.5rem;color:var(--secondary);">💬 重要な引用</h2>
+  
+  <div class="quote-card">
+    <p>「企業の正当な目的は顧客価値の創造である。」</p>
+    <small><strong>なぜ重要か:</strong> 目的を外部志向に定めることで、活動が成果に直結する。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「組織の成果は外部にあり、内部の効率は代替にならない。」</p>
+    <small><strong>なぜ重要か:</strong> 評価基準を顧客と市場に置く設計を迫るから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「有効性が先であり、効率はその後にくる。」</p>
+    <small><strong>なぜ重要か:</strong> 正しい目標に資源を向けることが最適化の前提だから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「人は弱点ではなく強みによって任用せよ。」</p>
+    <small><strong>なぜ重要か:</strong> 知識労働の時代に最大のレバレッジが人の強みにあるため。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「陳腐化したものは体系的に廃棄せよ。」</p>
+    <small><strong>なぜ重要か:</strong> 資源を成長機会へ再配分し、イノベーションを持続させるため。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「権限は結果に最も近いところに置け。」</p>
+    <small><strong>なぜ重要か:</strong> 責任と測定を一致させ、意思決定の質と速度を高めるから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「マーケティングとイノベーションが成果を生む。それ以外はすべてコストである。」</p>
+    <small><strong>なぜ重要か:</strong> 顧客価値の創造と変化への適応が組織の中心課題であることを明示するため。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「意思決定は仮説である。実行とフィードバックで検証せよ。」</p>
+    <small><strong>なぜ重要か:</strong> 学習と適応のサイクルが戦略実行の質を決定するから。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1.5rem;color:var(--secondary);">✅ 今日のアクション</h2>
+  
+  <div class="action-card">
+    <h3>🎯 アクション1: 主顧客を1文で定義する</h3>
+    <p><strong>実行内容:</strong> あなたの組織（または担当業務）の主要顧客を「誰が、何を求めているか」の形で1文にまとめ、紙に書き出す。</p>
+    <p><strong>目的:</strong> 顧客価値の起点を明確化し、活動の方向性を外部志向に定める。</p>
+    <small><strong>期待効果:</strong> 日々の意思決定が顧客価値に直結しているかを判断する基準ができる。</small>
+  </div>
+
+  <div class="action-card">
+    <h3>📊 アクション2: 3つの成果指標を決めて記録</h3>
+    <p><strong>実行内容:</strong> 自分の仕事の成果を測る指標を3つ選び（例: 顧客満足度、納期達成率、提案採用数）、現状値を記録する。</p>
+    <p><strong>目的:</strong> 成果を測定可能にし、改善のサイクルを開始する。</p>
+    <small><strong>期待効果:</strong> 活動量ではなく結果で自己評価できるようになり、生産性が向上する。</small>
+  </div>
+
+  <div class="action-card">
+    <h3>🗑️ アクション3: 廃棄候補リストを5件書く</h3>
+    <p><strong>実行内容:</strong> 現在の業務・会議・慣行の中で「やめても成果に影響しない」または「陳腐化している」ものを5件リストアップする。</p>
+    <p><strong>目的:</strong> 資源（時間・予算・注意力）を成長機会に再配分する準備をする。</p>
+    <small><strong>期待効果:</strong> 無駄な活動を削減し、重要な仕事に集中できる時間が増える。</small>
+  </div>
+
+  <div class="action-card">
+    <h3>💪 アクション4: 自分の強みを3つ書き出す</h3>
+    <p><strong>実行内容:</strong> 過去の成功体験を振り返り、自分が最も成果を上げた場面で発揮していた強み（スキル・知識・特性）を3つ特定する。</p>
+    <p><strong>目的:</strong> 強みの自覚を高め、それを活かす仕事設計の起点とする。</p>
+    <small><strong>期待効果:</strong> 弱みの克服ではなく強みの最大化に時間を使えるようになり、成果が飛躍する。</small>
+  </div>
+
+  <div class="action-card">
+    <h3>🤔 アクション5: 次の意思決定に代替案を2つ用意する</h3>
+    <p><strong>実行内容:</strong> 今週中に行う意思決定を1つ選び、最初に思いついた案に加えて、異なる視点からの代替案を2つ考える。</p>
+    <p><strong>目的:</strong> 意見の対立を設計し、より質の高い選択を導く習慣をつける。</p>
+    <small><strong>期待効果:</strong> 思い込みや偏見を排除し、リスクを事前に特定できるようになる。</small>
+  </div>
+
+  <div style="margin-top:2rem;padding:1.5rem;background:linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));border-radius:0.75rem;border-left:4px solid var(--primary);">
+    <h3 style="color:var(--secondary);margin-bottom:1rem;">📈 継続的な実践のために</h3>
+    <p style="margin-bottom:0.5rem;">✓ 週次で成果指標をレビューし、学習と改善のサイクルを回す</p>
+    <p style="margin-bottom:0.5rem;">✓ 月次で廃棄候補を見直し、1つ以上を実際にやめる</p>
+    <p style="margin-bottom:0.5rem;">✓ 四半期ごとに顧客定義と成果領域を再評価し、外部変化に適応する</p>
+    <p>✓ 年次で使命と戦略を見直し、組織全体の方向性を更新する</p>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <h3 style="color:var(--secondary);margin-bottom:1rem;">📚 関連書籍</h3>
+    <div class="related-books">
+      <div class="book-card">
+        <h4>📖 現代の経営</h4>
+        <p><strong>著者:</strong> ピーター・ドラッカー</p>
+        <small><strong>関連性:</strong> 顧客の創造やマネジメントの原理を初期に体系化し、本書の土台を提供。</small>
+      </div>
+      <div class="book-card">
+        <h4>📖 経営者の条件</h4>
+        <p><strong>著者:</strong> ピーター・ドラッカー</p>
+        <small><strong>関連性:</strong> 有効性・時間・貢献の原則が、知識労働者の生産性設計に直結。</small>
+      </div>
+      <div class="book-card">
+        <h4>📖 イノベーションと企業家精神</h4>
+        <p><strong>著者:</strong> ピーター・ドラッカー</p>
+        <small><strong>関連性:</strong> 体系的廃棄と機会領域の実践を具体化し、変革の運用法を補完。</small>
+      </div>
+      <div class="book-card">
+        <h4>📖 競争の戦略</h4>
+        <p><strong>著者:</strong> マイケル・E・ポーター</p>
+        <small><strong>関連性:</strong> 外部成果を左右する産業構造と競争優位の設計に関する実務フレームを提供。</small>
+      </div>
+      <div class="book-card">
+        <h4>📖 学習する組織</h4>
+        <p><strong>著者:</strong> ピーター・M・センゲ</p>
+        <small><strong>関連性:</strong> 組織学習とシステム思考で、継続的な適応とイノベーション能力を強化。</small>
+      </div>
+      <div class="book-card">
+        <h4>📖 マネジメント[エッセンシャル版]</h4>
+        <p><strong>著者:</strong> ピーター・ドラッカー</p>
+        <small><strong>関連性:</strong> 本書の要諦を凝縮した版で、復習と実装の指針として有用。</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// タブ切り替え機能
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    // すべてのタブとコンテンツから active クラスを削除
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブとコンテンツに active クラスを追加
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+
+// キーボードナビゲーション
+tabBtns.forEach((btn, index) => {
+  btn.addEventListener('keydown', (e) => {
+    let newIndex;
+    if (e.key === 'ArrowRight') {
+      newIndex = (index + 1) % tabBtns.length;
+      tabBtns[newIndex].focus();
+      tabBtns[newIndex].click();
+    } else if (e.key === 'ArrowLeft') {
+      newIndex = (index - 1 + tabBtns.length) % tabBtns.length;
+      tabBtns[newIndex].focus();
+      tabBtns[newIndex].click();
+    }
+  });
+});
+</script>
+
+</body>
+</html>
