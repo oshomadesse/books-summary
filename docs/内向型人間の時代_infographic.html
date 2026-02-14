@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiet 内向型人間の時代 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 32px 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 20px;
+  margin: 24px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 12px;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 4px;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0 16px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 8px;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-radius: 6px 6px 0 0;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--primary);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 10px;
+  color: var(--primary);
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 5px 0;
+  padding-left: 18px;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  color: var(--secondary);
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 5px solid var(--primary);
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+.quote-card small {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--accent);
+}
+.action-card h4 {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 6px;
+}
+.visual-metric {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+.metric-bar {
+  flex: 1;
+  height: 24px;
+  background: var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: width 1s ease-out;
+}
+.metric-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 120px;
+}
+.relationship-diagram {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.relationship-diagram h3 {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: var(--primary);
+  text-align: center;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  margin: 0 8px;
+  color: var(--accent);
+  font-weight: bold;
+}
+.related-books {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.book-card h4 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+  color: var(--primary);
+}
+.book-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 6px;
+}
+.book-card small {
+  font-size: 0.8rem;
+  color: var(--text);
+}
+footer {
+  text-align: center;
+  padding: 24px;
+  margin-top: 32px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  font-size: 0.9rem;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    width: 100%;
+    text-align: left;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 Quiet 内向型人間の時代</h1>
+  <p>スーザン・ケイン著 - 静かな力を解き放つ実践ガイド</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 エグゼクティブ・サマリー</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      外向性偏重の世界で、内向型はどう力を発揮し、社会・組織は何を改めるべきか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      内向型の価値を前提に、刺激のスイートスポットを基準とした働き方・学び方を設計し、フリー・トレイト戦略で必要時のみ外向的に振る舞い、回復の隙間でエネルギーを再充填する。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      生物学的気質（高反応性・報酬感受性）の個人差、グループシンクや開放型オフィスの弊害、静かなリーダーの実証的優位（自律的チームでの成果）により、外向性一辺倒は非効率。
+    </div>
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      <strong>個人:</strong> 1) 刺激閾値を見極め作業量・社交量を調整、2) 回復の隙間を日課化、3) コア・プロジェクトのために計画的に外向的行動を使う。<br>
+      <strong>組織・教育:</strong> 1) ソロ作業と小規模協働のハイブリッド設計、2) 静音ゾーン・非強制参加・非同時コラボを導入、3) 発言量より成果・質で評価し、内向型の発揮場面を制度化する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">🧠 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔄 内向性／外向性</h3>
+        <ul>
+          <li>刺激への好みとエネルギー充填の方法の違い</li>
+          <li>内向型: 低刺激環境で深く集中し、独りの時間で回復</li>
+          <li>外向型: 高刺激・社交的環境で活性化しやすい</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 性格の本質は社交性の有無ではなく、最適な刺激量の違いであり、この理解が環境設計の出発点になる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎯 刺激のスイートスポット</h3>
+        <ul>
+          <li>最も良いパフォーマンスが出る最適刺激域</li>
+          <li>多すぎても少なすぎても能力が下がる</li>
+          <li>個人差が大きく、自己認識が鍵</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 万人に最適な環境は存在せず、個別最適化が生産性と幸福の前提条件となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚡ 高反応性気質</h3>
+        <ul>
+          <li>感覚刺激や新奇性に強く反応する生得的傾向</li>
+          <li>内向性の基盤になりやすい</li>
+          <li>慎重さ・洞察の資源にもなる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 敏感さは弱点ではなく、深い処理と細部への気づきという強みの源泉である。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎭 自由特性理論（フリー・トレイト）</h3>
+        <ul>
+          <li>核心プロジェクトのために本来の性格を超えて振る舞える</li>
+          <li>一時的な外向的行動が可能</li>
+          <li>回復時間が必須条件</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 性格は運命ではなく、目的に応じて戦略的に使い分けられる資源だと示す。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎖️ コア・パーソナル・プロジェクト</h3>
+        <ul>
+          <li>個人の価値や意味と深く結びつく最重要の取り組み</li>
+          <li>行動の燃料と選択基準になる</li>
+          <li>エネルギー投資の優先順位を決める</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 何のために外向的に振る舞うかが明確でないと、消耗だけが残る。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🛡️ 回復の隙間（Restorative Niches）</h3>
+        <ul>
+          <li>刺激を下げて充電するための時間・場所・習慣</li>
+          <li>継続的成果の前提条件</li>
+          <li>意図的に設計・確保する必要がある</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 回復なき活動は持続不可能であり、パフォーマンスと健康の両方を損なう。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🚫 新しいグループシンク</h3>
+        <ul>
+          <li>協働万能主義で集団作業や対面発言を過度に理想化</li>
+          <li>創造性や熟考を損ねる現象</li>
+          <li>同調圧力と質の低下を招く</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 協働は手段であり目的ではない。盲目的な適用は逆効果を生む。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🏢 開放型オフィスのパラドックス</h3>
+        <ul>
+          <li>交流促進を狙う設計が実は集中・満足度・創造性を下げ得る</li>
+          <li>中断と監視感が認知資源を奪う</li>
+          <li>内向型に特に不利</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 物理環境の意図と実際の効果のギャップを認識し、選択肢を用意する必要性を示す。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🤫 静かなリーダーシップ</h3>
+        <ul>
+          <li>傾聴・熟議・準備を重視し、メンバーの自律性とアイデアを引き出す統率</li>
+          <li>自主性の高いチームで特に有効</li>
+          <li>発言量より質と成果で評価される</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> リーダーシップの多様性を認めることで、組織の適応力と成果が向上する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎤 文化的外向性理想</h3>
+        <ul>
+          <li>特に米国で強い「社交的で大胆＝優秀」という規範</li>
+          <li>内向型の過小評価を生む</li>
+          <li>評価・選抜・教育に偏りをもたらす</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 規範は相対的であり、自覚しないと才能の見落としと不公平を生む。
+        </div>
+      </div>
+    </div>
+
+    <div class="relationship-diagram">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-item">
+        <span>高反応性気質</span>
+        <span class="flow-arrow">→</span>
+        <span>低刺激耐性</span>
+        <span class="flow-arrow">→</span>
+        <span>内向性傾向</span>
+      </div>
+      <div class="flow-item">
+        <span>刺激過多（騒音・頻繁な会議）</span>
+        <span class="flow-arrow">→</span>
+        <span>認知資源の枯渇</span>
+        <span class="flow-arrow">→</span>
+        <span>パフォーマンス低下</span>
+      </div>
+      <div class="flow-item">
+        <span>文化的外向性理想</span>
+        <span class="flow-arrow">→</span>
+        <span>発言量偏重の評価</span>
+        <span class="flow-arrow">→</span>
+        <span>内向型の能力が見えにくい</span>
+      </div>
+      <div class="flow-item">
+        <span>新しいグループシンク</span>
+        <span class="flow-arrow">→</span>
+        <span>熟考時間の欠如</span>
+        <span class="flow-arrow">→</span>
+        <span>アイデアの質低下・同調圧力増大</span>
+      </div>
+      <div class="flow-item">
+        <span>開放型オフィス</span>
+        <span class="flow-arrow">→</span>
+        <span>断続的中断・監視感</span>
+        <span class="flow-arrow">→</span>
+        <span>深い仕事の阻害</span>
+      </div>
+      <div class="flow-item">
+        <span>コア・プロジェクト × 自由特性理論</span>
+        <span class="flow-arrow">→</span>
+        <span>選択的外向性の発動</span>
+        <span class="flow-arrow">→</span>
+        <span>影響力・説得力の向上</span>
+      </div>
+      <div class="flow-item">
+        <span>回復の隙間</span>
+        <span class="flow-arrow">→</span>
+        <span>自律神経の落ち着き</span>
+        <span class="flow-arrow">→</span>
+        <span>持続的成果と健康</span>
+      </div>
+      <div class="flow-item">
+        <span>静かなリーダーシップ</span>
+        <span class="flow-arrow">→</span>
+        <span>傾聴と熟議</span>
+        <span class="flow-arrow">→</span>
+        <span>自主性の高いチームで高成果</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">📖 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3>第I部: 外向性の理想</h3>
+      <ul>
+        <li>アメリカで外向性が称揚されてきた歴史的背景</li>
+        <li>自己宣伝・常時協働を良しとする規範の形成</li>
+        <li>開放型オフィスやブレーンストーミングの限界をデータで検討</li>
+        <li>創造性と判断を歪める文化的圧力の実態</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 現在の規範が歴史的・文化的構築物であることを示し、絶対視を解除する。協働偏重の弊害を認識することで、設計の見直しが可能になる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第II部: 生物学と自己</h3>
+      <ul>
+        <li>高反応性気質や報酬系の個人差など、内外向の神経科学・発達心理の証拠</li>
+        <li>性格は固定でなく環境と相互作用することを示す</li>
+        <li>遺伝と環境の両方が気質を形成する</li>
+        <li>敏感さが洞察と慎重さの源泉となるメカニズム</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 内向性を科学的に理解することで、偏見を排し、個人差を尊重する根拠を得る。性格の可塑性を知ることで、戦略的適応の可能性が開ける。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第III部: 文化のちがい</h3>
+      <ul>
+        <li>アジア文化圏など、内向性が評価されやすい文脈を比較</li>
+        <li>移民二世の学校経験を通じて規範の相対性を描く</li>
+        <li>文化によって理想とされる性格特性が異なる</li>
+        <li>多様性の尊重が組織と社会の適応力を高める</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 規範の相対性を示すことで、自文化の偏りを自覚し、多様な才能を活かす制度設計の必要性を認識させる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第IV部: 愛し、働く方法</h3>
+      <ul>
+        <li>職場・教育・家庭への実装戦略</li>
+        <li>刺激のスイートスポット、回復の隙間、自由特性理論の活用</li>
+        <li>静かなリーダーシップを用いた具体戦略</li>
+        <li>内向型が強みを活かす実践指針</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 理論を実践に落とし込み、個人・組織・教育の各レベルで即座に適用できる具体策を提供する。行動変容の道筋を明確にする。
+      </div>
+    </div>
+
+    <div style="margin-top: 24px;">
+      <h3 style="color: var(--secondary); margin-bottom: 12px;">📊 構造と論理展開の可視化</h3>
+      <div class="visual-metric">
+        <div class="metric-label">第I部: 問題提起</div>
+        <div class="metric-bar">
+          <div class="metric-fill" style="width: 25%;">25%</div>
+        </div>
+      </div>
+      <div class="visual-metric">
+        <div class="metric-label">第II部: 科学的基盤</div>
+        <div class="metric-bar">
+          <div class="metric-fill" style="width: 25%;">25%</div>
+        </div>
+      </div>
+      <div class="visual-metric">
+        <div class="metric-label">第III部: 文化的視点</div>
+        <div class="metric-bar">
+          <div class="metric-fill" style="width: 20%;">20%</div>
+        </div>
+      </div>
+      <div class="visual-metric">
+        <div class="metric-label">第IV部: 実践戦略</div>
+        <div class="metric-bar">
+          <div class="metric-fill" style="width: 30%;">30%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">💡 具体例</h2>
+    
+    <div class="example-card">
+      <h4>🔬 例1: ウォズニアックの単独作業</h4>
+      <p><strong>背景:</strong> Apple共同創業者スティーブ・ウォズニアックは、自宅の一室で独り黙々とコンピュータ設計に没頭し、革新的なApple IIを生み出した。彼は「独りで働くことが発明の鍵」と語る。</p>
+      <p><strong>示唆:</strong> 画期的なアイデアは、集団ブレストではなく深い集中と熟考から生まれることが多い。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> ソロ作業時間の確保が創造性の必須条件であり、協働偏重は革新を阻害し得る。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🎤 例2: ローザ・パークスの静かな抵抗</h4>
+      <p><strong>背景:</strong> 公民権運動の象徴ローザ・パークスは、物静かで控えめな性格だったが、バスでの座席拒否という一つの行動が歴史を動かした。彼女は大声で主張するタイプではなかったが、深い信念と準備が行動を支えた。</p>
+      <p><strong>示唆:</strong> リーダーシップは声の大きさではなく、信念の深さと行動の一貫性から生まれる。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 内向型の静かな力が社会変革を起こし得ることを実証し、外向性偏重の評価基準を問い直す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🏢 例3: 開放型オフィスの生産性低下</h4>
+      <p><strong>背景:</strong> ある企業が交流促進のため壁を取り払い開放型オフィスに移行したところ、従業員の集中力低下・ストレス増加・離職率上昇が観察された。調査の結果、中断の頻度が3倍に増え、深い思考を要する作業の質が著しく下がっていた。</p>
+      <p><strong>示唆:</strong> 物理環境の設計意図と実際の効果は一致しないことがあり、選択肢の提供が重要。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 一律の環境設計は逆効果を生み、個人の刺激閾値に応じた選択肢（静音ゾーン等）が生産性向上の鍵となる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🎓 例4: アジア系学生の学業成績</h4>
+      <p><strong>背景:</strong> 米国の学校で、アジア系移民の子どもたちは授業中の発言は少ないが、テストや課題では高い成績を収める傾向がある。文化的に内向性が尊重される背景を持つ彼らは、熟考と準備を重視する。</p>
+      <p><strong>示唆:</strong> 発言量と能力は必ずしも比例せず、評価方法の多様化が公平性を高める。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 文化的規範の相対性と、多様な評価軸の必要性を示し、教育制度の見直しを促す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🧪 例5: 高反応性気質の子どもの追跡研究</h4>
+      <p><strong>背景:</strong> ジェローム・ケーガンの研究で、乳児期に高反応性（新奇刺激に強く反応）だった子どもを追跡すると、思春期には慎重で思慮深い性格になる傾向が見られた。適切な環境とサポートがあれば、敏感さは洞察力と共感力の源泉となった。</p>
+      <p><strong>示唆:</strong> 気質は運命ではなく、環境との相互作用で強みに転換できる。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 内向性の生物学的基盤を理解し、敏感さを弱点ではなく資質として育てる教育・養育の重要性を示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">📜 重要な引用</h2>
+    
+    <div class="quote-card">
+      <p>「世界はよく話す人を評価しがちだが、静かな人の貢献は見えにくいだけで小さくない。」</p>
+      <small><strong>重要性:</strong> 評価バイアスを自覚し制度設計を改める起点になる。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「優れたアイデアは、独りの集中と熟考から芽生えることが多い。」</p>
+      <small><strong>重要性:</strong> ソロ作業時間の確保が創造性の条件だと示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「内向型は低刺激環境で最も力を発揮する。」</p>
+      <small><strong>重要性:</strong> 環境調整（静音・中断削減）が即効性のある介入だと示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「良いリーダーは必ずしも外向的ではない。」</p>
+      <small><strong>重要性:</strong> 選抜・評価で外向性偏重を是正する根拠になる。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「人は核心プロジェクトのためなら性格を越えて行動できるが、回復が必要だ。」</p>
+      <small><strong>重要性:</strong> 選択的外向性と回復の両立という実践原則を与える。</small>
+    </div>
+
+    <div style="margin-top: 24px; padding: 20px; background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1)); border-radius: 8px;">
+      <h3 style="color: var(--secondary); margin-bottom: 12px;">💬 引用の共通テーマ</h3>
+      <p style="font-size: 0.95rem;">これらの引用は、<strong>評価の公平性</strong>、<strong>環境設計の重要性</strong>、<strong>リーダーシップの多様性</strong>、<strong>戦略的適応</strong>という4つの柱を形成し、内向型の力を解き放つための理論的・実践的基盤を提供している。</p>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">✅ 今日のアクション</h2>
+    
+    <div class="action-card">
+      <h4>🤫 アクション1: 静かな場所で25分ソロ作業する</h4>
+      <p><strong>目的:</strong> 自分の刺激のスイートスポットを体感し、集中力の質を確認する。</p>
+      <p><strong>期待効果:</strong> 中断のない環境での生産性向上を実感し、今後の作業環境設計の基準を得る。深い思考を要するタスクの進捗が加速する。</p>
+      <p><span class="badge">15分</span> 実行時間の目安</p>
+    </div>
+
+    <div class="action-card">
+      <h4>📊 アクション2: 過去1日の刺激と疲労を記録</h4>
+      <p><strong>目的:</strong> どの活動・環境が自分のエネルギーを奪い、どれが充填するかを可視化する。</p>
+      <p><strong>期待効果:</strong> 刺激閾値の自己認識が深まり、スケジュール調整や環境選択の判断材料が得られる。消耗パターンの早期発見が可能になる。</p>
+      <p><span class="badge">20分</span> 実行時間の目安</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🎯 アクション3: 核プロジェクトの一文目的を書く</h4>
+      <p><strong>目的:</strong> 自分が最も大切にする取り組みを明確化し、エネルギー投資の優先順位を定める。</p>
+      <p><strong>期待効果:</strong> 外向的行動を使うべき場面と、回復を優先すべき場面の判断基準が明確になる。意味ある目標への集中力が高まる。</p>
+      <p><span class="badge">15分</span> 実行時間の目安</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🛡️ アクション4: 明日の回復の隙間を1つスケジュールに入れる</h4>
+      <p><strong>目的:</strong> 意図的な充電時間を確保し、持続可能な活動リズムを設計する。</p>
+      <p><strong>期待効果:</strong> 疲労の蓄積を防ぎ、翌日以降のパフォーマンスと幸福感が向上する。回復習慣の定着の第一歩となる。</p>
+      <p><span class="badge">10分</span> 実行時間の目安</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🗣️ アクション5: 次の会議で1つだけ準備した発言をする</h4>
+      <p><strong>目的:</strong> 自由特性理論を実践し、計画的な外向的行動の効果を体験する。</p>
+      <p><strong>期待効果:</strong> 準備による自信と質の高い貢献を実感し、発言量より質で評価される道筋を開く。選択的外向性の有効性を確認できる。</p>
+      <p><span class="badge">30分</span> 準備＋実行の目安</p>
+    </div>
+
+    <div style="margin-top: 24px; padding: 20px; background: var(--card-bg); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-left: 5px solid var(--primary);">
+      <h3 style="color: var(--secondary); margin-bottom: 12px;">🚀 アクション実行のヒント</h3>
+      <ul style="list-style: none; padding-left: 0;">
+        <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size: 0.9rem;">
+          <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">1.</span>
+          最も実行しやすいアクションから始める（小さな成功体験が継続の鍵）
+        </li>
+        <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size: 0.9rem;">
+          <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">2.</span>
+          カレンダーに具体的な時間をブロックする（意図→実行の橋渡し）
+        </li>
+        <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size: 0.9rem;">
+          <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">3.</span>
+          実行後に短いメモを残す（気づきの蓄積が自己理解を深める）
+        </li>
+        <li style="padding: 6px 0; padding-left: 20px; position: relative; font-size: 0.9rem;">
+          <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">4.</span>
+          1週間後に効果を振り返り、習慣化する価値があるか判断する
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top: 40px;">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">📚 関連書籍</h2>
+    <div class="related-books">
+      <div class="book-card">
+        <h4>Quiet Power 静かな力を持つキミへ</h4>
+        <p><strong>著者:</strong> スーザン・ケイン</p>
+        <small><strong>関連性:</strong> 若者・教育現場向けに内向型の実践策を展開。</small>
+      </div>
+      <div class="book-card">
+        <h4>内向型人間のすごい力</h4>
+        <p><strong>著者:</strong> マーティ・O・レイニー</p>
+        <small><strong>関連性:</strong> 内向型の神経学的基礎と具体的対処を補強。</small>
+      </div>
+      <div class="book-card">
+        <h4>ささいなことにもすぐに「動揺」してしまうあなたへ</h4>
+        <p><strong>著者:</strong> エレイン・N・アーロン</p>
+        <small><strong>関連性:</strong> 高感受性の特性とセルフケアが内向性理解を深化。</small>
+      </div>
+      <div class="book-card">
+        <h4>GIVE & TAKE 与える人こそ成功する時代</h4>
+        <p><strong>著者:</strong> アダム・グラント</p>
+        <small><strong>関連性:</strong> 静かなリーダーの有効性やチーム特性との相互作用を実証的に補う。</small>
+      </div>
+      <div class="book-card">
+        <h4>Me, Myself, and Us</h4>
+        <p><strong>著者:</strong> ブライアン・R・リトル</p>
+        <small><strong>関連性:</strong> 自由特性理論とコア・プロジェクトの実践が本書の戦略を理論面で支える。</small>
+      </div>
+      <div class="book-card">
+        <h4>深い仕事 ディープワーク</h4>
+        <p><strong>著者:</strong> カル・ニューポート</p>
+        <small><strong>関連性:</strong> 中断のない集中環境設計が内向型の強み最大化に直結。</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>📖 このインフォグラフィックは「Quiet 内向型人間の時代」の要点を視覚化したものです</p>
+  <p style="margin-top: 8px; font-size: 0.85rem;">カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+
+  const metricFills = document.querySelectorAll('.metric-fill');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.width = entry.target.getAttribute('style').match(/width:\s*(\d+%)/)[1];
+      }
+    });
+  }, { threshold: 0.5 });
+
+  metricFills.forEach(fill => {
+    const targetWidth = fill.style.width;
+    fill.style.width = '0%';
+    observer.observe(fill);
+    setTimeout(() => {
+      fill.style.width = targetWidth;
+    }, 100);
+  });
+});
+</script>
+</body>
+</html>
