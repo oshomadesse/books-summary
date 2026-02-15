@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ウォールデン - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #2d5016 セカンダリー #8b7355 アクセント #d4a574 -->
+<style>
+:root {
+  --primary: #2d5016;
+  --secondary: #8b7355;
+  --accent: #d4a574;
+  --bg: #faf9f7;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--secondary);
+  color: var(--secondary);
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--accent);
+  color: white;
+}
+.tab-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.6rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+  color: var(--text-light);
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, #f0ede8, #faf9f7);
+  border-left: 3px solid var(--accent);
+  padding: 0.7rem;
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--secondary);
+  border-radius: 0.3rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+  color: var(--text-light);
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 4rem;
+  position: absolute;
+  top: -0.5rem;
+  left: 1rem;
+  opacity: 0.3;
+  font-family: Georgia, serif;
+}
+.quote-card blockquote {
+  font-size: 1.05rem;
+  font-style: italic;
+  margin-bottom: 0.8rem;
+  position: relative;
+  z-index: 1;
+}
+.quote-card .significance {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding-top: 0.8rem;
+}
+.action-card {
+  background: var(--card-bg);
+  border: 2px solid var(--accent);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.action-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .action-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+}
+.action-card .action-detail {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+.metric-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.visual-flow {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.visual-flow h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: var(--text-light);
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+}
+.example-card .context {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  margin-bottom: 0.8rem;
+  line-height: 1.6;
+}
+.related-book {
+  background: var(--card-bg);
+  border-left: 4px solid var(--secondary);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.related-book h4 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.3rem;
+}
+.related-book .author {
+  font-size: 0.9rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+.related-book .relation {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📖 ウォールデン - 森の生活</h1>
+  <p>ヘンリー・D・ソロー | 意図的な簡素さと自己依拠の実験</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約 = 問い × 答え × 根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      現代的な過剰と慌ただしさの中で、人はどうすれば自由で充実した生を得られるか?
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      自然の中での実験に学び、欲望と支出を最小化する「意図的な簡素な暮らし」で自己依拠を高め、時間の主権を取り戻す。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      社会の慣習は過剰な労働と消費を生み、細部に人生を浪費させるが、ウォールデンでの実践は少ない資源でも知的・精神的に充足し得ることを示した。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      支出の見える化と削減、所有の縮減、小さな住まいと自給的労働、日課（読書・観察・省察）の設計により、労働時間を圧縮し自由時間を創出する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true">主要概念の詳細</button>
+    <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false">各章の要約</button>
+    <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false">具体例</button>
+    <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false">重要な引用</button>
+    <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false">今日のアクション</button>
+  </div>
+
+  <div id="concepts" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🌿 簡素化</h3>
+        <ul>
+          <li>不要な所有と活動を削ぎ落とす</li>
+          <li>本質に資源（時間・注意・お金）を集中</li>
+          <li>一言要約: 少なくして豊かに</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 過剰が注意を散漫にし、本当に大切なものへの集中を妨げるため、削減こそが自由への第一歩となる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🧘 自己依拠</h3>
+        <ul>
+          <li>自分の判断と行為に責任を持つ</li>
+          <li>社会規範や市場への依存を最小化</li>
+          <li>一言要約: 依らずに立つ</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 他者や制度への依存は自由を奪い、自分の価値観を見失わせるため、独立した判断力が必要。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎯 意図的生活</h3>
+        <ul>
+          <li>目的と価値に照らして日々を設計</li>
+          <li>能動的な選択を重ねる</li>
+          <li>一言要約: 意志で設計</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 無自覚な習慣は人生を浪費させるため、意識的な選択が充実した生を生む。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⏰ 時間の経済</h3>
+        <ul>
+          <li>労働・消費・余暇の交換比率を見直す</li>
+          <li>自由時間を最大化する考え方</li>
+          <li>一言要約: 時間を取り戻す</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> お金のために時間を売り過ぎると、人生の主権を失うため、時間こそ最も貴重な資源と認識すべき。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌲 自然の教師</h3>
+        <ul>
+          <li>自然の循環と静けさから学ぶ</li>
+          <li>倫理と洞察を得る態度</li>
+          <li>一言要約: 自然に学ぶ</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 自然は人工的な価値観を相対化し、本質的な真理を示すため、観察が精神を更新する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💎 清貧</h3>
+        <ul>
+          <li>物的豊かさより精神的充実を選ぶ</li>
+          <li>節度ある暮らし</li>
+          <li>一言要約: 足るを知る</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 物質的欲望は際限なく膨らみ、満足を遠ざけるため、節度が真の豊かさをもたらす。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🤫 孤独の創造性</h3>
+        <ul>
+          <li>独りの時間が感受性を育てる</li>
+          <li>創造を促す理解</li>
+          <li>一言要約: 独りで深まる</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 社交の騒音は内省を妨げるため、孤独こそが自己理解と創造の源泉となる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🚂 文明批判</h3>
+        <ul>
+          <li>交通・通信・商業の進歩を懐疑</li>
+          <li>幸福との関係を検証</li>
+          <li>一言要約: 進歩を問う</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 技術的進歩が必ずしも人間の幸福を増さないため、盲目的な信仰を疑う必要がある。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔬 実験としての生活</h3>
+        <ul>
+          <li>暮らしを仮説検証の対象とする</li>
+          <li>記録と調整を繰り返す姿勢</li>
+          <li>一言要約: くらしを実験</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 固定観念に縛られず、試行錯誤を通じて最適な生き方を発見できるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚖️ 観照と労働の均衡</h3>
+        <ul>
+          <li>肉体労働と読書・省察のリズム</li>
+          <li>動と静を調和させる配分</li>
+          <li>一言要約: 動と静の調和</li>
+        </ul>
+        <div class="reason">
+          <strong>理由:</strong> 一方に偏ると心身のバランスが崩れるため、両者の調和が持続可能な生を支える。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-flow">
+      <h3>🔄 概念間の関係性</h3>
+      <div class="flow-item">
+        <span>簡素化</span>
+        <span class="flow-arrow">→</span>
+        <span>支出縮小</span>
+        <span class="flow-arrow">→</span>
+        <span>労働短縮</span>
+        <span class="flow-arrow">→</span>
+        <span>自由時間拡大</span>
+        <span class="flow-arrow">→</span>
+        <span>省察と学びの深化</span>
+      </div>
+      <div class="flow-item">
+        <span>自己依拠</span>
+        <span class="flow-arrow">×</span>
+        <span>文明批判</span>
+        <span class="flow-arrow">→</span>
+        <span>意図的生活の設計</span>
+      </div>
+      <div class="flow-item">
+        <span>自然の教師</span>
+        <span class="flow-arrow">↔</span>
+        <span>観照</span>
+        <span class="flow-arrow">→</span>
+        <span>価値基準の更新</span>
+        <span class="flow-arrow">→</span>
+        <span>簡素化の強化</span>
+      </div>
+      <div class="flow-item">
+        <span>清貧</span>
+        <span class="flow-arrow">→</span>
+        <span>欲望の再定義</span>
+        <span class="flow-arrow">→</span>
+        <span>静けさと集中力の獲得</span>
+      </div>
+      <div class="flow-item">
+        <span>孤独の創造性</span>
+        <span class="flow-arrow">→</span>
+        <span>感受性・独創性の向上</span>
+        <span class="flow-arrow">→</span>
+        <span>自立の強化</span>
+      </div>
+      <div class="flow-item">
+        <span>時間の経済</span>
+        <span class="flow-arrow">→</span>
+        <span>日課の最適化</span>
+        <span class="flow-arrow">→</span>
+        <span>継続可能な実験としての生活</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="chapters" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>💰 経済</h3>
+      <ul>
+        <li>小屋建築費や食費を細かく開示</li>
+        <li>少額で生きられる事実を提示</li>
+        <li>前提となる「必要経費」の常識を覆す</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 具体的な数字で実証することで、「お金がないと生きられない」という思い込みを崩し、選択肢を広げるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🏡 居住と設計</h3>
+      <ul>
+        <li>ウォールデン池畔での小屋・菜園・自給の段取り</li>
+        <li>意図的生活の枠組みを示す</li>
+        <li>住まいの最小化と機能性の追求</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 住居は生活の基盤であり、その設計が日々の自由度を決めるため、小さく賢く住むことが自立の鍵となる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📚 読書</h3>
+      <ul>
+        <li>古典を精神の糧として位置づけ</li>
+        <li>知的鍛錬の価値を擁護</li>
+        <li>深い読書が思考を鍛える</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 表面的な情報消費ではなく、古典との対話が精神を深化させ、自己依拠の基盤を作るため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔔 音と自然</h3>
+      <ul>
+        <li>列車の騒音と自然音を対比</li>
+        <li>注意の再訓練を提案</li>
+        <li>静けさの中で聴く力を取り戻す</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 文明の騒音が感受性を鈍らせるため、自然音に耳を澄ますことで本質的な気づきを得られる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🤝 孤独と来訪者</h3>
+      <ul>
+        <li>独りの充足と節度ある社交の意味を検討</li>
+        <li>孤独の価値と人間関係の質</li>
+        <li>量より質の交流</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 社交の過剰は自己を希薄化させるため、孤独と選択的な交流のバランスが重要。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🌱 豆畑</h3>
+      <ul>
+        <li>労働のリズムと自然との協働を寓話的に描く</li>
+        <li>耕作を通じた学びと瞑想</li>
+        <li>手を動かすことの意味</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 肉体労働が思考を整理し、自然との対話を生むため、頭だけでなく体を使うことが全人的成長につながる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🏘️ 村</h3>
+      <ul>
+        <li>市場社会や慣習を観察</li>
+        <li>距離の取り方を示す</li>
+        <li>参加と離脱のバランス</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 社会から完全に離れるのではなく、適切な距離を保つことで、批判的視点と自由を維持できるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>⚖️ 高い法</h3>
+      <ul>
+        <li>食・狩猟・節制に関する内的倫理と規律を論じる</li>
+        <li>欲望の統御と精神的向上</li>
+        <li>自己規律の重要性</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 外的な規則ではなく内的な倫理が真の自由を支えるため、自己統治の力を養う必要がある。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>❄️ 冬の章群</h3>
+      <ul>
+        <li>暖房・氷・動物観察・池の測量</li>
+        <li>適応と観察の知恵を掘り下げる</li>
+        <li>厳しい季節での工夫と発見</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 困難な環境こそが創意工夫を引き出し、自然の深い理解をもたらすため、逆境が成長の機会となる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🌸 春</h3>
+      <ul>
+        <li>融解と再生の描写</li>
+        <li>循環と生成の力を象徴化</li>
+        <li>希望と新たな始まり</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 自然の再生サイクルが人生の可能性を示し、変化と更新の勇気を与えるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎵 結論</h3>
+      <ul>
+        <li>「各人の鼓手」に歩調を合わせよと述べる</li>
+        <li>個の道を選ぶ普遍的勧告</li>
+        <li>非同調の勇気を鼓舞</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 他者の期待ではなく自分のリズムで生きることが、真の充実と自由をもたらすため。
+      </div>
+    </div>
+  </div>
+
+  <div id="examples" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🏠 小屋建築の実験</h3>
+      <div class="context">
+        ソローは28ドル12セントで小屋を建て、最小限の資源で快適な住居を実現した。材料費を詳細に記録し、「高価な家は必要ない」という常識を覆した。この実践は、住居費の削減が労働時間の短縮に直結することを示した。
+      </div>
+      <div class="reason">
+        <strong>理由（この例が示すこと）:</strong> 住居への過剰投資が人生の自由を奪うという構造を可視化し、選択肢を広げる具体的な道筋を示すため。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🚂 列車の騒音と自然音</h3>
+      <div class="context">
+        ウォールデンの森に響く列車の汽笛を、ソローは文明の侵入として描いた。一方で、鳥の声や風の音に耳を澄ますことで、注意の質が変わり、思考が深まることを体験した。騒音と静寂の対比が、現代生活の問題を浮き彫りにした。
+      </div>
+      <div class="reason">
+        <strong>理由（この例が示すこと）:</strong> 環境が注意と思考の質を決定するため、意図的に静けさを選ぶことが精神的自由の前提となることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🌾 豆畑での労働</h3>
+      <div class="context">
+        ソローは毎日数時間、豆畑を耕し、雑草を抜いた。この単純な労働が瞑想的な時間となり、自然のリズムと調和する感覚を育てた。収穫物は自給と少額の収入をもたらし、労働と報酬の直接的な関係を体感させた。
+      </div>
+      <div class="reason">
+        <strong>理由（この例が示すこと）:</strong> 肉体労働が精神的充足と経済的自立を同時に生むことを示し、労働の意味を再定義するため。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📖 古典との対話</h3>
+      <div class="context">
+        ソローはホメロスやヴェーダを原語で読み、深い思索の時間を確保した。新聞や流行書ではなく、時代を超えた知恵に触れることで、表面的な情報消費から脱却し、思考の深度を増した。
+      </div>
+      <div class="reason">
+        <strong>理由（この例が示すこと）:</strong> 情報の質が思考の質を決めるため、古典との対話が自己依拠の知的基盤を作ることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>❄️ 冬の池の測量</h3>
+      <div class="context">
+        ソローは凍った池の深さを測り、その形状を記録した。この科学的観察が、自然への畏敬と理解を深め、孤独な冬の時間を豊かにした。測量という行為自体が、自然との対話の一形態となった。
+      </div>
+      <div class="reason">
+        <strong>理由（この例が示すこと）:</strong> 観察と記録が孤独を創造的時間に変え、自然理解が精神的充足をもたらすことを示すため。
+      </div>
+    </div>
+  </div>
+
+  <div id="quotes" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <blockquote>
+        "I went to the woods because I wished to live deliberately, to front only the essential facts of life..."
+      </blockquote>
+      <div class="significance">
+        <strong>意義:</strong> 本書の実験動機と方法（意図性と本質志向）を端的に示す冒頭の宣言だから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        "Simplify, simplify."
+      </blockquote>
+      <div class="significance">
+        <strong>意義:</strong> 過剰を削るという実践的原理を短句で刻み、行動指針となるため。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        "The mass of men lead lives of quiet desperation."
+      </blockquote>
+      <div class="significance">
+        <strong>意義:</strong> 日常の無自覚な不満と他律性を暴き、変化の必要を自覚させるため。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        "If a man does not keep pace with his companions, perhaps it is because he hears a different drummer."
+      </blockquote>
+      <div class="significance">
+        <strong>意義:</strong> 同調圧力から自由になる個のリズムを肯定し、非同調の勇気を与えるから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        "Rather than love, than money, than fame, give me truth."
+      </blockquote>
+      <div class="significance">
+        <strong>意義:</strong> 価値の序列を逆転させ、精神的誠実さを最上位に置く倫理を示すため。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>
+        "A man is rich in proportion to the number of things which he can afford to let alone."
+      </blockquote>
+      <div class="significance">
+        <strong>意義:</strong> 所有でなく手放す力こそ豊かさと定義し、簡素化の価値を測る尺度を与えるため。
+      </div>
+    </div>
+  </div>
+
+  <div id="actions" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>💰 アクション1</h3>
+      <div class="action-text">出費上位5件を書き出せ</div>
+      <div class="action-detail">
+        <strong>目的:</strong> 自分のお金の使い方を可視化し、無自覚な支出パターンを認識する。<br>
+        <strong>期待効果:</strong> 削減可能な項目が明確になり、時間の経済を実践する第一歩となる。労働時間と支出の交換比率を見直すきっかけを得る。<br>
+        <strong>所要時間:</strong> 15分
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🗑️ アクション2</h3>
+      <div class="action-text">机上の不要物を15分で捨てよ</div>
+      <div class="action-detail">
+        <strong>目的:</strong> 物理的な簡素化を体験し、所有が注意を奪うメカニズムを実感する。<br>
+        <strong>期待効果:</strong> 空間が整理されることで思考がクリアになり、集中力が向上する。簡素化の即効性を体感し、継続の動機が生まれる。<br>
+        <strong>所要時間:</strong> 15分
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🌳 アクション3</h3>
+      <div class="action-text">近所の自然を20分観察し記せ</div>
+      <div class="action-detail">
+        <strong>目的:</strong> 自然の教師としての役割を体験し、観察力と感受性を鍛える。<br>
+        <strong>期待効果:</strong> 日常の中に静けさと気づきの時間を作り、文明の騒音から距離を取る習慣の種を蒔く。記録することで観察が深まり、継続の基盤ができる。<br>
+        <strong>所要時間:</strong> 20分
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>📖 アクション4（追加）</h3>
+      <div class="action-text">古典を15分音読する</div>
+      <div class="action-detail">
+        <strong>目的:</strong> 表面的な情報消費から深い読書へ移行し、思考の質を高める。<br>
+        <strong>期待効果:</strong> 音読により集中力が増し、古典の言葉が身体に刻まれる。知的鍛錬の習慣が始まり、自己依拠の基盤が育つ。<br>
+        <strong>所要時間:</strong> 15分
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>⏰ アクション5（追加）</h3>
+      <div class="action-text">今日の時間配分を記録する</div>
+      <div class="action-detail">
+        <strong>目的:</strong> 時間の使い方を可視化し、労働・消費・自由時間の実態を把握する。<br>
+        <strong>期待効果:</strong> 無自覚に浪費している時間が明らかになり、時間の経済を実践する具体的な改善点が見える。<br>
+        <strong>所要時間:</strong> 20分
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 3rem; padding: 2rem; background: var(--card-bg); border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem; font-size: 1.5rem;">📚 関連書籍</h2>
+    
+    <div class="related-book">
+      <h4>自己信頼</h4>
+      <div class="author">ラルフ・ウォルドー・エマーソン</div>
+      <div class="relation">個人の判断と非同調を鼓舞する思想的源流で、ソローの実践を理論面で補強。</div>
+    </div>
+
+    <div class="related-book">
+      <h4>市民的不服従</h4>
+      <div class="author">ヘンリー・D・ソロー</div>
+      <div class="relation">個の良心と行為の独立を社会領域へ拡張し、自己依拠の政治的帰結を示す。</div>
+    </div>
+
+    <div class="related-book">
+      <h4>歩く</h4>
+      <div class="author">ヘンリー・D・ソロー</div>
+      <div class="relation">自然と自由の関係を散策哲学として展開し、自然の教師という視座を深める。</div>
+    </div>
+
+    <div class="related-book">
+      <h4>シエラ・ネバダ初めての夏</h4>
+      <div class="author">ジョン・ミューア</div>
+      <div class="relation">自然記述と精神的高揚の系譜を共有し、自然から学ぶ態度を広げる。</div>
+    </div>
+
+    <div class="related-book">
+      <h4>有閑階級の理論</h4>
+      <div class="author">ソースティン・ヴェブレン</div>
+      <div class="relation">見せびらかし消費の批判を通じ、文明批判と簡素化の妥当性を社会学的に補強。</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-radius: 0.75rem; text-align: center;">
+    <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">🌿 "Simplify, simplify." 🌿</p>
+    <p style="font-size: 0.9rem; opacity: 0.9;">意図的な簡素さが、自由への扉を開く</p>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
