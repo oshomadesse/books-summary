@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心理学と錬金術 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+.tab-btn {
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-left: 4px solid var(--primary);
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.7rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  margin-bottom: 0.7rem;
+  font-size: 1.15rem;
+}
+.example-card {
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+.example-card h3 {
+  color: #d84315;
+  margin-bottom: 0.7rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.quote-card blockquote {
+  font-style: italic;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: linear-gradient(135deg, #a8edea, #fed6e3);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+.action-card h3 {
+  color: #1565c0;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  color: #424242;
+}
+.diagram {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.flow-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+}
+.flow-item {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 120px;
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.book-list {
+  list-style: none;
+}
+.book-list li {
+  background: var(--card-bg);
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--primary);
+}
+.book-list strong {
+  color: var(--primary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.book-list em {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.book-list span {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📖 心理学と錬金術</h1>
+  <p>無意識の投影が織りなす象徴世界を読み解き、自己実現への道を照らす</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約=問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      錬金術は現代の自己理解や治療にどんな価値を持つか?
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      錬金術の象徴は個性化(無意識と自我の統合)を映す普遍言語であり、夢やイメージ作業を通じて自己実現を促進する。
+    </div>
+    <div class="summary-item">
+      <strong>📊 根拠</strong>
+      患者の連続夢と中世錬金術図像の精密な対応、異文化に共通する元型モチーフの収斂、投影メカニズムの臨床的検証。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why(なぜそうなのか)</strong>
+      深層は象徴としてしか表現されず、人は無意識内容を外界(物質・神話)へ投影して初めてそれに気づけるため。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How(そのためには)</strong>
+      夢分析と能動的想像で象徴と対話し、ニグレド→アルベド→ルベドという変容段階とコンジュンクティオの統合を意識化、投影を回収して日常の関係・意思決定に応用する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🔑 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📚 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💡 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">📝 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">📖 関連書籍</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="margin: 1.5rem 0 1rem; color: var(--primary);">🔑 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🌱 個性化</h3>
+        <ul>
+          <li>自我が無意識と対話</li>
+          <li>対立を統合する生涯過程</li>
+          <li>全体性としての自己へ近づく</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 人格の成熟と心的健康の核心プロセスであり、治療目標そのもの。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⭕ 自己(セルフ)</h3>
+        <ul>
+          <li>自我を包含する心的全体性</li>
+          <li>統合の目的因</li>
+          <li>中心原理として機能</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 錬金術の「賢者の石」に対応し、変容の最終目標を示す。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🧠 自我(エゴ)</h3>
+        <ul>
+          <li>意識の中心</li>
+          <li>無意識と向き合う主体</li>
+          <li>対話を通じて拡張される</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 変容の出発点であり、意識化の担い手として不可欠。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌊 共同無意識</h3>
+        <ul>
+          <li>人類に普遍的な心的基盤</li>
+          <li>元型がここに潜む</li>
+          <li>文化を超えて共有される</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 錬金術象徴が時代・地域を超えて類似する根拠を提供。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎭 元型(アーキタイプ)</h3>
+        <ul>
+          <li>反復出現する普遍的イメージ様式</li>
+          <li>夢・神話・錬金図像に現れる</li>
+          <li>無意識の構造的パターン</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 象徴解釈の鍵であり、個人体験と普遍性を結ぶ。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎬 投影</h3>
+        <ul>
+          <li>無意識内容を外界に映し出す</li>
+          <li>他者・物質に象徴化される</li>
+          <li>気づけば回収できる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 錬金術師が物質に心を見た仕組みを説明し、自己理解の入口となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💬 能動的想像</h3>
+        <ul>
+          <li>意識と無意識の対話を促す</li>
+          <li>象徴を展開し関係を築く</li>
+          <li>内的ワークの中核技法</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 夢分析を補完し、変容を能動的に促進する実践法。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌑 ニグレド(黒化)</h3>
+        <ul>
+          <li>崩壊・混沌・影との対面</li>
+          <li>停滞や苦悩として体験</li>
+          <li>変容の第一段階</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 危機や抑うつを意味ある過程として位置づけ、希望を与える。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚪ アルベド(白化)</h3>
+        <ul>
+          <li>浄化・区別化の段階</li>
+          <li>洞察と明確化が進む</li>
+          <li>光が差し始める</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 混沌から秩序への移行を示し、治療の進展を可視化。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔴 ルベド(赤化)</h3>
+        <ul>
+          <li>生気の回復と統合の成熟</li>
+          <li>全体性の兆しが強まる</li>
+          <li>変容の完成に近づく</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 生命力の復活と統合の実感を表し、治癒の徴となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💑 コンジュンクティオ(合一)</h3>
+        <ul>
+          <li>対立物の象徴的結合</li>
+          <li>太陽と月、意識と無意識</li>
+          <li>統合の頂点</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 反対性の統合が治癒と創造の源泉であることを示す。
+        </div>
+      </div>
+      <div class="card">
+        <h3>☿ メルクリウス</h3>
+        <ul>
+          <li>変容を媒介するトリックスター</li>
+          <li>精神と物質を往還</li>
+          <li>導き、攪乱もする</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 変容の両義性(恵みと試練)を体現し、プロセスの複雑さを教える。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💎 賢者の石(ラピス)</h3>
+        <ul>
+          <li>変容の完成と救済の象徴</li>
+          <li>心理学的には自己の顕現</li>
+          <li>究極の目標</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 個性化の到達点を具体的イメージで示し、方向性を与える。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌉 超越機能</h3>
+        <ul>
+          <li>意識と無意識の緊張を昇華</li>
+          <li>創造的第三項を生む</li>
+          <li>心的働きの核心</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 二項対立を超える創造性の源泉であり、治療の鍵。
+        </div>
+      </div>
+      <div class="card">
+        <h3>👤 アニマ/アニムス</h3>
+        <ul>
+          <li>異性像の元型</li>
+          <li>無意識への案内役</li>
+          <li>内なる他者として現れる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 関係性の投影を理解し、内的対話の相手を提供する。
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <h3 style="color: var(--secondary); margin-bottom: 1rem;">🔗 概念間の関係性</h3>
+      <div class="flow-container">
+        <div class="flow-item">共同無意識の元型</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">夢・錬金術図像</div>
+      </div>
+      <div class="flow-container">
+        <div class="flow-item">投影</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">物質/他者に象徴化</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">解釈で回収</div>
+      </div>
+      <div class="flow-container">
+        <div class="flow-item">ニグレド</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">アルベド</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">ルベド</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">ラピス</div>
+      </div>
+      <div class="flow-container">
+        <div class="flow-item">コンジュンクティオ</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">自己の顕現</div>
+      </div>
+      <div class="flow-container">
+        <div class="flow-item">能動的想像・夢分析</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">超越機能</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">新しい統合像</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="margin: 1.5rem 0 1rem; color: var(--secondary);">📚 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3>序論: 錬金術を心理学的に読む</h3>
+      <ul>
+        <li>錬金術は無意識の投影史である</li>
+        <li>比較象徴学と臨床事例を統合</li>
+        <li>夢と図像の対応を実証する方法論</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 本書の独自性と方法を明示し、読者に視座を提供するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第I部: 投影理論と錬金術の基礎</h3>
+      <ul>
+        <li>投影のメカニズムと回収</li>
+        <li>メルクリウス、ラピス、段階論の整理</li>
+        <li>錬金術用語の心理学的翻訳</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 理論的基盤を固め、以降の図像分析を理解可能にするため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第II部: 患者の連続夢と図像の対応</h3>
+      <ul>
+        <li>実際の夢シリーズを精査</li>
+        <li>太陽・月、王と王妃、樹、蛇などのモチーフ</li>
+        <li>錬金文献との精密な対応を実証</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 理論を臨床で検証し、象徴の普遍性と実効性を示すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第III部: 宗教的観念と個人心理</h3>
+      <ul>
+        <li>救済、聖霊=メルクリウスの考察</li>
+        <li>コンジュンクティオの宗教的意味</li>
+        <li>個人心理への含意を拡張</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 錬金術の深層にある宗教性を明らかにし、現代的意義を深めるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>結語: 錬金術=無意識の投影</h3>
+      <ul>
+        <li>全体の総論を確認</li>
+        <li>象徴作業が個性化を実効化する道</li>
+        <li>現代への応用可能性を示唆</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 読者に実践への橋渡しをし、本書の価値を日常に接続するため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="margin: 1.5rem 0 1rem; color: #d84315;">💡 具体例</h2>
+
+    <div class="example-card">
+      <h3>🌙 例1: 患者の夢に現れた太陽と月の結婚</h3>
+      <p><strong>背景:</strong> ある患者が繰り返し見た夢で、太陽(男性原理)と月(女性原理)が結ばれる場面が登場。これは中世錬金術の「王と王妃の合一」図像と酷似していた。</p>
+      <p><strong>示唆:</strong> 患者の内的な対立(理性と感情、意識と無意識)が統合へ向かう兆しであり、治療の転換点となった。</p>
+      <div class="reason-box">
+        <strong>理由:</strong> 象徴が時空を超えて反復し、個人の変容を導く普遍性を実証する。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🐍 例2: 蛇のウロボロスと自己回帰</h3>
+      <p><strong>背景:</strong> 自分の尾を噛む蛇(ウロボロス)は錬金術で循環と永遠を象徴。患者の夢にも登場し、終わりなき自己探求のテーマを示した。</p>
+      <p><strong>示唆:</strong> 個性化は直線的でなく螺旋的であり、同じテーマが深まりながら回帰することを教える。</p>
+      <div class="reason-box">
+        <strong>理由:</strong> 変容の非線形性を視覚化し、挫折を過程として受容させる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🔥 例3: ニグレドとしての抑うつ体験</h3>
+      <p><strong>背景:</strong> 患者が深い抑うつに陥った時期、夢には暗闇・腐敗・死のイメージが頻出。これは錬金術のニグレド(黒化)段階に対応。</p>
+      <p><strong>示唆:</strong> 苦悩は無意味な病理ではなく、変容の必要な第一段階であり、その後の浄化(アルベド)への準備だった。</p>
+      <div class="reason-box">
+        <strong>理由:</strong> 危機を意味ある過程として再定義し、希望と方向性を与える。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="margin: 1.5rem 0 1rem; color: var(--accent);">📝 重要な引用</h2>
+
+    <div class="quote-card">
+      <blockquote>"錬金術は無意識が物質へ投影された歴史である。"</blockquote>
+      <p><strong>なぜ重要か:</strong> 本書の中心命題で、心理学と錬金術を結ぶ橋を示す。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"象徴は未知と既知のあいだの橋である。"</blockquote>
+      <p><strong>なぜ重要か:</strong> 象徴解釈が治療と自己理解の核心だと示す。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"自己は自我を包含する全体性である。"</blockquote>
+      <p><strong>なぜ重要か:</strong> 目標(ラピス)を心理学用語で定義する。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"反対物の結合は治癒の徴である。"</blockquote>
+      <p><strong>なぜ重要か:</strong> コンジュンクティオの臨床的意義を端的に示す。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"メルクリウスは精神と物質の媒介者である。"</blockquote>
+      <p><strong>なぜ重要か:</strong> 変容を導く原理の二面性を示し理解を助ける。</p>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="margin: 1.5rem 0 1rem; color: #1565c0;">✅ 今日のアクション</h2>
+
+    <div class="action-card">
+      <h3>📔 アクション1: 昨夜の夢を3件メモする</h3>
+      <p>起床後すぐに夢の断片でも記録し、象徴の素材を集める。</p>
+      <div class="meta">
+        <strong>目的:</strong> 無意識との対話の入口を開く<br>
+        <strong>期待効果:</strong> 繰り返すモチーフに気づき、自己理解の手がかりを得る
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🎨 アクション2: 身近な象徴を1つスケッチする</h3>
+      <p>最近気になった物・動物・風景を描き、なぜ惹かれたか問う。</p>
+      <div class="meta">
+        <strong>目的:</strong> 投影を可視化し意識化する<br>
+        <strong>期待効果:</strong> 無意識内容が外界に映る仕組みを体感する
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>✍️ アクション3: 今日の投影と感情を書き出す</h3>
+      <p>誰かへの強い感情(怒り・憧れ)を記し、自分の何が映っているか考える。</p>
+      <div class="meta">
+        <strong>目的:</strong> 投影の回収を実践する<br>
+        <strong>期待効果:</strong> 他者への反応から自己の影や理想を発見し、統合へ向かう
+      </div>
+    </div>
+  </div>
+
+  <div id="tab6" class="tab-content" role="tabpanel">
+    <h2 style="margin: 1.5rem 0 1rem; color: var(--primary);">📖 関連書籍</h2>
+    <ul class="book-list">
+      <li>
+        <strong>神秘の合一(Mysterium Coniunctionis)</strong>
+        <em>著者: カール・グスタフ・ユング</em>
+        <span>コンジュンクティオと統合の象徴を徹底展開し、本書の到達点を深掘りする。</span>
+      </li>
+      <li>
+        <strong>アイオーン(Aion)</strong>
+        <em>著者: カール・グスタフ・ユング</em>
+        <span>自己概念とキリスト教象徴を分析し、錬金術的救済像との接点を示す。</span>
+      </li>
+      <li>
+        <strong>人間と象徴</strong>
+        <em>著者: C.G.ユング ほか</em>
+        <span>象徴の基礎理解を平易に提供し、夢と図像解釈の実践に役立つ。</span>
+      </li>
+      <li>
+        <strong>錬金術—その象徴と心理学</strong>
+        <em>著者: マリー＝ルイーズ・フォン・フランツ</em>
+        <span>錬金術象徴をユング心理学の観点から入門的に解説する。</span>
+      </li>
+      <li>
+        <strong>金華の秘密(The Secret of the Golden Flower)</strong>
+        <em>著者: 呂洞賓(伝)、訳注: リヒャルト・ヴィルヘルム／C.G.ユング</em>
+        <span>東洋錬金術的実践をユングが註解し、象徴と変容の普遍性を示す。</span>
+      </li>
+      <li>
+        <strong>鍛冶屋と錬金術</strong>
+        <em>著者: ミルチャ・エリアーデ</em>
+        <span>宗教史の観点から錬金術の神話と儀礼を分析し、文化的背景を補強する。</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
