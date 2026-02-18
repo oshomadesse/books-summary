@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>組織心理学インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+.tab-btn {
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fef5e7, #fdebd0);
+  border-left: 3px solid #f39c12;
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: #d68910;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.example-card {
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.example-card h3 {
+  color: #2e7d32;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  border-left: 4px solid #1976d2;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.quote-card .why {
+  font-style: normal;
+  font-size: 0.85rem;
+  color: #0d47a1;
+  font-weight: 600;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.action-card h3 {
+  color: #e65100;
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: #bf360c;
+  margin-top: 0.5rem;
+}
+.visual-section {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-section h3 {
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.flow-diagram {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+}
+.flow-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 120px;
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  margin: 0.25rem;
+  font-size: 0.9rem;
+}
+.book-list {
+  list-style: none;
+}
+.book-list li {
+  background: white;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.book-list strong {
+  color: var(--primary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.book-list .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-list .relation {
+  font-size: 0.9rem;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .flow-diagram {
+    flex-direction: column;
+  }
+  .flow-arrow {
+    transform: rotate(90deg);
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 組織心理学入門</h1>
+  <p>行動を設計する多層の文脈と対話的介入</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ同じ人でも組織で行動が変わるのか？どうすれば望ましい行動を設計できるのか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      行動は個人・集団・組織文化・制度・リーダーシップの相互作用で決まり、対話的診断と学習を通じた介入で変えられる。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      フィールド研究と事例は、役割期待・規範・権力構造・社会化が動機づけと行動を強く左右することを示す。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      多層診断→仮説設定→小さな安全な実験→振り返り→拡張というループを回し、学習不安を下げつつ文化・関係・仕事設計を整合させる。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🏛️ 組織文化</h3>
+        <ul>
+          <li>成員が共有する前提・価値・行動規範の体系</li>
+          <li>何が重要で正しいかを暗黙に指示する</li>
+          <li>一言要約：見えない作動原理</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>文化は日々の意思決定と行動の土台となり、施策の成否を左右するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎓 組織社会化</h3>
+        <ul>
+          <li>新参が役割・規範・価値を学ぶ過程</li>
+          <li>組織成員として機能するようになる</li>
+          <li>一言要約：内面化の通過儀礼</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>文化の継承と一貫性を保ち、新人の早期戦力化を実現するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎭 役割と役割葛藤</h3>
+        <ul>
+          <li>他者から期待される行動パターン</li>
+          <li>期待の不一致・過多が生む緊張</li>
+          <li>一言要約：期待の板挟み</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>役割の明確化と調整がストレス低減とパフォーマンス向上に直結するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🤝 心理的契約</h3>
+        <ul>
+          <li>雇用関係における暗黙の期待と義務</li>
+          <li>相互理解の基盤</li>
+          <li>一言要約：見えない約束</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>破綻すると信頼とコミットメントが急速に低下し、離職につながるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔥 動機づけ（内発・外発）</h3>
+        <ul>
+          <li>行動を起こし維持する内的興味と外的報酬</li>
+          <li>状況設計で大きく変わる</li>
+          <li>一言要約：やる気の設計</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>報酬や仕事設計の工夫で持続的なエンゲージメントを引き出せるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚡ 権力・影響</h3>
+        <ul>
+          <li>資源・専門性・地位・ネットワークに基づく行動変容能力</li>
+          <li>一言要約：意思決定の重力場</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>権力構造が資源配分と意思決定の質・スピードを決定するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>👥 集団規範と凝集性</h3>
+        <ul>
+          <li>集団内で望ましいとされる行動基準</li>
+          <li>成員の結束度</li>
+          <li>一言要約：場のルールと結びつき</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>規範と凝集性が同調圧力を生み、機能・機能不全の両面を持つため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🧭 リーダーシップ</h3>
+        <ul>
+          <li>文化・意味づけ・関係性を形成</li>
+          <li>適応と学習を方向づける作用</li>
+          <li>一言要約：文化の触媒</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>リーダーが文化を創り、育て、変える中核的役割を担うため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔍 プロセス・コンサルテーション</h3>
+        <ul>
+          <li>助言者が答えを与えず、気づきを促す</li>
+          <li>自力解決を支援する方法</li>
+          <li>一言要約：共同探索</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>現場の自律的問題解決力を高め、再現性のある学習を生むため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🩺 組織診断</h3>
+        <ul>
+          <li>個人・集団・組織レベルのデータを仮説的に読み解く</li>
+          <li>介入の当てどころを定める</li>
+          <li>一言要約：仮説駆動の見る力</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>多層の文脈を統合的に把握し、効果的な介入点を特定するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>😰 学習不安と生存不安</h3>
+        <ul>
+          <li>新しい学習への恐れと現状維持のリスクへの不安</li>
+          <li>変革は両者の相対で進む</li>
+          <li>一言要約：不安のレバレッジ</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>抵抗の根を扱い、安全に行動変容を起こす実務原則となるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔄 変革（解凍・変化・再凍結）</h3>
+        <ul>
+          <li>既存の慣行を揺らす</li>
+          <li>新行動を試行する</li>
+          <li>制度と意味づけで定着させる</li>
+          <li>一言要約：習慣の更新</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>段階的アプローチで持続的な行動変容を実現するため。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-diagram">
+        <div class="flow-box">リーダーシップ</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">文化</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">規範</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">日々の行動</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">業績</div>
+      </div>
+      <ul style="list-style:none; padding:0; margin-top:1rem;">
+        <li style="margin-bottom:0.5rem;">📌 採用・社会化 → 文化の内面化 → 役割遂行の一貫性</li>
+        <li style="margin-bottom:0.5rem;">📌 役割葛藤/曖昧さ ↑ → ストレス ↑ → 満足度/パフォーマンス ↓</li>
+        <li style="margin-bottom:0.5rem;">📌 心理的契約の破綻 → 信頼低下 → コミットメント低下 → 離職意図 ↑</li>
+        <li style="margin-bottom:0.5rem;">📌 権力/影響構造 → 意思決定の質・スピード → 資源配分 → 動機づけ</li>
+        <li style="margin-bottom:0.5rem;">📌 集団凝集性 × 規範適合 → 同調圧力 ↑（機能/機能不全の両面）</li>
+        <li style="margin-bottom:0.5rem;">📌 プロセス・コンサルテーション → 相互理解/学習 → 自律的問題解決力 ↑</li>
+        <li style="margin-bottom:0.5rem;">📌 学習不安 > 生存不安 → 防衛/回避 → 変革失敗</li>
+        <li style="margin-bottom:0.5rem;">📌 安全な小実験 → 成功体験 → 新規範の強化 → 再凍結</li>
+        <li style="margin-bottom:0.5rem;">📌 組織構造/制度 ⇄ 文化（相互強化または抑制の循環）</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 第I部：個人レベル</h3>
+      <ul style="list-style:none; padding-left:0;">
+        <li style="margin-bottom:0.5rem;">🔹 知覚・学習・動機づけ・役割の基礎を提示</li>
+        <li style="margin-bottom:0.5rem;">🔹 行動の状況依存性を明らかにする</li>
+        <li style="margin-bottom:0.5rem;">🔹 個人特性よりも文脈設計が行動を左右する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>個人を責めず環境を設計する発想転換の土台を築くため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第II部：集団レベル</h3>
+      <ul style="list-style:none; padding-left:0;">
+        <li style="margin-bottom:0.5rem;">🔹 集団形成、規範、コミュニケーションの力学</li>
+        <li style="margin-bottom:0.5rem;">🔹 リーダーシップと権力の作用</li>
+        <li style="margin-bottom:0.5rem;">🔹 集団が個人行動に与える圧力と支援</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>チームの規範と関係性が個人の動機づけと成果を大きく左右するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第III部：組織レベル</h3>
+      <ul style="list-style:none; padding-left:0;">
+        <li style="margin-bottom:0.5rem;">🔹 構造・文化・社会化・心理的契約の制度的文脈</li>
+        <li style="margin-bottom:0.5rem;">🔹 組織全体の仕組みが行動をどう規定するか</li>
+        <li style="margin-bottom:0.5rem;">🔹 文化と制度の相互強化・抑制の循環</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>個別施策でなく、文化・制度の整合的設計が持続的変化を生むため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第IV部：変革と介入</h3>
+      <ul style="list-style:none; padding-left:0;">
+        <li style="margin-bottom:0.5rem;">🔹 診断、プロセス・コンサルテーション、教育訓練</li>
+        <li style="margin-bottom:0.5rem;">🔹 小実験などの実践的アプローチを統合</li>
+        <li style="margin-bottom:0.5rem;">🔹 処方ではなく『共同学習のデザイン』へ収束</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>現場の自律的問題解決力を高め、再現性のある変革を実現するため。
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>🧩 全体の論理展開</h3>
+      <div class="flow-diagram">
+        <div class="flow-box">個人</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">集団</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">組織</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">介入</div>
+      </div>
+      <p style="margin-top:1rem; font-size:0.95rem;">多層の積み上げで、処方ではなく『共同学習のデザイン』へと収束する構造。</p>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🌟 具体例1：新人の社会化プログラム</h3>
+      <p><strong>背景：</strong>ある企業が新人に対し、メンター制度・ローテーション・定期振り返りを組み合わせた社会化プログラムを導入。</p>
+      <p><strong>示唆：</strong>新人は役割期待と規範を早期に内面化し、離職率が大幅に低下。文化の継承と一貫性が強化された。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>社会化の設計が文化の継承と早期戦力化を同時に実現できることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🌟 具体例2：役割葛藤の可視化ワークショップ</h3>
+      <p><strong>背景：</strong>中間管理職が上司と部下からの矛盾する期待に悩んでいた。ファシリテーターが期待マップを作成し、対話の場を設定。</p>
+      <p><strong>示唆：</strong>期待の不一致が明確になり、役割の再定義と優先順位の合意が形成され、ストレスが軽減。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>役割葛藤の可視化と対話が、ストレス低減とパフォーマンス向上に直結することを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🌟 具体例3：小さな安全な実験による変革</h3>
+      <p><strong>背景：</strong>ある組織が新しい働き方を導入する際、全社展開ではなく1チームで3ヶ月の試行を実施。成功体験を共有し、段階的に拡大。</p>
+      <p><strong>示唆：</strong>学習不安を下げ、生存不安を適切に高めることで、抵抗を最小化し、新規範が定着。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>小実験と学習のサイクルが、安全に行動変容を起こす実務原則であることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🌟 具体例4：リーダーによる文化の再定義</h3>
+      <p><strong>背景：</strong>新CEOが就任後、対話セッションを重ね、「失敗を学びと捉える」文化を明示的に宣言。自ら失敗談を共有。</p>
+      <p><strong>示唆：</strong>リーダーの言動が文化の意味づけを変え、心理的安全性が向上し、イノベーションが加速。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>リーダーシップが文化の触媒として機能し、規範と行動を変える力を持つことを示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>「人の行動は個人特性よりも状況・文脈の設計に強く影響される。」</p>
+      <p class="why">💡 なぜ重要か：人を責めず環境を設計する発想転換を促すから。</p>
+    </div>
+
+    <div class="quote-card">
+      <p>「リーダーの中核任務は、組織文化を創り、育て、守り、必要に応じて変えることだ。」</p>
+      <p class="why">💡 なぜ重要か：施策単発でなく規範・意味づけへの働きかけを指針化できるから。</p>
+    </div>
+
+    <div class="quote-card">
+      <p>「良い助言は処方ではなく、当事者が気づき学ぶプロセスを支える。」</p>
+      <p class="why">💡 なぜ重要か：現場の自律的問題解決力を高め、再現性を生むため。</p>
+    </div>
+
+    <div class="quote-card">
+      <p>「変革は『学習不安を下げ、生存不安を適切に高める』設計で前に進む。」</p>
+      <p class="why">💡 なぜ重要か：抵抗の根を扱い、安全に行動変容を起こす実務原則となるため。</p>
+    </div>
+
+    <div class="visual-section">
+      <h3>📊 重要指標の可視化</h3>
+      <div style="margin:1rem 0;">
+        <span class="metric-badge">🎯 文化の影響力：80%</span>
+        <span class="metric-badge">📈 社会化の効果：離職率-40%</span>
+        <span class="metric-badge">⚡ 役割明確化：ストレス-30%</span>
+      </div>
+      <p style="font-size:0.9rem; color:var(--text-light);">※ 数値は概念的な重要度を示すイメージです。</p>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>✅ アクション1：主要ステークホルダー3名を書き出す</h3>
+      <p>あなたの仕事に影響を与える、または影響を受ける主要な人物3名をリストアップし、それぞれの期待と関係性を整理する。</p>
+      <div class="meta">
+        <strong>目的：</strong>役割と権力構造の可視化<br>
+        <strong>期待効果：</strong>影響マップの基礎ができ、コミュニケーション戦略が明確になる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション2：チームの暗黙規範を5つ可視化</h3>
+      <p>あなたのチームで「当たり前」とされている行動や価値観を5つ書き出し、それが機能的か機能不全かを評価する。</p>
+      <div class="meta">
+        <strong>目的：</strong>集団規範の診断<br>
+        <strong>期待効果：</strong>文化の見える化により、改善の当てどころが明確になる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション3：影響マップを手書きで作成する</h3>
+      <p>紙に自分を中心に置き、周囲の人物・部署・資源を配置し、影響の方向と強さを矢印で描く。</p>
+      <div class="meta">
+        <strong>目的：</strong>権力と影響構造の可視化<br>
+        <strong>期待効果：</strong>意思決定の重力場が見え、戦略的な働きかけが可能になる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション4：心理的契約の期待を言語化する</h3>
+      <p>上司・組織に対して「暗黙に期待していること」を3つ書き出し、それが満たされているかチェックする。</p>
+      <div class="meta">
+        <strong>目的：</strong>心理的契約の診断<br>
+        <strong>期待効果：</strong>期待のズレを早期発見し、対話のきっかけを作る
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション5：小さな実験を1つ設計する</h3>
+      <p>変えたい行動や習慣を1つ選び、1週間で試せる小さな実験（例：朝会で1分の振り返り）を設計する。</p>
+      <div class="meta">
+        <strong>目的：</strong>学習不安を下げた変革の第一歩<br>
+        <strong>期待効果：</strong>成功体験が新規範の強化につながり、拡張の土台ができる
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>📚 関連書籍</h3>
+      <ul class="book-list">
+        <li>
+          <strong>組織文化とリーダーシップ</strong>
+          <div class="author">著者：エドガー・H・シャイン</div>
+          <div class="relation">文化の形成・変革をより深く掘り下げ、本書の文化論を補完する。</div>
+        </li>
+        <li>
+          <strong>プロセス・コンサルテーション</strong>
+          <div class="author">著者：エドガー・H・シャイン</div>
+          <div class="relation">対話的診断と介入の技法を体系化し、実践フェーズを強化する。</div>
+        </li>
+        <li>
+          <strong>キャリア・アンカー</strong>
+          <div class="author">著者：エドガー・H・シャイン</div>
+          <div class="relation">個人の価値観と役割適合を理解し、社会化・動機づけの設計に資する。</div>
+        </li>
+        <li>
+          <strong>組織の社会心理学</strong>
+          <div class="author">著者：ダニエル・カッツ／ロバート・カーン</div>
+          <div class="relation">役割・権力・コミュニケーションの枠組みで本書の理論を補強する。</div>
+        </li>
+        <li>
+          <strong>組織行動</strong>
+          <div class="author">著者：スティーブン・P・ロビンス／ティモシー・ジャッジ</div>
+          <div class="relation">最新研究を幅広く俯瞰し、本書の概念を現代的に位置づけ直す。</div>
+        </li>
+        <li>
+          <strong>恐れのない組織</strong>
+          <div class="author">著者：エイミー・C・エドモンドソン</div>
+          <div class="relation">心理的安全性を通じて学習と変革の条件を具体化する。</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
