@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>習慣の力 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 6px solid var(--accent);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  margin-left: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0 1rem;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff5f7, #fff);
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-light);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.35rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--secondary);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: linear-gradient(135deg, #f5f7ff, #ffffff);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 5px solid var(--primary);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.quote-card blockquote {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.quote-card cite {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 0.3rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-loop {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f5f7ff, #fff);
+  border-radius: 8px;
+}
+.loop-item {
+  text-align: center;
+  flex: 1;
+  min-width: 80px;
+  margin: 0.5rem;
+}
+.loop-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.loop-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--secondary);
+}
+.arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+  margin: 0 0.5rem;
+}
+.metric-bar {
+  background: var(--border);
+  border-radius: 8px;
+  height: 24px;
+  position: relative;
+  margin: 0.75rem 0;
+  overflow: hidden;
+}
+.metric-fill {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: width 1s ease-out;
+}
+.book-list {
+  list-style: none;
+  padding: 0;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--secondary);
+}
+.book-item strong {
+  color: var(--primary);
+  font-size: 1rem;
+}
+.book-item em {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin: 0.25rem 0;
+}
+.book-item p {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 習慣の力</h1>
+  <p>なぜ習慣は繰り返され、どう変えられるのか</p>
+</header>
+
+<div class="container">
+
+  <div class="summary-block">
+    <h2>🎯 要約：問い × 答え × 根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>人はなぜ同じ行動を繰り返し、どうすれば望ましい行動に変えられるのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      <p>習慣は「合図-ルーチン-報酬」のループと渇望が駆動する自動化回路である。変化は合図と報酬を保ちつつルーチンを置換し、キーストーン・ハビットと小さな勝利で拡張し、信念と支援で維持できる。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔬 Why（なぜそうなのか）</strong>
+      <p>神経科学は習慣が基底核で自動化され、報酬予期（渇望）が回路を強化することを示す。実証事例（記憶障害患者の歩行習慣、歯磨き・消臭剤の普及、企業の安全文化、データによる購買習慣形成、社会運動の拡散）が個人・組織・社会で同型のパターンを裏づける。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>1) 対象行動の合図・ルーチン・報酬を観察し特定する。2) 合図と報酬を固定し、望ましい代替ルーチンを設計する（実行意図"もし〜なら〜する"）。3) キーストーン・ハビット（例: 安全・運動・家計の可視化）で小さな勝利を連鎖させる。4) 意志力を手順化・練習で筋力化し、ストレス下のルールを準備する。5) 信念とコミュニティ（チーム/AA型支援）で再発時の復帰力を高める。</p>
+    </div>
+  </div>
+
+  <div class="visual-loop">
+    <div class="loop-item">
+      <div class="loop-icon">🔔</div>
+      <div class="loop-label">合図</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="loop-item">
+      <div class="loop-icon">🏃</div>
+      <div class="loop-label">ルーチン</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="loop-item">
+      <div class="loop-icon">🎁</div>
+      <div class="loop-label">報酬</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="loop-item">
+      <div class="loop-icon">💫</div>
+      <div class="loop-label">渇望</div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">関連書籍</button>
+  </nav>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="margin:1.5rem 0 1rem; color:var(--primary);">🧠 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔁 習慣ループ</h3>
+        <ul>
+          <li>合図がトリガーとなる</li>
+          <li>ルーチン（行動）が自動実行</li>
+          <li>報酬が脳に価値を刻む</li>
+          <li>繰り返しで自動化される</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>仕組みを可視化すると、介入ポイント（置換）が特定できるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔥 渇望</h3>
+        <ul>
+          <li>報酬への予期が生む強い欲求</li>
+          <li>ループを駆動・固定化する中核</li>
+          <li>マーケティングや儀礼で育成</li>
+          <li>渇望なしでは習慣は弱い</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>駆動エンジンを理解すれば、望ましい渇望を設計できるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚖️ 黄金律</h3>
+        <ul>
+          <li>合図と報酬は維持する</li>
+          <li>ルーチンだけを置き換える</li>
+          <li>最小の摩擦で行動変容</li>
+          <li>再発しにくい実践原則</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>変化の作法を知ると、失敗率が劇的に下がるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔑 キーストーン・ハビット</h3>
+        <ul>
+          <li>他の行動群に波及する中核習慣</li>
+          <li>例: 安全最優先、運動、家計記録</li>
+          <li>小さな勝利を連鎖させる</li>
+          <li>組織文化を変えるてこ</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>1つの習慣が複数の改善を引き起こし、効率的に変化を拡大できるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🏆 小さな勝利</h3>
+        <ul>
+          <li>すぐ得られる成功体験</li>
+          <li>モメンタムと自己効力感を高める</li>
+          <li>連鎖的に大きな変化を呼ぶ</li>
+          <li>勢いの種火となる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>初期の成功が心理的資本を蓄積し、持続的な変化の基盤になるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💪 意志力</h3>
+        <ul>
+          <li>訓練で強化できる"心理的筋肉"</li>
+          <li>手順化と事前計画で発揮</li>
+          <li>ストレス下でも機能する</li>
+          <li>消耗を抑える設計が鍵</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>気合ではなく設計と練習で再現性を高められるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🏢 組織の習慣</h3>
+        <ul>
+          <li>会議運営、意思決定の反復パターン</li>
+          <li>暗黙の規範が業績を規定</li>
+          <li>安全文化や品質を左右</li>
+          <li>集団の自動運転</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>個人だけでなく組織レベルでも習慣設計が成果を決めるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🤝 信念とコミュニティ</h3>
+        <ul>
+          <li>"できる"という信念が持続の鍵</li>
+          <li>仲間や組織の支援で強化</li>
+          <li>再発時の復帰力を高める</li>
+          <li>孤立を防ぐ土台</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>挫折からの復帰力を体系的に高め、長期的な変化を可能にするから。
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem; padding:1.5rem; background:linear-gradient(135deg, #f5f7ff, #fff); border-radius:8px;">
+      <h3 style="color:var(--secondary); margin-bottom:1rem;">🔗 概念間の関係性</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative; font-size:0.9rem;">
+          <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">▸</span>
+          合図 → ルーチン → 報酬 → 渇望の強化 → 次回の合図感受性↑
+        </li>
+        <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative; font-size:0.9rem;">
+          <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">▸</span>
+          渇望が形成されるほど、同じ合図でルーチンが自動起動しやすくなる
+        </li>
+        <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative; font-size:0.9rem;">
+          <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">▸</span>
+          変化: 合図＝固定／報酬＝固定／ルーチン＝置換（黄金律）
+        </li>
+        <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative; font-size:0.9rem;">
+          <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">▸</span>
+          キーストーン・ハビット → 小さな勝利の連鎖 → 自己効力感↑ → 他習慣の改善拡大
+        </li>
+        <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative; font-size:0.9rem;">
+          <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">▸</span>
+          意志力の訓練（手順化・実行意図） → ストレス下でも望ましいルーチン選択
+        </li>
+        <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative; font-size:0.9rem;">
+          <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">▸</span>
+          信念×コミュニティ → 再発時の復帰率↑・維持率↑
+        </li>
+        <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative; font-size:0.9rem;">
+          <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">▸</span>
+          組織の習慣設計（安全最優先など） → 事故率↓・品質↑・収益性↑
+        </li>
+        <li style="padding:0.5rem 0; padding-left:1.5rem; position:relative; font-size:0.9rem;">
+          <span style="position:absolute; left:0; color:var(--accent); font-weight:bold;">▸</span>
+          弱いつながり×規範化 → 社会運動の拡散（参加のしきい値↓）
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="margin:1.5rem 0 1rem; color:var(--primary);">📚 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3>序章：習慣は見えない構造</h3>
+      <ul>
+        <li>習慣は個人・組織・社会に通底する</li>
+        <li>変え方には型がある</li>
+        <li>本書は科学と実例で型を示す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>習慣を"見えない構造"として認識することで、介入可能な対象として扱えるようになるから。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第1部：個人の習慣</h3>
+      <ul>
+        <li>①習慣ループの神経科学（記憶障害患者ユージーンの事例）</li>
+        <li>②渇望の役割（歯磨きや消臭剤の普及は渇望設計で成功）</li>
+        <li>③黄金律と変化（AAとフットボールの戦術でルーチン置換と信念の力）</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>個人レベルで習慣の仕組みと変化の原則を理解することが、組織・社会への応用の土台になるから。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第2部：組織の習慣</h3>
+      <ul>
+        <li>④キーストーン・ハビット（アルコアの安全最優先が業績全般を牽引）</li>
+        <li>⑤意志力の制度化（スターバックスの接客手順と"もし〜なら〜する"訓練）</li>
+        <li>⑥危機の力（危機をてこに組織習慣を再設計、病院や地下鉄の事例）</li>
+        <li>⑦データと習慣（小売の分析が購買習慣を予測・形成）</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>組織の成果は個人の能力だけでなく、集団の習慣設計によって決まることを実証するから。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第3部：社会の習慣</h3>
+      <ul>
+        <li>⑧弱いつながりと規範で運動は拡大（バス・ボイコット、教会ネットワーク）</li>
+        <li>⑨自由意志と責任（自動性と選択の境界、規範と責任の再考）</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>社会運動や文化変容も習慣の原理で説明でき、意図的な設計が可能であることを示すから。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>付録：実践ガイド</h3>
+      <ul>
+        <li>自分の習慣ループを特定する手順</li>
+        <li>合図と報酬を保ってルーチンを置換するワーク</li>
+        <li>読者が即座に実践できる形式</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>理論を実践に落とし込むための具体的な手順を提供し、読者の行動変容を促すから。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="margin:1.5rem 0 1rem; color:var(--primary);">💡 具体例</h2>
+
+    <div class="example-card">
+      <h4>🧠 記憶障害患者ユージーンの歩行習慣</h4>
+      <p><strong>背景：</strong>脳炎で記憶を失ったユージーンは新しい情報を覚えられないが、毎日同じルートを散歩できる。基底核が習慣を自動化し、意識的記憶なしで行動が維持される。</p>
+      <p><strong>示唆：</strong>習慣は意識的な記憶とは別の神経回路で動作し、一度形成されると自動的に実行される。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>習慣の自動性が神経科学的に実証され、意識的努力なしで行動が維持される仕組みを示すから。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🦷 歯磨き粉と消臭剤の普及</h4>
+      <p><strong>背景：</strong>ペプソデント（歯磨き粉）とファブリーズ（消臭剤）は、使用後の爽快感や清潔感という"渇望"を設計することで習慣化に成功した。</p>
+      <p><strong>示唆：</strong>報酬への予期（渇望）を育成することで、新しい習慣を定着させられる。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>マーケティングが渇望を設計し、消費者行動を習慣化させる実例として、渇望の力を証明するから。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🏭 アルコアの安全最優先文化</h4>
+      <p><strong>背景：</strong>CEOポール・オニールは安全を最優先するキーストーン・ハビットを導入。事故率が劇的に低下し、同時に業績・品質・従業員満足度も向上した。</p>
+      <p><strong>示唆：</strong>1つの中核習慣が組織全体に波及し、複数の成果を同時に改善する。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>キーストーン・ハビットが組織文化と業績を変える実証例として、てこの原理を示すから。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>☕ スターバックスの接客訓練</h4>
+      <p><strong>背景：</strong>スターバックスは"もし〜なら〜する"（実行意図）の手順を従業員に訓練し、ストレス下でも一貫した接客を実現。意志力を制度化した。</p>
+      <p><strong>示唆：</strong>意志力は手順化と練習で強化でき、組織の標準として埋め込める。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>意志力を個人の資質ではなく、訓練可能なスキルとして扱う実践例だから。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🚌 バス・ボイコット運動</h4>
+      <p><strong>背景：</strong>ローザ・パークスの逮捕をきっかけに、教会ネットワーク（弱いつながり）と規範化によってバス・ボイコットが拡大し、公民権運動へと発展した。</p>
+      <p><strong>示唆：</strong>社会運動は弱いつながりと規範の力で拡散し、参加のしきい値を下げることで持続する。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>社会レベルの習慣形成が、個人・組織と同じ原理で機能することを示すから。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="margin:1.5rem 0 1rem; color:var(--primary);">📖 重要な引用</h2>
+
+    <div class="quote-card">
+      <blockquote>"習慣は合図・ルーチン・報酬のループとして機能し、繰り返しで自動化される。"</blockquote>
+      <cite><strong>なぜ重要か：</strong>仕組みを可視化すると、介入ポイント（置換）が特定できるから。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"変化の黄金律は、合図と報酬を維持しつつルーチンを入れ替えることだ。"</blockquote>
+      <cite><strong>なぜ重要か：</strong>最小の摩擦で行動を変え、再発しにくくする実践原則だから。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"小さな勝利は連鎖し、組織や個人に大きな転換を生む。"</blockquote>
+      <cite><strong>なぜ重要か：</strong>モメンタム設計が戦略の中心になることを示すから。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"意志力は筋肉のように鍛えられ、手順化で消耗を抑えられる。"</blockquote>
+      <cite><strong>なぜ重要か：</strong>気合ではなく設計と練習で再現性を高められるから。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"信念は変化を持続させる鍵で、コミュニティがその土台になる。"</blockquote>
+      <cite><strong>なぜ重要か：</strong>孤立を防ぎ、挫折からの復帰力を体系的に高められるから。</cite>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="margin:1.5rem 0 1rem; color:var(--primary);">🚀 今日のアクション</h2>
+
+    <div class="action-card">
+      <h4>📝 1. 直近の悪習の合図・報酬を記録</h4>
+      <p><strong>目的：</strong>習慣ループを可視化し、介入ポイントを特定する</p>
+      <p><strong>期待効果：</strong>自分の行動パターンを客観視でき、変化の設計図が描ける</p>
+      <p><strong>実行時間：</strong>15分</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✍️ 2. 代替ルーチンの手順を紙に書く</h4>
+      <p><strong>目的：</strong>望ましい行動を"もし〜なら〜する"形式で具体化する</p>
+      <p><strong>期待効果：</strong>実行意図が明確になり、ストレス下でも実行しやすくなる</p>
+      <p><strong>実行時間：</strong>15分</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🚶 3. 15分の散歩を今すぐ実行</h4>
+      <p><strong>目的：</strong>小さな勝利を体験し、キーストーン・ハビットの種を蒔く</p>
+      <p><strong>期待効果：</strong>即座の成功体験が自己効力感を高め、他の習慣改善への意欲を引き出す</p>
+      <p><strong>実行時間：</strong>15分</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🤝 4. 変化を支援してくれる仲間を1人見つける</h4>
+      <p><strong>目的：</strong>信念とコミュニティの土台を作る</p>
+      <p><strong>期待効果：</strong>挫折時の復帰力が高まり、長期的な変化が持続しやすくなる</p>
+      <p><strong>実行時間：</strong>30分</p>
+    </div>
+  </div>
+
+  <div id="tab6" class="tab-content" role="tabpanel">
+    <h2 style="margin:1.5rem 0 1rem; color:var(--primary);">📚 関連書籍</h2>
+
+    <ul class="book-list">
+      <li class="book-item">
+        <strong>アトミック・ハビット</strong>
+        <em>著者: ジェームズ・クリアー</em>
+        <p><strong>関連性：</strong>小さな勝利と環境設計で習慣を最適化する実践書。黄金律の具体化に役立つ。</p>
+      </li>
+      <li class="book-item">
+        <strong>Tiny Habits ― 小さな習慣</strong>
+        <em>著者: B.J.フォッグ</em>
+        <p><strong>関連性：</strong>合図（アンカー）と極小行動で行動変容を安定化。渇望と報酬設計の補完。</p>
+      </li>
+      <li class="book-item">
+        <strong>スイッチ！ 「変われない」を変える方法</strong>
+        <em>著者: チップ・ハース／ダン・ハース</em>
+        <p><strong>関連性：</strong>理性・感情・環境の整合で変化を起動。キーストーンや小さな勝利の考えと合流する。</p>
+      </li>
+      <li class="book-item">
+        <strong>ナッジ</strong>
+        <em>著者: リチャード・セイラー／キャス・サンスティーン</em>
+        <p><strong>関連性：</strong>選択設計で望ましい習慣を促す政策・組織設計の視点を提供。</p>
+      </li>
+      <li class="book-item">
+        <strong>ファスト＆スロー</strong>
+        <em>著者: ダニエル・カーネマン</em>
+        <p><strong>関連性：</strong>自動系（システム1）と熟慮系（システム2）の理解が、習慣の自動性と介入設計の基盤になる。</p>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+
+  const metricFills = document.querySelectorAll('.metric-fill');
+  metricFills.forEach(fill => {
+    const width = fill.style.width;
+    fill.style.width = '0';
+    setTimeout(() => {
+      fill.style.width = width;
+    }, 100);
+  });
+});
+</script>
+
+</body>
+</html>
