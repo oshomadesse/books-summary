@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Make Time インフォグラフィック</title>
+<style>
+/* カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb */
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  background: #edf2f7;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(102,126,234,0.2);
+}
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fef5e7, #fdebd0);
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, #e8eaf6, #f3e5f5);
+  border-left: 4px solid var(--secondary);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.quote-card small {
+  color: var(--text-light);
+  font-size: 0.85rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+.flow-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.flow-text {
+  flex: 1;
+}
+.flow-text strong {
+  display: block;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+.arrow-down {
+  text-align: center;
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📖 Make Time インフォグラフィック</h1>
+<p>時間は見つけるものではなく設計するもの</p>
+</header>
+
+<div class="summary-block">
+<h2>📌 要約：問い × 答え × 根拠</h2>
+<div class="summary-item">
+<strong>❓ 問い</strong>
+なぜ忙しいのに本当に大事なことが進まないのか？
+</div>
+<div class="summary-item">
+<strong>💡 答え</strong>
+仕事とデジタルのデフォルト（多忙の流れと無限フィード）が注意を奪う設計になっており、意思力だけでは抗えないから。
+</div>
+<div class="summary-item">
+<strong>🔍 Why（なぜそうなのか）</strong>
+注意は有限資源で、プロダクトと職場文化は"常時接続"に最適化されているため浪費が起こる。
+</div>
+<div class="summary-item">
+<strong>🛠️ How（そのためには）</strong>
+Make Timeループ（ハイライト→レーザー→エナジャイズ→リフレクト）を毎日回し、通知・ホーム画面など環境のデフォルトを変える多様なタクティクスを小さく試し最適化する。
+</div>
+</div>
+
+<div class="tabs" role="tablist">
+<button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true">主要概念の詳細</button>
+<button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false">各章の要約</button>
+<button class="tab-btn" data-tab="examples" role="tab" aria-selected="false">具体例</button>
+<button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false">重要な引用</button>
+<button class="tab-btn" data-tab="actions" role="tab" aria-selected="false">今日のアクション</button>
+</div>
+
+<div id="concepts" class="tab-content active" role="tabpanel">
+<h2 style="margin-bottom:1.5rem;color:var(--primary);">🧠 主要概念の詳細</h2>
+<div class="card-grid">
+<div class="card">
+<h3>🎯 ハイライト</h3>
+<ul>
+<li>その日いちばん価値・満足・締切影響が高い一件を選ぶ</li>
+<li>先に時間を確保する意思決定</li>
+<li>迷いを断つ日次の北極星</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>優先の明確化が意思決定の摩擦を減らし、進捗を保証するから。
+</div>
+</div>
+<div class="card">
+<h3>🔦 レーザー</h3>
+<ul>
+<li>集中を阻む要因（通知・タブ・雑音）を物理的に取り除く</li>
+<li>没入を生む条件を設計する</li>
+<li>環境が行動を規定する</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>誘惑を物理的に遠ざける方が意思力より再現性が高いから。
+</div>
+</div>
+<div class="card">
+<h3>⚡ エナジャイズ</h3>
+<ul>
+<li>睡眠・運動・食事・休息で脳の燃料を満たす</li>
+<li>注意の持続と意思決定の質を底上げ</li>
+<li>体を整えれば時間の質が変わる</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>睡眠・運動・栄養が注意と判断の土台で、集中の持続を左右するため。
+</div>
+</div>
+<div class="card">
+<h3>🔄 リフレクト</h3>
+<ul>
+<li>一日の終わりに実験を振り返る</li>
+<li>効いたタクティクスを残し効かなかったものを捨てる</li>
+<li>継続改善で個人差に適応</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>個人差に適応し、最適なタクティクスを選抜できるから。
+</div>
+</div>
+<div class="card">
+<h3>⚙️ デフォルト設計</h3>
+<ul>
+<li>通知・ホーム画面・机の配置など"初期設定"が行動を決める</li>
+<li>意思力より仕組みを変える</li>
+<li>環境が習慣を作る</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>環境が行動を規定し、誘惑を物理的に遠ざける方が再現性が高いから。
+</div>
+</div>
+<div class="card">
+<h3>🌊 無限プール</h3>
+<ul>
+<li>終わりのないコンテンツ供給源（SNSフィード、ニュース、動画）</li>
+<li>放置すると注意が流出する</li>
+<li>設計された中毒性</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>プロダクトは"常時接続"に最適化されており、注意を奪う設計になっているから。
+</div>
+</div>
+<div class="card">
+<h3>🚌 ビジーバンドワゴン</h3>
+<ul>
+<li>多忙こそ善という職場・社会の同調圧力</li>
+<li>予定とメールが優先を上書きする</li>
+<li>構造的な時間不足の原因</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>職場文化が"常時接続"に最適化されており、注意の浪費が起こるから。
+</div>
+</div>
+<div class="card">
+<h3>🎲 タクティクス</h3>
+<ul>
+<li>小さな着手案（通知一括オフ、タイマー25分、朝散歩等）</li>
+<li>人により効き方が異なる</li>
+<li>実験前提で試す</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>個人差があるため、多様な選択肢から自分に合うものを見つける必要があるから。
+</div>
+</div>
+<div class="card">
+<h3>🔁 Make Timeループ</h3>
+<ul>
+<li>ハイライト→レーザー→エナジャイズ→リフレクトを日次で回す</li>
+<li>改善サイクルで最適化</li>
+<li>再現性のある一日設計が確立</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>ループを反復することで個人差へ適応し、再現性のある一日設計が確立するから。
+</div>
+</div>
+</div>
+
+<div class="visual-diagram">
+<h3 style="color:var(--primary);margin-bottom:1.5rem;">🔗 概念間の関係性</h3>
+<div class="flow-item">
+<div class="flow-icon">🚌</div>
+<div class="flow-text">
+<strong>ビジーバンドワゴン + 無限プール</strong>
+多忙文化と無限コンテンツが注意を分散・疲弊させる
+</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-item">
+<div class="flow-icon">⚙️</div>
+<div class="flow-text">
+<strong>デフォルト設計を変更</strong>
+環境を変えることで無限プールへの露出を減らす
+</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-item">
+<div class="flow-icon">🔦</div>
+<div class="flow-text">
+<strong>レーザーの効果増大</strong>
+誘惑が減り、集中しやすい環境が整う
+</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-item">
+<div class="flow-icon">⚡</div>
+<div class="flow-text">
+<strong>エナジャイズで質向上</strong>
+体調が整い、集中持続時間が伸び、決断疲れが減る
+</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-item">
+<div class="flow-icon">🎯</div>
+<div class="flow-text">
+<strong>ハイライトの進捗向上</strong>
+最重要事項が確実に前進する
+</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-item">
+<div class="flow-icon">🔄</div>
+<div class="flow-text">
+<strong>リフレクトで最適化</strong>
+効くタクティクスを特定し、翌日の設計が改善される
+</div>
+</div>
+</div>
+</div>
+
+<div id="chapters" class="tab-content" role="tabpanel">
+<h2 style="margin-bottom:1.5rem;color:var(--primary);">📚 各章の要約</h2>
+<div class="card-grid">
+<div class="card">
+<h3>1️⃣ 問題提起</h3>
+<ul>
+<li>現代の時間不足は個人の怠惰ではない</li>
+<li>忙しさの文化と無限コンテンツ設計が生む構造問題</li>
+<li>注意は有限資源で、奪われる設計になっている</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>問題の本質を理解しないと、意思力だけで解決しようとして失敗するから。
+</div>
+</div>
+<div class="card">
+<h3>2️⃣ フレーム導入</h3>
+<ul>
+<li>解決は意思力ではなく、日次の再設計</li>
+<li>Make Timeの4要素を提示</li>
+<li>ハイライト/レーザー/エナジャイズ/リフレクト</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>実行可能なフレームワークを示すことで、具体的な行動に移せるから。
+</div>
+</div>
+<div class="card">
+<h3>3️⃣ タクティクス集</h3>
+<ul>
+<li>各要素ごとに多数の具体策を列挙</li>
+<li>通知一括オフ、ホーム画面の最小化、時間ブロック等</li>
+<li>実験的に選ぶ姿勢を推奨</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>個人差があるため、多様な選択肢から自分に合うものを試す必要があるから。
+</div>
+</div>
+<div class="card">
+<h3>4️⃣ 実装と応用</h3>
+<ul>
+<li>職場・家庭・チームでの合意形成</li>
+<li>会議やメールの扱い方</li>
+<li>デジタル環境の整え方をケースで解説</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>個人だけでなく、組織や環境全体を変える必要があるから。
+</div>
+</div>
+<div class="card">
+<h3>5️⃣ 振り返りと継続</h3>
+<ul>
+<li>短い日次レビューで学びを蓄積</li>
+<li>翌日の仮説→実験→検証のループを回す</li>
+<li>完璧を目指さず、継続改善</li>
+</ul>
+<div class="reason-box">
+<strong>理由：</strong>継続的な改善サイクルが、個人に最適化された時間設計を生むから。
+</div>
+</div>
+</div>
+</div>
+
+<div id="examples" class="tab-content" role="tabpanel">
+<h2 style="margin-bottom:1.5rem;color:var(--primary);">💡 具体例</h2>
+<div class="card">
+<h3>📱 例1：スマホのホーム画面を空にする</h3>
+<p><strong>背景：</strong>スマホを開くたびにSNSアイコンが目に入り、無意識にタップしてしまう。</p>
+<p><strong>実践：</strong>ホーム画面からすべてのアプリを削除し、必要なものだけフォルダに格納。</p>
+<p><strong>示唆：</strong>デフォルトを変えることで、誘惑への露出が減り、無駄な時間が削減される。</p>
+<div class="reason-box">
+<strong>理由（この例が示すこと）：</strong>環境のデフォルト設計が行動を決定し、意思力に頼らず習慣を変えられることを示す。
+</div>
+</div>
+<div class="card">
+<h3>⏰ 例2：朝一番にハイライトを60分確保</h3>
+<p><strong>背景：</strong>メールや会議に追われ、重要なプロジェクトが進まない。</p>
+<p><strong>実践：</strong>カレンダーの朝9〜10時を「ハイライト」としてブロックし、メール・Slackを閉じる。</p>
+<p><strong>示唆：</strong>先に時間を確保することで、割り込みがあっても最重要事項が前進する。</p>
+<div class="reason-box">
+<strong>理由（この例が示すこと）：</strong>優先事項を先に確保する設計が、日中の混乱に対する保険になることを示す。
+</div>
+</div>
+<div class="card">
+<h3>🏃 例3：昼休みに15分散歩する</h3>
+<p><strong>背景：</strong>午後の集中力が続かず、決断疲れが起こる。</p>
+<p><strong>実践：</strong>昼食後に外を15分歩き、日光を浴びる。</p>
+<p><strong>示唆：</strong>軽い運動と日光が脳をリセットし、午後のエネルギーと集中を回復させる。</p>
+<div class="reason-box">
+<strong>理由（この例が示すこと）：</strong>エナジャイズ（体調管理）が時間の質を左右し、集中の持続を支えることを示す。
+</div>
+</div>
+</div>
+
+<div id="quotes" class="tab-content" role="tabpanel">
+<h2 style="margin-bottom:1.5rem;color:var(--primary);">📝 重要な引用</h2>
+<div class="quote-card">
+<p>「毎日ひとつのハイライトを選び、先に時間を確保せよ。」</p>
+<small><strong>理由：</strong>優先の明確化が意思決定の摩擦を減らし、進捗を保証するから。</small>
+</div>
+<div class="quote-card">
+<p>「意志力よりもデフォルトを設計せよ（通知・ホーム画面）。」</p>
+<small><strong>理由：</strong>環境が行動を規定し、誘惑を物理的に遠ざける方が再現性が高いから。</small>
+</div>
+<div class="quote-card">
+<p>「体を整えれば、時間の質が変わる。」</p>
+<small><strong>理由：</strong>睡眠・運動・栄養が注意と判断の土台で、集中の持続を左右するため。</small>
+</div>
+<div class="quote-card">
+<p>「完璧を目指さず、毎日の反省でループを回せ。」</p>
+<small><strong>理由：</strong>個人差に適応し、最適なタクティクスを選抜できるから。</small>
+</div>
+</div>
+
+<div id="actions" class="tab-content" role="tabpanel">
+<h2 style="margin-bottom:1.5rem;color:var(--primary);">🚀 今日のアクション</h2>
+<div class="action-card">
+<h4>⏱️ 今日のハイライトを25分取り組む</h4>
+<p><strong>目的：</strong>最重要事項を先に進める習慣を作る</p>
+<p><strong>期待効果：</strong>一日の満足度が上がり、重要なことが確実に前進する</p>
+</div>
+<div class="action-card">
+<h4>📱 スマホのホーム画面を15分整える</h4>
+<p><strong>目的：</strong>誘惑への露出を減らし、無意識のタップを防ぐ</p>
+<p><strong>期待効果：</strong>SNSやニュースに奪われる時間が減り、集中しやすくなる</p>
+</div>
+<div class="action-card">
+<h4>📧 受信箱を20分だけ整理する</h4>
+<p><strong>目的：</strong>メールの処理時間を区切り、無限対応を防ぐ</p>
+<p><strong>期待効果：</strong>メールに支配されず、自分の時間を取り戻せる</p>
+</div>
+<div style="background:var(--card-bg);padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;">
+<h3 style="color:var(--primary);margin-bottom:1rem;">📚 関連書籍</h3>
+<ul style="list-style:none;padding:0;">
+<li style="margin-bottom:1rem;padding:0.75rem;background:#f7fafc;border-radius:0.5rem;">
+<strong>エッセンシャル思考 最少の時間で成果を最大にする</strong><br>
+<span style="color:var(--text-light);font-size:0.9rem;">著者: グレッグ・マキューン</span><br>
+<span style="font-size:0.9rem;">🔗 少数に集中する意思決定がハイライト戦略と合致。</span>
+</li>
+<li style="margin-bottom:1rem;padding:0.75rem;background:#f7fafc;border-radius:0.5rem;">
+<strong>ディープ・ワーク 大事な仕事に集中するためのルール</strong><br>
+<span style="color:var(--text-light);font-size:0.9rem;">著者: カル・ニューポート</span><br>
+<span style="font-size:0.9rem;">🔗 レーザー（没入）を支える環境設計と習慣化の理論。</span>
+</li>
+<li style="margin-bottom:1rem;padding:0.75rem;background:#f7fafc;border-radius:0.5rem;">
+<strong>デジタル・ミニマリスト</strong><br>
+<span style="color:var(--text-light);font-size:0.9rem;">著者: カル・ニューポート</span><br>
+<span style="font-size:0.9rem;">🔗 無限プールから注意を守るデジタルの最小化実践が重なる。</span>
+</li>
+<li style="padding:0.75rem;background:#f7fafc;border-radius:0.5rem;">
+<strong>アトミック・ハビッツ</strong><br>
+<span style="color:var(--text-light);font-size:0.9rem;">著者: ジェームズ・クリアー</span><br>
+<span style="font-size:0.9rem;">🔗 小さなタクティクスを習慣化し環境で後押しする方法論が補完。</span>
+</li>
+</ul>
+</div>
+</div>
+
+</div>
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.getAttribute('data-tab');
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(target).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
