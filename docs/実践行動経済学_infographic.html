@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUDGE インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-block .qa {
+  margin-bottom: 1rem;
+}
+.summary-block .qa strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+}
+.summary-block .qa p {
+  margin-left: 1rem;
+  font-size: 0.95rem;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+}
+.tab-content.active {
+  display: block;
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+.card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+}
+.example-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  border-left: 4px solid var(--primary);
+  font-style: italic;
+}
+.quote-card blockquote {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+.quote-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0.25rem;
+}
+.visual-stat {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.visual-stat .bar {
+  flex: 1;
+  height: 24px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 12px;
+  position: relative;
+}
+.visual-stat .label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  min-width: 100px;
+}
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    margin: 0.5rem;
+  }
+  .tab-btn {
+    font-size: 0.8rem;
+    padding: 0.6rem 0.75rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 NUDGE（ナッジ）</h1>
+  <p>選択の自由を守りながら、より良い決定へそっと背中を押す</p>
+</header>
+
+<div class="summary-block">
+  <h2>📌 要約 = 問い × 答え × 根拠</h2>
+  <div class="qa">
+    <strong>❓ 問い</strong>
+    <p>なぜ人は長期的に望ましい選択ができず、どうすれば改善できるのか？</p>
+  </div>
+  <div class="qa">
+    <strong>✅ 答え</strong>
+    <p>ナッジ=選択アーキテクチャの工夫により、選択の自由を保持しつつ意思決定を体系的に改善できる。</p>
+  </div>
+  <div class="qa">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>認知バイアス（損失回避・現在志向・現状維持・選択過多等）が誤りを生む。実証ではデフォルト、自動化、単純化、フィードバック、社会規範提示が大きな行動変化を生む。</p>
+  </div>
+  <div class="qa">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>1) 目標を可視化し選択をマッピング、2) 望ましいデフォルト・自動加入・事前承諾を設定、3) 情報・選択肢を簡素化し比較可能性を高める、4) タイムリーなフィードバックを与える、5) 社会規範とコミットメントで背中を押す、6) 透明性を確保し小さくテストして改善する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🧠 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📖 各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💡 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">🚀 今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🧑 ヒューマン vs エコン</h3>
+      <ul>
+        <li>現実の人間は限定合理的</li>
+        <li>バイアスに影響される</li>
+        <li>教科書の完全合理的存在とは異なる</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 人の実際の判断メカニズムを理解することが、効果的な設計の出発点だから。</div>
+    </div>
+    <div class="card">
+      <h3>👉 ナッジ（Nudge）</h3>
+      <ul>
+        <li>選択の自由を制限しない</li>
+        <li>選択環境を微調整</li>
+        <li>予測可能な方向へ行動を促す</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 強制せず、自律性を尊重しながら福祉を高める実践的手法だから。</div>
+    </div>
+    <div class="card">
+      <h3>🏗️ 選択アーキテクチャ</h3>
+      <ul>
+        <li>意思決定の場の設計</li>
+        <li>選択肢の並べ方・既定値</li>
+        <li>情報提示の方法</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 中立な設計は存在せず、どう設計するかが結果を左右するから。</div>
+    </div>
+    <div class="card">
+      <h3>⚖️ 自由至上主義的パターナリズム</h3>
+      <ul>
+        <li>選択の自由を守る</li>
+        <li>福祉を高める方向に誘導</li>
+        <li>オプトアウト可能</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 自由と配慮を両立する規範的基盤として、ナッジの正当性を支えるから。</div>
+    </div>
+    <div class="card">
+      <h3>⚙️ デフォルト効果</h3>
+      <ul>
+        <li>既定値があると多くが選ぶ</li>
+        <li>自動加入・臓器提供に大影響</li>
+        <li>最も強力なナッジの一つ</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 小さな設定変更が大規模な行動変化を生む実証的核心だから。</div>
+    </div>
+    <div class="card">
+      <h3>🖼️ フレーミング</h3>
+      <ul>
+        <li>同じ事実でも表現で判断が変わる</li>
+        <li>生存率90% vs 死亡率10%</li>
+        <li>言葉の選び方が結果を動かす</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 情報提示の仕方が選好を反転させうることを示すから。</div>
+    </div>
+    <div class="card">
+      <h3>📉 損失回避</h3>
+      <ul>
+        <li>利益より損失の痛みを強く感じる</li>
+        <li>現状維持・先延ばしの一因</li>
+        <li>失う痛みの過大評価</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 変化への抵抗の心理的メカニズムを説明し、設計で対処可能だから。</div>
+    </div>
+    <div class="card">
+      <h3>👥 社会的規範</h3>
+      <ul>
+        <li>他者の行動が自分の選択を方向づける</li>
+        <li>多数派情報の影響</li>
+        <li>「みんな効果」</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 集団の力を活用して望ましい行動を促進できるから。</div>
+    </div>
+    <div class="card">
+      <h3>🗺️ マッピング</h3>
+      <ul>
+        <li>複雑な属性を分かりやすい指標へ翻訳</li>
+        <li>年率→月額影響など</li>
+        <li>比較しやすく変換</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 抽象的情報を具体的価値に結びつけ、理解と判断を助けるから。</div>
+    </div>
+    <div class="card">
+      <h3>🔄 フィードバック</h3>
+      <ul>
+        <li>行動の結果を迅速に返す</li>
+        <li>電力使用の即時表示など</li>
+        <li>すぐ分かる仕組み</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 学習を加速し、行動修正のサイクルを回すから。</div>
+    </div>
+    <div class="card">
+      <h3>💰 SMarT（Save More Tomorrow）</h3>
+      <ul>
+        <li>将来の昇給に合わせて貯蓄比率を増やす</li>
+        <li>事前コミットメント</li>
+        <li>将来に自動で約束</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 現在志向バイアスを回避し、長期的福祉を実現する具体策だから。</div>
+    </div>
+    <div class="card">
+      <h3>🤯 選択の過負荷</h3>
+      <ul>
+        <li>選択肢が多すぎると比較困難</li>
+        <li>先延ばし・不満足な決定が増える</li>
+        <li>多すぎて選べない</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 単純化・段階化設計の必要性を示し、ユーザー体験を改善するから。</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>第1章: ヒューマンとエコンの対比</h3>
+    <ul>
+      <li>人は系統的に誤る—完全合理性の仮定は現実と乖離</li>
+      <li>認知バイアスが意思決定を歪める</li>
+      <li>設計が意思決定を左右する前提を確立</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 行動経済学の基礎を示し、ナッジの必要性を根拠づけるため。</div>
+  </div>
+  <div class="chapter-card">
+    <h3>第2章: 行動バイアスの整理</h3>
+    <ul>
+      <li>損失回避・現在志向・選択過多の実証</li>
+      <li>社会的影響・アンカリング・利用可能性ヒューリスティクス</li>
+      <li>バイアスのカタログが設計の着眼点を提供</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 具体的なバイアスを理解することで、的確な介入ポイントを見つけられるから。</div>
+  </div>
+  <div class="chapter-card">
+    <h3>第3章: 選択アーキテクチャの設計原則</h3>
+    <ul>
+      <li>デフォルト・並べ方・情報提示の工夫</li>
+      <li>フィードバック・マッピングの重要性</li>
+      <li>設計の6原則を体系化</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 実務で使える設計ツールキットを提供し、再現可能な介入を可能にするため。</div>
+  </div>
+  <div class="chapter-card">
+    <h3>第4章: ナッジの規範基盤</h3>
+    <ul>
+      <li>自由至上主義的パターナリズムの正当化</li>
+      <li>自由を残しつつ厚生を高める</li>
+      <li>倫理的ガードレールの設定</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> ナッジの倫理的正当性を確立し、濫用への懸念に応えるため。</div>
+  </div>
+  <div class="chapter-card">
+    <h3>第5章: 事例と政策応用</h3>
+    <ul>
+      <li>年金貯蓄（自動加入/SMarT）・医療同意</li>
+      <li>学校給食・消費者金融・環境エネルギー</li>
+      <li>多様な領域での成功事例を提示</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 理論を実践に橋渡しし、スケール可能性を実証するため。</div>
+  </div>
+  <div class="chapter-card">
+    <h3>第6章: 実装の作法</h3>
+    <ul>
+      <li>透明性・テストと計測・エビデンスに基づく改善</li>
+      <li>倫理的配慮と継続的学習</li>
+      <li>小さく始めて反復する</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 持続可能で信頼される介入のための実務指針を示すため。</div>
+  </div>
+  <div class="chapter-card">
+    <h3>結語: 小さな設計変更が大きな行動差を生む</h3>
+    <ul>
+      <li>スケール可能で低コストな改革手段</li>
+      <li>公私の意思決定環境を改善</li>
+      <li>自由と福祉の両立を実現</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> ナッジの可能性と限界を総括し、読者に行動を促すため。</div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>💼 例1: 年金自動加入制度</h3>
+    <p><strong>背景:</strong> 多くの従業員が年金加入を先延ばしにし、老後資金が不足していた。</p>
+    <p><strong>介入:</strong> デフォルトを「自動加入」に変更し、オプトアウトは自由に可能とした。</p>
+    <p><strong>結果:</strong> 加入率が劇的に上昇（例: 20%→90%超）し、長期的な貯蓄が増加。</p>
+    <div class="reason"><strong>理由（この例が示すこと）:</strong> デフォルト効果の強力さと、自由を保ちながら福祉を高める実証例だから。</div>
+  </div>
+  <div class="example-card">
+    <h3>🍎 例2: 学校給食の配置変更</h3>
+    <p><strong>背景:</strong> 子どもたちが不健康な食品を多く選び、肥満が問題化。</p>
+    <p><strong>介入:</strong> 健康的な食品を目線の高さ・手前に配置し、不健康な食品を奥に移動。</p>
+    <p><strong>結果:</strong> 健康的な食品の選択率が大幅に増加し、栄養バランスが改善。</p>
+    <div class="reason"><strong>理由（この例が示すこと）:</strong> 物理的配置という単純な設計変更が行動を変える具体例だから。</div>
+  </div>
+  <div class="example-card">
+    <h3>⚡ 例3: 電力使用のリアルタイムフィードバック</h3>
+    <p><strong>背景:</strong> 家庭の電力消費が見えず、節電意識が低かった。</p>
+    <p><strong>介入:</strong> スマートメーターで使用量を即時表示し、近隣平均との比較を提示。</p>
+    <p><strong>結果:</strong> 電力消費が平均5〜15%削減され、社会規範の力が確認された。</p>
+    <div class="reason"><strong>理由（この例が示すこと）:</strong> フィードバックと社会規範の組み合わせが持続的行動変化を生むから。</div>
+  </div>
+  <div class="example-card">
+    <h3>🏥 例4: 臓器提供の同意率</h3>
+    <p><strong>背景:</strong> 国によって臓器提供率に大きな差があった。</p>
+    <p><strong>介入:</strong> デフォルトを「提供する（オプトアウト可）」に設定した国と「提供しない（オプトイン）」の国を比較。</p>
+    <p><strong>結果:</strong> オプトアウト国では同意率が90%超、オプトイン国では20%以下。</p>
+    <div class="reason"><strong>理由（この例が示すこと）:</strong> デフォルト設定が生死に関わる重大な決定にも影響する証拠だから。</div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <blockquote>「自由至上主義的パターナリズムは矛盾ではない」</blockquote>
+    <p><strong>なぜ重要か:</strong> 自由の保持と厚生向上の両立が本書の規範的土台だから。</p>
+  </div>
+  <div class="quote-card">
+    <blockquote>「私たちはエコンではなくヒューマンである」</blockquote>
+    <p><strong>なぜ重要か:</strong> 完全合理性の仮定を外し、設計介入の必要性を示す前提だから。</p>
+  </div>
+  <div class="quote-card">
+    <blockquote>「デフォルトは最も強力なナッジの一つ」</blockquote>
+    <p><strong>なぜ重要か:</strong> 小さな既定値の設定が大きな行動差を生む実証的核心だから。</p>
+  </div>
+  <div class="quote-card">
+    <blockquote>「選択アーキテクチャは中立ではない—どう設計するかが結果を左右する」（要旨）</blockquote>
+    <p><strong>なぜ重要か:</strong> 設計者の責任と影響力を明確にし、意図的な設計の必要性を示すから。</p>
+  </div>
+  <div class="quote-card">
+    <blockquote>「小さな設計変更が大きな行動差を生む」（要旨）</blockquote>
+    <p><strong>なぜ重要か:</strong> ナッジの費用対効果の高さとスケール可能性を端的に表すから。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>💰 アクション1: 給与天引き貯蓄を10%に設定</h3>
+    <p>給与口座から自動的に別口座へ10%を移す設定を行う。</p>
+    <div class="meta">
+      <strong>目的:</strong> 現在志向バイアスを回避し、意識せず貯蓄を増やす。<br>
+      <strong>期待効果:</strong> 年間で給与の10%が自動的に貯まり、長期的な資産形成が進む。
+    </div>
+  </div>
+  <div class="action-card">
+    <h3>🥗 アクション2: 冷蔵庫の健康的食品を手前に置く</h3>
+    <p>野菜・果物を目線の高さ・手前に配置し、スナック類を奥に移動。</p>
+    <div class="meta">
+      <strong>目的:</strong> 物理的配置で健康的な選択を促す。<br>
+      <strong>期待効果:</strong> 無意識に健康的な食品を選ぶ頻度が増え、食生活が改善。
+    </div>
+  </div>
+  <div class="action-card">
+    <h3>🛒 アクション3: 迷う出費の上限ルールを決める</h3>
+    <p>「1万円以上の買い物は24時間待つ」など、事前にルールを設定。</p>
+    <div class="meta">
+      <strong>目的:</strong> 衝動買いを防ぎ、熟考の時間を確保する。<br>
+      <strong>期待効果:</strong> 不要な出費が減り、満足度の高い購入が増える。
+    </div>
+  </div>
+  <div class="action-card">
+    <h3>📊 アクション4: 電力使用量を毎日チェック</h3>
+    <p>スマートメーターアプリで日々の使用量を確認し、前日と比較。</p>
+    <div class="meta">
+      <strong>目的:</strong> フィードバックで節電意識を高める。<br>
+      <strong>期待効果:</strong> 無駄な電力消費に気づき、月々の電気代が削減される。
+    </div>
+  </div>
+  <div class="action-card">
+    <h3>🎯 アクション5: 目標を紙に書いて見える場所に貼る</h3>
+    <p>「毎月3万円貯蓄」など具体的目標を書き、デスクや冷蔵庫に貼る。</p>
+    <div class="meta">
+      <strong>目的:</strong> 視覚的リマインダーでコミットメントを強化。<br>
+      <strong>期待効果:</strong> 目標達成率が向上し、行動の一貫性が保たれる。
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabs = document.querySelectorAll('.tab-btn');
+  const contents = document.querySelectorAll('.tab-content');
+  
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.getAttribute('data-tab');
+      
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      contents.forEach(c => {
+        c.classList.remove('active');
+      });
+      
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById(target).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
