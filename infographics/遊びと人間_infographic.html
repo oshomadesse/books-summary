@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>遊びと人間 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333;
+  --text-light: #666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 2rem 2rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+.tab-btn:hover {
+  border-color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+}
+.chapter-card .reason {
+  background: #f0f0f0;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid var(--border);
+}
+.example-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-style: italic;
+}
+.quote-card .importance {
+  margin-top: 0.75rem;
+  font-style: normal;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.axis-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.axis-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.axis-label {
+  min-width: 100px;
+  font-weight: bold;
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+.axis-bar {
+  flex: 1;
+  height: 30px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.type-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.type-box .emoji {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.type-box .name {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+.type-box .desc {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+.relation-flow {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin: 1.5rem 0;
+  border: 2px dashed var(--border);
+}
+.relation-flow .flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+.relation-flow .arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.book-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.book-card .author {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .type-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .tabs {
+    font-size: 0.85rem;
+  }
+  .tab-btn {
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 遊びと人間</h1>
+  <p>ロジェ・カイヨワ - 文化の基層を解く四類型と自由×規則の力学</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    人間にとって遊びは何であり、社会とどう関わるのか？
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    遊びは自由で隔離され不確実・非生産的だが規則と虚構に支えられた行為で、四類型（競争・運・模倣・眩暈）とパイディア—ルドゥス軸の組合せとして社会を映し出しも形成もし、制度化や退廃を通じて文化を方向づける。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    各類型は異なる価値（実力主義、運命受容、役割逸脱、陶酔）を体現し、社会制度（スポーツ、賭博、演劇、祭礼）に組み込まれると規範や統合の原理となる一方、ズル・迷信・妄想・中毒として腐敗も生むから。
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    遊びの六特性で行為を同定し、四類型とパイディア—ルドゥスでマッピングする。混交と制度化の度合い、退廃の兆候を診断し、望ましい均衡（自由×規則）へ設計する。社会分析では、優勢な遊び様式から価値観と統治様式を読む。
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🧩 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📖 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1.5rem;">🧩 主要概念の詳細</h2>
+  
+  <div class="visual-diagram">
+    <h3 style="color: var(--secondary); margin-bottom: 1rem;">🎯 四類型の全体像</h3>
+    <div class="type-grid">
+      <div class="type-box">
+        <span class="emoji">🏆</span>
+        <div class="name">アゴン</div>
+        <div class="desc">競争</div>
+      </div>
+      <div class="type-box">
+        <span class="emoji">🎲</span>
+        <div class="name">アレア</div>
+        <div class="desc">運</div>
+      </div>
+      <div class="type-box">
+        <span class="emoji">🎭</span>
+        <div class="name">ミミクリ</div>
+        <div class="desc">模倣</div>
+      </div>
+      <div class="type-box">
+        <span class="emoji">🌀</span>
+        <div class="name">イリンクス</div>
+        <div class="desc">眩暈</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-diagram">
+    <h3 style="color: var(--secondary); margin-bottom: 1rem;">↔️ パイディア—ルドゥス連続体</h3>
+    <div class="axis-container">
+      <div class="axis-row">
+        <div class="axis-label">パイディア</div>
+        <div class="axis-bar">自由奔放 → 即興 → 創発</div>
+      </div>
+      <div class="axis-row">
+        <div class="axis-label">ルドゥス</div>
+        <div class="axis-bar">規則 → 訓練 → 熟達</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>🎯 遊びの六特性</h3>
+      <ul>
+        <li><strong>自由：</strong>強制されない</li>
+        <li><strong>隔離：</strong>時空間が区切られる</li>
+        <li><strong>不確実：</strong>結果が予測不能</li>
+        <li><strong>非生産：</strong>富を生まない</li>
+        <li><strong>規則：</strong>独自のルールに従う</li>
+        <li><strong>虚構：</strong>現実とは別の意識</li>
+      </ul>
+      <div class="reason" style="margin-top: 1rem; background: #f0f0f0; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem;">
+        <strong>💡 理由：</strong>これら六つが揃うことで遊びは仕事や儀礼と区別され、分析の出発点となる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏆 アゴン（競争）</h3>
+      <ul>
+        <li>力量の公正な比較</li>
+        <li>規則と公平性が中心</li>
+        <li>実力主義の価値を体現</li>
+        <li>スポーツ・競技へ制度化</li>
+      </ul>
+      <span class="badge">実力主義</span>
+      <div class="reason" style="margin-top: 1rem; background: #f0f0f0; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem;">
+        <strong>💡 理由：</strong>能力の優劣を測る社会的装置として、近代の能力主義社会の基盤を形成する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎲 アレア（運）</h3>
+      <ul>
+        <li>結果を偶然に委ねる</li>
+        <li>主体の能力は脇に退く</li>
+        <li>運命受容の価値</li>
+        <li>賭博・抽選・保険へ制度化</li>
+      </ul>
+      <span class="badge">運命受容</span>
+      <div class="reason" style="margin-top: 1rem; background: #f0f0f0; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem;">
+        <strong>💡 理由：</strong>不確実性を受け入れる態度を育み、リスク管理や確率思考の文化的土台となる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎭 ミミクリ（模倣）</h3>
+      <ul>
+        <li>仮面や役割を演じる</li>
+        <li>自己同一性を一時停止</li>
+        <li>他者・他界への没入</li>
+        <li>演劇・教育・儀礼へ制度化</li>
+      </ul>
+      <span class="badge">役割没入</span>
+      <div class="reason" style="margin-top: 1rem; background: #f0f0f0; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem;">
+        <strong>💡 理由：</strong>役割の流動性を許容し、社会的学習や共感の基盤を提供する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌀 イリンクス（眩暈）</h3>
+      <ul>
+        <li>目眩や失調を引き起こす</li>
+        <li>感覚的撹乱の遊び</li>
+        <li>秩序の瞬間的解体</li>
+        <li>遊具・祭礼・アミューズメントへ</li>
+      </ul>
+      <span class="badge">恍惚</span>
+      <div class="reason" style="margin-top: 1rem; background: #f0f0f0; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem;">
+        <strong>💡 理由：</strong>日常の秩序からの一時的解放を可能にし、祭祀や陶酔文化の核となる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎨 パイディア</h3>
+      <ul>
+        <li>即興的・奔放な傾向</li>
+        <li>規則が緩い</li>
+        <li>自由な発散と創発</li>
+        <li>子どもの遊びに典型</li>
+      </ul>
+      <span class="badge">自由奔放</span>
+      <div class="reason" style="margin-top: 1rem; background: #f0f0f0; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem;">
+        <strong>💡 理由：</strong>創造性と柔軟性の源泉であり、文化の革新を駆動する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📐 ルドゥス</h3>
+      <ul>
+        <li>厳密な規則や課題</li>
+        <li>困難を楽しむ</li>
+        <li>訓練と熟達が中心</li>
+        <li>競技・パズル・技芸に典型</li>
+      </ul>
+      <span class="badge">規則と熟達</span>
+      <div class="reason" style="margin-top: 1rem; background: #f0f0f0; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem;">
+        <strong>💡 理由：</strong>技能の洗練と達成感を生み、専門性や卓越性の文化を支える。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔗 混交と制度化</h3>
+      <ul>
+        <li>四類型は単独でも混合でも現れる</li>
+        <li>社会に組み込まれると制度になる</li>
+        <li>スポーツ、賭博、演劇、祭礼等</li>
+        <li>規範や統合の原理として機能</li>
+      </ul>
+      <span class="badge">社会化の回路</span>
+      <div class="reason" style="margin-top: 1rem; background: #f0f0f0; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem;">
+        <strong>💡 理由：</strong>遊びが社会制度へ転位する過程を理解することで、文化の形成メカニズムが見える。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚠️ 退廃（腐敗）</h3>
+      <ul>
+        <li><strong>アゴン：</strong>反則・八百長</li>
+        <li><strong>アレア：</strong>迷信</li>
+        <li><strong>ミミクリ：</strong>妄想</li>
+        <li><strong>イリンクス：</strong>依存</li>
+      </ul>
+      <span class="badge">負の転化</span>
+      <div class="reason" style="margin-top: 1rem; background: #f0f0f0; padding: 0.75rem; border-radius: 0.5rem; font-size: 0.9rem;">
+        <strong>💡 理由：</strong>遊びの健全性が失われると社会的逸脱や病理を生むため、境界と規則の維持が重要。
+      </div>
+    </div>
+  </div>
+
+  <div class="relation-flow">
+    <h3 style="color: var(--secondary); margin-bottom: 1rem;">🔄 概念間の関係性</h3>
+    <div class="flow-item">パイディア <span class="arrow">⟷</span> ルドゥス：自由度の連続体（即興→規則化）</div>
+    <div class="flow-item">四類型 <span class="arrow">×</span> (パイディア/ルドゥス)：各類型は自由度で相を変える</div>
+    <div class="flow-item">アゴン <span class="arrow">→</span> 制度化：公平な規則が強化されるほどスポーツ/競技へ</div>
+    <div class="flow-item">アレア <span class="arrow">→</span> 制度化：確率とリスク管理が賭博制度や保険・抽選に結晶</div>
+    <div class="flow-item">ミミクリ <span class="arrow">→</span> 制度化：劇・仮装・教育的ロールプレイに編入</div>
+    <div class="flow-item">イリンクス <span class="arrow">→</span> 制度化：遊具・アミューズメント・安全規範へ</div>
+    <div class="flow-item">制度化↑ <span class="arrow">→</span> 生産性は外部化、遊び内部は『非生産』を保持（象徴資本・名誉が報酬）</div>
+    <div class="flow-item">退廃の因果：規則の形骸化・過度の勝利至上主義 <span class="arrow">→</span> アゴンの不正／不確実性の誤読 <span class="arrow">→</span> アレアの迷信化</div>
+    <div class="flow-item">文化的優勢類型 <span class="arrow">→</span> 社会価値：アゴン優勢＝能力主義、アレア優勢＝運命論、ミミクリ優勢＝儀礼社会、イリンクス優勢＝祭祀・陶酔文化</div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1.5rem;">📖 各章の要約</h2>
+  
+  <div class="chapter-card">
+    <h3>📌 序—定義と前提</h3>
+    <ul style="list-style: none; padding-left: 0;">
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        遊びの六特性を提示
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        ホイジンガの議論を継承・修正
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        分析枠組みを準備
+      </li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの章が必要か）：</strong>遊びを操作的に定義することで、以後の類型化と社会分析の共通言語を確立するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>↔️ 二つの極—パイディアとルドゥス</h3>
+    <ul style="list-style: none; padding-left: 0;">
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        自由な即興から厳格な規則へ連続体として捉える
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        後の類型の変奏可能性を示す
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        遊びの多様性を一次元で整理
+      </li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（章のメッセージの根拠）：</strong>自由と規則の緊張が遊びの本質であり、この軸が四類型の表現形態を決定するから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎯 四類型の提示</h3>
+    <ul style="list-style: none; padding-left: 0;">
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        アゴン／アレア／ミミクリ／イリンクスを定義
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        具体例で差異と機能を描き分ける
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        各類型が体現する価値を明示
+      </li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（章のメッセージの根拠）：</strong>四類型は人間の基本的な遊び衝動を網羅し、文化の多様性を説明する分析装置となるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🔀 混交とハイブリッド</h3>
+    <ul style="list-style: none; padding-left: 0;">
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        類型はしばしば混ざり合う
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        スポーツの儀礼化や賭博性の導入など
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        複合形態が新たな文化形式を生む
+      </li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（章のメッセージの根拠）：</strong>現実の遊びは純粋類型ではなく混交形態として現れ、その組合せが文化の豊かさを生むから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🏛️ 社会学的転位</h3>
+    <ul style="list-style: none; padding-left: 0;">
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        遊びが制度（競技、賭博、演劇、祭礼）へ転位
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        規範・統合・逸脱管理に寄与する過程を分析
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        遊びが社会秩序の一部となるメカニズム
+      </li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（章のメッセージの根拠）：</strong>遊びは単なる余暇ではなく、社会制度の形成と維持に深く関与する文化的装置だから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>⚠️ 退廃と危険</h3>
+    <ul style="list-style: none; padding-left: 0;">
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        各類型の歪み（不正、迷信、妄想、依存）を指摘
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        規則・境界の意義を強調
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        健全な遊びの条件を提示
+      </li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（章のメッセージの根拠）：</strong>遊びの自由と規則の均衡が崩れると社会病理を生むため、境界維持の重要性を示す必要があるから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🌍 歴史比較と結語</h3>
+    <ul style="list-style: none; padding-left: 0;">
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        文化史の中で優勢類型の差とその帰結を比較
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        近代社会の遊びの位置を総括
+      </li>
+      <li style="margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent); font-weight: bold;">▸</span>
+        遊び研究の射程を示す
+      </li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（章のメッセージの根拠）：</strong>遊びの類型分析が文化比較と歴史理解の有効な道具であることを実証し、理論の普遍性を示すため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1.5rem;">💼 具体例</h2>
+  
+  <div class="example-card">
+    <h4>🏅 例1：オリンピック競技（アゴン×ルドゥス）</h4>
+    <p style="margin-bottom: 0.75rem;"><strong>背景：</strong>古代ギリシャから続く競技大会が近代に復活し、厳格な規則と公平性を備えた国際スポーツ制度として確立。</p>
+    <p style="margin-bottom: 0.75rem;"><strong>示唆：</strong>アゴンが高度にルドゥス化され制度化されると、国家の威信や経済的利益と結びつき、遊びの枠を超えた社会的機能を持つ。</p>
+    <div class="reason">
+      <strong>💡 理由（この例が示すこと）：</strong>競争の遊びが規則と公平性を強化することで、能力主義と国際協調の象徴となり、文化的統合装置として機能する。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🎰 例2：宝くじと保険（アレア×制度化）</h4>
+    <p style="margin-bottom: 0.75rem;"><strong>背景：</strong>運に結果を委ねる遊びが、確率論と統計学に基づく制度（宝くじ・保険・金融商品）へ転位。</p>
+    <p style="margin-bottom: 0.75rem;"><strong>示唆：</strong>アレアは不確実性を受容する態度を育み、リスク管理の社会的仕組みを支える文化的基盤となる。</p>
+    <div class="reason">
+      <strong>💡 理由（この例が示すこと）：</strong>運の遊びが制度化されると、偶然を計算可能にし、近代的リスク社会の運営原理となる。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🎭 例3：演劇と教育的ロールプレイ（ミミクリ×制度化）</h4>
+    <p style="margin-bottom: 0.75rem;"><strong>背景：</strong>仮面や役割を演じる遊びが、演劇芸術や教育現場のシミュレーション訓練へ組み込まれる。</p>
+    <p style="margin-bottom: 0.75rem;"><strong>示唆：</strong>ミミクリは他者理解と共感の訓練装置となり、社会的学習と文化伝承の手段として機能する。</p>
+    <div class="reason">
+      <strong>💡 理由（この例が示すこと）：</strong>模倣の遊びが制度化されると、役割の流動性を許容し、社会的スキルと文化的アイデンティティの形成を支える。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🎢 例4：遊園地のアトラクション（イリンクス×安全規範）</h4>
+    <p style="margin-bottom: 0.75rem;"><strong>背景：</strong>目眩や失調を楽しむ遊びが、安全基準と技術管理のもとで商業的アミューズメント施設へ。</p>
+    <p style="margin-bottom: 0.75rem;"><strong>示唆：</strong>イリンクスは秩序からの一時的解放を提供しつつ、安全規範によって制御され、消費文化の一部となる。</p>
+    <div class="reason">
+      <strong>💡 理由（この例が示すこと）：</strong>眩暈の遊びが制度化されると、管理された逸脱として日常秩序の補完機能を果たす。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>⚽ 例5：サッカーの八百長（アゴンの退廃）</h4>
+    <p style="margin-bottom: 0.75rem;"><strong>背景：</strong>競技の公平性が金銭的利益や外部圧力によって損なわれ、規則が形骸化する事例。</p>
+    <p style="margin-bottom: 0.75rem;"><strong>示唆：</strong>アゴンの退廃は実力主義の価値を破壊し、社会的信頼を損なう。</p>
+    <div class="reason">
+      <strong>💡 理由（この例が示すこと）：</strong>遊びの規則と境界が崩れると、社会制度としての機能が失われ、病理が顕在化する。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1.5rem;">💬 重要な引用</h2>
+  
+  <div class="quote-card">
+    <div style="font-size: 1.1rem; color: var(--secondary); margin-bottom: 0.5rem;">📜 要旨1</div>
+    <p>遊びは自由であり、現実から区切られ、不確実で、非生産的で、規則に従い、虚構をまとう。</p>
+    <div class="importance">
+      <strong>💡 重要性：</strong>遊びと仕事・儀礼の境界を測る操作的定義で、以後の分類の基礎となる。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div style="font-size: 1.1rem; color: var(--secondary); margin-bottom: 0.5rem;">📜 要旨2</div>
+    <p>四類型（競争・運・模倣・眩暈）は、文化の価値と制度の差異を映すプリズムである。</p>
+    <div class="importance">
+      <strong>💡 重要性：</strong>遊びを単なる娯楽でなく社会分析の装置に拡張する視座を示す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div style="font-size: 1.1rem; color: var(--secondary); margin-bottom: 0.5rem;">📜 要旨3</div>
+    <p>自由（パイディア）と規則（ルドゥス）の均衡が崩れると、遊びは退廃へ傾く。</p>
+    <div class="importance">
+      <strong>💡 重要性：</strong>健全な設計・運用の条件を示し、逸脱の予防線を与える。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div style="font-size: 1.1rem; color: var(--secondary); margin-bottom: 0.5rem;">📜 要旨4</div>
+    <p>遊びが制度化されると、非生産性は保持されつつ、象徴資本や名誉が報酬となる。</p>
+    <div class="importance">
+      <strong>💡 重要性：</strong>遊びの社会的機能と経済的価値の分離を説明し、文化資本論への接続を示す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div style="font-size: 1.1rem; color: var(--secondary); margin-bottom: 0.5rem;">📜 要旨5</div>
+    <p>優勢な遊び様式は、その社会の価値観と統治様式を反映する。</p>
+    <div class="importance">
+      <strong>💡 重要性：</strong>遊びの類型分析が文化比較と歴史理解の有効な道具であることを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1.5rem;">✅ 今日のアクション</h2>
+  
+  <div class="action-card">
+    <h4>🎯 アクション1：自分の遊びを4類型に分類</h4>
+    <p><strong>目的：</strong>日常の遊びや趣味を四類型（アゴン・アレア・ミミクリ・イリンクス）に当てはめ、自分の価値観や傾向を可視化する。</p>
+    <p><strong>期待効果：</strong>遊びの多様性を自覚し、偏りや不足を認識することで、バランスの取れた余暇設計が可能になる。</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9;">⏱️ 所要時間：15分</p>
+  </div>
+
+  <div class="action-card">
+    <h4>📐 アクション2：1タスクに明確な規則を設定</h4>
+    <p><strong>目的：</strong>仕事や学習の1タスクに「開始・終了条件」「制約」「評価基準」を明示し、ルドゥス的な構造を導入する。</p>
+    <p><strong>期待効果：</strong>課題が遊びのように楽しめるようになり、集中力と達成感が向上する。</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9;">⏱️ 所要時間：20分</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🎲 アクション3：コイン投げの運ゲームを15分</h4>
+    <p><strong>目的：</strong>コインを投げて表裏を予測し、結果を記録する。アレア（運）の体験を通じて、不確実性への態度を観察する。</p>
+    <p><strong>期待効果：</strong>運命受容の感覚を体験し、コントロール欲求と偶然の受容のバランスを内省できる。</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9;">⏱️ 所要時間：15分</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🎭 アクション4：5分間の役割演技</h4>
+    <p><strong>目的：</strong>歴史上の人物や架空のキャラクターになりきって独り言を話し、ミミクリ（模倣）を体験する。</p>
+    <p><strong>期待効果：</strong>自己同一性の一時停止を体験し、共感力や視点の柔軟性が高まる。</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9;">⏱️ 所要時間：10分</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🌀 アクション5：目を閉じて10回転</h4>
+    <p><strong>目的：</strong>その場で目を閉じて10回転し、イリンクス（眩暈）の感覚を安全に体験する。</p>
+    <p><strong>期待効果：</strong>秩序の一時的解体と回復のプロセスを体感し、日常の安定性を再認識できる。</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9;">⏱️ 所要時間：5分</p>
+  </div>
+
+  <div class="action-card">
+    <h4>📊 アクション6：遊びの退廃チェック</h4>
+    <p><strong>目的：</strong>自分が関わる遊びや趣味に、退廃の兆候（不正、迷信、妄想、依存）がないか点検する。</p>
+    <p><strong>期待効果：</strong>健全な遊びの境界を意識し、逸脱の予防と早期発見が可能になる。</p>
+    <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9;">⏱️ 所要時間：20分</p>
+  </div>
+</div>
+
+<div style="margin-top: 3rem; padding: 2rem; background: var(--card-bg); border-radius: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+  <h2 style="color: var(--primary); margin-bottom: 1.5rem;">📚 関連書籍</h2>
+  
+  <div class="book-card">
+    <h4>📖 ホモ・ルーデンス</h4>
+    <div class="author">著者：ヨハン・ホイジンガ</div>
+    <div class="relation"><strong>関連性：</strong>遊びを文化の源泉とする古典で、カイヨワの定義・批判の出発点。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 The Grasshopper: Games, Life and Utopia</h4>
+    <div class="author">著者：バーナード・スイーツ</div>
+    <div class="relation"><strong>関連性：</strong>ルドゥス的規則の役割を哲学的に精緻化し、遊びの本質を別角度から補強。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 The Ambiguity of Play</h4>
+    <div class="author">著者：ブライアン・サットン＝スミス</div>
+    <div class="relation"><strong>関連性：</strong>遊びの多義性を七つの言説で分析し、カイヨワの類型を拡張・批判する。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 フロー体験 喜びの現象学</h4>
+    <div class="author">著者：ミハイ・チクセントミハイ</div>
+    <div class="relation"><strong>関連性：</strong>没入（イリンクス/ルドゥス）に通じる最適経験の条件を実証的に解明。</div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
