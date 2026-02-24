@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>最高のマネジャーがいつも考えているたったひとつのこと - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  flex: 1 1 auto;
+  min-width: 120px;
+}
+.tab-btn:hover {
+  background: var(--bg);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid var(--primary);
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card .why {
+  font-style: normal;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.action-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.action-card h4 {
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: var(--bg);
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.metric-value {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+.flow-diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.flow-item:last-child {
+  margin-bottom: 0;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.75rem;
+}
+.book-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.book-card h4 {
+  font-size: 0.95rem;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    min-width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📊 最高のマネジャーがいつも考えているたったひとつのこと</h1>
+<p>才能×成果×強み×個別化で業績と定着を最大化する</p>
+</header>
+
+<div class="summary-block">
+<h2>🎯 要約：問い×答え×根拠（Why & How）</h2>
+<div class="summary-item">
+<strong>❓ 問い</strong>
+最高のマネジャーは何を大切にし、どう成果を出すのか？
+</div>
+<div class="summary-item">
+<strong>✅ 答え</strong>
+才能で選抜し成果でマネジメントし、強みに集中して弱みは配置と仕組みで補い、個別化された関係でエンゲージメントを高める。
+</div>
+<div class="summary-item">
+<strong>🔍 Why（なぜそうなのか）</strong>
+ギャラップの大規模調査で、優れたマネジメントの共通原則（4つの鍵）と高いQ12スコアが生産性・利益向上、欠勤・離職低下と因果的に結び付くことが示された。
+</div>
+<div class="summary-item">
+<strong>🛠️ How（そのためには）</strong>
+1) 採用・配置で才能を見抜く 2) 手順ではなく期待成果を明確化する 3) 強み中心に役割を再設計し弱みは補完する 4) 定期1on1とQ12で関係・環境を継続的に点検・改善する。
+</div>
+</div>
+
+<div class="tabs" role="tablist">
+<button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true" aria-controls="concepts-panel">主要概念の詳細</button>
+<button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false" aria-controls="chapters-panel">各章の要約</button>
+<button class="tab-btn" data-tab="examples" role="tab" aria-selected="false" aria-controls="examples-panel">具体例</button>
+<button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false" aria-controls="quotes-panel">重要な引用</button>
+<button class="tab-btn" data-tab="actions" role="tab" aria-selected="false" aria-controls="actions-panel">今日のアクション</button>
+</div>
+
+<div id="concepts-panel" class="tab-content active" role="tabpanel">
+<h2 style="margin-bottom:1rem;color:var(--primary);">💡 主要概念の詳細</h2>
+<div class="card-grid">
+<div class="card">
+<h3>🧬 才能（タレント）</h3>
+<ul>
+<li>繰り返し現れる思考・感情・行動のパターン</li>
+<li>先天的傾向で後天訓練では置き換えにくい</li>
+<li>選抜の起点となる重要指標</li>
+</ul>
+<div class="reason"><strong>理由：</strong>才能は訓練で変えられないため、採用段階で見抜くことが後工程すべての生産性を左右する。</div>
+</div>
+<div class="card">
+<h3>💪 強み</h3>
+<ul>
+<li>才能に知識・スキルという投資が加わった状態</li>
+<li>一貫して高い成果を生む武器</li>
+<li>伸ばすほど収益性が高い</li>
+</ul>
+<div class="reason"><strong>理由：</strong>強みへの投資は弱み矯正より投資対効果が高く、競争優位を生む最短経路。</div>
+</div>
+<div class="card">
+<h3>🛡️ 弱みのマネジメント</h3>
+<ul>
+<li>弱みを矯正の対象ではなく補完の対象と捉える</li>
+<li>役割再設計・パートナー連携・仕組み化で対処</li>
+<li>リスク管理の発想</li>
+</ul>
+<div class="reason"><strong>理由：</strong>弱みに時間を費やすより、強みを活かせる環境を整える方が速く確実に成果が出る。</div>
+</div>
+<div class="card">
+<h3>🎯 成果定義（アウトカム思考）</h3>
+<ul>
+<li>手順を細かく指示しない</li>
+<li>到達すべき成果・基準・境界条件を明確化</li>
+<li>自律性と責任感を高める</li>
+</ul>
+<div class="reason"><strong>理由：</strong>手順管理は創造性を奪い、成果定義は自律と責任を育て、生産性を最大化する。</div>
+</div>
+<div class="card">
+<h3>🧩 適材適所（フィット）</h3>
+<ul>
+<li>個々の才能と役割要件を整合させる</li>
+<li>昇進より「横の移動」も含めて最適化</li>
+<li>配席設計の思想</li>
+</ul>
+<div class="reason"><strong>理由：</strong>役割と才能が合致すると学習曲線が短縮され、満足度とパフォーマンスが同時に最大化される。</div>
+</div>
+<div class="card">
+<h3>👤 個別化マネジメント</h3>
+<ul>
+<li>全員に同じ扱いをしない</li>
+<li>動機・強み・学習様式に合わせてカスタマイズ</li>
+<li>指導・評価・表彰を一人ひとりに最適化</li>
+</ul>
+<div class="reason"><strong>理由：</strong>画一的な扱いは不公平であり、個別化こそが信頼と成果を生む真の公平性。</div>
+</div>
+<div class="card">
+<h3>🔥 エンゲージメント</h3>
+<ul>
+<li>仕事・組織への心理的コミットメント</li>
+<li>高いほど生産性・品質が上がる</li>
+<li>離職・欠勤が下がる</li>
+</ul>
+<div class="reason"><strong>理由：</strong>エンゲージメントは業績の先行指標であり、測定・改善することで持続的成長が可能になる。</div>
+</div>
+<div class="card">
+<h3>🌡️ Q12</h3>
+<ul>
+<li>エンゲージメントを測る12項目の質問群</li>
+<li>日々の条件から成長機会まで点検</li>
+<li>職場の基本要件を可視化する体温計</li>
+</ul>
+<div class="reason"><strong>理由：</strong>測定できないものは改善できない。Q12は職場環境の健全性を定量化し、施策の起点となる。</div>
+</div>
+<div class="card">
+<h3>🔄 頻繁なフィードバック／1on1</h3>
+<ul>
+<li>短く頻度高く進捗と障害を確認</li>
+<li>期待・優先度・支援を即時に調整</li>
+<li>微調整の仕組み</li>
+</ul>
+<div class="reason"><strong>理由：</strong>頻繁な対話は課題を早期発見し、ボトルネックを即座に解消して速度と品質を高める。</div>
+</div>
+<div class="card">
+<h3>🔀 規則を破る（常識の反転）</h3>
+<ul>
+<li>平均化・弱み矯正・手順指示・年功昇進を逆転</li>
+<li>成果起点で設計し直す姿勢</li>
+<li>逆張りの勇気</li>
+</ul>
+<div class="reason"><strong>理由：</strong>通念は平均的成果を生むが、卓越には常識を疑い、データと原則に基づく逆張りが必要。</div>
+</div>
+</div>
+
+<h3 style="margin-top:2rem;margin-bottom:1rem;color:var(--secondary);">🔗 概念間の関係性</h3>
+<div class="flow-diagram">
+<div class="flow-item">
+<span>才能で選ぶ</span><span class="flow-arrow">→</span><span>投資（知識・スキル）</span><span class="flow-arrow">→</span><span>強み形成</span><span class="flow-arrow">→</span><span>一貫した高成果</span>
+</div>
+<div class="flow-item">
+<span>成果定義が明確</span><span class="flow-arrow">→</span><span>自律性↑</span><span class="flow-arrow">→</span><span>責任感↑</span><span class="flow-arrow">→</span><span>生産性・品質↑</span>
+</div>
+<div class="flow-item">
+<span>個別化マネジメント</span><span class="flow-arrow">→</span><span>信頼関係↑</span><span class="flow-arrow">→</span><span>エンゲージメント↑</span><span class="flow-arrow">→</span><span>離職・欠勤↓</span>
+</div>
+<div class="flow-item">
+<span>弱みの補完（再設計/連携/仕組み）</span><span class="flow-arrow">→</span><span>エラー・ムダ↓</span><span class="flow-arrow">→</span><span>速度・安定性↑</span>
+</div>
+<div class="flow-item">
+<span>適材適所（横移動含む）</span><span class="flow-arrow">→</span><span>役割満足度↑</span><span class="flow-arrow">→</span><span>学習曲線短縮</span><span class="flow-arrow">→</span><span>パフォーマンス最大化</span>
+</div>
+<div class="flow-item">
+<span>Q12で測定</span><span class="flow-arrow">→</span><span>ギャップ特定</span><span class="flow-arrow">→</span><span>施策実行</span><span class="flow-arrow">→</span><span>再測定（改善サイクル）</span>
+</div>
+<div class="flow-item">
+<span>頻繁な1on1</span><span class="flow-arrow">→</span><span>課題早期発見</span><span class="flow-arrow">→</span><span>支援即応</span><span class="flow-arrow">→</span><span>ボトルネック解消</span><span class="flow-arrow">→</span><span>業績↑</span>
+</div>
+</div>
+</div>
+
+<div id="chapters-panel" class="tab-content" role="tabpanel">
+<h2 style="margin-bottom:1rem;color:var(--primary);">📚 各章の要約</h2>
+<div class="chapter-card">
+<h3>導入：測定の物差しを確立する</h3>
+<ul>
+<li>長年の大規模調査の方法論を提示</li>
+<li>優れたマネジャーを測る物差し（Q12）の意義を示す</li>
+<li>エンゲージメント測定の妥当性を確立</li>
+</ul>
+<div class="reason"><strong>理由：</strong>測定なくして改善なし。科学的根拠を示すことで、以降の原則に説得力を与える。</div>
+</div>
+<div class="chapter-card">
+<h3>第I部：エンゲージメントと業績の関連</h3>
+<ul>
+<li>生産性・利益・離職などの業績指標とQ12の相関を検証</li>
+<li>データで因果関係を実証</li>
+<li>測定の妥当性を確立</li>
+</ul>
+<div class="reason"><strong>理由：</strong>エンゲージメントが業績の先行指標であることを示し、投資対効果を可視化する。</div>
+</div>
+<div class="chapter-card">
+<h3>第II部：偉大なマネジャーの4つの鍵</h3>
+<ul>
+<li>①才能で選ぶ：経験や学歴より先天的パターンを重視</li>
+<li>②手順ではなく成果を定義：自律性と責任感を高める</li>
+<li>③強みに集中：弱みは補完策で対処</li>
+<li>④適材適所を徹底：横移動も含めて最適化</li>
+</ul>
+<div class="reason"><strong>理由：</strong>4つの鍵は調査で共通して見られた原則であり、実践の核心を提供する。</div>
+</div>
+<div class="chapter-card">
+<h3>第III部：4つの鍵を日々の運用に落とす</h3>
+<ul>
+<li>採用・配置：才能を見抜く質問と配置設計</li>
+<li>育成・評価：強み中心の育成と個別化評価</li>
+<li>報酬・称賛：動機に合わせたカスタマイズ</li>
+<li>キャリア設計：昇進だけでなく横移動も選択肢に</li>
+<li>チーム編成：強みの補完関係を設計</li>
+</ul>
+<div class="reason"><strong>理由：</strong>原則を具体的な運用に翻訳し、明日から実行可能な行動指針を提供する。</div>
+</div>
+<div class="chapter-card">
+<h3>終章：マネジャーの役割を再定義する</h3>
+<ul>
+<li>「人を平均化する管理者」から「強みを設計するデザイナー」へ</li>
+<li>継続改善の枠組みを提示</li>
+<li>Q12を軸にしたPDCAサイクル</li>
+</ul>
+<div class="reason"><strong>理由：</strong>役割の再定義は行動変容の起点であり、継続的な成長を促す。</div>
+</div>
+</div>
+
+<div id="examples-panel" class="tab-content" role="tabpanel">
+<h2 style="margin-bottom:1rem;color:var(--primary);">💼 具体例</h2>
+<div class="example-card">
+<h4>🏨 例1：ホテルのハウスキーパー配置</h4>
+<p><strong>背景：</strong>あるホテルチェーンで、清掃スタッフの離職率が高く、品質にばらつきがあった。</p>
+<p><strong>施策：</strong>マネジャーは各スタッフの才能（細部への注意力、人との交流好き、効率重視など）を観察し、部屋タイプや時間帯を個別に割り当てた。細部重視の人にはVIPルーム、交流好きな人にはロビー清掃、効率重視の人には大量の標準ルームを担当させた。</p>
+<p><strong>結果：</strong>離職率が30%低下し、顧客満足度が15%向上した。</p>
+<div class="reason"><strong>理由（この例が示すこと）：</strong>同じ職種でも才能に合わせて役割を細分化すると、満足度と成果が同時に上がる。</div>
+</div>
+<div class="example-card">
+<h4>📞 例2：コールセンターの成果定義</h4>
+<p><strong>背景：</strong>あるコールセンターでは、通話時間や応対手順を厳格に管理していたが、顧客満足度が低迷していた。</p>
+<p><strong>施策：</strong>マネジャーは手順指示をやめ、「顧客の問題を1回の通話で解決する」という成果定義に切り替えた。オペレーターは自分の判断で時間を使い、必要なら他部署に即座にエスカレーションできるようにした。</p>
+<p><strong>結果：</strong>平均通話時間は増えたが、再問い合わせが40%減少し、顧客満足度が20%向上した。</p>
+<div class="reason"><strong>理由（この例が示すこと）：</strong>手順管理は効率を下げ、成果定義は自律性と責任感を高めて真の効率を生む。</div>
+</div>
+<div class="example-card">
+<h4>🛠️ 例3：エンジニアの弱み補完</h4>
+<p><strong>背景：</strong>優秀なエンジニアが、ドキュメント作成が苦手で評価が伸び悩んでいた。</p>
+<p><strong>施策：</strong>マネジャーは弱みを矯正せず、ドキュメント作成が得意な別のメンバーとペアを組ませ、エンジニアは設計とコーディングに集中させた。ドキュメント担当者には追加報酬を支給した。</p>
+<p><strong>結果：</strong>エンジニアの生産性が30%向上し、ドキュメント品質も改善。チーム全体の納期遵守率が上がった。</p>
+<div class="reason"><strong>理由（この例が示すこと）：</strong>弱みを補完する仕組みは、個人とチーム双方の成果を最大化する。</div>
+</div>
+<div class="example-card">
+<h4>🎯 例4：営業チームの個別化表彰</h4>
+<p><strong>背景：</strong>営業チームで全員に同じ表彰（公開の場での賞賛）をしていたが、一部のメンバーは不快感を示していた。</p>
+<p><strong>施策：</strong>マネジャーは各メンバーの動機を1on1で確認し、公開表彰を好む人には従来通り、静かな承認を好む人には個別メールや1on1で感謝を伝えるようにした。</p>
+<p><strong>結果：</strong>全員のモチベーションが向上し、チーム全体の売上が12%増加した。</p>
+<div class="reason"><strong>理由（この例が示すこと）：</strong>個別化された承認は信頼を深め、内発的動機を高める。</div>
+</div>
+</div>
+
+<div id="quotes-panel" class="tab-content" role="tabpanel">
+<h2 style="margin-bottom:1rem;color:var(--primary);">💬 重要な引用</h2>
+<div class="quote-card">
+<p>「要旨: 人は会社を去るのではない。上司を去る。」</p>
+<div class="why"><strong>なぜ重要か：</strong>離職の主因がマネジャーにあることを端的に示し、役割の重みを可視化する。</div>
+</div>
+<div class="quote-card">
+<p>「要旨: 強みに集中し、弱みは回避策で補う。」</p>
+<div class="why"><strong>なぜ重要か：</strong>投資対効果の高い資源配分原則として行動指針になる。</div>
+</div>
+<div class="quote-card">
+<p>「要旨: 正しい手順ではなく、正しい成果を定義せよ。」</p>
+<div class="why"><strong>なぜ重要か：</strong>自律性と責任感を高め、微細な管理から価値創出へ軸足を移す。</div>
+</div>
+<div class="quote-card">
+<p>「要旨: 採用は才能で行い、経験や学歴に過度に依らない。」</p>
+<div class="why"><strong>なぜ重要か：</strong>選抜の質が後工程すべての生産性を規定することを示す。</div>
+</div>
+<div class="quote-card">
+<p>「要旨: 最高のマネジャーは、個々の才能を引き出すデザイナーである。」</p>
+<div class="why"><strong>なぜ重要か：</strong>マネジャーの役割を管理者から設計者へと再定義し、創造的な姿勢を促す。</div>
+</div>
+<div class="quote-card">
+<p>「要旨: エンゲージメントは業績の先行指標である。」</p>
+<div class="why"><strong>なぜ重要か：</strong>測定と改善の対象を明確化し、持続的成長の起点を示す。</div>
+</div>
+</div>
+
+<div id="actions-panel" class="tab-content" role="tabpanel">
+<h2 style="margin-bottom:1rem;color:var(--primary);">✅ 今日のアクション（15〜30分で実行可能）</h2>
+<div class="action-card">
+<h4>📝 アクション1：役割の期待成果を3つ書く</h4>
+<p><strong>目的：</strong>手順指示から成果定義へ軸足を移し、自律性を高める。</p>
+<p><strong>期待効果：</strong>メンバーが自分で判断できる範囲が広がり、マネジャーの負荷が減る。</p>
+<p><strong>具体的手順：</strong>担当する役割について「何を達成すべきか」を3つ箇条書きにし、「どうやるか」は書かない。</p>
+</div>
+<div class="action-card">
+<h4>🔍 アクション2：部下一人の強み仮説を箇条書き</h4>
+<p><strong>目的：</strong>強みに注目する習慣を作り、個別化マネジメントの起点を作る。</p>
+<p><strong>期待効果：</strong>強みを活かす配置・育成・評価の設計ができるようになる。</p>
+<p><strong>具体的手順：</strong>一人のメンバーについて「繰り返し現れる行動パターン」を3〜5個リストアップする。</p>
+</div>
+<div class="action-card">
+<h4>💬 アクション3：次回1on1の質問を3つ用意する</h4>
+<p><strong>目的：</strong>頻繁なフィードバックの質を高め、課題を早期発見する。</p>
+<p><strong>期待効果：</strong>ボトルネックが即座に解消され、メンバーの速度と品質が上がる。</p>
+<p><strong>具体的手順：</strong>「今週の進捗で一番の障害は？」「どんな支援があれば速く進む？」「今の役割で一番楽しいことは？」など、成果・支援・強みに関する質問を3つ準備する。</p>
+</div>
+<div class="action-card">
+<h4>📊 アクション4：Q12の1項目を自分のチームで測定する</h4>
+<p><strong>目的：</strong>エンゲージメントの現状を可視化し、改善の起点を作る。</p>
+<p><strong>期待効果：</strong>測定結果から優先課題が明確になり、施策の効果を追跡できる。</p>
+<p><strong>具体的手順：</strong>Q12の中から1項目（例：「仕事で自分の強みを活かす機会が毎日ある」）を選び、チームメンバーに5段階で評価してもらう。</p>
+</div>
+<div class="action-card">
+<h4>🔄 アクション5：弱みを補完する仕組みを1つ設計する</h4>
+<p><strong>目的：</strong>弱み矯正から補完へ発想を転換し、速く確実に成果を出す。</p>
+<p><strong>期待効果：</strong>メンバーが強みに集中でき、チーム全体の生産性が上がる。</p>
+<p><strong>具体的手順：</strong>一人のメンバーの弱み（例：ドキュメント作成）を特定し、ペア・テンプレート・ツールのいずれかで補完する方法を1つ書き出す。</p>
+</div>
+</div>
+
+<div style="margin-top:2rem;">
+<h2 style="margin-bottom:1rem;color:var(--primary);">📖 関連書籍</h2>
+<div class="book-card">
+<h4>さあ、才能(じぶん)に目覚めよう</h4>
+<div class="author">マーカス・バッキンガム, ドナルド・O・クリフトン</div>
+<div class="relation">強み=才能×投資という核概念の実践ガイドで補完関係にある。</div>
+</div>
+<div class="book-card">
+<h4>ストレングス・リーダーシップ</h4>
+<div class="author">トム・ラス, バリー・コンチー</div>
+<div class="relation">強みを土台にしたチーム構築とリーダー行動の設計指針を提供。</div>
+</div>
+<div class="book-card">
+<h4>ストレングス・ファインダー2.0</h4>
+<div class="author">トム・ラス</div>
+<div class="relation">個々の才能特性を特定し、配属・連携に活かす具体ツール。</div>
+</div>
+<div class="book-card">
+<h4>マネジメント［エッセンシャル版］</h4>
+<div class="author">P.F.ドラッカー</div>
+<div class="relation">成果志向・人を活かす観点で本書の原則を経営全体に拡張できる。</div>
+</div>
+<div class="book-card">
+<h4>DRIVE モチベーション3.0</h4>
+<div class="author">ダニエル・ピンク</div>
+<div class="relation">自律・熟達・目的という内発的動機づけが成果定義と親和的。</div>
+</div>
+<div class="book-card">
+<h4>ワーク・ルールズ!</h4>
+<div class="author">ラズロ・ボック</div>
+<div class="relation">データ駆動の人材マネジメント実践がQ12的アプローチと整合。</div>
+</div>
+</div>
+
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab-btn');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    
+    tabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    contents.forEach(c => c.classList.remove('active'));
+    
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    document.getElementById(target + '-panel').classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
