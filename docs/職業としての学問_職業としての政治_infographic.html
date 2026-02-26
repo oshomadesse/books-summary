@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>職業としての学問・政治 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+}
+.summary-block .item {
+  margin-bottom: 0.75rem;
+}
+.summary-block .item strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+}
+.summary-block .item p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-left: 0.5rem;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: var(--card-bg);
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-light);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+}
+.tab-content.active {
+  display: block;
+}
+.card {
+  background: var(--card-bg);
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+  color: var(--text-light);
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--secondary);
+  margin-bottom: 1rem;
+}
+.quote-card blockquote {
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.quote-card .note {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  margin-bottom: 1rem;
+  border-left: 3px solid var(--accent);
+}
+.action-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+.visual-container {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.bar-chart {
+  margin: 1rem 0;
+}
+.bar-item {
+  margin-bottom: 1rem;
+}
+.bar-label {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  color: var(--text);
+  font-weight: 600;
+}
+.bar-bg {
+  background: #e0e0e0;
+  height: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: width 1s ease;
+}
+.concept-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+@media (min-width: 640px) {
+  .concept-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.concept-card {
+  background: var(--card-bg);
+  padding: 0.75rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+}
+.concept-card h4 {
+  font-size: 0.95rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.concept-card .tag {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.15rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.concept-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.flow-diagram {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(240,147,251,0.05));
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.flow-item .arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 職業としての学問・政治</h1>
+  <p>マックス・ウェーバー | 近代の天職と倫理</p>
+</header>
+
+<div class="summary-block">
+  <h2>📌 要約：問い×答え×根拠</h2>
+  <div class="item">
+    <strong>❓ 問い</strong>
+    <p>近代社会で「学問」と「政治」を職業として担うとは何を意味し、どのような倫理が求められるか？</p>
+  </div>
+  <div class="item">
+    <strong>💡 答え</strong>
+    <p>学問は価値自由の下で世界を明晰化する天職、政治は国家の暴力独占を自覚しつつ責任倫理で結果に引き受ける天職である。</p>
+  </div>
+  <div class="item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>合理化と脱魔術化が進む近代では、学問は最終価値を与えられず、政治は権力の現実性を避けられないため、役割固有の倫理（価値自由／信念倫理と責任倫理の峻別）が不可欠となる。</p>
+  </div>
+  <div class="item">
+    <strong>🛠 How（そのためには）</strong>
+    <p>学問では事実と価値を分離し、専門分化の中で厳密に検証・反証する。政治では情熱と責任と距離化を備え、意図せざる結果を含めて帰結を評価し、硬い板をゆっくり穿つように持続する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="concept-grid">
+    <div class="concept-card">
+      <h4>🎯 職業（Beruf／天職）</h4>
+      <span class="tag">召命的生業</span>
+      <p>内的召命に基づき、継続的な規律と責任のもとで従事する生の様式。生活維持以上に意味づけを含む。</p>
+      <div class="reason"><strong>理由：</strong>近代人が生の意味を自ら構築する基盤となるため重要。</div>
+    </div>
+    <div class="concept-card">
+      <h4>⚖️ 価値自由（Wertfreiheit）</h4>
+      <span class="tag">事実と価値の峻別</span>
+      <p>研究設計・分析・提示において価値判断を混入させない態度。価値の提示自体は区別して明示する。</p>
+      <div class="reason"><strong>理由：</strong>学問の客観性と市民の自律的判断を保証する原則だから。</div>
+    </div>
+    <div class="concept-card">
+      <h4>🌀 世界の脱魔術化</h4>
+      <span class="tag">合理化の進行</span>
+      <p>近代の合理化により、世界が宗教的・神秘的秩序から説明可能な因果へと還元されていく過程。</p>
+      <div class="reason"><strong>理由：</strong>学問の役割が意味付与から明晰化へ転換する背景を示す。</div>
+    </div>
+    <div class="concept-card">
+      <h4>🧮 目的合理性</h4>
+      <span class="tag">手段選択理性</span>
+      <p>目的達成のために最適な手段を選択する計算的行為理性。価値合理性と緊張関係にある。</p>
+      <div class="reason"><strong>理由：</strong>近代社会の行為様式を特徴づけ、政治の手段選択を規定する。</div>
+    </div>
+    <div class="concept-card">
+      <h4>🔬 専門分化</h4>
+      <span class="tag">知の細分化</span>
+      <p>知の領域が細分化し、限定領域での厳密さが増す一方で全体的意味付与が困難になる傾向。</p>
+      <div class="reason"><strong>理由：</strong>学問の偉大さが全体把握から厳密性へ移行する構造的要因。</div>
+    </div>
+    <div class="concept-card">
+      <h4>💡 学問の使命</h4>
+      <span class="tag">明晰化の責務</span>
+      <p>世界を明晰化し、概念装置を提供し、自己反省を促すが、最終価値や生の意味は与えない。</p>
+      <div class="reason"><strong>理由：</strong>学問が担うべき役割と限界を明確にする核心命題。</div>
+    </div>
+    <div class="concept-card">
+      <h4>🏛 国家（暴力の正当的独占）</h4>
+      <span class="tag">暴力の独占</span>
+      <p>一定の領域内で正当な物理的暴力の行使を独占する人間の共同体。</p>
+      <div class="reason"><strong>理由：</strong>政治の手段の特異性を規定し、責任倫理の必要性を導く。</div>
+    </div>
+    <div class="concept-card">
+      <h4>❤️ 信念倫理</h4>
+      <span class="tag">動機重視</span>
+      <p>行為者の動機や純粋性を重視し、結果の責任を相対的に軽視する倫理。</p>
+      <div class="reason"><strong>理由：</strong>政治における理想主義の限界と危険性を示す対比軸。</div>
+    </div>
+    <div class="concept-card">
+      <h4>🎯 責任倫理</h4>
+      <span class="tag">結果引受</span>
+      <p>行為の予見可能な結果に対する引き受けを重視する倫理。政治に必須。</p>
+      <div class="reason"><strong>理由：</strong>政治家が権力行使の帰結を引き受ける規範的基盤となる。</div>
+    </div>
+    <div class="concept-card">
+      <h4>👑 正当性の三類型</h4>
+      <span class="tag">支配の根拠</span>
+      <p>伝統的支配・カリスマ的支配・合法的支配の三つの支配根拠。近代は合法的支配と官僚制が卓越。</p>
+      <div class="reason"><strong>理由：</strong>政治的権威の源泉を類型化し、近代国家の特質を理解する枠組み。</div>
+    </div>
+    <div class="concept-card">
+      <h4>📋 官僚制</h4>
+      <span class="tag">合理的装置</span>
+      <p>規則・職務分掌・資格に基づく合理的行政の装置。効率性と非人間化の両義性をもつ。</p>
+      <div class="reason"><strong>理由：</strong>近代国家の運営機構であり、自由と効率のジレンマを体現する。</div>
+    </div>
+    <div class="concept-card">
+      <h4>🔥 情熱・責任・距離化</h4>
+      <span class="tag">三資質</span>
+      <p>大義への情熱、結果への責任、自己抑制と均衡感覚（距離化）の三要素が政治の職業に必要。</p>
+      <div class="reason"><strong>理由：</strong>政治家の資質を具体化し、権力行使の倫理的基準を示す。</div>
+    </div>
+  </div>
+
+  <div class="visual-container">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">📊 概念の重要度（相対評価）</h3>
+    <div class="bar-chart">
+      <div class="bar-item">
+        <div class="bar-label">価値自由</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 95%;">95%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">責任倫理</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 95%;">95%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">国家（暴力独占）</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 90%;">90%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">脱魔術化</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 85%;">85%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">専門分化</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 80%;">80%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="color: var(--primary); margin-bottom: 0.75rem;">🔗 概念間の因果関係</h3>
+    <div class="flow-item">合理化の進行 <span class="arrow">→</span> 世界の脱魔術化 <span class="arrow">→</span> 学問の専門分化</div>
+    <div class="flow-item">専門分化の深化 <span class="arrow">→</span> 全体的意味付与の困難化 <span class="arrow">→</span> 学問の使命は明晰化へ</div>
+    <div class="flow-item">価値自由の要請 <span class="arrow">→</span> 事実／価値の分離 <span class="arrow">→</span> 研究と告知の役割区別</div>
+    <div class="flow-item">国家の暴力独占 <span class="arrow">→</span> 政治の手段は暴力 <span class="arrow">→</span> 責任倫理の不可欠化</div>
+    <div class="flow-item">信念倫理のみの政治 <span class="arrow">→</span> 意図せざる結果の拡大 <span class="arrow">→</span> 破局リスク増大</div>
+    <div class="flow-item">責任倫理の導入 <span class="arrow">→</span> 帰結への引受 <span class="arrow">→</span> 政策の漸進主義</div>
+    <div class="flow-item">カリスマ的支配の日常化 <span class="arrow">→</span> 官僚制の成立 <span class="arrow">→</span> 合法的支配の安定化</div>
+    <div class="flow-item">官僚制の拡大 <span class="arrow">→</span> 効率上昇と形式合理性 <span class="arrow">→</span> 個人の自由と意味の喪失感</div>
+    <div class="flow-item">学問の明晰化機能 <span class="arrow">→</span> 市民の判断力強化 <span class="arrow">→</span> 政治的熟議の質向上</div>
+    <div class="flow-item">情熱×責任×距離化の均衡 <span class="arrow">→</span> 権力行使の自制 <span class="arrow">→</span> 正統性維持</div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+  
+  <div class="card">
+    <h3>📚 学問としての職業</h3>
+    <ul>
+      <li><strong>導入：</strong>大学・学術界の就職構造と競争の厳しさ、偶然性の大きさを直視させる。</li>
+      <li><strong>近代の条件：</strong>合理化と脱魔術化により、学問は世界の意味を与えず、説明可能性を拡張する営みとなる。</li>
+      <li><strong>専門分化：</strong>知の細分化が進み、偉大さは全体把握よりも限定領域の厳密さに宿ると説く。</li>
+      <li><strong>価値自由：</strong>教師は不都合な事実を提示し、価値判断の押し付けを避けるべきとする。</li>
+      <li><strong>学問の意味：</strong>最終価値の競合（多神教化）を示し、個人が自らの価値選択を自覚する助けを与える。</li>
+      <li><strong>結語：</strong>学問は無限の営みであり、内的召命に応じて規律と誠実さで臨むべき天職である。</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（なぜこの章が必要か）：</strong>近代社会で学問が担う役割の限界と可能性を明確にし、研究者・教育者の倫理的指針を提供するため。学問が「意味」ではなく「明晰さ」を与える営みであることを示し、価値自由の原則を確立する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏛 政治としての職業</h3>
+    <ul>
+      <li><strong>国家定義：</strong>国家を正当な物理的暴力の独占体として規定し、政治の手段の特殊性を明確化。</li>
+      <li><strong>政治への道：</strong>名望家・党職・官僚などの経路と職業化の進展を概観。</li>
+      <li><strong>倫理二分法：</strong>信念倫理と責任倫理の緊張関係を提示し、政治には後者が不可欠とする。</li>
+      <li><strong>指導者と支配：</strong>正当性の三類型とカリスマの制度化（ルーティナイゼーション）を論じる。</li>
+      <li><strong>資質の三要素：</strong>情熱・責任・距離化を政治家の必要条件として提示。</li>
+      <li><strong>結語：</strong>政治は『硬い板をゆっくり穿つ』忍耐の営みであり、結果への引受が職業人の証である。</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（なぜこの章が必要か）：</strong>政治が暴力を手段とする特異な営みであることを直視させ、理想と現実の緊張を統治の規範設計に結びつけるため。責任倫理の導入により、政治家が権力行使の帰結を引き受ける倫理的基盤を確立する。
+    </div>
+  </div>
+
+  <div class="visual-container">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">🗂 章構成の視覚化</h3>
+    <svg viewBox="0 0 400 200" style="width: 100%; max-width: 500px; margin: 0 auto; display: block;">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect x="20" y="20" width="160" height="70" rx="8" fill="url(#grad1)" opacity="0.8"/>
+      <text x="100" y="45" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">学問としての職業</text>
+      <text x="100" y="65" text-anchor="middle" fill="#fff" font-size="10">価値自由・明晰化</text>
+      <text x="100" y="80" text-anchor="middle" fill="#fff" font-size="10">専門分化・天職</text>
+      
+      <rect x="220" y="20" width="160" height="70" rx="8" fill="url(#grad1)" opacity="0.8"/>
+      <text x="300" y="45" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">政治としての職業</text>
+      <text x="300" y="65" text-anchor="middle" fill="#fff" font-size="10">責任倫理・暴力独占</text>
+      <text x="300" y="80" text-anchor="middle" fill="#fff" font-size="10">情熱・責任・距離化</text>
+      
+      <rect x="20" y="110" width="360" height="70" rx="8" fill="#f093fb" opacity="0.3"/>
+      <text x="200" y="135" text-anchor="middle" fill="#333" font-size="12" font-weight="bold">共通基盤：近代の合理化と脱魔術化</text>
+      <text x="200" y="155" text-anchor="middle" fill="#666" font-size="10">事実と価値の峻別 / 意味の多元化 / 職業倫理の確立</text>
+      <text x="200" y="170" text-anchor="middle" fill="#666" font-size="10">内的召命への応答 / 結果への引受</text>
+    </svg>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💼 具体例</h2>
+  
+  <div class="card">
+    <h3>🔬 例1：価値自由の実践 — 気候変動研究</h3>
+    <ul>
+      <li><strong>背景：</strong>気候科学者が温暖化のメカニズムとシナリオを提示する際、「CO2削減すべき」という規範判断と「CO2が増えれば気温上昇する」という因果知識を分離する。</li>
+      <li><strong>示唆：</strong>研究者は政策選択肢の帰結を明示するが、最終的な価値判断（経済成長 vs 環境保護）は市民・政治家に委ねる。</li>
+      <li><strong>ウェーバーとの接続：</strong>学問は「何をすべきか」ではなく「何が起こるか」を明晰化する使命を体現。</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>価値自由の原則が現代の科学コミュニケーションにおいて、専門知と民主的意思決定を両立させる実践的枠組みとなることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ 例2：責任倫理の適用 — 戦後復興政策</h3>
+    <ul>
+      <li><strong>背景：</strong>戦後ドイツの政治家が「平和主義の信念」だけで武装解除を主張すると、周辺国の侵攻リスクや国内治安悪化という意図せざる結果を招く。</li>
+      <li><strong>示唆：</strong>責任倫理は「動機の純粋さ」ではなく「予見可能な帰結」を評価軸とし、段階的な軍縮と国際協調を選択する。</li>
+      <li><strong>ウェーバーとの接続：</strong>信念倫理と責任倫理の緊張を具体的政策判断に適用し、漸進主義の正当性を示す。</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>政治における理想主義の限界と、結果への引受が現実的な平和構築に不可欠であることを歴史的文脈で示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏢 例3：官僚制の両義性 — デジタル行政</h3>
+    <ul>
+      <li><strong>背景：</strong>行政手続きのデジタル化は効率性を高めるが、アルゴリズムによる自動判定が個別事情を無視し、市民の自由を制約するリスクを伴う。</li>
+      <li><strong>示唆：</strong>官僚制の合理性は効率と公平性をもたらすが、形式合理性が実質的正義を損なう「鉄の檻」となりうる。</li>
+      <li><strong>ウェーバーとの接続：</strong>官僚制の効率性と非人間化の両義性を現代技術の文脈で再現し、制度設計の倫理的課題を提起。</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>合理化の進展が個人の自由と意味を脅かす構造的ジレンマを、現代のデジタル化という具体的文脈で可視化する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎓 例4：専門分化の帰結 — 学際研究の困難</h3>
+    <ul>
+      <li><strong>背景：</strong>現代の大学では、生物学・経済学・倫理学がそれぞれ高度に専門化し、「遺伝子編集の是非」のような横断的問題に統合的視点を提供できない。</li>
+      <li><strong>示唆：</strong>専門分化は厳密性を高めるが、全体的意味付与を困難にし、市民の判断を支援する学問の役割を弱める。</li>
+      <li><strong>ウェーバーとの接続：</strong>学問の偉大さが全体把握から限定領域の厳密さへ移行する構造的要因を示す。</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>専門分化が知の断片化を招き、学問が社会的課題に応答する能力を制約する現代的ジレンマを浮き彫りにする。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📜 重要な引用</h2>
+  
+  <div class="quote-card">
+    <blockquote>「近代は世界を『脱魔術化』したが、それは世界の意味を奪い去ることではなく、説明の責任を個々人に返すことである。」</blockquote>
+    <p class="note"><strong>なぜ重要か：</strong>学問の限界と役割（明晰化と自己決定支援）を一文で示す中核命題だから。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>「学問は『意味』を教えない。学問は『明晰さ』を与える。」</blockquote>
+    <p class="note"><strong>なぜ重要か：</strong>教育・研究が価値判断の代行ではないという価値自由の原則を端的に表す。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>「国家とは、一定の領域内で正当な物理的暴力の行使を独占する共同体である。」</blockquote>
+    <p class="note"><strong>なぜ重要か：</strong>政治の手段の特異性を規定し、責任倫理の要請を導く出発点となる定義だから。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>「政治における二つの倫理――信念倫理と責任倫理――は対立しつつ補完しうる。」</blockquote>
+    <p class="note"><strong>なぜ重要か：</strong>理想と現実の緊張を統治の規範設計に結びつける枠組みを示す。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>「政治とは『硬い板をゆっくりと穿つ』営みである。」</blockquote>
+    <p class="note"><strong>なぜ重要か：</strong>短期成果主義を戒め、長期的・漸進的実践の価値を強調する比喩である。</p>
+  </div>
+
+  <div class="visual-container">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">🎯 引用の核心テーマ</h3>
+    <svg viewBox="0 0 300 180" style="width: 100%; max-width: 400px; margin: 0 auto; display: block;">
+      <circle cx="150" cy="90" r="70" fill="url(#grad1)" opacity="0.2"/>
+      <circle cx="150" cy="90" r="50" fill="url(#grad1)" opacity="0.4"/>
+      <circle cx="150" cy="90" r="30" fill="url(#grad1)" opacity="0.6"/>
+      <text x="150" y="95" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">明晰化</text>
+      <text x="150" y="50" text-anchor="middle" fill="#333" font-size="10">価値自由</text>
+      <text x="210" y="90" text-anchor="middle" fill="#333" font-size="10">責任倫理</text>
+      <text x="150" y="140" text-anchor="middle" fill="#333" font-size="10">暴力独占</text>
+      <text x="90" y="90" text-anchor="middle" fill="#333" font-size="10">脱魔術化</text>
+      <text x="150" y="165" text-anchor="middle" fill="#666" font-size="9">漸進主義</text>
+    </svg>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション（15〜30分）</h2>
+  
+  <div class="action-card">
+    <h4>📝 アクション1：自分の研究テーマを一文で定義</h4>
+    <p><strong>目的：</strong>専門分化の中で自分の立ち位置を明確化し、価値自由の原則を意識する。</p>
+    <p><strong>手順：</strong>「私の研究は〔対象〕について〔方法〕を用いて〔何を明らかにするか〕を探求する」という形式で一文にまとめる。</p>
+    <p><strong>期待効果：</strong>研究の焦点が絞られ、価値判断と事実探求の境界を自覚できる。学問の使命（明晰化）を実践する第一歩となる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>⚖️ アクション2：事実と価値の分離宣言を書く</h4>
+    <p><strong>目的：</strong>自分の発言・文章において事実記述と価値判断を峻別する習慣をつける。</p>
+    <p><strong>手順：</strong>最近書いた文章やプレゼン資料を見直し、「〜すべき」「〜が望ましい」などの価値判断を赤でマーク。それぞれに「これは私の価値判断である」と注釈を付ける。</p>
+    <p><strong>期待効果：</strong>価値自由の原則を実践し、聞き手・読み手が自律的に判断できる情報提供が可能になる。学問的誠実さが向上する。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🔍 アクション3：政策案の副作用を3つ列挙</h4>
+    <p><strong>目的：</strong>責任倫理の視点から、意図せざる結果を予見する訓練を行う。</p>
+    <p><strong>手順：</strong>関心のある政策（例：最低賃金引き上げ、教育無償化）を一つ選び、「この政策が引き起こしうる負の副作用」を3つ書き出す。それぞれに「誰が影響を受けるか」「どう対処するか」を付記。</p>
+    <p><strong>期待効果：</strong>信念倫理だけでなく責任倫理の視点を獲得し、政策評価の質が向上する。政治的判断における帰結への引受を実践できる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🧭 アクション4：自分の「天職」を問い直す</h4>
+    <p><strong>目的：</strong>職業を単なる生業ではなく、内的召命に基づく生の様式として再定義する。</p>
+    <p><strong>手順：</strong>「私がこの仕事を続ける理由は何か？」「この仕事を通じて何を実現したいか？」を5分間自由記述し、外的報酬（給与・地位）と内的動機（使命感・貢献）を区別する。</p>
+    <p><strong>期待効果：</strong>職業を天職として捉え直し、規律と誠実さをもって臨む姿勢が強化される。ウェーバーの「召命」概念を自己理解に統合できる。</p>
+  </div>
+
+  <div class="visual-container">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">🎯 アクションの優先順位</h3>
+    <div class="bar-chart">
+      <div class="bar-item">
+        <div class="bar-label">研究テーマ定義（即効性）</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 90%;">高</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">事実と価値の分離（習慣化）</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 85%;">高</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">副作用列挙（思考訓練）</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 80%;">中</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">天職の問い直し（長期）</div>
+        <div class="bar-bg"><div class="bar-fill" style="width: 75%;">中</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// タブ切替機能
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => {
+      c.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+
+// バーチャートアニメーション
+window.addEventListener('load', () => {
+  const bars = document.querySelectorAll('.bar-fill');
+  bars.forEach((bar, index) => {
+    setTimeout(() => {
+      bar.style.width = bar.style.width;
+    }, index * 100);
+  });
+});
+</script>
+
+</body>
+</html>
