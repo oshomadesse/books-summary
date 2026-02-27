@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daring Greatly - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  margin-left: 1rem;
+  color: var(--text);
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 2rem 0 1rem;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.card li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.example-card p {
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 4rem;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  opacity: 0.3;
+}
+.quote-card p {
+  font-size: 1.1rem;
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+.quote-card small {
+  display: block;
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--primary);
+}
+.action-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-meta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+.action-meta span {
+  background: rgba(102,126,234,0.1);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: var(--secondary);
+}
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-section h3 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  border-radius: 6px;
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0.25rem;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📖 Daring Greatly</h1>
+  <p>弱さを受け入れる勇気が、つながり・学習・創造性を生む</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 核心メッセージ</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜ「弱さを認めること」が本当の勇気であり、私たちの生き方・働き方・育児・リーダーシップを変えるのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>脆弱性は不確実性・リスク・感情的露出をいとわない実践であり、信頼・学習・革新・深い関係を生むから。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>「足りない」文化は比較と恐れを煽り、恥と防衛（アーマー）を強化して、つながりと挑戦を阻害する。一方、長年の定性研究と現場の事例は、共感・境界線・価値の整合性を伴う脆弱性が、エンゲージメント・回復力・創造性・フィードバック品質を向上させることを示す。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>脆弱性の神話を見破る→恥の引き金を特定・言語化→共感で共有し孤立を断つ→価値と境界線を明確化→小さな実験で不快さに踏み出す→職場と家庭で安全な対話・フィードバック・儀式（感謝/振り返り）を設計する。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🛡️ 脆弱性（Vulnerability）</h3>
+        <ul>
+          <li>不確実性・リスク・感情的露出を受け入れる姿勢</li>
+          <li>勇気の前提条件</li>
+          <li>弱さではなく強さの源泉</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>脆弱性なしに信頼・革新・深い関係は生まれない。勇気の尺度そのもの。
+        </div>
+      </div>
+      <div class="card">
+        <h3>😔 恥（Shame）</h3>
+        <ul>
+          <li>「自分は欠陥だ」という自己同一化の痛み</li>
+          <li>分離と沈黙を生む</li>
+          <li>秘密・沈黙・判断で増殖</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>恥はつながりを断ち、挑戦を阻む最大の障壁。理解と対処が回復の鍵。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💭 罪悪感（Guilt）</h3>
+        <ul>
+          <li>「したことが悪かった」と行為に結びつく感情</li>
+          <li>修正行動を促す</li>
+          <li>学習と成長の契機</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>恥と異なり、罪悪感は建設的。行動を正し前進を助ける。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📉 希少性文化（Scarcity）</h3>
+        <ul>
+          <li>常に「足りない」と感じさせる物語</li>
+          <li>比較と恐れを強化</li>
+          <li>競争と断絶を生む風土</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>不足の物語が恥を増幅し、アーマーを強化する社会的背景。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🛡️ アーマー（防衛）</h3>
+        <ul>
+          <li>完璧主義・皮肉・過剰統制・無感覚化</li>
+          <li>脆弱性回避の戦略</li>
+          <li>つながりと創造性を阻害</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>心の鎧は一時的に守るが、長期的には孤立と停滞を招く。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💚 共感（Empathy）</h3>
+        <ul>
+          <li>評価せずに感情に寄り添う</li>
+          <li>理解を示す対人スキル</li>
+          <li>恥の解毒剤</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>共感は恥を小さくし、つながりを回復する唯一の道。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌱 恥レジリエンス</h3>
+        <ul>
+          <li>恥を特定し言語化する力</li>
+          <li>批判的認識・手を伸ばす・恥を語る</li>
+          <li>回復と前進のプロセス</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>恥に折れない力が、挑戦と学習を継続可能にする。
+        </div>
+      </div>
+      <div class="card">
+        <h3>✨ 全身全霊の生き方</h3>
+        <ul>
+          <li>不完全さを受け入れる</li>
+          <li>価値と行動の整合性を保つ</li>
+          <li>「十分だ」で生きる姿勢</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>完璧ではなく十分であることが、持続可能な幸福と成長の土台。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🚧 境界線（Boundaries）</h3>
+        <ul>
+          <li>自他の限界と責任範囲を明確化</li>
+          <li>安全な開示の条件</li>
+          <li>やさしさの土台</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>境界線なしの脆弱性は危険。明確な枠が信頼を支える。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎯 勇気あるリーダーシップ</h3>
+        <ul>
+          <li>不確実性の中で価値に沿って対話・決断</li>
+          <li>学習を促す実践</li>
+          <li>不快を選ぶ力</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>リーダーシップは快適さではなく勇気。脆弱性が組織を変える。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-diagram">
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>希少性文化 → 比較/恐れ ↑ → 恥の増幅 → アーマー装着 → 断絶・創造性低下</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>脆弱性 × 境界線 → 安全な開示 → 信頼と絆の深化</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>恥 + （沈黙・秘密・判断） → 増殖 ／ 恥 + 共感 → 弱まる</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>罪悪感 → 行動修正・学習促進 ／ 恥 → 自己否定・回避/攻撃</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>価値の明確化 × 小さな実験 → 脆弱性の筋力化</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>心理的安全性 → 正直なフィードバック → パフォーマンス/革新向上</span>
+        </div>
+        <div class="flow-item">
+          <span class="flow-arrow">→</span>
+          <span>親の脆弱性モデリング → 子のレジリエンス/共感の育成</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📌 第1章：不足の文化を診断</h3>
+      <ul>
+        <li>社会に蔓延する「足りない」という物語</li>
+        <li>比較と恐れが恥と断絶を生む構造</li>
+        <li>希少性文化が心のアーマーを強化</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>問題の根源を理解することで、個人と社会の変革の出発点を示す。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📌 第2章：脆弱性の神話を反証</h3>
+      <ul>
+        <li>弱さ=無能という誤解を解く</li>
+        <li>脆弱性は勇気・創造性の源泉</li>
+        <li>不確実性への前進が革新を生む</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>価値転換により、脆弱性を実践する動機と正当性を提供。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📌 第3章：恥のメカニズム</h3>
+      <ul>
+        <li>恥と罪悪感の違いを明確化</li>
+        <li>引き金・増殖条件・対処の原理</li>
+        <li>共感が恥を弱める唯一の道</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>恥の理解が回復と前進の土台。言語化が力を奪う。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📌 第4章：心のアーマー</h3>
+      <ul>
+        <li>完璧主義・皮肉・麻痺化など回避戦略</li>
+        <li>アーマーの副作用（孤立・停滞）</li>
+        <li>防衛を手放す勇気の必要性</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>自己防衛パターンを特定し、脱却の道筋を示す。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📌 第5章：価値と境界線</h3>
+      <ul>
+        <li>価値の明確化と整合的行動</li>
+        <li>境界線が安全な開示を支える</li>
+        <li>やさしさと強さの両立</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>脆弱性の実践には明確な枠組みが不可欠。安全性の設計。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📌 第6章：職場への適用</h3>
+      <ul>
+        <li>フィードバック/評価/会議での脆弱性</li>
+        <li>心理的安全性の設計</li>
+        <li>正直な対話がパフォーマンスを向上</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>組織文化の変革により、エンゲージメントと革新を促進。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📌 第7章：家庭・育児</h3>
+      <ul>
+        <li>親のモデリングが子のレジリエンスを育む</li>
+        <li>儀式（感謝・振り返り）の設計</li>
+        <li>不完全さを受け入れる家庭文化</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>次世代への継承。家庭が脆弱性と共感の実践場。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📌 結語：日々の実践</h3>
+      <ul>
+        <li>小さな実験とコミュニティで継続</li>
+        <li>「大胆に挑む（Daring Greatly）」の日常化</li>
+        <li>不快さへの前進が変化を生む</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>知識から行動へ。持続可能な変化は日々の選択から。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🏢 例1：職場でのフィードバック</h3>
+      <p><strong>背景：</strong>マネージャーが部下に厳しいフィードバックを避け、問題が悪化。</p>
+      <p><strong>実践：</strong>「これは難しい会話だが、あなたの成長を信じているから話す」と前置きし、具体的な行動と影響を伝える。</p>
+      <p><strong>示唆：</strong>心理的安全性と明確な境界線が、正直な対話とパフォーマンス向上を両立。</p>
+      <div class="reason">
+        <strong>理由：</strong>脆弱性（不快な会話）が信頼と学習を生む実例。快適さより勇気を選ぶ。
+      </div>
+    </div>
+    <div class="example-card">
+      <h3>👨‍👩‍👧 例2：親子の対話</h3>
+      <p><strong>背景：</strong>親が完璧を装い、子どもが失敗を恐れて挑戦を避ける。</p>
+      <p><strong>実践：</strong>親が自分の失敗と学びを共有し、「完璧でなくていい」とモデリング。</p>
+      <p><strong>示唆：</strong>親の脆弱性が子のレジリエンスと共感を育む。不完全さの受容が次世代へ。</p>
+      <div class="reason">
+        <strong>理由：</strong>モデリングが最強の教育。親の勇気が子の成長マインドセットを形成。
+      </div>
+    </div>
+    <div class="example-card">
+      <h3>💡 例3：イノベーションチーム</h3>
+      <p><strong>背景：</strong>失敗を恐れ、安全なアイデアしか出ない会議。</p>
+      <p><strong>実践：</strong>リーダーが「私も分からない」と認め、失敗を学習機会と再定義。</p>
+      <p><strong>示唆：</strong>脆弱性を示すリーダーシップが、心理的安全性と創造性を解放。</p>
+      <div class="reason">
+        <strong>理由：</strong>不確実性の受容が革新の条件。リーダーの脆弱性が組織文化を変える。
+      </div>
+    </div>
+    <div class="example-card">
+      <h3>🤝 例4：恥の共有</h3>
+      <p><strong>背景：</strong>個人が恥を秘密にし、孤立と自己否定が深まる。</p>
+      <p><strong>実践：</strong>信頼できる友人に恥の経験を語り、共感を受ける。</p>
+      <p><strong>示唆：</strong>恥は共有で弱まる。沈黙が毒、共感が解毒剤。</p>
+      <div class="reason">
+        <strong>理由：</strong>恥のメカニズムの実証。つながりが回復の鍵。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>脆弱性は弱さではなく勇気の尺度。</p>
+      <small>本書の価値転換を一言で示し、実践の指針となる。</small>
+    </div>
+    <div class="quote-card">
+      <p>恥は秘密・沈黙・判断で育つ。</p>
+      <small>恥への処方が共有と共感である根拠を示す。</small>
+    </div>
+    <div class="quote-card">
+      <p>勇気か快適さか、両方は選べない。</p>
+      <small>学習と変化には不快への前進が不可欠だと明確化。</small>
+    </div>
+    <div class="quote-card">
+      <p>共感は恥を小さくする。</p>
+      <small>人とのつながりが回復の条件であることを凝縮。</small>
+    </div>
+    <div class="quote-card">
+      <p>完全であろうとせず、十分であれ。</p>
+      <small>全身全霊の生き方への入口を端的に表す。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>✍️ 弱さを書き出し言語化する</h3>
+      <p>今感じている不安・恐れ・恥を紙に書き出し、具体的に名前をつける。</p>
+      <div class="action-meta">
+        <span>⏱️ 15分</span>
+        <span>🎯 目的：恥の特定と言語化</span>
+        <span>💡 効果：感情の客観視と力の奪還</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>🔍 恥の引き金を3つ特定する</h3>
+      <p>過去1週間で恥を感じた場面を3つ振り返り、共通パターンを探す。</p>
+      <div class="action-meta">
+        <span>⏱️ 20分</span>
+        <span>🎯 目的：引き金の認識</span>
+        <span>💡 効果：予防と対処の準備</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>🤝 信頼できる人に1件相談する</h3>
+      <p>小さな悩みや不安を1人の信頼できる人に打ち明け、共感を求める。</p>
+      <div class="action-meta">
+        <span>⏱️ 30分</span>
+        <span>🎯 目的：共感の体験</span>
+        <span>💡 効果：つながりの回復と孤立の解消</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>📝 自分の価値を2つ書く</h3>
+      <p>最も大切にしたい価値を2つ選び、今週の行動がそれに沿っているか確認。</p>
+      <div class="action-meta">
+        <span>⏱️ 15分</span>
+        <span>🎯 目的：価値の明確化</span>
+        <span>💡 効果：整合的行動と自己信頼の強化</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>🎭 1つの小さな不快に踏み出す</h3>
+      <p>避けていた小さな会話や依頼を1つ実行し、結果を観察する。</p>
+      <div class="action-meta">
+        <span>⏱️ 20分</span>
+        <span>🎯 目的：脆弱性の筋力化</span>
+        <span>💡 効果：勇気の実感と行動範囲の拡大</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
