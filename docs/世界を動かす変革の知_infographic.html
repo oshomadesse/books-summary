@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世界を動かす思考と実践 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--primary);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.75rem;
+}
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border: 2px solid var(--border);
+}
+.example-card h4 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.quote-card blockquote {
+  font-style: italic;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card cite {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  display: block;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 0.25rem;
+}
+.diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.diagram h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--secondary);
+  text-align: center;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.metric-badge {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.metric-badge .number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.metric-badge .label {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+.book-list {
+  list-style: none;
+  padding: 0;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-left: 3px solid var(--primary);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.book-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+}
+.book-item em {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.book-item p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌍 世界を動かす思考と実践</h1>
+  <p>バイアスとノイズを超えた明晰な意思決定の設計</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📋 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      世界を動かす変革は、個人と組織のどの思考と実践から生まれるのか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      認知バイアスと判断ノイズを最小化する意思決定設計と、チェックリスト・ベースレート・情報ダイエット・二次効果思考を核にした反復可能なルール群から生まれる。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      人間の判断は体系的誤り（バイアス）とばらつき（ノイズ）に侵され、善意や知識量だけでは成果が安定せず拡張もしないため。
+    </div>
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      1) 主要バイアスを命名し可視化、2) 決断前のチェックリスト化とベースレート参照、3) ニュース等のノイズ源を遮断し注意資本を確保、4) 二次効果・オポチュニティコストを計算、5) 決断と結果を記録しフィードバック・ループで規律を更新。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true">主要概念の詳細</button>
+    <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false">各章の要約</button>
+    <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false">具体例</button>
+    <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false">重要な引用</button>
+    <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false">今日のアクション</button>
+  </div>
+
+  <div id="concepts" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🧠 認知バイアス</h3>
+        <ul>
+          <li>人間の情報処理の系統的誤り</li>
+          <li>直感やヒューリスティックの副作用</li>
+          <li>予測や判断を歪める</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>思考の歪みを認識しなければ、どれほど善意でも判断は安定しない。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📊 ノイズ（判断のばらつき）</h3>
+        <ul>
+          <li>同一事例でも人や状況で判断が変動</li>
+          <li>品質と公正を損なう</li>
+          <li>再現性を阻害する</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>ムラの害を減らすことで、組織全体の意思決定品質が向上する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>✅ 意思決定チェックリスト</h3>
+        <ul>
+          <li>判断前に必ず問う標準質問の束</li>
+          <li>抜け漏れを減らす</li>
+          <li>再現性を高める</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>賢さを安定化させ、誰でも一定水準の判断を可能にする。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📈 ベースレート思考</h3>
+        <ul>
+          <li>個別事例の前に集団データの頻度を参照</li>
+          <li>統計基準を優先する</li>
+          <li>直感の暴走を抑える</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>まず統計から始めることで、過信と楽観を防ぐ。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💸 オポチュニティコスト</h3>
+        <ul>
+          <li>選択により放棄する次善案の価値</li>
+          <li>意思決定の真のコスト</li>
+          <li>資源配分の最適化に不可欠</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>見えない代償を可視化し、最良の選択を導く。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔮 反事実思考（プレモーテム）</h3>
+        <ul>
+          <li>失敗したと仮定して原因を先に洗い出す</li>
+          <li>事前対策を促進</li>
+          <li>隠れたリスクを可視化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>先回り失敗学で、実際の失敗確率を下げる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📰 ニュース断食（情報ダイエット）</h3>
+        <ul>
+          <li>即時性の高い断片情報を遠ざける</li>
+          <li>一次情報と良質な長文へ注意を再配分</li>
+          <li>注意資本を回復</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>注意の節食で深い分析時間を確保し、バイアス検出力を高める。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔗 二次効果（セカンドオーダー思考）</h3>
+        <ul>
+          <li>施策の直接効果だけでなく時間遅れを考える</li>
+          <li>連鎖的な副作用を予測</li>
+          <li>長期的影響を評価</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>先の先を見ることで、短期的成功が長期的失敗にならないようにする。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚖️ 行動規律（ストイック・ルール）</h3>
+        <ul>
+          <li>原則ベースの行動ルールを事前に定める</li>
+          <li>情動に左右されない運用</li>
+          <li>再現性と拡張性を確保</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>原則で動くことで、組織的影響力が高まる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📓 決断日誌とフィードバック</h3>
+        <ul>
+          <li>意思決定の前提・予測・感情を記録</li>
+          <li>結果で精度を検証・更新</li>
+          <li>学習サイクルを回す</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>学習する判断で、意思決定品質が継続的に改善する。
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <h3>🔄 概念間の因果関係</h3>
+      <div class="flow-item">
+        <span>ニュース断食</span>
+        <span class="flow-arrow">→</span>
+        <span>注意資本の回復</span>
+        <span class="flow-arrow">→</span>
+        <span>深い分析時間↑</span>
+        <span class="flow-arrow">→</span>
+        <span>バイアス検出力↑</span>
+      </div>
+      <div class="flow-item">
+        <span>チェックリスト + ベースレート参照</span>
+        <span class="flow-arrow">→</span>
+        <span>抜け漏れ↓ & 直感の暴走↓</span>
+        <span class="flow-arrow">→</span>
+        <span>判断ノイズ↓</span>
+      </div>
+      <div class="flow-item">
+        <span>プレモーテム</span>
+        <span class="flow-arrow">→</span>
+        <span>隠れたリスク可視化</span>
+        <span class="flow-arrow">→</span>
+        <span>二次効果の把握</span>
+        <span class="flow-arrow">→</span>
+        <span>失敗確率↓</span>
+      </div>
+      <div class="flow-item">
+        <span>行動規律</span>
+        <span class="flow-arrow">→</span>
+        <span>ルール遵守率↑</span>
+        <span class="flow-arrow">→</span>
+        <span>意思決定の再現性↑</span>
+        <span class="flow-arrow">→</span>
+        <span>組織的影響力↑</span>
+      </div>
+      <div class="flow-item">
+        <span>決断日誌</span>
+        <span class="flow-arrow">→</span>
+        <span>予測精度の測定</span>
+        <span class="flow-arrow">→</span>
+        <span>フィードバック・ループ</span>
+        <span class="flow-arrow">→</span>
+        <span>意思決定品質の継続改善</span>
+      </div>
+      <div class="flow-item">
+        <span>オポチュニティコストの明示</span>
+        <span class="flow-arrow">→</span>
+        <span>資源配分の最適化</span>
+        <span class="flow-arrow">→</span>
+        <span>変革施策の費用対効果↑</span>
+      </div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-badge">
+        <span class="number">10</span>
+        <span class="label">主要概念</span>
+      </div>
+      <div class="metric-badge">
+        <span class="number">6</span>
+        <span class="label">因果関係</span>
+      </div>
+      <div class="metric-badge">
+        <span class="number">5</span>
+        <span class="label">実践ツール</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="chapters" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 導入：問題提起とスコープ</h3>
+      <ul>
+        <li>世界を動かすのは強い意志ではなく、良い判断と良い制度である</li>
+        <li>善意や雄弁だけでは変革は起きない</li>
+        <li>明晰な意思決定設計の必要性</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>動機中心から設計中心への発想転換を促し、本書全体の前提を確立するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🧩 第1部：バイアスとノイズ</h3>
+      <ul>
+        <li>認知の落とし穴と判断のばらつきが変革を妨げる実例</li>
+        <li>バイアスとノイズのメカニズム</li>
+        <li>既存研究の凝縮と体系化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>人間の判断の脆弱性を理解しなければ、対策の必要性が腹落ちしないため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🛠️ 第2部：判断を設計する</h3>
+      <ul>
+        <li>チェックリスト、ベースレート、プレモーテム</li>
+        <li>二次効果思考などの実践ツール群</li>
+        <li>意思決定の標準化と再現性</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>具体的なツールを提供することで、理論を実務に落とし込めるようにするため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>💡 第3部：注意の経済学</h3>
+      <ul>
+        <li>ニュース断食と情報源選別</li>
+        <li>注意資本を回復し、長期思考を可能にする方法</li>
+        <li>情報ダイエットの実践</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>注意は有限資源であり、その配分が判断品質を左右するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>⚙️ 第4部：行動規律と制度設計</h3>
+      <ul>
+        <li>個人ルールからチーム標準へ</li>
+        <li>インセンティブ整合までの拡張と運用例</li>
+        <li>組織的な意思決定品質の向上</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>個人の改善を組織全体にスケールさせ、変革の影響力を最大化するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔄 第5部：実装と学習</h3>
+      <ul>
+        <li>決断日誌、メトリクス、実験/反実験</li>
+        <li>学習サイクルを回す（再現性とスケール）</li>
+        <li>継続的な改善プロセス</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>フィードバック・ループで意思決定品質を継続的に向上させるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎯 結語：小さな明晰な判断の累積</h3>
+      <ul>
+        <li>小さな明晰な判断の累積が大きな変革を動かす</li>
+        <li>限界と倫理も含む</li>
+        <li>実践への呼びかけ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>完璧主義ではなく漸進主義で、持続可能な変革を促すため。
+      </div>
+    </div>
+
+    <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 1rem; padding: 1rem; background: rgba(102,126,234,0.05); border-radius: 0.5rem;">
+      <strong>備考：</strong>書名の公的情報が未確認のため、上記はドベリ既存著作の論旨に基づく推定的な構成です。
+    </p>
+  </div>
+
+  <div id="examples" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>🏥 例1：医療現場のチェックリスト導入</h4>
+      <p><strong>背景：</strong>外科手術の感染率が高く、手順の抜け漏れが原因だった。</p>
+      <p><strong>実践：</strong>WHO推奨の手術チェックリストを導入し、全スタッフが術前・術中・術後に確認。</p>
+      <p><strong>結果：</strong>感染率が30%以上低下し、死亡率も減少。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>チェックリストは専門家の知識を補完し、ノイズを減らして再現性を高める。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>📉 例2：投資判断のベースレート無視</h4>
+      <p><strong>背景：</strong>スタートアップ投資家が「この起業家は優秀だから成功する」と個別判断に傾倒。</p>
+      <p><strong>実践：</strong>ベースレート（スタートアップの90%は失敗）を無視し、楽観バイアスで投資。</p>
+      <p><strong>結果：</strong>ポートフォリオの大半が失敗し、期待リターンを大きく下回る。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>個別情報に惑わされず、まず統計基準を参照することの重要性。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>📰 例3：ニュース断食で注意資本を回復</h4>
+      <p><strong>背景：</strong>経営者が毎日数時間ニュースを追い、断片情報に振り回されていた。</p>
+      <p><strong>実践：</strong>ニュース通知を全停止し、週1回の長文レビューと一次資料に切り替え。</p>
+      <p><strong>結果：</strong>深い思考時間が増え、戦略的意思決定の質が向上。チームからも「判断が安定した」と評価。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>注意の節食で深い分析時間を確保し、バイアス検出力を高める。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🔮 例4：プレモーテムで隠れたリスクを発見</h4>
+      <p><strong>背景：</strong>新製品ローンチ前、チームは楽観的で「成功するはず」と考えていた。</p>
+      <p><strong>実践：</strong>「1年後、製品は失敗した」と仮定し、原因を全員でブレインストーミング。</p>
+      <p><strong>結果：</strong>サプライチェーンの脆弱性とカスタマーサポート不足が浮上し、事前に対策を実施。ローンチは成功。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>先回り失敗学で、実際の失敗確率を下げる。
+      </div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-badge">
+        <span class="number">4+</span>
+        <span class="label">具体例</span>
+      </div>
+      <div class="metric-badge">
+        <span class="number">30%</span>
+        <span class="label">感染率低下</span>
+      </div>
+      <div class="metric-badge">
+        <span class="number">90%</span>
+        <span class="label">失敗率（ベースレート）</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="quotes" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <blockquote>「善意では世界は動かない。世界を動かすのは良い制度と良いルールだ。」</blockquote>
+      <cite><strong>なぜ重要か：</strong>動機中心から設計中心への発想転換を迫るため。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>「ニュースは知識の錯覚を生み、注意を浪費する。」</blockquote>
+      <cite><strong>なぜ重要か：</strong>情報ダイエットの必要性と投資すべき注意の方向性を示すため。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>「チェックリストは賢さの代用品ではないが、賢さを安定化させる。」</blockquote>
+      <cite><strong>なぜ重要か：</strong>再現性のある実務ツールとしての価値を端的に示すため。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>「意思決定は予測であり、予測はまずベースレートに従うべきだ。」</blockquote>
+      <cite><strong>なぜ重要か：</strong>個別直感より統計基準を優先する判断規律の根拠となるため。</cite>
+    </div>
+
+    <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 1rem; padding: 1rem; background: rgba(102,126,234,0.05); border-radius: 0.5rem;">
+      <strong>注：</strong>上記は要旨であり、原典の公的情報が未確認のため、ドベリの既存論旨に基づく推定的な引用です。
+    </p>
+  </div>
+
+  <div id="actions" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>📝 1. 今日の重要決断を記録する</h4>
+      <p><strong>目的：</strong>意思決定の前提・予測・感情を可視化し、後で検証できるようにする。</p>
+      <p><strong>期待効果：</strong>フィードバック・ループの起点となり、判断精度が継続的に向上する。</p>
+      <p><strong>実行方法：</strong>ノートやアプリに「決断内容」「理由」「予測」「感情」を15分で書き出す。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ 2. 決断用5項目チェック作成</h4>
+      <p><strong>目的：</strong>判断前に必ず問う標準質問を定め、抜け漏れを防ぐ。</p>
+      <p><strong>期待効果：</strong>意思決定の再現性が高まり、ノイズが減少する。</p>
+      <p><strong>実行方法：</strong>「ベースレートは？」「二次効果は？」「オポチュニティコストは？」「プレモーテムは？」「記録したか？」の5項目を紙に書き、デスクに貼る（20分）。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>📵 3. ニュース通知を全停止する</h4>
+      <p><strong>目的：</strong>即時性の高い断片情報を遮断し、注意資本を回復する。</p>
+      <p><strong>期待効果：</strong>深い分析時間が増え、バイアス検出力が高まる。</p>
+      <p><strong>実行方法：</strong>スマホとPCのニュースアプリ通知をすべてオフにし、週1回の長文レビュー時間を予定に入れる（15分）。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🔮 4. 次の重要プロジェクトでプレモーテムを実施</h4>
+      <p><strong>目的：</strong>「失敗した」と仮定して隠れたリスクを先に洗い出す。</p>
+      <p><strong>期待効果：</strong>事前対策が促進され、実際の失敗確率が下がる。</p>
+      <p><strong>実行方法：</strong>チームで「1年後、このプロジェクトは失敗した」と仮定し、原因を10個リストアップ（30分）。</p>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-badge">
+        <span class="number">4</span>
+        <span class="label">即実行可能</span>
+      </div>
+      <div class="metric-badge">
+        <span class="number">15-30分</span>
+        <span class="label">所要時間</span>
+      </div>
+      <div class="metric-badge">
+        <span class="number">高</span>
+        <span class="label">期待効果</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 2rem; padding: 1.5rem; background: var(--card-bg); border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+    <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: var(--secondary);">📚 関連書籍</h3>
+    <ul class="book-list">
+      <li class="book-item">
+        <strong>The Art of Thinking Clearly</strong>
+        <em>著者: Rolf Dobelli</em>
+        <p>認知バイアスの体系的整理が本書の基盤的前提と重なる。</p>
+      </li>
+      <li class="book-item">
+        <strong>The Art of the Good Life</strong>
+        <em>著者: Rolf Dobelli</em>
+        <p>行動規律や意思決定ルールの実践が変革の運用面と一致する。</p>
+      </li>
+      <li class="book-item">
+        <strong>Noise: A Flaw in Human Judgment</strong>
+        <em>著者: Daniel Kahneman, Olivier Sibony, Cass R. Sunstein</em>
+        <p>判断ノイズ低減の科学的根拠と具体策を補強する。</p>
+      </li>
+      <li class="book-item">
+        <strong>Thinking, Fast and Slow</strong>
+        <em>著者: Daniel Kahneman</em>
+        <p>システム1/2の枠組みでバイアスの発生機序を理解できる。</p>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+// タブ切替
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => c.classList.remove('active'));
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
