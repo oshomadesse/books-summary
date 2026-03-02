@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>独学大全 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.15);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.summary-item strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid #f59e0b;
+}
+
+.reason-box strong {
+  color: #92400e;
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+
+.example-card {
+  background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-left: 4px solid var(--accent);
+}
+
+.example-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.quote-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  font-style: italic;
+}
+
+.quote-card .quote-text {
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.quote-card .quote-note {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-card h4 {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+  margin-bottom: 0.3rem;
+}
+
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin: 0.25rem;
+}
+
+.flow-diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.flow-step {
+  display: flex;
+  align-items: center;
+  margin: 0.75rem 0;
+  font-size: 0.95rem;
+}
+
+.flow-step:before {
+  content: "→";
+  color: var(--primary);
+  font-size: 1.5rem;
+  margin-right: 0.75rem;
+  font-weight: bold;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  border-left: 3px solid var(--secondary);
+}
+
+.book-card h4 {
+  color: var(--secondary);
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card .author {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.book-card .relation {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 独学大全</h1>
+  <p>絶対に「学ぶこと」をあきらめたくない人のための55の技法</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>💡 核心メッセージ</h2>
+  <p>独学は才能ではなく設計である。問いを立て、良質な情報にアクセスし、理解・記憶・練習・振り返りの循環を回すための具体的技法を組み合わせれば、誰でも学びを積み上げられる。</p>
+  
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    独学で挫折せず成果を出すにはどうすればよいか？
+  </div>
+  
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    学びを「問いの設計→資料探索→理解→記憶→練習→フィードバック→改善」の循環に分解し、55の技法で各段階をシステム化する。
+  </div>
+  
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    記憶と学習は直感に反し、思い出す練習・分散反復・適度な困難・明確な目標とフィードバックが定着と転移を最大化することが実証されているため。
+  </div>
+  
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    目的と制約を言語化→前後方引用で良質資料を特定→SQ3Rやフェインマンで構造理解→リトリーバル・分散・作問で定着→エラーログとレビューで計画更新→環境と習慣を設計。
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🎯 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📖 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">⚡ 今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    
+    <div class="card">
+      <h3>🧠 メタ認知</h3>
+      <ul>
+        <li>自分の理解度・誤り・進捗を客観視する能力</li>
+        <li>学習方略を選び直す判断力</li>
+        <li>レビューやログで養う</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 自分をモニターする頭脳のダッシュボードとして、学習効率を最大化し挫折を防ぐため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 問いの設計</h3>
+      <ul>
+        <li>抽象的目的を具体的な学習課題へ階層分解</li>
+        <li>達成基準と順序を定める</li>
+        <li>目的を課題に翻訳する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 曖昧な「学びたい」を実行可能な行動に変換し、迷いを減らすため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📋 学習計画（学習ログ）</h3>
+      <ul>
+        <li>いつ・何を・どれだけ・どう学ぶかを見通す</li>
+        <li>記録し、次回に活かす運用台帳</li>
+        <li>学びの地図と航海日誌</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 可視化と振り返りが軌道修正を可能にし、継続を支えるため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔍 情報探索</h3>
+      <ul>
+        <li>基礎教科書・総説・代表論文から出発</li>
+        <li>前方/後方引用追跡で信頼できる資料を収集</li>
+        <li>知の川上に当たる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 良質な情報源に接続することが独学の質を決定するため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📚 SQ3R</h3>
+      <ul>
+        <li>Survey-Question-Read-Recite-Reviewの読解法</li>
+        <li>構造把握と想起で理解を深める</li>
+        <li>読みを理解に変える手順書</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 受動的な読書を能動的な理解プロセスに変換するため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎓 フェインマン・テクニック</h3>
+      <ul>
+        <li>素人にも説明できる言葉で再記述</li>
+        <li>穴を特定して補修する理解法</li>
+        <li>説明して理解を試す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 説明できない部分が理解の穴であり、それを発見・修復するため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 リトリーバル練習</h3>
+      <ul>
+        <li>見直しよりも自力で思い出す練習を重ねる</li>
+        <li>記憶痕跡を強化する</li>
+        <li>思い出して覚える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 想起の努力が記憶を強固にし、長期定着を促すため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⏰ 分散学習</h3>
+      <ul>
+        <li>時間をあけて複数回復習</li>
+        <li>忘却曲線に抗い、長期定着を促す</li>
+        <li>間をあけて繰り返す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 間隔を置いた反復が記憶の保持期間を劇的に延ばすため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔀 インターリービング</h3>
+      <ul>
+        <li>類似テーマを交互に練習</li>
+        <li>識別力と転移を高める</li>
+        <li>混ぜて鍛える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 異なる問題を混在させることで応用力と判断力が向上するため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🗺️ コンセプトマップ</h3>
+      <ul>
+        <li>概念と関係を図示</li>
+        <li>知識のネットワーク構造を外化</li>
+        <li>知の見取り図</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 知識の構造を可視化し、ギャップと関連性を発見するため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 デリバレート・プラクティス</h3>
+      <ul>
+        <li>明確な目標・即時フィードバック</li>
+        <li>限界付近の課題で能力を伸ばす</li>
+        <li>狙って上達する練習</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 計画的な困難が技能の限界を押し上げるため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📝 エラーログ</h3>
+      <ul>
+        <li>誤答や勘違いのパターンを記録・分析</li>
+        <li>再発防止策を設計する台帳</li>
+        <li>失敗の再利用</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 失敗から学ぶ仕組みが成長を加速させるため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏠 環境設計</h3>
+      <ul>
+        <li>誘惑を遠ざけ、トリガーとルーチンを整える</li>
+        <li>集中が続く場を作る</li>
+        <li>集中をデザインする</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 意志力に頼らず、環境が行動を自動化するため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>❓ 作問（自作テスト）</h3>
+      <ul>
+        <li>学習対象を問う問題を自作</li>
+        <li>出題者視点で理解の深度と転移を高める</li>
+        <li>問うて学ぶ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 問いを作る過程で知識の構造と応用範囲を理解するため
+      </div>
+    </div>
+
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">🔗 概念間の関係性</h3>
+    <div class="flow-step">目的明確化 → 問いの設計 → 学習計画 → 実行 → レビュー（メタ認知）</div>
+    <div class="flow-step">問いの設計 → 情報探索（前後方引用） → 良質資料 → 理解の効率↑</div>
+    <div class="flow-step">SQ3R/フェインマン → 構造理解 → コンセプトマップ → 応用力↑</div>
+    <div class="flow-step">理解 → リトリーバル練習 → 分散学習 → 長期定着</div>
+    <div class="flow-step">インターリービング → 識別力↑ → 転移性能↑</div>
+    <div class="flow-step">エラーログ → 弱点特定 → デリバレート・プラクティス → 技能化</div>
+    <div class="flow-step">環境設計 → 注意制御 → 実行量安定 → 継続</div>
+    <div class="flow-step">学習ログ → 進捗可視化 → 計画修正 → 学習効率最適化</div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  
+  <div class="chapter-card">
+    <h3>第1部: 独学の前提と心構え</h3>
+    <ul>
+      <li>独学は方法の問題であり、孤立ではなく知の共同体に接続する営み</li>
+      <li>直感に反する学習原理を概説</li>
+      <li>才能ではなく技法の組み合わせで成果が出る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 独学への誤解を解き、科学的根拠に基づく方法論の土台を築くため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2部: 問いの設計と学習計画</h3>
+    <ul>
+      <li>目的の言語化、目標階層化、マイルストーン設定</li>
+      <li>学習ログの運用で道筋を描く</li>
+      <li>「わからない」を定義できれば半分は解けている</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 曖昧な目標を具体的な行動に変換し、迷いと挫折を防ぐため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3部: 情報探索と資料選定</h3>
+    <ul>
+      <li>教科書・総説・レビューから始める</li>
+      <li>前方/後方引用で網羅性と信頼性を担保</li>
+      <li>初学者に適した粒度を見極める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 良質な情報源に接続することが独学の質と効率を決定するため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4部: 読む・理解する技法</h3>
+    <ul>
+      <li>SQ3R、コーネル式、フェインマン・テクニック等</li>
+      <li>構造化読解と理解の外化を行う</li>
+      <li>受動的な読書を能動的な理解プロセスに変換</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 読むだけでは理解は深まらず、構造化と言語化が必要なため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5部: 記憶化と練習</h3>
+    <ul>
+      <li>リトリーバル練習、分散学習、インターリービング</li>
+      <li>作問、例題反復など、定着と転移を促す練習設計</li>
+      <li>見直しより思い出す練習をせよ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 記憶は想起の努力と間隔反復で強化され、応用力が育つため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6部: フィードバックと継続の仕組み</h3>
+    <ul>
+      <li>エラーログ、定期レビュー、自己テストで戦略を更新</li>
+      <li>環境・習慣設計で行動を自動化</li>
+      <li>長期継続を支える仕組みづくり</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 振り返りと環境設計が意志力に頼らない継続を可能にするため
+    </div>
+  </div>
+
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  
+  <div class="example-card">
+    <h4>📌 例1: 前方/後方引用追跡による資料探索</h4>
+    <p><strong>背景:</strong> 新しい分野を学ぶ際、どの資料が信頼できるか判断が難しい。</p>
+    <p><strong>実践:</strong> 基礎教科書や総説論文から始め、その参考文献（後方引用）と、それを引用している新しい論文（前方引用）を辿ることで、信頼性の高い資料網を構築。</p>
+    <p><strong>示唆:</strong> 情報の質は探索方法で決まり、川上に遡ることで本質的な知識にアクセスできる。</p>
+    <div class="reason-box">
+      <strong>理由:</strong> この例は、独学者が孤立せず知の共同体に接続する具体的手段を示すため
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>📌 例2: フェインマン・テクニックで理解の穴を発見</h4>
+    <p><strong>背景:</strong> 教科書を読んで「わかった気」になるが、実際には説明できない。</p>
+    <p><strong>実践:</strong> 学んだ内容を中学生にも理解できる言葉で紙に書き出す。詰まった箇所が理解の穴であり、そこを重点的に学び直す。</p>
+    <p><strong>示唆:</strong> 説明できない部分こそが真の学習課題であり、外化が理解を深める。</p>
+    <div class="reason-box">
+      <strong>理由:</strong> この例は、メタ認知と理解の外化が学習効率を高めることを具体的に示すため
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>📌 例3: エラーログで失敗を資産化</h4>
+    <p><strong>背景:</strong> 同じ種類の問題で繰り返し間違えてしまう。</p>
+    <p><strong>実践:</strong> 誤答をノートに記録し、「なぜ間違えたか」「どう考えれば正解できたか」を分析。パターンを見つけて対策を立て、次回の練習に反映。</p>
+    <p><strong>示唆:</strong> 失敗は記録と分析によって成長の燃料に変わる。</p>
+    <div class="reason-box">
+      <strong>理由:</strong> この例は、フィードバックループが技能向上を加速させる仕組みを示すため
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>📌 例4: 分散学習で長期記憶を形成</h4>
+    <p><strong>背景:</strong> 一夜漬けで覚えた内容は試験後すぐに忘れてしまう。</p>
+    <p><strong>実践:</strong> 学習内容を1日後、3日後、1週間後、1ヶ月後に復習するスケジュールを組み、間隔を空けて反復する。</p>
+    <p><strong>示唆:</strong> 忘却曲線に抗う最良の方法は、時間を置いた反復である。</p>
+    <div class="reason-box">
+      <strong>理由:</strong> この例は、記憶の科学的原理を実践に落とし込む方法を示すため
+    </div>
+  </div>
+
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  
+  <div class="quote-card">
+    <div class="quote-text">「独学は孤独だが孤立ではない。先人の知と方法に接続せよ。」</div>
+    <div class="quote-note">💡 情報探索と標準的方法に接続する姿勢が独学の質を決定するため重要</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">「『わからない』を定義できれば、半分は解けている。」</div>
+    <div class="quote-note">💡 問題定義と問いの設計が学習方略の選択と効率を左右するから重要</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">「覚えるなら、見直しより思い出す練習をせよ。」</div>
+    <div class="quote-note">💡 リトリーバルの有効性を端的に示し、実践を促す原則だから重要</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">「計画は地図、学習ログは航海日誌である。」</div>
+    <div class="quote-note">💡 可視化と振り返りが軌道修正を可能にし、継続を支えるため重要</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">「学びは積み木ではなくネットワークである。」</div>
+    <div class="quote-note">💡 構造理解とコンセプトマップの意義を示し、転移を促すから重要</div>
+  </div>
+
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  
+  <div class="action-card">
+    <h4>⚡ アクション1: 学びの目的を3文で書く</h4>
+    <p><strong>目的:</strong> 曖昧な「学びたい」を具体的な目標に変換する</p>
+    <p><strong>期待効果:</strong> 学習の方向性が明確になり、資料選定と計画立案がスムーズになる</p>
+    <p><strong>所要時間:</strong> 15分</p>
+  </div>
+
+  <div class="action-card">
+    <h4>⚡ アクション2: わからないことを10個書く</h4>
+    <p><strong>目的:</strong> 自分の知識の穴を可視化し、学習課題を特定する</p>
+    <p><strong>期待効果:</strong> 問いの設計が進み、何を学ぶべきかが明確になる</p>
+    <p><strong>所要時間:</strong> 20分</p>
+  </div>
+
+  <div class="action-card">
+    <h4>⚡ アクション3: 学習ログ用テンプレを1枚作る</h4>
+    <p><strong>目的:</strong> 学習の記録と振り返りの仕組みを準備する</p>
+    <p><strong>期待効果:</strong> 継続的な改善サイクルが回り始め、学習効率が向上する</p>
+    <p><strong>所要時間:</strong> 15分</p>
+  </div>
+
+  <div class="action-card">
+    <h4>⚡ アクション4: 今日学んだことを誰かに説明する（フェインマン）</h4>
+    <p><strong>目的:</strong> 理解の穴を発見し、知識を定着させる</p>
+    <p><strong>期待効果:</strong> 説明できない部分が明確になり、次の学習課題が見える</p>
+    <p><strong>所要時間:</strong> 20分</p>
+  </div>
+
+  <div class="action-card">
+    <h4>⚡ アクション5: 学習環境から誘惑を1つ取り除く</h4>
+    <p><strong>目的:</strong> 集中を妨げる要因を排除し、環境を設計する</p>
+    <p><strong>期待効果:</strong> 意志力に頼らず、自然と学習に集中できる環境が整う</p>
+    <p><strong>所要時間:</strong> 10分</p>
+  </div>
+
+  <h3 style="margin-top: 2rem; color: var(--primary);">📚 関連書籍</h3>
+  
+  <div class="book-card">
+    <h4>Make It Stick: 成功する学習の科学</h4>
+    <div class="author">著者: Peter C. Brown 他</div>
+    <div class="relation">リトリーバル・分散・交互練習など本書の科学的基盤を体系化。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>Learning How to Learn</h4>
+    <div class="author">著者: Barbara Oakley, Terrence Sejnowski</div>
+    <div class="relation">初心者向けに認知科学ベースの学習法を解説し、補完関係にある。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>知的生産の技術</h4>
+    <div class="author">著者: 梅棹忠夫</div>
+    <div class="relation">情報整理と発想法の古典で、独学のノート・記録術と親和性が高い。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>アイデア大全</h4>
+    <div class="author">著者: 読書猿</div>
+    <div class="relation">同著者による思考技法集で、問いの設計・発想面を強化できる。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>問題解決大全</h4>
+    <div class="author">著者: 読書猿</div>
+    <div class="relation">課題定義から解決までのフレーム群が独学の応用・実践段階を支える。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>エッセンシャル思考 最少の時間で成果を最大にする</h4>
+    <div class="author">著者: Greg McKeown</div>
+    <div class="relation">優先順位と集中の設計が学習計画と環境設計を後押しする。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>Atomic Habits 小さな習慣が大きな成果を生む</h4>
+    <div class="author">著者: James Clear</div>
+    <div class="relation">環境設計と行動の自動化が独学の継続性を高める。</div>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+// タブ切り替え機能
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    // すべてのタブとコンテンツから active を削除
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブとコンテンツに active を追加
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
