@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>選択のパラドックス - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 32px 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 6px solid var(--accent);
+  padding: 20px;
+  margin: 24px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 12px;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 4px;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  border-left: 4px solid var(--accent);
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  margin-bottom: 10px;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 4px 0 4px 20px;
+  position: relative;
+  font-size: 0.95rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+.example-card p {
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 6px solid var(--secondary);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+.quote-card small {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+.action-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 4px;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 8px;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin: 12px 0;
+  font-size: 0.9rem;
+}
+.flow-item .arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 12px;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+.metric-box .number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+}
+.metric-box .label {
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.book-item h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.book-item .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+.book-item .relation {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 選択のパラドックス</h1>
+  <p>なぜ選ぶほど不幸になるのか？</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    なぜ人は「選ぶ」ほど不幸になるのか？
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    選択過多が比較・期待の膨張・後悔・自己非難を誘発し、満足を下げるから。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    1) 比較が機会費用の意識を高め「逃した価値」を増幅<br>
+    2) 適応により得たものの喜びが急速に減衰<br>
+    3) 自己責任の拡大で失敗を自分のせいにしやすい<br>
+    4) 選択疲労が判断の質と気分を悪化
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    1) 選択肢を意図的に制限（ルール・定番・デフォルト）<br>
+    2) 満足化基準で「十分でよし」とする<br>
+    3) 比較対象と情報摂取を絞る<br>
+    4) 後悔を最小化する事前設計（返品・締切・予算の上限）<br>
+    5) 感謝とリフレーミングで得たものに注意を向ける
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 20px;">🧠 主要概念の詳細</h2>
+  
+  <div class="card-grid">
+    <div class="card">
+      <h3>🔀 選択過多</h3>
+      <ul>
+        <li>選択肢が多すぎると決定が困難化</li>
+        <li>満足と行動率が低下する現象</li>
+        <li>情報処理の限界を超える</li>
+        <li>決定回避や先延ばしを誘発</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💭 なぜ重要か：</strong>現代消費社会の根本問題を示し、「多い=良い」の神話を覆す。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 最大化志向</h3>
+      <ul>
+        <li>常に最良を求めて探索を続ける</li>
+        <li>後悔と不満足が高まりやすい</li>
+        <li>比較を止められない</li>
+        <li>決定後も「もっと良い選択肢」を探す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💭 なぜ重要か：</strong>個人の性格傾向が幸福度に直結することを実証し、変容可能な要因を示す。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>✅ 満足化志向</h3>
+      <ul>
+        <li>「十分に良い」基準を満たせば決定</li>
+        <li>幸福と満足が高い</li>
+        <li>探索コストを抑える</li>
+        <li>後悔が少ない</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💭 なぜ重要か：</strong>実践可能な幸福戦略の核心であり、最大化の対極として処方箋を提供。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💸 機会費用の顕在化</h3>
+      <ul>
+        <li>他の選択肢の良さが見える</li>
+        <li>選ばないコストが意識化</li>
+        <li>満足を下げる心理メカニズム</li>
+        <li>「逃した魚」が大きく見える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💭 なぜ重要か：</strong>選択肢の増加が満足低下に至る経路を経済学と心理学で説明する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>😔 後悔・予期後悔</h3>
+      <ul>
+        <li>「別の選択の方が良かった」と感じる</li>
+        <li>結果や想像上の比較による</li>
+        <li>決定前から後悔を予期する</li>
+        <li>行動を抑制する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💭 なぜ重要か：</strong>選択の自由が心理的苦痛を生む主要な感情メカニズムを明示。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📈 期待の膨張</h3>
+      <ul>
+        <li>選択の自由拡大で期待水準が上昇</li>
+        <li>達成しても満足しにくくなる</li>
+        <li>「完璧」を求める心理</li>
+        <li>現実とのギャップが拡大</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💭 なぜ重要か：</strong>豊かさが幸福に転換しない現代の逆説を説明する鍵概念。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 適応（ヘドニック・アダプテーション）</h3>
+      <ul>
+        <li>良い結果に慣れる心理傾向</li>
+        <li>快楽が短期で減衰する</li>
+        <li>新しい基準が「普通」になる</li>
+        <li>喜びの持続時間が短い</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💭 なぜ重要か：</strong>選択の成果が幸福に結びつかない生理的・心理的理由を示す。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧊 決定麻痺</h3>
+      <ul>
+        <li>選択肢や情報が過剰で決められない</li>
+        <li>行動率の低下</li>
+        <li>ストレスと不安の増大</li>
+        <li>先延ばし行動</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💭 なぜ重要か：</strong>選択過多が実際の行動を阻害する臨床的証拠を提供。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚙️ デフォルト／ルール化</h3>
+      <ul>
+        <li>あらかじめ決めた選択で自動化</li>
+        <li>意思決定の負荷を下げる</li>
+        <li>判断の質を保つ</li>
+        <li>疲労を防ぐ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💭 なぜ重要か：</strong>個人と制度レベルで実装可能な具体的解決策を示す。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>👥 社会的比較</h3>
+      <ul>
+        <li>他者の選択・成果と自分を比べる</li>
+        <li>満足が侵食される</li>
+        <li>SNSで加速する現象</li>
+        <li>相対的剥奪感</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💭 なぜ重要か：</strong>現代のデジタル環境が選択の苦痛を増幅する社会的文脈を説明。
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-diagram">
+    <h3 style="color: var(--secondary); margin-bottom: 16px;">🔗 概念間の因果関係</h3>
+    <div class="flow-item">
+      <span>選択過多</span>
+      <span class="arrow">→</span>
+      <span>情報量↑・比較対象↑</span>
+      <span class="arrow">→</span>
+      <span>決定麻痺↑・選択疲労↑</span>
+    </div>
+    <div class="flow-item">
+      <span>比較対象↑ + 機会費用の顕在化</span>
+      <span class="arrow">→</span>
+      <span>後悔・予期後悔↑</span>
+      <span class="arrow">→</span>
+      <span>満足↓</span>
+    </div>
+    <div class="flow-item">
+      <span>自由拡大</span>
+      <span class="arrow">→</span>
+      <span>期待の膨張</span>
+      <span class="arrow">→</span>
+      <span>適応で喜び減衰</span>
+      <span class="arrow">→</span>
+      <span>満足↓</span>
+    </div>
+    <div class="flow-item">
+      <span>自己責任の拡大</span>
+      <span class="arrow">→</span>
+      <span>失敗の自己非難↑</span>
+      <span class="arrow">→</span>
+      <span>幸福↓</span>
+    </div>
+    <div class="flow-item">
+      <span>最大化志向</span>
+      <span class="arrow">→</span>
+      <span>探索時間↑・基準上昇</span>
+      <span class="arrow">→</span>
+      <span>後悔↑・満足↓</span>
+    </div>
+    <div class="flow-item">
+      <span>満足化志向</span>
+      <span class="arrow">→</span>
+      <span>基準先決め・探索打ち切り</span>
+      <span class="arrow">→</span>
+      <span>後悔↓・満足↑</span>
+    </div>
+    <div class="flow-item">
+      <span>デフォルト/ルール化</span>
+      <span class="arrow">→</span>
+      <span>選択回数↓</span>
+      <span class="arrow">→</span>
+      <span>疲労↓</span>
+      <span class="arrow">→</span>
+      <span>判断の質↑</span>
+    </div>
+    <div class="flow-item">
+      <span>社会的比較↑</span>
+      <span class="arrow">→</span>
+      <span>期待膨張・機会費用の想像↑</span>
+      <span class="arrow">→</span>
+      <span>満足↓</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 20px;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>🚪 導入：選択の時代</h3>
+    <ul>
+      <li>現代は前例のない選択の時代</li>
+      <li>選択の自由は善という直観に疑問を突きつける</li>
+      <li>豊かさと自由が幸福に結びつかない逆説</li>
+      <li>本書の問い：なぜ選択は重荷になるのか</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜこの章が必要か：</strong>読者の常識（選択=自由=幸福）を揺さぶり、探究の動機を与える。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🛒 第I部：選択の拡大が起きた領域</h3>
+    <ul>
+      <li>消費：商品の爆発的増加とカスタマイゼーション</li>
+      <li>労働：キャリアの多様化と流動性</li>
+      <li>医療：インフォームド・コンセントと自己決定</li>
+      <li>アイデンティティ：性別・宗教・ライフスタイルの選択可能性</li>
+      <li>「自由=幸福」の通念を点検</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜこの章が必要か：</strong>選択過多が抽象論でなく、生活全域に浸透した現実であることを示す。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🧠 第II部：心理的コストの解剖</h3>
+    <ul>
+      <li>決定麻痺：選択肢が多すぎて動けない</li>
+      <li>機会費用：逃した選択肢の価値が満足を侵食</li>
+      <li>後悔：「もっと良い選択があったのでは」</li>
+      <li>比較：他者や他の選択肢との比較で満足低下</li>
+      <li>期待の膨張：自由が期待水準を引き上げる</li>
+      <li>適応：喜びの減衰が早い</li>
+      <li>自己責任の圧力：失敗を自分のせいにする</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜこの章が必要か：</strong>選択の自由がもたらす心理的苦痛のメカニズムを科学的に解明し、問題の深さを示す。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎭 第III部：タイプ差と帰結</h3>
+    <ul>
+      <li>最大化志向 vs 満足化志向の対比</li>
+      <li>最大化志向：後悔・不満・うつ傾向が高い</li>
+      <li>満足化志向：幸福・満足・楽観性が高い</li>
+      <li>実証研究による裏付け</li>
+      <li>性格傾向は変容可能</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜこの章が必要か：</strong>個人差を示すことで、読者が自己診断し変容の方向性を見出せる。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>💊 第IV部：処方箋</h3>
+    <ul>
+      <li>選択の設計：デフォルト、ルール、定番を作る</li>
+      <li>基準の先決め：「十分に良い」を事前に定義</li>
+      <li>比較の管理：情報摂取と比較対象を絞る</li>
+      <li>感謝の実践：得たものに注意を向ける</li>
+      <li>社会制度の示唆：選択アーキテクチャの設計</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜこの章が必要か：</strong>診断から治療へ—実践可能な具体策を提示し、読者に行動の指針を与える。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎯 結論：自由を守るために制約をデザインせよ</h3>
+    <ul>
+      <li>少なさは損失でなく、判断の質と幸福の条件</li>
+      <li>意図的な制約は自由の否定ではなく維持</li>
+      <li>個人と社会の両レベルで設計が必要</li>
+      <li>選択の自由と幸福のバランスを再考</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜこの章が必要か：</strong>全体のメッセージを統合し、読者に新しい価値観と行動原理を提供する。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 20px;">💡 具体例</h2>
+
+  <div class="example-card">
+    <h3>🍯 例1：ジャムの実験</h3>
+    <p><strong>背景：</strong>スーパーで24種類のジャムを並べた日と6種類だけ並べた日を比較。24種類の日は試食者が多かったが、購入率は6種類の日の1/10だった。</p>
+    <p><strong>示唆：</strong>選択肢が多すぎると決定麻痺が起き、行動率が劇的に低下する。</p>
+    <div class="reason-box">
+      <strong>💭 この例が示すこと：</strong>選択過多が実際の購買行動を阻害する実証的証拠であり、理論を日常に接続する。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>👔 例2：スティーブ・ジョブズの制服</h3>
+    <p><strong>背景：</strong>ジョブズは毎日同じ黒のタートルネックとジーンズを着用。服の選択を排除することで、重要な決定に認知資源を集中させた。</p>
+    <p><strong>示唆：</strong>デフォルト化とルール化により選択疲労を防ぎ、判断の質を保つ。</p>
+    <div class="reason-box">
+      <strong>💭 この例が示すこと：</strong>意図的な制約が創造性と生産性を高める実例であり、処方箋の有効性を示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🏥 例3：医療における選択の重圧</h3>
+    <p><strong>背景：</strong>がん治療の選択肢が増え、患者は「最良の治療」を選ぶ責任を負う。結果が悪いと自己非難に陥りやすい。</p>
+    <p><strong>示唆：</strong>選択の自由は責任と後悔の重荷も同時に増やし、幸福を損なう。</p>
+    <div class="reason-box">
+      <strong>💭 この例が示すこと：</strong>選択の自由が心理的苦痛を生む深刻な文脈を示し、倫理的・政策的議論を喚起する。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>📱 例4：SNSと社会的比較</h3>
+    <p><strong>背景：</strong>SNSで他者の「最高の瞬間」を見続けることで、自分の選択や生活が劣って見え、満足が低下する。</p>
+    <p><strong>示唆：</strong>比較対象の増加が期待を膨張させ、相対的剥奪感を生む。</p>
+    <div class="reason-box">
+      <strong>💭 この例が示すこと：</strong>現代のデジタル環境が選択の苦痛を増幅する社会的メカニズムを明示する。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 20px;">📜 重要な引用</h2>
+
+  <div class="quote-card">
+    <p>"選択が多いほど、私たちはより良い結果を期待し、満足しにくくなる。"</p>
+    <small><strong>重要性：</strong>期待の膨張が満足低下を生むメカニズムの核心だから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"最大化志向は選択後の後悔と自己非難を増幅する。"</p>
+    <small><strong>重要性：</strong>人格傾向が幸福に及ぼす差異を示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"「十分に良い」で決めることは、より良い人生の戦略である。"</p>
+    <small><strong>重要性：</strong>実践に直結する処方箋を簡潔に示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"選択の自由は、責任と後悔の重荷も同時に増やす。"</p>
+    <small><strong>重要性：</strong>自由の陰影を示し、政策・設計の視点を与える。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"自らに制約を課すことは、自由の否定ではなく維持である。"</p>
+    <small><strong>重要性：</strong>意図的な制限の正当性を打ち立てる。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 20px;">🎯 今日のアクション</h2>
+
+  <div class="action-card">
+    <h3>✍️ 1. 購入の十分基準を3つ書く</h3>
+    <p><strong>目的：</strong>満足化志向を実践し、最大化の罠を回避する</p>
+    <p><strong>期待効果：</strong>決定時間の短縮、後悔の減少、満足度の向上</p>
+    <p><strong>実行方法：</strong>次回の買い物（服・家電など）で「これを満たせば買う」という3つの基準をメモに書き出す（例：予算内、必要機能あり、1週間以内に届く）</p>
+  </div>
+
+  <div class="action-card">
+    <h3>⏱️ 2. 決定タイマー10分を設定する</h3>
+    <p><strong>目的：</strong>決定麻痺を防ぎ、選択疲労を軽減する</p>
+    <p><strong>期待効果：</strong>行動率の向上、ストレスの低減、時間の節約</p>
+    <p><strong>実行方法：</strong>次の小さな選択（レストラン、映画、記事など）で10分タイマーをセットし、時間内に決める練習をする</p>
+  </div>
+
+  <div class="action-card">
+    <h3>🍱 3. 定番昼食を1つ決めて登録</h3>
+    <p><strong>目的：</strong>デフォルト化で日常の選択負荷を下げる</p>
+    <p><strong>期待効果：</strong>認知資源の温存、重要な決定への集中力向上</p>
+    <p><strong>実行方法：</strong>週に2〜3回食べる「定番ランチ」を1つ決め、スマホのメモやカレンダーに登録する（例：火曜は近所のサラダボウル）</p>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-box">
+      <span class="number">15</span>
+      <span class="label">分で実行可能</span>
+    </div>
+    <div class="metric-box">
+      <span class="number">3</span>
+      <span class="label">つの具体的行動</span>
+    </div>
+    <div class="metric-box">
+      <span class="number">即</span>
+      <span class="label">効果を実感</span>
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1)); border-radius: 12px; padding: 20px; margin-top: 24px;">
+    <h3 style="color: var(--secondary); margin-bottom: 12px;">🌟 追加のマイクロアクション</h3>
+    <ul style="list-style: none; padding: 0;">
+      <li style="padding: 8px 0; padding-left: 24px; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent);">▸</span>
+        SNSアプリの通知を1つオフにする（比較の機会を減らす）
+      </li>
+      <li style="padding: 8px 0; padding-left: 24px; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent);">▸</span>
+        今日得たもの3つを紙に書く（感謝の実践）
+      </li>
+      <li style="padding: 8px 0; padding-left: 24px; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent);">▸</span>
+        メールの受信トレイを「重要」「その他」の2つに分ける（情報の絞り込み）
+      </li>
+      <li style="padding: 8px 0; padding-left: 24px; position: relative;">
+        <span style="position: absolute; left: 0; color: var(--accent);">▸</span>
+        「これで十分」と声に出して言う練習（満足化の言語化）
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div style="margin-top: 40px;">
+  <h2 style="color: var(--primary); margin-bottom: 20px;">📚 関連書籍</h2>
+  <div class="book-list">
+    <div class="book-item">
+      <h4>The Art of Choosing</h4>
+      <div class="author">シーナ・アイエンガー</div>
+      <div class="relation">選択の文化差と最適な選択設計を実証的に補強する。</div>
+    </div>
+    <div class="book-item">
+      <h4>Nudge</h4>
+      <div class="author">リチャード・セイラー／キャス・サンスティーン</div>
+      <div class="relation">デフォルトや選択アーキテクチャで負荷を下げる実践策が豊富。</div>
+    </div>
+    <div class="book-item">
+      <h4>Thinking, Fast and Slow</h4>
+      <div class="author">ダニエル・カーネマン</div>
+      <div class="relation">ヒューリスティクスとバイアスが選択過多時の誤りを説明する。</div>
+    </div>
+    <div class="book-item">
+      <h4>Stumbling on Happiness</h4>
+      <div class="author">ダニエル・ギルバート</div>
+      <div class="relation">予測と適応のズレが満足低下にどう関与するかを解説。</div>
+    </div>
+    <div class="book-item">
+      <h4>Essentialism</h4>
+      <div class="author">グレッグ・マキューン</div>
+      <div class="relation">選択を意図的に絞る生き方の実践論。</div>
+    </div>
+    <div class="book-item">
+      <h4>The Happiness Hypothesis</h4>
+      <div class="author">ジョナサン・ハイト</div>
+      <div class="relation">比較や感謝が幸福に与える影響を心理学的に補完。</div>
+    </div>
+    <div class="book-item">
+      <h4>Scarcity</h4>
+      <div class="author">センディル・ムッライナタン／エルダー・シャフィール</div>
+      <div class="relation">認知資源の逼迫が意思決定を歪める仕組みを説明。</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// タブ切り替え機能
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    // すべてのタブとコンテンツから active を削除
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブとコンテンツに active を追加
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+
+// キーボードナビゲーション
+tabBtns.forEach((btn, index) => {
+  btn.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      const nextIndex = (index + 1) % tabBtns.length;
+      tabBtns[nextIndex].focus();
+      tabBtns[nextIndex].click();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const prevIndex = (index - 1 + tabBtns.length) % tabBtns.length;
+      tabBtns[prevIndex].focus();
+      tabBtns[prevIndex].click();
+    }
+  });
+});
+</script>
+
+</body>
+</html>
