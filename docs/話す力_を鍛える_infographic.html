@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>伝わる話し方の科学 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+}
+.card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(240, 147, 251, 0.05));
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--primary);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.quote-card blockquote {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+.quote-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 0.5rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255,255,255,0.3);
+}
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-section h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-diagram {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+.flow-item {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 120px;
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.stat-box {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+.stat-box .number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.stat-box .label {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    font-size: 0.85rem;
+  }
+  .tab-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📢 伝わる話し方の科学</h1>
+  <p>声・言葉・態度を設計し、録音とフィードバックで誰でも改善できる</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>💡 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜ自分の話は伝わらず誤解されるのか？どうすれば確実に伝わるか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      <p>受け手は「内容」だけでなく、声の質・速度・抑揚・明瞭さ・非言語の手がかりで評価する。習慣化した癖を診断し、望ましい行動に置き換えれば伝達効率と信頼が向上する。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>人は第一印象と音声手がかりに強く影響され、微細な癖（語尾の弱さ、アップトーク、冗長語など）が知性・自信・温かさの判断を左右するため。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>自己録音→客観診断→目標設定→分解練習（呼吸・共鳴・明瞭化・抑揚・間・語彙・構成・非言語）→現場実験→フィードバック→微調整、のループを回す。場面別（電話/会議/面接/雑談）に合わせて速度・間・語彙を適応させる。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🎵 パラランゲージ</h3>
+        <p><strong>声の設計図</strong></p>
+        <ul>
+          <li>言葉以外の音声要素（高さ・強さ・速度・間・抑揚）</li>
+          <li>印象と理解度を左右する</li>
+          <li>意識的に調整可能</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>内容が同じでも声の質で信頼性・説得力が大きく変わるため、音声設計は伝達の基盤となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🫁 共鳴と発声支援</h3>
+        <p><strong>土台の声づくり</strong></p>
+        <ul>
+          <li>腹式呼吸で安定した息の供給</li>
+          <li>共鳴腔の活用で響きを増幅</li>
+          <li>聞き取りやすさと持続力を獲得</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>声の安定性と響きが信頼感と安心感を生み、長時間話しても疲れない土台を作るため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🗣️ アーティキュレーション</h3>
+        <p><strong>明瞭さの鍵</strong></p>
+        <ul>
+          <li>子音と語尾を明確に発音</li>
+          <li>言葉を輪郭立てて届ける</li>
+          <li>聞き返しを減らす</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>明瞭さが欠けると誤解や聞き返しが増え、専門性や自信の印象が低下するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎼 プロソディ</h3>
+        <p><strong>意味の運搬車</strong></p>
+        <ul>
+          <li>抑揚・強弱・リズム・間で意味を運ぶ</li>
+          <li>感情と重要度を伝達</li>
+          <li>単調さを回避</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>抑揚がないと重要ポイントが埋もれ、聞き手の注意と記憶が維持できないため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🏗️ 言語設計</h3>
+        <p><strong>話の骨組み</strong></p>
+        <ul>
+          <li>要点先行・構造化で理解を促進</li>
+          <li>具体例・ストーリーで記憶定着</li>
+          <li>冗長を削ぎ落とす</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>構造がないと聞き手は迷子になり、要点を思い出せず行動に移せないため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🚫 フィラーと不適切癖</h3>
+        <p><strong>ノイズ源</strong></p>
+        <ul>
+          <li>えー/その/みたいな/アップトーク</li>
+          <li>ボーカルフライ等が信頼を低下</li>
+          <li>意識と練習で削減可能</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>フィラーは自信のなさや準備不足の印象を与え、メッセージの信憑性を損なうため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>👂 受け手中心と傾聴</h3>
+        <p><strong>相手軸</strong></p>
+        <ul>
+          <li>相手の目的・知識・感情を把握</li>
+          <li>質問と要約で同期を取る</li>
+          <li>一方通行を避ける</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>相手の文脈を無視すると理解も共感も得られず、説得や協力が成立しないため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🧍 プレゼンス（非言語）</h3>
+        <p><strong>存在感の信号</strong></p>
+        <ul>
+          <li>姿勢・視線・表情・身振りの一貫性</li>
+          <li>メッセージの信頼性を補強</li>
+          <li>音声と整合させる</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>非言語が音声と矛盾すると受け手は混乱し、信頼を失うため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔄 フィードバックループ</h3>
+        <p><strong>改善のエンジン</strong></p>
+        <ul>
+          <li>録音/観察→仮説→練習→実戦</li>
+          <li>評価→修正の学習循環</li>
+          <li>継続的な成長を実現</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>客観的フィードバックなしでは癖に気づけず、改善が偶然に依存するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎯 コンテクスト適応</h3>
+        <p><strong>場面調律</strong></p>
+        <ul>
+          <li>電話・会議・面接・雑談で調整</li>
+          <li>速度・間・語彙・形式を最適化</li>
+          <li>チャンネル制約に対応</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>場面ごとに受け手の期待と制約が異なり、一律の話し方では効果が半減するため。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-diagram">
+        <div class="flow-item">呼吸</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">共鳴</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">安定した声質</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">信頼/安心感↑</div>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-item">アーティキュレーション</div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-item">プロソディ</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">明瞭さ</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">理解度↑</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">説得力↑</div>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-item">言語設計</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">要点の想起容易性</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">記憶定着</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">行動喚起</div>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-item">フィラー削減</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">シグナル/ノイズ比↑</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">専門性の知覚↑</div>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-item">録音</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">客観視</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">弱点特定</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">分解練習</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">改善持続</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 導入：視点転換</h3>
+      <ul>
+        <li>伝わらない原因は内容不足ではなく"言い方"の問題</li>
+        <li>声・速度・抑揚・非言語が印象を決定</li>
+        <li>改善可能なスキルとして再定義</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>多くの人は内容を磨くことに集中し、デリバリーを軽視するが、受け手は音声手がかりで判断するため、視点転換が出発点となる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔍 自己診断：可視化</h3>
+      <ul>
+        <li>録音・チェックリストで声質/速度/明瞭さ/癖を可視化</li>
+        <li>主観と客観のギャップを認識</li>
+        <li>改善の優先順位を設定</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>自分の声を正しく知らなければ改善の方向が定まらず、録音が客観的な出発点を提供するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🫁 声の基礎：土台構築</h3>
+      <ul>
+        <li>呼吸・共鳴・姿勢で安定した土台を作る</li>
+        <li>腹式呼吸で息の供給を安定化</li>
+        <li>共鳴腔の活用で響きを増幅</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>声の安定性と響きが信頼感と持続力を生み、すべての技術の基盤となるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🗣️ 明瞭化の技術：聞き取りやすさ</h3>
+      <ul>
+        <li>子音・語尾・速度・間を調整</li>
+        <li>聞き取りやすさを高める</li>
+        <li>聞き返しを減らし効率向上</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>明瞭さが欠けると誤解や聞き返しが増え、専門性や自信の印象が低下し、コミュニケーション効率が落ちるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎼 表現のダイナミクス：意味と感情</h3>
+      <ul>
+        <li>抑揚・強調・リズムで意味と感情を届ける</li>
+        <li>単調さを回避し注意を維持</li>
+        <li>重要ポイントを際立たせる</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>抑揚がないと重要ポイントが埋もれ、聞き手の注意と記憶が維持できず、メッセージが伝わらないため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🏗️ 言語設計：記憶と説得</h3>
+      <ul>
+        <li>要点先行、構造化、具体例・ストーリー</li>
+        <li>記憶と説得を促進</li>
+        <li>冗長を削ぎ落とす</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>構造がないと聞き手は迷子になり、要点を思い出せず行動に移せないため、設計が記憶と行動を促進する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🧍 非言語・プレゼンス：整合性</h3>
+      <ul>
+        <li>目線・表情・身振りを音声と整合させる</li>
+        <li>メッセージの信頼性を補強</li>
+        <li>矛盾を避ける</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>非言語が音声と矛盾すると受け手は混乱し、信頼を失うため、一貫性が信憑性を高める。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>👂 対人スキル：相手中心</h3>
+      <ul>
+        <li>傾聴・質問・相づちで相手中心の会話を実装</li>
+        <li>相手の目的・知識・感情を把握</li>
+        <li>一方通行を避ける</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>相手の文脈を無視すると理解も共感も得られず、説得や協力が成立しないため、受け手中心が必須となる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎯 場面別応用：調整ポイント</h3>
+      <ul>
+        <li>電話/会議/面接/プレゼン/雑談での調整ポイント</li>
+        <li>速度・間・語彙・形式を最適化</li>
+        <li>チャンネル制約に対応</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>場面ごとに受け手の期待と制約が異なり、一律の話し方では効果が半減するため、適応が成果を最大化する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔄 実践プラン：継続的改善</h3>
+      <ul>
+        <li>フィードバックループと習慣化</li>
+        <li>継続的に改善する方法</li>
+        <li>録音→診断→練習→実戦→評価→修正</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>客観的フィードバックなしでは癖に気づけず、改善が偶然に依存するため、ループが持続的成長を保証する。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>🎤 例1：録音による自己発見</h4>
+      <p><strong>背景：</strong>ある営業担当者が自分のプレゼンを録音し、初めて自分の声を客観的に聞いた。語尾が弱く、「えー」が多く、早口で聞き取りにくいことに気づいた。</p>
+      <p><strong>示唆：</strong>主観と客観のギャップを埋めることで、改善の方向が明確になり、具体的な練習項目（語尾の強化、フィラー削減、速度調整）を設定できた。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>録音は自己認識の盲点を照らし、改善の出発点を提供する最も効果的な手段である。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🫁 例2：腹式呼吸と共鳴の実践</h4>
+      <p><strong>背景：</strong>教師が長時間の授業で声が枯れる問題を抱えていた。腹式呼吸とハミング練習を毎日10分続けた結果、声の響きが増し、疲労が大幅に減少した。</p>
+      <p><strong>示唆：</strong>声の土台を整えることで、持続力と聞き取りやすさが向上し、信頼感も高まった。生徒からの聞き返しも減少した。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>呼吸と共鳴の技術は声の安定性と響きを生み、長時間のコミュニケーションを支える基盤となる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🎼 例3：抑揚と間の活用</h4>
+      <p><strong>背景：</strong>プレゼンターが単調な話し方で聴衆の注意を失っていた。重要ポイントの前に2秒の間を置き、声のトーンを上げる練習を実施。結果、聴衆の反応が劇的に改善し、質問も増えた。</p>
+      <p><strong>示唆：</strong>抑揚と間は注意を引き、重要ポイントを際立たせる強力なツールである。単調さを避けることで記憶定着も向上する。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>プロソディ（抑揚・間）は意味と感情を運び、聞き手の注意と記憶を制御する鍵となる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🚫 例4：フィラー削減の効果</h4>
+      <p><strong>背景：</strong>面接候補者が「えー」「その」を頻繁に使い、自信がない印象を与えていた。録音を聞き、フィラーを意識的に削減する練習を実施。次の面接では専門性と自信の評価が向上した。</p>
+      <p><strong>示唆：</strong>フィラーは自信のなさや準備不足の印象を与え、メッセージの信憑性を損なう。削減することで専門性の知覚が高まる。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>フィラーはノイズとして信頼を低下させ、削減することでシグナル/ノイズ比が向上し、説得力が増す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🎯 例5：場面別適応</h4>
+      <p><strong>背景：</strong>マネージャーが電話会議で早口で話し、聞き返しが多発していた。電話では視覚情報がないため、速度を20%落とし、間を多く取る調整を実施。結果、理解度と満足度が向上した。</p>
+      <p><strong>示唆：</strong>場面ごとにチャンネル制約が異なり、速度・間・語彙を適応させることで効果が最大化される。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>コンテクスト適応は受け手の期待と制約に合わせた最適化であり、一律の話し方では効果が半減する。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <blockquote>"多くの人は自分の声を正しく知らない。録音が出発点である。"</blockquote>
+      <p><strong>重要性：</strong>主観と客観のギャップを埋める最小ステップを示すため。自己認識の盲点を照らし、改善の方向を明確にする。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"話すことは運動技能であり、分解して反復すれば上達する。"</blockquote>
+      <p><strong>重要性：</strong>才能依存ではなく訓練可能であると再定義するため。誰でも練習によって改善できることを示す。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"相手が受け取るのは意図ではなく、実際に聞こえたシグナルである。"</blockquote>
+      <p><strong>重要性：</strong>自己本位から受け手中心への設計変更を促すため。意図と受信のギャップを認識させる。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"信頼は明瞭さと一貫性から生まれる。"</blockquote>
+      <p><strong>重要性：</strong>音声・言語・非言語を揃える重要性を要約するため。一貫性が信憑性を高めることを示す。</p>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>🎙️ アクション1：自己紹介を録音→癖を3つ書き出す</h4>
+      <p>1分間の自己紹介を録音し、客観的に聞き直す。フィラー、語尾の弱さ、早口など、気になる癖を3つ書き出す。</p>
+      <div class="meta">
+        <strong>目的：</strong>主観と客観のギャップを認識し、改善の優先順位を設定する。<br>
+        <strong>期待効果：</strong>自己認識の盲点が明らかになり、具体的な練習項目が定まる。15分で実行可能。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🫁 アクション2：腹式呼吸とハミングを各10分練習</h4>
+      <p>仰向けに寝て腹式呼吸を10分、その後ハミングで共鳴を感じる練習を10分実施。声の響きと安定性を体感する。</p>
+      <div class="meta">
+        <strong>目的：</strong>声の土台を整え、安定した響きと持続力を獲得する。<br>
+        <strong>期待効果：</strong>声の疲労が減り、聞き取りやすさと信頼感が向上する。20分で実行可能。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>📝 アクション3：要点3つで1分スピーチを作る</h4>
+      <p>伝えたいテーマを選び、要点を3つに絞って1分スピーチを作成。録音して構造の明瞭さを確認する。</p>
+      <div class="meta">
+        <strong>目的：</strong>言語設計の基本（要点先行・構造化）を実践し、記憶と説得を促進する。<br>
+        <strong>期待効果：</strong>聞き手が要点を思い出しやすくなり、行動喚起の成功率が上がる。15分で実行可能。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🎯 アクション4：次の会話で間を2秒取る</h4>
+      <p>次の会議や会話で、重要ポイントの前に意識的に2秒の間を置く。相手の反応を観察する。</p>
+      <div class="meta">
+        <strong>目的：</strong>間の効果を体感し、注意を引く技術を習得する。<br>
+        <strong>期待効果：</strong>聞き手の注意が高まり、重要ポイントの記憶定着が向上する。実戦で即実行可能。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🚫 アクション5：フィラーカウント</h4>
+      <p>次の5分間の会話を録音し、「えー」「その」「みたいな」の回数を数える。次回は半分に減らす目標を設定。</p>
+      <div class="meta">
+        <strong>目的：</strong>フィラーの頻度を可視化し、削減の意識を高める。<br>
+        <strong>期待効果：</strong>シグナル/ノイズ比が向上し、専門性と自信の印象が高まる。10分で実行可能。
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>📊 改善のフィードバックループ</h3>
+    <svg viewBox="0 0 600 300" style="max-width:100%; height:auto;">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <circle cx="100" cy="150" r="40" fill="url(#grad1)" />
+      <text x="100" y="155" text-anchor="middle" fill="white" font-size="14" font-weight="bold">録音</text>
+      <path d="M 140 150 L 180 150" stroke="#f093fb" stroke-width="3" fill="none" marker-end="url(#arrowhead)" />
+      <circle cx="220" cy="150" r="40" fill="url(#grad1)" />
+      <text x="220" y="155" text-anchor="middle" fill="white" font-size="14" font-weight="bold">診断</text>
+      <path d="M 260 150 L 300 150" stroke="#f093fb" stroke-width="3" fill="none" marker-end="url(#arrowhead)" />
+      <circle cx="340" cy="150" r="40" fill="url(#grad1)" />
+      <text x="340" y="155" text-anchor="middle" fill="white" font-size="14" font-weight="bold">練習</text>
+      <path d="M 380 150 L 420 150" stroke="#f093fb" stroke-width="3" fill="none" marker-end="url(#arrowhead)" />
+      <circle cx="460" cy="150" r="40" fill="url(#grad1)" />
+      <text x="460" y="155" text-anchor="middle" fill="white" font-size="14" font-weight="bold">実戦</text>
+      <path d="M 460 110 Q 280 50 100 110" stroke="#f093fb" stroke-width="3" fill="none" marker-end="url(#arrowhead)" stroke-dasharray="5,5" />
+      <text x="280" y="40" text-anchor="middle" fill="#764ba2" font-size="16" font-weight="bold">フィードバック</text>
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <polygon points="0 0, 10 3, 0 6" fill="#f093fb" />
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="visual-section">
+    <h3>🎨 スキルの構成要素</h3>
+    <div class="stat-grid">
+      <div class="stat-box">
+        <span class="number">🫁</span>
+        <span class="label">呼吸・共鳴</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">🗣️</span>
+        <span class="label">明瞭化</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">🎼</span>
+        <span class="label">抑揚・間</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">🏗️</span>
+        <span class="label">言語設計</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">🧍</span>
+        <span class="label">非言語</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">👂</span>
+        <span class="label">傾聴</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">🎯</span>
+        <span class="label">場面適応</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">🔄</span>
+        <span class="label">改善ループ</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabs = document.querySelectorAll('.tab-btn');
+  const contents = document.querySelectorAll('.tab-content');
+  
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetId = tab.getAttribute('data-tab');
+      
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      contents.forEach(c => {
+        c.classList.remove('active');
+      });
+      
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById(targetId).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
