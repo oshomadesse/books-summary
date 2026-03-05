@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>週4時間だけ働く - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333;
+  --text-light: #666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  border-bottom: 2px solid #ddd;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, #f093fb22, #667eea22);
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.reason strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary)11, var(--secondary)11);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+}
+.quote-card blockquote {
+  font-size: 1rem;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: var(--card-bg);
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.chart-container {
+  margin: 1.5rem 0;
+}
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.bar-label {
+  min-width: 120px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.bar {
+  flex: 1;
+  height: 28px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.flow-diagram {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+.flow-box {
+  background: linear-gradient(135deg, var(--primary)22, var(--secondary)22);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  color: var(--text);
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+@media (max-width: 768px) {
+  header h1 { font-size: 1.5rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .tabs { font-size: 0.85rem; }
+  .tab-btn { padding: 0.6rem 0.75rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 週4時間だけ働く</h1>
+  <p>長時間労働の常識を捨て、価値の高い少数に集中し、外注と自動化で仕組み化し、場所と時間の制約を外すことで、収入と自由を同時に最大化する「ライフスタイル設計」を実現せよ。</p>
+</header>
+
+<div class="container">
+
+  <div class="summary-block">
+    <h2>📌 要約 = 問い × 答え × 根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜ多くの人は長時間働いても自由を得られず、どうすれば短時間で成果と自由を両立できるのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>成果の大半は少数の活動から生まれるため、目的を再定義し、不要を徹底的に捨て、反復を自動化し、働く場所・時間を選べる状態を設計すればよい。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか？）</strong>
+      <p>80/20の法則により価値は偏在し、パーキンソンの法則により仕事は可用時間まで膨張する。加えてテクノロジーとグローバル化が分業・外注・地理的アービトラージを可能にし、時間単位の稼ぎだけに依存する必要がない。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠 How（そのためには？）</strong>
+      <p>DEALの4段階で実行する。<br>
+      <strong>D(定義)</strong>=ドリームライニングと恐怖設定で目標とリスクを明確化。<br>
+      <strong>E(削除)</strong>=低情報化・会議/メール削減・80/20適用で無駄を除去。<br>
+      <strong>A(自動化)</strong>=小規模で高粗利のミューズを構築し、外注とシステムで反復を自動化。<br>
+      <strong>L(解放)</strong>=成果主義を前提にリモート交渉し、地理的アービトラージとミニリタイアで時間・場所から解放する。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="margin-bottom:1rem; color:var(--primary);">🧠 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🌟 ニューリッチ（NR）</h3>
+        <ul>
+          <li>金額よりも時間・移動・選択の自由を重視</li>
+          <li>仕組みで収入を得る人々</li>
+          <li>高可処分時間を最優先</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 従来の「金持ち=長時間労働」を否定し、自由こそ真の富と再定義するため。</div>
+      </div>
+      <div class="card">
+        <h3>🎯 ライフスタイル設計</h3>
+        <ul>
+          <li>働き方中心ではなく、望む生活から逆算</li>
+          <li>収入源と時間配分を設計する方法</li>
+          <li>目的が先、手段が後</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 目的なき効率化は無意味。生活の質を起点にすることで、削除・自動化の判断軸が明確になる。</div>
+      </div>
+      <div class="card">
+        <h3>💭 ドリームライニング</h3>
+        <ul>
+          <li>欲求を具体化し、費用と期限・行動を数値化</li>
+          <li>夢を家計簿化する目標設定法</li>
+          <li>曖昧な願望を実行可能なステップに変換</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 数値化により夢が現実的になり、行動の優先順位と必要収入が明確になる。</div>
+      </div>
+      <div class="card">
+        <h3>😨 恐怖設定</h3>
+        <ul>
+          <li>最悪ケースを言語化・確率評価</li>
+          <li>予防策と修復策を決める意思決定法</li>
+          <li>リスクの見える化で行動を促進</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 漠然とした不安が行動を止める。具体化すれば対処可能と分かり、実験が始まる。</div>
+      </div>
+      <div class="card">
+        <h3>📊 80/20の法則</h3>
+        <ul>
+          <li>成果の80%は活動の20%から生じる</li>
+          <li>偏在則で集中対象を選別</li>
+          <li>少数集中が効率を最大化</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 全てに均等投資は非効率。高インパクト活動に絞ることで時間と成果が両立する。</div>
+      </div>
+      <div class="card">
+        <h3>⏱ パーキンソンの法則</h3>
+        <ul>
+          <li>仕事は与えた時間に拡張する</li>
+          <li>締切短縮で集中と効率が上がる</li>
+          <li>時間は器に広がる</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 時間制約が集中を生む。短い締切で重要度が浮き彫りになり、無駄が削がれる。</div>
+      </div>
+      <div class="card">
+        <h3>📵 低情報ダイエット</h3>
+        <ul>
+          <li>ニュースやSNS・メールなど低価値情報を制限</li>
+          <li>注意資源を守る</li>
+          <li>注意の節約で集中力を確保</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 注意は有限資源。低価値情報を遮断することで、高価値活動へ再配分できる。</div>
+      </div>
+      <div class="card">
+        <h3>💰 ミューズ（Muse）</h3>
+        <ul>
+          <li>小資本・高粗利で自動化しやすいキャッシュフロー事業</li>
+          <li>自走する小さな稼ぎ口</li>
+          <li>オーナーの関与を最小化</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 時間切り売りから脱却し、仕組みで稼ぐ基盤を作るため。</div>
+      </div>
+      <div class="card">
+        <h3>🤖 自動化</h3>
+        <ul>
+          <li>ツールや外注で反復作業を仕組みに置換</li>
+          <li>オーナーの関与を最小化</li>
+          <li>手放す設計</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 反復は人間の時間を奪う。仕組み化で時間を解放し、創造的活動へシフトできる。</div>
+      </div>
+      <div class="card">
+        <h3>👤 バーチャルアシスタント（VA）</h3>
+        <ul>
+          <li>遠隔の人材へタスクを委任</li>
+          <li>時間単価を下げつつ品質を担保</li>
+          <li>遠隔の右腕</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 自分でやる必要のないタスクを委任し、高価値活動に集中するため。</div>
+      </div>
+      <div class="card">
+        <h3>🌍 地理的アービトラージ</h3>
+        <ul>
+          <li>収入は先進国水準、支出は物価の安い地域</li>
+          <li>地理差益の活用</li>
+          <li>場所差益で生活費を圧縮</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 地理差を利用すれば、同じ収入でも可処分所得が増え、自由度が上がる。</div>
+      </div>
+      <div class="card">
+        <h3>🏖 ミニリタイア</h3>
+        <ul>
+          <li>人生の後半に一括で休むのではなく、短期の休暇を周期的に挿入</li>
+          <li>分割リタイア</li>
+          <li>人生全体で自由を分散</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 老後まで待つ必要はない。今の人生を豊かにし、エネルギーのあるうちに経験を積むため。</div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <h3 style="color:var(--primary); margin-bottom:1rem;">📈 概念間の関係性</h3>
+      <div class="flow-diagram">
+        <div class="flow-box">目的の再定義(D)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">不要の可視化</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">削除(E)が容易に</div>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-box">80/20適用(E)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">タスク激減</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">集中時間創出</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">自動化(A)へ投資</div>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-box">自動化(A)・外注</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">オーナー稼働減</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">成果主義でリモート交渉(L)が通る</div>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-box">地理的アービトラージ(L)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">生活費↓</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">ミューズ利益率↑</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">自由時間↑</div>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-box">低情報ダイエット(E)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">注意力↑</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">高インパクト活動へ再配分</div>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-box">恐怖設定(D)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">リスクの現実化</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">小さな実験</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">学習サイクル加速</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem; color:var(--primary);">📚 各章の要約</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>📖 導入</h3>
+        <ul>
+          <li>旧来のキャリア観を疑う</li>
+          <li>NRの原則を提示</li>
+          <li>成功=自由の設計と定義</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 前提を疑わなければ、従来の働き方から抜け出せない。自由を成功の指標に置き換えることで、行動の方向性が変わる。</div>
+      </div>
+      <div class="card">
+        <h3>🎯 D(Definition)</h3>
+        <ul>
+          <li>ドリームライニングで目的・指標・行動を数値化</li>
+          <li>恐怖設定でリスクを可視化</li>
+          <li>目標と行動を明確化</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 曖昧な目標では行動できない。数値化と恐怖の具体化が、実験と意思決定の土台になる。</div>
+      </div>
+      <div class="card">
+        <h3>✂️ E(Elimination)</h3>
+        <ul>
+          <li>80/20・パーキンソン法で時間創出</li>
+          <li>低情報化・会議/メール最適化</li>
+          <li>無駄を徹底的に除去</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 時間は作るもの。削除なしに自動化も解放もできない。集中対象を絞ることが全ての前提。</div>
+      </div>
+      <div class="card">
+        <h3>🤖 A(Automation)</h3>
+        <ul>
+          <li>ミューズ設計(ニッチ選定→検証→販売→外注化)</li>
+          <li>VA活用で手離れ化</li>
+          <li>反復を仕組みに置換</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 時間切り売りから脱却し、仕組みで稼ぐ基盤を作る。外注と自動化でオーナーの稼働を最小化する。</div>
+      </div>
+      <div class="card">
+        <h3>🌍 L(Liberation)</h3>
+        <ul>
+          <li>成果ベースでのリモート交渉</li>
+          <li>場所非依存化</li>
+          <li>ミニリタイアの運用</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 場所と時間の制約を外すことで、地理的アービトラージとミニリタイアが可能になり、自由が最大化する。</div>
+      </div>
+      <div class="card">
+        <h3>🛠 応用/事例/ツール</h3>
+        <ul>
+          <li>ケーススタディ</li>
+          <li>スクリプト、テンプレート</li>
+          <li>FAQで実装を補強</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 理論だけでは実行できない。具体的な事例とツールが、読者の行動を加速する。</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem; color:var(--primary);">💡 具体例</h2>
+    <div class="card">
+      <h3>🌟 例1: ドリームライニングで夢を数値化</h3>
+      <p><strong>背景:</strong> 「世界一周したい」という漠然とした願望を持つ会社員が、ドリームライニングを実施。</p>
+      <ul>
+        <li>6ヶ月の世界一周に必要な費用を月15万円×6=90万円と算出</li>
+        <li>月5万円の副業ミューズを構築すれば18ヶ月で達成可能と判明</li>
+        <li>具体的な行動リストを作成し、実験を開始</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 数値化により夢が現実的になり、行動の優先順位と必要収入が明確になる。曖昧な願望が実行可能なステップに変わる。</div>
+    </div>
+    <div class="card">
+      <h3>🌟 例2: 80/20で顧客を絞り込む</h3>
+      <p><strong>背景:</strong> 小規模ECサイト運営者が、顧客分析を実施。</p>
+      <ul>
+        <li>売上の80%が上位20%の顧客から発生していることを発見</li>
+        <li>下位80%の顧客対応を停止し、上位20%に集中</li>
+        <li>稼働時間が半減し、利益率が向上</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 全てに均等投資は非効率。高インパクト活動に絞ることで時間と成果が両立する。削除の意思決定が集中と自動化の前提になる。</div>
+    </div>
+    <div class="card">
+      <h3>🌟 例3: VAで反復タスクを外注</h3>
+      <p><strong>背景:</strong> フリーランスのコンサルタントが、メール対応と資料作成に週10時間を費やしていた。</p>
+      <ul>
+        <li>フィリピンのVAに時給5ドルで委任</li>
+        <li>週10時間×月4週=40時間を解放</li>
+        <li>解放した時間で新規顧客開拓に集中し、収入が1.5倍に</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 自分でやる必要のないタスクを委任し、高価値活動に集中するため。反復は人間の時間を奪う。仕組み化で時間を解放し、創造的活動へシフトできる。</div>
+    </div>
+    <div class="card">
+      <h3>🌟 例4: 地理的アービトラージで生活費を圧縮</h3>
+      <p><strong>背景:</strong> リモートワーク可能なエンジニアが、東京からタイのチェンマイに移住。</p>
+      <ul>
+        <li>収入は東京水準のまま（月50万円）</li>
+        <li>生活費が月30万円→月10万円に減少</li>
+        <li>可処分所得が増え、週3日労働に移行</li>
+      </ul>
+      <div class="reason"><strong>理由:</strong> 地理差を利用すれば、同じ収入でも可処分所得が増え、自由度が上がる。場所と時間の制約を外すことで、地理的アービトラージとミニリタイアが可能になる。</div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem; color:var(--primary);">💬 重要な引用</h2>
+    <div class="quote-card">
+      <blockquote>"最大の敵は失敗ではなく、退屈への慣れだ。"</blockquote>
+      <p><strong>なぜ重要か:</strong> 現状維持バイアスを破り、実験を続ける動機を与えるから。</p>
+    </div>
+    <div class="quote-card">
+      <blockquote>"多忙はしばしば重要性の代用品にすぎない。"</blockquote>
+      <p><strong>なぜ重要か:</strong> 忙しさ崇拝を否定し、価値基準へ回帰させるから。</p>
+    </div>
+    <div class="quote-card">
+      <blockquote>"時間ではなく成果に支払ってもらえ。"</blockquote>
+      <p><strong>なぜ重要か:</strong> 時間切り売りから成果主義への転換を促すから。</p>
+    </div>
+    <div class="quote-card">
+      <blockquote>"やらないことリストは、やることリストと同等に重要だ。"</blockquote>
+      <p><strong>なぜ重要か:</strong> 削除の意思決定が集中と自動化の前提になるから。</p>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem; color:var(--primary);">🚀 今日のアクション</h2>
+    <div class="action-card">
+      <h4>📊 80/20で上位3タスクを特定する</h4>
+      <p>今週のタスクリストを書き出し、成果への貢献度で順位付け。上位3つを特定し、それ以外を削除または延期する。</p>
+      <div class="meta">
+        <span class="badge">目的</span> 高インパクト活動に集中<br>
+        <span class="badge">期待効果</span> 稼働時間の削減と成果の向上
+      </div>
+    </div>
+    <div class="action-card">
+      <h4>📧 自動返信メール文面を作成する</h4>
+      <p>「メールは1日2回(10時・16時)のみ確認します」という自動返信を設定し、緊急時の連絡先を明記する。</p>
+      <div class="meta">
+        <span class="badge">目的</span> 低情報ダイエットの実践<br>
+        <span class="badge">期待効果</span> 注意資源の保護と集中時間の確保
+      </div>
+    </div>
+    <div class="action-card">
+      <h4>😨 恐怖設定シートを1枚書き出す</h4>
+      <p>「転職/独立/副業開始」など、やりたいが怖いことを1つ選び、最悪ケース・確率・予防策・修復策を書き出す。</p>
+      <div class="meta">
+        <span class="badge">目的</span> リスクの可視化と行動の促進<br>
+        <span class="badge">期待効果</span> 漠然とした不安の解消と実験の開始
+      </div>
+    </div>
+    <div class="action-card">
+      <h4>💭 ドリームライニングで夢を1つ数値化する</h4>
+      <p>「やりたいこと」を1つ選び、必要な費用・期限・行動ステップを具体的に書き出す。</p>
+      <div class="meta">
+        <span class="badge">目的</span> 曖昧な願望を実行可能なステップに変換<br>
+        <span class="badge">期待効果</span> 行動の優先順位と必要収入の明確化
+      </div>
+    </div>
+    <div class="action-card">
+      <h4>🤖 反復タスクを1つ外注候補にリストアップ</h4>
+      <p>週に2時間以上かかる反復タスクを1つ選び、外注先候補(VA・クラウドソーシング)を調べる。</p>
+      <div class="meta">
+        <span class="badge">目的</span> 自動化の第一歩<br>
+        <span class="badge">期待効果</span> 時間の解放と高価値活動へのシフト
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabContents.forEach(c => c.classList.remove('active'));
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
