@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>組織を物語として設計する - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+}
+.tab-content.active {
+  display: block;
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+.example-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  margin-bottom: 1rem;
+  border-top: 3px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.example-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  padding: 1.25rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary);
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card small {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+.action-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  opacity: 0.95;
+}
+.visual-diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+.flow-item {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+  box-shadow: 0 2px 6px rgba(102,126,234,0.3);
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.metric-badge {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  border: 2px solid var(--accent);
+}
+.metric-badge .number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary);
+  display: block;
+}
+.metric-badge .label {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+}
+.relationship-list {
+  list-style: none;
+  padding: 0;
+}
+.relationship-list li {
+  background: var(--card-bg);
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 組織を物語として設計する</h1>
+  <p>知識創造と善い目的で持続的イノベーションを生む</p>
+</header>
+
+<div class="summary-block">
+  <h2>📌 エグゼクティブ・サマリー</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>不確実な環境で組織が一貫して価値を生み続けるには、何を設計し運営すべきか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>組織を『物語』として設計・運営する。善い目的を核に、知識創造(暗黙知×形式知)が循環する場とプロセスを整え、ミドルアップダウンで戦略と現場を往還させる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>人と組織は物語で意味を共有し行為を方向づける。物語はバラバラの知と行為を結び、暗黙知の共有を促進する。SECIと場が知を拡張し、フロネシスが状況判断を善い目的へと整合させるため、継続的な学習とイノベーションが生まれる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>1) 善い目的(共通善)を明確化し、中長期の価値創造ストーリーを描く。2) 物理・デジタル・心理の『場』を設計し、観察→対話→可視化→実験のSECIサイクルを回す。3) ミドルを中核に、経営の意図と現場の知を往還させるミドルアップダウンを制度化する。4) 物語を定期的な対話で検証・更新し、仮説と実践をスプリントで学習する。5) 成果指標は短期KPIに加え、物語の整合性・学習速度・越境協働の質を含めて評価する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>📚 ストーリー（物語）</h3>
+      <ul>
+        <li>組織の善い目的・文脈・登場人物・因果の筋立てを結ぶ</li>
+        <li>判断と行為を方向づける意味のフレーム</li>
+        <li>暗黙知の共有装置として機能</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 意味で人を動かす設計図となり、バラバラの知と行為を統合する
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧠 暗黙知</h3>
+      <ul>
+        <li>言語化しきれない身体化された知や直観</li>
+        <li>経験と状況への感受性に根差す</li>
+        <li>個人の勘どころとして蓄積</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 競争優位の源泉であり、形式知だけでは捉えきれない価値を生む
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📊 形式知</h3>
+      <ul>
+        <li>言語・数式・図表で表現・共有可能な知</li>
+        <li>移転と拡張が容易</li>
+        <li>組織全体への展開に適する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 見える化により知の再利用と組織学習を加速する
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 SECIモデル</h3>
+      <ul>
+        <li>社会化(S): 暗黙知を共有</li>
+        <li>表出(E): 暗黙知を形式知に変換</li>
+        <li>連結(C): 形式知を組み合わせ</li>
+        <li>内面化(I): 形式知を暗黙知に</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 知の変換エンジンとして、組織の知識創造を駆動する
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌐 場（ba）</h3>
+      <ul>
+        <li>人・物・情報が相互作用する共有コンテクスト</li>
+        <li>物理・デジタル・心理・時間の次元を持つ</li>
+        <li>知が生まれ拡張される土壌</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 知識創造の質と速度は場の設計で決まる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 フロネシス（実践知）</h3>
+      <ul>
+        <li>状況固有性を踏まえた判断力</li>
+        <li>善い目的に照らして最適に行為</li>
+        <li>倫理と判断力の統合</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 善を実現する賢慮として、正しい判断と行為を導く
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚙️ ミドルアップダウン型マネジメント</h3>
+      <ul>
+        <li>トップのビジョンと現場の知をミドルが往還</li>
+        <li>全社学習を加速する運営様式</li>
+        <li>戦略と実装の橋渡し役</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 知をつなぐ推進軸として、組織全体の学習速度を上げる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🗣️ ナラティブ・リーダーシップ</h3>
+      <ul>
+        <li>物語を構築・共有・更新するリーダーシップ</li>
+        <li>意味づけと行為を一致させる</li>
+        <li>語りで方向を揃える力</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 組織の意味を創造し、メンバーの自律的行動を促す
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⭐ 共通善（善い目的）</h3>
+      <ul>
+        <li>私益を超えた社会的価値の創造</li>
+        <li>判断と資源配分の最上位規範</li>
+        <li>存在意義の明確化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 目的の北極星として、全ての判断と行為を整合させる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌀 知の螺旋</h3>
+      <ul>
+        <li>個人→グループ→組織→ネットワークへ波及</li>
+        <li>SECIが増幅する学習ダイナミクス</li>
+        <li>組織能力の継続的進化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 学習の拡張機構として、持続的イノベーションを実現する
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-diagram">
+    <h3 style="text-align:center; color: var(--primary); margin-bottom: 1rem;">🔗 概念間の関係性</h3>
+    <ul class="relationship-list">
+      <li>共通善(善い目的) → ストーリーの核 → 判断基準の統一 → 行為の一貫性</li>
+      <li>場(ba) → 相互作用の質向上 → SECI加速 → 暗黙知・形式知の統合 → 組織知の創造</li>
+      <li>ナラティブ・リーダーシップ → 物語の構築・共有 → 動機づけ・協働促進 → 実践の整合</li>
+      <li>フロネシス → 状況判断の質向上 → 物語と現実の整合 → 倫理と成果の両立</li>
+      <li>ミドルアップダウン → トップの意図 × 現場の知の編集 → 戦略仮説の高速検証</li>
+      <li>知の螺旋 → 個人学習の集約 → 組織能力の進化 → 持続的イノベーション</li>
+      <li>ストーリー ←(フィードバック)— 実践結果・学習 → 物語の更新・強化</li>
+    </ul>
+  </div>
+
+  <div class="visual-diagram">
+    <h3 style="text-align:center; color: var(--secondary); margin-bottom: 1rem;">🔄 SECIサイクルの流れ</h3>
+    <div class="flow-container">
+      <div class="flow-item">社会化(S): 暗黙知を共有</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item">表出(E): 暗黙知→形式知</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item">連結(C): 形式知を組合せ</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item">内面化(I): 形式知→暗黙知</div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-item" style="background: var(--accent);">知の螺旋として拡大</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>第1章: 組織を『ストーリー』として捉える</h3>
+    <ul>
+      <li>組織は意味の共有体であり、物語が行為を駆動する</li>
+      <li>善い目的が物語の核となり、判断基準を統一する</li>
+      <li>物語は暗黙知の共有装置として機能する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 組織を機械ではなく意味の共同体として再定義し、人を動かす原理を示すため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章: 知識創造論の基盤</h3>
+    <ul>
+      <li>暗黙知と形式知の相互変換がイノベーションを生む</li>
+      <li>SECIモデル(社会化→表出→連結→内面化)の循環</li>
+      <li>場(ba)が知識創造の質と速度を決定する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 知識創造を個人能力ではなく相互作用デザインとして捉える理論基盤を提供するため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章: 物語の構成要素</h3>
+    <ul>
+      <li>善い目的: 存在意義と社会的価値</li>
+      <li>文脈: 時代・市場・顧客の状況</li>
+      <li>登場人物: ステークホルダーの役割</li>
+      <li>因果の筋立て: 行為と結果の論理</li>
+      <li>メタファ/アナロジー: 理解を助ける比喩</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 実践可能な物語設計の具体的要素を明示し、再現性を高めるため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章: フロネシスとナラティブ・リーダーシップ</h3>
+    <ul>
+      <li>フロネシス(実践知)が状況判断の質を高める</li>
+      <li>ナラティブ・リーダーシップで物語を構築・共有</li>
+      <li>倫理と成果を両立させる賢慮の実践</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> リーダーの役割を命令者から意味創造者へと転換し、自律的組織を実現するため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章: ミドルアップダウン型マネジメント</h3>
+    <ul>
+      <li>ミドルが経営の意図と現場の知を往還・編集</li>
+      <li>トップダウンでもボトムアップでもない第三の道</li>
+      <li>戦略仮説の高速検証サイクルを実現</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 戦略と実装の分断を解消し、全社学習を加速する具体的運営様式を示すため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章: 場の設計と学習サイクル</h3>
+    <ul>
+      <li>物理・デジタル・心理の場を意図的に設計</li>
+      <li>観察→対話→可視化→実験のサイクル</li>
+      <li>仮説検証スプリントで学習を加速</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 知識創造を偶然ではなく設計可能なプロセスとして実装するため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7章: 実践編 - プロジェクトでのSECI運用</h3>
+    <ul>
+      <li>対話セッションで暗黙知を引き出す(社会化)</li>
+      <li>プロトタイピングで形式知に変換(表出)</li>
+      <li>レビューで知を統合・拡張(連結・内面化)</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 理論を現場の具体的行動に落とし込み、即実践可能にするため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第8章: 物語の継続的更新と学習する組織</h3>
+    <ul>
+      <li>物語を定期的な対話で検証・更新</li>
+      <li>成果指標に物語の整合性・学習速度を含める</li>
+      <li>共通善の実現を通じた持続的進化</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 一度作った物語を固定せず、環境変化に適応し続ける組織能力を構築するため
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🏢 例1: 製造業の現場改善プロジェクト</h3>
+    <p><strong>背景:</strong> ベテラン職人の暗黙知が若手に伝わらず、品質のばらつきが課題だった。</p>
+    <p><strong>実践:</strong> 職人と若手の対話の場(社会化)を設け、コツを動画・チェックリストに変換(表出)。全工程マニュアルに統合(連結)し、若手が実践で体得(内面化)。</p>
+    <p><strong>示唆:</strong> SECIサイクルを回すことで、属人的な技能が組織知として定着し、品質が安定した。</p>
+    <div class="reason-box">
+      <strong>理由:</strong> 暗黙知の形式知化と再内面化のプロセスが、知の継承と組織能力向上を実現することを示す
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>💡 例2: スタートアップの価値創造ストーリー</h3>
+    <p><strong>背景:</strong> 創業メンバーの想いが共有されず、採用した人材が方向性を見失っていた。</p>
+    <p><strong>実践:</strong> 「なぜこの事業をやるのか」を物語として明文化し、全社ミーティングで語り続けた。善い目的(社会課題の解決)を軸に、判断基準を統一。</p>
+    <p><strong>示唆:</strong> 物語が組織の意味を創造し、メンバーの自律的行動と一体感を生んだ。</p>
+    <div class="reason-box">
+      <strong>理由:</strong> ナラティブ・リーダーシップが組織の求心力と判断の一貫性を生むメカニズムを示す
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🔄 例3: ミドルマネジャーによる戦略と現場の往還</h3>
+    <p><strong>背景:</strong> 経営の戦略が現場に降りず、現場の知見が経営に届かない分断があった。</p>
+    <p><strong>実践:</strong> ミドルが週次で経営と現場の両方と対話し、戦略仮説を現場で検証。結果を経営にフィードバックし、戦略を修正。</p>
+    <p><strong>示唆:</strong> ミドルアップダウンが戦略の実効性を高め、組織全体の学習速度を加速した。</p>
+    <div class="reason-box">
+      <strong>理由:</strong> ミドルが知の編集者として機能することで、戦略と実装の分断を解消できることを示す
+    </div>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-badge">
+      <span class="number">4</span>
+      <span class="label">SECIの段階</span>
+    </div>
+    <div class="metric-badge">
+      <span class="number">3</span>
+      <span class="label">場の次元</span>
+    </div>
+    <div class="metric-badge">
+      <span class="number">∞</span>
+      <span class="label">知の螺旋</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>「組織は『善い目的』に向かう物語であり、その物語が知と行為を束ねる。」</p>
+    <small><strong>重要性:</strong> 本書の中心命題であり、意味設計が成果を生むメカニズムを示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「知識は『場』で創られ、SECIの螺旋として拡大する。」</p>
+    <small><strong>重要性:</strong> 知識創造を個人能力ではなく相互作用デザインとして捉える基盤になる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「ミドルは現場と経営をつなぐ『物語の編集者』である。」</p>
+    <small><strong>重要性:</strong> 戦略と実装を往還させる具体的な役割像を提示する。</small>
+  </div>
+
+  <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 10px; margin-top: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">📚 関連書籍</h3>
+    <div style="margin-bottom: 1rem; padding: 1rem; background: rgba(102,126,234,0.05); border-radius: 6px;">
+      <strong style="color: var(--secondary);">知識創造企業</strong> - 野中郁次郎・竹内弘高<br>
+      <small style="color: var(--text-light);">SECI/場/知の螺旋の基礎理論で、本書の物語論の土台。</small>
+    </div>
+    <div style="margin-bottom: 1rem; padding: 1rem; background: rgba(102,126,234,0.05); border-radius: 6px;">
+      <strong style="color: var(--secondary);">ワイズ・カンパニー</strong> - 野中郁次郎・竹内弘高<br>
+      <small style="color: var(--text-light);">フロネシスと善い目的に基づく実践知経営を深化させる。</small>
+    </div>
+    <div style="padding: 1rem; background: rgba(102,126,234,0.05); border-radius: 6px;">
+      <strong style="color: var(--secondary);">ストーリーとしての競争戦略</strong> - 楠木建<br>
+      <small style="color: var(--text-light);">戦略を物語として構築・伝達する実践視点が補完関係にある。</small>
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>✍️ 事業の善い目的を一文で書く</h3>
+    <p><strong>目的:</strong> 組織の存在意義を明確化し、判断基準の軸を定める</p>
+    <p><strong>方法:</strong> 「私たちは[誰]に[何]を提供することで[どんな社会的価値]を実現する」の形式で書く</p>
+    <p><strong>期待効果:</strong> メンバーの判断が一貫し、優先順位が明確になる。採用・育成の基準も定まる。</p>
+  </div>
+
+  <div class="action-card">
+    <h3>📖 直近案件の成功物語を描く</h3>
+    <p><strong>目的:</strong> プロジェクトの意味と筋道を共有し、チームの方向を揃える</p>
+    <p><strong>方法:</strong> 背景→課題→解決策→期待成果→社会的意義の流れで1ページにまとめ、チームで対話する</p>
+    <p><strong>期待効果:</strong> メンバーが自分の役割を理解し、自律的に動けるようになる。暗黙知の共有も進む。</p>
+  </div>
+
+  <div class="action-card">
+    <h3>🔄 次会議のSECI流れを設計</h3>
+    <p><strong>目的:</strong> 会議を知識創造の場に変え、学習サイクルを回す</p>
+    <p><strong>方法:</strong> 1)対話で暗黙知共有(S)、2)ホワイトボードで可視化(E)、3)既存知と統合(C)、4)次アクション決定(I)の流れを設計</p>
+    <p><strong>期待効果:</strong> 会議が単なる報告ではなく、知が生まれ拡張される場になる。チームの学習速度が上がる。</p>
+  </div>
+
+  <div style="background: white; padding: 1.5rem; border-radius: 10px; margin-top: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+    <h3 style="color: var(--primary); margin-bottom: 1rem; text-align: center;">🎯 実践のポイント</h3>
+    <ul style="list-style: none; padding: 0;">
+      <li style="padding: 0.75rem; margin-bottom: 0.5rem; background: rgba(240,147,251,0.1); border-radius: 6px; font-size: 0.9rem;">
+        <strong style="color: var(--secondary);">小さく始める:</strong> 完璧を目指さず、15分の対話から始める
+      </li>
+      <li style="padding: 0.75rem; margin-bottom: 0.5rem; background: rgba(240,147,251,0.1); border-radius: 6px; font-size: 0.9rem;">
+        <strong style="color: var(--secondary);">可視化する:</strong> 暗黙知を言葉・図・動画で形にする
+      </li>
+      <li style="padding: 0.75rem; background: rgba(240,147,251,0.1); border-radius: 6px; font-size: 0.9rem;">
+        <strong style="color: var(--secondary);">振り返る:</strong> 週次で物語と実践の整合性を確認する
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
