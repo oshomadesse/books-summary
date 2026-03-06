@@ -16,12 +16,21 @@ cd "$REPO_DIR" || {
     exit 1
 }
 
+# Commit any staged changes (e.g. artifact deletions from post-merge) before pull
+# This prevents the deadlock where staged deletions block git pull --rebase
+if ! git diff --cached --quiet; then
+    echo "[$DATE] 📝 Found staged changes. Committing before pull..." >> "$LOG_FILE"
+    git commit -m "🧹 Cleanup artifacts [skip ci]" >> "$LOG_FILE" 2>&1
+    git push >> "$LOG_FILE" 2>&1
+    echo "[$DATE] ✅ Pre-pull cleanup committed." >> "$LOG_FILE"
+fi
+
 # Stash local changes if needed so pull won't fail
 STASHED=0
-if ! git diff --quiet || ! git diff --cached --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+if ! git diff --quiet || [ -n "$(git ls-files --others --exclude-standard)" ]; then
     STASH_NAME="auto_pull_$(date +%Y%m%d_%H%M%S)"
     echo "[$DATE] ⚠️ Working tree dirty. Stashing as $STASH_NAME" >> "$LOG_FILE"
-    STASH_OUTPUT=$(git stash push -u -k -m "$STASH_NAME" 2>&1)
+    STASH_OUTPUT=$(git stash push -u -m "$STASH_NAME" 2>&1)
     STASH_EXIT=$?
     echo "$STASH_OUTPUT" >> "$LOG_FILE"
     if [ $STASH_EXIT -ne 0 ]; then
