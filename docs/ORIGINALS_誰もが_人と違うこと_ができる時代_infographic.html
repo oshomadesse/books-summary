@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORIGINALS インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.metric-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(102,126,234,0.3);
+}
+.metric-card .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.metric-card .label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.quote-card blockquote {
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.quote-card .importance {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  padding-top: 0.5rem;
+  border-top: 1px solid #eee;
+}
+.action-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(240,147,251,0.05));
+  border: 2px solid var(--accent);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+}
+.action-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+.action-card .purpose {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin: 0.75rem 0;
+  font-size: 0.9rem;
+}
+.flow-item .arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+.book-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--secondary);
+}
+.book-card h4 {
+  color: var(--primary);
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(240,147,251,0.05));
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  border: 2px solid var(--secondary);
+}
+.example-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  font-size: 1.05rem;
+}
+.example-card .context {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+@media (max-width: 600px) {
+  header h1 { font-size: 1.5rem; }
+  .tabs { flex-wrap: nowrap; }
+  .tab-btn { font-size: 0.85rem; padding: 0.6rem 0.75rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 ORIGINALS 誰もが「人と違うこと」ができる時代</h1>
+  <p>アダム・グラント著 — オリジナリティは実践の総和である</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 エグゼクティブ・サマリー</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>ふつうの人がどうすればオリジナルな価値を世に出せるか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>多くのアイデアを生みつつ厳しく選び、戦略的先延ばしと適切なリスク配分で機を見て提案を通し、異論・同盟・フレーミングを用いて採用確率を高める。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>研究は「量が質を生む」「一番乗りより改良者が有利」「反対意見が盲点を減らす」ことを示すため。人は現状維持に偏るが、証拠づけと社会的後押しが偏りを補正する。</p>
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    <p>1) アイデアを大量生成→事前モルグ（失敗先取り）で選別、2) 先延ばしを用い熟成と偶発性を確保、3) リスクは分野間で分散、4) メッセージは既存枠組みと結び付け小さく試す、5) 反対者を巻き込み小さく勝つ、6) 弱い紐帯や権威者のスポンサーを得る。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">関連書籍</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="metric-grid">
+    <div class="metric-card">
+      <span class="number">11</span>
+      <span class="label">主要概念</span>
+    </div>
+    <div class="metric-card">
+      <span class="number">∞</span>
+      <span class="label">アイデアの量</span>
+    </div>
+    <div class="metric-card">
+      <span class="number">3</span>
+      <span class="label">実践の柱</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎨 オリジナリティ</h3>
+    <ul>
+      <li>慣習や既存解に挑み、新しい価値・見方・解を生み社会に定着させる行為</li>
+      <li>天性ではなくプロセスに依存する</li>
+      <li>誰もが実装可能な行動原則の集合</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 才能神話を退け、再現可能な方法論として提示することで実践のハードルを下げる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔢 量は質を生む</h3>
+    <ul>
+      <li>創造的成果の質は多数の試行から偶然と学習が積み重なることで生まれる</li>
+      <li>完璧主義より多作を優先する経験則</li>
+      <li>試行回数をKPI化する発想</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 傑作は偶然の産物であり、試行回数が増えるほど確率が上がるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏳ 戦略的先延ばし</h3>
+    <ul>
+      <li>意図的に着手や決定を遅らせ、アイデアの熟成と新規入力の機会を増やす</li>
+      <li>罪悪感の対象だった遅延を、意図ある熟成として再定義</li>
+      <li>偶発的な連想と深い思考を促進</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 即断即決より、寝かせることで無意識の処理と新情報の統合が進むため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ リスクの分散</h3>
+    <ul>
+      <li>一領域で攻めるとき、他領域で安定を確保し総リスクを下げる</li>
+      <li>攻守のポートフォリオを組む意思決定原則</li>
+      <li>心理的安全性を確保し大胆な試行を可能にする</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 全てを賭けると失敗時の損失が大きく、挑戦を躊躇するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔒 現状維持バイアス</h3>
+    <ul>
+      <li>人や組織が既存のやり方を過大評価し変化を過小評価する認知傾向</li>
+      <li>変化嫌いの罠として新規提案の最大の障壁</li>
+      <li>証拠づけと社会的後押しで補正可能</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 人間の脳は損失回避に偏り、現状を基準点として固定するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗣️ ディセント（異論）</h3>
+    <ul>
+      <li>合意に流されず建設的に反対意見を提示すること</li>
+      <li>規範的対立は質向上に資する（関係的対立は避ける）</li>
+      <li>健全な反対を制度化する根拠</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 同調圧力は盲点を生み、多様な視点が意思決定の質を高めるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🖼️ フレーミング</h3>
+    <ul>
+      <li>提案を受け手の価値・既存比較・損失回避に沿う形で提示</li>
+      <li>採用確率を高める語り口の技術</li>
+      <li>既存枠組みと結び付け、小さく試す形で提示</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 同じ内容でも提示方法で受容性が劇的に変わるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 弱い紐帯と同盟形成</h3>
+    <ul>
+      <li>疎なつながりや外部者の支援は新規アイデアの拡散と正当化に有効</li>
+      <li>外縁を味方にする戦略</li>
+      <li>社会的証明と臨界質量の獲得</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 内輪は同質的で、外部の多様な視点と支持が採用を後押しするため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🥈 改良者優位（後発優位）</h3>
+    <ul>
+      <li>先行者よりも、学習や市場教育を活かした改良者の方が成功確率が高い</li>
+      <li>一番より賢く参入するタイミング戦略</li>
+      <li>学習コスト削減と市場適合の向上</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 先行者は市場を教育するコストを負い、改良者はその学習を活かせるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔮 プリモーテム（失敗先取り）</h3>
+    <ul>
+      <li>実行前に失敗したと仮定して原因を洗い出し対策する予防的レビュー法</li>
+      <li>先に転ばぬ杖として盲点を可視化</li>
+      <li>失敗確率を下げ、説得材料を増やす</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 楽観バイアスを補正し、事前に対策を打てるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💎 価値主導の教育・規範づくり</h3>
+    <ul>
+      <li>規則より価値を共有し、自主的に異議申立てと倫理的判断を促す環境設計</li>
+      <li>価値で動かす文化の構築</li>
+      <li>不正・同調圧力を減らす</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 規則は抜け穴を生むが、価値は内発的動機と自律的判断を促すため。
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="color: var(--secondary); margin-bottom: 1rem;">📊 概念間の因果関係</h3>
+    <div class="flow-item">
+      <span>アイデアの量↑</span>
+      <span class="arrow">→</span>
+      <span>高品質アイデア出現確率↑</span>
+      <span class="arrow">→</span>
+      <span>採用候補の質↑</span>
+    </div>
+    <div class="flow-item">
+      <span>戦略的先延ばし</span>
+      <span class="arrow">→</span>
+      <span>熟成・連想の多様化</span>
+      <span class="arrow">→</span>
+      <span>独創性↑</span>
+    </div>
+    <div class="flow-item">
+      <span>リスク分散</span>
+      <span class="arrow">→</span>
+      <span>心理的安全性↑</span>
+      <span class="arrow">→</span>
+      <span>大胆な試行が可能</span>
+    </div>
+    <div class="flow-item">
+      <span>プリモーテム</span>
+      <span class="arrow">→</span>
+      <span>盲点の可視化</span>
+      <span class="arrow">→</span>
+      <span>失敗確率↓／説得材料↑</span>
+    </div>
+    <div class="flow-item">
+      <span>ディセント促進</span>
+      <span class="arrow">→</span>
+      <span>規範的対立↑・関係的対立↓</span>
+      <span class="arrow">→</span>
+      <span>意思決定の質↑</span>
+    </div>
+    <div class="flow-item">
+      <span>フレーミング最適化</span>
+      <span class="arrow">→</span>
+      <span>現状維持バイアスの抵抗↓</span>
+      <span class="arrow">→</span>
+      <span>採用率↑</span>
+    </div>
+    <div class="flow-item">
+      <span>弱い紐帯・同盟形成</span>
+      <span class="arrow">→</span>
+      <span>社会的証明↑</span>
+      <span class="arrow">→</span>
+      <span>組織内外の支持獲得</span>
+    </div>
+    <div class="flow-item">
+      <span>改良者戦略（後発）</span>
+      <span class="arrow">→</span>
+      <span>学習コスト↓・市場適合↑</span>
+      <span class="arrow">→</span>
+      <span>成功確率↑</span>
+    </div>
+    <div class="flow-item">
+      <span>価値主導の規範</span>
+      <span class="arrow">→</span>
+      <span>自主的異議申立て↑</span>
+      <span class="arrow">→</span>
+      <span>不正・同調圧力↓</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📖 導入: オリジナリティの神話を反証</h3>
+    <ul>
+      <li>極端なリスク志向や天才待望論を退ける</li>
+      <li>オリジナルは無謀ではなく、計算されたリスク配分を行う</li>
+      <li>誰もが実践できる行動原則の提示</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 神話を解体し、実践可能な方法論として再定義することで読者の心理的ハードルを下げる。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>💡 アイデア創出と選別</h3>
+    <ul>
+      <li>量が質を生む: 多作が傑作の母である</li>
+      <li>選別には他者評価と失敗先取り（プリモーテム）が有効</li>
+      <li>完璧主義を抑え、試行回数をKPI化する</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 創造性は偶然と学習の積み重ねであり、試行回数が成果を決定づけるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>⏰ タイミングと先延ばし</h3>
+    <ul>
+      <li>参入時期: 一番乗りより改良者が有利</li>
+      <li>戦略的先延ばしが創造性と成果に及ぼす影響を検証</li>
+      <li>熟成と偶発的連想の機会を確保</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> タイミングと熟成が成功確率を左右し、焦りを抑える戦略的視点を提供するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎯 提案の通し方</h3>
+    <ul>
+      <li>フレーミング: 受け手の価値・既存比較・損失回避に沿う形で提示</li>
+      <li>少数派としての話法: 既存枠組みと結び付け小さく試す</li>
+      <li>現状維持バイアスを補正する証拠づけ</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 同じ内容でも提示方法で受容性が劇的に変わり、採用確率を高めるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🌐 同盟とネットワーク</h3>
+    <ul>
+      <li>弱い紐帯: 疎なつながりが新規アイデアの拡散と正当化に有効</li>
+      <li>スポンサー・連合づくりで採用の臨界質量を作る</li>
+      <li>社会的証明と外部の多様な視点を活用</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 内輪は同質的で、外部の支持が採用を後押しし、臨界質量を形成するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🏢 組織文化と規範</h3>
+    <ul>
+      <li>ディセントを奨励: 健全な規範的対立を制度化</li>
+      <li>価値中心の規範で健全な反対と学習を回す設計</li>
+      <li>不正・同調圧力を減らす環境づくり</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 同調圧力は盲点を生み、多様な視点が意思決定の質を高めるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>👶 個人と教育</h3>
+    <ul>
+      <li>子ども・若手への育み方: 規則より価値を共有</li>
+      <li>役割モデル提示と自主的異議申立ての促進</li>
+      <li>内発的動機と自律的判断を育む</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 規則は抜け穴を生むが、価値は内発的動機と自律的判断を促すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎬 結語: 持続的実践の心構え</h3>
+    <ul>
+      <li>誰もが実装できる行動原則に落とし込む</li>
+      <li>持続的に試すための心構えをまとめる</li>
+      <li>小さく勝ち、学習を回し続ける</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 一度の成功ではなく、継続的な実践と学習が長期的成果を生むため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h4>🚀 例1: Warby Parker（眼鏡EC）の創業者たち</h4>
+    <div class="context">
+      <strong>背景:</strong> 創業者たちは学業と就職を並行し、リスクを分散しながら起業した。一発勝負ではなく、安定収入を確保しつつ新規事業に挑戦。
+    </div>
+    <div class="context">
+      <strong>示唆:</strong> 無謀なリスクを取らず、攻守のポートフォリオを組むことで心理的安全性を確保し、大胆な試行が可能になった。
+    </div>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> リスク分散が実践可能な戦略であり、全てを賭けずとも成功できることを実証する。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🎵 例2: ベートーヴェンとモーツァルトの多作</h4>
+    <div class="context">
+      <strong>背景:</strong> 両者とも膨大な作品数を残し、その中から傑作が生まれた。完璧主義ではなく、試行回数を重視。
+    </div>
+    <div class="context">
+      <strong>示唆:</strong> 創造性は偶然と学習の積み重ねであり、試行回数が成果を決定づける。量が質を生む経験則の実例。
+    </div>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> 天才でさえ多作を通じて傑作を生み出しており、量産が創造性の基盤であることを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🏛️ 例3: キング牧師の「I Have a Dream」演説</h4>
+    <div class="context">
+      <strong>背景:</strong> 演説の核心部分は即興だったが、長年の思索と戦略的先延ばしが背景にあった。事前準備と偶発性の融合。
+    </div>
+    <div class="context">
+      <strong>示唆:</strong> 戦略的先延ばしが熟成と偶発的連想を促し、独創性を高める。即断即決より、寝かせることで深い思考が進む。
+    </div>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> 先延ばしが罪悪感の対象ではなく、意図ある熟成として機能することを実証する。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🔬 例4: NASA のプリモーテム（失敗先取り）</h4>
+    <div class="context">
+      <strong>背景:</strong> ミッション前に「失敗した」と仮定し、原因を洗い出す演習を実施。楽観バイアスを補正し、盲点を可視化。
+    </div>
+    <div class="context">
+      <strong>示唆:</strong> 事前に対策を打つことで失敗確率を下げ、説得材料を増やす。予防的レビュー法の有効性。
+    </div>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> 失敗先取りが実践可能な手法であり、リスク管理と説得力向上に寄与することを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>💼 例5: ブリッジウォーター・アソシエイツの「徹底的透明性」</h4>
+    <div class="context">
+      <strong>背景:</strong> 全社員が会議を録音・共有し、異論を奨励する文化を制度化。規範的対立を促進し、関係的対立を抑制。
+    </div>
+    <div class="context">
+      <strong>示唆:</strong> ディセントを制度化することで、同調圧力を減らし、意思決定の質を高める。健全な反対が組織の学習を促進。
+    </div>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> 異論を奨励する文化が実装可能であり、組織の創造性と意思決定の質を向上させることを実証する。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <blockquote>
+      「要旨: オリジナルは無謀なリスクを取らない。リスクを分散する。」
+    </blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> 勇気と無謀を区別し、実行可能な戦略に落とせる視点を与える。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>
+      「要旨: 量は質を生む。多作が傑作の母である。」
+    </blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> 完璧主義を抑え、試行回数をKPI化する発想を支える。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>
+      「要旨: 戦略的な先延ばしは創造性を高めうる。」
+    </blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> 罪悪感の対象だった遅延を、意図ある熟成として再定義する。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>
+      「要旨: 反対意見は意思決定の質を上げる。」
+    </blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> 同調圧力に抗い、健全な規範的対立を制度化する根拠となる。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>
+      「要旨: 一番乗りより、改良者の方が勝ちやすい。」
+    </blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> タイミングと学習優位の設計により焦りを抑え戦略的に動ける。
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>✏️ アクション1: 懸案のアイデアを10個量産する</h4>
+    <p>今抱えている課題や機会について、15分間でアイデアを10個書き出す。質より量を優先し、突飛なものも含める。</p>
+    <div class="purpose">
+      <strong>目的:</strong> 量が質を生む原則を体感し、試行回数を増やす習慣をつける。<br>
+      <strong>期待効果:</strong> 多様な選択肢が生まれ、その中から高品質なアイデアが出現する確率が上がる。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🔍 アクション2: 逆仮説を3つ書き根拠を当てる</h4>
+    <p>現在進行中のプロジェクトや提案について、「失敗する」と仮定し、その原因を3つ書き出す（プリモーテム）。</p>
+    <div class="purpose">
+      <strong>目的:</strong> 楽観バイアスを補正し、盲点を事前に可視化する。<br>
+      <strong>期待効果:</strong> 失敗確率が下がり、説得材料が増え、提案の質が向上する。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🤝 アクション3: 弱い繋がり1人に相談する</h4>
+    <p>普段あまり話さない同僚や知人（弱い紐帯）に、現在のアイデアや課題を相談する。</p>
+    <div class="purpose">
+      <strong>目的:</strong> 外部の多様な視点を取り入れ、内輪の同質性を補正する。<br>
+      <strong>期待効果:</strong> 新しい視点や支持が得られ、アイデアの拡散と正当化が進む。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>📝 アクション4: 提案を既存枠組みと結び付ける</h4>
+    <p>自分の提案を、受け手が既に知っている成功事例や価値観と結び付けて1文で説明する（フレーミング）。</p>
+    <div class="purpose">
+      <strong>目的:</strong> 現状維持バイアスを補正し、受容性を高める。<br>
+      <strong>期待効果:</strong> 提案が「理解しやすく、安全」と認識され、採用確率が上がる。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>⏸️ アクション5: 意図的に1日寝かせる</h4>
+    <p>重要な決定や提案を、意図的に1日寝かせてから再検討する（戦略的先延ばし）。</p>
+    <div class="purpose">
+      <strong>目的:</strong> 熟成と偶発的連想の機会を確保し、独創性を高める。<br>
+      <strong>期待効果:</strong> 無意識の処理が進み、新しい視点や改善点が浮かぶ。
+    </div>
+  </div>
+</div>
+
+<div id="tab6" class="tab-content" role="tabpanel">
+  <div class="book-card">
+    <h4>📚 THINK AGAIN 発想を変える、学び続ける</h4>
+    <div class="author">著者: アダム・グラント</div>
+    <div class="relation">
+      <strong>関連性:</strong> 思考のやり直しと異論受容の技法がディセント実践を補強する。
+    </div>
+  </div>
+
+  <div class="book-card">
+    <h4>📚 クリエイティブ・コンフィデンス</h4>
+    <div class="author">著者: トム・ケリー／デイヴィッド・ケリー</div>
+    <div class="relation">
+      <strong>関連性:</strong> アイデア量産と小さな実験の文化づくりが実装面で響き合う。
+    </div>
+  </div>
+
+  <div class="book-card">
+    <h4>📚 リーン・スタートアップ</h4>
+    <div class="author">著者: エリック・リース</div>
+    <div class="relation">
+      <strong>関連性:</strong> 仮説検証と小規模実験でフレーミングと採用確率を高める方法論。
+    </div>
+  </div>
+
+  <div class="book-card">
+    <h4>📚 スイッチ！―変革を続けるための条件</h4>
+    <div class="author">著者: チップ・ハース／ダン・ハース</div>
+    <div class="relation">
+      <strong>関連性:</strong> 人の抵抗（現状維持バイアス）を越えるフレーミングと設計が近い。
+    </div>
+  </div>
+
+  <div class="book-card">
+    <h4>📚 レンジ 知識の「幅」が最強の武器になる</h4>
+    <div class="author">著者: デイヴィッド・エプスタイン</div>
+    <div class="relation">
+      <strong>関連性:</strong> 多様な経験が独創的連想を生むという背景理論を補完する。
+    </div>
+  </div>
+
+  <div class="book-card">
+    <h4>📚 Quiet: 内向型のための静かな力</h4>
+    <div class="author">著者: スーザン・ケイン</div>
+    <div class="relation">
+      <strong>関連性:</strong> 目立たずに異議申立てし影響力を持つ方法が少数派戦略と合致。
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
