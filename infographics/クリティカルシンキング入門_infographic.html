@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>批判的思考 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.15);
+  border-radius: 0.5rem;
+  border-left: 4px solid white;
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+
+.reason-box strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+
+.example-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--secondary);
+  position: relative;
+}
+
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--secondary);
+  opacity: 0.2;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+
+.quote-card blockquote {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  padding-left: 1rem;
+}
+
+.quote-card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  opacity: 0.95;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.visual-diagram h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.metric-box .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+}
+
+.metric-box .label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 批判的思考の実践ガイド</h1>
+  <p>主張・根拠・推論を明示し、より妥当な判断へ到達する</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📋 エグゼクティブ・サマリー</h2>
+  
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    私たちはどうすれば思い込みに流されず、より妥当で説明可能な結論に到達できるか？
+  </div>
+  
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    主張・根拠・反証の三点セットを明示し、証拠の質を評価しながら推論を検証・更新する。
+  </div>
+  
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    人間の直感はバイアスや論理的誤謬に影響されやすく、根拠の吟味と推論の検証なしには誤った判断に陥るため。
+  </div>
+  
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    ①主張を明確化する ②根拠の関連性・信頼性・十分性を評価する ③反証と代替仮説を探索する ④推論形式（演繹/帰納/アブダクション）を点検する ⑤結論の条件・限界を明記する
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🎯 主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📖 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    
+    <div class="card">
+      <h3>🎯 主張（クレーム）</h3>
+      <ul>
+        <li>話し手が真であると提示する結論部分</li>
+        <li>論証の到達点であり検証の対象</li>
+        <li>一言要約：何を言いたいか</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>主張を明確にすることで議論の焦点が定まり、検証可能性が生まれる。曖昧な主張は評価も反論もできない。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📊 根拠（エビデンス）</h3>
+      <ul>
+        <li>主張を支持する情報やデータ</li>
+        <li>関連性・信頼性・十分性で評価</li>
+        <li>一言要約：なぜそう言えるか</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>根拠なき主張は単なる意見に留まる。質の高い根拠が結論の説得力と妥当性を支える基盤となる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔗 推論</h3>
+      <ul>
+        <li>根拠から主張へ至る思考の橋渡し</li>
+        <li>明示されない場合は暗黙の前提を含む</li>
+        <li>一言要約：どう繋げたか</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>推論の透明性が論証の強度を決める。隠れた飛躍や前提が論理的弱点となりやすい。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🕳️ 前提（暗黙の前提）</h3>
+      <ul>
+        <li>共有されていると仮定される根拠</li>
+        <li>明示されないため論証の弱点になりやすい</li>
+        <li>一言要約：隠れた土台</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>暗黙の前提を掘り起こすことで、議論の脆弱性や偏りを発見でき、より堅牢な論証へ改善できる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚡ 反証・反論</h3>
+      <ul>
+        <li>主張や推論を弱める証拠や代替説明</li>
+        <li>検討は結論の堅牢性を高める</li>
+        <li>一言要約：揺さぶり</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>反証に耐えた結論ほど信頼性が高い。代替仮説を潰すプロセスが科学的思考の核心。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🚫 論理的誤謬</h3>
+      <ul>
+        <li>結論を支持しない誤った推論パターン</li>
+        <li>例：人物攻撃、滑路、相関と因果の混同</li>
+        <li>一言要約：思考の落とし穴</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>誤謬を認識することで、説得力があるように見えても論理的に無効な議論を見抜ける。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧠 認知バイアス</h3>
+      <ul>
+        <li>体系的な判断の偏り</li>
+        <li>確証バイアス、利用可能性ヒューリスティック等</li>
+        <li>一言要約：心のクセ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>バイアスは無意識に働くため、自覚と対策なしには客観的判断が困難。メタ認知の出発点。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔀 演繹・帰納・アブダクション</h3>
+      <ul>
+        <li>演繹：必然的結論（前提が真なら結論も真）</li>
+        <li>帰納：一般化（観察から法則を導く）</li>
+        <li>アブダクション：最良説明への仮説形成</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>推論様式ごとに強度と限界が異なる。適切な使い分けが論証の質を左右する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📏 基準設定</h3>
+      <ul>
+        <li>評価軸や判断条件を先に定める作業</li>
+        <li>恣意性を抑え透明性を高める</li>
+        <li>一言要約：ものさし作り</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>事後的な基準変更は結論の信頼性を損なう。事前設定が公正な評価を保証する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 因果推論</h3>
+      <ul>
+        <li>原因と結果の関係の特定</li>
+        <li>反事実、統制、介入などで妥当性を検討</li>
+        <li>一言要約：なぜ起きたか</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>相関と因果を混同すると誤った介入につながる。因果の特定は効果的な行動の前提。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🪞 メタ認知</h3>
+      <ul>
+        <li>自分の思考プロセスを客観視し調整する能力</li>
+        <li>誤謬の自己検出に不可欠</li>
+        <li>一言要約：考えを点検</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>思考の質を継続的に改善するには、自分の推論を監視・修正するメタ認知が必須。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ 条件付き結論</h3>
+      <ul>
+        <li>前提や範囲を明示した限定的な結論</li>
+        <li>過剰な一般化を防ぐ</li>
+        <li>一言要約：どこまで言えるか</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>結論の適用範囲を明示することで、誤用や過信を防ぎ、知的誠実さを保つ。
+      </div>
+    </div>
+
+  </div>
+
+  <div class="visual-diagram">
+    <h3>🔗 概念間の関係性</h3>
+    <div class="flow-item">
+      <span>根拠</span>
+      <span class="flow-arrow">→</span>
+      <span>（推論）</span>
+      <span class="flow-arrow">→</span>
+      <span>主張</span>
+    </div>
+    <div class="flow-item">
+      <span>認知バイアス</span>
+      <span class="flow-arrow">↑</span>
+      <span>誤謬発生率</span>
+    </div>
+    <div class="flow-item">
+      <span>反証検討</span>
+      <span class="flow-arrow">→</span>
+      <span>結論の堅牢性↑</span>
+    </div>
+    <div class="flow-item">
+      <span>基準設定</span>
+      <span class="flow-arrow">→</span>
+      <span>評価の再現性↑</span>
+    </div>
+    <div class="flow-item">
+      <span>証拠の質（関連性×信頼性×十分性）</span>
+      <span class="flow-arrow">→</span>
+      <span>結論の妥当性</span>
+    </div>
+    <div class="flow-item">
+      <span>メタ認知</span>
+      <span class="flow-arrow">→</span>
+      <span>バイアス検出</span>
+      <span class="flow-arrow">→</span>
+      <span>推論修正</span>
+    </div>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-box">
+      <span class="number">3</span>
+      <span class="label">推論様式</span>
+    </div>
+    <div class="metric-box">
+      <span class="number">3</span>
+      <span class="label">証拠評価軸</span>
+    </div>
+    <div class="metric-box">
+      <span class="number">12</span>
+      <span class="label">主要概念</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  
+  <div class="chapter-card">
+    <h3>📌 導入：批判的思考の目的と必要性</h3>
+    <ul>
+      <li>直感依存のリスクと誤判断の実例</li>
+      <li>批判的思考が日常・学業・仕事で果たす役割</li>
+      <li>思考の質が結果の質を決める原則</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>なぜ批判的思考が必要かを示し、読者の動機づけと問題意識を喚起するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🧩 基礎：主張・根拠・推論の三要素</h3>
+    <ul>
+      <li>論証の最小単位を定義</li>
+      <li>主張と根拠を切り離さない習慣</li>
+      <li>推論の明示化と暗黙の前提の掘り起こし</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>批判的思考の基本構造を理解することで、以降の技法が適用可能になるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>⚠️ 誤りの源泉：認知バイアスと論理的誤謬</h3>
+    <ul>
+      <li>代表的なバイアス（確証、利用可能性、アンカリング等）</li>
+      <li>頻出する誤謬（人物攻撃、滑路、誤った二分法等）</li>
+      <li>回避策とチェックリスト</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>誤りのパターンを知ることで、自分と他者の推論を点検し、質を向上できるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🔀 推論の形式：演繹・帰納・アブダクション</h3>
+    <ul>
+      <li>各推論様式の定義と強度</li>
+      <li>使い分けの基準と注意点</li>
+      <li>演繹の妥当性、帰納の蓋然性、アブダクションの説明力</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>推論形式ごとの特性を理解することで、状況に応じた適切な論証が可能になるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📊 エビデンス評価：関連性・信頼性・十分性</h3>
+    <ul>
+      <li>証拠の質を評価する三つの基準</li>
+      <li>因果推論の実務（反事実、統制、介入）</li>
+      <li>基準設定と透明性の確保</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>証拠の質が結論の妥当性を左右するため、評価基準の習得が不可欠。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>⚡ 反証と対話：反論・異論の取り込み</h3>
+    <ul>
+      <li>スチールマン（相手の最良の論を構築）</li>
+      <li>代替仮説の探索と最良説明の選択</li>
+      <li>反証可能性と検証可能性</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>反証に耐えた結論ほど堅牢。対話的思考が独善を防ぎ、結論の質を高めるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>💼 実践編：ケーススタディ</h3>
+    <ul>
+      <li>三点セット（主張・根拠・反証）の明示訓練</li>
+      <li>前提の掘り起こしと推論の点検</li>
+      <li>実例を用いた誤謬・バイアスの検出</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>理論を実際の事例に適用することで、スキルが定着し実務で使えるようになるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🚀 応用とまとめ：日常・学業・仕事での適用</h3>
+    <ul>
+      <li>条件付き結論の習慣化</li>
+      <li>メタ認知の定着法（思考日記、ピアレビュー）</li>
+      <li>継続的な学習と改善のサイクル</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>批判的思考を一過性の知識でなく、日常の習慣として定着させるため。
+    </div>
+  </div>
+
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  
+  <div class="example-card">
+    <h3>🏥 例1：医療ニュースの評価</h3>
+    <p><strong>背景：</strong>「新サプリで健康寿命が延びる」という記事を読んだ。</p>
+    <p><strong>適用：</strong>主張（健康寿命延伸）、根拠（研究データの有無・サンプル数・統制群）、反証（他の要因、利益相反）を確認。</p>
+    <p><strong>示唆：</strong>根拠が不十分（小規模・短期・統制なし）と判明し、結論を保留。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>この例は、日常の情報消費で三点セットを適用することで、誤情報に踊らされず冷静な判断ができることを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>💼 例2：ビジネス提案の検討</h3>
+    <p><strong>背景：</strong>新規事業提案「競合が少ないから成功する」。</p>
+    <p><strong>適用：</strong>主張（成功）、根拠（競合少）、暗黙の前提（需要存在、参入障壁低）を明示。反証（需要不足、技術的困難）を探索。</p>
+    <p><strong>示唆：</strong>需要検証が不足していると判明し、市場調査を追加。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>この例は、暗黙の前提を掘り起こすことで、見落としていたリスクを発見し、意思決定の質を高められることを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>📰 例3：政治的主張の分析</h3>
+    <p><strong>背景：</strong>「政策Aは失敗だった。なぜなら経済成長率が低いから」。</p>
+    <p><strong>適用：</strong>主張（政策A失敗）、根拠（成長率低）、推論（因果関係）を点検。反証（他の要因：世界経済、自然災害）を検討。</p>
+    <p><strong>示唆：</strong>相関と因果を混同していると判明。政策の効果を単独で評価するには統制が必要。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>この例は、因果推論の重要性と、相関を因果と誤認する誤謬を回避する方法を示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🎓 例4：学術論文の査読</h3>
+    <p><strong>背景：</strong>論文「X理論がY現象を説明する」を評価。</p>
+    <p><strong>適用：</strong>主張（X理論の説明力）、根拠（実験データ、統計的有意性）、反証（代替理論Z、未説明の事例）を検討。</p>
+    <p><strong>示唆：</strong>代替理論Zも同等の説明力を持つと判明し、結論を「X理論は有力な候補の一つ」に限定。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>この例は、反証と代替仮説の検討が結論の過剰な一般化を防ぎ、知的誠実さを保つことを示す。
+    </div>
+  </div>
+
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  
+  <div class="quote-card">
+    <blockquote>主張は根拠と切り離せない。根拠なき主張は意見に留まる。</blockquote>
+    <p><strong>重要性：</strong>主張・根拠をワンセットで考える基本姿勢を端的に示すため。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>反証可能性がない仮説は、検討に値する情報を生みにくい。</blockquote>
+    <p><strong>重要性：</strong>検証可能性を基準に思考の質を上げる視点を与えるため。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>結論の力は証拠の質と推論の透明性の積で決まる。</blockquote>
+    <p><strong>重要性：</strong>エビデンスと推論の両輪が不可欠であることを定式化するため。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>（要旨）暗黙の前提を掘り起こすことで、論証の脆弱性が明らかになる。</blockquote>
+    <p><strong>重要性：</strong>前提の明示化が論証の質を高める実践的手法であることを示すため。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>（要旨）メタ認知は批判的思考の継続的改善を駆動する。</blockquote>
+    <p><strong>重要性：</strong>自己点検の習慣が長期的な思考力向上の鍵であることを強調するため。</p>
+  </div>
+
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  
+  <div class="action-card">
+    <h3>📰 アクション1：ニュース記事を1本分析する</h3>
+    <p><strong>目的：</strong>主張・根拠・推論の三点セットを実際の情報源で識別する訓練。</p>
+    <p><strong>手順：</strong>記事を読み、①主張は何か ②根拠は何か ③推論の飛躍はないか ④反証は考えられるか を書き出す。</p>
+    <p><strong>期待効果：</strong>日常の情報消費で批判的思考が自動化され、誤情報に惑わされにくくなる。</p>
+    <span class="badge">15分</span>
+  </div>
+
+  <div class="action-card">
+    <h3>✍️ アクション2：主張-根拠-反証を1事例で書く</h3>
+    <p><strong>目的：</strong>自分の意見や判断を構造化し、論証の質を自己点検する。</p>
+    <p><strong>手順：</strong>最近の意思決定（購入、進路、仕事の判断等）を選び、①主張 ②根拠 ③反証・代替案 を各3行で記述。</p>
+    <p><strong>期待効果：</strong>自分の思考の癖や暗黙の前提に気づき、判断の透明性が向上する。</p>
+    <span class="badge">20分</span>
+  </div>
+
+  <div class="action-card">
+    <h3>🧠 アクション3：自分の認知バイアスを3つ記録</h3>
+    <p><strong>目的：</strong>自己のバイアスを自覚し、メタ認知を強化する。</p>
+    <p><strong>手順：</strong>過去1週間の判断を振り返り、①確証バイアス（都合の良い情報だけ見た） ②利用可能性（印象的な事例に引きずられた） ③アンカリング（最初の情報に固執した）の有無を記録。</p>
+    <p><strong>期待効果：</strong>バイアスの自覚が習慣化し、将来の判断で自己補正できるようになる。</p>
+    <span class="badge">15分</span>
+  </div>
+
+  <div class="action-card">
+    <h3>🔍 アクション4：推論形式を1つ点検する</h3>
+    <p><strong>目的：</strong>演繹・帰納・アブダクションの区別と適切性を実践で確認する。</p>
+    <p><strong>手順：</strong>最近の会議や議論を思い出し、使われた推論が①演繹（前提から必然的結論） ②帰納（事例から一般化） ③アブダクション（最良説明）のどれか判定し、妥当性を評価。</p>
+    <p><strong>期待効果：</strong>推論様式の使い分けが意識化され、論証の強度を高められる。</p>
+    <span class="badge">20分</span>
+  </div>
+
+  <div class="action-card">
+    <h3>📋 アクション5：評価基準を事前設定する</h3>
+    <p><strong>目的：</strong>恣意的な判断を防ぎ、評価の透明性を確保する。</p>
+    <p><strong>手順：</strong>次の意思決定（採用、投資、購入等）の前に、評価軸（コスト、品質、納期等）と重み付けを書き出し、事後に変更しない。</p>
+    <p><strong>期待効果：</strong>事前基準が公正な評価を保証し、結論の信頼性が向上する。</p>
+    <span class="badge">15分</span>
+  </div>
+
+  <div class="visual-diagram">
+    <h3>📅 実践スケジュール例</h3>
+    <ul style="list-style:none; padding:0;">
+      <li style="padding:0.5rem 0; border-bottom:1px solid var(--border);">📅 <strong>月曜：</strong>ニュース分析（朝15分）</li>
+      <li style="padding:0.5rem 0; border-bottom:1px solid var(--border);">📅 <strong>水曜：</strong>主張-根拠-反証記述（昼休み20分）</li>
+      <li style="padding:0.5rem 0; border-bottom:1px solid var(--border);">📅 <strong>金曜：</strong>バイアス記録（夕方15分）</li>
+      <li style="padding:0.5rem 0;">📅 <strong>週末：</strong>推論点検＋基準設定（各20分）</li>
+    </ul>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+// タブ切替
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
