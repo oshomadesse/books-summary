@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>錯覚の科学 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.summary-item ul {
+  margin-left: 1.2rem;
+  margin-top: 0.3rem;
+}
+.summary-item li {
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  flex: 1 1 auto;
+  min-width: 120px;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-top: 4px solid var(--primary);
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  margin-left: 0;
+}
+.card li {
+  margin-bottom: 0.6rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 0.3rem;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--primary);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.6rem;
+}
+.chapter-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  border: 2px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.15rem;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-style: italic;
+}
+.quote-card blockquote {
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+}
+.quote-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  opacity: 0.95;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.visual-flow {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-flow h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.book-item h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.3rem;
+}
+.book-item p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.3rem;
+}
+.book-item .relation {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    min-width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📖 錯覚の科学</h1>
+  <p>見ていても見えない、覚えていても誤っている―直感の限界を知り、設計で補う</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜ有能な人でも重大な見落としや誤判断を繰り返すのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>心の"錯覚"が自分の限界を覆い隠し、過信と誤因果・誤記憶・誤理解を生むから。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>選択的注意、再構成的記憶、過信傾向、説明深度の錯覚、相関誤認、能力開発神話などが、実験（不可視のゴリラ等）と実社会の事例で一貫して確認される。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <ul>
+        <li>錯覚を名称で認識し、発動サインを言語化する</li>
+        <li>チェックリスト・外部記録・二重チェックで設計的に補う</li>
+        <li>事前確率・対照・ブラインド化で因果と妥当性を検証する</li>
+        <li>自信と正答率のキャリブレーションを定期的に行う</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>👁️ 注意の錯覚</h3>
+        <ul>
+          <li><strong>定義:</strong> 選択的注意は限られた資源を特定課題に集中させ、顕著な出来事でも見逃す</li>
+          <li><strong>一言:</strong> 見ていても見えない</li>
+          <li><strong>影響:</strong> 運転中の事故、医療現場での見落とし、監視業務の失敗</li>
+          <li><strong>対策:</strong> 二重チェック、外部アラート、タスク分散</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 脳の処理能力は有限で、意識的注意は一度に1つの複雑タスクしか扱えないため、重要情報が視野内にあっても認識されない。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🧠 記憶の錯覚</h3>
+        <ul>
+          <li><strong>定義:</strong> 記憶は録画ではなく再構成であり、自信と正確さは独立し偽記憶が生じやすい</li>
+          <li><strong>一言:</strong> 覚えていても誤っている</li>
+          <li><strong>影響:</strong> 証言の信頼性低下、誤った意思決定、過去の美化・悪化</li>
+          <li><strong>対策:</strong> 外部記録、複数証拠の照合、記憶の時系列検証</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 記憶は想起のたびに再構成され、暗示や文脈で容易に変容するため、鮮明な記憶でも事実と異なる可能性が高い。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💪 自信の錯覚</h3>
+        <ul>
+          <li><strong>定義:</strong> 主観的自信はパフォーマンスの確かな指標ではなく、過信が誤判断を強化する</li>
+          <li><strong>一言:</strong> 自信≠正しさ</li>
+          <li><strong>影響:</strong> リスク過小評価、専門家の誤診、投資判断の失敗</li>
+          <li><strong>対策:</strong> キャリブレーション訓練、確率的思考、事後検証</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 自信は経験・流暢性・社会的承認で高まるが、実際の正確性とは相関が弱く、過信が修正機会を奪う。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📚 知識の錯覚</h3>
+        <ul>
+          <li><strong>定義:</strong> 自分がどれほど仕組みを理解しているかを過大評価し、曖昧さを見落とす</li>
+          <li><strong>一言:</strong> 分かったつもり</li>
+          <li><strong>影響:</strong> 不十分な計画、誤った教育、技術導入の失敗</li>
+          <li><strong>対策:</strong> 説明テスト、詳細な質問、実装前の検証</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 表面的な理解と深い理解の区別が困難で、説明を求められて初めて知識の穴が露呈するため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔗 原因の錯覚</h3>
+        <ul>
+          <li><strong>定義:</strong> 相関や同時発生から安易に因果を推定し、第三要因やベースレートを無視する</li>
+          <li><strong>一言:</strong> 因果を急ぎすぎる</li>
+          <li><strong>影響:</strong> 誤った政策、無効な治療法、迷信の蔓延</li>
+          <li><strong>対策:</strong> 対照群設定、ベースレート確認、反事実思考</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 脳は物語を好み、時間的前後や共起を因果と解釈しやすく、統計的検証なしに結論を急ぐため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🚀 潜在力の錯覚</h3>
+        <ul>
+          <li><strong>定義:</strong> 短期介入や"脳トレ"で能力が劇的に伸びると期待するが、汎化は限定的で近道は稀</li>
+          <li><strong>一言:</strong> 近道はない</li>
+          <li><strong>影響:</strong> 無駄な投資、期待外れ、継続的努力の軽視</li>
+          <li><strong>対策:</strong> 転移可能性の検証、長期追跡、現実的目標設定</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 能力向上は領域固有で時間がかかり、一般化する"魔法の弾丸"は存在しないが、マーケティングが期待を煽るため。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-flow">
+      <h3>🔄 錯覚の連鎖と対策</h3>
+      <div class="flow-item">
+        <span>注意の錯覚</span>
+        <span class="flow-arrow">→</span>
+        <span>重要情報の欠落</span>
+        <span class="flow-arrow">→</span>
+        <span>記憶の穴を"物語"で埋める</span>
+      </div>
+      <div class="flow-item">
+        <span>記憶の錯覚</span>
+        <span class="flow-arrow">×</span>
+        <span>自信の錯覚</span>
+        <span class="flow-arrow">→</span>
+        <span>誤った確信が強化され修正困難</span>
+      </div>
+      <div class="flow-item">
+        <span>知識の錯覚</span>
+        <span class="flow-arrow">→</span>
+        <span>簡単な説明を好む</span>
+        <span class="flow-arrow">→</span>
+        <span>原因の錯覚（相関を因果と誤認）</span>
+      </div>
+      <div class="flow-item">
+        <span>原因の錯覚</span>
+        <span class="flow-arrow">→</span>
+        <span>誤った介入や政策決定</span>
+        <span class="flow-arrow">→</span>
+        <span>期待外れを"潜在力の錯覚"で合理化</span>
+      </div>
+      <div class="flow-item">
+        <span>自信の錯覚</span>
+        <span class="flow-arrow">↔</span>
+        <span>キャリブレーション不足</span>
+        <span class="flow-arrow">→</span>
+        <span>判断精度の低下が継続</span>
+      </div>
+      <div class="flow-item" style="background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1)); padding: 0.8rem; border-radius: 0.5rem; margin-top: 1rem;">
+        <span style="font-weight: 600; color: var(--secondary);">✅ 対策（外部記録・ベースレート・二重チェック）</span>
+        <span class="flow-arrow">→</span>
+        <span style="font-weight: 600; color: var(--primary);">これら錯覚の連鎖を分断</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📍 導入：不可視のゴリラ実験</h3>
+      <p><strong>要点:</strong> 選択的注意の限界を直感に反する形で可視化し、"見えているはず"という過信を揺さぶる。</p>
+      <div class="reason-box">
+        <strong>理由:</strong> 実験参加者の約半数がゴリラを見落とす事実は、注意の限界を体感させ、以降の錯覚への受容性を高める導入として機能する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>👁️ 注意の錯覚</h3>
+      <p><strong>要点:</strong> 日常・専門現場（運転、医療、監視）での見落としを提示し、ヒューマンエラーの構造を示す。</p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>選択的注意は資源制約がある</li>
+        <li>顕著性≠注意の保証</li>
+        <li>マルチタスクは錯覚を増幅</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 注意の錯覚は最も基礎的で、他の錯覚（記憶・自信）の前提となるため、最初に扱うことで全体の理解を支える。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🧠 記憶の錯覚</h3>
+      <p><strong>要点:</strong> 偽記憶と証言の脆弱性を実験と事例で示し、証拠評価の原則を提案。</p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>記憶は再構成プロセス</li>
+        <li>自信≠正確性</li>
+        <li>暗示で容易に変容</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 法廷証言や歴史認識など社会的影響が大きく、記憶への過信を正すことが誤判断防止に直結するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>💪 自信の錯覚</h3>
+      <p><strong>要点:</strong> 過信が意思決定を歪めるプロセスを解剖し、キャリブレーション技法を紹介。</p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>専門家も過信する</li>
+        <li>流暢性が自信を高める</li>
+        <li>キャリブレーション訓練が有効</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 自信は意思決定の重みづけに使われるため、キャリブレーション不足は全判断の質を下げる根本問題となる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📚 知識の錯覚（説明深度）</h3>
+      <p><strong>要点:</strong> "分かったつもり"を測る手法（説明テスト）で理解の実像を炙り出す。</p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>表面的理解と深い理解の混同</li>
+        <li>説明を求めると知識の穴が露呈</li>
+        <li>専門用語が理解を隠蔽</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 知識の錯覚は計画・教育・技術導入の失敗を招き、説明テストという具体的対策が実践可能なため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔗 原因の錯覚</h3>
+      <p><strong>要点:</strong> 相関と因果の混同を正し、対照・ベースレート・反事実の重要性を解説。</p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>相関≠因果</li>
+        <li>第三要因の見落とし</li>
+        <li>ベースレート無視</li>
+        <li>対照群の必要性</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 因果推論の誤りは政策・医療・ビジネスで最も高コストな失敗を生むため、科学的思考の核心として扱う。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🚀 潜在力の錯覚</h3>
+      <p><strong>要点:</strong> 短期的万能解への懐疑と、効果が再現される介入の条件（転移・測定）を検討。</p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>脳トレの汎化は限定的</li>
+        <li>能力向上は領域固有</li>
+        <li>長期的努力が必要</li>
+        <li>測定方法が結果を左右</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 潜在力の錯覚は教育・自己啓発産業で広く悪用され、現実的な能力開発観を示すことが読者の実益になるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎯 結論：錯覚と共存する設計</h3>
+      <p><strong>要点:</strong> 錯覚は消せないが、名前を付け、外部化・検証・環境設計で害を最小化できると締めくくる。</p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>錯覚の認識が第一歩</li>
+        <li>設計による補償</li>
+        <li>継続的検証</li>
+        <li>謙虚な姿勢の維持</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 完全な克服ではなく"共存"という現実的ゴールを示すことで、読者に実行可能な希望を与える。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🚗 例1: 運転中の携帯電話使用</h3>
+      <p><strong>背景:</strong> ハンズフリーでも通話中の運転者は、目の前の歩行者や信号変化を見落とす確率が大幅に上昇する。</p>
+      <p><strong>示唆:</strong> 注意は"見る"行為と独立しており、認知負荷が高いと視覚情報が処理されない。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 注意の錯覚が日常的リスクとして存在し、"見ていれば大丈夫"という直感が危険であることを具体的に証明する。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>⚖️ 例2: 目撃証言の誤り</h3>
+      <p><strong>背景:</strong> DNA鑑定で無罪が証明された冤罪事件の多くで、自信満々の目撃証言が決定的証拠とされていた。</p>
+      <p><strong>示唆:</strong> 記憶の自信と正確性は無関係であり、証言者の確信は信頼性の指標にならない。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 記憶の錯覚と自信の錯覚が組み合わさると、社会システム（司法）レベルで重大な誤りを生むことを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>💊 例3: プラセボ効果と因果の誤認</h3>
+      <p><strong>背景:</strong> 新薬を飲んだ後に症状が改善しても、自然治癒・回帰効果・プラセボなど複数の説明が可能だが、人は薬の効果と即断しやすい。</p>
+      <p><strong>示唆:</strong> 対照群なしの観察では因果を確定できず、ベースレート（自然経過）の考慮が不可欠。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 原因の錯覚が医療・健康分野で無効な治療への依存を生み、科学的検証の価値を浮き彫りにする。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🧩 例4: 脳トレゲームの限界</h3>
+      <p><strong>背景:</strong> 特定の記憶ゲームで高得点を出せるようになっても、日常の記憶力や他の認知課題への転移はほとんど見られない。</p>
+      <p><strong>示唆:</strong> 能力向上は訓練した課題に特化し、汎用的な"脳力"向上は稀。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 潜在力の錯覚が消費者を誤導する構造を明示し、現実的な能力開発への期待調整を促す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <blockquote>"私たちは自分の見落としに気づかない。"</blockquote>
+      <p><strong>重要性:</strong> 自己評価の盲点を突き、対策の必要性を直感させる。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"記憶は録画ではなく、その都度の再構成だ。"</blockquote>
+      <p><strong>重要性:</strong> 証言や自分の記憶への過信を戒める基礎になる。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"自信は正確さの確かな手がかりではない。"</blockquote>
+      <p><strong>重要性:</strong> 意思決定で"確信度"に依存しすぎない指針となる。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"因果を断定する前に、比較とベースレートを見よ。"</blockquote>
+      <p><strong>重要性:</strong> 誤因果の回避に直結する実践的助言である。</p>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"近道の約束より、設計と継続の方が効く。"</blockquote>
+      <p><strong>重要性:</strong> 潜在力の錯覚に代わる現実的な処方箋を示す。</p>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>✅ アクション1: 10問クイズで自信と正答を記録</h3>
+      <p><strong>目的:</strong> 自分の自信と実際の正答率のズレ（キャリブレーション）を可視化する。</p>
+      <p><strong>手順:</strong> 一般知識クイズ10問に答え、各問ごとに自信度（0-100%）を記録→答え合わせ→自信度と正答の相関を確認。</p>
+      <p><strong>期待効果:</strong> 過信傾向を自覚し、今後の判断で確信度を割り引く習慣が身につく。</p>
+      <p><strong>所要時間:</strong> 15分</p>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション2: 1件の記憶を証拠で事実確認</h3>
+      <p><strong>目的:</strong> 鮮明な記憶でも誤りうることを体験的に理解する。</p>
+      <p><strong>手順:</strong> 過去の重要な出来事（会議の決定、約束の内容等）を思い出し、メール・議事録・写真など客観証拠と照合する。</p>
+      <p><strong>期待効果:</strong> 記憶の再構成性を実感し、重要事項は外部記録に頼る習慣が形成される。</p>
+      <p><strong>所要時間:</strong> 20分</p>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション3: 今の決断で代替仮説を3つ書く</h3>
+      <p><strong>目的:</strong> 因果の錯覚を防ぎ、複数の説明を検討する思考習慣をつける。</p>
+      <p><strong>手順:</strong> 現在検討中の決断（採用、投資、診断等）について、"なぜそうなのか"の説明を3つ以上列挙し、それぞれの証拠を書き出す。</p>
+      <p><strong>期待効果:</strong> 単一の因果ストーリーへの飛びつきを抑制し、より慎重で多角的な判断が可能になる。</p>
+      <p><strong>所要時間:</strong> 25分</p>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション4: 説明テストで理解度を測る</h3>
+      <p><strong>目的:</strong> 知識の錯覚を暴き、真の理解度を把握する。</p>
+      <p><strong>手順:</strong> 自分が"理解している"と思う仕組み（例：トイレの水流、選挙制度）を、素人に説明するつもりで詳細に書き出す→書けない部分を特定。</p>
+      <p><strong>期待効果:</strong> 表面的理解と深い理解の差を認識し、学習・計画の質が向上する。</p>
+      <p><strong>所要時間:</strong> 20分</p>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション5: 注意の二重チェックリストを作る</h3>
+      <p><strong>目的:</strong> 注意の錯覚を前提とした設計で見落としを減らす。</p>
+      <p><strong>手順:</strong> 日常の重要タスク（出発前、提出前等）で確認すべき項目を列挙し、チェックリスト化→実際に使ってみる。</p>
+      <p><strong>期待効果:</strong> 注意資源に頼らず、外部補助で確実性を高める習慣が定着する。</p>
+      <p><strong>所要時間:</strong> 15分</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 3rem;">
+    <h2 style="font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem; text-align: center;">📚 関連書籍</h2>
+    <div class="book-list">
+      <div class="book-item">
+        <h4>ファスト&スロー</h4>
+        <p><strong>著者:</strong> ダニエル・カーネマン</p>
+        <p class="relation">直感システムの誤りと遅い思考の役割が補完的。</p>
+      </div>
+      <div class="book-item">
+        <h4>予想どおりに不合理</h4>
+        <p><strong>著者:</strong> ダン・アリエリー</p>
+        <p class="relation">行動経済学の実験が直感の錯覚を実社会で示す。</p>
+      </div>
+      <div class="book-item">
+        <h4>間違っていたのは私ではない</h4>
+        <p><strong>著者:</strong> キャロル・タヴリス, エリオット・アロンソン</p>
+        <p class="relation">自己正当化が過信と誤記憶を固定化する過程を説明。</p>
+      </div>
+      <div class="book-item">
+        <h4>Thinking in Bets</h4>
+        <p><strong>著者:</strong> アニー・デューク</p>
+        <p class="relation">自信のキャリブレーションと意思決定の検証法が実践的。</p>
+      </div>
+      <div class="book-item">
+        <h4>ファクトフルネス</h4>
+        <p><strong>著者:</strong> ハンス・ロスリング</p>
+        <p class="relation">原因の錯覚をデータとベースレートで正す視点を提供。</p>
+      </div>
+      <div class="book-item">
+        <h4>ヒューマンエラー</h4>
+        <p><strong>著者:</strong> ジェームズ・リーズン</p>
+        <p class="relation">錯覚を前提にした安全設計と多層防御の枠組みが役立つ。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
