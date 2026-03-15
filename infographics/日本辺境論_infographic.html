@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本の辺境論 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  font-style: italic;
+}
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: var(--text);
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+.action-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.action-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.diagram {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+.chapter-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+@media (max-width: 768px) {
+  header h1 { font-size: 1.5rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .tabs { flex-wrap: nowrap; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 日本の辺境論</h1>
+  <p>外部参照と翻訳による編集文明の構造</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      日本という社会・文化の持続的な特徴は何か／それは強みか弱みか
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      日本は「辺境」として外部の中央を参照し、翻訳・模倣・稽古を通じて資源を内在化する"編集文明"であり、それが強みと脆弱性の両方を生む
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      歴史的には中国→西欧と中央が遷移するたびに、権威を外部に置きつつ迅速に受容・再編してきた言語運用と制度設計の実績がある。学びは型の反復と共同体的認証に依存し、結果として雑種性と実務的有効性が高まるが、自己正統化が苦手で他者評価に左右されやすい
+    </div>
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      1) 外部参照性を自覚化し、単一中央ではなく複数の参照枢点を持つ<br>
+      2) 翻訳と編集の技法(比較・対照・用語の再定義)を鍛え、守破離の運用で実践の自由度を高める<br>
+      3) 権威の外部化を補うため、場(世間/空気)に依存しすぎない内在的基準(原則・目的関数)を設定する
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🗺️ 辺境</h3>
+        <ul>
+          <li>自己を外部の中央に対する周縁として規定</li>
+          <li>参照を通じて独自形をつくる位置性</li>
+          <li>一言要約：参照による自己規定</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>日本の文化・制度形成の基本構造を説明する核心概念。中央なしには自己定義できない構造が、翻訳・編集の必然性を生む
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🏛️ 中央</h3>
+        <ul>
+          <li>正統や規範を供給する想像的・地政学的中心</li>
+          <li>歴史的に変動する（中国→西欧）</li>
+          <li>一言要約：権威の供給源</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>辺境が参照する対象。中央の変動が日本の適応戦略を駆動し、翻訳国家としての性格を強化してきた
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔗 外部参照性</h3>
+        <ul>
+          <li>評価や規範の拠り所を自国内ではなく外部に置く傾向</li>
+          <li>権威を外部化する習慣</li>
+          <li>一言要約：他者基準志向</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>日本の強み（柔軟な適応）と弱み（自己正統化の困難）の両方を生む。グローバル時代に複数参照へ転換する鍵
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌐 翻訳国家</h3>
+        <ul>
+          <li>異文化の制度・概念を翻訳・編集して高速に内在化</li>
+          <li>統治・文化の作法として定着</li>
+          <li>一言要約：取り込みの達人</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>日本の競争力の源泉。創造の原初性ではなく、編集の巧みさが実務的革新を可能にする
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎭 模倣と稽古</h3>
+        <ul>
+          <li>正統とされる型を反復して身体化</li>
+          <li>熟達と創造を導く学習様式</li>
+          <li>一言要約：型の反復</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>型の反復が自由を可能にする逆説的メカニズム。実践知の形成と創造的逸脱の基盤
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🥋 守破離</h3>
+        <ul>
+          <li>型に従い(守)、批判的に拡張し(破)、自律的な型を生む(離)</li>
+          <li>熟達過程の三段階</li>
+          <li>一言要約：熟達の三段階</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>稽古の哲学を体系化。型の習得から創造への移行プロセスを明示し、実践的有効性を担保する
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👥 師弟・共同体学習</h3>
+        <ul>
+          <li>個人の才能より系譜や場のネットワークが学習の質を担保</li>
+          <li>共同体的認証が重要</li>
+          <li>一言要約：共同体が教える</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>日本の学習が個人主義的でなく関係性に埋め込まれる理由。質の維持と硬直化のトレードオフを生む
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎖️ 権威の外部化</h3>
+        <ul>
+          <li>「自ら正統」を名乗らず、第三者の承認で正当性を確保</li>
+          <li>他者評価への依存</li>
+          <li>一言要約：他者認証</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>辺境性の脆弱性を象徴。内在的基準の欠如が過剰適応や中央コンプレックスを招く
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🧬 ハイブリッド性</h3>
+        <ul>
+          <li>異質要素の折衷・混淆から新たな有用形を生成</li>
+          <li>雑種性が創造の源泉</li>
+          <li>一言要約：雑種の創造</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>辺境の強み。純粋性ではなく混淆が実務的革新と適応力を生む
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌫️ 世間と空気</h3>
+        <ul>
+          <li>法や原理よりも場の雰囲気・相互監視が行為規範</li>
+          <li>場の力学が支配的</li>
+          <li>一言要約：場の規範</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>日本の規範形成の特徴。短期的秩序維持と長期的硬直化の両面を持つ
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌍 普遍と特殊の媒介</h3>
+        <ul>
+          <li>自前の普遍主義を掲げず、翻訳・編集を通じて特殊を普遍へ媒介</li>
+          <li>翻訳的普遍の態度</li>
+          <li>一言要約：翻訳的普遍</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>グローバル化時代の戦略。複数中心時代に辺境の機動力が相対優位となる根拠
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <h3 style="color: var(--primary); margin-bottom: 1rem;">📊 概念間の関係性</h3>
+      <div class="flow-item">
+        <span>歴史的中央の変動</span>
+        <span class="flow-arrow">→</span>
+        <span>日本の辺境自己規定強化</span>
+        <span class="flow-arrow">→</span>
+        <span>外部参照性の定着</span>
+      </div>
+      <div class="flow-item">
+        <span>外部参照性</span>
+        <span class="flow-arrow">→</span>
+        <span>翻訳/編集に資源配分</span>
+        <span class="flow-arrow">→</span>
+        <span>模倣と稽古の高度化</span>
+        <span class="flow-arrow">→</span>
+        <span>ハイブリッド性の創出</span>
+      </div>
+      <div class="flow-item">
+        <span>模倣と稽古(型)</span>
+        <span class="flow-arrow">→</span>
+        <span>守破離</span>
+        <span class="flow-arrow">→</span>
+        <span>身体知の形成</span>
+        <span class="flow-arrow">→</span>
+        <span>実務的革新</span>
+      </div>
+      <div class="flow-item">
+        <span>権威の外部化</span>
+        <span class="flow-arrow">→</span>
+        <span>第三者認証依存</span>
+        <span class="flow-arrow">→</span>
+        <span>中央コンプレックス/過剰適応のリスク</span>
+      </div>
+      <div class="flow-item">
+        <span>世間と空気の強さ</span>
+        <span class="flow-arrow">→</span>
+        <span>内在的原則の希薄化</span>
+        <span class="flow-arrow">→</span>
+        <span>場による逸脱抑制(短期)と硬直(長期)</span>
+      </div>
+      <div class="flow-item">
+        <span>グローバル化(中央の多極化)</span>
+        <span class="flow-arrow">→</span>
+        <span>辺境の機動力が相対優位</span>
+        <span class="flow-arrow">→</span>
+        <span>翻訳的普遍の価値上昇</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>第1章：問題提起</h3>
+      <ul>
+        <li>日本はなぜ"自前の正統"ではなく外部の中央を参照して自己を定義するのか</li>
+        <li>辺境性という構造的特徴の提示</li>
+        <li>強みと弱みの両面性を問う</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>本書全体の問いを設定し、読者に日本の自己認識の特異性を意識させる。以降の分析の出発点
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第2章：歴史的観察</h3>
+      <ul>
+        <li>中国→西欧へと中央が遷移する局面ごとの対応を整理</li>
+        <li>制度・語彙の輸入と変形の事例分析</li>
+        <li>外部参照性の歴史的定着過程</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>辺境性が一時的現象ではなく構造的特徴であることを実証。翻訳国家としての連続性を示す
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第3章：言語と翻訳</h3>
+      <ul>
+        <li>日本語運用と翻訳/編集のメカニズム分析</li>
+        <li>受容の速さと適応の巧みさの源泉</li>
+        <li>翻訳国家としての言語戦略</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>辺境性が言語レベルでどう機能するかを解明。翻訳・編集が文化的競争力の核心であることを論証
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第4章：学習様式</h3>
+      <ul>
+        <li>稽古・型・守破離・師弟系譜の分析</li>
+        <li>身体知の枠組みが実践的有効性と創造を担保する仕組み</li>
+        <li>型の反復が自由を可能にする逆説</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>辺境の学習が個人主義的でなく共同体的である理由を説明。実務的革新の条件を明示
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第5章：社会規範</h3>
+      <ul>
+        <li>世間/空気と権威外部化が規範形成に与える影響</li>
+        <li>利点（秩序維持）と脆弱性（硬直化・他者依存）の検討</li>
+        <li>内在的基準の希薄化問題</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>辺境性が社会規範レベルでもたらす両義性を分析。権威外部化の課題を浮き彫りにする
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第6章：現代的示唆</h3>
+      <ul>
+        <li>中央の多極化が進む世界での辺境性の資源化戦略</li>
+        <li>複数参照・翻訳的普遍・内在基準の補強</li>
+        <li>グローバル競争力と倫理の両立</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>辺境性を否定せず戦略的に運用する方法を提案。過去の分析を未来の行動指針へ転換
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>結語：辺境の倫理と技法</h3>
+      <ul>
+        <li>辺境であることを否定せず統御する意義</li>
+        <li>倫理と技法としての辺境性の再確認</li>
+        <li>自覚的運用による競争力と倫理の両立</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>本書の結論。辺境性を宿命ではなく選択可能な戦略として位置づけ、読者に実践を促す
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="card">
+      <h3>🎌 具体例1：明治維新の翻訳戦略</h3>
+      <ul>
+        <li><strong>背景：</strong>西欧の制度・概念を短期間で導入する必要</li>
+        <li><strong>実践：</strong>「society→社会」「right→権利」など造語による翻訳</li>
+        <li><strong>結果：</strong>西欧概念を日本語に内在化し、東アジア全体の近代化語彙を供給</li>
+        <li><strong>示唆：</strong>翻訳が単なる受容でなく創造的編集であることを示す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>辺境の翻訳力が地域的影響力を生む。外部参照が受動的でなく能動的資源化であることの証左
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🥋 具体例2：武道における守破離</h3>
+      <ul>
+        <li><strong>背景：</strong>型の反復が創造を阻害するという西欧的批判</li>
+        <li><strong>実践：</strong>守（型の忠実な模倣）→破（型の批判的拡張）→離（独自の型創出）</li>
+        <li><strong>結果：</strong>型の習得が自由な応用と創造の基盤となる</li>
+        <li><strong>示唆：</strong>制約が創造を可能にする逆説的メカニズム</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>稽古の哲学が実践知形成の普遍的モデルとなりうる。辺境の学習様式が持つ創造的潜在力を具体化
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏭 具体例3：戦後日本の産業技術導入</h3>
+      <ul>
+        <li><strong>背景：</strong>敗戦後の技術的後進性と経済復興の必要</li>
+        <li><strong>実践：</strong>欧米技術のライセンス導入→改良・小型化・品質向上</li>
+        <li><strong>結果：</strong>「メイド・イン・ジャパン」が高品質の代名詞に</li>
+        <li><strong>示唆：</strong>模倣から改良への移行が競争力を生む</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>翻訳国家の産業版。外部参照と編集の巧みさが経済的成功をもたらした実例
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📖 具体例4：漢字の受容と仮名の創造</h3>
+      <ul>
+        <li><strong>背景：</strong>中国文明の圧倒的影響下での文字導入</li>
+        <li><strong>実践：</strong>漢字を音・訓で運用しつつ、仮名（ひらがな・カタカナ）を創出</li>
+        <li><strong>結果：</strong>漢字仮名交じり文という独自の文字体系確立</li>
+        <li><strong>示唆：</strong>外来要素と自生要素のハイブリッド化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>辺境が外部資源を完全模倣せず、自己の必要に応じて変形・創造する能力を持つことの証明
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>「日本は恒常的な辺境として、常に中央を参照して自己を定義してきた。」</p>
+      <small><strong>なぜ重要か：</strong>本書の中心仮説であり、以降の翻訳・学習・規範分析の基盤だから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「日本の強さは創造の原初性ではなく、翻訳と編集の巧みさにある。」</p>
+      <small><strong>なぜ重要か：</strong>日本の競争力を"編集文明"として再定義し、誇りと課題を同時に示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「型の反復がかえって自由を可能にする。」</p>
+      <small><strong>なぜ重要か：</strong>稽古の哲学を通じ、実践的創造が生まれる条件を説明する鍵概念だから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「普遍への直行路を持たないことが、日本の加速装置になりうる。」</p>
+      <small><strong>なぜ重要か：</strong>辺境性の弱点を資源へと反転させる戦略的視点を提供する。</small>
+    </div>
+
+    <div style="background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1)); padding: 1.5rem; border-radius: 1rem; margin-top: 1.5rem;">
+      <h3 style="color: var(--primary); margin-bottom: 1rem;">💬 引用の共通テーマ</h3>
+      <p style="font-size: 0.95rem; line-height: 1.7;">
+        これらの引用は、辺境性を否定的に捉えるのではなく、<strong>戦略的資源として再定義</strong>する視点を共有しています。
+        外部参照・翻訳・型の反復といった一見受動的な要素が、実は<strong>能動的な創造と適応の源泉</strong>であることを示唆しています。
+      </p>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>✍️ アクション1：外来概念を自分の言葉で定義する</h4>
+      <p><span class="badge">15分</span></p>
+      <p><strong>目的：</strong>翻訳・編集の実践を通じて概念の内在化を体験する</p>
+      <p><strong>方法：</strong>最近触れた外来概念（例：サステナビリティ、レジリエンス）を、辞書を見ずに自分の言葉で3行で定義してみる</p>
+      <p><strong>期待効果：</strong>翻訳国家の基本動作を体感し、概念理解が深まる。自分の文脈で再定義する力が養われる</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🔄 アクション2：英日で短文を往復翻訳する</h4>
+      <p><span class="badge">20分</span></p>
+      <p><strong>目的：</strong>翻訳の過程で何が失われ、何が加わるかを観察する</p>
+      <p><strong>方法：</strong>好きな英文（3〜5文）を日本語に訳し、それを再度英語に戻す。元の英文と比較して差異を分析する</p>
+      <p><strong>期待効果：</strong>言語間の非対称性と編集の必然性を実感。翻訳が創造的行為であることを体験的に理解</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🎯 アクション3：手元の型作業を15分反復する</h4>
+      <p><span class="badge">15分</span></p>
+      <p><strong>目的：</strong>守破離の「守」段階を体験し、型の反復が身体知を形成する過程を観察する</p>
+      <p><strong>方法：</strong>日常の作業（文章の型、プレゼンの構成、料理の手順など）を意識的に同じ型で3回繰り返す。変化を記録する</p>
+      <p><strong>期待効果：</strong>型の習得が自由の基盤となる感覚を得る。稽古の哲学を実践レベルで理解</p>
+    </div>
+
+    <div style="background: white; padding: 1.5rem; border-radius: 1rem; margin-top: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+      <h3 style="color: var(--secondary); margin-bottom: 1rem;">🎁 ボーナスアクション</h3>
+      <ul style="list-style: none; padding: 0;">
+        <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;">
+          <span style="position: absolute; left: 0; color: var(--accent);">📝</span>
+          <strong>複数の参照点を設定：</strong>関心テーマについて、異なる文化圏の3つの視点（例：日本・欧米・アジア）から情報を集め、比較表を作る（30分）
+        </li>
+        <li style="margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative;">
+          <span style="position: absolute; left: 0; color: var(--accent);">🧭</span>
+          <strong>内在的基準の明文化：</strong>自分の仕事や学習における「譲れない原則」を3つ書き出し、それが外部評価に左右されないか検証する（20分）
+        </li>
+        <li style="padding-left: 1.5rem; position: relative;">
+          <span style="position: absolute; left: 0; color: var(--accent);">🔍</span>
+          <strong>世間と空気の観察：</strong>今日の会議や会話で「空気」が意思決定に影響した場面を1つ記録し、代替的な判断基準を考える（15分）
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
