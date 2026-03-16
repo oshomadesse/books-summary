@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extreme Ownership - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #1e3a8a, セカンダリー #3b82f6, アクセント #f59e0b -->
+<style>
+:root {
+  --primary: #1e3a8a;
+  --secondary: #3b82f6;
+  --accent: #f59e0b;
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --text: #1e293b;
+  --text-light: #64748b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+header .subtitle {
+  font-size: 1rem;
+  opacity: 0.95;
+  font-weight: 500;
+}
+
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.summary-block h2 {
+  font-size: 1.25rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+}
+
+.summary-item strong {
+  color: var(--primary);
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--secondary);
+  color: var(--secondary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  background: var(--secondary);
+  color: white;
+}
+
+.tab-btn.active {
+  background: var(--secondary);
+  color: white;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  font-size: 0.9rem;
+}
+
+.card ul li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.card ul li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--accent);
+}
+
+.chapter-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.chapter-card .chapter-meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.75rem;
+  font-style: italic;
+}
+
+.chapter-card ul {
+  list-style: none;
+  font-size: 0.9rem;
+}
+
+.chapter-card ul li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.chapter-card ul li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.chapter-card .reason {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #eff6ff;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--primary);
+}
+
+.chapter-card .reason strong {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.example-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 1rem;
+  border-top: 3px solid var(--accent);
+}
+
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.example-card .reason {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #fef3c7;
+  border-radius: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.example-card .reason strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--primary);
+}
+
+.quote-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary);
+  position: relative;
+}
+
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--secondary);
+  opacity: 0.2;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  font-family: Georgia, serif;
+}
+
+.quote-card .quote-text {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  padding-left: 1rem;
+}
+
+.quote-card .quote-why {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  padding-left: 1rem;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--accent) 0%, #fb923c 100%);
+  color: white;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 1rem;
+}
+
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.95;
+}
+
+.action-card .action-meta {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-top: 0.5rem;
+}
+
+.visual-section {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 1.5rem;
+}
+
+.visual-section h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.relationship-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.flow-item {
+  background: #eff6ff;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  border-left: 3px solid var(--secondary);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.stat-box {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.stat-box .stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.stat-box .stat-label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.book-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.book-item {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--accent);
+}
+
+.book-item h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.book-item .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.book-item .relation {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 Extreme Ownership</h1>
+  <div class="subtitle">リーダーシップの極意 - 全責任主義で勝つ</div>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 核心メッセージ</h2>
+  <p style="font-size:1rem;font-weight:600;margin-bottom:1rem;">成果も失敗も徹底的に自分事化し、単純・優先・分権で遂行せよ。リーダーの当事者意識が勝敗を決める。</p>
+  
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>不確実で複雑な環境でもチームが安定して勝つ方法は何か？</p>
+  </div>
+  
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    <p>リーダーが極限まで当事者意識を高めて全責任を引き受け、目的を信じて伝播し、戦闘の法則（カバー&ムーブ／シンプル／優先順位と実行／分権指揮）を徹底運用すること。</p>
+  </div>
+  
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>SEALの実戦・ビジネス双方の事例で、同じ資源でもリーダー行動（所有・単純化・優先集中・分権連携）の差が成果を決定づけた。責任転嫁は学習を止め、所有は迅速な是正と信頼を生む。単純化は認知負荷と誤解を減らし、分権は現場の機動性を最大化する。</p>
+  </div>
+  
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>1) 失敗を自責で回収し是正策を提示、2) ミッションの意図を自ら腹落ちさせて関係者へ繰り返し説明、3) 1ページ作戦（目的→重要任務→調整事項→指標）を作る、4) 最優先1件へ資源集中し完了後に次へ、5) 意図と権限を任務単位で委譲し上下左右の連携を維持、6) 不確実でも十分情報で決断し前進、7) 規律的な標準化で再現性と自由度を確保する。</p>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist">
+  <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true">主要概念</button>
+  <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false">各章の要約</button>
+  <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false">具体例</button>
+  <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false">重要な引用</button>
+  <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false">今日のアクション</button>
+  <button class="tab-btn" data-tab="relations" role="tab" aria-selected="false">概念の関係性</button>
+  <button class="tab-btn" data-tab="books" role="tab" aria-selected="false">関連書籍</button>
+</nav>
+
+<div id="concepts" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🎯 Extreme Ownership</h3>
+      <ul>
+        <li><strong>定義:</strong> 成果も失敗も自分の責任として引き受け、原因と是正策を自ら提示する姿勢</li>
+        <li><strong>一言:</strong> 全責任主義</li>
+        <li><strong>理由:</strong> 責任転嫁は学習を止め、所有は迅速な是正と信頼を生む</li>
+        <li>周囲を責めず状況を是正する</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>👥 No Bad Teams, Only Bad Leaders</h3>
+      <ul>
+        <li><strong>定義:</strong> パフォーマンス差は個々の能力よりリーダーの基準設定・訓練・信頼で説明できる</li>
+        <li><strong>一言:</strong> チームは鏡</li>
+        <li><strong>理由:</strong> 成果責任の重心を個人非難からリーダー行動へ移し、改善の起点を明確にする</li>
+        <li>リーダーが変われば結果が変わる</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>💡 Believe</h3>
+      <ul>
+        <li><strong>定義:</strong> 任務の目的と作戦を自ら深く理解・確信し、その信念を言語化して組織に伝播</li>
+        <li><strong>一言:</strong> 腹落ち</li>
+        <li><strong>理由:</strong> 意図の共有度が自律判断の質を決定する</li>
+        <li>信じなければ伝わらない</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>🧘 Check the Ego</h3>
+      <ul>
+        <li><strong>定義:</strong> 自我を抑え、事実とミッションを最優先にして学習・協働を阻害しない態度</li>
+        <li><strong>一言:</strong> 自我抑制</li>
+        <li><strong>理由:</strong> 自我が学習と信頼を阻害し、チーム機能を低下させる</li>
+        <li>謙虚さが成長を加速する</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>🤝 Cover and Move</h3>
+      <ul>
+        <li><strong>定義:</strong> 相互に援護し合いながら前進する連携の原則</li>
+        <li><strong>一言:</strong> 相互支援</li>
+        <li><strong>理由:</strong> サイロを破る相互支援がミッション成功確率を飛躍的に高める</li>
+        <li>部門横断で補完し合う</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>✨ Simple</h3>
+      <ul>
+        <li><strong>定義:</strong> 計画・伝達・手順を理解容易な水準まで単純化し、誰でも即実行できる状態にする</li>
+        <li><strong>一言:</strong> 単純明快</li>
+        <li><strong>理由:</strong> 単純化は認知負荷と誤解を減らし、実行速度を向上させる</li>
+        <li>複雑さは敵</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>🎯 Prioritize and Execute</h3>
+      <ul>
+        <li><strong>定義:</strong> 混乱時ほど最重要課題を特定し、順序立てて一つずつ完遂する運用</li>
+        <li><strong>一言:</strong> 一点突破</li>
+        <li><strong>理由:</strong> 認知過負荷を回避し、致命タスクを確実に完遂する</li>
+        <li>同時多発を避ける</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>🌐 Decentralized Command</h3>
+      <ul>
+        <li><strong>定義:</strong> 上位は意図と境界を示し、現場が自律判断で遂行する</li>
+        <li><strong>一言:</strong> 自律分権</li>
+        <li><strong>理由:</strong> 現場の機動性を最大化し、テンポ優位を確保する</li>
+        <li>意図の共有が前提</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>📋 Plan</h3>
+      <ul>
+        <li><strong>定義:</strong> 目的・意図・役割・相互調整・リスク対策・指標を織り込む作戦設計とリハーサル</li>
+        <li><strong>一言:</strong> 作戦設計</li>
+        <li><strong>理由:</strong> 計画の質が実行の質を決定する</li>
+        <li>1ページ作戦で明確化</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>⬆️⬇️ Leading Up and Down</h3>
+      <ul>
+        <li><strong>定義:</strong> 上司にも部下にも現実と意図を翻訳し、資源・優先度の整合を取る</li>
+        <li><strong>一言:</strong> 上下整合</li>
+        <li><strong>理由:</strong> ボトルネックを解消し、資源配分を最適化する</li>
+        <li>双方向のコミュニケーション</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>⚡ Decisiveness amid Uncertainty</h3>
+      <ul>
+        <li><strong>定義:</strong> 完全情報を待たず、十分情報で決断し前進する意思決定テンポ</li>
+        <li><strong>一言:</strong> 不確実決断</li>
+        <li><strong>理由:</strong> テンポ優位が機会獲得につながる</li>
+        <li>70%で決断する</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>🔒 Discipline Equals Freedom</h3>
+      <ul>
+        <li><strong>定義:</strong> 規律ある標準化と訓練の積み上げが、応用力と創造の自由度を生む</li>
+        <li><strong>一言:</strong> 規律は自由</li>
+        <li><strong>理由:</strong> 標準化が余力と適応力を生み、創造的な自由度を保証する</li>
+        <li>反復が創造を可能にする</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="chapters" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>Part I: 内なる戦い（個の規律と責任）</h3>
+    <div class="chapter-meta">Extreme Ownership／No Bad Teams／Believe／Check the Ego</div>
+    <ul>
+      <li>リーダーの内面（責任・信念・自我）を整える</li>
+      <li>外部要因に依存しない統率基盤を構築</li>
+      <li>自責思考が学習と是正を加速</li>
+      <li>信念の伝播が組織の方向性を統一</li>
+      <li>自我抑制が協働と成長を促進</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの章が必要か）:</strong>
+      リーダー自身の内面が整わなければ、どんな戦術も機能しない。責任・信念・謙虚さが全ての土台となる。
+    </div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>Part II: 戦闘の法則（チーム運用原理）</h3>
+    <div class="chapter-meta">Cover and Move／Simple／Prioritize and Execute／Decentralized Command</div>
+    <ul>
+      <li>不確実な現場で機能する4原則を提示</li>
+      <li>連携・単純化・優先集中・分権で実行の質と速度を両立</li>
+      <li>相互支援でサイロを破壊</li>
+      <li>単純化で誤解と遅延を削減</li>
+      <li>優先順位で認知過負荷を回避</li>
+      <li>分権で現場の機動性を最大化</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの章が必要か）:</strong>
+      内面が整ったリーダーが実際にチームを動かすための具体的な運用原理。これらの法則が実行力を決定する。
+    </div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>Part III: 勝利の持続（制度化とバランス）</h3>
+    <div class="chapter-meta">Plan／Leading Up and Down the Chain／Decisiveness amid Uncertainty／Discipline Equals Freedom</div>
+    <ul>
+      <li>計画・上下整合・不確実決断・規律を制度化</li>
+      <li>日常運用へ落とし込んで勝ち続ける組織を作る</li>
+      <li>1ページ作戦で計画を明確化</li>
+      <li>上下整合で資源配分を最適化</li>
+      <li>不確実下でもテンポを維持</li>
+      <li>規律が創造の自由を生む</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの章が必要か）:</strong>
+      一時的な成功ではなく、持続的な勝利を実現するための制度化とバランス。組織文化として定着させる方法論。
+    </div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>各章の構成パターン</h3>
+    <div class="chapter-meta">戦闘事例 → 原則の抽出 → ビジネス事例</div>
+    <ul>
+      <li>極限環境（イラク戦争）の実戦教訓</li>
+      <li>普遍原理への翻訳と抽象化</li>
+      <li>企業現場での適用例で再検証</li>
+      <li>軍事とビジネスの共通性を実証</li>
+      <li>理論と実践の往復で説得力を強化</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由（なぜこの構成か）:</strong>
+      極限環境で証明された原理は普遍性が高く、ビジネス事例で実用性を示すことで読者の納得と実践を促す。
+    </div>
+  </div>
+</div>
+
+<div id="examples" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🎖️ 例1: ボートレース訓練での逆転</h3>
+    <p><strong>背景:</strong> 同じ資源・環境で、あるボートチームは常に最下位、別チームは常に優勝。メンバーを入れ替えても結果は変わらなかった。</p>
+    <p><strong>介入:</strong> リーダーを交換した瞬間、最下位チームが優勝し、優勝チームが最下位に転落。</p>
+    <p><strong>示唆:</strong> パフォーマンス差は個人能力ではなくリーダーの基準設定・訓練・信頼構築で決まる。</p>
+    <div class="reason">
+      <strong>💡 理由（この例が示すこと）:</strong>
+      「No Bad Teams, Only Bad Leaders」の実証。リーダー行動が成果の決定要因であることを劇的に示す。
+    </div>
+  </div>
+  
+  <div class="example-card">
+    <h3>⚔️ 例2: ラマディでの同士討ち事故</h3>
+    <p><strong>背景:</strong> 複雑な市街戦で味方同士が誤射し、死傷者が発生。混乱と責任の押し付け合いが始まった。</p>
+    <p><strong>介入:</strong> 著者（Jocko Willink）が全責任を引き受け、計画・伝達・調整の不備を自ら認めて是正策を提示。</p>
+    <p><strong>示唆:</strong> リーダーが責任を引き受けることで、チームは学習モードに入り、迅速に改善が進む。</p>
+    <div class="reason">
+      <strong>💡 理由（この例が示すこと）:</strong>
+      Extreme Ownershipの核心。責任転嫁は学習を止め、所有は信頼と是正を加速する。
+    </div>
+  </div>
+  
+  <div class="example-card">
+    <h3>🏢 例3: 企業の部門間対立解消</h3>
+    <p><strong>背景:</strong> ある企業で営業部門と製造部門が互いを非難し、プロジェクトが停滞。双方が「相手が悪い」と主張。</p>
+    <p><strong>介入:</strong> 著者が「Cover and Move」原則を導入。各部門が相手の目的を理解し、相互支援の計画を立案。</p>
+    <p><strong>示唆:</strong> サイロを破る相互支援の設計が、組織全体の成功確率を飛躍的に高める。</p>
+    <div class="reason">
+      <strong>💡 理由（この例が示すこと）:</strong>
+      軍事原理のビジネス適用。部門横断連携が競争優位の源泉となることを実証。
+    </div>
+  </div>
+  
+  <div class="example-card">
+    <h3>📊 例4: 複雑な作戦計画の失敗</h3>
+    <p><strong>背景:</strong> 詳細で完璧な作戦計画を作成したが、現場で誰も理解できず実行が混乱。</p>
+    <p><strong>介入:</strong> 計画を1ページに単純化し、誰でも5分で理解できる水準に再設計。</p>
+    <p><strong>示唆:</strong> 単純化は高度な思考の産物であり、実行再現性を劇的に高める。</p>
+    <div class="reason">
+      <strong>💡 理由（この例が示すこと）:</strong>
+      「Simple, not easy」の実践。複雑さは敵であり、単純化が実行力を決定する。
+    </div>
+  </div>
+</div>
+
+<div id="quotes" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <div class="quote-text">"There are no bad teams, only bad leaders."</div>
+    <div class="quote-why"><strong>なぜ重要か:</strong> 成果責任の重心を個人非難からリーダー行動へ移し、改善の起点を明確にする。</div>
+  </div>
+  
+  <div class="quote-card">
+    <div class="quote-text">"Prioritize and execute."</div>
+    <div class="quote-why"><strong>なぜ重要か:</strong> 混乱時に意思決定麻痺を避け、致命タスクから確実に突破させる処方箋だから。</div>
+  </div>
+  
+  <div class="quote-card">
+    <div class="quote-text">"Cover and move."</div>
+    <div class="quote-why"><strong>なぜ重要か:</strong> サイロを破る相互支援がミッション成功確率を飛躍的に高める中核原理だから。</div>
+  </div>
+  
+  <div class="quote-card">
+    <div class="quote-text">"Simple, not easy."</div>
+    <div class="quote-why"><strong>なぜ重要か:</strong> 単純化は高度な思考の産物であり、実行再現性を劇的に高める要件だから。</div>
+  </div>
+  
+  <div class="quote-card">
+    <div class="quote-text">規律が自由をつくる（Discipline equals freedom）<span style="font-size:0.8rem;opacity:0.7;"> [要旨]</span></div>
+    <div class="quote-why"><strong>なぜ重要か:</strong> 標準化と訓練の積み上げが余力と適応力を生み、創造的な自由度を保証する。</div>
+  </div>
+</div>
+
+<div id="actions" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>✅ アクション1: チームの最優先1件を紙に書く</h3>
+    <p>今週チームが達成すべき最も重要な1つのタスクを特定し、A4用紙に大きく書き出す。</p>
+    <div class="action-meta">
+      <strong>⏱️ 所要時間:</strong> 15分<br>
+      <strong>🎯 目的:</strong> 優先順位の明確化と認知負荷の削減<br>
+      <strong>📈 期待効果:</strong> チーム全員が同じ方向を向き、リソースが集中して完遂率が向上する
+    </div>
+  </div>
+  
+  <div class="action-card">
+    <h3>✅ アクション2: 関係部署3名に目的を共有する</h3>
+    <p>現在進行中のプロジェクトの「なぜ（目的）」を、関係する他部署の3名に直接説明する。</p>
+    <div class="action-meta">
+      <strong>⏱️ 所要時間:</strong> 30分（1人10分×3名）<br>
+      <strong>🎯 目的:</strong> 意図の伝播と部門横断連携の強化<br>
+      <strong>📈 期待効果:</strong> 相互理解が深まり、Cover and Moveの土台ができる
+    </div>
+  </div>
+  
+  <div class="action-card">
+    <h3>✅ アクション3: 今週の障害の責任と対策を記す</h3>
+    <p>今週発生した問題を1つ選び、「自分の責任」として原因と是正策を3行で書く。</p>
+    <div class="action-meta">
+      <strong>⏱️ 所要時間:</strong> 20分<br>
+      <strong>🎯 目的:</strong> Extreme Ownershipの実践と学習サイクルの起動<br>
+      <strong>📈 期待効果:</strong> 責任転嫁の習慣が消え、迅速な改善と信頼構築が始まる
+    </div>
+  </div>
+  
+  <div class="action-card">
+    <h3>✅ アクション4: 1ページ作戦を作成する</h3>
+    <p>次の会議やプロジェクトについて、目的・重要任務・調整事項・指標を1ページにまとめる。</p>
+    <div class="action-meta">
+      <strong>⏱️ 所要時間:</strong> 25分<br>
+      <strong>🎯 目的:</strong> 計画の単純化と実行可能性の向上<br>
+      <strong>📈 期待効果:</strong> 関係者全員が即座に理解でき、実行速度が上がる
+    </div>
+  </div>
+</div>
+
+<div id="relations" class="tab-content" role="tabpanel">
+  <div class="visual-section">
+    <h3>🔗 概念間の関係性と因果関係</h3>
+    <div class="relationship-flow">
+      <div class="flow-item">
+        <strong>Extreme Ownership</strong> → 自我抑制（Check the Ego）→ 学習と信頼が加速
+      </div>
+      <div class="flow-item">
+        <strong>Believe（腹落ち）</strong> → 意図の共有度向上 → 自律判断の質向上
+      </div>
+      <div class="flow-item">
+        <strong>Simple（単純化）</strong> → 誤解・遅延・エラー減少 → 実行速度向上
+      </div>
+      <div class="flow-item">
+        <strong>Prioritize and Execute</strong> → 認知過負荷の回避 → 致命タスクを確実に完遂
+      </div>
+      <div class="flow-item">
+        <strong>Decentralized Command</strong> ⇄ Simple & Believe に依存（意図が明確・理解容易であるほど分権が機能）
+      </div>
+      <div class="flow-item">
+        <strong>Cover and Move</strong> ←→ 部門横断連携の設計（Plan）により相互支援が成立
+      </div>
+      <div class="flow-item">
+        <strong>Leading Up/Down</strong> → 資源配分と優先度の整合 → ボトルネック解消
+      </div>
+      <div class="flow-item">
+        <strong>Decisiveness amid Uncertainty</strong> → テンポ優位 → 機会獲得
+      </div>
+      <div class="flow-item">
+        <strong>Discipline Equals Freedom</strong> → 標準化・反復 → 余力と創造の自由を確保
+      </div>
+    </div>
+  </div>
+  
+  <div class="visual-section">
+    <h3>📊 4つの戦闘の法則</h3>
+    <svg viewBox="0 0 400 300" style="width:100%;max-width:500px;margin:1rem auto;display:block;">
+      <rect x="50" y="20" width="140" height="60" fill="#3b82f6" rx="5"/>
+      <text x="120" y="55" fill="white" font-size="14" text-anchor="middle" font-weight="bold">Cover & Move</text>
+      
+      <rect x="210" y="20" width="140" height="60" fill="#3b82f6" rx="5"/>
+      <text x="280" y="55" fill="white" font-size="14" text-anchor="middle" font-weight="bold">Simple</text>
+      
+      <rect x="50" y="100" width="140" height="60" fill="#3b82f6" rx="5"/>
+      <text x="120" y="125" fill="white" font-size="12" text-anchor="middle" font-weight="bold">Prioritize &</text>
+      <text x="120" y="145" fill="white" font-size="12" text-anchor="middle" font-weight="bold">Execute</text>
+      
+      <rect x="210" y="100" width="140" height="60" fill="#3b82f6" rx="5"/>
+      <text x="280" y="125" fill="white" font-size="12" text-anchor="middle" font-weight="bold">Decentralized</text>
+      <text x="280" y="145" fill="white" font-size="12" text-anchor="middle" font-weight="bold">Command</text>
+      
+      <circle cx="200" cy="220" r="50" fill="#f59e0b"/>
+      <text x="200" y="215" fill="white" font-size="12" text-anchor="middle" font-weight="bold">Extreme</text>
+      <text x="200" y="232" fill="white" font-size="12" text-anchor="middle" font-weight="bold">Ownership</text>
+      
+      <line x1="120" y1="80" x2="170" y2="180" stroke="#1e3a8a" stroke-width="2"/>
+      <line x1="280" y1="80" x2="230" y2="180" stroke="#1e3a8a" stroke-width="2"/>
+      <line x1="120" y1="160" x2="170" y2="200" stroke="#1e3a8a" stroke-width="2"/>
+      <line x1="280" y1="160" x2="230" y2="200" stroke="#1e3a8a" stroke-width="2"/>
+    </svg>
+    <p style="text-align:center;font-size:0.85rem;color:var(--text-light);margin-top:0.5rem;">
+      4つの法則はExtreme Ownershipを土台に相互に連携して機能する
+    </p>
+  </div>
+  
+  <div class="visual-section">
+    <h3>📈 リーダーシップの3層構造</h3>
+    <div class="stat-grid">
+      <div class="stat-box">
+        <span class="stat-number">1</span>
+        <span class="stat-label">内なる戦い<br>（責任・信念・謙虚）</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">2</span>
+        <span class="stat-label">戦闘の法則<br>（連携・単純・優先・分権）</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">3</span>
+        <span class="stat-label">勝利の持続<br>（計画・整合・決断・規律）</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="books" class="tab-content" role="tabpanel">
+  <div class="book-list">
+    <div class="book-item">
+      <h4>📚 The Dichotomy of Leadership</h4>
+      <div class="author">著者: Jocko Willink, Leif Babin</div>
+      <div class="relation">本書原則のバランス点（厳しさと寛容、攻勢と慎重など）を深化。リーダーシップの両極をどう統合するかを解説。</div>
+    </div>
+    
+    <div class="book-item">
+      <h4>📚 Turn the Ship Around!</h4>
+      <div class="author">著者: L. David Marquet</div>
+      <div class="relation">意図ベースの分権指揮と現場自律を海軍事例で体系化。Decentralized Commandの実践例として最適。</div>
+    </div>
+    
+    <div class="book-item">
+      <h4>📚 Team of Teams</h4>
+      <div class="author">著者: Stanley McChrystal</div>
+      <div class="relation">複雑環境でのネットワーク型連携（Cover & Move, 分権）の全社適用。組織構造の変革まで踏み込む。</div>
+    </div>
+    
+    <div class="book-item">
+      <h4>📚 Good to Great</h4>
+      <div class="author">著者: Jim Collins</div>
+      <div class="relation">規律の文化とレベル5リーダーが「規律は自由」を補強。長期的な卓越性の構築方法を提示。</div>
+    </div>
+    
+    <div class="book-item">
+      <h4>📚 The Mission, the Men, and Me</h4>
+      <div class="author">著者: Pete Blaber</div>
+      <div class="relation">不確実下の意思決定と意図の明確化が本書のHowを補完。特殊部隊の思考法を詳述。</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
