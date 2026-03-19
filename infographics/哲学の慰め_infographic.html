@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>哲学の慰め - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+.chapter-card h4 {
+  font-size: 0.95rem;
+  color: var(--secondary);
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+.quote-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--accent);
+  opacity: 0.3;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+.quote-text {
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  padding-left: 1rem;
+  color: var(--text);
+}
+.quote-why {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 8px rgba(102,126,234,0.3);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-flow {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+@media (max-width: 600px) {
+  .concept-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.metric-box .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+}
+.metric-box .label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 哲学の慰め</h1>
+  <p>日常の苦しみを和らげる6人の哲学者の実践的知恵</p>
+</header>
+
+<div class="summary-block">
+  <h2>📌 要約 = 問い × 答え × 根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    日常の苦しみはどう和らげられるか？
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    六人の哲学者の思考を用い、判断と欲望を訓練し直す。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    苦しみの多くは外部事象ではなく誤った評価や期待から生じるため、思考の再教育が有効。
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    ソクラテスで不人気を恐れず理由を吟味し、エピクロスで快の再設計と友の価値を確認し、セネカで感情を予期・再評価し、モンテーニュで不完全さと和解し、ショーペンハウアーで恋愛の神話を解体し、ニーチェで困難を成長の条件として引き受ける。
+  </div>
+</div>
+
+<div class="metric-box" style="margin: 1rem;">
+  <span class="number">6</span>
+  <span class="label">哲学者 × 6つの人生問題</span>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="concept-grid">
+    <div class="card">
+      <h3>🛡️ 慰め（コンソレーション）</h3>
+      <ul>
+        <li>苦を和らげ、生の耐え方を教える哲学の効用</li>
+        <li>理不尽な出来事に対し意味づけを更新する</li>
+        <li>一言要約: <span class="badge">支え</span></li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 哲学が抽象理論ではなく実生活の痛みに応答する道具であることを示すため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💬 ソクラテス的問答法</h3>
+      <ul>
+        <li>信念を理由で追及し、矛盾を露わにする対話術</li>
+        <li>多数意見と真理を切り分ける</li>
+        <li>一言要約: <span class="badge">批判</span></li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 同調圧力から思考を解放し、独立した判断力を育てるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>😰 不人気の恐れ</h3>
+      <ul>
+        <li>大多数からの拒否・嘲笑への不安</li>
+        <li>推論より迎合を選ばせる心理的圧力</li>
+        <li>一言要約: <span class="badge">迎合圧</span></li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 社会的承認欲求が理性的判断を妨げる構造を理解するため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🍃 エピクロス的快楽</h3>
+      <ul>
+        <li>欲望を自然・必要/自然・不必要/不自然・不必要に分類</li>
+        <li>安価で確実な満足（友・自由・思索）を重視</li>
+        <li>一言要約: <span class="badge">足るを知る</span></li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 金銭不安を和らげ、満足の設計指針を与えるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧘 ストア派（セネカ）の怒り観</h3>
+      <ul>
+        <li>怒りは期待と現実の落差から生じる</li>
+        <li>予期を調整し内的統御を鍛えることで鎮まる</li>
+        <li>一言要約: <span class="badge">予期調整</span></li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 感情は訓練で変えられるという可塑性を示すため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🤝 モンテーニュの自己受容</h3>
+      <ul>
+        <li>人間の弱さと多様さを観察</li>
+        <li>欠点と同居する技術を養う</li>
+        <li>一言要約: <span class="badge">寛容</span></li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 自責と羞恥を和らげ、自己受容を促すため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💔 ショーペンハウアーの恋愛論</h3>
+      <ul>
+        <li>恋は種の存続を図る意志の策略</li>
+        <li>個人の幸福と齟齬を来すことがある</li>
+        <li>一言要約: <span class="badge">脱神話化</span></li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 失恋の痛みを個人の失敗ではなく構造として理解できるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚡ ニーチェの運命愛（amor fati）</h3>
+      <ul>
+        <li>不可避の苦難を積極的に引き受ける</li>
+        <li>自己形成の条件として愛する姿勢</li>
+        <li>一言要約: <span class="badge">超克</span></li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 逆境の再評価により、行動エネルギーへ転化できるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 評価の再訓練</h3>
+      <ul>
+        <li>出来事ではなく評価が感情を生む</li>
+        <li>解釈習慣を見直し再構築する</li>
+        <li>一言要約: <span class="badge">再評価</span></li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 六哲学に共通する実践的技法の核心だから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🛠️ 哲学＝生活技術</h3>
+      <ul>
+        <li>理念の体系ではなく実践的な思考の道具箱</li>
+        <li>日々の選択・感情・人間関係を扱う</li>
+        <li>一言要約: <span class="badge">実践</span></li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 哲学を日常に落とし込む姿勢が本書全体を貫くため。
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-flow">
+    <h3 style="margin-bottom:1rem; color: var(--primary);">🔗 概念間の関係性</h3>
+    <div class="flow-item">
+      不人気の恐れ <span class="flow-arrow">→</span> ソクラテス <span class="flow-arrow">→</span> 理由の吟味 <span class="flow-arrow">→</span> 他者評価への依存低下
+    </div>
+    <div class="flow-item">
+      金銭不安 <span class="flow-arrow">→</span> エピクロス <span class="flow-arrow">→</span> 欲望の分類と友・簡素な食の重視 <span class="flow-arrow">→</span> 充足コスト低下
+    </div>
+    <div class="flow-item">
+      怒り・挫折 <span class="flow-arrow">→</span> セネカ <span class="flow-arrow">→</span> 予期修正と内的統御 <span class="flow-arrow">→</span> 平静・反応の選択肢増加
+    </div>
+    <div class="flow-item">
+      無能感・不全感 <span class="flow-arrow">→</span> モンテーニュ <span class="flow-arrow">→</span> 人間普遍性の観察 <span class="flow-arrow">→</span> 自己受容と寛容
+    </div>
+    <div class="flow-item">
+      失恋の痛み <span class="flow-arrow">→</span> ショーペンハウアー <span class="flow-arrow">→</span> 種の意志/投影の理解 <span class="flow-arrow">→</span> 執着緩和
+    </div>
+    <div class="flow-item">
+      困難・失敗 <span class="flow-arrow">→</span> ニーチェ <span class="flow-arrow">→</span> 苦を成長の条件とみなす <span class="flow-arrow">→</span> 行為の勇気と回復力
+    </div>
+    <div class="flow-item">
+      評価の再訓練 <span class="flow-arrow">←</span> 六哲学に共通 <span class="flow-arrow">→</span> 感情の再編成 <span class="flow-arrow">→</span> 行動の自由度拡大
+    </div>
+    <div class="flow-item">
+      生活技術としての哲学 <span class="flow-arrow">→</span> 具体的練習（問答・日記・計画） <span class="flow-arrow">→</span> 習慣化 <span class="flow-arrow">→</span> 慰めの持続
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📖 導入</h3>
+    <h4>ポイント</h4>
+    <ul>
+      <li>現代の苦境（孤独・不安・挫折）を提示</li>
+      <li>「慰め」が哲学の古典的役割であると位置づける</li>
+      <li>六人の哲学者が六つの問題に対応する構成を予告</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 哲学を抽象理論ではなく実生活の痛みに応答する道具として再定義し、読者の関心を引くため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>1️⃣ 不人気 × ソクラテス</h3>
+    <h4>ポイント</h4>
+    <ul>
+      <li>裁判と毒杯の逸話から、多数派と真理の分離を学ぶ</li>
+      <li>問答法で信念の根拠を吟味し、迎合を拒む</li>
+      <li>独立思考の価値と孤独の受容</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 社会的承認欲求が理性的判断を妨げる構造を理解し、自立した思考を育てるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>2️⃣ 金銭 × エピクロス</h3>
+    <h4>ポイント</h4>
+    <ul>
+      <li>欲望の分類（自然・必要/自然・不必要/不自然・不必要）</li>
+      <li>「庭の共同体」を通じ、友・自由・思索の価値を示す</li>
+      <li>満足の設計原理と充足コストの低下</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 金銭不安を和らげ、安価で確実な満足の設計指針を与えるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>3️⃣ 挫折/怒り × セネカ</h3>
+    <h4>ポイント</h4>
+    <ul>
+      <li>予期の調整と内的統御の訓練で苛立ちを減らす</li>
+      <li>怒りは期待と現実の落差から生じる</li>
+      <li>感情の可塑性と理性の訓練</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 感情は訓練で変えられるという可塑性を示し、平静と反応の選択肢を増やすため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>4️⃣ 無能感 × モンテーニュ</h3>
+    <h4>ポイント</h4>
+    <ul>
+      <li>身体・習俗・失敗の観察から人間普遍性を学ぶ</li>
+      <li>自己寛容と判断停止の賢さ</li>
+      <li>欠点と同居する技術</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 自責と羞恥を和らげ、自己受容と他者への寛容を促すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>5️⃣ 失恋 × ショーペンハウアー</h3>
+    <h4>ポイント</h4>
+    <ul>
+      <li>意志と表象の枠組みで恋の陶酔を分析</li>
+      <li>恋は種の継続のための錯覚で、後悔は構造的に起きる</li>
+      <li>痛みの構造理解と執着緩和</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 失恋の痛みを個人の失敗ではなく構造として理解し、執着を緩和するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>6️⃣ 困難 × ニーチェ</h3>
+    <h4>ポイント</h4>
+    <ul>
+      <li>永劫回帰の思考実験と運命愛（amor fati）</li>
+      <li>苦難の肯定と自己形成</li>
+      <li>困難を成長の条件として引き受ける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 逆境の再評価により、行動エネルギーへ転化し、行為の勇気と回復力を育てるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎯 結語</h3>
+    <h4>ポイント</h4>
+    <ul>
+      <li>六つの処方箋を「生活の技法」として束ねる</li>
+      <li>日々の練習に落とし込む重要性を強調</li>
+      <li>哲学を実践的な道具箱として活用する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 哲学を日常に落とし込む姿勢が本書全体を貫き、読者の行動変容を促すため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🎭 例1: ソクラテスの裁判</h3>
+    <p><strong>背景:</strong> 紀元前399年、ソクラテスはアテナイで不敬罪と青年腐敗の罪で告発され、死刑判決を受けた。彼は多数派の意見に迎合せず、自らの信念を貫いた。</p>
+    <p><strong>示唆:</strong> 多数派の意見が必ずしも正しいわけではなく、理性的な吟味が重要。社会的承認を失う恐怖に屈しない勇気が、真理への道を開く。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 不人気を恐れず理由を吟味する姿勢が、独立した思考と自己尊重を育てることを具体的に示すため。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🌿 例2: エピクロスの庭</h3>
+    <p><strong>背景:</strong> エピクロスは紀元前4世紀にアテナイ郊外の庭で共同体を営み、友人たちと簡素な食事と哲学的対話を楽しんだ。彼らは高価な贅沢ではなく、友情・自由・思索に幸福を見出した。</p>
+    <p><strong>示唆:</strong> 満足は高価な消費ではなく、安価で確実な快（友・自由・思索）に宿る。欲望を分類し、必要なものに集中することで、金銭不安を和らげられる。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 金銭不安を和らげる満足の設計指針を、歴史的実践を通じて具体的に示すため。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>📝 例3: モンテーニュの随想録</h3>
+    <p><strong>背景:</strong> 16世紀のフランスで、モンテーニュは自らの身体的欠点・失敗・習俗の多様さを率直に記録し、人間の普遍的な弱さと多様性を観察した。彼は自己受容と寛容の技術を文学的に実践した。</p>
+    <p><strong>示唆:</strong> 自分の欠点を隠さず観察することで、自責と羞恥を和らげ、他者への寛容も育つ。不完全さは人間の普遍的条件であり、恥ずべきものではない。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 自己受容と寛容の技術を、文学的実践を通じて具体的に示し、読者の自己理解を促すため。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>💡 例4: ニーチェの永劫回帰</h3>
+    <p><strong>背景:</strong> ニーチェは「もし人生が永遠に繰り返されるとしたら、あなたは今の選択を肯定できるか？」という思考実験を提示した。これは困難を含む人生全体を愛する姿勢（amor fati）を育てる。</p>
+    <p><strong>示唆:</strong> 困難を避けるのではなく、成長の条件として積極的に引き受けることで、行動エネルギーと回復力が生まれる。逆境の再評価が自己形成を促す。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 困難の肯定と自己形成の関係を、思考実験を通じて具体的に示し、読者の行動変容を促すため。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <div class="quote-text">
+      多数派はしばしば誤る。真理は人気投票で決まらない。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 同調圧力から思考を解放し、自立した判断を後押しするから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      幸福は高価な贅沢ではなく、友・自由・思索に宿る。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 金銭不安を和らげ、満足の設計指針を与えるから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      怒りは過剰な期待から生まれ、知性の訓練で和らぐ。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 感情は訓練で変えられるという可塑性を示すから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      私たちは皆、不完全で気まぐれな人間だ。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 自責と羞恥を和らげ、自己受容を促すから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      恋の陶酔は種の継続のための錯覚で、後悔は構造的に起きる。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 失恋の痛みを個人の失敗ではなく構造として理解できるから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      困難を憎まず愛せ。そこに力が芽生える。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 逆境の再評価により、行動エネルギーへ転化できるから。
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>🔍 アクション1: 悩みを1つ選び、なぜを5回問う</h3>
+    <p><strong>目的:</strong> ソクラテス的問答法を実践し、信念の根拠を吟味する。</p>
+    <p><strong>期待効果:</strong> 表面的な不安の背後にある本質的な問題を発見し、解決の糸口を見つける。15分で実行可能。</p>
+  </div>
+
+  <div class="action-card">
+    <h3>📅 アクション2: 今週の小さな快楽を3つ計画</h3>
+    <p><strong>目的:</strong> エピクロス的快楽の分類を実践し、安価で確実な満足を設計する。</p>
+    <p><strong>期待効果:</strong> 友人との対話、散歩、読書など、金銭コストの低い快を意識的に取り入れ、充足感を高める。20分で計画可能。</p>
+  </div>
+
+  <div class="action-card">
+    <h3>📝 アクション3: 今日の怒りを3行で理性化する</h3>
+    <p><strong>目的:</strong> セネカの予期調整と内的統御を実践し、感情を再評価する。</p>
+    <p><strong>期待効果:</strong> 怒りの原因（期待と現実の落差）を言語化し、冷静な対応策を見出す。10分で実行可能。</p>
+  </div>
+
+  <div class="action-card">
+    <h3>🪞 アクション4: 自分の欠点を1つ書き出し、普遍性を確認</h3>
+    <p><strong>目的:</strong> モンテーニュの自己受容を実践し、人間の普遍的弱さを観察する。</p>
+    <p><strong>期待効果:</strong> 自責と羞恥を和らげ、自己寛容と他者への寛容を育てる。15分で実行可能。</p>
+  </div>
+
+  <div class="action-card">
+    <h3>💭 アクション5: 最近の困難を「成長の条件」として再評価</h3>
+    <p><strong>目的:</strong> ニーチェの運命愛を実践し、逆境を肯定的に捉え直す。</p>
+    <p><strong>期待効果:</strong> 困難から学びを抽出し、行動エネルギーと回復力を高める。20分で実行可能。</p>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
