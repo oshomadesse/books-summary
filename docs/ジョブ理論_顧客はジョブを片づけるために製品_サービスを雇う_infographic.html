@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ジョブ理論 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー=#667eea セカンダリー=#764ba2 アクセント=#f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(240,147,251,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.85rem;
+}
+.action-card {
+  background: var(--card);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.visual-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.visual-section h3 {
+  text-align: center;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+.bar-chart {
+  margin: 1rem 0;
+}
+.bar-item {
+  margin-bottom: 1rem;
+}
+.bar-label {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  color: var(--text);
+  font-weight: 600;
+}
+.bar-bg {
+  background: #e0e0e0;
+  height: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: width 1s ease;
+}
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.flow-item {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--primary);
+  position: relative;
+  font-size: 0.9rem;
+}
+.flow-item:after {
+  content: "↓";
+  display: block;
+  text-align: center;
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+.flow-item:last-child:after {
+  content: "";
+}
+.book-card {
+  background: var(--card);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+.book-card h4 {
+  color: var(--primary);
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 ジョブ理論</h1>
+  <p>顧客は製品を買うのではなく、進歩のために"雇う"</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 エグゼクティブ・サマリー</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>なぜ優良企業でも新製品で外すのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>顧客の"片づけたいジョブ"を基準に発見・設計・組織化していないから。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>人は属性ではなく状況と感情/社会/機能の束で進歩を求め、採用は『進歩の力学』で決まる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>苦闘の瞬間を起点にジョブを言語化し、体験要件/採用・解雇基準/ブランド約束/統合度/指標をジョブに整合させる。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">関連書籍</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="visual-section">
+    <h3>📊 概念の重要度</h3>
+    <div class="bar-chart">
+      <div class="bar-item">
+        <div class="bar-label">ジョブ（Jobs to Be Done）</div>
+        <div class="bar-bg"><div class="bar-fill" style="width:100%">100%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">進歩の力学</div>
+        <div class="bar-bg"><div class="bar-fill" style="width:95%">95%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">苦闘の瞬間</div>
+        <div class="bar-bg"><div class="bar-fill" style="width:90%">90%</div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">顧客経験要件</div>
+        <div class="bar-bg"><div class="bar-fill" style="width:85%">85%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>🎯 ジョブ（Jobs to Be Done）</h3>
+      <ul>
+        <li>特定の状況で人が達成したい"望ましい進歩"</li>
+        <li>製品はその進歩のために一時的に雇われる</li>
+        <li>属性やカテゴリではなく進歩が焦点</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜ重要か：</strong> 顧客の真の動機を理解し、競争軸を再定義する起点になる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📈 進歩（Progress）</h3>
+      <ul>
+        <li>現状から望ましい未来へ動くこと</li>
+        <li>機能・感情・社会的側面が絡み合う</li>
+        <li>単なる機能改善ではなく体験全体</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜ重要か：</strong> 製品開発の目的を明確化し、多面的な価値提供を可能にする。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌍 状況（シチュエーション）</h3>
+      <ul>
+        <li>ジョブが発生する具体的な文脈</li>
+        <li>時間・場所・制約・トリガーを含む</li>
+        <li>同じ人でも状況で異なるジョブが生まれる</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜ重要か：</strong> セグメンテーションを属性から文脈へ転換し、精度を高める。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎭 機能的/感情的/社会的次元</h3>
+      <ul>
+        <li>実務的成果（機能）</li>
+        <li>内面感情（感情）</li>
+        <li>他者からの評価（社会）</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜ重要か：</strong> 進歩の全体像を捉え、見落としがちな感情・社会面を設計に組み込む。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚡ 苦闘の瞬間</h3>
+      <ul>
+        <li>現行手段で進歩できず苛立つ瞬間</li>
+        <li>未充足ジョブの最良シグナル</li>
+        <li>回避・代替・逸脱行動に現れる</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜ重要か：</strong> イノベーション機会を最短距離で発見する手掛かりとなる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ 採用/解雇基準</h3>
+      <ul>
+        <li>新しい解決を雇う判断要素</li>
+        <li>既存手段を解雇する判断要素</li>
+        <li>期待と不安の差分で決まる</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜ重要か：</strong> 顧客の意思決定プロセスを理解し、障壁を除去する設計が可能になる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 進歩の力学（Forces）</h3>
+      <ul>
+        <li>現状の押し出し（Push）</li>
+        <li>解決の引力（Pull）</li>
+        <li>習慣の惰性（Anxiety of old）</li>
+        <li>新解決への不安（Anxiety of new）</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜ重要か：</strong> 採用を決める四力の合力を理解し、戦略的に介入できる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📝 ジョブ記述（When–I want–So I can）</h3>
+      <ul>
+        <li>「いつ・どこで」を明示</li>
+        <li>「何を望み」を記述</li>
+        <li>「なぜそれが重要か」を説明</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜ重要か：</strong> 組織全体で共有可能な設計図となり、一貫性を保つ。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎬 顧客経験要件</h3>
+      <ul>
+        <li>ジョブ達成に不可欠な体験の連鎖</li>
+        <li>購入→使用→維持→統合の全段階</li>
+        <li>各接点での期待を明確化</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜ重要か：</strong> 体験の仕様書として、設計・評価の基準を提供する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🚫 非消費</h3>
+      <ul>
+        <li>既存提案では片づけられず放置されるジョブ領域</li>
+        <li>成長の宝庫</li>
+        <li>競争回避と高成長の余地</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜ重要か：</strong> 未開の需要を開拓し、ブルーオーシャンを創出する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔧 統合 vs モジュール化</h3>
+      <ul>
+        <li>体験を守るため内製・統合すべきか</li>
+        <li>市場の部品化を活用すべきか</li>
+        <li>望む体験の保護から逆算</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜ重要か：</strong> 設計の境界線を決め、組織とアーキテクチャを最適化する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📊 ジョブ中心の指標</h3>
+      <ul>
+        <li>採用率、再雇用率</li>
+        <li>達成時間短縮</li>
+        <li>進歩への寄与で測るKPI</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 なぜ重要か：</strong> 進歩で測ることで、真の価値創出を可視化し改善を加速する。
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>🔗 概念間の関係性</h3>
+    <div class="flow-diagram">
+      <div class="flow-item">苦闘の瞬間 → 未充足ジョブの存在を示唆 → 機会発見</div>
+      <div class="flow-item">状況 × 機能/感情/社会 → ジョブ定義 → 顧客経験要件の特定</div>
+      <div class="flow-item">進歩の力学: Push(現状不満)+Pull(新解決)−習慣−不安 = 採用確率</div>
+      <div class="flow-item">要件に合う体験設計 → 採用/再雇用増 → 成長の再現性向上</div>
+      <div class="flow-item">ジョブ明確化 → ブランド約束/統合度/組織KPIの整合 → 一貫した価値提供</div>
+      <div class="flow-item">非消費の特定 → 競争回避 → 高成長の余地</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🚨 問題提起: 成長の不確実性</h3>
+    <ul>
+      <li>優れた企業でも新規事業が外れる</li>
+      <li>理論不在で"運任せ"の状態</li>
+      <li>属性ベースのセグメンテーションの限界</li>
+      <li>相関と因果の混同</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か：</strong> 現状の問題を明確化し、新しい枠組みの必要性を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💡 理論提示: ジョブ理論とは</h3>
+    <ul>
+      <li>人は進歩のために製品を雇うという枠組み</li>
+      <li>属性や製品カテゴリ起点を否定</li>
+      <li>状況と進歩が中心</li>
+      <li>機能・感情・社会の三次元</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か：</strong> 新しい思考の枠組みを提示し、視点転換を促す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔍 発見法: 苦闘から始める</h3>
+    <ul>
+      <li>日常の逸脱・代替・回避に着目</li>
+      <li>ジョブインタビューで状況と感情を再構成</li>
+      <li>非消費領域の探索</li>
+      <li>When–I want–So I can形式での記述</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か：</strong> 実践的な発見手法を提供し、机上の空論を防ぐ。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎨 設計法: 体験とブランドの整合</h3>
+    <ul>
+      <li>体験要件の明確化</li>
+      <li>採用/解雇基準の特定</li>
+      <li>価格・チャネル・メッセージをジョブに合わせる</li>
+      <li>ブランドは特定ジョブを必ず果たす約束</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か：</strong> 発見したジョブを具体的な製品・サービス設計に落とし込む方法を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏢 実装: 組織・範囲・指標</h3>
+    <ul>
+      <li>統合/モジュール化の選択</li>
+      <li>人材像とプロセスの最適化</li>
+      <li>KPIを進歩基準で設定</li>
+      <li>組織構造とインセンティブの整合</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か：</strong> 設計を組織全体で実行可能にし、持続的な成長エンジンを構築する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌐 応用とケース</h3>
+    <ul>
+      <li>飲食、小売、教育、医療など多領域での適用</li>
+      <li>非消費攻略の効果実証</li>
+      <li>成功・失敗事例の分析</li>
+      <li>業界横断的な原則の確認</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か：</strong> 理論の汎用性を示し、読者の業界への適用イメージを具体化する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 結論: 運と戦う方法</h3>
+    <ul>
+      <li>ジョブ中心に学習可能な成長エンジンを作る</li>
+      <li>成功は再現可能になる</li>
+      <li>継続的な改善サイクルの確立</li>
+      <li>理論から実践への橋渡し</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か：</strong> 全体を統合し、読者に行動への確信を与える。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🥤 ミルクシェイクの事例</h3>
+    <ul>
+      <li><strong>背景：</strong> ファストフード店が朝のミルクシェイク売上を伸ばしたい</li>
+      <li><strong>発見：</strong> 通勤中の退屈を紛らわせ、昼まで空腹を抑えるジョブ</li>
+      <li><strong>競合：</strong> バナナ、ドーナツ、コーヒーではなく"退屈な通勤時間"</li>
+      <li><strong>改善：</strong> より濃厚で飲むのに時間がかかる仕様に変更</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong> 製品カテゴリではなく状況と進歩で競合を再定義すると、全く異なる改善策が見える。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏠 IKEAの家具</h3>
+    <ul>
+      <li><strong>背景：</strong> 新居に早く・安く・自分らしく家具を揃えたい</li>
+      <li><strong>ジョブ：</strong> "今日中に新生活を始める"進歩</li>
+      <li><strong>体験設計：</strong> 在庫即納・低価格・DIY組立・店内託児</li>
+      <li><strong>統合：</strong> 物流・店舗・製品設計を一体化</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong> ジョブ全体の体験要件を満たすため、統合度を高めることで独自価値を生む。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📚 オンライン教育の非消費</h3>
+    <ul>
+      <li><strong>背景：</strong> 既存大学は高額・時間拘束で働く社会人には不向き</li>
+      <li><strong>ジョブ：</strong> "キャリアアップのスキルを仕事と両立して習得"</li>
+      <li><strong>解決：</strong> 低価格・自分のペース・実務直結のオンライン講座</li>
+      <li><strong>成長：</strong> 非消費層を開拓し急成長</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong> 非消費領域を狙うことで、既存競合を回避しながら新市場を創出できる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏥 遠隔医療サービス</h3>
+    <ul>
+      <li><strong>背景：</strong> 軽症でも病院に行くのは時間と手間がかかる</li>
+      <li><strong>ジョブ：</strong> "すぐに専門家の助言を得て安心したい"</li>
+      <li><strong>体験：</strong> スマホで即座に医師と相談、処方箋も即日</li>
+      <li><strong>感情面：</strong> 不安の解消と時間節約の両立</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong> 機能だけでなく感情的ジョブ（安心）を満たすことが採用の鍵となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎵 音楽ストリーミング</h3>
+    <ul>
+      <li><strong>背景：</strong> 気分に合う音楽を探す手間を省きたい</li>
+      <li><strong>ジョブ：</strong> "今の気分にぴったりの音楽体験を即座に"</li>
+      <li><strong>解決：</strong> プレイリスト自動生成、状況別推薦</li>
+      <li><strong>社会面：</strong> 友人と共有して自分のセンスを示す</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong> 機能・感情・社会の三次元すべてを満たす設計が強力な差別化を生む。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>"人は製品を買うのではなく、ジョブのために雇う。"</p>
+    <small><strong>なぜ重要か：</strong> 焦点を属性から進歩へ切り替える起点になる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"人口動態は相関を示しても因果を語らない。"</p>
+    <small><strong>なぜ重要か：</strong> セグメンテーションの再設計を迫る警句だから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"苦闘はイノベーションの最良の洞察源だ。"</p>
+    <small><strong>なぜ重要か：</strong> 需要の源泉を最短距離で見つける手掛かりとなる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"ブランドは特定のジョブを必ず果たすという約束だ。"</p>
+    <small><strong>なぜ重要か：</strong> 体験とメッセージの一貫性の重要性を示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"正しい統合度は望む体験の保護から逆算される。"</p>
+    <small><strong>なぜ重要か：</strong> 組織設計とアーキテクチャ選択の指針になる。</small>
+  </div>
+
+  <div class="visual-section">
+    <h3>🎯 引用の核心</h3>
+    <p style="text-align:center; font-size:0.95rem; line-height:1.6; padding:1rem;">
+      これらの引用は、<span class="badge">属性→進歩</span><span class="badge">相関→因果</span><span class="badge">苦闘→機会</span><span class="badge">約束→体験</span><span class="badge">体験→構造</span>という思考の転換を促し、ジョブ理論の実践的適用を支える原則を凝縮している。
+    </p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>📝 アクション1: 直近購入の雇用理由を3件書く</h4>
+    <p>過去1週間で購入した製品・サービスを3つ選び、「いつ・どこで・なぜ・何のために」を書き出す。</p>
+    <div class="meta">
+      <strong>⏱️ 所要時間：</strong> 15分<br>
+      <strong>🎯 目的：</strong> 自分の購買行動をジョブの視点で振り返る<br>
+      <strong>✨ 期待効果：</strong> ジョブ思考の感覚を体得し、顧客理解の解像度が上がる
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🔍 アクション2: ジョブ仮説文を1本作る</h4>
+    <p>自社製品・サービスについて「When [状況]–I want [望み]–So I can [理由]」形式で1文作成する。</p>
+    <div class="meta">
+      <strong>⏱️ 所要時間：</strong> 20分<br>
+      <strong>🎯 目的：</strong> 顧客の進歩を言語化する練習<br>
+      <strong>✨ 期待効果：</strong> チーム内で共有可能な仮説が生まれ、議論の起点になる
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>💬 アクション3: レビュー10件から苦闘を抽出</h4>
+    <p>自社または競合のレビュー10件を読み、「不満・回避・代替」の表現をハイライトする。</p>
+    <div class="meta">
+      <strong>⏱️ 所要時間：</strong> 25分<br>
+      <strong>🎯 目的：</strong> 苦闘の瞬間を実データから発見<br>
+      <strong>✨ 期待効果：</strong> 未充足ジョブの具体的な手掛かりが得られ、改善アイデアが浮かぶ
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>🚀 アクション実行のコツ</h3>
+    <ul style="list-style:none; padding:0;">
+      <li style="padding:0.5rem 0; font-size:0.9rem;">✅ 完璧を求めず、まず書き出すことを優先</li>
+      <li style="padding:0.5rem 0; font-size:0.9rem;">✅ 同僚と共有し、異なる視点を取り入れる</li>
+      <li style="padding:0.5rem 0; font-size:0.9rem;">✅ 週次で繰り返し、ジョブ発見を習慣化</li>
+      <li style="padding:0.5rem 0; font-size:0.9rem;">✅ 発見した苦闘を製品ロードマップに反映</li>
+    </ul>
+  </div>
+</div>
+
+<div id="tab6" class="tab-content" role="tabpanel">
+  <div class="book-card">
+    <h4>📖 イノベーションのジレンマ</h4>
+    <div class="author">著者: クレイトン・M・クリステンセン</div>
+    <div class="relation">
+      <strong>関連性：</strong> 破壊的イノベーション理論で市場構造と成長の背景を補完。ジョブ理論の前提となる市場ダイナミクスを理解できる。
+    </div>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 リーン・スタートアップ</h4>
+    <div class="author">著者: エリック・リース</div>
+    <div class="relation">
+      <strong>関連性：</strong> ジョブ仮説をMVPと実験で検証する実践手法が揃う。仮説検証サイクルの具体的な回し方を学べる。
+    </div>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 ブルー・オーシャン戦略</h4>
+    <div class="author">著者: W・チャン・キム／レネ・モボルニュ</div>
+    <div class="relation">
+      <strong>関連性：</strong> 非消費領域を狙う価値革新の戦略面を強化。ジョブ理論と組み合わせることで競争回避の精度が上がる。
+    </div>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 デマンドサイド・セールス</h4>
+    <div class="author">著者: ボブ・モエスタ</div>
+    <div class="relation">
+      <strong>関連性：</strong> ジョブ理論を営業・発見会話に落とす具体技法。顧客インタビューの実践スキルを習得できる。
+    </div>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 アウトカム・ドリブン・イノベーション</h4>
+    <div class="author">著者: アンソニー・ウルウィック</div>
+    <div class="relation">
+      <strong>関連性：</strong> ジョブと期待アウトカムを指標化する方法論を提供。定量的なジョブ分析と優先順位付けが可能になる。
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>📚 読書ロードマップ</h3>
+    <div style="font-size:0.9rem; line-height:1.6;">
+      <p><strong>1. 基礎理解：</strong> 本書（ジョブ理論）→ イノベーションのジレンマ</p>
+      <p><strong>2. 実践手法：</strong> リーン・スタートアップ → デマンドサイド・セールス</p>
+      <p><strong>3. 戦略展開：</strong> ブルー・オーシャン戦略 → アウトカム・ドリブン・イノベーション</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// タブ切替
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => {
+      c.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+
+// バーチャートアニメーション
+window.addEventListener('load', () => {
+  const bars = document.querySelectorAll('.bar-fill');
+  bars.forEach(bar => {
+    const width = bar.style.width;
+    bar.style.width = '0%';
+    setTimeout(() => {
+      bar.style.width = width;
+    }, 300);
+  });
+});
+</script>
+
+</body>
+</html>
