@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ザ・ゴール インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 32px 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 6px solid var(--accent);
+  padding: 20px;
+  margin: 24px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 12px;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 4px;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0 16px;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 16px 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  border-left: 6px solid var(--secondary);
+  padding: 16px;
+  margin: 12px 0;
+  border-radius: 8px;
+  font-style: italic;
+}
+.quote-card p {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.85rem;
+}
+.action-card {
+  background: var(--card-bg);
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+}
+.action-card h4 {
+  color: var(--primary);
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+.metric-bar {
+  background: var(--border);
+  border-radius: 8px;
+  height: 24px;
+  margin: 8px 0;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: width 1s;
+}
+.chapter-section {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-section h3 {
+  color: var(--primary);
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+.chapter-section .reason {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 8px 12px;
+  margin-top: 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+.visual-diagram {
+  margin: 24px 0;
+  text-align: center;
+}
+.flow-chart {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+.flow-item {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin: 16px 0;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.book-item h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+.book-item p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 ザ・ゴール</h1>
+  <p>制約理論で組織を変える — 最小投資で最大成果を生む全体最適の科学</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>🎯 要約 = 問い × 答え × 根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    企業・工場は何を目的にし、どう達成し続けるべきか？
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    目的は現在と将来の利益（スループット）の最大化。最も強い制約を特定し、活用・従属・強化の順で全体最適の流れを作る。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    生産は従属関係と統計的ばらつきの影響下にあり、局所最適はしばしば全体のスループットを悪化させる。制約への集中特化は全体の出力を直接押し上げ、在庫と業務費用を抑えるため利益率が高い。
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    TOCの五つのフォーカシング・ステップ（特定→活用→従属→強化→繰り返し）、3指標（スループット・在庫・業務費用）、DBRやバッチ分割、時間バッファ運用で制約を保護し、継続的に次の制約へ焦点を移す。
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 16px;">🔑 主要概念の詳細</h2>
+  <div class="card-grid">
+    <div class="card">
+      <h3>🎯 制約理論（TOC）</h3>
+      <span class="badge">最も弱い輪に集中せよ</span>
+      <ul>
+        <li>組織の目標達成を妨げる最も強い制約に焦点を当てる</li>
+        <li>全体最適で継続的改善を行う管理思想</li>
+        <li>局所最適を避け、システム全体の流れを重視</li>
+      </ul>
+      <div class="reason" style="margin-top:12px;">
+        <strong>理由:</strong> 最も弱い部分が全体のパフォーマンスを決定するため、そこへの集中が最大のレバレッジを生む
+      </div>
+    </div>
+    <div class="card">
+      <h3>🚰 制約（ボトルネック）</h3>
+      <span class="badge">全体出力の蛇口</span>
+      <ul>
+        <li>システムのスループットを最終的に制限する資源・方針・市場等</li>
+        <li>制約の能力=システム全体の能力</li>
+        <li>制約の1時間のロスは全体の1時間のロス</li>
+      </ul>
+      <div class="reason" style="margin-top:12px;">
+        <strong>理由:</strong> 制約が改善の最優先ポイントであり、ここを改善しない限り全体は改善しない
+      </div>
+    </div>
+    <div class="card">
+      <h3>🤝 非制約</h3>
+      <span class="badge">制約の支援役</span>
+      <ul>
+        <li>現時点でスループットを制限していない資源</li>
+        <li>制約を助けるよう従属させるべき対象</li>
+        <li>非制約の稼働率100%は有害</li>
+      </ul>
+      <div class="reason" style="margin-top:12px;">
+        <strong>理由:</strong> 非制約を全力稼働させると仕掛在庫が膨張し、制約を圧迫してしまう
+      </div>
+    </div>
+    <div class="card">
+      <h3>💰 スループット（T）</h3>
+      <span class="badge">儲けの流量</span>
+      <ul>
+        <li>売上から真の変動費を引いた、組織が稼ぐ速度</li>
+        <li>利益の源泉であり最優先指標</li>
+        <li>制約の活用で直接増加</li>
+      </ul>
+      <div class="reason" style="margin-top:12px;">
+        <strong>理由:</strong> 企業の目的は金を稼ぐことであり、スループットがその速度を表す
+      </div>
+    </div>
+    <div class="card">
+      <h3>📦 在庫（I）</h3>
+      <span class="badge">眠る現金</span>
+      <ul>
+        <li>将来のスループット創出に投じた資金</li>
+        <li>売れなければコストの塊</li>
+        <li>削減が資金繰りとリードタイムを改善</li>
+      </ul>
+      <div class="reason" style="margin-top:12px;">
+        <strong>理由:</strong> 在庫は資金を固定化し、変化への対応力を奪うため最小化が望ましい
+      </div>
+    </div>
+    <div class="card">
+      <h3>⚙️ 業務費用（OE）</h3>
+      <span class="badge">回すための燃料</span>
+      <ul>
+        <li>在庫をスループットに変換するために継続的に支払う固定的費用</li>
+        <li>人件費・設備費・間接費など</li>
+        <li>短期的には削減困難</li>
+      </ul>
+      <div class="reason" style="margin-top:12px;">
+        <strong>理由:</strong> 業務費用は固定的なため、スループット増と在庫減が利益改善の鍵となる
+      </div>
+    </div>
+    <div class="card">
+      <h3>🎯 五つのフォーカシング・ステップ</h3>
+      <span class="badge">焦点づけの手順</span>
+      <ul>
+        <li>①制約の特定</li>
+        <li>②制約の活用</li>
+        <li>③全体の従属</li>
+        <li>④制約の強化</li>
+        <li>⑤惰性を警戒し繰り返す</li>
+      </ul>
+      <div class="reason" style="margin-top:12px;">
+        <strong>理由:</strong> 体系的な手順により、継続的改善を組織に定着させる
+      </div>
+    </div>
+    <div class="card">
+      <h3>🥁 ドラム・バッファ・ロープ（DBR）</h3>
+      <span class="badge">制約中心の同期</span>
+      <ul>
+        <li>制約の節拍（ドラム）に合わせる</li>
+        <li>時間バッファで保護</li>
+        <li>リリース量（ロープ）を同期</li>
+      </ul>
+      <div class="reason" style="margin-top:12px;">
+        <strong>理由:</strong> 制約を中心にシステム全体を同期させることで、在庫とリードタイムを最小化
+      </div>
+    </div>
+    <div class="card">
+      <h3>📊 統計的ばらつきと従属関係</h3>
+      <span class="badge">平均は嘘をつく</span>
+      <ul>
+        <li>工程ごとの変動が直列依存で増幅</li>
+        <li>平均能力では流れが保証されない</li>
+        <li>ばらつきの累積が納期遅延を生む</li>
+      </ul>
+      <div class="reason" style="margin-top:12px;">
+        <strong>理由:</strong> 平均値での計画は現実を反映せず、バッファと制約管理が必須となる
+      </div>
+    </div>
+    <div class="card">
+      <h3>✂️ ロット分割</h3>
+      <span class="badge">小さく運べ</span>
+      <ul>
+        <li>加工ロットを小さくする</li>
+        <li>移動も分割して待ちを減らす</li>
+        <li>制約を飢えさせない</li>
+      </ul>
+      <div class="reason" style="margin-top:12px;">
+        <strong>理由:</strong> 小ロット化により待ち時間が減り、制約の稼働率が向上する
+      </div>
+    </div>
+    <div class="card">
+      <h3>🌐 全体最適と局所最適</h3>
+      <span class="badge">部分最適は敵</span>
+      <ul>
+        <li>個別資源の稼働率最大化は全体スループットを損ねうる</li>
+        <li>制約基準で意思決定する</li>
+        <li>非制約の遊びは健全</li>
+      </ul>
+      <div class="reason" style="margin-top:12px;">
+        <strong>理由:</strong> 部分の効率化が全体の非効率を生むパラドックスを避けるため
+      </div>
+    </div>
+    <div class="card">
+      <h3>🛡️ バッファ管理</h3>
+      <span class="badge">守るための余白</span>
+      <ul>
+        <li>重要工程前に意図的余裕を置く</li>
+        <li>色帯などで消耗を監視</li>
+        <li>優先順位を制御</li>
+      </ul>
+      <div class="reason" style="margin-top:12px;">
+        <strong>理由:</strong> 制約を保護し、納期遵守率を高めるための戦略的余裕
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-diagram">
+    <h3 style="color: var(--secondary); margin-bottom: 16px;">📈 概念間の関係性</h3>
+    <div class="flow-chart">
+      <div class="flow-item">統計的ばらつき<br>+従属関係</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">平均能力≠実流れ</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">制約がスループット決定</div>
+    </div>
+    <div class="flow-chart">
+      <div class="flow-item">制約の活用↑</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">スループット↑</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">利益↑</div>
+    </div>
+    <div class="flow-chart">
+      <div class="flow-item">非制約を制約に従属</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">過剰仕掛削減</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">リードタイム短縮</div>
+    </div>
+    <div class="flow-chart">
+      <div class="flow-item">局所最適追求</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">WIP膨張</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">利益低下</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 16px;">📖 各章の要約</h2>
+  
+  <div class="chapter-section">
+    <h3>第1章: 危機の提示</h3>
+    <ul>
+      <li>赤字・納期遅延の工場が閉鎖の瀬戸際</li>
+      <li>主人公アレックスが3ヶ月の猶予を与えられる</li>
+      <li>従来の管理手法では解決できない状況</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 危機が変革の必要性を明確にし、読者に問題意識を共有させる
+    </div>
+  </div>
+
+  <div class="chapter-section">
+    <h3>第2章: 目的の再定義</h3>
+    <ul>
+      <li>企業の目的=継続的に金を儲けること</li>
+      <li>3指標（T/I/OE）の導入</li>
+      <li>従来の原価計算の限界を認識</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 正しい目的と指標がなければ、改善の方向性を誤るため
+    </div>
+  </div>
+
+  <div class="chapter-section">
+    <h3>第3章: 現場観察と仮説形成</h3>
+    <ul>
+      <li>従属関係とばらつきを体験的に理解（ハイキングの比喩）</li>
+      <li>局所最適の弊害を発見</li>
+      <li>平均値の罠を認識</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 抽象的な理論を具体的な体験で理解することで、納得感と実行力が生まれる
+    </div>
+  </div>
+
+  <div class="chapter-section">
+    <h3>第4章: 制約の特定と活用</h3>
+    <ul>
+      <li>真のボトルネックを見極める</li>
+      <li>優先順序と段取り短縮で活用</li>
+      <li>制約の1時間=全体の1時間という認識</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 制約への集中が最大のレバレッジを生み、即座に成果が出るため
+    </div>
+  </div>
+
+  <div class="chapter-section">
+    <h3>第5章: 全体の従属</h3>
+    <ul>
+      <li>非制約の稼働を意図的に落とす</li>
+      <li>DBRとバッファで同期化</li>
+      <li>仕掛在庫の削減開始</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 全体最適には非制約の「遊び」が必要であり、これが在庫削減とリードタイム短縮を実現する
+    </div>
+  </div>
+
+  <div class="chapter-section">
+    <h3>第6章: 改善の定量化</h3>
+    <ul>
+      <li>仕掛削減・リードタイム短縮を測定</li>
+      <li>納期遵守率改善を確認</li>
+      <li>T/I/OEで評価し利益向上を証明</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 定量的な成果が組織の信頼を獲得し、継続的改善の基盤となる
+    </div>
+  </div>
+
+  <div class="chapter-section">
+    <h3>第7章: 制約の強化と移動</h3>
+    <ul>
+      <li>投資・改善で制約が移る</li>
+      <li>新たな制約（市場）の発見</li>
+      <li>手順を繰り返す学習過程</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 制約は移動するため、継続的な焦点の再設定が必要であることを示す
+    </div>
+  </div>
+
+  <div class="chapter-section">
+    <h3>第8章: 思考プロセスの拡張</h3>
+    <ul>
+      <li>生産から販売・方針へ拡大</li>
+      <li>制約の種類を市場・方針へ拡大適用</li>
+      <li>組織全体への展開</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> TOCは生産だけでなく、あらゆる組織活動に適用可能な普遍的思考法であるため
+    </div>
+  </div>
+
+  <div class="chapter-section">
+    <h3>第9章: 結末</h3>
+    <ul>
+      <li>全体最適の管理で業績回復</li>
+      <li>継続的改善の文化が根づく</li>
+      <li>アレックスの昇進と新たな挑戦</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 成功体験が組織文化を変え、持続可能な改善サイクルを生むことを示す
+    </div>
+  </div>
+
+  <div style="margin-top: 24px;">
+    <h3 style="color: var(--secondary); margin-bottom: 12px;">📊 改善の進捗イメージ</h3>
+    <div style="margin-bottom: 8px;">スループット向上</div>
+    <div class="metric-bar">
+      <div class="metric-fill" style="width: 85%;">+85%</div>
+    </div>
+    <div style="margin-bottom: 8px;">在庫削減</div>
+    <div class="metric-bar">
+      <div class="metric-fill" style="width: 60%; background: linear-gradient(90deg, #764ba2, #667eea);">-60%</div>
+    </div>
+    <div style="margin-bottom: 8px;">リードタイム短縮</div>
+    <div class="metric-bar">
+      <div class="metric-fill" style="width: 70%; background: linear-gradient(90deg, #f093fb, #764ba2);">-70%</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 16px;">💡 具体例</h2>
+  
+  <div class="card">
+    <h3>🥾 例1: ハイキングの比喩</h3>
+    <span class="badge">統計的ばらつきと従属関係</span>
+    <ul>
+      <li><strong>背景:</strong> アレックスが息子のボーイスカウトハイキングに同行</li>
+      <li><strong>状況:</strong> 列の先頭は速く進むが、後ろは遅れ、全体が伸びきる</li>
+      <li><strong>発見:</strong> 各人の速度のばらつきが累積し、平均速度では到着時間を予測できない</li>
+      <li><strong>示唆:</strong> 工場の工程も同様に、ばらつきが累積して納期遅延を生む</li>
+    </ul>
+    <div class="reason" style="margin-top:12px;">
+      <strong>理由（この例が示すこと）:</strong> 直列依存システムでは、ばらつきの影響が増幅され、平均値での計画が無意味になることを体感的に理解させる
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎲 例2: サイコロとマッチ棒のゲーム</h3>
+    <span class="badge">制約と在庫の関係</span>
+    <ul>
+      <li><strong>背景:</strong> アレックスが子供たちとゲームで実験</li>
+      <li><strong>状況:</strong> サイコロで決まる数だけマッチ棒を次へ渡す。各工程の平均は同じ</li>
+      <li><strong>発見:</strong> 後工程ほど在庫が溜まり、最終工程の出力は平均を大きく下回る</li>
+      <li><strong>示唆:</strong> 制約のない工程が過剰生産すると、仕掛在庫が膨張し全体が遅くなる</li>
+    </ul>
+    <div class="reason" style="margin-top:12px;">
+      <strong>理由（この例が示すこと）:</strong> 局所最適（各工程の稼働率最大化）が全体最適を損ねるメカニズムを、シンプルなゲームで証明する
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏭 例3: NCX-10とヒート処理炉</h3>
+    <span class="badge">制約の特定と活用</span>
+    <ul>
+      <li><strong>背景:</strong> 工場の2つの機械が制約候補</li>
+      <li><strong>状況:</strong> NCX-10の前に常に仕掛が山積み、ヒート処理炉は時々空く</li>
+      <li><strong>発見:</strong> NCX-10が真の制約。段取り時間短縮と優先順位変更で活用</li>
+      <li><strong>示唆:</strong> 制約の1時間のロスは全体の1時間のロス。制約を止めてはならない</li>
+    </ul>
+    <div class="reason" style="margin-top:12px;">
+      <strong>理由（この例が示すこと）:</strong> 制約の特定と活用が即座にスループット向上をもたらし、投資なしで成果を出せることを実証する
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📦 例4: バッチサイズの半減</h3>
+    <span class="badge">ロット分割の効果</span>
+    <ul>
+      <li><strong>背景:</strong> 大ロット生産で段取り回数を減らす従来の常識</li>
+      <li><strong>状況:</strong> バッチを半分にし、移動ロットも分割</li>
+      <li><strong>発見:</strong> 待ち時間が激減し、制約の稼働率が向上、リードタイムが半減</li>
+      <li><strong>示唆:</strong> 小ロット化は段取り増を補って余りある効果を生む</li>
+    </ul>
+    <div class="reason" style="margin-top:12px;">
+      <strong>理由（この例が示すこと）:</strong> 従来の常識（大ロット=効率的）が誤りであり、小ロット化が制約保護とリードタイム短縮の鍵であることを示す
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 例5: 市場が制約になる</h3>
+    <span class="badge">制約の移動</span>
+    <ul>
+      <li><strong>背景:</strong> 生産制約を解消した後、受注が追いつかない</li>
+      <li><strong>状況:</strong> 工場の能力は十分だが、販売が制約に</li>
+      <li><strong>発見:</strong> 短納期を武器に新規受注を獲得、制約を再び生産へ</li>
+      <li><strong>示唆:</strong> 制約は移動し続ける。次の制約を見つけ、焦点を移す</li>
+    </ul>
+    <div class="reason" style="margin-top:12px;">
+      <strong>理由（この例が示すこと）:</strong> 改善は終わりがなく、制約の移動に応じて焦点を再設定する継続的プロセスであることを教える
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 16px;">💬 重要な引用</h2>
+  
+  <div class="quote-card">
+    <p>「企業の目的は、今と将来にわたりお金を稼ぎ続けることだ。」</p>
+    <small><strong>意義:</strong> 評価指標と意思決定をスループット中心へ揃える起点となる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「ボトルネックが工場のスループットを決める。」</p>
+    <small><strong>意義:</strong> 改善のレバレッジ点を一つに絞る合理性を示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「忙しさは生産性ではない。」</p>
+    <small><strong>意義:</strong> 稼働率最適化という錯覚を捨て、流れの最適化へ視点を転換させる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「在庫は将来のスループットのために縛られたお金だ。」</p>
+    <small><strong>意義:</strong> 在庫最適化を利益に直結させ、不要な仕掛の削減を正当化する。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「改善で制約が移るなら、考えることをやめてはならない。」</p>
+    <small><strong>意義:</strong> 継続的改善の反復と惰性への警戒を促す。</small>
+  </div>
+
+  <div style="margin-top: 24px; padding: 20px; background: var(--card-bg); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+    <h3 style="color: var(--secondary); margin-bottom: 12px;">📌 引用から学ぶ3つの原則</h3>
+    <ul style="list-style: none; padding: 0;">
+      <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+        <strong style="color: var(--primary);">1. 目的の明確化:</strong> 企業は利益を生むためにあり、全ての活動はそこに収束すべき
+      </li>
+      <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">
+        <strong style="color: var(--primary);">2. 焦点の絞り込み:</strong> 制約への集中が最大の成果を生む
+      </li>
+      <li style="padding: 8px 0;">
+        <strong style="color: var(--primary);">3. 継続的思考:</strong> 改善は終わりなき旅であり、惰性が最大の敵
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 16px;">🚀 今日のアクション</h2>
+  <p style="margin-bottom: 16px; color: var(--text-light);">読後すぐに15〜30分で実行できる具体的な行動です。各アクションの目的と期待効果を確認してください。</p>
+  
+  <div class="action-card">
+    <h4>📝 アクション1: 工程の流れ図を紙に描く</h4>
+    <p><strong>目的:</strong> 自分の業務や組織の流れを可視化し、従属関係を理解する</p>
+    <p><strong>手順:</strong> A4用紙に、仕事の開始から完了までの主要工程を箱と矢印で描く（5〜10工程程度）</p>
+    <p><strong>期待効果:</strong> 全体像が見え、どこに仕掛が溜まりやすいか、どこが遅いかの仮説が立つ</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🔍 アクション2: 制約候補を1つ挙げる</h4>
+    <p><strong>目的:</strong> 現在のスループットを最も制限している要素を特定する</p>
+    <p><strong>手順:</strong> 流れ図を見ながら「ここが遅いと全体が止まる」「ここに常に仕事が溜まる」箇所を1つ選ぶ</p>
+    <p><strong>期待効果:</strong> 改善の焦点が明確になり、次のアクションの優先順位が決まる</p>
+  </div>
+
+  <div class="action-card">
+    <h4>⚡ アクション3: 制約向け優先ルールを決める</h4>
+    <p><strong>目的:</strong> 制約を最大限活用するための意思決定基準を設ける</p>
+    <p><strong>手順:</strong> 制約候補に対し「納期が近い順」「利益率が高い順」など、優先順位ルールを1つ決めて明日から試す</p>
+    <p><strong>期待効果:</strong> 制約の稼働率が上がり、スループットが即座に改善し始める</p>
+  </div>
+
+  <div style="margin-top: 24px; padding: 20px; background: linear-gradient(135deg, #fff3cd, #ffe8a1); border-radius: 8px; border-left: 6px solid #ffc107;">
+    <h3 style="color: #856404; margin-bottom: 12px;">💡 追加の推奨アクション</h3>
+    <ul style="list-style: none; padding: 0;">
+      <li style="padding: 6px 0; color: #856404;">
+        <strong>📊 自分の仕事をT/I/OEで評価:</strong> 今日の活動がスループット増・在庫減・業務費用減のどれに貢献したか振り返る（5分）
+      </li>
+      <li style="padding: 6px 0; color: #856404;">
+        <strong>🤝 チームで制約を議論:</strong> 同僚と「うちの制約は何か？」を15分話し合い、認識を揃える
+      </li>
+      <li style="padding: 6px 0; color: #856404;">
+        <strong>📚 関連書籍を1冊選ぶ:</strong> 下記の関連書籍から興味のある1冊を図書館やオンラインで探し、次の学習計画を立てる（10分）
+      </li>
+    </ul>
+  </div>
+
+  <div style="margin-top: 24px;">
+    <h3 style="color: var(--secondary); margin-bottom: 12px;">📚 関連書籍</h3>
+    <div class="book-list">
+      <div class="book-item">
+        <h4>クリティカル・チェーン</h4>
+        <p><strong>著者:</strong> エリヤフ・ゴールドラット</p>
+        <p><strong>関連性:</strong> TOCをプロジェクト管理に拡張し、バッファと従属の考え方を実装する。</p>
+      </div>
+      <div class="book-item">
+        <h4>ザ・ゴール2</h4>
+        <p><strong>著者:</strong> エリヤフ・ゴールドラット</p>
+        <p><strong>関連性:</strong> 思考プロセスを用いた方針・市場制約の解消を描く続編。</p>
+      </div>
+      <div class="book-item">
+        <h4>リーン思考</h4>
+        <p><strong>著者:</strong> ジェームズ・P・ウォマック／ダニエル・T・ジョーンズ</p>
+        <p><strong>関連性:</strong> フロー重視とムダ排除でTOCと補完的に全体最適を目指す。</p>
+      </div>
+      <div class="book-item">
+        <h4>トヨタ生産方式</h4>
+        <p><strong>著者:</strong> 大野耐一</p>
+        <p><strong>関連性:</strong> ジャストインタイムと自働化の原理がDBRや在庫削減と響き合う。</p>
+      </div>
+      <div class="book-item">
+        <h4>ザ・フェニックス・プロジェクト</h4>
+        <p><strong>著者:</strong> ジーン・キム／ケビン・ベアー／ジョージ・スパフォード</p>
+        <p><strong>関連性:</strong> IT/DevOps領域でTOCの制約・フロー・バッファ思考を物語形式で適用。</p>
+      </div>
+      <div class="book-item">
+        <h4>ザ・チョイス</h4>
+        <p><strong>著者:</strong> エリヤフ・ゴールドラット</p>
+        <p><strong>関連性:</strong> TOCの思考様式（単純さの追求）を意思決定の哲学として深掘りする。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabContents.forEach(c => {
+        c.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetId).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
