@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>無意識の心理学 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  border-bottom: 2px solid #e0e0e0;
+  margin: 2rem 0 1rem;
+  padding-bottom: 0;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, #f093fb22, #667eea22);
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.example-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.75rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 4rem;
+  position: absolute;
+  top: -0.5rem;
+  left: 1rem;
+  opacity: 0.3;
+  font-family: Georgia, serif;
+}
+.quote-card p {
+  font-size: 1rem;
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+.quote-card .importance {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding-top: 0.75rem;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--primary);
+}
+.action-card h3 {
+  font-size: 1.05rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .purpose {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.action-card .effect {
+  font-size: 0.85rem;
+  background: #f0f0f0;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.relation-diagram {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.relation-diagram h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+.relation-item {
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  background: linear-gradient(90deg, #667eea11, transparent);
+  border-left: 3px solid var(--primary);
+  border-radius: 4px;
+}
+.book-list {
+  display: grid;
+  gap: 1rem;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  gap: 1rem;
+  align-items: start;
+}
+.book-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+.book-info h4 {
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+}
+.book-info .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-info .relation {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    font-size: 0.85rem;
+  }
+  .tab-btn {
+    padding: 0.6rem 0.8rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 無意識の心理学</h1>
+  <p>C・G・ユング - 象徴と元型で読み解く心の全体性</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>💡 核心メッセージ</h2>
+    <p>人間の心は個人的無意識と集合的無意識から成り、元型が象徴として顕れる。夢や神話に表れる象徴を解釈し、意識と無意識を統合することで、人格は全体性（個性化）へ向かう。</p>
+  </div>
+
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜ私たちは自分でも理解しがたい思考・感情・行動に突き動かされるのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      <p>意識を超えた無意識、特に集合的無意識にある元型的パターンが象徴を通じて働き、個人の体験を超えた力が心を方向づけるから。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>夢・神話・宗教・民話に共通モチーフ（元型）が反復出現し、文化や個人差を超えて同型の象徴が意味づけを導く事例が豊富に観察されるため。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>夢分析と象徴解釈、拡充法で個別のイメージを神話・民話・宗教資料に照合し、コンプレックスの核にある元型的意味を見出して意識へ統合する（個性化）。</p>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true">主要概念</button>
+    <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false">各章の要約</button>
+    <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false">具体例</button>
+    <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false">重要な引用</button>
+    <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false">今日のアクション</button>
+  </nav>
+
+  <div id="concepts" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🗂️ 個人的無意識</h3>
+        <ul>
+          <li>個人の忘却・抑圧された体験や感情の貯蔵域</li>
+          <li>自伝的素材が主で、コンプレックスとして組織化</li>
+          <li>一言要約：私的な影の倉庫</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>個人史の未解決部分が行動を自律的に左右するため、自己理解の出発点となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌍 集合的無意識</h3>
+        <ul>
+          <li>人類共通の心理的基盤</li>
+          <li>個人経験に先立つ普遍的パターン（元型）を内蔵</li>
+          <li>一言要約：こころの普遍階層</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>文化を超えた共通象徴の存在を説明し、個人を超えた意味の源泉を示す。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🏛️ 元型</h3>
+        <ul>
+          <li>反復的に現れる普遍的イメージや行動様式の型</li>
+          <li>象徴や物語モチーフとして表出</li>
+          <li>一言要約：心の設計図</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>神話・夢・宗教に共通パターンを与え、象徴解釈の鍵となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔗 コンプレックス</h3>
+        <ul>
+          <li>感情価を帯びた観念の集合</li>
+          <li>意識を攪乱する自律性をもつ</li>
+          <li>一言要約：感情の結節点</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>無意識が意識に介入する具体的メカニズムを示し、治療の標的となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎨 象徴</h3>
+        <ul>
+          <li>未知の心的内容を最適に表す多義的イメージ</li>
+          <li>単なる徴候ではなく意味を生成</li>
+          <li>一言要約：意味を生む像</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>還元主義を超え、拡充法による多層的解釈を可能にする。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚖️ 夢の補償機能</h3>
+        <ul>
+          <li>夢が意識の偏りを是正</li>
+          <li>無意識の観点を提示して全体性へ調整</li>
+          <li>一言要約：心のバランサー</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>夢を単なる願望充足でなく、自己調整システムとして位置づける。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌱 個性化</h3>
+        <ul>
+          <li>意識と無意識の諸側面を統合</li>
+          <li>シャドウ、アニマ/アニムス等を統合</li>
+          <li>一言要約：全体への道</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>心理療法の最終目標であり、人格の成熟と全体性獲得を示す。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌑 シャドウ</h3>
+        <ul>
+          <li>自我が拒否・未発達の特性の集合</li>
+          <li>対峙と統合が成熟の第一段階</li>
+          <li>一言要約：否認された自分</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>投影を回収し自己受容を促す、個性化の入口となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>👤 アニマ／アニムス</h3>
+        <ul>
+          <li>異性像の元型</li>
+          <li>感情・関係性（アニマ）や意見・原理性（アニムス）</li>
+          <li>一言要約：内なる異性像</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>関係性と内的対話の質を左右し、自我の柔軟性を高める。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚡ リビドー</h3>
+        <ul>
+          <li>心の一般的エネルギー概念</li>
+          <li>性的に還元されず、象徴変換を通じ多様に表現</li>
+          <li>一言要約：変換する心力</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>フロイトの性的還元を超え、創造性や症状の多様性を説明する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔍 拡充法</h3>
+        <ul>
+          <li>夢像を神話・宗教・民話・芸術の並行モチーフで広げる</li>
+          <li>象徴の意味圏を照射する技法</li>
+          <li>一言要約：文脈で拡げる解釈</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>個別夢像を文化的文脈に位置づけ、元型的意味を同定する実践手法。
+        </div>
+      </div>
+    </div>
+
+    <div class="relation-diagram">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="relation-item">集合的無意識 → 元型 → 象徴として表出 → 夢・神話・創作に顕在化</div>
+      <div class="relation-item">個人的体験 × 感情価 → コンプレックス形成 → 行動・認知を自律的に攪乱</div>
+      <div class="relation-item">意識の偏り ←→ 夢の補償機能：偏りが強いほど補償的象徴が強く現れる</div>
+      <div class="relation-item">シャドウ対峙 → 投影の回収 → 自己理解の深化 → 個性化が進行</div>
+      <div class="relation-item">アニマ/アニムスの統合 → 関係性と内的対話の成熟 → 自我の柔軟性向上</div>
+      <div class="relation-item">拡充法の適用 → 個別夢像の文化的文脈化 → 元型的意味の同定</div>
+      <div class="relation-item">リビドーの象徴変換 → 症状や創造性として現れる → 解釈と統合で形を変える</div>
+    </div>
+  </div>
+
+  <div id="chapters" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 第1章：問題提起</h3>
+      <ul>
+        <li>フロイト的還元（性的原因論）だけでは夢や神話の多義的意味を捉えきれない</li>
+        <li>象徴の多層性と文化横断的反復を説明する新たな枠組みが必要</li>
+        <li>無意識を性的エネルギーに限定せず、より広い心的エネルギー概念へ</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>還元主義の限界を示し、象徴解釈の射程を拡げる必要性を明確化するため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📖 第2章：理論枠組</h3>
+      <ul>
+        <li>心の層構造：意識／個人的無意識／集合的無意識</li>
+        <li>リビドーを一般的心的エネルギーとして再定義</li>
+        <li>元型概念の導入：普遍的パターンとしての心的構造</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>以降の実証と解釈の基盤となる理論的枠組みを提供するため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📖 第3章：実証素材</h3>
+      <ul>
+        <li>夢・神話・宗教・民話・錬金術的イメージを比較</li>
+        <li>反復モチーフ（元型）の存在を豊富な事例で示す</li>
+        <li>文化・時代を超えた象徴の共通性を実証</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>集合的無意識と元型の存在を経験的に裏づけ、理論の妥当性を示すため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📖 第4章：メカニズム説明</h3>
+      <ul>
+        <li>コンプレックスの自律性：感情価が意識を攪乱する仕組み</li>
+        <li>夢の補償機能：意識の偏りを是正する無意識の働き</li>
+        <li>象徴生成と変換過程：リビドーが多様な形で表現される道筋</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>無意識が意識に作用する具体的プロセスを明らかにし、治療介入の根拠を与えるため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📖 第5章：方法論</h3>
+      <ul>
+        <li>拡充法による解釈手順：個人連想→文化的並行→全体像の仮説→生活への適用</li>
+        <li>夢分析の実践技法：補償機能を前提とした読み解き</li>
+        <li>象徴の多義性を尊重し、一義的還元を避ける姿勢</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>理論を実践に橋渡しし、臨床家や自己探求者が使える具体的手法を提供するため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📖 第6章：発達と倫理</h3>
+      <ul>
+        <li>シャドウとの対峙：投影の回収と自己受容</li>
+        <li>アニマ/アニムスとの対話：関係性と内的対話の成熟</li>
+        <li>自己の中心への接近（個性化）を目標化</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>心理療法の最終目標を示し、人格の全体性獲得という倫理的方向性を明確にするため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>📖 第7章：結語</h3>
+      <ul>
+        <li>無意識の理解と統合が病理軽減のみならず創造性・意味・全体性の獲得に資する</li>
+        <li>個性化は生涯にわたる発達課題であり、完結しない過程</li>
+        <li>象徴と元型の理解は、現代人の意味喪失に対する処方箋となる</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>本書の実践的・倫理的意義を総括し、読者に継続的探求を促すため。
+      </div>
+    </div>
+  </div>
+
+  <div id="examples" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🌊 例1：洪水の夢</h3>
+      <div class="meta">背景：意識が過度に合理的・統制的な患者</div>
+      <p><strong>内容：</strong>患者が洪水に飲み込まれる夢を繰り返し見る。拡充法で洪水を神話（ノアの箱舟、ギルガメシュ叙事詩）と照合すると、「古い秩序の破壊と再生」の元型的モチーフが浮上。</p>
+      <p><strong>示唆：</strong>意識の過剰統制が無意識の圧力を高め、補償的に「破壊と再生」の象徴が現れた。統合により患者は柔軟性を取り戻す。</p>
+      <div class="reason">
+        <strong>理由：</strong>夢の補償機能と拡充法の実践例として、元型的意味の同定プロセスを具体的に示す。
+      </div>
+    </div>
+    <div class="example-card">
+      <h3>🐉 例2：ドラゴンとの戦い</h3>
+      <div class="meta">背景：英雄神話の普遍モチーフ</div>
+      <p><strong>内容：</strong>世界中の神話（ゲオルギオス、ジークフリート、スサノオ等）に「英雄が怪物（ドラゴン）を倒す」物語が反復。心理的には「自我が無意識の脅威（シャドウ）と対峙し統合する」過程の象徴。</p>
+      <p><strong>示唆：</strong>個性化の第一段階（シャドウ統合）が文化を超えた普遍的物語として語られる。</p>
+      <div class="reason">
+        <strong>理由：</strong>集合的無意識と元型の存在を、文化横断的な神話比較で実証する代表例。
+      </div>
+    </div>
+    <div class="example-card">
+      <h3>🔮 例3：錬金術の象徴</h3>
+      <div class="meta">背景：中世錬金術のイメージ体系</div>
+      <p><strong>内容：</strong>錬金術師が金属を「浄化・変容・統合」する過程は、心理的には「無意識素材を意識化し統合する」個性化の比喩。賢者の石は「全体的自己」の象徴。</p>
+      <p><strong>示唆：</strong>外的な化学操作に投影された内的変容プロセスを読み解くことで、象徴の多層性と元型的意味が明らかになる。</p>
+      <div class="reason">
+        <strong>理由：</strong>象徴が外的現象に投影される仕組みと、拡充法による意味回収の実例を示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="quotes" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>無意識を意識化しない限り、それは人生を方向づけ、運命と呼ばれてしまう。</p>
+      <div class="importance">
+        <strong>重要性：</strong>統合の必要性を端的に示し、本書の実践的目標（意識化）を明確にする。
+      </div>
+    </div>
+    <div class="quote-card">
+      <p>夢は願望充足だけでなく、意識の偏りを補償する機能をもつ。</p>
+      <div class="importance">
+        <strong>重要性：</strong>夢解釈の射程を拡げ、治療・自己理解の中核メカニズムを示す。
+      </div>
+    </div>
+    <div class="quote-card">
+      <p>象徴は未知のものを最善に表す言葉であり、一義的な徴候ではない。</p>
+      <div class="importance">
+        <strong>重要性：</strong>還元主義を退け、拡充法による多層的解釈の必然性を裏づける。
+      </div>
+    </div>
+  </div>
+
+  <div id="actions" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>✍️ 昨夜の夢を3点メモし連想を書く</h3>
+      <div class="purpose"><strong>目的：</strong>夢の記録習慣を開始し、無意識との対話の入口を開く</div>
+      <div class="effect"><strong>期待効果：</strong>夢の補償機能を体感し、意識の偏りに気づく手がかりを得る。継続により象徴パターンが見えてくる。</div>
+    </div>
+    <div class="action-card">
+      <h3>🌑 今日の感情を影として1行記す</h3>
+      <div class="purpose"><strong>目的：</strong>否認・抑圧している感情（シャドウ）を意識化する</div>
+      <div class="effect"><strong>期待効果：</strong>投影を回収し自己受容が進む。他者への過剰反応が減り、関係性が改善する。</div>
+    </div>
+    <div class="action-card">
+      <h3>🎨 身近な象徴を3つ描き意味を書く</h3>
+      <div class="purpose"><strong>目的：</strong>日常の象徴に気づき、拡充法の感覚を養う</div>
+      <div class="effect"><strong>期待効果：</strong>象徴の多義性を体感し、無意識のメッセージを受け取る感受性が高まる。創造性の源泉にアクセスできる。</div>
+    </div>
+  </div>
+
+  <div style="margin-top:3rem;">
+    <h2 style="font-size:1.3rem; color:var(--primary); margin-bottom:1rem;">📚 関連書籍</h2>
+    <div class="book-list">
+      <div class="book-item">
+        <div class="book-icon">📘</div>
+        <div class="book-info">
+          <h4>自我と無意識</h4>
+          <div class="author">C・G・ユング</div>
+          <div class="relation">個性化や無意識の統合手順をさらに体系化。</div>
+        </div>
+      </div>
+      <div class="book-item">
+        <div class="book-icon">📕</div>
+        <div class="book-info">
+          <h4>元型と集合的無意識</h4>
+          <div class="author">C・G・ユング</div>
+          <div class="relation">本書の中核概念（元型・集合的無意識）を詳細展開。</div>
+        </div>
+      </div>
+      <div class="book-item">
+        <div class="book-icon">📗</div>
+        <div class="book-info">
+          <h4>人間と象徴</h4>
+          <div class="author">C・G・ユング他</div>
+          <div class="relation">象徴解釈と夢分析を一般読者向けに図解・事例化。</div>
+        </div>
+      </div>
+      <div class="book-item">
+        <div class="book-icon">📙</div>
+        <div class="book-info">
+          <h4>夢判断</h4>
+          <div class="author">ジークムント・フロイト</div>
+          <div class="relation">還元的夢解釈の基礎。ユングの立場との比較で理解が深まる。</div>
+        </div>
+      </div>
+      <div class="book-item">
+        <div class="book-icon">📔</div>
+        <div class="book-info">
+          <h4>夢の解釈</h4>
+          <div class="author">マリー＝ルイーズ・フォン・フランツ</div>
+          <div class="relation">ユング派の夢分析技法と豊富な事例を提供。</div>
+        </div>
+      </div>
+      <div class="book-item">
+        <div class="book-icon">📓</div>
+        <div class="book-info">
+          <h4>千の顔をもつ英雄</h4>
+          <div class="author">ジョーゼフ・キャンベル</div>
+          <div class="relation">神話の普遍構造（元型的モチーフ）の比較研究。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab-btn');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    
+    tabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    contents.forEach(c => c.classList.remove('active'));
+    
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    document.getElementById(target).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
