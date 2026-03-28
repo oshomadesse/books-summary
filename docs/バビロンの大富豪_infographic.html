@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>バビロンの大富豪 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー=#667eea セカンダリー=#f093fb アクセント=#feca57 -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #f093fb;
+  --accent: #feca57;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  color: var(--primary);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+}
+
+.summary-item strong {
+  color: var(--primary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.tab-button {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+
+.tab-button:hover {
+  border-color: var(--primary);
+}
+
+.tab-button.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.card-icon {
+  font-size: 2rem;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary);
+  flex: 1;
+}
+
+.card-content ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card-content li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.card-content li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--primary);
+}
+
+.reason-box strong {
+  color: var(--primary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.chapter-number {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.chapter-title {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(240,147,251,0.05));
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+.quote-text {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+}
+
+.quote-text:before {
+  content: """;
+  font-size: 2rem;
+  color: var(--accent);
+  line-height: 0;
+}
+
+.quote-text:after {
+  content: """;
+  font-size: 2rem;
+  color: var(--accent);
+  line-height: 0;
+}
+
+.quote-reason {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+}
+
+.action-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-top: 4px solid var(--accent);
+}
+
+.action-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+}
+
+.action-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.action-detail {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.stat-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  margin: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.visual-flow {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  margin: 2rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.flow-icon {
+  font-size: 1.5rem;
+  min-width: 2rem;
+}
+
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--primary);
+}
+
+.book-title {
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.book-author {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.book-relation {
+  font-size: 0.9rem;
+  color: var(--text);
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .tab-button {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 バビロンの大富豪</h1>
+  <p class="subtitle">誰でも富を築ける普遍の原則</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>💡 核心メッセージ</h2>
+  <p style="font-size:1.1rem; font-weight:500; margin-bottom:1.5rem;">収入の一部を先取り貯蓄し、堅実に守り増やし、働く力を高め続ければ、誰でも富は築ける。</p>
+  
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>普通の人が確実に富を築く方法は何か？</p>
+  </div>
+  
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    <p>収入の一割を先取りして貯め、損失から守り、増やし続け、稼ぐ力を磨く習慣を積み重ねること。</p>
+  </div>
+  
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>富は偶然ではなく、普遍的な原則（貯蓄・節制・安全・運用・能力向上）に従った反復で生まれるから。</p>
+  </div>
+  
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>七つの治療法で家計を整え（先取り・支出統制・複利・安全・住居・老後・技能）、黄金の五法則で投資判断を律し（貯蓄家に集まる・正直で有能な者に従う・慎重を好む・未知を避ける・不可能を約す者を退ける）、寓話の失敗談でリスク回避を学ぶ。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-button active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color:var(--primary); margin-bottom:1.5rem; font-size:1.5rem;">🔑 主要概念の詳細</h2>
+  
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">💊</span>
+        <h3 class="card-title">やせた財布の七つの治療法</h3>
+      </div>
+      <div class="card-content">
+        <p style="margin-bottom:1rem; font-weight:500;">家計再建の7ステップ</p>
+        <ul>
+          <li>貯蓄・支出管理・運用の基礎を固める</li>
+          <li>リスク管理と持ち家で安定化</li>
+          <li>将来所得確保と技能向上で成長</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>家計を体系的に立て直す処方箋として、誰でも実行可能な具体手順を提供するため。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">💰</span>
+        <h3 class="card-title">先取り貯蓄（10%ルール）</h3>
+      </div>
+      <div class="card-content">
+        <p style="margin-bottom:1rem; font-weight:500;">まず自分に一割を支払え</p>
+        <ul>
+          <li>収入の10%を先に貯蓄口座へ</li>
+          <li>使う前に貯める仕組みを固定</li>
+          <li>残りの90%で生活を設計</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>可処分を先に減らす設計が唯一確実な貯蓄習慣を生み、資本の種を確実に形成するため。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">📊</span>
+        <h3 class="card-title">支出を予算化せよ</h3>
+      </div>
+      <div class="card-content">
+        <p style="margin-bottom:1rem; font-weight:500;">欲望より優先順位</p>
+        <ul>
+          <li>すべての欲望に支出しない</li>
+          <li>必要と価値ある支出を選別</li>
+          <li>優先順位を付けて上限内に収める</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>無制限の欲望は収入を超えるため、意識的な選択で貯蓄率を守る必要があるから。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">📈</span>
+        <h3 class="card-title">黄金を増やせ（複利）</h3>
+      </div>
+      <div class="card-content">
+        <p style="margin-bottom:1rem; font-weight:500;">安全に回して増やす</p>
+        <ul>
+          <li>貯めた資金を安全な案件に投資</li>
+          <li>理解可能な投資先を選ぶ</li>
+          <li>利益を再投資して増殖させる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>複利の力で時間とともに資産が加速度的に成長し、労働収入を超える富を生むため。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🛡️</span>
+        <h3 class="card-title">損失から守れ（資本保全）</h3>
+      </div>
+      <div class="card-content">
+        <p style="margin-bottom:1rem; font-weight:500;">失わないが最優先</p>
+        <ul>
+          <li>本質を理解しない投機を避ける</li>
+          <li>過大リターンの甘言を退ける</li>
+          <li>信頼できる助言者を用いる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>一度の大損失が複利を破壊し、回復に膨大な時間を要するため、保全が最優先だから。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🏠</span>
+        <h3 class="card-title">住まいを有利な投資に</h3>
+      </div>
+      <div class="card-content">
+        <p style="margin-bottom:1rem; font-weight:500;">住居は家計の土台</p>
+        <ul>
+          <li>過度な家賃負担を避ける</li>
+          <li>持ち家で住居コストを最適化</li>
+          <li>家計の土台を安定させる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>住居費は固定費の最大項目であり、最適化が貯蓄率と生活の質を同時に高めるため。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🔮</span>
+        <h3 class="card-title">将来の所得を確保</h3>
+      </div>
+      <div class="card-content">
+        <p style="margin-bottom:1rem; font-weight:500;">未来の収入を用意</p>
+        <ul>
+          <li>保険・年金で老後に備える</li>
+          <li>長期積立でキャッシュフロー確保</li>
+          <li>不測の事態への準備</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>労働収入が途絶えた後も生活を維持し、長期投資を継続できる安心感を得るため。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">💪</span>
+        <h3 class="card-title">稼ぐ力を高めよ</h3>
+      </div>
+      <div class="card-content">
+        <p style="margin-bottom:1rem; font-weight:500;">人的資本を強化</p>
+        <ul>
+          <li>技能習得で専門性を磨く</li>
+          <li>信用と勤勉さを積み上げる</li>
+          <li>所得の伸びしろを継続拡大</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>人的資本の向上が収入増加を生み、貯蓄率と投資額を同時に拡大する最強のレバレッジだから。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">⚖️</span>
+        <h3 class="card-title">黄金の五法則</h3>
+      </div>
+      <div class="card-content">
+        <p style="margin-bottom:1rem; font-weight:500;">お金の重力法則</p>
+        <ul>
+          <li>貯蓄家に金は集まる</li>
+          <li>賢明な運用に従う者を助ける</li>
+          <li>慎重な者を守り、未知を避け、甘言を退ける</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>資本の性質と運用原理を示し、投資判断の規律を提供する普遍的な指針だから。
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">⚠️</span>
+        <h3 class="card-title">借金の罠</h3>
+      </div>
+      <div class="card-content">
+        <p style="margin-bottom:1rem; font-weight:500;">高利負債は最優先で回避</p>
+        <ul>
+          <li>高利の負債は可処分所得を蝕む</li>
+          <li>返済計画と節制で抜け出す</li>
+          <li>信用回復が次の機会を生む</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>負債の利息が複利の逆回転を起こし、貯蓄・投資の余力を恒常的に奪うため。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-flow">
+    <h3 style="color:var(--primary); margin-bottom:1.5rem; text-align:center;">🔄 概念間の関係性</h3>
+    <div class="flow-item">
+      <span class="flow-icon">💰</span>
+      <div style="flex:1;">
+        <strong>先取り貯蓄(10%)</strong> → 資本の種形成
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-item">
+      <span class="flow-icon">🛡️</span>
+      <div style="flex:1;">
+        <strong>安全な運用</strong> → 損失回避でドローダウン抑制
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-item">
+      <span class="flow-icon">📈</span>
+      <div style="flex:1;">
+        <strong>複利・再投資</strong> → 資産成長の加速
+      </div>
+    </div>
+    <div class="flow-arrow">↓</div>
+    <div class="flow-item">
+      <span class="flow-icon">💪</span>
+      <div style="flex:1;">
+        <strong>人的資本向上</strong> → 収入増加 → 貯蓄率と投資額の同時拡大
+      </div>
+    </div>
+    <div style="margin-top:1.5rem; padding:1rem; background:rgba(102,126,234,0.1); border-radius:0.5rem;">
+      <strong style="color:var(--primary);">補完関係：</strong>
+      <ul style="margin-top:0.5rem; padding-left:1.5rem;">
+        <li>支出予算化 → 無駄削減 → 追加貯蓄率↑</li>
+        <li>将来所得確保(保険・年金) → リスク耐性↑ → 長期投資継続性↑</li>
+        <li>借金管理(高利回避) → キャッシュフロー改善 → 貯蓄・投資余力↑</li>
+        <li>黄金の五法則(原理) ←規律→ 七つの治療法(実行手順)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color:var(--primary); margin-bottom:1.5rem; font-size:1.5rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <span class="chapter-number">導入</span>
+    <h3 class="chapter-title">貧しい職人たちとアルカド</h3>
+    <p style="margin-bottom:1rem;"><strong>要点：</strong>最も富んだ男アルカドが、求める者には富の法則を教えると宣言。</p>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+      <li>問題提起：なぜ自分は貧しいのか</li>
+      <li>師の登場：富の秘訣を知る者</li>
+      <li>学びの場が開かれる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（なぜこの章が必要か）：</strong>読者に自身の状況を問い直させ、富は偶然ではなく学べる原則であることを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <span class="chapter-number">第1章</span>
+    <h3 class="chapter-title">やせた財布の七つの治療法</h3>
+    <p style="margin-bottom:1rem;"><strong>要点：</strong>家計改善の7手順で、貯める・守る・増やす・備える・稼ぐを具体化。</p>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+      <li>現金管理の基礎（先取り貯蓄）</li>
+      <li>支出統制（予算化）</li>
+      <li>投資（複利運用）</li>
+      <li>リスク管理（資本保全）</li>
+      <li>将来準備（保険・年金）</li>
+      <li>能力開発（人的資本）</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）：</strong>富の構築は単一の行動ではなく、体系的な7つの習慣の積み重ねで実現するという実行可能な処方箋を提供するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <span class="chapter-number">第2章</span>
+    <h3 class="chapter-title">黄金の五法則</h3>
+    <p style="margin-bottom:1rem;"><strong>要点：</strong>資本の性質と運用原理を物語形式で提示。</p>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+      <li>貯蓄家に金は集まる</li>
+      <li>有能な助言に従う者を助ける</li>
+      <li>慎重さが資本を守る</li>
+      <li>無知な投資を避ける</li>
+      <li>甘言を約束する者を退ける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）：</strong>資本には重力のような普遍法則があり、それに従う者だけが富を保持・増大できることを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <span class="chapter-number">第3章</span>
+    <h3 class="chapter-title">金貸し・商人の寓話（損失と信用）</h3>
+    <p style="margin-bottom:1rem;"><strong>要点：</strong>安易な投資と信用の危うさ、相手の専門性と担保の重要性を示す。</p>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+      <li>失敗談：無知と強欲による損失</li>
+      <li>原因分析：専門外への投資</li>
+      <li>再発防止策：専門家の助言と安全域</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）：</strong>実際の失敗事例から学ぶことで、理論だけでは防げないリスクを体感的に理解させるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <span class="chapter-number">第4章</span>
+    <h3 class="chapter-title">バビロンの城壁（備えの価値）</h3>
+    <p style="margin-bottom:1rem;"><strong>要点：</strong>危機は必ず来るため、壁=備えが繁栄を守るという比喩。</p>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+      <li>脅威の想定：危機は避けられない</li>
+      <li>事前準備：保険・緊急資金</li>
+      <li>被害最小化：備えが損失を防ぐ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）：</strong>富の構築だけでなく、それを守る防御の仕組みが不可欠であることを比喩で印象づけるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <span class="chapter-number">第5章</span>
+    <h3 class="chapter-title">負債からの再起（返済計画）</h3>
+    <p style="margin-bottom:1rem;"><strong>要点：</strong>収入配分ルールで借金を雪だるま式に返す方法。</p>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+      <li>現状把握：負債の全体像を可視化</li>
+      <li>返済優先順位：高利から順に</li>
+      <li>規律運用：収入の一定割合を返済に</li>
+      <li>信用回復：次の機会を生む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）：</strong>負債に苦しむ者でも、規律ある計画で再起可能であることを示し、希望と実行手順を提供するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <span class="chapter-number">結語</span>
+    <h3 class="chapter-title">習慣と時間</h3>
+    <p style="margin-bottom:1rem;"><strong>要点：</strong>小さな規律の反復が時間とともに大きな富へ。</p>
+    <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+      <li>原理の再確認：普遍法則の存在</li>
+      <li>習慣化の勧め：日々の小さな行動</li>
+      <li>行動への号令：今日から始めよ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）：</strong>知識だけでは富は築けず、習慣化と時間の複利が成功の鍵であることを最後に強調するため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color:var(--primary); margin-bottom:1.5rem; font-size:1.5rem;">💼 具体例</h2>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">🏺</span>
+      <h3 class="card-title">例1：アルカドの先取り貯蓄</h3>
+    </div>
+    <div class="card-content">
+      <p style="margin-bottom:1rem;"><strong>背景：</strong></p>
+      <p style="margin-bottom:1rem;">アルカドは若い頃、粘土板の筆記者として働いていた。ある日、富豪から「収入の一割を自分に支払え」という助言を受け、それを実践し始めた。</p>
+      
+      <p style="margin-bottom:1rem;"><strong>実践内容：</strong></p>
+      <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+        <li>収入の10%を必ず貯蓄用の壺に入れる</li>
+        <li>残りの90%で生活を設計</li>
+        <li>貯まった資金を安全な投資に回す</li>
+      </ul>
+      
+      <p style="margin-bottom:1rem;"><strong>示唆：</strong></p>
+      <p style="margin-bottom:1rem;">時間とともに貯蓄が増え、投資からの収益が生活費を上回るようになり、バビロン一の富豪となった。</p>
+      
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>先取り貯蓄という単純な習慣が、時間と複利の力で誰でも富を築ける基盤になることを実証している。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">⚠️</span>
+      <h3 class="card-title">例2：宝石商の失敗（無知な投資）</h3>
+    </div>
+    <div class="card-content">
+      <p style="margin-bottom:1rem;"><strong>背景：</strong></p>
+      <p style="margin-bottom:1rem;">ある宝石商が、レンガ職人から「砂漠を越える隊商で宝石を仕入れれば大儲けできる」と持ちかけられ、全財産を投じた。</p>
+      
+      <p style="margin-bottom:1rem;"><strong>実践内容：</strong></p>
+      <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+        <li>レンガ職人は宝石の目利きができない</li>
+        <li>持ち帰った「宝石」は価値のないガラス玉</li>
+        <li>全財産を失う</li>
+      </ul>
+      
+      <p style="margin-bottom:1rem;"><strong>示唆：</strong></p>
+      <p style="margin-bottom:1rem;">専門外の者に資金を託すことの危険性と、自分が理解できない投資を避ける重要性を痛感した。</p>
+      
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>高リターンの甘言に惑わされず、専門性と安全域を確認する慎重さが資本保全の核心であることを示している。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">🏛️</span>
+      <h3 class="card-title">例3：バビロンの城壁（備えの比喩）</h3>
+    </div>
+    <div class="card-content">
+      <p style="margin-bottom:1rem;"><strong>背景：</strong></p>
+      <p style="margin-bottom:1rem;">バビロンは強固な城壁に守られ、何度も外敵の侵攻を退けてきた。城壁がなければ、繁栄は一夜にして失われていた。</p>
+      
+      <p style="margin-bottom:1rem;"><strong>実践内容：</strong></p>
+      <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+        <li>城壁=保険・緊急資金・リスク管理</li>
+        <li>危機は必ず来ると想定</li>
+        <li>事前準備で被害を最小化</li>
+      </ul>
+      
+      <p style="margin-bottom:1rem;"><strong>示唆：</strong></p>
+      <p style="margin-bottom:1rem;">富を築くだけでなく、それを守る防御の仕組みが不可欠。備えがあれば、危機を乗り越えて繁栄を継続できる。</p>
+      
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>攻め（投資）だけでなく守り（保険・リスク管理）が富の持続に不可欠であることを、視覚的な比喩で印象づけている。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">🔄</span>
+      <h3 class="card-title">例4：負債からの再起（返済計画）</h3>
+    </div>
+    <div class="card-content">
+      <p style="margin-bottom:1rem;"><strong>背景：</strong></p>
+      <p style="margin-bottom:1rem;">ある商人が事業失敗で多額の借金を抱え、債権者に追われる日々を送っていた。</p>
+      
+      <p style="margin-bottom:1rem;"><strong>実践内容：</strong></p>
+      <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+        <li>収入の70%で生活、20%を返済、10%を貯蓄</li>
+        <li>債権者に計画を説明し理解を得る</li>
+        <li>規律を守り続ける</li>
+      </ul>
+      
+      <p style="margin-bottom:1rem;"><strong>示唆：</strong></p>
+      <p style="margin-bottom:1rem;">数年後、すべての借金を返済し、信用を回復。再び事業を始め、今度は成功を収めた。</p>
+      
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>負債に苦しむ者でも、規律ある計画と実行で再起可能であり、信用回復が次の機会を生むことを実証している。
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color:var(--primary); margin-bottom:1.5rem; font-size:1.5rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">まず自分に一割を支払え。</p>
+    <p class="quote-reason"><strong>なぜ重要か：</strong>可処分を先に減らす設計が唯一確実な貯蓄習慣を生むから。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">黄金は貯蓄と賢明な持ち主に流れる。</p>
+    <p class="quote-reason"><strong>なぜ重要か：</strong>資本は規律と判断力に集まるという重力を示す。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">理解せぬ事業に金を投ずるな。</p>
+    <p class="quote-reason"><strong>なぜ重要か：</strong>無知リスクの回避が長期の複利を守る核心だから。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">小さな出費を制せよ。</p>
+    <p class="quote-reason"><strong>なぜ重要か：</strong>微小な漏れが貯蓄率を恒常的に蝕むため。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">幸運は機会に備えた者に味方する。</p>
+    <p class="quote-reason"><strong>なぜ重要か：</strong>準備と行動の反復が偶然を必然に変えるから。</p>
+  </div>
+
+  <div style="background:linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1)); padding:1.5rem; border-radius:0.75rem; margin-top:2rem;">
+    <h3 style="color:var(--primary); margin-bottom:1rem;">📌 引用の共通テーマ</h3>
+    <p>これらの引用は、富の構築が偶然ではなく、<strong>規律・慎重さ・準備・理解</strong>という普遍的な原則に従った反復で実現することを一貫して示している。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color:var(--primary); margin-bottom:1.5rem; font-size:1.5rem;">🎯 今日のアクション</h2>
+  <p style="margin-bottom:2rem; color:var(--text-light);">読後すぐに15〜30分で実行できる具体的な行動</p>
+
+  <div class="action-card">
+    <div class="action-number">1</div>
+    <h3 class="action-title">💰 収入の10%を貯蓄用口座へ移す</h3>
+    <p class="action-detail"><strong>目的：</strong>先取り貯蓄の仕組みを即座に開始し、資本の種を形成する。</p>
+    <p class="action-detail"><strong>期待効果：</strong>貯蓄習慣が固定化され、時間とともに投資原資が自動的に積み上がる。</p>
+    <div style="margin-top:1rem; padding:1rem; background:rgba(254,202,87,0.2); border-radius:0.5rem;">
+      <strong>具体的手順：</strong>
+      <ol style="padding-left:1.5rem; margin-top:0.5rem;">
+        <li>今月の収入額を確認</li>
+        <li>10%を計算（例：月収30万円なら3万円）</li>
+        <li>貯蓄専用口座に即座に移動</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-number">2</div>
+    <h3 class="action-title">📊 支出を必需/快楽/浪費で3分類</h3>
+    <p class="action-detail"><strong>目的：</strong>支出の優先順位を可視化し、削減可能な項目を特定する。</p>
+    <p class="action-detail"><strong>期待効果：</strong>無駄な支出を削減し、貯蓄率を追加で2〜5%向上させる。</p>
+    <div style="margin-top:1rem; padding:1rem; background:rgba(254,202,87,0.2); border-radius:0.5rem;">
+      <strong>具体的手順：</strong>
+      <ol style="padding-left:1.5rem; margin-top:0.5rem;">
+        <li>先月の支出明細を用意</li>
+        <li>各項目を「必需（家賃・食費）」「快楽（趣味・外食）」「浪費（衝動買い）」に分類</li>
+        <li>浪費項目を削減対象としてマーク</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-number">3</div>
+    <h3 class="action-title">🔄 積立用自動振替を設定</h3>
+    <p class="action-detail"><strong>目的：</strong>貯蓄を自動化し、意志力に頼らない仕組みを構築する。</p>
+    <p class="action-detail"><strong>期待効果：</strong>貯蓄の継続性が劇的に向上し、複利の力を最大化できる。</p>
+    <div style="margin-top:1rem; padding:1rem; background:rgba(254,202,87,0.2); border-radius:0.5rem;">
+      <strong>具体的手順：</strong>
+      <ol style="padding-left:1.5rem; margin-top:0.5rem;">
+        <li>銀行のオンラインバンキングにログイン</li>
+        <li>給料日翌日に自動振替を設定（収入の10%）</li>
+        <li>振替先を貯蓄専用口座に指定</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-number">4</div>
+    <h3 class="action-title">📚 投資の基礎を15分学ぶ</h3>
+    <p class="action-detail"><strong>目的：</strong>「理解せぬ事業に金を投ずるな」の原則に従い、投資知識の土台を築く。</p>
+    <p class="action-detail"><strong>期待効果：</strong>無知リスクを減らし、安全な投資判断の基礎を得る。</p>
+    <div style="margin-top:1rem; padding:1rem; background:rgba(254,202,87,0.2); border-radius:0.5rem;">
+      <strong>具体的手順：</strong>
+      <ol style="padding-left:1.5rem; margin-top:0.5rem;">
+        <li>「インデックス投資」「複利」「分散投資」をWeb検索</li>
+        <li>各用語の定義を1分ずつ読む</li>
+        <li>理解した内容をメモに残す</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-number">5</div>
+    <h3 class="action-title">🛡️ 緊急資金の目標額を設定</h3>
+    <p class="action-detail"><strong>目的：</strong>「バビロンの城壁」を築き、不測の事態への備えを明確化する。</p>
+    <p class="action-detail"><strong>期待効果：</strong>リスク耐性が向上し、長期投資を継続できる安心感を得る。</p>
+    <div style="margin-top:1rem; padding:1rem; background:rgba(254,202,87,0.2); border-radius:0.5rem;">
+      <strong>具体的手順：</strong>
+      <ol style="padding-left:1.5rem; margin-top:0.5rem;">
+        <li>月間生活費を計算（例：25万円）</li>
+        <li>3〜6ヶ月分を目標額に設定（例：75〜150万円）</li>
+        <li>達成までの期間と月額を逆算</li>
+      </ol>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg, var(--primary), var(--secondary)); color:white; padding:2rem; border-radius:0.75rem; margin-top:2rem; text-align:center;">
+    <h3 style="font-size:1.5rem; margin-bottom:1rem;">🚀 今日から始めよう</h3>
+    <p style="font-size:1.1rem; opacity:0.95;">小さな規律の反復が、時間とともに大きな富へと変わる。行動こそが唯一の道である。</p>
+  </div>
+</div>
+
+<div style="margin-top:3rem; padding:2rem; background:var(--card-bg); border-radius:0.75rem; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+  <h2 style="color:var(--primary); margin-bottom:1.5rem; font-size:1.5rem;">📚 関連書籍</h2>
+  
+  <div class="book-card">
+    <div class="book-title">金持ち父さん 貧乏父さん</div>
+    <div class="book-author">著者：ロバート・T・キヨサキ</div>
+    <div class="book-relation">先取り貯蓄と資産思考を現代家庭の文脈で拡張。</div>
+  </div>
+
+  <div class="book-card">
+    <div class="book-title">隣の億万長者</div>
+    <div class="book-author">著者：トマス・J・スタンリー／ウィリアム・D・ダンコ</div>
+    <div class="book-relation">倹約・支出統制が富の主要因であることをデータで裏付け。</div>
+  </div>
+
+  <div class="book-card">
+    <div class="book-title">オートマチック・ミリオネア</div>
+    <div class="book-author">著者：デビッド・バック</div>
+    <div class="book-relation">先取り貯蓄と自動化により行動の継続性を高める実践書。</div>
+  </div>
+
+  <div class="book-card">
+    <div class="book-title">賢明なる投資家</div>
+    <div class="book-author">著者：ベンジャミン・グレアム</div>
+    <div class="book-relation">安全域と慎重な投資判断で"守る"原則を体系化。</div>
+  </div>
+
+  <div class="book-card">
+    <div class="book-title">7つの習慣</div>
+    <div class="book-author">著者：スティーブン・R・コヴィー</div>
+    <div class="book-relation">主体性と長期視点など、富を支える人格原則を補強。</div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// タブ切り替え機能
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const targetTab = button.getAttribute('data-tab');
+    
+    // すべてのタブとコンテンツから active クラスを削除
+    tabButtons.forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブとコンテンツに active クラスを追加
+    button.classList.add('active');
+    button.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+
+// スムーズスクロール
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
