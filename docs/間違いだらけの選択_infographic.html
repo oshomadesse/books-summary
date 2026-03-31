@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>間違いの雪だるま化を止める - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+.tab-btn {
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.quote-block {
+  background: linear-gradient(135deg, #f7fafc, #edf2f7);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-block strong {
+  display: block;
+  margin-top: 0.5rem;
+  font-style: normal;
+  color: var(--secondary);
+  font-size: 0.9rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 0.25rem;
+}
+.diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+.metric-box .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.metric-box .label {
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+.chapter-section {
+  margin-bottom: 1.5rem;
+}
+.chapter-section h3 {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+.chapter-section .reason {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+}
+.chapter-section .reason strong {
+  color: #856404;
+}
+.book-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.book-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 { font-size: 1.5rem; }
+  .tabs { flex-wrap: nowrap; }
+  .card-grid { grid-template-columns: 1fr; }
+  .metric-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 間違いの雪だるま化を止める</h1>
+  <p>認知的不協和と自己正当化のメカニズムを理解し、誤りを学習に変える</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約=問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ賢明な人でも誤りを重ね、深みにハマるのか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      認知的不協和が自尊心を脅かすと、自己正当化が作動し、記憶・判断・行動を歪めて誤りの連鎖（エスカレーション）を生むから。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      人は自分を「善い・有能・正しい」と一貫させたい。矛盾が生じると不協和低減のために、反証の無視、記憶の書き換え、責任転嫁が自動的に起こる。これが個人・組織・制度で同型的に発生し、冤罪や政策失敗、対人関係破綻を拡大する。
+    </div>
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      1) 反証主義の習慣（反対証拠を先に探す、決断ログ） 2) エスカレーションの域値を可視化（撤退条件の事前設定） 3) 記憶の再構成を前提に検証（第三者・記録で補強） 4) 早期の責任受容と修復的謝罪（行為と自分の同一化を緩める） 5) システム設計（インセンティブ、ピアレビュー、反対役の制度化）で、個人の美徳に頼らず不協和の歪みを減らす。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">🧠 主要概念の詳細</h2>
+    
+    <div class="metric-grid">
+      <div class="metric-box">
+        <span class="number">10</span>
+        <span class="label">核心概念</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">🔄</span>
+        <span class="label">連鎖メカニズム</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">⚠️</span>
+        <span class="label">自動的歪み</span>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>🧩 認知的不協和</h3>
+        <span class="badge">矛盾の不快</span>
+        <ul>
+          <li>自己像や信念と行動の不一致がもたらす不快感</li>
+          <li>人はこれを低減しようと情報や記憶を操作する</li>
+          <li>不協和が大きいほど正当化も強くなる</li>
+          <li><strong>理由:</strong> すべての自己正当化の出発点であり、誤りの連鎖を理解する鍵</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>⚙️ 自己正当化</h3>
+        <span class="badge">誤りの増幅器</span>
+        <ul>
+          <li>不協和を減らすために自分の選択・行為を合理化する心理過程</li>
+          <li>誤りの連鎖を生む主要因</li>
+          <li>無意識に作動し、客観性を失わせる</li>
+          <li><strong>理由:</strong> 誤り自体より、この正当化が被害を拡大する核心メカニズム</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>📐 選択のピラミッド</h3>
+        <span class="badge">少しの差が極端へ</span>
+        <ul>
+          <li>小さな分岐点の選択が、下るほど自己正当化で極端な立場に固定化される</li>
+          <li>最初は僅かな差でも、累積で大きな隔たりになる</li>
+          <li>引き返しが困難になる構造的罠</li>
+          <li><strong>理由:</strong> 初期介入の重要性と、なぜ対立が深まるかを視覚的に示す</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🔍 確証バイアス</h3>
+        <span class="badge">見たいものだけ見る</span>
+        <ul>
+          <li>既存の信念を支持する情報のみを集め、反証を無視する傾向</li>
+          <li>自己正当化を支援し、誤信念を強化する</li>
+          <li>専門家でも陥る普遍的な罠</li>
+          <li><strong>理由:</strong> 反証探索の習慣がなぜ必須かを説明する基礎</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🧠 記憶の再構成</h3>
+        <span class="badge">都合よく書換</span>
+        <ul>
+          <li>記憶は再生時に編集される</li>
+          <li>自分に都合よく書き換えられ、過去の自分を現在の自己像に合わせる</li>
+          <li>本人は書き換えに気づかない</li>
+          <li><strong>理由:</strong> 「覚えている」ことの信頼性を疑い、記録で補強する必要性を示す</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>📈 コミットメントのエスカレーション</h3>
+        <span class="badge">悪手に追い銭</span>
+        <ul>
+          <li>損失や誤りが明らかでも、過去投資を正当化して追加投入してしまう</li>
+          <li>サンクコストの誤謬と自己正当化の合体</li>
+          <li>個人・組織・国家レベルで発生</li>
+          <li><strong>理由:</strong> 撤退条件の事前設定がなぜ重要かを示す典型例</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🌫️ 道徳的漂白</h3>
+        <span class="badge">倫理の視界不良</span>
+        <ul>
+          <li>意思決定から道徳的側面が見えなくなる現象</li>
+          <li>問題の深刻さを感じにくくなる</li>
+          <li>組織文化や専門用語が倫理を覆い隠す</li>
+          <li><strong>理由:</strong> 制度設計で倫理を可視化する必要性を説明</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>👁️ バイアス・ブラインドスポット</h3>
+        <span class="badge">自分だけは例外</span>
+        <ul>
+          <li>他者の偏りは見抜けても自分の偏りは過小評価する</li>
+          <li>「自分は客観的」という錯覚</li>
+          <li>介入や修正を遅らせる</li>
+          <li><strong>理由:</strong> 第三者視点やピアレビューの制度化が必須である根拠</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>💥 過ちの二次被害</h3>
+        <span class="badge">隠すほど悪化</span>
+        <ul>
+          <li>誤り自体ではなく、その隠蔽・否認・責任転嫁によって被害が拡大</li>
+          <li>カバーアップが本体より深刻な結果を招く</li>
+          <li>信頼喪失と制度崩壊の主因</li>
+          <li><strong>理由:</strong> 早期の責任受容と透明性がなぜ最善策かを示す</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🤝 修復的謝罪</h3>
+        <span class="badge">関係を直す謝罪</span>
+        <ul>
+          <li>弁明よりも被害の把握・責任受容・具体的な是正策に焦点を当てる</li>
+          <li>自尊心を守りつつ学習を促す</li>
+          <li>信頼回復と再発防止の両立</li>
+          <li><strong>理由:</strong> 自己正当化の連鎖を断ち切る実践的技法</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <h3 style="margin-bottom:1rem;color:var(--secondary);">🔗 概念間の関係性</h3>
+      <div class="flow-item">矛盾の発生 <span class="flow-arrow">→</span> 認知的不協和↑ <span class="flow-arrow">→</span> 不快の低減欲求</div>
+      <div class="flow-item">不協和↓の手段として自己正当化 <span class="flow-arrow">→</span> 確証バイアス強化 <span class="flow-arrow">→</span> 反証無視</div>
+      <div class="flow-item">自己正当化 <span class="flow-arrow">→</span> 記憶の再構成 <span class="flow-arrow">→</span> 過去の自分が現在の正当化に従属</div>
+      <div class="flow-item">確証バイアス＋再構成記憶 <span class="flow-arrow">→</span> 誤信念の確信度↑ <span class="flow-arrow">→</span> エスカレーション</div>
+      <div class="flow-item">道徳的漂白＋制度のインセンティブ <span class="flow-arrow">→</span> 組織的不正・冤罪の固定化</div>
+      <div class="flow-item">バイアス・ブラインドスポット <span class="flow-arrow">→</span> 介入遅延 <span class="flow-arrow">→</span> 二次被害拡大</div>
+      <div class="flow-item">修復的謝罪＋反証探索＋撤退条件 <span class="flow-arrow">→</span> 自己正当化の連鎖を切断 <span class="flow-arrow">→</span> 学習・信頼回復</div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">📖 各章の要約</h2>
+    
+    <div class="chapter-section">
+      <h3>第1章: 導入 - 賢明な人がなぜ誤るか</h3>
+      <div class="reason"><strong>章の理由:</strong> 不協和理論と自己正当化の基本メカニズムを提示し、全体の理論的基盤を築く</div>
+      <div class="card">
+        <ul>
+          <li>認知的不協和の発見と実験的証拠</li>
+          <li>自己正当化が誤りを拡大する仕組み</li>
+          <li>知性や善意では防げない心理的罠</li>
+          <li>本書の問い: なぜ誤りを認められないのか</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>第2章: 小さな選択の累積 - 選択のピラミッド</h3>
+      <div class="reason"><strong>章の理由:</strong> 些細な分岐が自己正当化で極端化する様を解説し、初期介入の重要性を示す</div>
+      <div class="card">
+        <ul>
+          <li>最初は僅かな差でも、自己正当化で立場が固定化</li>
+          <li>ピラミッドを下るほど引き返しが困難に</li>
+          <li>対立する両者が同じメカニズムで極端化</li>
+          <li>早期の自覚と介入が分岐点</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>第3章: 記憶とアイデンティティ - 再構成記憶</h3>
+      <div class="reason"><strong>章の理由:</strong> 再構成記憶が過去を書き換え、誤りの自覚を阻む過程を示し、記録の必要性を説く</div>
+      <div class="card">
+        <ul>
+          <li>記憶は再生時に編集され、現在の自己像に合わせて書き換わる</li>
+          <li>本人は書き換えに気づかず、確信を持つ</li>
+          <li>過去の自分を美化または悪魔化する</li>
+          <li>記録と第三者視点で補強する必要</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>第4章: 対人関係 - 正当化と非難の応酬</h3>
+      <div class="reason"><strong>章の理由:</strong> 夫婦・友人・職場での正当化と非難の応酬が関係破綻を招く事例を分析し、修復の道を示す</div>
+      <div class="card">
+        <ul>
+          <li>互いの自己正当化が対立を深める</li>
+          <li>記憶の再構成で相手の悪意を「確信」</li>
+          <li>謝罪の失敗が関係を決定的に壊す</li>
+          <li>修復的謝罪と相手視点の再記述が鍵</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>第5章: 司法と冤罪 - 制度的不正の連鎖</h3>
+      <div class="reason"><strong>章の理由:</strong> 取り調べ・確証バイアス・謝罪拒否が制度的不正を生む連鎖を検証し、システム改革の必要性を訴える</div>
+      <div class="card">
+        <ul>
+          <li>捜査官の確証バイアスが冤罪を生む</li>
+          <li>自白強要と記憶の汚染</li>
+          <li>謝罪拒否が冤罪を固定化</li>
+          <li>反証制度とピアレビューで防ぐ</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>第6章: 医療・心理療法・科学 - 権威と理論執着</h3>
+      <div class="reason"><strong>章の理由:</strong> 権威と理論執着が自己訂正を妨げるが、反証制度が解毒剤になることを示す</div>
+      <div class="card">
+        <ul>
+          <li>専門家も確証バイアスと自己正当化に陥る</li>
+          <li>理論への執着が患者を傷つける</li>
+          <li>科学の反証主義が自己訂正を促す</li>
+          <li>透明性と再現性の文化が重要</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>第7章: 政治・戦争・公共政策 - 国家的失敗の固定化</h3>
+      <div class="reason"><strong>章の理由:</strong> コミットメントのエスカレーションが国家的失敗を固定化する様を示し、撤退基準の重要性を説く</div>
+      <div class="card">
+        <ul>
+          <li>政策失敗でも過去投資を正当化して継続</li>
+          <li>戦争のエスカレーション（ベトナム、イラク等）</li>
+          <li>道徳的漂白が倫理的判断を麻痺させる</li>
+          <li>撤退条件の事前設定と透明性が必須</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>第8章: 解決編 - 自己正当化を弱める個人スキルと組織設計</h3>
+      <div class="reason"><strong>章の理由:</strong> 反証志向、謝罪、撤退基準、透明性で自己正当化の連鎖を断ち切る実践的方法を提示し、希望を示す</div>
+      <div class="card">
+        <ul>
+          <li>反証主義の習慣（反対証拠を先に探す）</li>
+          <li>決断ログと撤退条件の事前設定</li>
+          <li>記憶の再構成を前提に記録で補強</li>
+          <li>修復的謝罪と早期の責任受容</li>
+          <li>システム設計（インセンティブ、ピアレビュー、反対役の制度化）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">💡 具体例</h2>
+    
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔬 事例1: 冤罪事件の固定化</h3>
+        <span class="badge">司法</span>
+        <ul>
+          <li><strong>背景:</strong> 捜査官が容疑者を「犯人」と確信し、反証を無視</li>
+          <li><strong>展開:</strong> 自白強要、記憶の汚染、DNA証拠が出ても謝罪拒否</li>
+          <li><strong>結果:</strong> 冤罪が何十年も固定化され、真犯人は野放し</li>
+          <li><strong>示唆:</strong> 確証バイアスと自己正当化が制度的不正を生む</li>
+          <li><strong>理由:</strong> 個人の偏りが制度で増幅される典型例であり、反証制度の必要性を示す</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>💔 事例2: 夫婦の対立深化</h3>
+        <span class="badge">対人関係</span>
+        <ul>
+          <li><strong>背景:</strong> 些細な口論から互いに自己正当化を開始</li>
+          <li><strong>展開:</strong> 記憶の再構成で相手の悪意を「確信」、謝罪の失敗</li>
+          <li><strong>結果:</strong> 選択のピラミッドを下り、離婚に至る</li>
+          <li><strong>示唆:</strong> 初期の小さな介入が関係を救う</li>
+          <li><strong>理由:</strong> 自己正当化が対人関係を破壊する普遍的メカニズムを示し、修復的謝罪の重要性を説く</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🎖️ 事例3: ベトナム戦争のエスカレーション</h3>
+        <span class="badge">政治・戦争</span>
+        <ul>
+          <li><strong>背景:</strong> 初期の小規模介入が失敗の兆候を示す</li>
+          <li><strong>展開:</strong> 過去投資を正当化して兵力・予算を追加投入</li>
+          <li><strong>結果:</strong> 数十万の犠牲と国家的トラウマ</li>
+          <li><strong>示唆:</strong> コミットメントのエスカレーションが国家を破滅させる</li>
+          <li><strong>理由:</strong> 撤退条件の事前設定と透明性がなぜ必須かを歴史的に証明する事例</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🧪 事例4: 科学理論への執着</h3>
+        <span class="badge">科学</span>
+        <ul>
+          <li><strong>背景:</strong> 研究者が自分の理論に感情的に投資</li>
+          <li><strong>展開:</strong> 反証データを無視、実験の再解釈で理論を守る</li>
+          <li><strong>結果:</strong> 科学の進歩が遅れ、誤った治療が継続</li>
+          <li><strong>示唆:</strong> 反証主義と透明性が自己訂正を促す</li>
+          <li><strong>理由:</strong> 専門家でも陥る罠であり、制度的チェックの必要性を示す</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🏥 事例5: 医療ミスの隠蔽</h3>
+        <span class="badge">医療</span>
+        <ul>
+          <li><strong>背景:</strong> 医師が診断ミスを犯すが、自尊心が認めることを拒む</li>
+          <li><strong>展開:</strong> 記憶の再構成で「正しい判断だった」と確信、隠蔽</li>
+          <li><strong>結果:</strong> 患者の被害拡大、訴訟、信頼喪失</li>
+          <li><strong>示唆:</strong> 早期の責任受容と透明性が被害を最小化</li>
+          <li><strong>理由:</strong> 過ちの二次被害が本体より深刻になる典型例であり、修復的謝罪の効果を示す</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">📜 重要な引用</h2>
+    
+    <div class="quote-block">
+      <p>「問題は誤りそのものではなく、それを認めないことが損害を拡大する。」</p>
+      <strong>なぜ重要か:</strong> 自己正当化の核心を一文で示し、介入点を明確にする。
+    </div>
+
+    <div class="quote-block">
+      <p>「私たちは事実を見るのではなく、信じたい物語に事実を合わせる。」</p>
+      <strong>なぜ重要か:</strong> 確証バイアスと記憶再構成の連動を示す。
+    </div>
+
+    <div class="quote-block">
+      <p>「小さな一歩が、やがて自分を全く別の場所に固定する。」</p>
+      <strong>なぜ重要か:</strong> 選択のピラミッドが累積的偏向を生む点を可視化する。
+    </div>
+
+    <div class="quote-block">
+      <p>「よい謝罪は自尊心を壊さずに責任を引き受け、学習を促す。」</p>
+      <strong>なぜ重要か:</strong> 防衛ではなく修復の技法が連鎖断ち切りの鍵であるため。
+    </div>
+
+    <div style="background:linear-gradient(135deg,#f7fafc,#edf2f7);padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;">
+      <h3 style="color:var(--secondary);margin-bottom:1rem;">📚 関連書籍</h3>
+      
+      <div class="book-card">
+        <h4>📖 ファスト&スロー</h4>
+        <div class="author">著者: ダニエル・カーネマン</div>
+        <div class="relation"><strong>関連性:</strong> 直感と熟慮の二系統が自己正当化にどう影響するか理解を深める。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>📖 予想どおりに不合理</h4>
+        <div class="author">著者: ダン・アリエリー</div>
+        <div class="relation"><strong>関連性:</strong> 日常の非合理と自己正当化の実験的事例が豊富。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>📖 ザ・ソーシャル・アニマル</h4>
+        <div class="author">著者: エリオット・アロンソン</div>
+        <div class="relation"><strong>関連性:</strong> 不協和理論を含む社会心理学の基礎と応用を体系的に学べる。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>📖 Think Again（考え直す力）</h4>
+        <div class="author">著者: アダム・グラント</div>
+        <div class="relation"><strong>関連性:</strong> 信念の再考と反証文化の実践が本書の解毒剤と重なる。</div>
+      </div>
+
+      <div class="book-card">
+        <h4>📖 Thinking in Bets</h4>
+        <div class="author">著者: アニー・デューク</div>
+        <div class="relation"><strong>関連性:</strong> 決断ログと撤退基準など、自己正当化を抑える意思決定術を提供。</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">✅ 今日のアクション</h2>
+    <p style="margin-bottom:1.5rem;color:var(--text-light);">読後すぐに15〜30分で実行できる具体的な行動</p>
+    
+    <div class="action-card">
+      <h4>📝 アクション1: 重要決断の撤退条件を書き出す</h4>
+      <p><strong>目的:</strong> コミットメントのエスカレーションを防ぐ</p>
+      <p><strong>方法:</strong> 現在進行中のプロジェクトや投資について「どうなったら撤退するか」を3つ具体的に書く</p>
+      <p><strong>期待効果:</strong> 事前に基準を設定することで、感情的な追加投入を抑制し、客観的判断を保つ</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🔍 アクション2: 反証リストを3つ作成し検討する</h4>
+      <p><strong>目的:</strong> 確証バイアスを弱め、反証主義の習慣を作る</p>
+      <p><strong>方法:</strong> 自分の重要な信念や決断について「これが間違っている証拠は何か？」を3つ探して書く</p>
+      <p><strong>期待効果:</strong> 反対証拠を先に探す習慣が、自己正当化の自動作動を遅らせ、柔軟な思考を促す</p>
+    </div>
+
+    <div class="action-card">
+      <h4>👥 アクション3: 最近の対立を相手視点で再記述</h4>
+      <p><strong>目的:</strong> 記憶の再構成を自覚し、相手理解を深める</p>
+      <p><strong>方法:</strong> 最近の口論や対立を、相手の立場から「相手はなぜそう言ったか」を3つ推測して書く</p>
+      <p><strong>期待効果:</strong> 自分の記憶の偏りに気づき、修復的対話の準備ができる。関係改善の第一歩</p>
+    </div>
+
+    <div style="background:white;padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;border-left:4px solid var(--accent);">
+      <h3 style="color:var(--secondary);margin-bottom:1rem;">🎯 追加の実践ヒント</h3>
+      <ul style="list-style:none;padding:0;">
+        <li style="margin-bottom:0.75rem;padding-left:1.5rem;position:relative;">
+          <span style="position:absolute;left:0;color:var(--accent);font-weight:bold;">▸</span>
+          決断ログをつける（なぜその選択をしたか、どんな情報を見たかを記録）
+        </li>
+        <li style="margin-bottom:0.75rem;padding-left:1.5rem;position:relative;">
+          <span style="position:absolute;left:0;color:var(--accent);font-weight:bold;">▸</span>
+          謝罪の練習（「でも」「しかし」を使わず、責任受容と是正策を述べる）
+        </li>
+        <li style="margin-bottom:0.75rem;padding-left:1.5rem;position:relative;">
+          <span style="position:absolute;left:0;color:var(--accent);font-weight:bold;">▸</span>
+          第三者に意見を求める（自分のバイアス・ブラインドスポットを補う）
+        </li>
+        <li style="margin-bottom:0.75rem;padding-left:1.5rem;position:relative;">
+          <span style="position:absolute;left:0;color:var(--accent);font-weight:bold;">▸</span>
+          チーム内に「反対役」を制度化（意図的に反証を探す役割を割り当てる）
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
