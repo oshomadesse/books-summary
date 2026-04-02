@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プロセス・コンサルテーション インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  flex: 1 1 auto;
+  min-width: 120px;
+  text-align: center;
+}
+.tab-btn:hover {
+  background: var(--bg);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.05rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 4px solid var(--primary);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.action-card h3 {
+  font-size: 1.05rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-diagram h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+.metric-box .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.metric-box .label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+.book-list {
+  list-style: none;
+  padding: 0;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.book-item strong {
+  display: block;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+.book-item em {
+  display: block;
+  color: var(--text-light);
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+.book-item p {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    min-width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 プロセス・コンサルテーション</h1>
+  <p>組織の真因は"プロセス"にある — 自律と学習を育む支援の原則</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜ外部の知見や施策があっても組織の改善が持続しないのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>真因は「人と集団のやり取り＝プロセス」にあり、解決はクライアント自身のプロセス認知・調整力の強化によってのみ定着する。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>画一的処方は状況固有の相互作用を捉えきれず依存を生みがち。一方、現実接触・共同診断・最小十分介入という原則は内省と学習を駆動し、自走を促す。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>謙虚な問いかけで信頼を築き、エントリーと契約→観察と共同診断→フィードバック→小さな実験的介入→振り返りの学習サイクルを回す。介入の深さとタイミングを調整し、問題と解の所有権を常にクライアントへ戻す。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">関連書籍</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="visual-diagram">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-item">
+        <span>謙虚な問いかけ</span>
+        <span class="flow-arrow">→</span>
+        <span>心理的安全性</span>
+        <span class="flow-arrow">→</span>
+        <span>本音データ</span>
+        <span class="flow-arrow">→</span>
+        <span>共同診断の質向上</span>
+      </div>
+      <div class="flow-item">
+        <span>明確な契約</span>
+        <span class="flow-arrow">→</span>
+        <span>役割境界の安定</span>
+        <span class="flow-arrow">→</span>
+        <span>介入の受容度向上</span>
+      </div>
+      <div class="flow-item">
+        <span>最小十分介入 × 適切なタイミング</span>
+        <span class="flow-arrow">→</span>
+        <span>依存低下・自律性向上</span>
+      </div>
+      <div class="flow-item">
+        <span>ここ・いま志向</span>
+        <span class="flow-arrow">→</span>
+        <span>生きたプロセス観察</span>
+        <span class="flow-arrow">→</span>
+        <span>即時の小実験</span>
+      </div>
+      <div class="flow-item">
+        <span>所有権の保持</span>
+        <span class="flow-arrow">→</span>
+        <span>実行コミットメント</span>
+        <span class="flow-arrow">→</span>
+        <span>施策の定着</span>
+      </div>
+      <div class="flow-item">
+        <span>フィードバック</span>
+        <span class="flow-arrow">→</span>
+        <span>学習ループ</span>
+        <span class="flow-arrow">→</span>
+        <span>能力の内製化</span>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔄 プロセス・コンサルテーション</h3>
+        <ul>
+          <li>内容の専門解ではなく相互作用の質を高める</li>
+          <li>クライアントの自己診断・自己修正力を伸ばす</li>
+          <li>依存を作らず自律を育てる支援</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>解の提供は一時的。プロセス改善力こそが持続的成果を生む。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🤝 助ける関係</h3>
+        <ul>
+          <li>対等性と信頼に基づく協働関係</li>
+          <li>双方が学ぶ前提で築く</li>
+          <li>依存を作らず自律を育てる</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>上下関係では本音が出ず、真の課題に到達できない。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🙏 謙虚な問いかけ</h3>
+        <ul>
+          <li>相手が主役であることを尊重</li>
+          <li>先入観を抑えて真のデータを引き出す</li>
+          <li>質問姿勢が信頼を生む</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>仮説押し付けは抵抗を生む。問いは相手の思考を開く。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⏱️ ここ・いま志向</h3>
+        <ul>
+          <li>現在進行中のやり取りや感情に注目</li>
+          <li>その場で小さく検証・調整</li>
+          <li>抽象論より実践視点</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>過去の分析より今の相互作用が変化のレバーになる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔍 共同診断</h3>
+        <ul>
+          <li>観察・意味づけ・仮説形成を共に行う</li>
+          <li>理解の所有権を共有</li>
+          <li>一方的診断を避ける</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>診断を共有することで納得と実行力が高まる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📝 契約とエントリー</h3>
+        <ul>
+          <li>支援の目的・範囲・役割を明確化</li>
+          <li>期待・境界を合意</li>
+          <li>介入の土台を整える</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>曖昧な契約は期待ズレと失敗を招く。明確化が成功の前提。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎯 所有権（問題と解）</h3>
+        <ul>
+          <li>問題認識と解決策の責任主体はクライアント</li>
+          <li>定着度を左右する原則</li>
+          <li>自分ごと化を促す</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>他人の解は実行されない。自分の解だけが定着する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📊 介入の深さとタイミング</h3>
+        <ul>
+          <li>表層の手順から関係・感情・前提まで</li>
+          <li>影響レベルと投入時機を選ぶ</li>
+          <li>段階的に深める設計</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>深すぎる介入は抵抗を生み、浅すぎると効果が出ない。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚖️ 最小十分介入</h3>
+        <ul>
+          <li>必要最小限で最大効果を狙う</li>
+          <li>過剰介入や依存化を避ける</li>
+          <li>小さく効かす原則</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>やりすぎは自律を奪い、依存を生む。最小が最適。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎭 三つのコンサルモデル</h3>
+        <ul>
+          <li>専門家モデル：解を提供</li>
+          <li>医者‐患者モデル：診断と処方</li>
+          <li>プロセス・コンサルモデル：能力移転</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>課題の性質・成熟度・緊急度で役割を選ぶ必要がある。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🛡️ 心理的安全性</h3>
+        <ul>
+          <li>不利益なく本音や仮説を出せる感覚</li>
+          <li>質の高いデータ収集の前提</li>
+          <li>信頼関係の土壌</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>安全がなければ本音は出ず、表面的対処に終わる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔁 フィードバックと学習ループ</h3>
+        <ul>
+          <li>観察→可視化→合意→試行→振り返り</li>
+          <li>循環で組織能力を内製化</li>
+          <li>回して定着させる</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>一度の介入では定着しない。ループが能力を育てる。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>第1章：問題提起 — プロセスへの視座転換</h3>
+      <ul>
+        <li>組織の成果を左右するのは"内容"より"プロセス"</li>
+        <li>相互作用の質が結果を決める</li>
+        <li>表面的施策では真因に届かない</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>この章は、従来の専門知提供型支援の限界を示し、プロセス重視の必要性を基礎づける。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第2章：モデル比較 — 役割と限界</h3>
+      <ul>
+        <li>専門家モデル：解を提供するが依存を生む</li>
+        <li>医者‐患者モデル：診断と処方だが前提が必要</li>
+        <li>プロセス・コンサルモデル：能力移転で自走を促す</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>各モデルの適用条件を理解し、状況に応じた役割選択を可能にする。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第3章：助ける関係 — 対等性と信頼</h3>
+      <ul>
+        <li>対等性、現実接触、信頼形成の要件</li>
+        <li>謙虚な問いかけの態度</li>
+        <li>双方向の学習関係</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>信頼なくして本音は出ない。関係構築が全ての土台となる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第4章：エントリーと契約 — 土台づくり</h3>
+      <ul>
+        <li>目的・範囲・役割・境界の合意設計</li>
+        <li>成功基準と倫理の明確化</li>
+        <li>期待ズレを防ぐ初期設定</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>曖昧な契約は後の混乱を招く。明確な合意が成功の前提。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第5章：データ収集 — ここ・いまの把握</h3>
+      <ul>
+        <li>観察・面談・会議参加を通じたプロセス把握</li>
+        <li>"ここ・いま"の相互作用に注目</li>
+        <li>生きたデータの収集技法</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>抽象的分析より現場の実際が変化のレバーになる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第6章：共同診断とフィードバック — 可視化と合意</h3>
+      <ul>
+        <li>可視化と意味づけの技法</li>
+        <li>合意形成のプロセス</li>
+        <li>理解の所有権を共有</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>診断を共有することで納得と実行力が高まる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第7章：介入設計 — 深さとタイミング</h3>
+      <ul>
+        <li>深さとタイミングの調整</li>
+        <li>会議運営・コミュニケーション・役割/規範への働きかけ</li>
+        <li>段階的な介入設計</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>適切な深さとタイミングが効果と受容度を最大化する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第8章：原則と倫理 — 行動指針</h3>
+      <ul>
+        <li>常に役に立つこと、現実接触、無知の活用</li>
+        <li>行為は全て介入、所有権の維持</li>
+        <li>倫理的配慮と境界</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>原則は判断の拠り所となり、一貫性と信頼を生む。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第9章：能力移転と終了 — 自走化</h3>
+      <ul>
+        <li>自走化の確認</li>
+        <li>フォローアップ設計</li>
+        <li>依存を残さないクロージング</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>終了時の設計が定着度を決める。依存を残さず能力を残す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>📌 具体例1：会議の沈黙を問いかけで開く</h3>
+      <p><strong>背景：</strong>経営会議で誰も発言せず、決定が先送りされる状況が続いていた。</p>
+      <p><strong>介入：</strong>コンサルタントは「今、この場で何が起きていると感じますか？」と謙虚に問いかけた。</p>
+      <p><strong>結果：</strong>メンバーが「上司の顔色を伺っている」「本音を言うと評価が下がる」と本音を語り始め、心理的安全性の欠如が可視化された。</p>
+      <p><strong>示唆：</strong>問いかけは相手の思考を開き、プロセスの問題を表面化させる。</p>
+      <div class="reason">
+        <strong>理由：</strong>この例は、謙虚な問いかけが本音データを引き出し、共同診断の起点となることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📌 具体例2：契約の曖昧さが招いた混乱</h3>
+      <p><strong>背景：</strong>あるプロジェクトで「組織改善を支援してほしい」という依頼を受けたが、具体的な範囲や期待が不明確だった。</p>
+      <p><strong>介入：</strong>コンサルタントは初回で「何を成功とするか」「誰が意思決定するか」「どこまで関与するか」を明文化する契約プロセスを提案。</p>
+      <p><strong>結果：</strong>期待ズレが事前に解消され、後の介入がスムーズに受け入れられた。</p>
+      <p><strong>示唆：</strong>明確な契約は信頼と効率の土台となる。</p>
+      <div class="reason">
+        <strong>理由：</strong>この例は、エントリーと契約の重要性を実証し、曖昧さが混乱を招くことを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📌 具体例3：最小介入で自律を促す</h3>
+      <p><strong>背景：</strong>チームが問題解決の方法を求めてきたが、コンサルタントは直接の解を提示しなかった。</p>
+      <p><strong>介入：</strong>「この問題について、チーム内で誰が一番詳しいですか？」「過去に似た状況をどう乗り越えましたか？」と問いかけ、チーム自身の資源を引き出した。</p>
+      <p><strong>結果：</strong>チームは自分たちで解を見つけ、実行へのコミットメントが高まった。</p>
+      <p><strong>示唆：</strong>最小介入は依存を防ぎ、自律と所有権を育てる。</p>
+      <div class="reason">
+        <strong>理由：</strong>この例は、最小十分介入の原則が自律性と定着度を高めることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📌 具体例4：ここ・いまの感情を扱う</h3>
+      <p><strong>背景：</strong>プロジェクト会議で緊張が高まり、メンバー間の対立が表面化していた。</p>
+      <p><strong>介入：</strong>コンサルタントは「今、この場の空気をどう感じていますか？」と問い、感情を言語化する場を作った。</p>
+      <p><strong>結果：</strong>メンバーが「不安」「怒り」「無力感」を共有し、対立の背景にある誤解が解消された。</p>
+      <p><strong>示唆：</strong>ここ・いまの感情を扱うことで、プロセスの質が改善される。</p>
+      <div class="reason">
+        <strong>理由：</strong>この例は、ここ・いま志向が感情と関係性の改善に直結することを示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>「コンサルタントの役目は、クライアントの自己診断力を高めることだ。」</p>
+      <small><strong>なぜ重要か：</strong>解の提供ではなく能力移転が目的であると明確に示すため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「あなたが行うことは全て介入であり、関係に影響する。」</p>
+      <small><strong>なぜ重要か：</strong>無意識の振る舞いも関係を形作ると自覚させ、慎重さを促す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「"ここ・いま"の相互作用に注目せよ。」</p>
+      <small><strong>なぜ重要か：</strong>抽象論より実際のやり取りが変化のレバーになるから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「問題と解の所有権はクライアントにある。」</p>
+      <small><strong>なぜ重要か：</strong>依存を避け、自走と定着を生む設計原則になるため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「謙虚な問いかけは、相手を主役にし、真のデータを引き出す。」</p>
+      <small><strong>なぜ重要か：</strong>仮説押し付けは抵抗を生む。問いは相手の思考を開く鍵となる。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「最小十分介入で最大効果を狙え。」</p>
+      <small><strong>なぜ重要か：</strong>やりすぎは自律を奪い、依存を生む。最小が最適である。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="metric-grid">
+      <div class="metric-box">
+        <span class="number">15分</span>
+        <span class="label">実行時間の目安</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">3+</span>
+        <span class="label">推奨アクション数</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">即日</span>
+        <span class="label">効果実感</span>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🎨 アクション1：利害関係者マップを描く（15分）</h3>
+      <p><strong>目的：</strong>現在の支援対象やプロジェクトの関係者を可視化し、誰が誰に影響を与えているかを理解する。</p>
+      <p><strong>手順：</strong>紙やホワイトボードに関係者の名前を書き、矢印で影響関係を結ぶ。権力・関心・信頼の度合いを色分けする。</p>
+      <p><strong>期待効果：</strong>プロセスの全体像が見え、介入ポイントや契約相手が明確になる。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>👀 アクション2：会議の発言パターンを観察し記録する（15分）</h3>
+      <p><strong>目的：</strong>次の会議で「誰が・いつ・どのように発言するか」を観察し、プロセスのパターンを把握する。</p>
+      <p><strong>手順：</strong>会議中にメモを取り、発言者・タイミング・反応を記録。会議後に「誰が沈黙していたか」「誰が話を遮ったか」を振り返る。</p>
+      <p><strong>期待効果：</strong>ここ・いまのプロセスが可視化され、介入の糸口が見つかる。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>📝 アクション3：次の1on1で目的と契約を明確化する（15分）</h3>
+      <p><strong>目的：</strong>次回の1on1やミーティングで「この時間の目的は何か」「どこまで話すか」「何を決めるか」を冒頭で合意する。</p>
+      <p><strong>手順：</strong>開始時に「今日のゴールは何ですか？」「私の役割は何でしょうか？」と問いかけ、合意を得る。</p>
+      <p><strong>期待効果：</strong>期待ズレが減り、対話の質と効率が向上する。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>❓ アクション4：謙虚な問いかけを1つ試す（15分）</h3>
+      <p><strong>目的：</strong>次の対話で「教えてください」「どう感じますか？」など、相手を主役にする問いを1つ使う。</p>
+      <p><strong>手順：</strong>事前に問いを1つ準備し、対話の冒頭や中盤で投げかける。相手の反応を観察する。</p>
+      <p><strong>期待効果：</strong>相手の本音が引き出され、信頼関係が深まる。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>🔍 アクション5：自分の介入を振り返る（15分）</h3>
+      <p><strong>目的：</strong>今日の自分の言動が相手にどう影響したかを振り返り、無意識の介入を自覚する。</p>
+      <p><strong>手順：</strong>1日の終わりに「今日、誰にどんな影響を与えたか」「意図しない介入はなかったか」をメモする。</p>
+      <p><strong>期待効果：</strong>自己認識が高まり、次の介入の質が向上する。</p>
+    </div>
+  </div>
+
+  <div id="tab6" class="tab-content" role="tabpanel">
+    <ul class="book-list">
+      <li class="book-item">
+        <strong>📖 プロセス・コンサルテーション再考</strong>
+        <em>エドガー・H・シャイン</em>
+        <p>PCの原則を再整理し、10原則と事例で深化させる続編。</p>
+      </li>
+      <li class="book-item">
+        <strong>📖 謙虚に問いかける</strong>
+        <em>エドガー・H・シャイン</em>
+        <p>PCの中核スキルである"謙虚な問い"を具体的に解説。</p>
+      </li>
+      <li class="book-item">
+        <strong>📖 人を助けるということ</strong>
+        <em>エドガー・H・シャイン</em>
+        <p>助ける関係の心理と倫理を広く扱いPCの基盤を補完。</p>
+      </li>
+      <li class="book-item">
+        <strong>📖 学習する組織</strong>
+        <em>ピーター・M・センゲ</em>
+        <p>学習ループとシステム思考がPCの自走化と相補的。</p>
+      </li>
+      <li class="book-item">
+        <strong>📖 組織文化とリーダーシップ</strong>
+        <em>エドガー・H・シャイン</em>
+        <p>前提や規範への働きかけなど介入の深さ理解に資する。</p>
+      </li>
+      <li class="book-item">
+        <strong>📖 クリティカル・コンバーセーションズ</strong>
+        <em>ケリー・パターソンほか</em>
+        <p>高リスク対話の技法がプロセス改善の実践に直結。</p>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetTab = button.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      button.classList.add('active');
+      button.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
