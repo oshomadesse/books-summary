@@ -1379,3 +1379,10 @@ if __name__ == "__main__":
         print("種類:", type(e).__name__)
         print("内容:", e)
         traceback.print_exc()
+        # エラー時にLINE通知を試みる
+        try:
+            from line_messaging import line_push_text
+            error_msg = f"📚 読書ワークフロー失敗\n種類: {type(e).__name__}\n内容: {e}"
+            line_push_text(error_msg[:500])
+        except Exception:
+            pass

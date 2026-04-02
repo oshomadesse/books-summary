@@ -207,9 +207,10 @@ class GeminiConnector:
             + " 邦題が国内で未流通・不明な場合はその候補を推薦しないでください。直訳や推測の邦題を作らないこと。"
             + " 著者表記は日本語で一般的な表記（カタカナ等）に統一してください。"
             # 信頼性の担保（根拠の要請）
-            + " reasonには、その邦題や著者表記の根拠（国内出版社名やISBN、国内流通名の言及など）を簡潔に含めてください（URLは不要）。"
+            + " reasonには、その邦題や著者表記の根拠（国内出版社名やISBN等）を50文字以内で簡潔に記載してください（URLは不要、長い説明は不要）。"
             # 出力形式
             + " 出力はJSON配列で、各要素に title, author, category, reason の4項目のみを含めてください。"
+            + " 各reasonは必ず50文字以内に収めてください。"
         )
 
     def _call_flash_json(self, prompt):
@@ -235,6 +236,11 @@ class GeminiConnector:
             text = None
             if getattr(resp, "candidates", None):
                 cand = resp.candidates[0]
+                if hasattr(cand, 'finish_reason'):
+                    fr = str(cand.finish_reason)
+                    if 'MAX_TOKENS' in fr or 'LENGTH' in fr or 'MAX_OUTPUT' in fr:
+                        if self.verbose:
+                            print(f"WARNING: Response truncated (finish_reason={fr}). Output may be incomplete JSON.")
                 if getattr(cand, "content", None) and getattr(cand.content, "parts", None):
                     for part in cand.content.parts:
                         if getattr(part, "text", None):
@@ -249,6 +255,19 @@ class GeminiConnector:
                 data = json.loads(text) if text else []
             except Exception:
                 data = []
+                # JSONリカバリ: 切り捨てられたJSON配列の部分回復を試みる
+                if text and text.lstrip().startswith("["):
+                    last_brace = text.rfind("}")
+                    if last_brace > 0:
+                        candidate = text[:last_brace + 1].rstrip().rstrip(",") + "]"
+                        try:
+                            recovered = json.loads(candidate)
+                            if isinstance(recovered, list) and len(recovered) > 0:
+                                data = recovered
+                                if self.verbose:
+                                    print(f"WARNING: JSON was truncated. Recovered {len(data)} items from partial output.")
+                        except Exception:
+                            pass
             if self.verbose:
                 print("DEBUG: parsed candidates count =", len(data) if isinstance(data, list) else 0)
             return data if isinstance(data, list) else []
