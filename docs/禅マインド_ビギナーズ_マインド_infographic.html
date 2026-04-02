@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>禅マインド ビギナーズ・マインド - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+}
+.summary-block .item {
+  margin-bottom: 0.75rem;
+}
+.summary-block .item strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+}
+.summary-block .item span {
+  font-size: 0.85rem;
+  display: block;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin: 0 1rem;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.9rem 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: linear-gradient(to bottom, rgba(102,126,234,0.05), transparent);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+  line-height: 1.5;
+}
+.card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.card .reason {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, rgba(102,126,234,0.08), rgba(240,147,251,0.08));
+  border-radius: 6px;
+  font-size: 0.8rem;
+  border-left: 3px solid var(--accent);
+}
+.card .reason strong {
+  color: var(--secondary);
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media(min-width: 768px) {
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--secondary);
+  font-style: italic;
+}
+.quote-card .text {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card .note {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+.action-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  opacity: 0.95;
+}
+.visual-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.bar-chart {
+  margin-top: 1rem;
+}
+.bar-item {
+  margin-bottom: 1rem;
+}
+.bar-label {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+  color: var(--text);
+  font-weight: 600;
+}
+.bar-bg {
+  background: #e0e0e0;
+  height: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: width 1s ease-out;
+}
+.concept-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media(min-width: 600px) {
+  .concept-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.concept-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.concept-card h4 {
+  font-size: 0.95rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.concept-card .def {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+.concept-card .summary {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.flow-diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+}
+.flow-item .arrow {
+  margin: 0 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📿 禅マインド ビギナーズ・マインド</h1>
+  <p>鈴木俊隆 - 初心を保ち、ただ坐る実践の道</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 核心メッセージ</h2>
+  <div class="item">
+    <strong>❓ 問い</strong>
+    <span>どうすれば禅の理解と自由な生き方に至るか？</span>
+  </div>
+  <div class="item">
+    <strong>💡 答え</strong>
+    <span>結果を求めず、只管打坐を通じて『初心』を保ち、姿勢・呼吸・態度を整える。</span>
+  </div>
+  <div class="item">
+    <strong>🔍 Why（なぜ？）</strong>
+    <span>心は対象を得ようとするほど狭まり、手放すほど広がる。身体を通じた実践は心を直接調律し、非二元・空の理解は執着をほどくから。</span>
+  </div>
+  <div class="item">
+    <strong>🛠 How（どうやって？）</strong>
+    <span>①正しい姿勢と呼吸で坐る ②『得ようとしない心』を保つ ③日常行為を修行として行う ④無常と空を観照し、起こるものすべてをそのままに観る。</span>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="visual-container">
+    <h2 style="font-size:1.1rem; margin-bottom:1rem; color:var(--primary);">🧩 8つの核心概念</h2>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h4>🌱 初心（Beginner's Mind）</h4>
+        <p class="def">先入観や自己同一化を脇に置き、あらゆる瞬間を新鮮に受け取る心の在り方。可能性に開かれ、柔軟に学ぶ姿勢。</p>
+        <span class="summary">開放</span>
+      </div>
+      <div class="concept-card">
+        <h4>🧘 只管打坐（Shikantaza）</h4>
+        <p class="def">目的や成果を求めず、ただ坐ることそのものを全うする禅の中核的実践。姿勢・呼吸・注意に尽くす。</p>
+        <span class="summary">ただ坐る</span>
+      </div>
+      <div class="concept-card">
+        <h4>🚫 無所得（Non-gaining idea）</h4>
+        <p class="def">修行で何かを得ようとしない態度。得失の枠を離れることで、本来の明晰さが現れる。</p>
+        <span class="summary">求めない</span>
+      </div>
+      <div class="concept-card">
+        <h4>🧍 姿勢・呼吸</h4>
+        <p class="def">背骨を立て、安定した呼吸に注意を置くことで身心を調律する基盤。身体から心を整える技法。</p>
+        <span class="summary">基盤</span>
+      </div>
+      <div class="concept-card">
+        <h4>🌊 無常</h4>
+        <p class="def">あらゆる現象は変化し続けるという洞察。執着を緩め、柔軟な応答を促す。</p>
+        <span class="summary">変化</span>
+      </div>
+      <div class="concept-card">
+        <h4>🕸 空（相互依存）</h4>
+        <p class="def">事物は固定した自性をもたず、縁起により成り立つという理解。自他境界が相対化される。</p>
+        <span class="summary">開かれた関係</span>
+      </div>
+      <div class="concept-card">
+        <h4>☯️ 非二元</h4>
+        <p class="def">主客・修行と悟りなどの対立を超える見方。実践と結果は同時で一つであると観る。</p>
+        <span class="summary">分離の超越</span>
+      </div>
+      <div class="concept-card">
+        <h4>🏡 日常修行</h4>
+        <p class="def">食事・掃除・仕事など日常行為に注意を尽くし、坐禅と同じ心で臨む実践。生活がそのまま道になる。</p>
+        <span class="summary">日常即道</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔗 概念間の関係性</h3>
+    <div class="flow-diagram">
+      <div class="flow-item">
+        <span>姿勢・呼吸の調律</span><span class="arrow">→</span><span>身心の安定</span><span class="arrow">→</span><span>現象をそのまま観る力</span>
+      </div>
+      <div class="flow-item">
+        <span>『得ようとしない心』</span><span class="arrow">→</span><span>執着の緩解</span><span class="arrow">→</span><span>初心が保たれる</span>
+      </div>
+      <div class="flow-item">
+        <span>只管打坐</span><span class="arrow">→</span><span>評価・比較の停止</span><span class="arrow">→</span><span>非二元の理解</span>
+      </div>
+      <div class="flow-item">
+        <span>無常の観照</span><span class="arrow">→</span><span>固定観念の崩壊</span><span class="arrow">→</span><span>柔軟な応答</span>
+      </div>
+      <div class="flow-item">
+        <span>空の理解</span><span class="arrow">→</span><span>自他境界の相対化</span><span class="arrow">→</span><span>思いやりと責任</span>
+      </div>
+      <div class="flow-item">
+        <span>日常修行</span><span class="arrow">↔</span><span>坐禅</span><span class="arrow">→</span><span>気づきの持続</span>
+      </div>
+      <div class="flow-item">
+        <span>初心</span><span class="arrow">→</span><span>学びへの開放性</span><span class="arrow">→</span><span>迷いに巻き込まれにくい心</span>
+      </div>
+    </div>
+    <div class="reason">
+      <strong>💡 理由：</strong> これらの概念は独立せず、相互に支え合い深め合う。姿勢が心を整え、無所得が初心を守り、日常と坐禅が統合されることで、禅の実践が生活全体に浸透する。
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>📖 序・導入</h3>
+    <ul>
+      <li>初心の重要性を提起</li>
+      <li>禅は特別な体験ではなく日常の中にある</li>
+      <li>可能性に開かれた心の在り方を示す</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong> 読者に禅が遠い教えではなく、今ここで実践できるものだと理解させ、学びへの動機を高めるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧘 第一部〈正しい修行〉</h3>
+    <ul>
+      <li>姿勢・呼吸・注意の具体的方法を提示</li>
+      <li>坐禅は手段でなく"坐ること自体"が完成形</li>
+      <li>身体を通じて心を調律する技法を解説</li>
+      <li>只管打坐の実践原理を明示</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong> 実践の基盤を身体レベルで確立し、結果志向から解放することで、非二元の理解への土台を築くため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 第二部〈正しい態度〉</h3>
+    <ul>
+      <li>無所得・精進・規律・信のバランスを示す</li>
+      <li>初心を損なう慢心や観念化を戒める</li>
+      <li>得ようとしない心の重要性を強調</li>
+      <li>継続的な実践の質を保つ指針</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong> 技法だけでは不十分で、心の態度が実践の質を決める。執着を手放し、柔軟に学び続ける姿勢を育むため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌌 第三部〈正しい理解〉</h3>
+    <ul>
+      <li>無常・空・仏性・非二元の枠組みを提示</li>
+      <li>実践と理解の同時性を明確化</li>
+      <li>固定観念を超える世界観を示す</li>
+      <li>自他境界の相対化と思いやりの自然な発生</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong> 実践を支える哲学的基盤を示し、体験を深い洞察へと統合するため。理解が実践を深め、実践が理解を確かにする循環を生む。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏠 結語</h3>
+    <ul>
+      <li>日常行為を修行として生きる指針</li>
+      <li>師弟関係と共同体の意義に触れる</li>
+      <li>生活全体が道となる統合を示す</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong> 坐禅と日常を分離せず、生活のあらゆる瞬間が修行の場となることを示し、実践の持続可能性を高めるため。
+    </div>
+  </div>
+
+  <div class="visual-container">
+    <h3 style="font-size:1rem; margin-bottom:1rem; color:var(--primary);">📊 論理の流れ</h3>
+    <div class="bar-chart">
+      <div class="bar-item">
+        <div class="bar-label">1️⃣ 身体の整え（修行）</div>
+        <div class="bar-bg">
+          <div class="bar-fill" style="width:25%;">25%</div>
+        </div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">2️⃣ 心の態度（無所得・初心）</div>
+        <div class="bar-bg">
+          <div class="bar-fill" style="width:50%;">50%</div>
+        </div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">3️⃣ 世界観（無常・空・非二元）</div>
+        <div class="bar-bg">
+          <div class="bar-fill" style="width:75%;">75%</div>
+        </div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">4️⃣ 日常への統合</div>
+        <div class="bar-bg">
+          <div class="bar-fill" style="width:100%;">100%</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:0.85rem; margin-top:1rem; color:var(--text-light);">技法・姿勢の具体から始め、態度の質を正し、最終的に理解を生活に落とし込む段階的な流れ。</p>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🔥 具体例1：焚き火のメタファー</h3>
+    <ul>
+      <li>何かをするときは跡を残さず、焚き火のように燃やし尽くす</li>
+      <li>全身全霊で臨みつつ、執着を残さない</li>
+      <li>行為の純度と完全性を示す</li>
+      <li>終わったら手放し、次の瞬間に新鮮に臨む</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong> 実践における集中と手放しの同時性。結果への執着なく、今この瞬間に全力を尽くす姿勢が、初心と無所得の具体的表現となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🪴 具体例2：初心者と達人の可能性</h3>
+    <ul>
+      <li>「初心の人には多くの可能性があり、達人には少ししかない」</li>
+      <li>固定観念が選択肢を狭める</li>
+      <li>専門性が柔軟性を失わせるリスク</li>
+      <li>常に学び直す姿勢の価値</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong> 知識や経験が逆に視野を狭める危険性。初心を保つことで、既知の枠を超えた創造的な応答が可能になり、人生の豊かさが増す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧍 具体例3：姿勢が心をつくる</h3>
+    <ul>
+      <li>「正しい姿勢が正しい心をつくる」</li>
+      <li>背骨を立て、呼吸を整えることで心が安定</li>
+      <li>身体から心へ働きかける禅の実践原理</li>
+      <li>心理状態を身体技法で調律できる</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong> 心と身体の不可分性。抽象的な心の修行ではなく、具体的な身体技法が心を直接変容させることを示し、実践の即効性と再現性を保証する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🍽 具体例4：日常行為の修行化</h3>
+    <ul>
+      <li>食事・掃除・仕事を坐禅と同じ心で行う</li>
+      <li>特別な時間と日常を分離しない</li>
+      <li>一挙手一投足に注意を尽くす</li>
+      <li>生活全体が道となる</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong> 修行と生活の統合。坐禅だけが修行ではなく、日常のあらゆる瞬間が気づきの機会となり、実践が持続可能で生活に根ざしたものになる。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <div class="text">「初心の人には多くの可能性があり、達人には少ししかない。」</div>
+    <div class="note">💡 固定観念が選択肢を狭めることを示し、初心を保つ価値を端的に表す。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="text">「坐禅は手段ではなく、それ自体が目的である。」</div>
+    <div class="note">💡 実践と悟りの非二元を明示し、結果志向から解放する指針となる。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="text">「何かをするときは跡を残さず、焚き火のように燃やし尽くせ。」</div>
+    <div class="note">💡 全身全霊で臨みつつ執着を残さない、行為の純度を教える。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="text">「正しい姿勢が正しい心をつくる。」</div>
+    <div class="note">💡 身体から心へ働きかける禅の実践原理を要約する。</div>
+  </div>
+
+  <div class="visual-container">
+    <h3 style="font-size:1rem; margin-bottom:1rem; color:var(--primary);">📚 関連書籍</h3>
+    <div class="grid-2">
+      <div style="font-size:0.85rem; padding:0.75rem; background:rgba(102,126,234,0.05); border-radius:6px; margin-bottom:0.5rem;">
+        <strong style="color:var(--primary);">禅と日本文化</strong><br>
+        <span style="font-size:0.75rem; color:var(--text-light);">鈴木大拙 - 禅の思想的背景と美意識を提供</span>
+      </div>
+      <div style="font-size:0.85rem; padding:0.75rem; background:rgba(102,126,234,0.05); border-radius:6px; margin-bottom:0.5rem;">
+        <strong style="color:var(--primary);">禅の三柱</strong><br>
+        <span style="font-size:0.75rem; color:var(--text-light);">フィリップ・カプルー - 坐禅の実際と公案修行を詳細に解説</span>
+      </div>
+      <div style="font-size:0.85rem; padding:0.75rem; background:rgba(102,126,234,0.05); border-radius:6px; margin-bottom:0.5rem;">
+        <strong style="color:var(--primary);">マインドフルネスの奇跡</strong><br>
+        <span style="font-size:0.75rem; color:var(--text-light);">ティック・ナット・ハン - 日常を修行とする姿勢が共通</span>
+      </div>
+      <div style="font-size:0.85rem; padding:0.75rem; background:rgba(102,126,234,0.05); border-radius:6px; margin-bottom:0.5rem;">
+        <strong style="color:var(--primary);">マインドフルネス瞑想入門</strong><br>
+        <span style="font-size:0.75rem; color:var(--text-light);">ヘネポラ・グナラタナ - 呼吸・注意の基礎技法を体系化</span>
+      </div>
+      <div style="font-size:0.85rem; padding:0.75rem; background:rgba(102,126,234,0.05); border-radius:6px; margin-bottom:0.5rem;">
+        <strong style="color:var(--primary);">日常のなかの禅</strong><br>
+        <span style="font-size:0.75rem; color:var(--text-light);">シャーロット・ジョコ・ベック - 感情や対人関係を禅の視点で扱う</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>🧘‍♀️ アクション1：15分坐禅し呼吸を数える</h3>
+    <p><strong>目的：</strong> 姿勢と呼吸の基盤を体験し、身体から心を整える技法を実感する</p>
+    <p><strong>期待効果：</strong> 心の落ち着き、注意力の向上、無所得の態度の体得、只管打坐の入口体験</p>
+    <p><strong>やり方：</strong> 背骨を立てて座り、呼吸を1から10まで数え、10に達したら1に戻る。雑念が浮かんでも判断せず、再び呼吸に戻る。</p>
+  </div>
+
+  <div class="action-card">
+    <h3>🧹 アクション2：15分掃除を無心で行う</h3>
+    <p><strong>目的：</strong> 日常行為を修行として実践し、坐禅と生活の統合を体験する</p>
+    <p><strong>期待効果：</strong> 気づきの持続、日常即道の理解、初心の保持、行為の純度向上</p>
+    <p><strong>やり方：</strong> 一つ一つの動作に注意を向け、結果を求めず、掃除そのものに没入する。終わったら手放し、次の行為に移る。</p>
+  </div>
+
+  <div class="action-card">
+    <h3>✍️ アクション3：15分初心の気づきを書く</h3>
+    <p><strong>目的：</strong> 自分の固定観念や先入観に気づき、初心を保つ意識を育む</p>
+    <p><strong>期待効果：</strong> 自己理解の深化、柔軟性の向上、学びへの開放性、無常の観照</p>
+    <p><strong>やり方：</strong> 今日一日で「当たり前」と思ったこと、「こうあるべき」と感じたことを書き出し、それを新鮮な目で見直す問いを立てる。</p>
+  </div>
+
+  <div class="visual-container">
+    <h3 style="font-size:1rem; margin-bottom:1rem; color:var(--primary);">⏱ 実践の時間配分</h3>
+    <svg width="100%" height="120" viewBox="0 0 300 120" style="max-width:400px; margin:0 auto; display:block;">
+      <circle cx="150" cy="60" r="50" fill="none" stroke="#e0e0e0" stroke-width="8"/>
+      <circle cx="150" cy="60" r="50" fill="none" stroke="url(#grad1)" stroke-width="8" stroke-dasharray="157 314" transform="rotate(-90 150 60)"/>
+      <circle cx="150" cy="60" r="50" fill="none" stroke="url(#grad2)" stroke-width="8" stroke-dasharray="157 314" stroke-dashoffset="-157" transform="rotate(-90 150 60)"/>
+      <circle cx="150" cy="60" r="50" fill="none" stroke="url(#grad3)" stroke-width="8" stroke-dasharray="157 314" stroke-dashoffset="-314" transform="rotate(-90 150 60)"/>
+      <text x="150" y="65" text-anchor="middle" font-size="18" font-weight="bold" fill="#667eea">45分</text>
+      <text x="150" y="85" text-anchor="middle" font-size="12" fill="#666">合計</text>
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#764ba2;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#667eea;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+    </svg>
+    <div style="display:flex; justify-content:space-around; margin-top:1rem; font-size:0.8rem;">
+      <div><span style="display:inline-block; width:12px; height:12px; background:linear-gradient(90deg, #667eea, #764ba2); border-radius:2px; margin-right:4px;"></span>坐禅 15分</div>
+      <div><span style="display:inline-block; width:12px; height:12px; background:linear-gradient(90deg, #764ba2, #f093fb); border-radius:2px; margin-right:4px;"></span>掃除 15分</div>
+      <div><span style="display:inline-block; width:12px; height:12px; background:linear-gradient(90deg, #f093fb, #667eea); border-radius:2px; margin-right:4px;"></span>書く 15分</div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+
+  setTimeout(() => {
+    const barFills = document.querySelectorAll('.bar-fill');
+    barFills.forEach(bar => {
+      const width = bar.style.width;
+      bar.style.width = '0%';
+      setTimeout(() => {
+        bar.style.width = width;
+      }, 100);
+    });
+  }, 500);
+});
+</script>
+
+</body>
+</html>
