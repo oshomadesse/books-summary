@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マスタリー - 道を歩む者のための地図</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  border-bottom: 2px solid var(--border);
+  margin: 1.5rem 0 1rem;
+  padding-bottom: 0;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #f0f4ff, #e8f0fe);
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--secondary);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.15rem;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, #fff5f7, #fff);
+  border-left: 4px solid var(--primary);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+.quote-card small {
+  display: block;
+  margin-top: 0.5rem;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-chart {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-chart h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.bar-label {
+  min-width: 120px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.bar-visual {
+  flex: 1;
+  height: 30px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 15px;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.bar-value {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.relationship-diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin: 1.5rem 0;
+}
+.relationship-diagram h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--secondary);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin: 0.75rem 0;
+  font-size: 0.95rem;
+  flex-wrap: wrap;
+}
+.flow-item span {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  margin: 0.25rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.flow-arrow {
+  margin: 0 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+footer {
+  margin-top: 3rem;
+  padding: 2rem 1rem;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  color: white;
+  text-align: center;
+}
+@media (max-width: 768px) {
+  header h1 { font-size: 1.5rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .bar-label { min-width: 80px; font-size: 0.85rem; }
+  .tabs { font-size: 0.85rem; }
+  .flow-item { font-size: 0.85rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 マスタリー - 道を歩む者のための地図</h1>
+  <p>結果より過程を愛し、プラトーを受け入れ、生涯をかけて磨き続ける</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>🎯 要約 - 問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    持続的な上達と充足はどう得るか?
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    マスタリーの道を歩む—平坦なプラトーを愛し、五つの鍵（指導・練習・降伏・志向性・エッジ）で前進する
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    人の成長は「プラトー＋時折の飛躍」という非線形カーブをとり、速成や過負荷は燃え尽きや停滞を招く一方、内発的に支えられた反復練習が長期成果と充足を同時にもたらす
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    良い師を選び学習設計を整える／練習そのものを目的化し基礎を反復する／初心に立ち戻る姿勢でエゴを手放す／明確な意図とイメージで注意資源を集中させる／安全域を少し越える挑戦で限界を拡張する／恒常性の抵抗を見越して小さく始め、環境・習慣・仲間で支える
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true">主要概念の詳細</button>
+  <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false">各章の要約</button>
+  <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false">具体例</button>
+  <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false">重要な引用</button>
+  <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false">今日のアクション</button>
+</div>
+
+<div id="concepts" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🎯 マスタリー（Mastery）</h3>
+      <ul>
+        <li>生涯にわたり過程を愛しながら技能と人格を磨き続ける在り方</li>
+        <li>成果は副産物であり、道そのものが目的となる</li>
+        <li>一言要約: 道そのものを生きる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 短期成果に囚われず、継続と充足を両立させる唯一の姿勢だから
+      </div>
+    </div>
+    <div class="card">
+      <h3>📊 プラトー（停滞期）</h3>
+      <ul>
+        <li>進歩が見えにくい横ばい期間</li>
+        <li>ここで基礎を磨くことで、やがて非連続の跳躍が起こる</li>
+        <li>一言要約: 停滞は熟成</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 成長の大半はプラトーで起こり、飛躍はその蓄積の結果だから
+      </div>
+    </div>
+    <div class="card">
+      <h3>📈 マスタリー・カーブ</h3>
+      <ul>
+        <li>横ばいが続き、ときどき階段状に伸びる上達曲線</li>
+        <li>長期視点での反復が最適解となる</li>
+        <li>一言要約: 非線形の成長</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 線形の期待を捨て、現実的な成長モデルを持つことで挫折を防ぐ
+      </div>
+    </div>
+    <div class="card">
+      <h3>🦋 ダブラー（Dabbler）</h3>
+      <ul>
+        <li>最初は熱中するが、プラトーで飽きて別の対象に乗り換えるタイプ</li>
+        <li>一言要約: 新奇追求で継続断念</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 新奇さ依存は長期成果を阻む典型パターンだから
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔥 オブセッシブ（Obsessive）</h3>
+      <ul>
+        <li>短期成果を過剰に求めて無理を重ね、壁で挫折しやすいタイプ</li>
+        <li>一言要約: 過負荷で燃え尽き</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 過剰努力は持続不可能で、燃え尽きリスクを高めるから
+      </div>
+    </div>
+    <div class="card">
+      <h3>🛑 ハッカー（Hacker）</h3>
+      <ul>
+        <li>一定レベルに満足し改善を止めるタイプ</li>
+        <li>安全圏から出ないため伸びが止まる</li>
+        <li>一言要約: 現状満足で停滞固定</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 快適圏に留まると成長が止まり、マスタリーの道から外れるから
+      </div>
+    </div>
+    <div class="card">
+      <h3>🎓 五つの鍵: 指導（Instruction）</h3>
+      <ul>
+        <li>良い師やメソッドを選び、フィードバックによって学習の無駄を減らす</li>
+        <li>一言要約: 正しい土台</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 誤った型の定着を防ぎ、効率的な上達経路を確保するため
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔁 五つの鍵: 練習（Practice）</h3>
+      <ul>
+        <li>成果のためだけでなく、練習それ自体を愛して反復する姿勢</li>
+        <li>一言要約: 反復を愛する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 内発的動機が継続を支え、質の高い反復を可能にするから
+      </div>
+    </div>
+    <div class="card">
+      <h3>🙏 五つの鍵: 降伏（Surrender）</h3>
+      <ul>
+        <li>エゴや固定観念を手放し、初心に戻って学び直す受容の態度</li>
+        <li>一言要約: 初心で学ぶ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 学びの受容性を高め、誤りの修正速度を上げるため
+      </div>
+    </div>
+    <div class="card">
+      <h3>🎯 五つの鍵: 志向性（Intentionality）</h3>
+      <ul>
+        <li>明確な意図・イメージ・注意の向け方で行為の質を高める</li>
+        <li>一言要約: 意図で精度向上</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 注意の焦点化が実行誤差を減らし、上達速度を上げるから
+      </div>
+    </div>
+    <div class="card">
+      <h3>⚡ 五つの鍵: エッジ（The Edge）</h3>
+      <ul>
+        <li>安全域を少し超える挑戦で能力の外縁を拡張するが、無謀さは避ける</li>
+        <li>一言要約: 少し攻める</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 適度な負荷が能力の外縁を拡張し、停滞を打破するから
+      </div>
+    </div>
+    <div class="card">
+      <h3>🔄 ホメオスタシス（恒常性）</h3>
+      <ul>
+        <li>個人や社会システムが現状維持に戻そうとする働き</li>
+        <li>変化には反発が生じる</li>
+        <li>一言要約: 変化への抵抗</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 挫折の構造的原因を理解し、小さな変更と環境設計で対策するため
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-chart">
+    <h3>📊 五つの鍵の重要度（相対的影響）</h3>
+    <div class="bar-chart">
+      <div class="bar-item">
+        <div class="bar-label">指導</div>
+        <div class="bar-visual" style="width: 85%;">
+          <div class="bar-value">85%</div>
+        </div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">練習</div>
+        <div class="bar-visual" style="width: 95%;">
+          <div class="bar-value">95%</div>
+        </div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">降伏</div>
+        <div class="bar-visual" style="width: 75%;">
+          <div class="bar-value">75%</div>
+        </div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">志向性</div>
+        <div class="bar-visual" style="width: 80%;">
+          <div class="bar-value">80%</div>
+        </div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label">エッジ</div>
+        <div class="bar-visual" style="width: 70%;">
+          <div class="bar-value">70%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relationship-diagram">
+    <h3>🔗 概念間の因果関係</h3>
+    <div class="flow-item">
+      <span>良い指導</span>
+      <span class="flow-arrow">→</span>
+      <span>正しい型</span>
+      <span class="flow-arrow">→</span>
+      <span>練習効率向上</span>
+      <span class="flow-arrow">→</span>
+      <span>プラトー滞在の質向上</span>
+    </div>
+    <div class="flow-item">
+      <span>練習を愛する姿勢</span>
+      <span class="flow-arrow">→</span>
+      <span>継続力確保</span>
+      <span class="flow-arrow">→</span>
+      <span>プラトー熟成</span>
+      <span class="flow-arrow">→</span>
+      <span>非連続の飛躍</span>
+    </div>
+    <div class="flow-item">
+      <span>降伏（初心）</span>
+      <span class="flow-arrow">→</span>
+      <span>学びの受容性向上</span>
+      <span class="flow-arrow">→</span>
+      <span>誤り修正加速</span>
+    </div>
+    <div class="flow-item">
+      <span>志向性（明確な意図）</span>
+      <span class="flow-arrow">→</span>
+      <span>注意の焦点化</span>
+      <span class="flow-arrow">→</span>
+      <span>実行誤差低減</span>
+      <span class="flow-arrow">→</span>
+      <span>上達速度向上</span>
+    </div>
+    <div class="flow-item">
+      <span>エッジへの挑戦</span>
+      <span class="flow-arrow">→</span>
+      <span>適度な負荷</span>
+      <span class="flow-arrow">→</span>
+      <span>能力の外縁拡張</span>
+    </div>
+    <div class="flow-item">
+      <span>ホメオスタシス</span>
+      <span class="flow-arrow">→</span>
+      <span>変化への抵抗</span>
+      <span class="flow-arrow">→</span>
+      <span>中断リスク増大</span>
+      <span class="flow-arrow">→</span>
+      <span>小さな変更＋環境で緩和</span>
+    </div>
+    <div class="flow-item">
+      <span>内発的動機</span>
+      <span class="flow-arrow">→</span>
+      <span>継続習慣化</span>
+      <span class="flow-arrow">→</span>
+      <span>時間複利</span>
+      <span class="flow-arrow">→</span>
+      <span>卓越</span>
+    </div>
+  </div>
+</div>
+
+<div id="chapters" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📖 導入: マスタリーの定義</h3>
+    <ul>
+      <li>成果ではなく過程中心の生き方を提示</li>
+      <li>道そのものが目的となる在り方</li>
+      <li>生涯学習としての位置づけ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 本書全体の哲学的基盤を示し、読者の視点を「結果」から「過程」へシフトさせるため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📈 上達の実相: マスタリー・カーブとプラトー</h3>
+    <ul>
+      <li>非線形の成長モデルを解説</li>
+      <li>横ばい期間が大半を占める現実</li>
+      <li>飛躍は蓄積の結果として訪れる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 線形成長の幻想を打ち破り、プラトーでの粘りを正当化する科学的根拠を提供するため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎭 タイプ論: ダブラー／オブセッシブ／ハッカー</h3>
+    <ul>
+      <li>よくある挫折パターンを可視化</li>
+      <li>新奇追求・過負荷・現状満足の罠</li>
+      <li>各タイプの特徴と陥りやすい失敗</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 読者が自身のパターンを認識し、マスタリーの道から逸脱する兆候を早期発見できるようにするため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🔑 五つの鍵の詳説</h3>
+    <ul>
+      <li>指導: 正しい土台とフィードバック</li>
+      <li>練習: 反復そのものを愛する姿勢</li>
+      <li>降伏: 初心に戻る受容の態度</li>
+      <li>志向性: 意図と注意の焦点化</li>
+      <li>エッジ: 安全域を少し超える挑戦</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> マスタリーを実践するための具体的ツールキットを提供し、各鍵の狙いと使い方を明確化するため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🔄 抵抗の理解: ホメオスタシス</h3>
+    <ul>
+      <li>変化に対する内外の反発メカニズム</li>
+      <li>個人と社会システムの現状維持力</li>
+      <li>小さな変更と環境設計による対策</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 挫折の構造的原因を理解し、自己妨害を予測・対策することで継続可能性を高めるため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>⚡ 社会的文脈: 速成文化と近道の誘惑</h3>
+    <ul>
+      <li>なぜ多くが持続を手放すのか</li>
+      <li>短期快感と長期停滞のトレードオフ</li>
+      <li>基礎反復の軽視がもたらす代償</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 現代社会の速成志向がマスタリーを阻む構造を明らかにし、反復基礎の価値を再定義するため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🛠️ 実践編: 日常の儀式化</h3>
+    <ul>
+      <li>小さな成功の設計</li>
+      <li>環境づくりと習慣化</li>
+      <li>続けるためのツール群</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 理論を日常行動に落とし込む具体的手法を提示し、読者が即座に実践できるようにするため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🌟 結語: 生涯学習としてのマスタリー</h3>
+    <ul>
+      <li>プラトーを愛し、道を歩み続ける決意</li>
+      <li>長期的な充足と卓越の両立</li>
+      <li>マスタリーは終わりなき旅</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 読者に生涯学習の覚悟を促し、マスタリーの道を歩み続ける動機づけを強化するため
+    </div>
+  </div>
+</div>
+
+<div id="examples" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🎻 例1: 音楽家の基礎練習</h3>
+    <p><strong>背景:</strong> プロの音楽家は毎日スケール練習を何十年も続ける。観客には見えない地味な反復が、舞台での表現力を支える。</p>
+    <p><strong>示唆:</strong> 基礎の反復は退屈に見えるが、高度な技能の土台となる。プラトーでの粘りが飛躍を準備する。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 卓越は華やかな成果の裏に地道な基礎反復があり、プラトーを愛する姿勢が長期成果を生むことを具体的に示すため
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🥋 例2: 武道の「守破離」</h3>
+    <p><strong>背景:</strong> 武道では「守（型を守る）→破（型を破る）→離（型から離れる）」の段階を踏む。初心者が型を飛ばすと基礎が崩れる。</p>
+    <p><strong>示唆:</strong> 降伏（初心に戻る）と指導（正しい型）の重要性。エゴを手放し、師の教えを素直に受け入れることが上達の鍵。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 五つの鍵のうち「降伏」と「指導」が実践でどう機能するかを伝統的メソッドで裏付け、初心の価値を再認識させるため
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🏃 例3: マラソンランナーの壁</h3>
+    <p><strong>背景:</strong> 初心者ランナーは最初の数週間で記録が伸びるが、その後長いプラトーに入る。多くがここで諦めるが、継続者は数ヶ月後に再び伸びる。</p>
+    <p><strong>示唆:</strong> マスタリー・カーブの典型例。プラトーは停滞ではなく熟成期間であり、ここでの継続が次の飛躍を準備する。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 非線形成長の現実を身近なスポーツで示し、プラトーでの粘りが報われることを体感的に理解させるため
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>💼 例4: 起業家の失敗と学習</h3>
+    <p><strong>背景:</strong> 成功した起業家の多くは複数回の失敗を経験している。失敗から学び、エゴを手放して方向転換できた者が最終的に成功する。</p>
+    <p><strong>示唆:</strong> 降伏（エゴを手放す）と志向性（明確な意図で修正）の実践例。失敗を受け入れ、学びに変える姿勢がマスタリーの核心。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> ビジネス領域でもマスタリーの原則が適用でき、失敗を学習機会に変える「降伏」の力を示すため
+    </div>
+  </div>
+</div>
+
+<div id="quotes" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>「上達は長いプラトーの合間に小さな飛躍が挟まる。」</p>
+    <small><strong>重要性:</strong> 成長の期待値を適正化し、停滞期の粘りを正当化するため。線形成長の幻想を打ち破る核心的メッセージ。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「練習は成果のためだけでなく、練習そのもののために行う。」</p>
+    <small><strong>重要性:</strong> 内発的動機を高め、継続性と質を同時に上げる核心だから。過程を愛する姿勢がマスタリーの本質。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「現状維持の力はあらゆる変化に抵抗する。」</p>
+    <small><strong>重要性:</strong> 挫折の正体を構造的に捉え、対策設計（小さな変更・環境化）につなげる。ホメオスタシスの理解が継続の鍵。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「新奇さの強迫的追求は退屈を生み、満足は基礎の反復に宿る。」</p>
+    <small><strong>重要性:</strong> 近道志向の逆効果を示し、基礎反復の価値を再定義する。ダブラーの罠を避ける指針となる。</small>
+  </div>
+</div>
+
+<div id="actions" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>📝 アクション1: 学習ログの雛形を作成する</h3>
+    <p><strong>目的:</strong> 日々の練習を可視化し、プラトーでの進捗を記録する仕組みを整える</p>
+    <p><strong>期待効果:</strong> 停滞期でも小さな改善を認識でき、継続の動機づけが強化される。15分で簡単なテンプレート（日付・内容・気づき）を作成。</p>
+    <p><span class="badge">15分</span> ノートやスプレッドシートに「日付／練習内容／気づき／次の改善点」の4列を用意し、今日の分を記入する</p>
+  </div>
+
+  <div class="action-card">
+    <h3>🔁 アクション2: 20分の基礎ドリルを繰り返す</h3>
+    <p><strong>目的:</strong> 練習そのものを愛する姿勢を体感し、反復の価値を実感する</p>
+    <p><strong>期待効果:</strong> 成果を求めず過程に集中することで、内発的動機が芽生え、継続の土台ができる。20分間、結果を気にせず基礎動作だけに集中。</p>
+    <p><span class="badge">20分</span> 自分の分野の最も基本的な動作（スケール・素振り・タイピング等）を、タイマーをセットして淡々と反復する</p>
+  </div>
+
+  <div class="action-card">
+    <h3>🎓 アクション3: 師の候補を3人書き出す</h3>
+    <p><strong>目的:</strong> 良い指導を得るための第一歩として、学べる相手をリストアップする</p>
+    <p><strong>期待効果:</strong> 指導の鍵を意識し、独学の限界を認識する。次のステップ（連絡・観察・模倣）への準備が整う。15分でリサーチと記入。</p>
+    <p><span class="badge">15分</span> 自分の分野で尊敬する人物3名を挙げ、それぞれ「なぜ学びたいか」を1文で書く。オンライン・書籍・身近な人でも可</p>
+  </div>
+
+  <div class="action-card">
+    <h3>🧘 アクション4: 初心に戻る5分瞑想</h3>
+    <p><strong>目的:</strong> エゴや固定観念を手放し、降伏の姿勢を体感する</p>
+    <p><strong>期待効果:</strong> 学びの受容性が高まり、誤りの修正速度が上がる。5分の静かな時間で心をリセット。</p>
+    <p><span class="badge">5分</span> 静かな場所で目を閉じ、「自分は初心者である」と心の中で唱えながら深呼吸を繰り返す</p>
+  </div>
+
+  <div class="action-card">
+    <h3>🎯 アクション5: 明日の練習に明確な意図を設定する</h3>
+    <p><strong>目的:</strong> 志向性の鍵を実践し、注意の焦点化で練習の質を高める</p>
+    <p><strong>期待効果:</strong> 漫然とした反復から脱却し、実行誤差が減少する。10分で意図を言語化。</p>
+    <p><span class="badge">10分</span> 明日の練習で「何に注意を向けるか」を1つ決め、紙に書く（例: 呼吸のリズム、手首の角度、言葉の選び方）</p>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  <p>🌟 マスタリーは終わりなき旅 - プラトーを愛し、道を歩み続けよう</p>
+  <p style="margin-top: 0.5rem; font-size: 0.9rem;">カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
