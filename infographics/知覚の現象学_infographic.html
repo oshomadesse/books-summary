@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知覚の現象学 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  flex: 1 1 auto;
+  min-width: 120px;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.2rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  border-left: 3px solid var(--accent);
+  padding: 0.6rem;
+  margin-top: 0.8rem;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.2rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1.05rem;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-left: 4px solid var(--primary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.6rem;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card small {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.8rem;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.3rem 0.7rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.visual-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+.relation-flow {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.relation-flow h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+.flow-item {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.8rem;
+  margin-bottom: 0.8rem;
+  border-radius: 0.5rem;
+  border-left: 3px solid var(--primary);
+  font-size: 0.9rem;
+  font-family: monospace;
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.book-item h4 {
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 0.4rem;
+}
+.book-item p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.book-item small {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    min-width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📖 知覚の現象学</h1>
+  <p>モーリス・メルロ＝ポンティ</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>私たちはどのように世界を意味あるものとして経験するのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>身体を通した前反省的な知覚によって、世界は常にすでに意味をもって現れる。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>感覚の寄せ集め（経験論）や思考の構成（知性主義）では、実際の経験の連続性・場・行為性が説明できず、身体主体の志向的活動がその欠を埋めるから。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>生きられた経験に立ち戻る現象学的方法（エポケー）を用い、身体図式・運動的志向性・地平・図と地などの構造を記述し、事例（病理・習慣・言語）で実証する。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">関連書籍</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="font-size:1.4rem; color:var(--primary); margin-bottom:1rem;">🧠 主要概念の詳細</h2>
+    
+    <div class="visual-diagram">
+      <h3 style="font-size:1.1rem; margin-bottom:1rem; color:var(--secondary);">概念マップ</h3>
+      <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="300" cy="200" rx="80" ry="50" fill="url(#grad1)" opacity="0.8"/>
+        <text x="300" y="205" text-anchor="middle" fill="white" font-size="14" font-weight="bold">生きられた身体</text>
+        <circle cx="150" cy="100" r="40" fill="#f093fb" opacity="0.7"/>
+        <text x="150" y="105" text-anchor="middle" fill="white" font-size="12" font-weight="bold">身体図式</text>
+        <circle cx="450" cy="100" r="40" fill="#f093fb" opacity="0.7"/>
+        <text x="450" y="105" text-anchor="middle" fill="white" font-size="12" font-weight="bold">運動的志向性</text>
+        <circle cx="150" cy="300" r="40" fill="#667eea" opacity="0.6"/>
+        <text x="150" y="305" text-anchor="middle" fill="white" font-size="12" font-weight="bold">図と地</text>
+        <circle cx="450" cy="300" r="40" fill="#667eea" opacity="0.6"/>
+        <text x="450" y="305" text-anchor="middle" fill="white" font-size="12" font-weight="bold">地平</text>
+        <line x1="240" y1="180" x2="180" y2="130" stroke="#764ba2" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="360" y1="180" x2="420" y2="130" stroke="#764ba2" stroke-width="2"/>
+        <line x1="240" y1="220" x2="180" y2="270" stroke="#764ba2" stroke-width="2"/>
+        <line x1="360" y1="220" x2="420" y2="270" stroke="#764ba2" stroke-width="2"/>
+      </svg>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>🧍 生きられた身体（Leib）</h3>
+        <ul>
+          <li>世界に向けて開かれた主体</li>
+          <li>感じ・動き・意味を立ち上げる</li>
+          <li>客体（Körper）とは区別される</li>
+          <li>一言要約：主体としての身体</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>身体を物体ではなく主体として捉えることで、知覚と行為の一体性が理解できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🗺️ 身体図式</h3>
+        <ul>
+          <li>姿勢や可動域の統合モデル</li>
+          <li>習慣化した協応を保持</li>
+          <li>前反省的な自己身体配置</li>
+          <li>一言要約：無意識の運動地図</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>即応的行為を可能にする身体の「知」の基盤であり、スキル習得の鍵となる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🏃 運動的志向性</h3>
+        <ul>
+          <li>判断以前の身体的志向性</li>
+          <li>世界の布置に呼応して行為へ</li>
+          <li>知覚と運動が一体化</li>
+          <li>一言要約：行為としての意識</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>思考と行為の分離を超え、身体が直接世界に関与する仕方を示す。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🖼️ 図と地（ゲシュタルト）</h3>
+        <ul>
+          <li>対象は背景の中で輪郭を得る</li>
+          <li>孤立せず関係的に立ち現れる</li>
+          <li>意味は場の組織から生じる</li>
+          <li>一言要約：場から立つ形</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>感覚の総和ではなく文脈が意味を生むことを示し、経験論を超克する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌅 地平（ホライゾン）</h3>
+        <ul>
+          <li>対象を取り巻く潜在的連関</li>
+          <li>予期と未定義の余白</li>
+          <li>知覚の開放性を保障</li>
+          <li>一言要約：予期の背景</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>知覚が常に「もっと」を含み、世界が無限に開かれていることを説明する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔄 習慣化</h3>
+        <ul>
+          <li>反復経験が身体に沈潜</li>
+          <li>新たな知覚-行為可能性の蓄積</li>
+          <li>スキルの身体化</li>
+          <li>一言要約：身につく知</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>学習と熟練の本質を、身体図式の再編として理解できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👥 間主観性</h3>
+        <ul>
+          <li>他者の身体的ふるまいを通じた意味共有</li>
+          <li>世界が「私たち」の場として開ける</li>
+          <li>共同世界の成立基盤</li>
+          <li>一言要約：共有される世界</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>孤立した主観を超え、社会的世界の現象学的基礎を与える。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔬 現象学的還元（エポケー）</h3>
+        <ul>
+          <li>自然的態度の前提を停止</li>
+          <li>生きられた経験そのものを記述</li>
+          <li>先入見からの解放</li>
+          <li>一言要約：先入見の停止</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>理論的構成物を排し、現象そのものへ立ち戻る方法的基盤。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⏰ 時間性（生きられた時間）</h3>
+        <ul>
+          <li>過去の保持と未来の予期が現在に重なる</li>
+          <li>持続としての時間</li>
+          <li>行為と意味の連続性を生む</li>
+          <li>一言要約：重なり合う現在</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>知覚の地平と連続性を時間構造から説明し、主体性の基盤を示す。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💬 言語＝表現としての身振り</h3>
+        <ul>
+          <li>既成記号操作ではない</li>
+          <li>意味を生起させる身体的身振り</li>
+          <li>発話は創造的行為</li>
+          <li>一言要約：意味を生む発話</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>言語を身体的表現として捉え、意味の起源を身体に見出す。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚖️ 経験論・知性主義批判</h3>
+        <ul>
+          <li>感覚の総和への還元を退ける</li>
+          <li>純粋思考への還元も退ける</li>
+          <li>身体的知覚の一次性を擁護</li>
+          <li>一言要約：二分法の超克</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>伝統的認識論の限界を示し、第三の道としての身体論を開く。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌍 生きられた世界（ライフワールド）</h3>
+        <ul>
+          <li>理論化以前の意味充満の世界</li>
+          <li>すでに関与し住みこむ場</li>
+          <li>科学的世界観の基盤</li>
+          <li>一言要約：すでにそこにある世界</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>抽象的理論の前提となる生活世界の重要性を回復する。
+        </div>
+      </div>
+    </div>
+
+    <div class="relation-flow">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-item">生きられた身体 → 身体図式 → 運動的志向性 → 即応的行為</div>
+      <div class="flow-item">図と地 ＋ 地平 → 対象の意味の立ち上がり</div>
+      <div class="flow-item">習慣化 → 身体図式の再編 → 新たな知覚-行為可能性</div>
+      <div class="flow-item">間主観性 ← 他者の身振りの可読性 ← 私の身体図式の移入</div>
+      <div class="flow-item">時間性（保持・予期） → 地平の生成 → 知覚の連続性</div>
+      <div class="flow-item">現象学的還元 → 経験論/知性主義の前提停止 → 身体の一次性の把握</div>
+      <div class="flow-item">言語＝身振り ← 運動的志向性の高度化 ← 共同世界の成立</div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="font-size:1.4rem; color:var(--secondary); margin-bottom:1rem;">📚 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3>序論：知覚への回帰</h3>
+      <ul>
+        <li>経験論と知性主義の限界を指摘</li>
+        <li>知覚の一次性へ回帰するプログラム提示</li>
+        <li>現象学的方法の導入</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>伝統的認識論では生きられた経験の豊かさを捉えきれず、新たな出発点が必要だから。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第一部：身体</h3>
+      <ul>
+        <li>物理・生理学的身体観の批判</li>
+        <li>身体は主体であることの擁護</li>
+        <li>身体図式・空間性・運動の分析</li>
+        <li>病理事例（失行・シュナイダー例）を通じた論証</li>
+        <li>習慣と技能の身体化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>身体を客体ではなく主体として捉え直すことで、知覚と行為の統一的理解が可能になるから。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第二部：知覚された世界</h3>
+      <ul>
+        <li>感覚は要素ではなくゲシュタルト的全体</li>
+        <li>対象・空間・深さ・色の現れの場構造</li>
+        <li>図と地・地平の機能分析</li>
+        <li>他者と人間世界の開け</li>
+        <li>言語を意味生成の身振りとして解明</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>知覚世界の構造を記述することで、意味が身体-世界の関係から生じることを示すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第三部：人間性・主体性</h3>
+      <ul>
+        <li>コギトの再解釈（反省以前の自己）</li>
+        <li>時間性の現象学（保持と予期の交錯）</li>
+        <li>自由と状況の弁証法（投企は常に状況内）</li>
+        <li>歴史性と行為の責務</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>主体性を抽象的思考ではなく身体的・時間的・状況的存在として再定義するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>結論的含意</h3>
+      <ul>
+        <li>主体と客体の二分法を超える</li>
+        <li>内と外の二分法を超える</li>
+        <li>身体‐世界の絡み合い（交錯）として人間存在を捉える</li>
+        <li>実存の自由を状況内の投企として理解</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>デカルト的二元論を克服し、存在論的に新たな人間理解を提示するため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="font-size:1.4rem; color:var(--accent); margin-bottom:1rem;">💡 具体例</h2>
+    
+    <div class="example-card">
+      <h4>🎹 例1：ピアニストの演奏</h4>
+      <p><strong>背景：</strong>熟練したピアニストは楽譜を見ながら、鍵盤の位置を意識的に計算することなく指が自然に動く。</p>
+      <p><strong>示唆：</strong>身体図式と習慣化により、知覚と運動が一体化し、反省以前の運動的志向性が発揮される。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>身体が「知っている」という形で技能が沈潜し、思考を介さず世界に応答できることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🚗 例2：運転中の風景知覚</h4>
+      <p><strong>背景：</strong>運転者は道路標識や他車を「図」として認識し、背景の建物は「地」として意識の周縁に留まる。</p>
+      <p><strong>示唆：</strong>図と地の構造により、状況に応じて意味が組織化され、行為に必要な情報が前景化する。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>知覚は受動的受容ではなく、行為の文脈で能動的に構造化されることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🤝 例3：握手の間主観性</h4>
+      <p><strong>背景：</strong>握手する際、相手の手の動きを見て、自分の手を調整し、互いに意図を読み取り合う。</p>
+      <p><strong>示唆：</strong>他者の身体的ふるまいを通じて意味が共有され、間主観的な世界が開かれる。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>他者理解は推論ではなく、身体的共鳴を通じて直接的に成立することを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🩺 例4：シュナイダーの病理事例</h4>
+      <p><strong>背景：</strong>脳損傷患者シュナイダーは、指示された身体部位を指すことはできるが、蚊を払うような即応的動作ができない。</p>
+      <p><strong>示唆：</strong>抽象的運動と具体的運動の分離は、運動的志向性の障害を示し、身体図式の重要性を浮き彫りにする。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>身体的知覚と行為の一体性が損なわれると、世界への直接的関与が失われることを示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="font-size:1.4rem; color:var(--primary); margin-bottom:1rem;">📜 重要な引用</h2>
+    
+    <div class="quote-card">
+      <p>「知覚は思考に先立ち、世界への私たちの開かれである。」</p>
+      <small><strong>なぜ重要か：</strong>本書の中核である「知覚の一次性」を端的に示すから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「身体は対象ではなく、世界への私の視点である。」</p>
+      <small><strong>なぜ重要か：</strong>身体＝主体という転換により認識論と存在論を架橋するから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「私はまず行い、その後で理解する。」</p>
+      <small><strong>なぜ重要か：</strong>運動的志向性を強調し、知覚と行為の不可分性を示すから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「ものは場の中で輪郭を得て、感覚の総和ではない。」</p>
+      <small><strong>なぜ重要か：</strong>ゲシュタルト構造を通じて文脈が意味を生むことを示すから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「自由は状況の中での投企としてしか現れない。」</p>
+      <small><strong>なぜ重要か：</strong>実存の自由を身体‐世界の関与として再定義するから。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="font-size:1.4rem; color:var(--accent); margin-bottom:1rem;">✅ 今日のアクション</h2>
+    
+    <div class="action-card">
+      <h4>🚶 アクション1：歩行の感覚を15分観察し記述する</h4>
+      <p><strong>目的：</strong>身体図式と運動的志向性を自己観察する</p>
+      <p><strong>期待効果：</strong>無意識の身体的「知」に気づき、知覚と行為の一体性を体感できる</p>
+      <p><strong>手順：</strong>静かな場所を15分歩き、足の接地感・バランス調整・視線の動きをメモする</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🎨 アクション2：身近な物の図と地を20分描き分ける</h4>
+      <p><strong>目的：</strong>図と地の構造を視覚的に理解する</p>
+      <p><strong>期待効果：</strong>対象が文脈の中で意味を得る仕組みを実感できる</p>
+      <p><strong>手順：</strong>コップなど身近な物を選び、背景を変えながらスケッチし、意味の変化を観察する</p>
+    </div>
+
+    <div class="action-card">
+      <h4>📖 アクション3：一節を15分音読し発話の身振りを意識</h4>
+      <p><strong>目的：</strong>言語を身体的表現として体験する</p>
+      <p><strong>期待効果：</strong>意味が記号操作ではなく身体的行為から生じることを実感できる</p>
+      <p><strong>手順：</strong>好きな文章を声に出して読み、抑揚・間・身体の動きが意味にどう影響するか観察する</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🧘 アクション4：5分間の身体スキャン瞑想</h4>
+      <p><strong>目的：</strong>前反省的な身体感覚に注意を向ける</p>
+      <p><strong>期待効果：</strong>生きられた身体の現前性を直接経験できる</p>
+      <p><strong>手順：</strong>座位で目を閉じ、頭から足先まで順に身体各部の感覚を観察する</p>
+    </div>
+  </div>
+
+  <div id="tab6" class="tab-content" role="tabpanel">
+    <h2 style="font-size:1.4rem; color:var(--secondary); margin-bottom:1rem;">📚 関連書籍</h2>
+    
+    <div class="book-list">
+      <div class="book-item">
+        <h4>存在と時間</h4>
+        <p><strong>著者：</strong>マルティン・ハイデガー</p>
+        <small><strong>関連性：</strong>世界内存在と実存分析が身体的世界関与の地平を準備する。</small>
+      </div>
+
+      <div class="book-item">
+        <h4>観念 I（純粋現象学と現象学的哲学）</h4>
+        <p><strong>著者：</strong>エトムント・フッサール</p>
+        <small><strong>関連性：</strong>還元と志向性の方法的基盤に対する継承と修正を理解できる。</small>
+      </div>
+
+      <div class="book-item">
+        <h4>見えるものと見えないもの</h4>
+        <p><strong>著者：</strong>モーリス・メルロ＝ポンティ</p>
+        <small><strong>関連性：</strong>後期思想で「交錯」や可逆性が深化し、本書の展開を補完する。</small>
+      </div>
+
+      <div class="book-item">
+        <h4>知覚の生態学的アプローチ</h4>
+        <p><strong>著者：</strong>ジェームズ・J・ギブソン</p>
+        <small><strong>関連性：</strong>直接知覚と環境への行為可能性の観点が身体的知覚論と呼応する。</small>
+      </div>
+
+      <div class="book-item">
+        <h4>身体化された心</h4>
+        <p><strong>著者：</strong>フランシスコ・ヴァレラ／エヴァン・トンプソン／エレノア・ロッシュ</p>
+        <small><strong>関連性：</strong>現象学と認知科学を接続し、身体化された知の科学的含意を示す。</small>
+      </div>
+
+      <div class="book-item">
+        <h4>コンピュータには何ができないか</h4>
+        <p><strong>著者：</strong>ヒューバート・ドレイファス</p>
+        <small><strong>関連性：</strong>規則では捉えきれない熟練と身体的技能の重要性を論じる。</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
