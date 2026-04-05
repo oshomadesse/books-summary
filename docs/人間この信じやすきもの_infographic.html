@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>なぜ人は奇妙なことを信じるのか - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  flex: 1 1 auto;
+  min-width: 120px;
+}
+.tab-btn:hover {
+  background: var(--bg);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.05rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 4px solid var(--primary);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card blockquote {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+.quote-card cite {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.action-card h3 {
+  font-size: 1.05rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-diagram h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+.metric-box .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+}
+.metric-box .label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    min-width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 なぜ人は奇妙なことを信じるのか</h1>
+  <p>科学的懐疑主義で誤信を減らす実践ガイド</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ人は奇妙なこと・誤ったことを信じるのか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      私たちはパターン検出と意図推定を過剰に行う脳を持ち、確証バイアスや動機づけられた推論、所属集団の圧力などにより、先に抱いた結論を防衛するから。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか？）</strong>
+      進化的には偽陽性（誤ってパターンを見る）ほうが生存上安全で、文化的には信念がアイデンティティや共同体利益に結びつくため維持されやすい。さらに人は賢さゆえに誤信を巧妙に正当化できる。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには？）</strong>
+      科学的方法（反証可能性・再現性・事前確率を踏まえた評価）と懐疑のツールキット（代替仮説の列挙、ベイズ的更新、コールドリーディング等の技法の理解、エラーコストの見積もり）を用い、事例検討（疑似科学・陰謀論・偽史・代替医療など）で実践する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>👁️ パターニシティ</h3>
+        <ul>
+          <li><strong>定義:</strong> 無作為の中に誤って規則や相関を見出す傾向</li>
+          <li><strong>一言:</strong> 見えすぎ</li>
+          <li>偽陽性を受け入れやすい心のデフォルト</li>
+          <li>ランダムな点にも「顔」や「意味」を発見</li>
+        </ul>
+        <div class="reason-box">
+          <strong>💡 なぜ重要か:</strong> 誤信の出発点。パターン過検出が迷信・陰謀論の土台となる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎭 エージェンティシティ</h3>
+        <ul>
+          <li><strong>定義:</strong> 出来事の背後に意図ある主体を見出す傾向</li>
+          <li><strong>一言:</strong> 誰かのせい</li>
+          <li>陰謀論形成の土壌</li>
+          <li>「偶然」より「誰かの計画」を好む心理</li>
+        </ul>
+        <div class="reason-box">
+          <strong>💡 なぜ重要か:</strong> 脅威下で活性化し、陰謀論・超自然信仰を生む主要メカニズム。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>✅ 確証バイアス</h3>
+        <ul>
+          <li><strong>定義:</strong> 自分の仮説を支持する情報を集め・重視</li>
+          <li><strong>一言:</strong> 都合優先</li>
+          <li>反証的情報を無視・過小評価</li>
+          <li>信念を強化する情報探索パターン</li>
+        </ul>
+        <div class="reason-box">
+          <strong>💡 なぜ重要か:</strong> 誤信を維持・強化する最も普遍的な認知バイアス。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎯 動機づけられた推論</h3>
+        <ul>
+          <li><strong>定義:</strong> 望ましい結論に到達するため情報処理を歪める</li>
+          <li><strong>一言:</strong> 先に結論</li>
+          <li>結論先行・理由後付けの心理過程</li>
+          <li>アイデンティティ防衛が推論を支配</li>
+        </ul>
+        <div class="reason-box">
+          <strong>💡 なぜ重要か:</strong> 賢い人ほど巧妙に誤信を正当化できる理由を説明。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔮 信念依存的リアリズム</h3>
+        <ul>
+          <li><strong>定義:</strong> 世界の理解が先行する信念で形づくられる</li>
+          <li><strong>一言:</strong> 先入観フィルタ</li>
+          <li>証拠は解釈を通じて取り込まれる</li>
+          <li>同じ事実が異なる「現実」を生む</li>
+        </ul>
+        <div class="reason-box">
+          <strong>💡 なぜ重要か:</strong> 「客観的事実」だけでは信念が変わらない理由を示す。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔬 反証可能性</h3>
+        <ul>
+          <li><strong>定義:</strong> 主張が経験的に打ち消され得る条件を持つこと</li>
+          <li><strong>一言:</strong> 試せるか</li>
+          <li>科学と非科学の境界の鍵</li>
+          <li>失敗を認める仕組みが科学を強くする</li>
+        </ul>
+        <div class="reason-box">
+          <strong>💡 なぜ重要か:</strong> デマルケーション基準。検証不能な主張を識別する道具。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎪 疑似科学</h3>
+        <ul>
+          <li><strong>定義:</strong> 科学の様式を装い反証・再現の規律を回避</li>
+          <li><strong>一言:</strong> 科学のフリ</li>
+          <li>失敗を免疫化する言説体系</li>
+          <li>専門用語で権威を演出</li>
+        </ul>
+        <div class="reason-box">
+          <strong>💡 なぜ重要か:</strong> 科学的外観が誤信を正当化する典型パターンを理解。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🃏 コールド・リーディング</h3>
+        <ul>
+          <li><strong>定義:</strong> 一般的・曖昧な言葉で「当たっている」と思わせる技法</li>
+          <li><strong>一言:</strong> 当たった風</li>
+          <li>観察と誘導で情報を引き出す</li>
+          <li>占い・霊能の「的中」の種明かし</li>
+        </ul>
+        <div class="reason-box">
+          <strong>💡 なぜ重要か:</strong> 体験的確信の裏側を知り、主観的「証拠」を再評価できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📊 ベイズ的思考</h3>
+        <ul>
+          <li><strong>定義:</strong> 事前確率と新証拠で信念の度合いを更新</li>
+          <li><strong>一言:</strong> 確率更新</li>
+          <li>珍しい主張には強い証拠が必要</li>
+          <li>段階的に信念を調整する推論様式</li>
+        </ul>
+        <div class="reason-box">
+          <strong>💡 なぜ重要か:</strong> 証拠の重みを文脈で評価し、極端な結論を避ける枠組み。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚖️ コスト・ベネフィット信念モデル</h3>
+        <ul>
+          <li><strong>定義:</strong> 信念採択は適応的な賭け</li>
+          <li><strong>一言:</strong> 誤りの損得</li>
+          <li>偽陽性/偽陰性のコスト差が傾向を決める</li>
+          <li>進化的に「安全側」に誤る設計</li>
+        </ul>
+        <div class="reason-box">
+          <strong>💡 なぜ重要か:</strong> 誤信の傾きが合理的起源を持つことを示し、対策の方向を定める。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-diagram">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-item">
+        不確実性↑ <span class="flow-arrow">→</span> パターニシティ↑ <span class="flow-arrow">→</span> 偽陽性の信念↑
+      </div>
+      <div class="flow-item">
+        脅威の知覚↑ <span class="flow-arrow">→</span> エージェンティシティ↑ <span class="flow-arrow">→</span> 陰謀論傾向↑
+      </div>
+      <div class="flow-item">
+        先行信念 <span class="flow-arrow">→</span> 信念依存的リアリズム <span class="flow-arrow">→</span> 証拠の選別（確証バイアス）
+      </div>
+      <div class="flow-item">
+        所属アイデンティティ <span class="flow-arrow">→</span> 動機づけられた推論 <span class="flow-arrow">→</span> 反証の回避
+      </div>
+      <div class="flow-item">
+        疑似科学は反証可能性の欠如・失敗の免疫化で維持 <span class="flow-arrow">←</span> 確証バイアス/動機づけ
+      </div>
+      <div class="flow-item">
+        ベイズ的思考・反証テスト <span class="flow-arrow">→</span> 信念の収束/更新 <span class="flow-arrow">→</span> 誤信の低減
+      </div>
+      <div class="flow-item">
+        コールド・リーディング理解 <span class="flow-arrow">→</span> 体験的確信の再評価 <span class="flow-arrow">→</span> 占い/霊能主張の説得力低下
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 第1章：序論 - 懐疑主義と科学的方法</h3>
+      <ul>
+        <li>懐疑主義の基本姿勢：証拠を求め、代替仮説を検討する態度</li>
+        <li>科学的方法の核心：反証可能性、再現性、第三者検証</li>
+        <li>中心課題の設定：「なぜ人は奇妙なことを信じるのか」</li>
+        <li>個人攻撃ではなくメカニズム理解を目指す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜこの章が必要か:</strong> 全体の枠組みと姿勢を定め、非難ではなく理解と改善を目指す土台を築く。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🧠 第2章：心理学的基盤 - 脳のデフォルト設定</h3>
+      <ul>
+        <li>パターニシティとエージェンティシティの進化的起源</li>
+        <li>確証バイアス：仮説支持情報の優先的処理</li>
+        <li>動機づけられた推論：結論先行・理由後付けの心理</li>
+        <li>信念依存的リアリズム：先入観が「現実」を形づくる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜこの章が必要か:</strong> 誤信の普遍的メカニズムを示し、「誰でも陥る」現実を受け入れる基盤を作る。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>👥 第3章：社会・文化の力学 - 集団が信念を強化する</h3>
+      <ul>
+        <li>アイデンティティと信念の結びつき：所属の証としての信念</li>
+        <li>権威と同調圧力：集団内での信念維持メカニズム</li>
+        <li>コスト・ベネフィット分析：誤りの型による適応的選択</li>
+        <li>文化的伝達：信念の世代間継承</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜこの章が必要か:</strong> 個人心理を超えた社会的要因を理解し、集団レベルの介入点を示す。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔬 第4章：科学と疑似科学のデマルケーション</h3>
+      <ul>
+        <li>反証可能性：科学の必要条件</li>
+        <li>再現性と第三者検証：信頼性の担保</li>
+        <li>疑似科学の免疫化戦略：失敗を説明し去る技法</li>
+        <li>専門用語の濫用と権威の演出</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜこの章が必要か:</strong> 科学的主張と非科学的主張を区別する実務的基準を提供する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔍 第5章：事例研究 - 原理の具体適用</h3>
+      <ul>
+        <li>霊能・UFO・超常現象：エージェンティシティとパターニシティの実例</li>
+        <li>偽史/否定論（ホロコースト否定等）：動機づけられた推論の極端例</li>
+        <li>創造論と進化論：科学と信念の衝突</li>
+        <li>代替医療・記憶回復療法：疑似科学の健康リスク</li>
+        <li>占いとコールドリーディング：体験的確信の種明かし</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜこの章が必要か:</strong> 抽象的原理を具体事例で検証し、読者が自分の文脈に応用できるようにする。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🛠️ 第6章：処方箋 - 懐疑のツールキット</h3>
+      <ul>
+        <li>代替仮説の列挙：複数の説明を並べて比較</li>
+        <li>反証テスト設計：「どうなれば間違いか」を明確化</li>
+        <li>事前確率評価：珍しい主張には強い証拠を要求</li>
+        <li>エラーコスト比較：偽陽性と偽陰性の損得を見積もる</li>
+        <li>専門家合意の確認：孤立した主張に警戒</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜこの章が必要か:</strong> 実務的手順として科学的思考を提示し、学習可能な技法とする。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎓 第7章：結語 - 学習可能な技法としての科学的思考</h3>
+      <ul>
+        <li>「人は先に信じる生き物」である現実の受容</li>
+        <li>教育と訓練による改善可能性</li>
+        <li>制度化された懐疑：個人技から共同体の規律へ</li>
+        <li>継続的実践の奨励</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜこの章が必要か:</strong> 希望と実践の方向を示し、読者を行動へ促す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🔮 具体例1：占い師の「的中」</h3>
+      <p><strong>背景:</strong> 占い師が初対面の相談者に「あなたは過去に大きな失恋をした」と告げ、相談者は驚いて「当たっている！」と感じる。</p>
+      <p><strong>示唆:</strong> コールド・リーディング技法（一般的な経験を言う、相手の反応を観察して軌道修正）により、特殊な能力なしに「的中」を演出できる。</p>
+      <div class="reason-box">
+        <strong>💡 この例が示すこと:</strong> 体験的確信（「当たった！」）は主観的で、技法の理解により再評価可能。超常能力の「証拠」は別の説明で十分。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🌾 具体例2：雨乞いの儀式</h3>
+      <p><strong>背景:</strong> 干ばつ時に雨乞いを行い、数日後に雨が降ると「儀式が効いた」と信じられる。降らなければ「祈りが足りなかった」と説明される。</p>
+      <p><strong>示唆:</strong> 確証バイアス（成功だけ記憶）と失敗の免疫化（失敗を別要因に帰属）により、因果関係のない行動が維持される。</p>
+      <div class="reason-box">
+        <strong>💡 この例が示すこと:</strong> 偶然の一致と因果を混同しやすく、反証を回避する説明が信念を強化する。統制された検証が必要。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🦠 具体例3：ワクチン陰謀論</h3>
+      <p><strong>背景:</strong> ワクチン接種後に子どもが自閉症と診断され、親は「ワクチンが原因」と確信。大規模研究で因果関係は否定されているが、個人体験が優先される。</p>
+      <p><strong>示唆:</strong> エージェンティシティ（誰かの責任を求める）、パターニシティ（時間的近接を因果と見る）、動機づけられた推論（子を守りたい動機）が複合し、科学的証拠より個人体験が重視される。</p>
+      <div class="reason-box">
+        <strong>💡 この例が示すこと:</strong> 強い感情と個人体験は統計的証拠を圧倒しやすい。ベイズ的思考（事前確率と集団データ）で評価する訓練が必要。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🎰 具体例4：ギャンブラーの誤謬</h3>
+      <p><strong>背景:</strong> ルーレットで赤が5回連続で出た後、「次は黒が出る確率が高い」と賭ける。実際は各回独立で確率は変わらない。</p>
+      <p><strong>示唆:</strong> パターニシティ（ランダムに規則を見る）と「平均への回帰」の誤解が、誤った予測と損失を生む。</p>
+      <div class="reason-box">
+        <strong>💡 この例が示すこと:</strong> 独立事象の理解不足が経済的損失につながる。確率の基礎教育が実生活の意思決定を改善する。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <blockquote>"賢い人ほど、先に抱いた信念を巧みに正当化できる。"</blockquote>
+      <cite><strong>なぜ重要か:</strong> 教育水準の高さが誤信の免疫ではないという逆説を示す。知性は防御にも使われる。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"人はまず信じ、後から懐疑する—その順序が誤りを生む。"</blockquote>
+      <cite><strong>なぜ重要か:</strong> 心の初期設定を理解し、検証の介入点を明確にする。デフォルトは「信じる」。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"偽陽性の誤りは偽陰性より進化的コストが低い。"</blockquote>
+      <cite><strong>なぜ重要か:</strong> 誤信の傾きが適応的起源を持つことを示し、非難より対策に焦点を当てられる。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"科学とは制度化された懐疑である。"</blockquote>
+      <cite><strong>なぜ重要か:</strong> 個人技ではなく、手続と共同体で誤りを減らす発想を強調する。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"反証できない主張は科学の外にある。"</blockquote>
+      <cite><strong>なぜ重要か:</strong> デマルケーション基準を簡潔に示し、議論の土俵を定める。検証不能な主張を識別する道具。</cite>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>✅ アクション1：直近の主張1件を一次資料で確認</h3>
+      <p><strong>🎯 目的:</strong> 伝聞や要約ではなく、元の情報源に当たる習慣をつける。</p>
+      <p><strong>📋 手順:</strong> 今日見たニュースや主張を1つ選び、引用元の論文・公式発表・原典を15分で探して読む。</p>
+      <p><strong>💡 期待効果:</strong> 情報の歪みや文脈の欠落に気づき、二次情報への依存度を下げる。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>🔍 アクション2：ニュース1本をファクトチェック</h3>
+      <p><strong>🎯 目的:</strong> 主張の真偽を複数の独立した情報源で検証する実践。</p>
+      <p><strong>📋 手順:</strong> 気になるニュースを選び、ファクトチェックサイト（Snopes、FactCheck.org等）や複数メディアで裏取りを20分で行う。</p>
+      <p><strong>💡 期待効果:</strong> 単一情報源への依存リスクを体感し、クロスチェックの重要性を学ぶ。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>📝 アクション3：確証バイアス例を3つ書き出す</h3>
+      <p><strong>🎯 目的:</strong> 自分の思考パターンを観察し、バイアスの自覚を高める。</p>
+      <p><strong>📋 手順:</strong> 過去1週間で「自分の意見に合う情報だけ集めた」「反対意見を無視した」場面を3つ振り返り、ノートに記録（各5分）。</p>
+      <p><strong>💡 期待効果:</strong> メタ認知が向上し、次回から意識的に反対意見を探す習慣が芽生える。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>🧪 アクション4：反証テストを1つ設計する</h3>
+      <p><strong>🎯 目的:</strong> 自分の信念を検証可能な形に変換する訓練。</p>
+      <p><strong>📋 手順:</strong> 自分が持つ信念を1つ選び、「どうなれば間違いと認めるか」を具体的に書く（15分）。</p>
+      <p><strong>💡 期待効果:</strong> 反証可能性の理解が深まり、検証不能な主張を見抜く力がつく。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>📊 アクション5：事前確率を見積もる練習</h3>
+      <p><strong>🎯 目的:</strong> 珍しい主張には強い証拠が必要という感覚を養う。</p>
+      <p><strong>📋 手順:</strong> 「宇宙人が地球を訪問している」など珍しい主張を選び、「事前にどれくらいありそうか（%）」「どんな証拠があれば信じるか」を書く（10分）。</p>
+      <p><strong>💡 期待効果:</strong> ベイズ的思考の基礎が身につき、証拠の重みを文脈で評価できるようになる。</p>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-box">
+        <span class="number">15</span>
+        <span class="label">分で実行</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">5</span>
+        <span class="label">アクション</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">即</span>
+        <span class="label">今日から</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetTab = button.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      button.classList.add('active');
+      button.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
