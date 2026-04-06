@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Work インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333;
+  --text-light: #666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: white;
+  margin: 1rem;
+  padding: 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 0.75rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem 1rem 0;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.875rem 0.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: linear-gradient(to bottom, rgba(102,126,234,0.05), transparent);
+}
+.tab-content {
+  display: none;
+  padding: 1.5rem 1rem;
+  background: white;
+  margin: 0 1rem 1rem;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.tab-content.active {
+  display: block;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.card .reason {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, rgba(102,126,234,0.08), rgba(240,147,251,0.08));
+  border-radius: 6px;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--secondary);
+}
+.card .reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: linear-gradient(to right, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 4px solid var(--primary);
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(240,147,251,0.1), rgba(102,126,234,0.05));
+  border-left: 4px solid var(--accent);
+  font-style: italic;
+}
+.quote-card .quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card .quote-why {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff, rgba(102,126,234,0.03));
+  border: 2px solid var(--primary);
+}
+.action-card h4 {
+  font-size: 0.95rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.25rem;
+}
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin: 0.25rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border: 1px solid #e0e0e0;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+}
+.flow-arrow {
+  margin: 0 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+.book-card {
+  background: linear-gradient(to right, rgba(118,75,162,0.05), rgba(240,147,251,0.05));
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  border-left: 3px solid var(--secondary);
+}
+.book-card h4 {
+  font-size: 0.95rem;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+}
+.book-card .author {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+@media (min-width: 768px) {
+  .tabs {
+    margin: 1.5rem auto 0;
+    max-width: 900px;
+  }
+  .tab-content {
+    margin: 0 auto 1.5rem;
+    max-width: 900px;
+    padding: 2rem;
+  }
+  .summary-block {
+    margin: 1.5rem auto;
+    max-width: 900px;
+  }
+  header h1 {
+    font-size: 2.25rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 Deep Work</h1>
+  <p>集中力を武器に変える、デジタル時代の成果戦略</p>
+</header>
+
+<div class="summary-block">
+  <h2>📌 要約（問い×答え×根拠）</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>常時接続と雑事に追われる時代に、どうすれば大きな成果と満足を得られるか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>ディープ・ワーク（強い集中での難易度高い作業）を意図的に増やし、シャロー・ワーク（表層的で容易な作業）を体系的に減らす。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>深作業は複雑スキルの習得と高品質アウトプットを最短化し、希少ゆえに市場価値と内的充足を同時にもたらす。一方、断片化とマルチタスクは注意残渣を生み、生産性を劣化させる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    <p>1) 深く働くための儀式と時間割（タイムブロッキング、開始儀式、終了儀式）を設計する<br>
+    2) 退屈の受容で衝動を鍛え、集中持続力を高める<br>
+    3) 道具選択を職人基準に切り替え、SNS等は価値が上回る場合のみ使う<br>
+    4) 浅い作業の比率を測定・可視化し、上限を設けて排水する</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--primary);">🧠 主要概念の詳細</h2>
+  
+  <div class="card">
+    <h3>🎯 ディープ・ワーク</h3>
+    <ul>
+      <li>強い集中のもとで認知的に困難な課題に取り組む</li>
+      <li>短時間で高品質の成果や学習を生む働き方</li>
+      <li>一言要約: 深く集中して難題を解く</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 複雑スキルの習得速度を最大化し、希少価値の高いアウトプットを生むため、市場価値と内的充足を同時に高める。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📧 シャロー・ワーク</h3>
+    <ul>
+      <li>メール対応や会議など低付加価値で容易に複製可能な表層業務</li>
+      <li>集中不要で成果への寄与が小さい</li>
+      <li>一言要約: 浅く広い雑務</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 無自覚に増殖すると深作業の時間を侵食し、成果の質と量を低下させるため、意図的な制限が必要。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 注意残渣</h3>
+    <ul>
+      <li>タスク切替後も前の課題への注意が残る現象</li>
+      <li>現行タスクの集中と遂行が妨げられる</li>
+      <li>一言要約: 切替の残り香</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> マルチタスクや頻繁な割り込みが集中度を劇的に下げる科学的根拠であり、シングルタスク設計の重要性を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 成果の法則</h3>
+    <ul>
+      <li>高品質な成果 = 集中の強度 × 投入時間</li>
+      <li>実践的経験則として機能</li>
+      <li>一言要約: 成果=集中度×時間</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 時間管理だけでなく集中度の設計こそがレバレッジであり、深作業の投資対効果を明確化する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎬 開始・終了儀式</h3>
+    <ul>
+      <li>作業環境・手順・目標を定型化</li>
+      <li>開始の摩擦を下げ集中スイッチを入れる</li>
+      <li>業務を確実に締める習慣</li>
+      <li>一言要約: 集中のスイッチ</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 意志力に頼らず自動的に深作業モードへ移行でき、終了儀式で未完了タスクの心理的負荷を軽減する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📅 深作業のスケジューリング哲学</h3>
+    <ul>
+      <li>僧侶型: 長期間の完全隔離</li>
+      <li>二峰性: 年/月単位で深作業期と浅作業期を分離</li>
+      <li>リズミック: 毎日固定時間に深作業ブロック</li>
+      <li>記者型: 隙間時間を即座に深作業化</li>
+      <li>一言要約: 自分に合う型で組む</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 個人の役割・環境に応じた型を選ぶことで、深作業を持続可能な習慣として制度化できる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>😐 退屈の受容</h3>
+    <ul>
+      <li>刺激への即時反応を抑える</li>
+      <li>退屈さを意図的に経験</li>
+      <li>集中の持続力を鍛える訓練</li>
+      <li>一言要約: 衝動を飼い慣らす</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 注意の筋力は訓練可能であり、刺激断ちで衝動制御力を高めることで深作業の持続時間が伸びる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚰 浅い作業の排水</h3>
+    <ul>
+      <li>タイムブロックと上限制で浅い仕事の比率を可視化</li>
+      <li>削減し、深作業に時間を再配分</li>
+      <li>一言要約: 雑務を枠で絞る</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 測定なしに改善なし。浅作業の上限を設けることで、戦略的に深作業の可処分時間を確保できる。
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="font-size:1rem;margin-bottom:0.75rem;color:var(--secondary);">🔗 概念間の因果関係</h3>
+    <div class="flow-item">
+      常時接続・通知増 <span class="flow-arrow">→</span> 注意散漫↑ <span class="flow-arrow">→</span> 注意残渣↑ <span class="flow-arrow">→</span> 集中度↓ <span class="flow-arrow">→</span> 成果↓
+    </div>
+    <div class="flow-item">
+      開始・終了儀式 + 固定ブロック <span class="flow-arrow">→</span> 切替コスト↓ <span class="flow-arrow">→</span> 集中度↑ <span class="flow-arrow">→</span> 深作業時間↑
+    </div>
+    <div class="flow-item">
+      退屈の受容 <span class="flow-arrow">→</span> 衝動制御力↑ <span class="flow-arrow">→</span> シングルタスク持続↑ <span class="flow-arrow">→</span> 学習速度・品質↑
+    </div>
+    <div class="flow-item">
+      職人基準の道具選択 <span class="flow-arrow">→</span> 無駄なアプリ削減 <span class="flow-arrow">→</span> 割り込み↓ <span class="flow-arrow">→</span> 深作業回数↑
+    </div>
+    <div class="flow-item">
+      浅い作業の見える化 <span class="flow-arrow">→</span> 上限設定 <span class="flow-arrow">→</span> 会議・メール削減 <span class="flow-arrow">→</span> 可処分深作業時間↑
+    </div>
+    <div class="flow-item">
+      深作業の蓄積 <span class="flow-arrow">→</span> スキル獲得の加速 <span class="flow-arrow">→</span> 希少価値↑ <span class="flow-arrow">→</span> 報酬・満足度↑
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--primary);">📚 各章の要約</h2>
+
+  <div class="card chapter-card">
+    <h3>序章: ディープ・ワークの定義と時代背景</h3>
+    <ul>
+      <li>常時接続が集中を侵食する現代を提示</li>
+      <li>深作業と浅作業の対比を明確化</li>
+      <li>本書の目的: 深作業を制度化する方法論</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> デジタル時代の構造的課題を示し、深作業が単なる理想ではなく戦略的必要性であることを読者に認識させる。
+    </div>
+  </div>
+
+  <div class="card chapter-card">
+    <h3>Part1 アイデア: 深作業の3つの命題</h3>
+    <ul>
+      <li>命題1: 深作業は価値がある（複雑スキル習得と高品質成果）</li>
+      <li>命題2: 深作業は希少である（多くの人が浅作業に流される）</li>
+      <li>命題3: 深作業は意味がある（内的充足と職人的満足）</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 経済的・心理的・哲学的な3軸で深作業の必要性を論証し、読者の動機づけを多層的に強化する。
+    </div>
+  </div>
+
+  <div class="card chapter-card">
+    <h3>Part2 ルール1: 深く働け</h3>
+    <ul>
+      <li>儀式化: 開始・終了の定型手順で摩擦を下げる</li>
+      <li>時間割: リズミック型など自分に合う型を選ぶ</li>
+      <li>専用空間: 環境を深作業専用に設計</li>
+      <li>指標設定: 進捗を可視化しフィードバックループを回す</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 意志力に頼らず、環境と習慣の設計で深作業を自動化・持続化する実践手法を提供する。
+    </div>
+  </div>
+
+  <div class="card chapter-card">
+    <h3>Part2 ルール2: 退屈を受け入れよ</h3>
+    <ul>
+      <li>刺激断ち: スマホ・SNSへの即反応を意図的に遅延</li>
+      <li>意図的練習: 集中の筋力を鍛える訓練</li>
+      <li>退屈耐性: 衝動制御力を高め、深作業の持続時間を伸ばす</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 集中力は生得的才能ではなく訓練可能な能力であり、行動設計で改善できることを示す。
+    </div>
+  </div>
+
+  <div class="card chapter-card">
+    <h3>Part2 ルール3: ソーシャルメディアをやめよ</h3>
+    <ul>
+      <li>職人基準: 道具は「少しでも得」ではなく純便益で選ぶ</li>
+      <li>SNS等の無駄な割り込みを排除</li>
+      <li>時間資本の最適配分を実現</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 漫然とした道具使用を転換し、深作業への時間投資を最大化する意思決定基準を提供する。
+    </div>
+  </div>
+
+  <div class="card chapter-card">
+    <h3>Part2 ルール4: 浅い仕事を排水せよ</h3>
+    <ul>
+      <li>タイムブロック: 1日の全時間を15分単位で事前割当</li>
+      <li>会議の最小化: 定例会議を見直し、必要最小限に</li>
+      <li>メールのルール化: 返信テンプレと処理時間枠を設定</li>
+      <li>上限制: 浅作業の比率を測定し、上限（例30%）を設ける</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 浅作業の無自覚な膨張を防ぎ、戦略的に深作業の可処分時間を確保・拡大する。
+    </div>
+  </div>
+
+  <div class="card chapter-card">
+    <h3>結論: 深作業の制度化</h3>
+    <ul>
+      <li>個人レベル: 習慣と環境設計で深作業を日常化</li>
+      <li>組織レベル: 協業プロセスを見直し、深作業を支援</li>
+      <li>成果と満足が持続的に増幅する好循環</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 深作業は一時的な努力ではなく、制度化により長期的な競争優位と充足を生むことを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--primary);">💡 具体例</h2>
+
+  <div class="card">
+    <h3>🏆 例1: カール・ユングの隠れ家</h3>
+    <ul>
+      <li>背景: 心理学者ユングは深い思索のため、スイスの森に専用の石造りタワーを建設</li>
+      <li>実践: 電話・訪問者を遮断し、数週間単位で執筆・思索に没頭</li>
+      <li>成果: 『元型と無意識』など画期的理論を構築</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 物理的隔離と専用空間が深作業の質を劇的に高め、独創的成果を生む実例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📈 例2: ビル・ゲイツの「Think Week」</h3>
+    <ul>
+      <li>背景: マイクロソフトCEO時代、年2回1週間を完全隔離</li>
+      <li>実践: 森の小屋に籠もり、技術論文・戦略メモを読み込み思考</li>
+      <li>成果: Internet Explorer開発など重要戦略の多くがThink Weekから生まれた</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 経営トップでも深作業時間を制度化することで、長期的競争優位を生む意思決定ができることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✍️ 例3: 作家J.K.ローリングのホテル缶詰</h3>
+    <ul>
+      <li>背景: ハリー・ポッター最終巻の執筆が家では進まず</li>
+      <li>実践: 高級ホテルに缶詰になり、外部刺激を遮断して執筆</li>
+      <li>成果: 短期間で完成、世界的ベストセラーに</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 環境変更と刺激遮断が創造的アウトプットを加速し、締切と品質を両立できることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔬 例4: 注意残渣の実験（ソフィー・ルロイ）</h3>
+    <ul>
+      <li>背景: ミネソタ大学の研究で、タスク切替後の集中度を測定</li>
+      <li>実践: 被験者にタスクAを中断させ、タスクBへ移行</li>
+      <li>成果: タスクBの遂行速度が平均20%低下、注意残渣の存在を実証</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> マルチタスクが科学的に非効率であり、シングルタスク設計の重要性を裏付ける。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--primary);">📖 重要な引用</h2>
+
+  <div class="card quote-card">
+    <div class="quote-text">
+      「深く働ける人は少ない。だからこそ価値が集中する。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 希少性が報酬と影響力を生み、投資対象としての妥当性を示すから。
+    </div>
+  </div>
+
+  <div class="card quote-card">
+    <div class="quote-text">
+      「高品質な成果は、集中の強度×投入時間で決まる。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 時間管理だけでなく、集中度の設計こそがレバレッジだと示す指針だから。
+    </div>
+  </div>
+
+  <div class="card quote-card">
+    <div class="quote-text">
+      「退屈を受け入れよ。刺激への即反応を断つことで集中は鍛えられる。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 注意の筋力は訓練可能で、行動設計で改善できると示すから。
+    </div>
+  </div>
+
+  <div class="card quote-card">
+    <div class="quote-text">
+      「道具は『少しでも得』ではなく、純便益で選べ。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> SNS等を漫然と使う発想を転換し、時間資本の最適配分を促すから。
+    </div>
+  </div>
+
+  <div class="card quote-card">
+    <div class="quote-text">
+      「浅い仕事に上限を設け、深い仕事にブロックを与えよ。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 意図しない雑務の膨張を防ぎ、戦略的に集中時間を確保できるから。
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--primary);">🚀 今日のアクション</h2>
+
+  <div class="card action-card">
+    <h4>📅 アクション1: 明日の深作業90分をカレンダー予約</h4>
+    <p><strong>目的:</strong> 深作業時間を意図的に確保し、浅作業の侵食を防ぐ</p>
+    <p><strong>期待効果:</strong> 集中ブロックが可視化され、周囲への宣言効果で中断が減る</p>
+    <p><strong>実行手順:</strong></p>
+    <ul>
+      <li>カレンダーアプリを開く</li>
+      <li>明日の午前中に90分の「深作業」ブロックを作成</li>
+      <li>通知をオフ、会議招集を拒否設定</li>
+    </ul>
+  </div>
+
+  <div class="card action-card">
+    <h4>📵 アクション2: スマホ通知とSNSを30分停止設定</h4>
+    <p><strong>目的:</strong> 刺激への即反応を断ち、退屈耐性を鍛える</p>
+    <p><strong>期待効果:</strong> 注意残渣が減り、現行タスクへの集中度が向上</p>
+    <p><strong>実行手順:</strong></p>
+    <ul>
+      <li>スマホの「集中モード」または「おやすみモード」を有効化</li>
+      <li>SNSアプリの通知を30分間オフ</li>
+      <li>タイマーをセットし、終了まで一切開かない</li>
+    </ul>
+  </div>
+
+  <div class="card action-card">
+    <h4>📝 アクション3: 浅い作業を15分で棚卸し分類</h4>
+    <p><strong>目的:</strong> 浅作業の実態を可視化し、削減対象を特定</p>
+    <p><strong>期待効果:</strong> 無自覚な時間浪費が明確になり、上限設定の根拠ができる</p>
+    <p><strong>実行手順:</strong></p>
+    <ul>
+      <li>紙またはメモアプリに「浅作業リスト」を作成</li>
+      <li>昨日1日の活動を振り返り、メール・会議・雑務を列挙</li>
+      <li>各項目に所要時間と「削減可能か」を記入</li>
+      <li>合計時間を算出し、全体の何%かを計算</li>
+    </ul>
+  </div>
+
+  <div style="margin-top:1.5rem;padding:1rem;background:linear-gradient(135deg,rgba(102,126,234,0.1),rgba(240,147,251,0.1));border-radius:8px;">
+    <h3 style="font-size:1rem;margin-bottom:0.5rem;color:var(--secondary);">📚 関連書籍</h3>
+    
+    <div class="book-card">
+      <h4>エッセンシャル思考 最少の時間で成果を最大にする</h4>
+      <div class="author">著者: グレッグ・マキューン</div>
+      <div class="relation">重要な少数へ集中する意思決定の枠組みが深作業を後押しする。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>Atomic Habits（ジェームズ・クリアー式 複利で伸びる1つの習慣）</h4>
+      <div class="author">著者: ジェームズ・クリアー</div>
+      <div class="relation">小さな習慣設計で深作業の儀式化と継続を実現できる。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>Make Time</h4>
+      <div class="author">著者: ジェイク・ナップ／ジョン・ゼラツキー</div>
+      <div class="relation">タイムブロックとハイライトの手法が深作業の時間確保に直結。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>So Good They Can't Ignore You</h4>
+      <div class="author">著者: カル・ニューポート</div>
+      <div class="relation">スキル希少性の重視が深作業の価値（市場価値向上）を補強する。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>A World Without Email</h4>
+      <div class="author">著者: カル・ニューポート</div>
+      <div class="relation">割り込みと協業の設計を見直し、浅い仕事の排水を組織レベルで扱う。</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabContents.forEach(c => {
+        c.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetId).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
