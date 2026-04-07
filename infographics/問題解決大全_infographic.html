@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>問題解決の思考法 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー=#667eea セカンダリー=#764ba2 アクセント=#f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.75rem;
+}
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+}
+.example-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid var(--secondary);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-card blockquote {
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  color: var(--text);
+}
+.quote-card p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 2px solid var(--accent);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .meta {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.flow-diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-diagram h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  text-align: center;
+}
+.flow-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
+}
+.flow-step {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  min-width: 120px;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.related-books {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.related-books h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.book-item {
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(240, 147, 251, 0.05));
+  border-radius: 0.5rem;
+  border-left: 3px solid var(--accent);
+}
+.book-item h4 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--secondary);
+}
+.book-item .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-item .relation {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .flow-steps {
+    flex-direction: column;
+  }
+  .flow-arrow {
+    transform: rotate(90deg);
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📚 問題解決の思考法</h1>
+<p>成果は「解く前」に決まる - イシュー定義と構造化の実践ガイド</p>
+</header>
+
+<div class="summary-block">
+<h2>🎯 核心メッセージ</h2>
+<p>問題解決の成果は「解く前」に決まる。目的を明確化し、正しいイシューを定義し、抽象と具体を往復しながら構造化・仮説・検証を短サイクルで回すことで、限られた資源で最大のインパクトを生む。</p>
+<div style="margin-top:1.5rem;">
+<div class="summary-item">
+<strong>❓ 問い</strong>
+なぜ多くの問題解決は成果に結びつかないのか？
+</div>
+<div class="summary-item">
+<strong>💡 答え</strong>
+問題設定（イシュー選定）と構造化が不十分で、症状対応に終始するから。適切なフレーミングと仮説駆動・可視化・反復学習を組み合わせれば最小努力で最大効果が出る。
+</div>
+<div class="summary-item">
+<strong>🔍 Why（なぜそうなのか）</strong>
+人は前提に縛られ、原因と症状を混同しがちで、制約と目的の階層を見落とす。
+</div>
+<div class="summary-item">
+<strong>⚙️ How（そのためには）</strong>
+目的を言語化→イシュー定義→分解・因果・抽象化で構造化→仮説設定→小さく検証→学習して再定義、を短いループで回す。
+</div>
+</div>
+</div>
+
+<div class="tabs" role="tablist">
+<button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+<button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+<button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+<button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+<button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+<div class="card-grid">
+<div class="card">
+<h3>🎯 問題設定（イシュー定義）</h3>
+<ul>
+<li>解くべき問いを選び、境界条件を明確化</li>
+<li>成功基準を先に定める</li>
+<li>問題の枠組みを意識的に設計</li>
+<li>一言要約: 問をつくる</li>
+</ul>
+<div class="reason-box">
+<strong>理由:</strong> 成果を左右する最大のレバーポイント。間違った問いを解いても資源の浪費に終わる。
+</div>
+</div>
+
+<div class="card">
+<h3>🔄 目的と手段の分離</h3>
+<ul>
+<li>上位目的を先に据える</li>
+<li>既存手段に思考を拘束されない</li>
+<li>「なぜ」を3回繰り返す</li>
+<li>一言要約: 目的先行</li>
+</ul>
+<div class="reason-box">
+<strong>理由:</strong> 手段の固定化が視野狭窄を生む。目的に立ち返ることで解決策の選択肢が広がる。
+</div>
+</div>
+
+<div class="card">
+<h3>💭 仮説思考</h3>
+<ul>
+<li>結論の当たりを先に置く</li>
+<li>検証を通じて素早く学ぶ</li>
+<li>完璧を待たず動く</li>
+<li>一言要約: 当てに行く</li>
+</ul>
+<div class="reason-box">
+<strong>理由:</strong> 情報収集の無限ループを防ぎ、学習サイクルを加速。不確実性下での意思決定を可能にする。
+</div>
+</div>
+
+<div class="card">
+<h3>🌳 MECE/ロジックツリー</h3>
+<ul>
+<li>重複・漏れなく全体を分解</li>
+<li>論点を構造化する技法</li>
+<li>階層的に整理して優先順位付け</li>
+<li>一言要約: 分けて考える</li>
+</ul>
+<div class="reason-box">
+<strong>理由:</strong> 複雑な問題を扱いやすい単位に分割し、見落としを防ぐ。チーム内の認識統一にも有効。
+</div>
+</div>
+
+<div class="card">
+<h3>🔗 因果ループ・システム思考</h3>
+<ul>
+<li>相互作用とフィードバックを可視化</li>
+<li>構造から原因を捉える</li>
+<li>時間遅れと非線形性を考慮</li>
+<li>一言要約: つながりを見る</li>
+</ul>
+<div class="reason-box">
+<strong>理由:</strong> 症状ではなく構造に介入することで根本解決が可能になる。副作用の予測にも役立つ。
+</div>
+</div>
+
+<div class="card">
+<h3>🪜 抽象と具体の往復</h3>
+<ul>
+<li>抽象度を上げ下げする</li>
+<li>一般化と適用を繰り返す</li>
+<li>異なる文脈への転用を促進</li>
+<li>一言要約: 階層ジャンプ</li>
+</ul>
+<div class="reason-box">
+<strong>理由:</strong> 発想の硬直を避け、他分野からの知見移植を可能にする。本質的な共通点を発見できる。
+</div>
+</div>
+
+<div class="card">
+<h3>⏪ バックキャスティング</h3>
+<ul>
+<li>望ましい未来像から逆算</li>
+<li>現在の打ち手を設計</li>
+<li>制約を前提とせず理想を描く</li>
+<li>一言要約: 未来起点</li>
+</ul>
+<div class="reason-box">
+<strong>理由:</strong> 現状の延長線上にない革新的解を生む。目標と現実のギャップが行動を駆動する。
+</div>
+</div>
+
+<div class="card">
+<h3>🔄 アナロジー思考</h3>
+<ul>
+<li>異領域の構造的類似を探す</li>
+<li>解のヒントを移植する</li>
+<li>メタファーで理解を促進</li>
+<li>一言要約: 似から学ぶ</li>
+</ul>
+<div class="reason-box">
+<strong>理由:</strong> 既存の成功パターンを活用し、ゼロからの発明コストを削減。創造性を刺激する。
+</div>
+</div>
+
+<div class="card">
+<h3>⚡ 制約条件（TOC）</h3>
+<ul>
+<li>全体最適を阻むボトルネックを特定</li>
+<li>資源を集中させる</li>
+<li>制約以外の改善は効果薄</li>
+<li>一言要約: 一点突破</li>
+</ul>
+<div class="reason-box">
+<strong>理由:</strong> 限られた資源で最大効果を出すには集中が不可欠。全体最適の視点を強制する。
+</div>
+</div>
+
+<div class="card">
+<h3>🖼️ フレーミング/前提の疑い</h3>
+<ul>
+<li>問題の枠組みを点検</li>
+<li>隠れた前提を再設定</li>
+<li>視点を変えて問い直す</li>
+<li>一言要約: 枠を外す</li>
+</ul>
+<div class="reason-box">
+<strong>理由:</strong> 前提が間違っていれば全ての努力が無駄になる。枠組みの変更が解決の突破口になる。
+</div>
+</div>
+
+<div class="card">
+<h3>👁️ 可視化/KJ法</h3>
+<ul>
+<li>情報を外化・整理</li>
+<li>関係性と全体像を掴む</li>
+<li>認知負荷を軽減</li>
+<li>一言要約: 見える化</li>
+</ul>
+<div class="reason-box">
+<strong>理由:</strong> 頭の中だけでは限界がある。外化することで客観視と共有が可能になり、洞察が生まれる。
+</div>
+</div>
+
+<div class="card">
+<h3>🧪 実験・プロトタイピング</h3>
+<ul>
+<li>小規模に素早く試す</li>
+<li>不確実性を削る</li>
+<li>学習を加速する</li>
+<li>一言要約: 小さく試す</li>
+</ul>
+<div class="reason-box">
+<strong>理由:</strong> 完璧な計画は不可能。実験を通じて現実からフィードバックを得ることで精度が上がる。
+</div>
+</div>
+</div>
+
+<div class="flow-diagram">
+<h3>🔄 概念間の関係性フロー</h3>
+<div class="flow-steps">
+<div class="flow-step">目的明確化</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">イシュー定義</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">構造化</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">仮説</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">検証</div>
+<div class="flow-arrow">→</div>
+<div class="flow-step">学習</div>
+<div class="flow-arrow">↻</div>
+<div class="flow-step">再定義</div>
+</div>
+<ul style="margin-top:1.5rem; list-style:none; padding:0;">
+<li style="padding:0.5rem 0;">🔹 フレーミング変更 → 問題再定義 → 解決策空間の拡大</li>
+<li style="padding:0.5rem 0;">🔹 抽象↔具体の往復 → アナロジー想起 → 新規解の発見</li>
+<li style="padding:0.5rem 0;">🔹 制約特定（TOC） → 資源集中 → ボトルネック解消 → 全体効果最大化</li>
+<li style="padding:0.5rem 0;">🔹 可視化（KJ/因果図） → 認知負荷低減 → 合意形成加速 → 実行力向上</li>
+<li style="padding:0.5rem 0;">🔹 MECE分解 → 論点明確化 → 仮説精度向上 → 検証効率化</li>
+</ul>
+</div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+<div class="chapter-card">
+<h3>📖 序章: 成果が出ない問題解決の失敗パターン</h3>
+<ul>
+<li>症状対応に終始し根本原因に届かない</li>
+<li>前提を疑わず既存の枠組みに固定される</li>
+<li>手段が目的化し上位目標を見失う</li>
+<li>情報収集が目的化し行動に移らない</li>
+</ul>
+<div class="reason-box">
+<strong>理由（なぜこの章が必要か）:</strong> 失敗の構造を理解することで、自分の思考パターンの罠に気づき、正しいアプローチへの動機付けとなる。
+</div>
+</div>
+
+<div class="chapter-card">
+<h3>🧭 基礎: 問題設定の重要性と目的・手段・制約の階層</h3>
+<ul>
+<li>問題は「設定するもの」であり「与えられるもの」ではない</li>
+<li>目的・手段・制約の3層構造を意識する</li>
+<li>上位目的を明確にすることで手段の選択肢が広がる</li>
+<li>制約は所与ではなく変更可能な場合がある</li>
+</ul>
+<div class="reason-box">
+<strong>理由（章のメッセージの根拠）:</strong> 問題解決の成否は「何を解くか」で8割決まる。基礎理論を押さえることで以降のツールが活きる。
+</div>
+</div>
+
+<div class="chapter-card">
+<h3>🛠️ 道具: 構造化・仮説・因果・抽象化・可視化の思考ツール</h3>
+<ul>
+<li>MECE/ロジックツリーで論点を分解</li>
+<li>因果ループ図でシステムの構造を可視化</li>
+<li>抽象度の上げ下げで発想を拡張</li>
+<li>仮説思考で学習サイクルを加速</li>
+<li>KJ法などで情報を整理・統合</li>
+</ul>
+<div class="reason-box">
+<strong>理由（なぜこの章が必要か）:</strong> 具体的な技法を習得することで、複雑な問題に対処する実践力が身につく。ツールの組み合わせが威力を発揮する。
+</div>
+</div>
+
+<div class="chapter-card">
+<h3>💼 適用: ビジネス/社会課題/日常のケースへの応用</h3>
+<ul>
+<li>ビジネス戦略立案での目的・制約の再定義</li>
+<li>社会課題における構造的原因の特定</li>
+<li>日常の意思決定での仮説検証サイクル</li>
+<li>異なる文脈でのアナロジー活用事例</li>
+</ul>
+<div class="reason-box">
+<strong>理由（章のメッセージの根拠）:</strong> 理論だけでは使えない。実際の適用例を通じて、自分の文脈への転用イメージが湧く。
+</div>
+</div>
+
+<div class="chapter-card">
+<h3>🔁 プロセス: 反復ループの設計と実行</h3>
+<ul>
+<li>目的→イシュー→構造化→仮説→検証→学習の流れ</li>
+<li>短いサイクルで回し、早期に軌道修正</li>
+<li>学習した内容を次の問題設定に反映</li>
+<li>プロトタイピングで不確実性を削る</li>
+</ul>
+<div class="reason-box">
+<strong>理由（なぜこの章が必要か）:</strong> 一度きりの問題解決ではなく、継続的に成果を出す仕組みを作るため。学習する組織への転換が鍵。
+</div>
+</div>
+
+<div class="chapter-card">
+<h3>🚀 終章: 学習する個人・組織への転換とチェックリスト</h3>
+<ul>
+<li>問題解決を習慣化するための振り返りの仕組み</li>
+<li>チーム内での共通言語と思考フレームの共有</li>
+<li>実践のチェックリスト（目的明確化、前提の疑い、仮説設定など）</li>
+<li>継続的改善のためのメタ認知の重要性</li>
+</ul>
+<div class="reason-box">
+<strong>理由（章のメッセージの根拠）:</strong> 知識を行動に変え、組織文化に定着させることで持続的な成果が生まれる。実践の指針を提供する。
+</div>
+</div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+<div class="example-card">
+<h3>🏢 ケース1: 売上低迷の原因分析</h3>
+<p><strong>背景:</strong> ある企業で売上が低迷。当初「営業の努力不足」と定義されていた。</p>
+<p><strong>適用:</strong> 上位目的（顧客価値提供）に立ち返り、因果ループ図で構造化。実は製品の市場適合性が低下していたことが判明。</p>
+<p><strong>示唆:</strong> 症状（売上減）ではなく構造（市場ニーズとのズレ）に介入することで根本解決。</p>
+<div class="reason-box">
+<strong>理由（この例が示すこと）:</strong> 問題の再定義（フレーミング変更）が解決策の質を劇的に変える。症状対応の限界を示す典型例。
+</div>
+</div>
+
+<div class="example-card">
+<h3>🌍 ケース2: 交通渋滞の解消</h3>
+<p><strong>背景:</strong> 都市部の渋滞問題。「道路を増やす」が既定路線だった。</p>
+<p><strong>適用:</strong> 目的を「移動の円滑化」に再定義し、抽象度を上げて考察。公共交通の充実、リモートワーク推進、時差通勤など多様な解が浮上。</p>
+<p><strong>示唆:</strong> 手段の固定化を解き、目的に立ち返ることで選択肢が広がる。</p>
+<div class="reason-box">
+<strong>理由（この例が示すこと）:</strong> 目的と手段の分離が創造的解決を生む。既存の枠組みを疑うことの重要性を示す。
+</div>
+</div>
+
+<div class="example-card">
+<h3>💡 ケース3: 新製品開発の不確実性</h3>
+<p><strong>背景:</strong> 新市場への参入で完璧な計画を求めて時間を浪費。</p>
+<p><strong>適用:</strong> 仮説思考とプロトタイピングを導入。最小限の機能で市場投入し、顧客フィードバックを元に素早く改善。</p>
+<p><strong>示唆:</strong> 不確実性下では完璧な計画より学習サイクルの速さが勝る。</p>
+<div class="reason-box">
+<strong>理由（この例が示すこと）:</strong> 実験と学習のサイクルが不確実性を削り、リスクを管理しながら前進できることを実証。
+</div>
+</div>
+
+<div class="example-card">
+<h3>🔬 ケース4: 医療現場の待ち時間問題</h3>
+<p><strong>背景:</strong> 病院の待ち時間が長く患者満足度が低い。</p>
+<p><strong>適用:</strong> TOC（制約理論）でボトルネックを特定。診察室ではなく受付処理が制約と判明。受付プロセスを改善し全体のスループット向上。</p>
+<p><strong>示唆:</strong> 全体最適の視点で制約に集中投資することが効率的。</p>
+<div class="reason-box">
+<strong>理由（この例が示すこと）:</strong> 部分最適ではなく全体最適の思考が資源配分の精度を高める。制約理論の実践的有効性を示す。
+</div>
+</div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+<div class="quote-card">
+<blockquote>解くべきは『問題』ではなく『問題の定義』である。</blockquote>
+<p><strong>なぜ重要か:</strong> 成果を左右するレバーが前段の設定にあることを示す。問題設定の質が全てを決める。</p>
+</div>
+
+<div class="quote-card">
+<blockquote>現象は症状にすぎず、原因は構造の中にある。</blockquote>
+<p><strong>なぜ重要か:</strong> 対症療法から構造改革へ思考を切り替える指針になる。根本解決への道筋を示す。</p>
+</div>
+
+<div class="quote-card">
+<blockquote>抽象度を上げ下げすると解決の選択肢が増える。</blockquote>
+<p><strong>なぜ重要か:</strong> 発想の硬直を避け、他分野からの移植を促す。創造性の源泉を明示する。</p>
+</div>
+
+<div class="quote-card">
+<blockquote>仮説は外れるためにある。外れることで学習が進む。</blockquote>
+<p><strong>なぜ重要か:</strong> 完璧主義を排し、行動と学習のサイクルを回す勇気を与える。失敗を学習機会に変える視点。</p>
+</div>
+
+<div class="quote-card">
+<blockquote>制約は所与ではなく、変更可能な前提である。</blockquote>
+<p><strong>なぜ重要か:</strong> 思考の枠を広げ、革新的解決への扉を開く。制約の再定義が突破口になる。</p>
+</div>
+
+<div class="quote-card">
+<blockquote>可視化は思考の外部化であり、共有と洞察の起点である。</blockquote>
+<p><strong>なぜ重要か:</strong> 個人の限界を超え、チームでの問題解決を加速する。認知負荷を下げ創造性を高める。</p>
+</div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+<div class="action-card">
+<h3>✍️ アクション1: 身近な不満を10個書き出す</h3>
+<p>日常生活や仕事で感じる小さな不満を10個リストアップする。各不満について「これは症状か原因か？」を自問する。</p>
+<div class="meta">
+<span class="badge">15分</span>
+<strong>目的:</strong> 問題発見の感度を上げる<br>
+<strong>期待効果:</strong> 症状と原因を区別する習慣が身につき、問題設定の質が向上する
+</div>
+</div>
+
+<div class="action-card">
+<h3>🎯 アクション2: 上位目的を3回「なぜ」で掘る</h3>
+<p>現在取り組んでいる課題を1つ選び、「なぜそれをやるのか？」を3回繰り返して上位目的を明確化する。紙に階層構造で書き出す。</p>
+<div class="meta">
+<span class="badge">20分</span>
+<strong>目的:</strong> 目的と手段の分離を体得する<br>
+<strong>期待効果:</strong> 手段の固定化から脱却し、代替案の発想が広がる
+</div>
+</div>
+
+<div class="action-card">
+<h3>📝 アクション3: 問題文を1行で定義する</h3>
+<p>抱えている問題を「誰が・何を・どうしたいのか」の形式で1行に圧縮する。曖昧な表現を排除し、測定可能な成功基準を含める。</p>
+<div class="meta">
+<span class="badge">15分</span>
+<strong>目的:</strong> イシュー定義の精度を高める<br>
+<strong>期待効果:</strong> 問題の境界が明確になり、関係者との認識のズレが減る
+</div>
+</div>
+
+<div class="action-card">
+<h3>🌳 アクション4: 問題をMECEで3階層に分解する</h3>
+<p>選んだ問題を「重複なく漏れなく」3階層のツリー構造に分解する。各ノードに具体的なラベルを付け、全体像を俯瞰する。</p>
+<div class="meta">
+<span class="badge">25分</span>
+<strong>目的:</strong> 構造化思考を実践する<br>
+<strong>期待効果:</strong> 複雑な問題が扱いやすくなり、優先順位付けの根拠が明確になる
+</div>
+</div>
+
+<div class="action-card">
+<h3>💭 アクション5: 仮説を1つ立てて検証方法を設計する</h3>
+<p>問題に対する仮説を1文で書き、それを検証するための最小限の実験（15分で実行可能）を設計する。明日実行する。</p>
+<div class="meta">
+<span class="badge">20分</span>
+<strong>目的:</strong> 仮説思考と実験の習慣化<br>
+<strong>期待効果:</strong> 完璧主義から脱却し、学習サイクルが回り始める
+</div>
+</div>
+
+<div class="action-card">
+<h3>🔄 アクション6: 異分野のアナロジーを1つ探す</h3>
+<p>自分の問題と構造的に似ている他分野の事例を1つ見つける。その解決策を自分の文脈に翻訳してみる。</p>
+<div class="meta">
+<span class="badge">30分</span>
+<strong>目的:</strong> アナロジー思考を鍛える<br>
+<strong>期待効果:</strong> 既存の成功パターンを活用でき、創造的解決の幅が広がる
+</div>
+</div>
+</div>
+
+<div class="related-books">
+<h3>📚 関連書籍</h3>
+<div class="book-item">
+<h4>地頭力を鍛える</h4>
+<div class="author">著者: 細谷 功</div>
+<div class="relation"><strong>関連性:</strong> 本質思考・仮説思考など基盤スキルが共通。問題解決の思考基礎を補完する。</div>
+</div>
+<div class="book-item">
+<h4>イシューからはじめよ</h4>
+<div class="author">著者: 安宅 和人</div>
+<div class="relation"><strong>関連性:</strong> 問題設定（イシュー選定）の重要性を徹底解説。本書の核心テーマと直結。</div>
+</div>
+<div class="book-item">
+<h4>システム思考入門</h4>
+<div class="author">著者: ドネラ・H・メドウズ</div>
+<div class="relation"><strong>関連性:</strong> 因果ループと構造理解が問題の本質把握に有効。構造化の理論的背景を提供。</div>
+</div>
+<div class="book-item">
+<h4>問題解決プロフェッショナル 思考と技術</h4>
+<div class="author">著者: 大前 研一</div>
+<div class="relation"><strong>関連性:</strong> ロジックツリー等の実務的手法が補完関係にある。ビジネス適用の具体例が豊富。</div>
+</div>
+<div class="book-item">
+<h4>発想法（KJ法）</h4>
+<div class="author">著者: 川喜田 二郎</div>
+<div class="relation"><strong>関連性:</strong> 情報の可視化と統合により構造化を支援。本書の可視化技法の原典。</div>
+</div>
+</div>
+
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => {
+      c.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
