@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自己決定理論 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 2rem 2rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.3s;
+  position: relative;
+}
+.tab-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+.tab-btn.active {
+  color: var(--primary);
+  background: rgba(102, 126, 234, 0.15);
+}
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -0.6rem;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.3rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+.card li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.3rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+.chapter-card li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(240, 147, 251, 0.05));
+  border-radius: 0.8rem;
+  padding: 1.3rem;
+  margin-bottom: 1.2rem;
+  border: 2px solid rgba(102, 126, 234, 0.2);
+}
+.example-card h4 {
+  font-size: 1.05rem;
+  color: var(--secondary);
+  margin-bottom: 0.6rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.quote-card blockquote {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+  line-height: 1.6;
+}
+.quote-card cite {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  display: block;
+  margin-top: 0.5rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.8rem;
+  padding: 1.3rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 0.4rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.3rem 0.7rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.8rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.visual-diagram h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+.flow-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+.flow-item {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  border: 2px solid var(--primary);
+  max-width: 90%;
+}
+.arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.stat-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.2rem;
+  border-radius: 0.8rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+.stat-box .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.stat-box .label {
+  font-size: 0.85rem;
+  opacity: 0.95;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 自己決定理論（SDT）完全ガイド</h1>
+  <p>人の動機・成長・幸福を支える3つの心理欲求</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 エグゼクティブ・サマリー</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>長期的に人のやる気と成長を高める設計原則は何か？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>自己決定理論に基づき、基本的心理欲求（自律性・有能感・関係性）を充足させる環境をつくること。外的報酬で統制するのではなく、選択肢と明確な理由、具体的で情報的なフィードバック、尊重的な関係を提供する。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>数十年にわたる実験・フィールド研究は、統制的報酬が内発的興味を弱める一方、選択権と能力感を高める情報的フィードバックが動機・学習・ウェルビーイングを強めることを一貫して示す。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>1) 自律支援=目的・理由の共有＋実行手段の選択肢提供、2) 有能感支援=適切な挑戦水準＋即時で具体的なフィードバック、3) 関係性支援=共感・尊重・安全な対話、4) 外的規範は意味づけを伴う形で内在化を促す（罰や監視でなく、価値・影響を説明）。</p>
+    </div>
+  </div>
+
+  <div class="visual-diagram">
+    <h3>🌟 核心的メッセージ</h3>
+    <p style="font-size:1rem;line-height:1.7;color:var(--text);max-width:800px;margin:0 auto;">人は「自律性・有能感・関係性」という基本的心理欲求が満たされるとき、最も深く学び・持続的に努力し・健やかに成長する。外的なアメとムチは短期的効果はあっても、統制的に用いるほど内発的動機を損ないやすい。</p>
+    <div class="stat-grid" style="margin-top:1.5rem;">
+      <div class="stat-box">
+        <span class="number">3</span>
+        <span class="label">基本的心理欲求</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">∞</span>
+        <span class="label">持続的成長</span>
+      </div>
+      <div class="stat-box">
+        <span class="number">↑</span>
+        <span class="label">創造性・幸福感</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🧠 自己決定理論（SDT）</h3>
+        <ul>
+          <li>人の動機・発達・健康を、基本的心理欲求の充足と社会環境の質から説明する包括理論</li>
+          <li>一言要約：動機の生態系理論</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>動機を単一の軸でなく、環境との相互作用で捉えることで、持続的成長の設計が可能になるから</div>
+      </div>
+      <div class="card">
+        <h3>🎨 内発的動機づけ</h3>
+        <ul>
+          <li>活動それ自体が楽しい・興味深いから行う動機</li>
+          <li>創造性・持続性が高い</li>
+          <li>一言要約：好きだからやる</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>外的報酬に依存しないため、環境変化に強く、深い学習と革新を生むから</div>
+      </div>
+      <div class="card">
+        <h3>📊 外発的動機づけ（連続体）</h3>
+        <ul>
+          <li>外的結果のために行う動機</li>
+          <li>外的調整→取り入れ→同一化→統合の順に自律性が高まる</li>
+          <li>一言要約：外から内への内在化</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>外発的動機も内在化により自律的になりうることを示し、規範遵守と自律の両立を可能にするから</div>
+      </div>
+      <div class="card">
+        <h3>🗝️ 自律性</h3>
+        <ul>
+          <li>自分の価値や興味に沿って自ら選び、行為を「自分事」と感じられる感覚</li>
+          <li>一言要約：選べる・納得している</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>自律性が満たされると、行為への責任感と持続力が高まり、外的監視なしでも質の高い行動が維持されるから</div>
+      </div>
+      <div class="card">
+        <h3>💪 有能感</h3>
+        <ul>
+          <li>適切な挑戦に向き合い、進歩や達成を実感できる感覚</li>
+          <li>一言要約：できる手応え</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>有能感は学習意欲を維持し、困難に直面しても挑戦を続ける原動力となるから</div>
+      </div>
+      <div class="card">
+        <h3>🤝 関係性</h3>
+        <ul>
+          <li>他者からの尊重・つながり・所属を感じられる感覚</li>
+          <li>一言要約：信頼とつながり</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>安全な関係があると、失敗を恐れず挑戦でき、価値観の内在化が促進されるから</div>
+      </div>
+      <div class="card">
+        <h3>🔬 認知的評価理論（CET）</h3>
+        <ul>
+          <li>報酬やフィードバックが、自律性と有能感の認知を通じて内発的動機に影響するという枠組み</li>
+          <li>一言要約：報酬の二面性</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>同じ報酬でも、統制的か情報的かで効果が逆転することを示し、実務での報酬設計を精緻化するから</div>
+      </div>
+      <div class="card">
+        <h3>⚠️ アンダーマイニング効果</h3>
+        <ul>
+          <li>統制的な外的報酬が、活動への内発的興味を低下させる現象</li>
+          <li>一言要約：ごほうびで興味低下</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>アメとムチ依存の限界を実証し、動機づけ設計の根本的見直しを促すから</div>
+      </div>
+      <div class="card">
+        <h3>🌱 自律支援型マネジメント</h3>
+        <ul>
+          <li>選択肢・理由説明・共感・感情承認を通じて自律性を支える関わり</li>
+          <li>一言要約：任せて支える</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>放任でなく構造化された支援により、自律と成果の両立が実現するから</div>
+      </div>
+      <div class="card">
+        <h3>📈 情報的フィードバック</h3>
+        <ul>
+          <li>評価や統制ではなく、改善に役立つ具体的情報を与えるフィードバック</li>
+          <li>一言要約：上達の手がかり</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>有能感を高め、次の行動を具体化することで、継続的な成長サイクルを生むから</div>
+      </div>
+    </div>
+
+    <div class="visual-diagram">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-chart">
+        <div class="flow-item">自律性↑ + 有能感↑ + 関係性↑</div>
+        <div class="arrow">⬇️</div>
+        <div class="flow-item">内発的動機づけ↑</div>
+        <div class="arrow">⬇️</div>
+        <div class="flow-item">持続・創造性・幸福感↑</div>
+      </div>
+      <div class="flow-chart" style="margin-top:2rem;">
+        <div class="flow-item" style="background:rgba(255,100,100,0.1);border-color:#ff6464;">統制的報酬/監視/圧力</div>
+        <div class="arrow" style="color:#ff6464;">⬇️</div>
+        <div class="flow-item" style="background:rgba(255,100,100,0.1);border-color:#ff6464;">自律性↓</div>
+        <div class="arrow" style="color:#ff6464;">⬇️</div>
+        <div class="flow-item" style="background:rgba(255,100,100,0.1);border-color:#ff6464;">内発的興味↓（アンダーマイニング）</div>
+      </div>
+      <ul style="text-align:left;max-width:600px;margin:2rem auto 0;font-size:0.9rem;line-height:1.8;">
+        <li>適切な挑戦 + 具体的達成指標 + 情報的フィードバック → 有能感↑ → エンゲージメント↑</li>
+        <li>共感的関係 + 安全な対話 → 関係性↑ → 規範・価値の内在化促進</li>
+        <li>外的調整 → 取り入れ → 同一化 → 統合（外発的動機の自律性連続体）</li>
+        <li>理由説明 + 選択肢提供 → 規範の意味づけ → 抵抗↓・内在化↑</li>
+        <li>称賛（情報的） → 有能感↑ / 称賛（統制的） → 自律性↓</li>
+        <li>失敗の学習化 → 有能感維持 → 挑戦行動維持</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📌 第1章：問題提起</h3>
+      <ul>
+        <li>アメとムチ中心の動機づけは短期的で、学習・創造・幸福を損なう可能性がある</li>
+        <li>外的報酬依存は、活動への本質的興味を奪い、監視がなければ行動が停止するリスクを生む</li>
+        <li>持続的成長には、内発的動機と基本的心理欲求の充足が不可欠</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>従来の動機づけモデルの限界を明示し、新たな理論的枠組みの必要性を提起するため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔬 第2章：実証的基盤</h3>
+      <ul>
+        <li>実験とフィールド研究で、統制的報酬が内発的興味を弱めることを実証</li>
+        <li>選択と情報的フィードバックが動機を高めることを多様な文脈で確認</li>
+        <li>数十年にわたる再現性の高い証拠が理論を支える</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>理論の科学的妥当性を示し、実務への適用の信頼性を担保するため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🧩 第3章：理論化1 - 認知的評価理論</h3>
+      <ul>
+        <li>報酬の『統制性/情報性』が自律性・有能感を媒介して動機に作用することを説明</li>
+        <li>同じ報酬でも、受け取り手の認知により効果が変わる</li>
+        <li>称賛・フィードバック・期限などの社会的要因も同様のメカニズムで作用</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>報酬の二面性を理論化し、実務での報酬設計の指針を提供するため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🌐 第4章：理論化2 - 自己決定理論への拡張</h3>
+      <ul>
+        <li>基本的心理欲求（自律性・有能感・関係性）を理論の中核に位置づけ</li>
+        <li>外発的動機の内在化連続体（外的調整→取り入れ→同一化→統合）を提示</li>
+        <li>内発的動機と外発的動機を対立ではなく、連続的な自律性の度合いで捉える</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>動機の多様性を包括的に説明し、規範遵守と自律の両立を可能にするため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🏫 第5章：適用領域</h3>
+      <ul>
+        <li>学校：自律支援的教育が学習意欲・成績・創造性を高める</li>
+        <li>職場：自律支援的マネジメントが生産性・満足度・離職率を改善</li>
+        <li>家庭：共感的養育が子どもの自己調整力と幸福感を育む</li>
+        <li>医療・スポーツ：患者・選手の自律性支援が治療遵守・パフォーマンスを向上</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>理論の汎用性を示し、多様な現場での実践可能性を具体化するため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🛠️ 第6章：実装原則</h3>
+      <ul>
+        <li>自律支援：目的・理由の共有、実行手段の選択肢提供、感情の承認</li>
+        <li>有能感支援：適切な挑戦水準の設定、即時で具体的なフィードバック、失敗の学習化</li>
+        <li>関係性支援：尊重・共感・安全な対話、所属感の醸成</li>
+        <li>外的規範の内在化：価値・影響の説明、意味づけの共有</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>理論を実務に翻訳し、現場で即座に適用できる具体的手法を提供するため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>⚖️ 第7章：境界条件と誤解の整理</h3>
+      <ul>
+        <li>自律支援は放任ではない：方向性と選択の両立が重要</li>
+        <li>安全・倫理・共有目標との両立：自律性は無制限の自由ではない</li>
+        <li>文化差：基本的心理欲求は普遍的だが、充足の形は文化により異なる</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>よくある誤解を正し、理論の適切な理解と実践を促進するため</div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🚀 第8章：結語</h3>
+      <ul>
+        <li>人の成長を軸にした制度・マネジメントへの転換を提言</li>
+        <li>短期的成果主義から、持続的成長と幸福を重視する設計へ</li>
+        <li>自己決定理論は、教育・組織・社会の再設計の基盤となる</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>理論の社会的意義を示し、読者に行動変容を促すため</div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>🎓 例1：学校での自律支援的教育</h4>
+      <p><strong>背景：</strong>ある中学校で、教師が生徒に課題の選択肢を与え、なぜその学習が重要かを丁寧に説明し、失敗を責めずに改善点を具体的にフィードバックする授業を実施した。</p>
+      <p><strong>結果：</strong>生徒の学習意欲・成績・創造性が向上し、授業への主体的参加が増加した。</p>
+      <p><strong>示唆：</strong>統制的な指示や成績による脅しではなく、自律性・有能感・関係性を支える関わりが、深い学習と持続的努力を生む。</p>
+      <div class="reason"><strong>理由（この例が示すこと）：</strong>自律支援は放任ではなく、構造化された選択と意味づけにより、学習の質と量を同時に高められることを示すから</div>
+    </div>
+
+    <div class="example-card">
+      <h4>💼 例2：職場での自律支援的マネジメント</h4>
+      <p><strong>背景：</strong>ある企業で、マネージャーが部下に目標の意義を共有し、達成手段を部下自身に選ばせ、進捗を監視するのではなく具体的な支援を提供するスタイルに転換した。</p>
+      <p><strong>結果：</strong>生産性・満足度が向上し、離職率が低下。部下の自発的な改善提案が増加した。</p>
+      <p><strong>示唆：</strong>外的報酬や監視に頼らず、自律性と有能感を支えることで、持続的なエンゲージメントと成果が得られる。</p>
+      <div class="reason"><strong>理由（この例が示すこと）：</strong>マネジメントの本質は統制ではなく支援であり、自律性を尊重することで組織全体のパフォーマンスが向上することを示すから</div>
+    </div>
+
+    <div class="example-card">
+      <h4>🏥 例3：医療での患者の自律性支援</h4>
+      <p><strong>背景：</strong>糖尿病患者に対し、医師が治療の選択肢を提示し、各選択の理由と影響を説明し、患者自身に治療計画を選ばせるアプローチを採用した。</p>
+      <p><strong>結果：</strong>治療遵守率が向上し、血糖コントロールが改善。患者の満足度と自己効力感も上昇した。</p>
+      <p><strong>示唆：</strong>指示や脅しではなく、自律性を尊重し情報を提供することで、患者の主体的な健康管理が促進される。</p>
+      <div class="reason"><strong>理由（この例が示すこと）：</strong>医療においても、患者を受動的な対象ではなく能動的なパートナーとして扱うことで、治療成果と幸福感が向上することを示すから</div>
+    </div>
+
+    <div class="example-card">
+      <h4>👨‍👩‍👧 例4：家庭での共感的養育</h4>
+      <p><strong>背景：</strong>親が子どもの感情を承認し、ルールの理由を説明し、年齢に応じた選択肢を与える養育スタイルを実践した。</p>
+      <p><strong>結果：</strong>子どもの自己調整力・社会性・幸福感が向上し、親子関係の質も改善した。</p>
+      <p><strong>示唆：</strong>罰や報酬による統制ではなく、関係性と自律性を支える関わりが、子どもの健全な発達を促す。</p>
+      <div class="reason"><strong>理由（この例が示すこと）：</strong>養育においても、統制ではなく共感と理由説明が、子どもの内発的動機と自己調整力を育むことを示すから</div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <blockquote>「人は自律性・有能感・関係性が満たされると最もよく機能する。」</blockquote>
+      <cite><strong>理由：</strong>理論の核心を端的に示し、全体の設計指針となるから。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>「外的報酬は行為の所有感を奪い、内発的興味を弱めうる。」</blockquote>
+      <cite><strong>理由：</strong>アメとムチ依存の限界を示し、実務の再設計を促すから。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>「称賛も統制的に使えば害になるが、情報的なら有益である。」</blockquote>
+      <cite><strong>理由：</strong>同じ行為でも意図と受け取りで効果が反転することを示すから。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>「自律支援は放任ではなく、方向性と選択の両立である。」</blockquote>
+      <cite><strong>理由：</strong>よくある誤解を正し、現場で実践可能にするから。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>「価値と目的の理解は、外的規範の内在化を促進する。」</blockquote>
+      <cite><strong>理由：</strong>規範遵守を強制でなく納得で実現する道筋を示すから。</cite>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>✅ アクション1：内発的動機の条件を3つ書く</h4>
+      <p><strong>目的：</strong>自己決定理論の核心（自律性・有能感・関係性）を自分の言葉で整理し、理解を深める。</p>
+      <p><strong>期待効果：</strong>理論の実践的理解が進み、日常の場面で3つの欲求を意識できるようになる。</p>
+      <p><strong>実行方法：</strong>ノートやスマホに「自律性=選べる・納得」「有能感=できる手応え」「関係性=信頼とつながり」と書き、それぞれ自分の経験例を1つずつ添える（15分）。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション2：仕事の目的を誰のためか再定義</h4>
+      <p><strong>目的：</strong>自分の仕事の意義を外的報酬ではなく、価値や影響の観点から捉え直し、内発的動機を高める。</p>
+      <p><strong>期待効果：</strong>仕事への主体性と満足感が向上し、困難に直面しても持続する力が強まる。</p>
+      <p><strong>実行方法：</strong>「この仕事は誰のどんな課題を解決するか？」「自分がこの仕事をする理由は何か？」を3分で書き出し、明日の仕事開始時に読み返す（20分）。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション3：同僚に具体的な承認を送る</h4>
+      <p><strong>目的：</strong>情報的フィードバックの実践を通じて、他者の有能感と関係性を支える。</p>
+      <p><strong>期待効果：</strong>職場の心理的安全性が高まり、相互支援の文化が育つ。自分自身も承認を受け取りやすくなる。</p>
+      <p><strong>実行方法：</strong>同僚の具体的な行動（例：「昨日の会議で○○さんの質問が議論を深めた」）を1つ選び、メールやチャットで感謝と具体的な影響を伝える（10分）。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション4：今日の選択を1つ振り返る</h4>
+      <p><strong>目的：</strong>自分の行動の中で自律性を発揮した瞬間を認識し、自己決定の感覚を強化する。</p>
+      <p><strong>期待効果：</strong>日常の小さな選択にも意味を見出し、自律性の感覚が高まる。</p>
+      <p><strong>実行方法：</strong>今日の行動の中で「自分で選んだ」と感じた瞬間を1つ思い出し、「なぜその選択をしたか」「どう感じたか」を2分で書く（15分）。</p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
