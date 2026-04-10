@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Range - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+}
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+.card li:last-child {
+  border-bottom: none;
+}
+.card .reason {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(240, 147, 251, 0.05));
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  border: 2px solid var(--accent);
+}
+.example-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: 0.5rem;
+  left: 1rem;
+  opacity: 0.3;
+}
+.quote-card p {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  padding-left: 2rem;
+}
+.quote-card .reason {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  padding-left: 2rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+.action-card h4 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+.action-card p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+.flow-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  flex: 1;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.book-item {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.book-item h4 {
+  color: var(--primary);
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+.book-item .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-item .relation {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 Range - 広さが適応力を生む</h1>
+  <p>不確実な世界で勝つ"レンジ"の力</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      専門家の深さとジェネラリストの広さはどちらが現代で優位か？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      多くの現実（意地悪な学習環境）では"広さ×転移力"を備えた一般主義者が優位。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      1) 問題構造が変動し過去データが効きにくい<br>
+      2) 幅広い経験がマッチ・クオリティを高め最適領域へ導く<br>
+      3) 類推・抽象化が新規課題への"遠い転移"を可能にする<br>
+      4) 望ましい困難とインタリービングが理解を強固にする
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      1) サンプリング期を設け進路を試す<br>
+      2) アナロジーでフレームを変え学習を抽象化<br>
+      3) 学習設計に望ましい困難/インタリービングを組み込む<br>
+      4) 外部者視点と多様チームで境界を越える<br>
+      5) 継続的にマッチ・クオリティを見直し微調整する
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">🧩 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🌐 レンジ（Range）</h3>
+        <p><strong>定義:</strong> 複数分野の経験・知識を横断し、抽象化と類推で新領域へ転移する能力。深さを否定せず、広さを先行させて適応力を高める。</p>
+        <p class="reason">💡 理由: 変化の激しい環境で柔軟に対応し、新しい問題に既存知識を応用できるため。</p>
+      </div>
+      <div class="card">
+        <h3>🎲 親切/意地悪な学習環境</h3>
+        <p><strong>定義:</strong> 親切=ルール明確・フィードバック即時・反復が効く。意地悪=目標不明・遅延/ノイズの多いフィードバック・例外だらけで過去経験が裏切る。</p>
+        <p class="reason">💡 理由: 環境の性質が最適な学習戦略（専門 vs 広さ）を決定するため。</p>
+      </div>
+      <div class="card">
+        <h3>🔬 サンプリング期</h3>
+        <p><strong>定義:</strong> 初期に複数の活動を試し、興味・強み・価値観の適合を探索する期間。早期ロックインを避ける実験段階。</p>
+        <p class="reason">💡 理由: 自分に最適な領域を見つけ、長期的な成果と満足を最大化するため。</p>
+      </div>
+      <div class="card">
+        <h3>🎯 マッチ・クオリティ</h3>
+        <p><strong>定義:</strong> 個人の特性と仕事/領域の相性。高いほど学習速度・持続・成果・満足が増す。</p>
+        <p class="reason">💡 理由: 適合度が高いと内発的動機が高まり、パフォーマンスが向上するため。</p>
+      </div>
+      <div class="card">
+        <h3>🔗 類推思考（アナロジー）</h3>
+        <p><strong>定義:</strong> 抽象レベルで共通構造を見抜き、ある領域の解を別領域へ転用する推論法。遠い領域からの類推ほど創造的。</p>
+        <p class="reason">💡 理由: 異分野の知見を統合し、革新的な解決策を生み出すため。</p>
+      </div>
+      <div class="card">
+        <h3>🚀 遠い転移</h3>
+        <p><strong>定義:</strong> 表面が異なる課題間で、根本原理を適用する学習の移転。深い理解と抽象化が前提。</p>
+        <p class="reason">💡 理由: 本質的な理解があれば、未知の状況でも応用できるため。</p>
+      </div>
+      <div class="card">
+        <h3>💪 望ましい困難</h3>
+        <p><strong>定義:</strong> 短期の容易さを犠牲にして長期保持と転移を高める負荷（遅延復習、生成、テスト等）。</p>
+        <p class="reason">💡 理由: 努力を要する学習ほど記憶に定着し、応用力が高まるため。</p>
+      </div>
+      <div class="card">
+        <h3>🔀 インタリービング</h3>
+        <p><strong>定義:</strong> 異なる課題/概念を交互に練習し、識別と抽象化を促す学習設計。ブロック練習より転移に効く。</p>
+        <p class="reason">💡 理由: 概念間の違いを認識し、適切な戦略を選択する力が育つため。</p>
+      </div>
+      <div class="card">
+        <h3>🌟 アウトサイダー・アドバンテージ</h3>
+        <p><strong>定義:</strong> 領域外の視点や多様経験が、専門の惰性（認知的固定化）を破り新解法を生む現象。</p>
+        <p class="reason">💡 理由: 既存の枠にとらわれず、新しい視点から問題を捉えられるため。</p>
+      </div>
+      <div class="card">
+        <h3>🔒 認知的固定化</h3>
+        <p><strong>定義:</strong> 狭い専門で形成された枠に縛られ、新条件下で柔軟性を失う傾向。</p>
+        <p class="reason">💡 理由: 過度の専門化が思考の柔軟性を奪い、変化への適応を妨げるため。</p>
+      </div>
+    </div>
+
+    <div class="visual-diagram">
+      <h3 style="margin-bottom:1.5rem;color:var(--secondary);">🔄 概念間の関係性</h3>
+      <div class="flow-item">
+        <div class="flow-box">環境の性質<br>（親切/意地悪）</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">最適戦略<br>（専門/レンジ）</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">サンプリング期</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">マッチ・クオリティ向上</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">成果・満足増加</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">インタリービング<br>+望ましい困難</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">抽象化・識別力</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">遠い転移</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">レンジ（広い経験）</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">類推思考の拡大</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">革新・問題解決</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">早期専門化</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">認知的固定化</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">変化への脆弱性</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">多様チーム<br>外部者視点</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">交差点での再構成</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">新規知の創出</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">📖 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3>第1章: 導入 - タイガー vs ロジャー</h3>
+      <ul>
+        <li>タイガー・ウッズ（早期専門化）とロジャー・フェデラー（遅い探索）の対比</li>
+        <li>早期専門化が常に最適とは限らない仮説を提示</li>
+        <li>現代の複雑な世界では広さが重要になる場面が多い</li>
+      </ul>
+      <p class="reason">💡 章の理由: 読者の先入観（早期専門化=成功）に疑問を投げかけ、本書のテーマを設定するため。</p>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第2章: 環境の区別 - 親切 vs 意地悪</h3>
+      <ul>
+        <li>親切な学習環境: ルール明確、フィードバック即時、反復が効く（例: チェス）</li>
+        <li>意地悪な学習環境: 目標不明、遅延フィードバック、例外多数（例: ビジネス）</li>
+        <li>環境の性質が最適な学習戦略を決定する</li>
+        <li>現実の多くは意地悪な環境であり、レンジが有利</li>
+      </ul>
+      <p class="reason">💡 章の理由: 戦略選択の判断基準を提供し、状況依存の思考を促すため。</p>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第3章: 探索の価値 - サンプリング期</h3>
+      <ul>
+        <li>初期の多様な経験がマッチ・クオリティを高める</li>
+        <li>早期ロックインのリスク: 適合度の低い領域に固定される</li>
+        <li>試行錯誤を通じて最適な進路を発見する</li>
+        <li>長期的な成果と満足度を最大化する戦略</li>
+      </ul>
+      <p class="reason">💡 章の理由: キャリア設計における探索期の正当性を実証し、行動を後押しするため。</p>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第4章: 学習科学 - 望ましい困難とインタリービング</h3>
+      <ul>
+        <li>短期の容易さは長期の定着を妨げる</li>
+        <li>遅延復習、生成、テスト効果が記憶を強化</li>
+        <li>インタリービング: 異なる課題を交互に練習し識別力を高める</li>
+        <li>ブロック練習より転移に効果的</li>
+      </ul>
+      <p class="reason">💡 章の理由: 効果的な学習設計の原則を示し、教育・訓練の改善指針を提供するため。</p>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第5章: 思考の道具 - 類推と抽象化</h3>
+      <ul>
+        <li>類推思考: 抽象レベルで共通構造を見抜き転用する</li>
+        <li>遠い領域からの類推ほど創造性が高い</li>
+        <li>ケースの構造化で遠い転移を実現</li>
+        <li>表面的類似に惑わされず本質を捉える訓練</li>
+      </ul>
+      <p class="reason">💡 章の理由: 知識転移の具体的メカニズムを解説し、実践可能な思考法を提示するため。</p>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第6章: 専門の盲点 - 認知的固定化</h3>
+      <ul>
+        <li>狭い専門化が思考の柔軟性を奪う</li>
+        <li>新条件下で過去の成功パターンが通用しなくなる</li>
+        <li>アウトサイダー・アドバンテージ: 外部者が新解法を生む</li>
+        <li>多様性が組織の適応力を高める</li>
+      </ul>
+      <p class="reason">💡 章の理由: 専門化のリスクを明示し、多様性の価値を組織レベルで示すため。</p>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第7章: 組織・教育設計 - 広さを生かす制度</h3>
+      <ul>
+        <li>評価・採用で広さを重視する仕組み</li>
+        <li>遅い特化を許容する育成プログラム</li>
+        <li>境界を越える人材配置とチーム編成</li>
+        <li>継続的な適合度評価とキャリア微調整</li>
+      </ul>
+      <p class="reason">💡 章の理由: 個人の戦略を組織・制度レベルに拡張し、実装の道筋を示すため。</p>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第8章: 結語 - 深さと広さの統合</h3>
+      <ul>
+        <li>深さと広さは対立ではなく補完関係</li>
+        <li>まず広く、必要に応じて絞る"タイミングの戦略"</li>
+        <li>環境と自己を継続的に評価し調整する</li>
+        <li>不確実性を受け入れ、柔軟に適応する姿勢</li>
+      </ul>
+      <p class="reason">💡 章の理由: 全体を統合し、読者に実践可能な行動指針を提供するため。</p>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">💡 具体例</h2>
+    
+    <div class="example-card">
+      <h4>🎾 例1: ロジャー・フェデラーの多様なスポーツ経験</h4>
+      <p><strong>背景:</strong> フェデラーは幼少期にテニスだけでなく、サッカー、バスケットボール、スキーなど多様なスポーツを経験。専門化は比較的遅く、10代半ばまで複数競技を続けた。</p>
+      <p><strong>示唆:</strong> 多様な運動経験が身体的・認知的な適応力を高め、テニスでの創造的なプレースタイルにつながった。早期専門化したライバルより長期的に優位に立った。</p>
+      <p class="reason">💡 この例が示すこと: サンプリング期が最適な領域発見とスキル転移を促進し、長期的成功の基盤となる。</p>
+    </div>
+
+    <div class="example-card">
+      <h4>🔬 例2: InnoCentiveでの外部者による問題解決</h4>
+      <p><strong>背景:</strong> InnoCentive（オープンイノベーションプラットフォーム）では、企業が解決できなかった技術課題を外部に公開。専門外の人々が革新的な解決策を提示するケースが多発。</p>
+      <p><strong>示唆:</strong> 領域外の視点（アウトサイダー・アドバンテージ）が、専門家の認知的固定化を破り、異分野の知識を類推で転用して新解法を生む。</p>
+      <p class="reason">💡 この例が示すこと: 多様な経験と外部視点が、専門の盲点を補い、イノベーションを加速する。</p>
+    </div>
+
+    <div class="example-card">
+      <h4>🎨 例3: ヨハネス・ケプラーの類推思考</h4>
+      <p><strong>背景:</strong> ケプラーは惑星運動の法則を発見する際、音楽の和声理論や幾何学の美的原理を類推として用いた。異分野の構造を天文学に転用し、楕円軌道の概念に到達。</p>
+      <p><strong>示唆:</strong> 遠い領域からの類推（音楽→天文学）が、既存の円軌道モデルを打破し、科学革命をもたらした。抽象化と構造の共通性が鍵。</p>
+      <p class="reason">💡 この例が示すこと: 異分野の知識を抽象レベルで統合する類推思考が、革新的な発見を生む。</p>
+    </div>
+
+    <div class="example-card">
+      <h4>📚 例4: 医学教育でのインタリービング効果</h4>
+      <p><strong>背景:</strong> 従来の医学教育では疾患ごとにブロックで学習。インタリービング（異なる疾患を交互に学習）を導入した結果、診断精度が向上。</p>
+      <p><strong>示唆:</strong> 疾患間の識別力が高まり、症状の微妙な違いを認識する能力が向上。ブロック学習より転移に効果的。</p>
+      <p class="reason">💡 この例が示すこと: 学習設計の工夫（インタリービング）が、実践での応用力を高める。</p>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">📝 重要な引用</h2>
+    
+    <div class="quote-card">
+      <p>親切な環境では専門が勝ち、意地悪な環境では広さが勝つ。</p>
+      <p class="reason">💡 重要性: 状況依存の最適戦略を一言で示し、適用判断の軸になる。</p>
+    </div>
+
+    <div class="quote-card">
+      <p>マッチ・クオリティがキャリアの満足と成果を左右する。</p>
+      <p class="reason">💡 重要性: 探索の投資対効果を説明し、進路設計の指針となる。</p>
+    </div>
+
+    <div class="quote-card">
+      <p>学習は"楽さ"より"望ましい困難"が転移を生む。</p>
+      <p class="reason">💡 重要性: 短期の手応えに惑わされない設計を促す。</p>
+    </div>
+
+    <div class="quote-card">
+      <p>遠い領域からの類推ほど創造性は高い。</p>
+      <p class="reason">💡 重要性: 境界を越えるリサーチや人材配置の根拠になる。</p>
+    </div>
+
+    <div class="quote-card">
+      <p>計画でなく試行の積み重ねが最良の進路を示す。</p>
+      <p class="reason">💡 重要性: サンプリング期を正当化し、行動を後押しする。</p>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">🚀 今日のアクション</h2>
+    
+    <div class="action-card">
+      <h4>📋 アクション1: 過去10年の経験を棚卸しする</h4>
+      <p><strong>目的:</strong> 自分のレンジ（広さ）を可視化し、隠れた強みや転移可能なスキルを発見する。</p>
+      <p><strong>期待効果:</strong> 多様な経験の価値を再認識し、今後のキャリア戦略に活かせる。マッチ・クオリティの評価材料になる。</p>
+      <p><strong>実行方法:</strong> 紙やデジタルツールに、過去10年の仕事・趣味・学習を列挙。各経験から得たスキル・知識・人脈を書き出す（15分）。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>📰 アクション2: 異分野の記事を1本要約する</h4>
+      <p><strong>目的:</strong> 自分の専門外の知識に触れ、類推思考の材料を増やす。</p>
+      <p><strong>期待効果:</strong> 新しい視点やフレームワークを獲得し、自分の課題に転用できる可能性が広がる。認知的固定化を防ぐ。</p>
+      <p><strong>実行方法:</strong> 全く異なる分野（例: 生物学、経済学、芸術）の記事を1本読み、3行で要約。自分の仕事にどう応用できるか1文で書く（20分）。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🔗 アクション3: 直近課題の類推を3つ書く</h4>
+      <p><strong>目的:</strong> 現在の課題を異なる領域の問題に置き換え、新しい解決策を発想する。</p>
+      <p><strong>期待効果:</strong> 類推思考を実践し、遠い転移の感覚を掴む。創造的な解決策が見つかる可能性が高まる。</p>
+      <p><strong>実行方法:</strong> 今抱えている課題を1つ選び、「これは○○（別領域）の△△問題に似ている」という形で3つ類推を書く。各類推から得られる示唆を1文ずつ記す（15分）。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🧪 アクション4: インタリービング学習を試す</h4>
+      <p><strong>目的:</strong> 学習効率を高め、識別力と転移力を向上させる。</p>
+      <p><strong>期待効果:</strong> 異なる概念を交互に学ぶことで、深い理解と応用力が身につく。</p>
+      <p><strong>実行方法:</strong> 今週学ぶ予定の3つのトピックを選び、各10分ずつ交互に学習する（計30分）。ブロック学習との違いを体感する。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🎯 アクション5: マッチ・クオリティを評価する</h4>
+      <p><strong>目的:</strong> 現在の仕事や活動が自分に合っているか客観的に評価する。</p>
+      <p><strong>期待効果:</strong> 適合度の低い領域を特定し、キャリア微調整の方向性が見える。</p>
+      <p><strong>実行方法:</strong> 現在の主要活動3つについて、興味・強み・価値観の適合度を5段階で評価。低い項目の改善策を1つずつ書く（20分）。</p>
+    </div>
+  </div>
+
+  <div style="margin-top:3rem;">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">📚 関連書籍</h2>
+    <div class="book-list">
+      <div class="book-item">
+        <h4>Peak: Secrets from the New Science of Expertise</h4>
+        <p class="author">Anders Ericsson, Robert Pool</p>
+        <p class="relation">親切な環境での熟達（反復/専門）を提示し、Rangeの対照軸となる。</p>
+      </div>
+      <div class="book-item">
+        <h4>The Medici Effect</h4>
+        <p class="author">Frans Johansson</p>
+        <p class="relation">異分野交差点での革新理論がレンジと合流する。</p>
+      </div>
+      <div class="book-item">
+        <h4>Where Good Ideas Come From</h4>
+        <p class="author">Steven Johnson</p>
+        <p class="relation">多様性と再結合が創造を生む生態系視点を補強する。</p>
+      </div>
+      <div class="book-item">
+        <h4>Think Again</h4>
+        <p class="author">Adam Grant</p>
+        <p class="relation">再考・柔軟性の習慣化が認知的固定化の対策となる。</p>
+      </div>
+      <div class="book-item">
+        <h4>Originals</h4>
+        <p class="author">Adam Grant</p>
+        <p class="relation">非定型の挑戦とリスク設計が一般主義の行動指針に近い。</p>
+      </div>
+      <div class="book-item">
+        <h4>The Sports Gene</h4>
+        <p class="author">David Epstein</p>
+        <p class="relation">個人差と発達の多様性の証拠がサンプリング期の価値を裏づける。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
