@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  books-summary ローカル日次ワークフロー LaunchAgent 定義。
+
+  インストール手順（ユーザー側）:
+    1. cp src/com.oshomadesse.bookssummary.run.plist \
+         ~/Library/LaunchAgents/com.oshomadesse.bookssummary.run.plist
+    2. launchctl unload ~/Library/LaunchAgents/com.oshomadesse.bookssummary.pull.plist 2>/dev/null
+    3. launchctl load   ~/Library/LaunchAgents/com.oshomadesse.bookssummary.run.plist
+    4. sudo pmset repeat wakeorpoweron MTWRFSU 06:55:00   # スリープ中に発火しないためのwake予約
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.oshomadesse.bookssummary.run</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/seihoushouba/Documents/Oshomadesse-pc/11_Engineering/📖 books-summary/src/run_local.sh</string>
+    </array>
+
+    <!-- 毎朝 07:00 JST (Mac は JST 前提) -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>7</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <!-- インストール直後に走らせない（安全側） -->
+    <key>RunAtLoad</key>
+    <false/>
+
+    <!-- LaunchAgent は login shell ではないので PATH を明示 -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>LANG</key>
+        <string>ja_JP.UTF-8</string>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/seihoushouba/Library/Logs/BooksSummary/run-stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/seihoushouba/Library/Logs/BooksSummary/run-stderr.log</string>
+</dict>
+</plist>
