@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>逆説的アプローチ - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.15);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.6rem;
+  padding-left: 1.2rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.7;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card .quote-text {
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  color: var(--text);
+}
+.quote-card .quote-why {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--accent);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .action-detail {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.action-card .action-effect {
+  background: rgba(240, 147, 251, 0.1);
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.visual-diagram h3 {
+  text-align: center;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  margin: 0 0.8rem;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0.3rem;
+}
+.book-list {
+  list-style: none;
+  padding: 0;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.book-item strong {
+  color: var(--primary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.book-item .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-item .relation {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 逆説的アプローチ（アンチドート）</h1>
+  <p>不確実性・不快・限界を受け入れ、しなやかに生きる</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 要約ブロック（問い×答え×根拠）</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    逆境や不安の中でどうすれば健全に生きられるか？
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    不快を避けず受容し、コントロール可能領域とプロセスに集中する「逆説的アプローチ」を採る。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    不快の回避は反作用で不安を増幅し、幻想的な完全制御・失敗回避が柔軟性を奪うことが、行動科学・臨床・哲学で繰り返し示されているから。
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    ストア派の二分法とネガティブ・ビジュアライゼーション、マインドフルネスと曝露、目標より習慣の設計、メメント・モリと自己コンパッションを日常に実装する。
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🔄 逆説的アプローチ（アンチドート）</h3>
+      <ul>
+        <li>幸福や安心を直接追わず、不快や不確実性を受け入れる</li>
+        <li>結果として満足と自在さが増すという逆説</li>
+        <li>ポジティブ至上主義の解毒剤</li>
+        <li>一言要約: 幸せは追うと逃げる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か:</strong> 直接的な幸福追求が不安を増幅する現代の罠を解く鍵となるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌫️ 否定的能力</h3>
+      <ul>
+        <li>答えのない状況や不確実性に、とどまり続ける心理的耐性</li>
+        <li>拙速な回避や確実化を手放す力</li>
+        <li>一言要約: わからなさに居続ける力</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か:</strong> 複雑な現実に対し性急な解決を求めず、深い洞察を得る余地を生むため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ コントロールの二分法（ストア派）</h3>
+      <ul>
+        <li>自分の力で変えられるものと変えられないものを区別</li>
+        <li>前者に専心する原則</li>
+        <li>無駄な苦悩を減らす実践知</li>
+        <li>一言要約: 可変に全集中</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か:</strong> エネルギーを影響可能領域に集中し、効果感と回復力を高めるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔮 ネガティブ・ビジュアライゼーション</h3>
+      <ul>
+        <li>最悪のケースや喪失を意図的に想像</li>
+        <li>備えと感謝を高め、依存や過剰期待を下げる技法</li>
+        <li>一言要約: 備えと感謝を同時に育てる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か:</strong> 期待値を調整し失望を緩和、同時に現在への感謝を深めるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧘 マインドフルネス／非執着</h3>
+      <ul>
+        <li>経験を評価せず観察し、湧く思考・感情に絡まず手放す態度</li>
+        <li>反応の自動操縦を外す</li>
+        <li>一言要約: 気づきが自由を生む</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か:</strong> 認知的脱フュージョンにより、反応の選択自由度を拡大するため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🚪 曝露（エクスポージャー）</h3>
+      <ul>
+        <li>避けている不安刺激に段階的に触れる</li>
+        <li>脅威評価を再学習する行動療法</li>
+        <li>回避サイクルを断つ</li>
+        <li>一言要約: 怖さは向き合うほど小さくなる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か:</strong> 回避が不安を維持する悪循環を断ち、行動範囲を拡張するため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚙️ 目標よりシステム（プロセス志向）</h3>
+      <ul>
+        <li>結果目標への固着を減らす</li>
+        <li>日々の仕組み・習慣・環境に投資</li>
+        <li>再現性を高める考え方</li>
+        <li>一言要約: 成果はプロセスの副産物</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か:</strong> 一貫した小成果の蓄積が長期成果と自己効力を強化するため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💪 失敗の活用（反脆弱性）</h3>
+      <ul>
+        <li>小さな失敗や変動を学習と適応に変換</li>
+        <li>全体として強くなる設計</li>
+        <li>完全回避より回復可能性</li>
+        <li>一言要約: 壊れながら強くなる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か:</strong> 失敗を成長資源に変え、レジリエンスを高める設計思想を提供するため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💀 メメント・モリ（死の想起）</h3>
+      <ul>
+        <li>人生の有限性を直視</li>
+        <li>いまの選択に重みと明瞭さを与える実践</li>
+        <li>優先順位を磨く</li>
+        <li>一言要約: 有限性が本質を照らす</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か:</strong> 価値の明確化と意味整合的なプロセス選択を促すため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💖 自己コンパッション</h3>
+      <ul>
+        <li>失敗や欠点に直面した自分へ、友人に向けるのと同程度の優しさを向ける</li>
+        <li>現実受容を促す態度</li>
+        <li>一言要約: 厳しさより親切が効く</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か:</strong> 失敗からの回復を促進し、学習サイクルを持続させるため。
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-diagram">
+    <h3>🔗 概念間の関係性フロー</h3>
+    <div class="flow-item">
+      <span>不快回避志向</span>
+      <span class="flow-arrow">→</span>
+      <span>反芻・不安増幅</span>
+      <span class="flow-arrow">→</span>
+      <span>行動回避</span>
+      <span class="flow-arrow">→</span>
+      <span>レジリエンス低下</span>
+    </div>
+    <div class="flow-item">
+      <span>受容 × 曝露</span>
+      <span class="flow-arrow">→</span>
+      <span>脅威の再評価（習慣化）</span>
+      <span class="flow-arrow">→</span>
+      <span>不安減弱・行動範囲拡大</span>
+    </div>
+    <div class="flow-item">
+      <span>コントロールの二分法</span>
+      <span class="flow-arrow">→</span>
+      <span>影響可能領域への資源集中</span>
+      <span class="flow-arrow">→</span>
+      <span>効果感と回復力の向上</span>
+    </div>
+    <div class="flow-item">
+      <span>目標依存</span>
+      <span class="flow-arrow">→</span>
+      <span>成果変動に翻弄・挫折増</span>
+      <span class="flow-arrow">→</span>
+      <span>継続困難</span>
+    </div>
+    <div class="flow-item">
+      <span>システム志向</span>
+      <span class="flow-arrow">→</span>
+      <span>一貫した小成果の蓄積</span>
+      <span class="flow-arrow">→</span>
+      <span>長期成果・自己効力の強化</span>
+    </div>
+    <div class="flow-item">
+      <span>ネガティブ・ビジュアライゼーション</span>
+      <span class="flow-arrow">→</span>
+      <span>期待値調整・備え</span>
+      <span class="flow-arrow">→</span>
+      <span>失望緩和・挑戦意欲増</span>
+    </div>
+    <div class="flow-item">
+      <span>マインドフルネス</span>
+      <span class="flow-arrow">→</span>
+      <span>認知的脱フュージョン</span>
+      <span class="flow-arrow">→</span>
+      <span>反応の選択自由度拡大</span>
+    </div>
+    <div class="flow-item">
+      <span>メメント・モリ</span>
+      <span class="flow-arrow">→</span>
+      <span>価値の明確化</span>
+      <span class="flow-arrow">→</span>
+      <span>意味整合的なプロセス選択</span>
+    </div>
+    <div class="flow-item">
+      <span>自己コンパッション</span>
+      <span class="flow-arrow">→</span>
+      <span>失敗からの回復促進</span>
+      <span class="flow-arrow">→</span>
+      <span>学習サイクル持続</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📖 第1章: 問題提起</h3>
+    <ul>
+      <li>ポジティブ思考の副作用を明らかにする</li>
+      <li>不快回避が不安・硬直を増幅するメカニズム</li>
+      <li>幸福追求のパラドックスを提示</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か:</strong> 従来の幸福論の限界を示し、逆説的アプローチの必要性を読者に納得させるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🏛️ 第2章: 哲学的基盤</h3>
+    <ul>
+      <li>ストア派の二分法の原理と実践</li>
+      <li>ネガティブ・ビジュアライゼーションの技法</li>
+      <li>制御幻想を手放し備える姿勢</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か:</strong> 古代哲学の知恵が現代の不安に対する実践的解決策となることを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🧠 第3章: 心理的実践</h3>
+    <ul>
+      <li>マインドフルネスと受容の態度を学ぶ</li>
+      <li>思考・感情との距離を取る技法</li>
+      <li>自動反応を外し選択の自由を得る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か:</strong> 認知的脱フュージョンを通じて、内的経験に振り回されない力を育むため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎯 第4章: 行動戦略</h3>
+    <ul>
+      <li>曝露と小さな実験で回避サイクルを断つ</li>
+      <li>逆境下でも行動可能域を拡張する方法</li>
+      <li>段階的な挑戦による脅威評価の再学習</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か:</strong> 受容だけでなく具体的行動を通じて、実際の変化を生み出すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎲 第5章: 目標と成果</h3>
+    <ul>
+      <li>結果への固着を緩める考え方</li>
+      <li>日々のシステム・習慣設計に投資</li>
+      <li>再現性を高め長期成果を得る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か:</strong> 目標依存の罠を避け、持続可能な成長の仕組みを構築するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>⏳ 第6章: 有限性の統合</h3>
+    <ul>
+      <li>メメント・モリを用いた価値の再編</li>
+      <li>優先順位を磨き決断の勇気を得る</li>
+      <li>有限性の受容が今を鮮明にする</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か:</strong> 死の想起が人生の意味と選択の質を高めることを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🔄 第7章: 総合化</h3>
+    <ul>
+      <li>受容×行動×プロセスの統合ループ</li>
+      <li>日常に埋め込むしなやかなレジリエンス</li>
+      <li>逆説的アプローチの実践的統合</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か:</strong> 個別の技法を統合し、日常生活で持続可能な実践体系を提示するため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h4>🌊 例1: サーファーと波のメタファー</h4>
+    <p><strong>背景:</strong> 波（不確実性）をコントロールしようとするのではなく、波に乗る技術を磨く。</p>
+    <p><strong>示唆:</strong> 外部環境を変えられなくても、自分の反応と技術を磨くことで逆境を乗りこなせる。</p>
+    <div class="reason-box">
+      <strong>💡 この例が示すこと:</strong> コントロールの二分法と受容の実践が、不確実性の中での自在さを生むことを具体的に示すため。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🎭 例2: 俳優の舞台恐怖症克服</h4>
+    <p><strong>背景:</strong> 舞台恐怖を避けるほど悪化。曝露療法で段階的に舞台に立ち、不安が減弱。</p>
+    <p><strong>示唆:</strong> 回避が不安を維持し、向き合うことで脅威評価が再学習される。</p>
+    <div class="reason-box">
+      <strong>💡 この例が示すこと:</strong> 曝露と受容が回避サイクルを断ち、行動範囲を拡張する実証例となるため。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>📝 例3: 作家の習慣設計</h4>
+    <p><strong>背景:</strong> ベストセラー目標に固執せず、毎朝2時間書く習慣を設計。結果として作品が完成し評価を得た。</p>
+    <p><strong>示唆:</strong> 結果目標より日々のプロセスに投資することで、再現性と長期成果が得られる。</p>
+    <div class="reason-box">
+      <strong>💡 この例が示すこと:</strong> システム志向が目標依存の罠を避け、持続可能な成果を生むことを示すため。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>⚰️ 例4: 起業家のメメント・モリ実践</h4>
+    <p><strong>背景:</strong> 毎朝「今日が最後の日なら何をするか」を問い、優先順位を再編。無駄な会議を削減し本質的プロジェクトに集中。</p>
+    <p><strong>示唆:</strong> 有限性の直視が価値を明確化し、意味整合的な選択を促す。</p>
+    <div class="reason-box">
+      <strong>💡 この例が示すこと:</strong> 死の想起が日常の選択の質を高め、本質に集中させることを示すため。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <div class="quote-text">
+      「要旨: 幸福になろうと必死になる努力こそが、しばしば不幸の原因になる。」
+    </div>
+    <div class="quote-why">
+      <strong>💡 なぜ重要か:</strong> 本書の逆説的アプローチ（追うほど逃げる）の核心を端的に示すため。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「要旨: 不確実性は取り除く対象ではなく、生きる舞台の前提である。」
+    </div>
+    <div class="quote-why">
+      <strong>💡 なぜ重要か:</strong> 制御幻想を手放し受容へ方向転換する理路を与える。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「要旨: 私たちが自在にできるのは、出来事ではなく反応と行動である。」
+    </div>
+    <div class="quote-why">
+      <strong>💡 なぜ重要か:</strong> コントロールの二分法に基づく実践の起点を明確化する。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「要旨: 失敗は成功の反対ではなく、成功の必須条件である。」
+    </div>
+    <div class="quote-why">
+      <strong>💡 なぜ重要か:</strong> 小さな実験と学習を促し、回避から挑戦への転換を後押しする。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「要旨: 死を思うことは今を損なうのでなく、今を鮮明にする。」
+    </div>
+    <div class="quote-why">
+      <strong>💡 なぜ重要か:</strong> 有限性の受容が優先順位と意味づけを研ぎ澄ますことを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>📝 アクション1: 最悪ケースを15分で書き出す</h4>
+    <div class="action-detail">
+      <strong>具体的手順:</strong>
+      <ul style="margin-top:0.5rem;">
+        <li>現在抱えている不安や懸念を1つ選ぶ</li>
+        <li>その最悪のシナリオを紙に書き出す（5分）</li>
+        <li>それが起きた場合の対処法を3つリストアップ（5分）</li>
+        <li>現在持っているリソースと支援を確認（5分）</li>
+      </ul>
+    </div>
+    <div class="action-effect">
+      <strong>🎯 目的:</strong> ネガティブ・ビジュアライゼーションの実践<br>
+      <strong>✨ 期待効果:</strong> 漠然とした不安が具体化され、備えと感謝が同時に育つ。期待値調整により失望が緩和される。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🧘 アクション2: 呼吸瞑想を20分実践する</h4>
+    <div class="action-detail">
+      <strong>具体的手順:</strong>
+      <ul style="margin-top:0.5rem;">
+        <li>静かな場所で座り、タイマーを20分にセット</li>
+        <li>呼吸に注意を向け、吸う・吐くを観察</li>
+        <li>思考が湧いたら「考えている」と気づき、呼吸に戻る</li>
+        <li>評価せず、ただ観察し続ける</li>
+      </ul>
+    </div>
+    <div class="action-effect">
+      <strong>🎯 目的:</strong> マインドフルネスと非執着の態度を育む<br>
+      <strong>✨ 期待効果:</strong> 認知的脱フュージョンが進み、思考・感情に振り回されず、反応の選択自由度が拡大する。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>⚙️ アクション3: 小さな習慣を20分設計する</h4>
+    <div class="action-detail">
+      <strong>具体的手順:</strong>
+      <ul style="margin-top:0.5rem;">
+        <li>達成したい結果目標を1つ選ぶ（5分）</li>
+        <li>その目標に貢献する日々の行動を1つ特定（5分）</li>
+        <li>その行動を毎日実行できる最小単位に分解（例: 腕立て1回、読書1ページ）（5分）</li>
+        <li>実行のトリガー（時間・場所・既存習慣）を設定（5分）</li>
+      </ul>
+    </div>
+    <div class="action-effect">
+      <strong>🎯 目的:</strong> 目標よりシステム（プロセス志向）の実装<br>
+      <strong>✨ 期待効果:</strong> 一貫した小成果の蓄積が長期成果と自己効力を強化し、目標依存の罠を避けられる。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🚪 アクション4: 小さな曝露実験（15分）</h4>
+    <div class="action-detail">
+      <strong>具体的手順:</strong>
+      <ul style="margin-top:0.5rem;">
+        <li>避けている小さな不安刺激を1つ選ぶ（例: 知らない人に挨拶、電話をかける）</li>
+        <li>不安レベルを0-10で評価（実行前）</li>
+        <li>実際に行動し、不安の変化を観察</li>
+        <li>実行後の不安レベルを再評価し、気づきを記録</li>
+      </ul>
+    </div>
+    <div class="action-effect">
+      <strong>🎯 目的:</strong> 曝露による回避サイクルの断絶<br>
+      <strong>✨ 期待効果:</strong> 脅威評価が再学習され、不安が減弱し行動範囲が拡張される。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>💀 アクション5: メメント・モリの問い（10分）</h4>
+    <div class="action-detail">
+      <strong>具体的手順:</strong>
+      <ul style="margin-top:0.5rem;">
+        <li>「今日が人生最後の日なら、何をするか？」を紙に書く（3分）</li>
+        <li>「今週が最後なら、何を優先するか？」を書く（3分）</li>
+        <li>現在のスケジュールと比較し、ギャップを確認（2分）</li>
+        <li>1つだけ優先順位を変更する決断をする（2分）</li>
+      </ul>
+    </div>
+    <div class="action-effect">
+      <strong>🎯 目的:</strong> 有限性の直視による価値の明確化<br>
+      <strong>✨ 期待効果:</strong> 優先順位が研ぎ澄まされ、意味整合的なプロセス選択が促される。
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:3rem; padding:2rem; background:var(--card-bg); border-radius:0.75rem; box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+  <h2 style="color:var(--primary); margin-bottom:1.5rem; text-align:center;">📚 関連書籍</h2>
+  <ul class="book-list">
+    <li class="book-item">
+      <strong>限りある時間の使い方</strong>
+      <div class="author">著者: オリバー・バークマン</div>
+      <div class="relation">有限性の受容とプロセス志向という本書の核と地続きの実践論。</div>
+    </li>
+    <li class="book-item">
+      <strong>A Guide to the Good Life（ストア派の哲学実践）</strong>
+      <div class="author">著者: William B. Irvine</div>
+      <div class="relation">コントロールの二分法やネガティブ可視化の具体法が学べる。</div>
+    </li>
+    <li class="book-item">
+      <strong>フル・キャタストロフ・リビング（マインドフルネスストレス低減法）</strong>
+      <div class="author">著者: ジョン・カバットジン</div>
+      <div class="relation">不快の受容と気づきの訓練を体系的に実践できる。</div>
+    </li>
+    <li class="book-item">
+      <strong>幸福になりたいなら幸福になろうとするな</strong>
+      <div class="author">著者: ラス・ハリス</div>
+      <div class="relation">ACTの受容と価値志向が本書の逆説的アプローチを補強。</div>
+    </li>
+    <li class="book-item">
+      <strong>反脆弱性</strong>
+      <div class="author">著者: ナシーム・ニコラス・タレブ</div>
+      <div class="relation">失敗や変動を成長資源に変える設計思想が重なる。</div>
+    </li>
+    <li class="book-item">
+      <strong>レジリエンスの科学</strong>
+      <div class="author">著者: スティーブン・サウスウィック／デニス・チャーニー</div>
+      <div class="relation">逆境からの回復を支える科学的要因を多角的に示す。</div>
+    </li>
+  </ul>
+</div>
+
+<svg width="0" height="0" style="position:absolute;">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>
+
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
