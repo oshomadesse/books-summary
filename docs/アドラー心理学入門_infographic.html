@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アドラー心理学 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.15);
+  border-radius: 0.5rem;
+  border-left: 4px solid white;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+.tab-btn {
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.15rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid #f59e0b;
+}
+.reason-box strong {
+  color: #92400e;
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-weight: bold;
+}
+.example-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.example-card h3 {
+  color: var(--accent);
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary);
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #1e3a8a;
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: #3730a3;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #10b981;
+}
+.action-card h3 {
+  color: #065f46;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  color: #047857;
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin: 0.75rem 0;
+  font-size: 0.95rem;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.5rem;
+  margin: 0 0.75rem;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 アドラー心理学 完全ガイド</h1>
+  <p>過去ではなく目的で変わる。共同体感覚と勇気づけの実践</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 核心サマリー</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      人はなぜ変われず、どうすれば変われるか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      過去ではなく現在の「目的」を選び直し、共同体感覚に基づく行動へ切り替えること。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      人間の行動は原因よりも到達したい目的に従って選択され、承認依存が課題の混同と回避を招くため。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      1) 課題の分離で境界を引く 2) 横の関係を築く 3) 勇気づけでライフスタイルを修正 4) 仕事・交友・愛の課題で貢献を意識する
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🎯 目的論</h3>
+        <ul>
+          <li>行動は過去の原因ではなく、到達したい目的に沿って選ばれる</li>
+          <li>原因論からの転換を促す立場</li>
+          <li>変化可能性を取り戻す視点</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 過去依存を断ち、現在の選択で未来を変える力を取り戻すため
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🗺️ ライフスタイル</h3>
+        <ul>
+          <li>早期体験から形づくられた世界観・自己観・行動様式の総体</li>
+          <li>無意識的な選択の指針になる</li>
+          <li>修正可能な「生き方の設計図」</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 自分の行動パターンを理解し、意識的に書き換えることで変化を起こせるため
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚖️ 劣等感</h3>
+        <ul>
+          <li>自分が他より劣ると感じる感覚</li>
+          <li>成長への駆動力にも、回避の口実にもなり得る</li>
+          <li>健全な向上心と不健全な劣等コンプレックスの分岐点</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 劣等感の扱い方が成長か停滞かを決定するため
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🚀 優越性追求</h3>
+        <ul>
+          <li>より良くあろうとする健全な向上志向</li>
+          <li>対他比較の優越化ではなく、自分なりの成長を指す</li>
+          <li>前進へのエネルギー源</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 他者との競争ではなく自己成長に焦点を当てることで持続的な幸福を得られるため
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🤝 共同体感覚</h3>
+        <ul>
+          <li>他者への信頼・自己受容・貢献感からなる所属意識</li>
+          <li>幸福感の基礎となる</li>
+          <li>つながりと貢献の感覚</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 人間は社会的存在であり、所属と貢献が幸福の本質だから
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>✂️ 課題の分離</h3>
+        <ul>
+          <li>「最終的な結果の当事者は誰か」で自他の課題を分ける</li>
+          <li>干渉と依存を止める技法</li>
+          <li>境界線を引く実践</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 他者の課題に踏み込むことが対人関係の悩みの大半を生むため
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💪 勇気づけ</h3>
+        <ul>
+          <li>存在価値と貢献可能性に光を当てる</li>
+          <li>挑戦する力を引き出す関わり方</li>
+          <li>叱責やご褒美依存の対極</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 外的報酬ではなく内発的動機を育てることで持続的な成長を促すため
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔄 横の関係</h3>
+        <ul>
+          <li>優劣や支配ではなく、対等・尊敬・協力に基づく関係性</li>
+          <li>承認依存を減らす</li>
+          <li>対等なつながり</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 縦の関係が承認欲求と競争を生み、共同体感覚を阻害するため
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔧 使用の心理学</h3>
+        <ul>
+          <li>能力・感情・環境は所有物ではなく「どう使うか」が要点</li>
+          <li>使い方が運命を決める</li>
+          <li>選択と責任の視点</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 持っているものではなく使い方に焦点を当てることで変化の主体性を取り戻すため
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🧠 私的論理と常識</h3>
+        <ul>
+          <li>個人固有の信念（私的論理）と社会的に妥当な見方（常識）のズレ</li>
+          <li>葛藤を生む思い込み</li>
+          <li>思い込みの点検が必要</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 歪んだ私的論理が対人関係の問題と回避行動を生むため
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌟 人生の三つの課題</h3>
+        <ul>
+          <li>仕事・交友・愛の領域での貢献と関係構築</li>
+          <li>共同体感覚の実践舞台</li>
+          <li>すべての人が直面する課題</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> これら三領域での貢献が幸福と成長の具体的な実践場所だから
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-diagram">
+      <h3 style="color: var(--primary); margin-bottom: 1rem;">🔗 概念間の関係性</h3>
+      <div class="flow-item">
+        <span>劣等感</span>
+        <span class="flow-arrow">→</span>
+        <span>目的設定</span>
+        <span class="flow-arrow">→</span>
+        <span>ライフスタイル</span>
+        <span class="flow-arrow">→</span>
+        <span>行動選択</span>
+      </div>
+      <div class="flow-item">
+        <span>私的論理の歪み</span>
+        <span class="flow-arrow">→</span>
+        <span>回避戦略</span>
+        <span class="flow-arrow">→</span>
+        <span>他者コントロール</span>
+        <span class="flow-arrow">→</span>
+        <span>課題の混同</span>
+      </div>
+      <div class="flow-item">
+        <span>課題の分離</span>
+        <span class="flow-arrow">→</span>
+        <span>干渉の抑制</span>
+        <span class="flow-arrow">→</span>
+        <span>横の関係</span>
+        <span class="flow-arrow">→</span>
+        <span>共同体感覚の強化</span>
+      </div>
+      <div class="flow-item">
+        <span>勇気づけ</span>
+        <span class="flow-arrow">→</span>
+        <span>失敗受容</span>
+        <span class="flow-arrow">→</span>
+        <span>挑戦回数増</span>
+        <span class="flow-arrow">→</span>
+        <span>自己効力感上昇</span>
+      </div>
+      <div class="flow-item">
+        <span>共同体感覚</span>
+        <span class="flow-arrow">→</span>
+        <span>貢献感</span>
+        <span class="flow-arrow">→</span>
+        <span>承認依存の低下</span>
+        <span class="flow-arrow">→</span>
+        <span>安定した幸福感</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 序章: アドラー心理学の人間観</h3>
+      <ul>
+        <li>目的論・使用の心理学を提示</li>
+        <li>悩みは対人関係に集中することを示す</li>
+        <li>変化可能性の前提を確立</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 従来の原因論的思考から脱却し、変化への希望を持つための基礎を築くため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔄 原因論から目的論へ</h3>
+      <ul>
+        <li>過去原因の脱神話化</li>
+        <li>選択・目的の枠組みへの転換を解説</li>
+        <li>トラウマの否定と現在の選択の重視</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 過去に縛られず、今この瞬間から変われることを理解するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>⚖️ 劣等感とライフスタイル</h3>
+      <ul>
+        <li>劣等感の二面性（駆動力 vs 口実）</li>
+        <li>早期に形成されたライフスタイルの点検方法</li>
+        <li>劣等コンプレックスと優越コンプレックスの理解</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 自分の行動パターンの根源を理解し、建設的な方向へ転換するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🤝 共同体感覚・横の関係</h3>
+      <ul>
+        <li>幸福の条件としての所属・貢献</li>
+        <li>対等な関係づくりの原則を展開</li>
+        <li>承認欲求からの脱却</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 真の幸福は他者との対等な関係と貢献から生まれることを示すため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>✂️ 課題の分離</h3>
+      <ul>
+        <li>自他の境界設定の重要性</li>
+        <li>干渉・被干渉の悪循環を断つ実践手順</li>
+        <li>「これは誰の課題か？」の問い</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 対人関係の悩みの大半は境界の曖昧さから生まれるため、明確な分離が解決の鍵となる
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>💪 勇気づけの実践</h3>
+      <ul>
+        <li>罰と報酬の限界を指摘</li>
+        <li>勇気づけの言葉・態度・環境づくりを具体化</li>
+        <li>失敗を学習機会として捉える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 外的動機ではなく内発的動機を育てることで、持続的な成長と挑戦を可能にするため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🌟 人生の三つの課題への適用</h3>
+      <ul>
+        <li>仕事・交友・愛それぞれでの目的設定</li>
+        <li>各領域での貢献の仕方を整理</li>
+        <li>具体的な実践方法の提示</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 抽象的な理論を日常の具体的な場面に適用し、実践可能にするため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎯 結論: 変化は可能である</h3>
+      <ul>
+        <li>私的論理の修正方法</li>
+        <li>小さな実践の反復の重要性</li>
+        <li>変化は誰にでも可能だと締めくくる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 理論の理解だけでなく、継続的な実践こそが変化をもたらすことを強調するため
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>📌 例1: 怒りの目的論</h3>
+      <p><strong>背景:</strong> ある人が部下のミスに激怒した場面。従来の原因論では「ミスが怒りを引き起こした」と考える。</p>
+      <p><strong>アドラー的解釈:</strong> 怒りは「相手を支配し、自分の主張を通す」という目的のために選択された感情。冷静に話せば通じない場合に、怒りという手段を使って相手を屈服させようとしている。</p>
+      <p><strong>示唆:</strong> 感情は自然発生ではなく、目的達成のために選ばれる道具。別の目的（対等な対話）を選べば、別の感情（冷静さ）を選べる。</p>
+      <div class="reason-box">
+        <strong>理由:</strong> 感情すら選択可能であることを示し、自分の行動の主体性を取り戻すため
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📌 例2: 引きこもりの目的</h3>
+      <p><strong>背景:</strong> 過去のいじめ体験を理由に引きこもる若者。原因論では「トラウマが引きこもりを引き起こした」と説明される。</p>
+      <p><strong>アドラー的解釈:</strong> 引きこもりは「外に出て失敗するリスクを避け、家族の注目を集める」という目的のために選ばれた行動。過去の体験は口実として使われている。</p>
+      <p><strong>示唆:</strong> 過去は変えられないが、現在の目的は変えられる。「小さな成功体験を積む」という新しい目的を設定すれば、行動は変わる。</p>
+      <div class="reason-box">
+        <strong>理由:</strong> 過去のトラウマに縛られず、現在の選択で未来を変えられることを実証するため
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📌 例3: 子どもの宿題と課題の分離</h3>
+      <p><strong>背景:</strong> 親が子どもの宿題をやらせようと叱り、子どもは反発して余計にやらなくなる悪循環。</p>
+      <p><strong>アドラー的解釈:</strong> 宿題は「最終的に成績という結果を受け取るのは子ども」なので子どもの課題。親が干渉すると、子どもは「親のために勉強する」という歪んだ動機になり、自律性が育たない。</p>
+      <p><strong>示唆:</strong> 親は「宿題をやるかどうかはあなたが決めること。困ったときは手伝うよ」と伝え、結果は子どもに委ねる。これにより子どもは自分の課題として向き合い、自律性が育つ。</p>
+      <div class="reason-box">
+        <strong>理由:</strong> 課題の分離が対人関係の悪循環を断ち、相手の自律性を育てることを具体的に示すため
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📌 例4: 承認欲求と横の関係</h3>
+      <p><strong>背景:</strong> 上司の評価を気にして本音を言えず、ストレスを抱える社員。</p>
+      <p><strong>アドラー的解釈:</strong> 承認欲求は「縦の関係」（上下・優劣）から生まれる。上司を「評価者」と見る限り、対等な対話は不可能。</p>
+      <p><strong>示唆:</strong> 上司を「協力者」と捉え直し、「この提案はチームの目標達成に貢献する」という視点で話す。承認ではなく貢献を軸にすることで、対等な関係が築ける。</p>
+      <div class="reason-box">
+        <strong>理由:</strong> 承認依存から貢献志向への転換が、対等な関係と精神的自由をもたらすことを示すため
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📌 例5: 勇気づけの実践</h3>
+      <p><strong>背景:</strong> テストで60点を取った子どもに対し、「なぜ100点じゃないの？」と叱る親 vs 「前回より10点上がったね。どの問題が解けるようになったの？」と聞く親。</p>
+      <p><strong>アドラー的解釈:</strong> 前者は「できていないこと」に焦点を当て、子どもの勇気を挫く。後者は「できるようになったこと」に光を当て、挑戦を支える。</p>
+      <p><strong>示唆:</strong> 勇気づけは結果ではなくプロセスと努力を認めること。「ありがとう」「助かったよ」という貢献の承認が、内発的動機を育てる。</p>
+      <div class="reason-box">
+        <strong>理由:</strong> 勇気づけが外的報酬に依存せず、持続的な成長を促す具体的方法であることを示すため
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>「人は原因で動くのではなく、選んだ目的に向けて行動する。」</p>
+      <small><strong>なぜ重要か:</strong> 過去依存を断ち、変化可能性を取り戻す視点転換だから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「あらゆる悩みの多くは対人関係の問題である。」</p>
+      <small><strong>なぜ重要か:</strong> 焦点を関係と貢献に絞り、解決策を具体化できるから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「他者の課題に踏み込まず、自分の課題を委ねない。」</p>
+      <small><strong>なぜ重要か:</strong> 境界が明確になり、干渉と承認依存の悪循環が止まるから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「価値は承認でなく貢献で測る。」</p>
+      <small><strong>なぜ重要か:</strong> 外的評価から自立し、共同体感覚が育つから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「勇気とは失敗を受け入れ、なお挑戦を続ける力だ。」</p>
+      <small><strong>なぜ重要か:</strong> 学習と成長を継続させ、ライフスタイルを更新できるから。</small>
+    </div>
+
+    <div style="background: white; padding: 1.5rem; border-radius: 0.75rem; margin-top: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+      <h3 style="color: var(--primary); margin-bottom: 1rem;">📚 関連書籍</h3>
+      <div style="margin-bottom: 1rem; padding: 1rem; background: #f7fafc; border-radius: 0.5rem; border-left: 3px solid var(--primary);">
+        <strong style="color: var(--primary);">嫌われる勇気</strong> - 岸見一郎・古賀史健<br>
+        <small style="color: var(--text-light);">アドラー心理学の核心を対話形式で深掘りし、実践を補強する。</small>
+      </div>
+      <div style="margin-bottom: 1rem; padding: 1rem; background: #f7fafc; border-radius: 0.5rem; border-left: 3px solid var(--primary);">
+        <strong style="color: var(--primary);">幸せになる勇気</strong> - 岸見一郎・古賀史健<br>
+        <small style="color: var(--text-light);">共同体感覚と教育・対人支援における勇気づけの応用を扱う。</small>
+      </div>
+      <div style="margin-bottom: 1rem; padding: 1rem; background: #f7fafc; border-radius: 0.5rem; border-left: 3px solid var(--primary);">
+        <strong style="color: var(--primary);">個人心理学講義</strong> - アルフレッド・アドラー<br>
+        <small style="color: var(--text-light);">原典として目的論・共同体感覚・ライフスタイルの理論的基礎を学べる。</small>
+      </div>
+      <div style="padding: 1rem; background: #f7fafc; border-radius: 0.5rem; border-left: 3px solid var(--primary);">
+        <strong style="color: var(--primary);">人を動かす</strong> - デール・カーネギー<br>
+        <small style="color: var(--text-light);">承認より尊敬と貢献に基づく対人スキルがアドラー的実践と響き合う。</small>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>✅ アクション1: 自分の悩みを課題の分離で分類する</h3>
+      <p><strong>🎯 目的:</strong> 自分の課題と他者の課題を明確に区別し、不要な干渉と承認依存を減らす</p>
+      <p><strong>📝 具体的手順:</strong></p>
+      <ul style="list-style: none; padding-left: 0;">
+        <li style="padding: 0.3rem 0;">1. 今抱えている悩みを3つ書き出す</li>
+        <li style="padding: 0.3rem 0;">2. 各悩みについて「最終的な結果を受け取るのは誰か？」を問う</li>
+        <li style="padding: 0.3rem 0;">3. 自分の課題には対処法を、他者の課題には「手放す」と書く</li>
+      </ul>
+      <p><strong>💡 期待効果:</strong> 心理的負担が軽減され、自分がコントロールできる範囲に集中できる（15分）</p>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション2: 今日の行動目的を一句で書く</h3>
+      <p><strong>🎯 目的:</strong> 原因論から目的論への思考転換を習慣化し、主体的な選択を意識する</p>
+      <p><strong>📝 具体的手順:</strong></p>
+      <ul style="list-style: none; padding-left: 0;">
+        <li style="padding: 0.3rem 0;">1. 朝、今日やる予定の行動を1つ選ぶ</li>
+        <li style="padding: 0.3rem 0;">2. 「なぜやるのか？」ではなく「何のためにやるのか？」を問う</li>
+        <li style="padding: 0.3rem 0;">3. 目的を一句（例:「チームの成果に貢献するため」）で書く</li>
+      </ul>
+      <p><strong>💡 期待効果:</strong> 行動の意味が明確になり、モチベーションと方向性が定まる（5分）</p>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション3: 感謝と貢献の行動を一つ実行する</h3>
+      <p><strong>🎯 目的:</strong> 共同体感覚を実践し、承認欲求ではなく貢献感から幸福を得る体験をする</p>
+      <p><strong>📝 具体的手順:</strong></p>
+      <ul style="list-style: none; padding-left: 0;">
+        <li style="padding: 0.3rem 0;">1. 身近な人（家族・同僚）の困りごとを1つ見つける</li>
+        <li style="padding: 0.3rem 0;">2. 見返りを期待せず、その人のために小さな行動をする（例: お茶を入れる、資料を整理する）</li>
+        <li style="padding: 0.3rem 0;">3. 相手の反応ではなく「貢献できた」という感覚に注目する</li>
+      </ul>
+      <p><strong>💡 期待効果:</strong> 承認依存が減り、貢献そのものが喜びになる体験を得る（10〜20分）</p>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション4: 勇気づけの言葉を一つ使う</h3>
+      <p><strong>🎯 目的:</strong> 他者との横の関係を築き、勇気づけの実践を通じて自分も相手も成長させる</p>
+      <p><strong>📝 具体的手順:</strong></p>
+      <ul style="list-style: none; padding-left: 0;">
+        <li style="padding: 0.3rem 0;">1. 今日会う人の中で、何か努力している人を1人選ぶ</li>
+        <li style="padding: 0.3rem 0;">2. 結果ではなくプロセスに注目し、「〇〇してくれて助かった」「〇〇の工夫がいいね」と伝える</li>
+        <li style="padding: 0.3rem 0;">3. 相手の反応を観察し、自分の気持ちの変化も記録する</li>
+      </ul>
+      <p><strong>💡 期待効果:</strong> 相手の挑戦を支え、自分も貢献感と対等な関係を体感できる（5〜10分）</p>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション5: ライフスタイルの点検メモを書く</h3>
+      <p><strong>🎯 目的:</strong> 自分の無意識的な行動パターン（ライフスタイル）を可視化し、修正の第一歩を踏む</p>
+      <p><strong>📝 具体的手順:</strong></p>
+      <ul style="list-style: none; padding-left: 0;">
+        <li style="padding: 0.3rem 0;">1. 「自分はいつも〇〇してしまう」という行動パターンを1つ書く</li>
+        <li style="padding: 0.3rem 0;">2. 「その行動の目的は何か？」を問う（例: 失敗を避ける、注目を集める）</li>
+        <li style="padding: 0.3rem 0;">3. 「別の目的（例: 成長する、貢献する）を選ぶなら、どう行動するか？」を書く</li>
+      </ul>
+      <p><strong>💡 期待効果:</strong> 無意識の選択が意識化され、新しい行動の選択肢が見えてくる（15分）</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabs = document.querySelectorAll('.tab-btn');
+  const contents = document.querySelectorAll('.tab-content');
+  
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetId = tab.getAttribute('data-tab');
+      
+      tabs.forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      contents.forEach(c => {
+        c.classList.remove('active');
+      });
+      
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById(targetId).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
