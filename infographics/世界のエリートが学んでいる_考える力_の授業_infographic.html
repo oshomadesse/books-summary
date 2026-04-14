@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>思考の誤りを避ける技術 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+
+.reason-box strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--secondary);
+  font-style: italic;
+}
+
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.quote-card small {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--text-light);
+  font-style: normal;
+  font-size: 0.85rem;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+  margin-bottom: 0.25rem;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  border-radius: 0.5rem;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.relationship-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.relationship-item {
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(240,147,251,0.05));
+  border-radius: 0.5rem;
+  border-left: 3px solid var(--primary);
+  font-size: 0.95rem;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+
+.book-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--primary);
+}
+
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.book-card .relation {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 思考の誤りを避ける技術</h1>
+  <p>認知バイアスを前提化し、意思決定を設計する</p>
+</header>
+
+<div class="container">
+  
+  <div class="summary-block">
+    <h2>📋 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      エリートの「考える力」は何か、どう獲得するか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      認知バイアスを前提化し、ベース率・確率思考・反証主義に基づく意思決定プロセス（チェックリスト、意思決定日記、事前検死）を運用すること。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      心理学・行動経済学は、人間の直感が一貫して系統誤差（確証・サバイバル・損失回避など）に支配されると示す。成功談は生存者偏差で歪み、経験則だけでは精度が上がらない。
+    </div>
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      ①結論よりプロセス評価（事前に前提・選択肢・ベース率・期待値を記録）②チェックリストでバイアス検査③反証を探す癖（逆張り質問・デビルズアドボケイト）④環境設計（インセンティブ整合・デフォルト設定・情報の非対称/ノイズ低減）⑤撤退ルール（サンクコスト遮断・事前に閾値設定）
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🎯 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📚 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">🔗 関連書籍</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">🎯 主要概念の詳細</h2>
+    <div class="card-grid">
+      
+      <div class="card">
+        <h3>🔍 確証バイアス</h3>
+        <ul>
+          <li>自説を支持する情報だけを集める</li>
+          <li>反証を無視する傾向</li>
+          <li>意思決定の盲点を生む</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>反対意見を探さないと、誤った前提のまま突き進み、失敗リスクが高まる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🏆 サバイバル・バイアス</h3>
+        <ul>
+          <li>成功例だけを観察して原因推定を誤る</li>
+          <li>失敗例の欠落が結論を歪める</li>
+          <li>勝者だけを見る錯覚</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>沈んだ船の設計図は見えない。成功談だけでは再現性のある戦略を導けない。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💸 サンクコスト錯誤</h3>
+        <ul>
+          <li>回収不能な過去投資に引きずられる</li>
+          <li>非合理に継続してしまう</li>
+          <li>もったいないの罠</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>過去は変えられない。未来の期待値だけで判断しないと損失が拡大する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>😰 損失回避</h3>
+        <ul>
+          <li>同額の損失は利得より強い心理的痛み</li>
+          <li>過度に回避的になる</li>
+          <li>失う恐怖は大きい</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>リスクを取るべき場面で保守的になり、機会損失を招く。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🖼️ フレーミング効果</h3>
+        <ul>
+          <li>同じ事実でも表現で選好が変わる</li>
+          <li>言い方で判断が変化</li>
+          <li>情報の見せ方に左右される</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>本質を見ずに表層に反応すると、操作されやすくなる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📰 利用可能性ヒューリスティック</h3>
+        <ul>
+          <li>思い出しやすい事例を過大評価</li>
+          <li>メディア露出に弱い</li>
+          <li>思い出せる=頻繁と誤認</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>稀な事象を過大評価し、リスク対策が歪む。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚓ アンカリング</h3>
+        <ul>
+          <li>初期情報が基準となる</li>
+          <li>その後の見積もりを引き寄せる</li>
+          <li>最初の数値に縛られる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>交渉や価格判断で不利な基準点を押し付けられる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>✨ ハロー効果</h3>
+        <ul>
+          <li>一つの顕著な特徴が全体評価を左右</li>
+          <li>一点豪華に引きずられる</li>
+          <li>部分が全体を覆い隠す</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>採用・評価で本質を見誤り、ミスマッチを生む。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📖 ナラティブ錯誤</h3>
+        <ul>
+          <li>ばらばらの出来事に因果物語を付与</li>
+          <li>過度に確信する</li>
+          <li>物語が真実を隠す</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>偶然を必然と誤認し、再現性のない戦略を信じる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎲 結果バイアス</h3>
+        <ul>
+          <li>意思決定の良し悪しを結果で評価</li>
+          <li>過程の質を曇らせる</li>
+          <li>結果論の落とし穴</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>運の良い悪手を称賛し、運の悪い良手を糾弾すると学習が歪む。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🏃 行動バイアス（行動過多）</h3>
+        <ul>
+          <li>何もしないより動くことを過大評価</li>
+          <li>誤射を増やす</li>
+          <li>動くことが目的化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>待つべき時に動くと、無駄なコストと副作用を生む。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👤 代表性ヒューリスティック</h3>
+        <ul>
+          <li>見た目の似姿から確率を誤る</li>
+          <li>統計的な事前確率を無視</li>
+          <li>見かけに騙される</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>ベース率を無視すると、診断・採用の精度が大幅に低下する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📉 回帰効果</h3>
+        <ul>
+          <li>極端な結果は平均へ戻る</li>
+          <li>誤って因果と解釈しがち</li>
+          <li>たまたまは平均へ</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>偶然の変動を施策の成果と誤認し、無効な介入を続ける。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👔 権威バイアス</h3>
+        <ul>
+          <li>専門家や肩書きに過度に従う</li>
+          <li>肩書きに弱い</li>
+          <li>批判的思考が停止</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>専門家も誤る。盲従は誤りの連鎖を生む。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👥 社会的証明</h3>
+        <ul>
+          <li>多数の行動が正しいと見なす</li>
+          <li>集団思考を助長</li>
+          <li>みんなが正しい</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>群衆は誤る。反証探索が弱まり、バブルや集団パニックを招く。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💰 インセンティブ過剰反応</h3>
+        <ul>
+          <li>報酬設計に行動が強く最適化</li>
+          <li>思わぬ副作用が出る</li>
+          <li>報酬に引きずられる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>指標ドリブンが形骸化し、本来目的を逸脱する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💎 希少性錯覚</h3>
+        <ul>
+          <li>入手困難なものを過大評価</li>
+          <li>レア=価値と誤信</li>
+          <li>焦りで判断を誤る</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>希少性を演出されると冷静な価値判断ができなくなる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🏠 所有効果/現状維持バイアス</h3>
+        <ul>
+          <li>所有した瞬間に価値を高く見積もる</li>
+          <li>変更を避ける</li>
+          <li>今のままが心地良い</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>変化を拒むと、より良い選択肢を逃し続ける。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💳 メンタル・アカウンティング</h3>
+        <ul>
+          <li>お金や時間を恣意的な枠に分ける</li>
+          <li>全体最適を損なう</li>
+          <li>財布を分けて錯覚</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>部分最適に陥り、トータルで損をする。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📅 計画錯誤</h3>
+        <ul>
+          <li>所要時間・費用を一貫して過小評価</li>
+          <li>楽観見積もり</li>
+          <li>予定が常に遅れる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>楽観バイアスで納期・予算が破綻し、信頼を失う。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔮 ハインドサイト・バイアス</h3>
+        <ul>
+          <li>起きた後で「予見していた」と感じる</li>
+          <li>学習を阻害</li>
+          <li>後知恵の毒</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>過去を美化すると、真の教訓を引き出せない。
+        </div>
+      </div>
+
+    </div>
+
+    <div class="relationship-diagram">
+      <h3 style="margin-bottom:1rem;color:var(--secondary);">🔗 概念間の関係性</h3>
+      <div class="relationship-item">フレーミング → 損失回避を増幅 → リスク選好が情景依存に</div>
+      <div class="relationship-item">社会的証明 × 権威バイアス → 盲従・集団思考 → 反証探索が弱まる</div>
+      <div class="relationship-item">利用可能性 ↑ → 稀事象の過大評価 → 不適切なリスク対策</div>
+      <div class="relationship-item">代表性 + ベース率無視 → 誤分類 → 診断/採用の精度低下</div>
+      <div class="relationship-item">サンクコスト + 所有効果 → 撤退遅延 → 損失拡大</div>
+      <div class="relationship-item">アンカリング → 参照点形成 → 価格判断・交渉結果が歪む → メンタル・アカウンティングを誘発</div>
+      <div class="relationship-item">ナラティブ錯誤 → 結果バイアス強化 → プロセス学習が阻害</div>
+      <div class="relationship-item">回帰効果の誤解 → 誤った因果推論 → 無効な施策を称賛/糾弾</div>
+      <div class="relationship-item">インセンティブ過剰反応 → 指標ドリブンの形骸化 → 本来目的の逸脱</div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--secondary);">📚 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3>📌 導入：思考の衛生仮説</h3>
+      <ul>
+        <li>人間の思考は合理的ではなく、系統誤差に満ちる</li>
+        <li>知識量ではなく、誤りに強い仕組みが成果を左右</li>
+        <li>バイアスを前提化することが出発点</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>誤りを個人の能力不足と見なすと改善できない。構造的問題として扱うことで対策可能になる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📌 本論：認知バイアスのカタログ</h3>
+      <ul>
+        <li>短章のケーススタイルで主要バイアスを定義</li>
+        <li>身近な例 → 誤りのメカニズム → 回避のヒントの順に提示</li>
+        <li>確証・サバイバル・サンクコスト・損失回避など21種を網羅</li>
+        <li>各バイアスが意思決定のどこで発動するかを明示</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>バイアスを名前で認識できると、発動時に気づき、チェックリストで対処できる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📌 横串テーマ：統計・反証・インセンティブ</h3>
+      <ul>
+        <li>ベース率・期待値・確率更新の重要性を反復強調</li>
+        <li>反証主義：自説を支持する証拠ではなく、反証を探せ</li>
+        <li>インセンティブ設計：報酬が行動を歪める副作用を警戒</li>
+        <li>選択アーキテクチャ：デフォルト設定・情報の非対称を整える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>個別バイアスの知識だけでは不十分。統計的思考と環境設計が意思決定の質を底上げする。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📌 実践編：誤りに強いプロセス設計</h3>
+      <ul>
+        <li>チェックリスト：バイアス検査項目を事前に列挙</li>
+        <li>意思決定日記：前提・選択肢・ベース率・期待値を記録</li>
+        <li>事前検死（プレモーテム）：失敗シナリオを先に想定</li>
+        <li>撤退ルール：サンクコスト遮断のため事前に閾値設定</li>
+        <li>ノイズ低減：情報の非対称・感情ノイズを構造的に排除</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>誤りをゼロにはできない。誤りに強い仕組みを持つことで、失敗の影響を最小化し、学習を加速する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📌 結語：賢さは規律と環境設計の産物</h3>
+      <ul>
+        <li>賢くなる最短の道は、愚かな行為を避ける規則を作ること</li>
+        <li>個人の知力よりプロセス設計が成果を左右する</li>
+        <li>誤りから自由でいられるのは、誤りに強い仕組みを持つ者だけ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>知識を増やすだけでは行動は変わらない。環境と規律が行動を変え、成果を生む。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--accent);">💼 具体例</h2>
+
+    <div class="example-card">
+      <h3>🛩️ 例1：第二次大戦の爆撃機補強（サバイバル・バイアス）</h3>
+      <p><strong>背景：</strong>帰還した爆撃機の被弾箇所を調べ、そこを補強しようとした。統計学者エイブラハム・ウォルドは「帰還できなかった機体の被弾箇所こそ致命的」と指摘し、被弾が少ない箇所（エンジン・操縦席）を補強すべきと提言。</p>
+      <p><strong>示唆：</strong>成功例だけを見ると、失敗の真因を見逃す。沈んだ船の設計図は博物館にない。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>この例は、観察可能なデータが選択バイアスで歪んでいることを示し、反証思考の重要性を教える。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🏥 例2：医療診断とベース率無視</h3>
+      <p><strong>背景：</strong>ある病気の検査精度が95%でも、病気の有病率が1%なら、陽性判定の大半は偽陽性。医師も患者もベース率を無視し、陽性=病気と誤認しがち。</p>
+      <p><strong>示唆：</strong>代表性ヒューリスティックに頼ると、統計的な事前確率を見落とし、誤診・過剰治療を招く。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>この例は、直感が確率計算を誤る典型を示し、ベイズ更新の必要性を明示する。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>💼 例3：プロジェクト撤退の遅延（サンクコスト錯誤）</h3>
+      <p><strong>背景：</strong>既に多額の投資をしたプロジェクトが失敗濃厚でも、「ここまで投資したのだから」と継続し、損失が拡大。撤退ルールを事前に設定していれば、早期に損切りできた。</p>
+      <p><strong>示唆：</strong>過去は変えられない。未来の期待値だけで判断しないと、損失が雪だるま式に増える。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>この例は、感情的執着が合理的判断を妨げることを示し、事前ルール設定の有効性を教える。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📊 例4：業績評価と回帰効果</h3>
+      <p><strong>背景：</strong>極端に良い成績を出した社員を称賛し、次期に成績が平均に戻ると「慢心した」と叱責。逆に極端に悪い成績の社員を叱責し、次期に改善すると「叱責が効いた」と誤認。</p>
+      <p><strong>示唆：</strong>極端な結果は偶然の変動で平均へ戻る。因果を誤認すると、無効な介入を続ける。</p>
+      <div class="reason-box">
+        <strong>理由：</strong>この例は、回帰効果を因果と誤認する典型を示し、結果バイアスの危険性を教える。
+      </div>
+    </div>
+
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--secondary);">💬 重要な引用</h2>
+
+    <div class="quote-card">
+      <p>「誰も誤りから自由ではない。自由でいられるのは、誤りに強い仕組みを持つ者だけだ。」</p>
+      <small><strong>重要性：</strong>個人の知力よりプロセス設計が成果を左右するという本書の核を示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「賢くなる最短の道は、賢く振る舞うことではなく、愚かな行為を避ける規則を作ることだ。」</p>
+      <small><strong>重要性：</strong>「やらないこと」の規律が高レバレッジである点を強調する。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「成功物語は生存者の声で作られる。沈んだ船の設計図は博物館にはない。」</p>
+      <small><strong>重要性：</strong>サバイバル・バイアスの直感的理解を促し、事例学習の限界を示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「良い結果は、良い判断を必ずしも意味しない。評価すべきはプロセスだ。」</p>
+      <small><strong>重要性：</strong>結果バイアスへの対抗策として意思決定監査の必要性を明示する。</small>
+    </div>
+
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">✅ 今日のアクション（15〜30分で実行可能）</h2>
+
+    <div class="action-card">
+      <h3>📝 1. 意思決定チェックリストを書く</h3>
+      <p><strong>目的：</strong>次回の重要判断時にバイアス検査を実施できるようにする。</p>
+      <p><strong>期待効果：</strong>確証バイアス・アンカリング・サンクコストなど主要バイアスを事前に検出し、誤りを減らす。</p>
+      <p><strong>具体的手順：</strong>①主要バイアス5〜10個をリスト化②各バイアスに対応する質問を1つずつ作成（例：「反証を3つ探したか？」「ベース率を確認したか？」）③次回判断時にチェックリストを見ながら自問する。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>📖 2. 直近の判断を日記に記録</h3>
+      <p><strong>目的：</strong>意思決定の前提・選択肢・期待値を記録し、後で振り返れるようにする。</p>
+      <p><strong>期待効果：</strong>結果バイアス・ハインドサイト・バイアスを防ぎ、プロセス評価で学習を加速する。</p>
+      <p><strong>具体的手順：</strong>①直近の重要判断を1つ選ぶ②判断時の前提・選択肢・ベース率・期待値を箇条書き③3ヶ月後に振り返り、前提の妥当性と結果を分離して評価する。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>🔍 3. 次の選択のベース率を確認</h3>
+      <p><strong>目的：</strong>代表性ヒューリスティックに頼らず、統計的事前確率を意識する。</p>
+      <p><strong>期待効果：</strong>診断・採用・投資などの精度が大幅に向上する。</p>
+      <p><strong>具体的手順：</strong>①次に判断する事項を1つ選ぶ②その事象の一般的な発生率（ベース率）を調べる（例：新規事業の成功率、採用候補の定着率）③ベース率を基準に、個別情報をどれだけ重視すべきか再評価する。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>🛑 4. 撤退ルールを1つ設定する</h3>
+      <p><strong>目的：</strong>サンクコスト錯誤を防ぎ、損失拡大を防止する。</p>
+      <p><strong>期待効果：</strong>感情的執着を排除し、早期損切りで資源を有効活用できる。</p>
+      <p><strong>具体的手順：</strong>①現在進行中のプロジェクト/投資を1つ選ぶ②事前に撤退条件を明文化（例：3ヶ月後に売上が目標の50%未満なら撤退）③条件を満たしたら機械的に撤退する。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>🔄 5. 事前検死（プレモーテム）を実施</h3>
+      <p><strong>目的：</strong>失敗シナリオを先に想定し、盲点を洗い出す。</p>
+      <p><strong>期待効果：</strong>確証バイアスを打破し、リスク対策の精度が上がる。</p>
+      <p><strong>具体的手順：</strong>①次の重要プロジェクトを1つ選ぶ②「1年後、このプロジェクトは失敗した」と仮定③失敗の原因を5〜10個列挙④各原因への対策を事前に講じる。</p>
+    </div>
+
+  </div>
+
+  <div id="tab6" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--accent);">🔗 関連書籍</h2>
+
+    <div class="book-card">
+      <h4>📘 ファスト＆スロー</h4>
+      <div class="author">著者：ダニエル・カーネマン</div>
+      <div class="relation"><strong>関連性：</strong>認知バイアスの学術的土台（システム1/2）を提供する。本書の理論的基盤となる心理学研究の集大成。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>📘 予想どおりに不合理</h4>
+      <div class="author">著者：ダン・アリエリー</div>
+      <div class="relation"><strong>関連性：</strong>行動経済学の実験から非合理性と対策を具体例で示す。本書のバイアスを実験で検証した内容が豊富。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>📘 ナッジ</h4>
+      <div class="author">著者：リチャード・セイラー／キャス・サンスティーン</div>
+      <div class="relation"><strong>関連性：</strong>選択アーキテクチャにより誤りに強い環境設計を解説。本書の実践編（環境設計）を深掘りする。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>📘 ブラック・スワン</h4>
+      <div class="author">著者：ナシーム・ニコラス・タレブ</div>
+      <div class="relation"><strong>関連性：</strong>希少大事象と物語錯誤への警鐘が意思決定の限界を補足。ナラティブ錯誤・利用可能性ヒューリスティックの危険性を強調。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>📘 Superforecasting 超予測力</h4>
+      <div class="author">著者：フィリップ・テトロック／ダン・ガードナー</div>
+      <div class="relation"><strong>関連性：</strong>確率更新・ベース率・決定日記など本書の実践を高精度予測で実証。意思決定日記の有効性を科学的に裏付ける。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>📘 Thinking in Bets</h4>
+      <div class="author">著者：アニー・デューク</div>
+      <div class="relation"><strong>関連性：</strong>結果ではなくプロセス評価と事前検死の手法が重なる。ポーカーの意思決定から本書の実践手法を補強。</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+// タブ切り替え機能
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    // すべてのタブとコンテンツから active を削除
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブとコンテンツに active を追加
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
