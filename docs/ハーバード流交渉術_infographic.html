@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ハーバード流交渉術 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  margin-left: 1rem;
+  font-size: 0.95rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.7rem 1.2rem;
+  cursor: pointer;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--primary);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 20px rgba(102,126,234,0.2);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 0.4rem;
+  font-size: 0.88rem;
+  font-style: italic;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 4px solid var(--primary);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card small {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--accent);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.flow-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+.flow-item {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  min-width: 200px;
+  text-align: center;
+  position: relative;
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 ハーバード流交渉術</h1>
+  <p>原則立脚型交渉で賢明・公正・持続可能な合意へ</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 エグゼクティブ・サマリー</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>力比べや妥協の連鎖に陥らず、関係を損なわずに良質な合意へ最短で到達するには？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>原則立脚型交渉を用いる（人と問題を分ける／利害に焦点を当てる／相互利益の選択肢を発想する／客観的基準を用いる）うえで、BATNAを準備・強化する。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>立場交渉は非効率・関係悪化・劣悪な合意を招きやすい。一方、利害に基づく対話と客観基準は信頼と説得力を高め、価値創造と公正性を両立させる。BATNAが明確だと撤退点と交渉力が定まり、不利な合意を避けられる。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>準備で利害・選好・制約を可視化しBATNAを算定/強化、客観基準を収集。場では傾聴と再構成で人間関係を安定化、発散（ブレスト）→収束で選択肢を設計、Yesable提案とワンテキスト法で合意形成を促進、攻撃には交渉柔術で原則へ戻す。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">🔑 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🎯 原則立脚型交渉</h3>
+        <ul>
+          <li>人と問題を分離</li>
+          <li>利害に焦点を当てる</li>
+          <li>相互利益の案を生む</li>
+          <li>客観基準で決める</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 協調的アプローチで効率・関係・質を同時に最大化できるため
+        </div>
+      </div>
+      <div class="card">
+        <h3>📍 立場（ポジション）</h3>
+        <ul>
+          <li>当事者が主張する結論</li>
+          <li>要求そのもの</li>
+          <li>理由や代替案が隠れる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 表層に固執すると対立が激化し解決の柔軟性を失うため
+        </div>
+      </div>
+      <div class="card">
+        <h3>💎 利害（インタレスト）</h3>
+        <ul>
+          <li>立場の背後にある動機</li>
+          <li>欲求・懸念・価値</li>
+          <li>解決の鍵となる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 根本原因に働きかけることで解の空間が広がるため
+        </div>
+      </div>
+      <div class="card">
+        <h3>🤝 人と問題を分ける</h3>
+        <ul>
+          <li>認知・感情を丁寧に扱う</li>
+          <li>関係と実質課題を切り分け</li>
+          <li>傾聴と再構成を活用</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 感情のもつれを減らし課題解決に集中できるため
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌟 相互利益の選択肢</h3>
+        <ul>
+          <li>ブレストで価値を拡張</li>
+          <li>パッケージ化で同時充足</li>
+          <li>発散と収束を分離</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> ゼロサムを回避しパイを広げられるため
+        </div>
+      </div>
+      <div class="card">
+        <h3>📏 客観的基準</h3>
+        <ul>
+          <li>市場価格・業界慣行</li>
+          <li>専門指針・法規</li>
+          <li>当事者外の公平な指標</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 公正性と説得力が高まり合意の受容性が増すため
+        </div>
+      </div>
+      <div class="card">
+        <h3>🚪 BATNA（最良の代替案）</h3>
+        <ul>
+          <li>合意に至らない場合の最善行動</li>
+          <li>実行可能性が交渉力の源泉</li>
+          <li>撤退点の明確化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 不利な合意を避ける指針となり交渉力の基盤になるため
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚠️ ボトムライン</h3>
+        <ul>
+          <li>受け入れ可能な最終条件</li>
+          <li>硬直化の恐れあり</li>
+          <li>BATNAほど有効でない</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 柔軟性を失い機会損失を招く可能性があるため
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎯 ZOPA（合意可能域）</h3>
+        <ul>
+          <li>当事者の受容範囲の重なり</li>
+          <li>解が存在する領域</li>
+          <li>交渉の交差点</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> この領域を見極めることで効率的な合意形成が可能になるため
+        </div>
+      </div>
+      <div class="card">
+        <h3>🥋 交渉柔術</h3>
+        <ul>
+          <li>攻撃や拒絶を受け流す</li>
+          <li>問い返し・再構成</li>
+          <li>原則に立ち返らせる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 力の対立を避け建設的対話に戻せるため
+        </div>
+      </div>
+      <div class="card">
+        <h3>📄 ワンテキスト法</h3>
+        <ul>
+          <li>一つの草案を反復改訂</li>
+          <li>共同で最適化</li>
+          <li>立場対立の沈静化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 対立を減らし協調的な改善プロセスを促進するため
+        </div>
+      </div>
+      <div class="card">
+        <h3>✅ Yesable提案</h3>
+        <ul>
+          <li>相手が即受諾しやすい設計</li>
+          <li>明確・公正・実行可能</li>
+          <li>受容性の最大化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 合意の確率と速度を高められるため
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-diagram">
+      <h3 style="color:var(--primary);margin-bottom:1rem;">🔄 概念間の関係性</h3>
+      <div class="flow-container">
+        <div class="flow-item">立場志向</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">対立激化・非効率</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">劣悪な合意/関係悪化</div>
+      </div>
+      <div style="margin:2rem 0;font-size:1.5rem;color:var(--accent);">VS</div>
+      <div class="flow-container">
+        <div class="flow-item">利害志向 + 選択肢発想</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">価値創造</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-item">合意の質・持続性向上</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">📚 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3>第1章: 問題提起</h3>
+      <ul>
+        <li>立場交渉は非効率で時間がかかる</li>
+        <li>関係を悪化させやすい</li>
+        <li>合意の質が低下する</li>
+        <li>より良い方法が必要</li>
+      </ul>
+      <div class="reason-box">
+        <strong>章の理由:</strong> 従来の交渉法の限界を示し、新しいアプローチの必要性を明確にするため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第2章: 原則立脚型交渉の4原則</h3>
+      <ul>
+        <li>人と問題を分ける</li>
+        <li>利害に焦点を当てる</li>
+        <li>相互利益の選択肢を発想する</li>
+        <li>客観的基準を用いる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>章の理由:</strong> 本書の核心フレームワークを提示し、以降の詳細展開の基盤を作るため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第3章: 人と問題を分ける</h3>
+      <ul>
+        <li>認知の違いを理解する</li>
+        <li>感情を認識し対処する</li>
+        <li>傾聴と再構成を実践</li>
+        <li>意図と影響を切り分ける</li>
+      </ul>
+      <div class="reason-box">
+        <strong>章の理由:</strong> 人間関係の維持が交渉成功の前提であり、感情管理が実質的問題解決を可能にするため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第4章: 利害へ焦点</h3>
+      <ul>
+        <li>「なぜ？」で立場の背後を掘る</li>
+        <li>利害をマッピングする</li>
+        <li>優先度と交換可能性を見極める</li>
+        <li>共通利害と補完利害を発見</li>
+      </ul>
+      <div class="reason-box">
+        <strong>章の理由:</strong> 根本原因に働きかけることで解の空間が広がり、創造的解決が可能になるため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第5章: 選択肢の発想</h3>
+      <ul>
+        <li>発散と収束を分離する</li>
+        <li>ブレインストーミングを活用</li>
+        <li>パッケージ化で価値を拡張</li>
+        <li>相互利得を構築する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>章の理由:</strong> ゼロサムの罠を回避し、双方が得をする解を生み出すことで合意の質を高めるため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第6章: 客観的基準</h3>
+      <ul>
+        <li>合理的理由付けを行う</li>
+        <li>外部標準を選定・合意する</li>
+        <li>適用の手順を明確化</li>
+        <li>公正性と説得力を確保</li>
+      </ul>
+      <div class="reason-box">
+        <strong>章の理由:</strong> 意志の対立を原則の対話に変え、合意の正当性と受容性を高めるため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第7章: 難しい相手への対応</h3>
+      <ul>
+        <li>交渉柔術で攻撃を受け流す</li>
+        <li>Yesable提案を設計する</li>
+        <li>ワンテキスト法で協調を促す</li>
+        <li>権力不均衡に対処する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>章の理由:</strong> 非協力的・強硬な相手にも原則を適用できる実践技法を提供するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第8章: BATNA</h3>
+      <ul>
+        <li>最良の代替案を定義する</li>
+        <li>BATNAを評価・強化する</li>
+        <li>代替案創出と実行可能性向上</li>
+        <li>ボトムラインの限界を理解</li>
+      </ul>
+      <div class="reason-box">
+        <strong>章の理由:</strong> 交渉力の源泉を明確にし、不利な合意を避ける判断基準を提供するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第9章: まとめと統合</h3>
+      <ul>
+        <li>4原則の統合運用</li>
+        <li>現場への適用指針</li>
+        <li>継続的な実践と改善</li>
+        <li>長期的な関係構築</li>
+      </ul>
+      <div class="reason-box">
+        <strong>章の理由:</strong> 学んだ原則を実務で活用できるよう統合し、持続的な成果を生むため
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">💡 具体例</h2>
+    
+    <div class="example-card">
+      <h4>🏠 例1: オレンジの分割</h4>
+      <p><strong>背景:</strong> 二人の姉妹が一つのオレンジを巡って争っている。立場は「オレンジが欲しい」で対立。</p>
+      <p><strong>利害の発見:</strong> 姉は「ケーキを作るため皮が必要」、妹は「ジュースを作るため果肉が必要」。</p>
+      <p><strong>解決:</strong> 姉に皮を全部、妹に果肉を全部渡すことで双方100%満足。</p>
+      <div class="reason-box">
+        <strong>この例が示すこと:</strong> 立場の背後にある利害を掘り下げることで、ゼロサムに見えた問題が相互利益の解に変わることを実証
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🏢 例2: 賃貸契約交渉</h4>
+      <p><strong>背景:</strong> 家主は「家賃を上げたい」、借主は「家賃を据え置きたい」と対立。</p>
+      <p><strong>利害の発見:</strong> 家主は「収入の安定と物件の維持」、借主は「予算内で快適な住環境」を求めている。</p>
+      <p><strong>解決:</strong> 家賃は据え置き、借主が小修繕を負担し契約期間を延長。家主は安定収入と維持費削減、借主は家賃据え置きと長期居住を実現。</p>
+      <div class="reason-box">
+        <strong>この例が示すこと:</strong> 金銭以外の要素（期間・責任分担）をパッケージ化することで価値を創造し、双方の利害を同時充足できることを示す
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🌍 例3: キャンプ・デービッド合意</h4>
+      <p><strong>背景:</strong> エジプトとイスラエルがシナイ半島の領有権で対立。立場は「全土返還」vs「全土保持」。</p>
+      <p><strong>利害の発見:</strong> エジプトは「主権の回復」、イスラエルは「安全保障」を重視。</p>
+      <p><strong>解決:</strong> シナイ半島の主権をエジプトに返還し、非武装地帯を設定。エジプトは主権を回復、イスラエルは安全を確保。</p>
+      <div class="reason-box">
+        <strong>この例が示すこと:</strong> 国際紛争レベルでも利害に基づく創造的解決が可能であり、主権と安全という異なる次元の利害を同時充足できることを実証
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>💼 例4: 職場での昇進交渉</h4>
+      <p><strong>背景:</strong> 従業員が「昇進と大幅な昇給」を要求、上司は「予算制約」を理由に拒否。</p>
+      <p><strong>利害の発見:</strong> 従業員は「成長実感と将来性」、上司は「予算内で優秀な人材の定着」を求めている。</p>
+      <p><strong>解決:</strong> 役職は昇進、給与は段階的引き上げ、新プロジェクトのリード権と研修予算を付与。従業員は成長機会を得て、上司は予算内で人材を確保。</p>
+      <div class="reason-box">
+        <strong>この例が示すこと:</strong> 金銭以外の価値（成長機会・権限・スキル開発）を組み合わせることで、予算制約下でも満足度の高い合意が可能であることを示す
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">📖 重要な引用</h2>
+    
+    <div class="quote-card">
+      <p>「人間関係と実質的問題を切り離して扱え。」</p>
+      <small><strong>重要性:</strong> 感情のもつれを減らし、課題解決に集中できるため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「立場ではなく利害に焦点を当てよ。」</p>
+      <small><strong>重要性:</strong> 根本原因に働きかけ、解の空間を広げられるため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「相互利益の選択肢を発想してから決めよ。」</p>
+      <small><strong>重要性:</strong> 価値を拡張し、ゼロサムを回避できるため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「決定は客観的基準に基づけ。」</p>
+      <small><strong>重要性:</strong> 公正性と説得力が高まり、合意の受容性が増すため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「あなたの最良の代替案（BATNA）を知れ。」</p>
+      <small><strong>重要性:</strong> 交渉力の基盤となり、不利な合意を避ける指針になるため。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">🎯 今日のアクション</h2>
+    
+    <div class="action-card">
+      <h4>📝 アクション1: 交渉案件のBATNAを明文化する</h4>
+      <p><strong>目的:</strong> 現在進行中または予定されている交渉について、合意に至らない場合の最善の代替案を具体的に書き出す。</p>
+      <p><strong>手順:</strong> 交渉案件を1つ選び、合意しなかった場合に取れる行動を3〜5個リストアップ。各行動の実行可能性と価値を評価し、最も良い選択肢を特定する。</p>
+      <p><strong>期待効果:</strong> 交渉の撤退点が明確になり、不利な合意を避ける判断基準が得られる。交渉力の源泉を自覚できる。</p>
+      <span class="badge">15分</span><span class="badge">即効性高</span>
+    </div>
+
+    <div class="action-card">
+      <h4>🔍 アクション2: 相手の真の利害を3つ列挙する</h4>
+      <p><strong>目的:</strong> 交渉相手の表面的な要求（立場）の背後にある本当の動機・懸念・価値を推測し理解する。</p>
+      <p><strong>手順:</strong> 相手の立場を書き出し、「なぜそれを求めるのか？」を3回繰り返して掘り下げる。相手の視点に立ち、経済的・心理的・社会的な利害を想像する。</p>
+      <p><strong>期待効果:</strong> 相手の真のニーズを理解することで、創造的な解決策の発想が可能になる。共感と信頼が高まり、交渉が円滑になる。</p>
+      <span class="badge">20分</span><span class="badge">洞察力向上</span>
+    </div>
+
+    <div class="action-card">
+      <h4>📊 アクション3: 客観的基準候補を5つ洗い出す</h4>
+      <p><strong>目的:</strong> 交渉の決定に使える公平な外部基準を事前に準備し、説得力を高める。</p>
+      <p><strong>手順:</strong> 交渉テーマに関連する市場価格、業界慣行、専門家の意見、法規制、過去の判例などを調査。最低5つの客観的基準をリストアップし、それぞれの信頼性と適用可能性を評価する。</p>
+      <p><strong>期待効果:</strong> 意志の対立を原則の対話に変えられる。合意の公正性が高まり、相手の受容性が向上する。準備の充実が自信につながる。</p>
+      <span class="badge">30分</span><span class="badge">説得力強化</span>
+    </div>
+
+    <div class="action-card">
+      <h4>🧠 アクション4: 過去の交渉を原則で振り返る</h4>
+      <p><strong>目的:</strong> 過去の交渉経験を4原則の視点で分析し、改善点を明確にする。</p>
+      <p><strong>手順:</strong> 最近の交渉を1つ選び、「人と問題の分離」「利害への焦点」「選択肢の発想」「客観基準の使用」の各観点でできたこと・できなかったことを書き出す。</p>
+      <p><strong>期待効果:</strong> 自分の交渉パターンを客観視でき、次回への具体的な改善策が得られる。学習サイクルが加速する。</p>
+      <span class="badge">25分</span><span class="badge">継続改善</span>
+    </div>
+
+    <div class="action-card">
+      <h4>💬 アクション5: 傾聴と再構成を1回実践する</h4>
+      <p><strong>目的:</strong> 「人と問題を分ける」技法を日常会話で練習し、習慣化する。</p>
+      <p><strong>手順:</strong> 今日の会話で相手の発言を最後まで聞き、「つまり〜ということですね」と自分の言葉で言い換えて確認する。相手の感情にも言及する。</p>
+      <p><strong>期待効果:</strong> 傾聴スキルが向上し、相手との信頼関係が深まる。誤解が減り、コミュニケーションの質が高まる。</p>
+      <span class="badge">15分</span><span class="badge">関係構築</span>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
