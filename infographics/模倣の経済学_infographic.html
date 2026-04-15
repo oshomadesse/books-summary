@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模倣の戦略 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 2rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+.tab-btn:hover {
+  border-color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+  line-height: 1.5;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.chapter-card h3 {
+  font-size: 1.05rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card .reason {
+  background: #f5f5f5;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-light);
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.example-card .context {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+.example-card .insight {
+  background: #fff9e6;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.quote-card {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.quote-card:before {
+  content: """;
+  font-size: 4rem;
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  color: var(--primary);
+  opacity: 0.2;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+.quote-card .note {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  border-top: 1px solid rgba(0,0,0,0.1);
+  padding-top: 0.5rem;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.action-card h4 {
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .details {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.action-card .details strong {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--primary);
+  font-size: 0.85rem;
+}
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-section h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.bar-chart {
+  margin: 1rem 0;
+}
+.bar-item {
+  margin-bottom: 1rem;
+}
+.bar-label {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  color: var(--text);
+}
+.bar-bg {
+  background: #e0e0e0;
+  border-radius: 1rem;
+  height: 1.5rem;
+  overflow: hidden;
+  position: relative;
+}
+.bar-fill {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  height: 100%;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: width 1s;
+}
+.concept-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.flow-item {
+  background: #f5f5f5;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--primary);
+  position: relative;
+}
+.flow-item:after {
+  content: "↓";
+  display: block;
+  text-align: center;
+  color: var(--accent);
+  font-size: 1.2rem;
+  margin-top: 0.25rem;
+}
+.flow-item:last-child:after {
+  display: none;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 模倣の戦略</h1>
+  <p>市場は革新だけでなく"巧みな模倣"で前進する</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約 = 問い × 答え × 根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>企業は不確実な市場で、革新と模倣をどう最適化して持続的優位を築くべきか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      <p>外部の良策を迅速に模倣しつつ、自社の特色能力（アーキテクチャ、レピュテーション、独自の革新）で文脈適合と不可模倣性を高め、選択環境に適応する"進化戦略"が最適。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>模倣はコストとリスクを下げ学習速度を上げる一方、利得は容易に競争で浸食される。不可模倣な能力が価値の取り分を守る"堤防"となり、選択環境（市場）の淘汰圧に耐えるから。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>1) ベースラインを業界最良事例で素早く揃える 2) コアを自社文脈へ再設計（顧客・組織・資産に適合） 3) 特色能力に投資し模倣困難性を強化 4) 実験と学習で微調整し、合わない部分は切り捨てる。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" data-tab="concepts">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="chapters">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="examples">💡 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="quotes">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="actions">🎯 今日のアクション</button>
+  </div>
+
+  <div id="concepts" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>💰 模倣の経済性</h3>
+        <ul>
+          <li>先行者の試行錯誤に"ただ乗り"</li>
+          <li>学習コストと不確実性を削減</li>
+          <li>高速追随を可能にする</li>
+        </ul>
+        <span class="badge">安く速く賢く</span>
+        <div class="reason" style="margin-top:1rem;background:#f0f8ff;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem;">
+          <strong>理由:</strong> 市場の不確実性下で、他者の成功パターンを活用することでリスクを最小化し、資源を効率的に配分できるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌍 選択環境（市場の淘汰）</h3>
+        <ul>
+          <li>市場は多様な試みを評価・淘汰</li>
+          <li>適合度の高い設計だけが生き残る</li>
+          <li>進化のメカニズムが働く舞台</li>
+        </ul>
+        <span class="badge">進化の舞台</span>
+        <div class="reason" style="margin-top:1rem;background:#f0f8ff;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem;">
+          <strong>理由:</strong> 企業の戦略は市場という選択環境で試され、適応できない戦略は淘汰されるため、環境理解が競争優位の前提となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚡ 特色能力</h3>
+        <ul>
+          <li>長期的超過利潤を生む企業固有の強み</li>
+          <li>アーキテクチャ、レピュテーション、革新能力</li>
+          <li>模倣困難性が価値を守る</li>
+        </ul>
+        <span class="badge">勝ち筋の源泉</span>
+        <div class="reason" style="margin-top:1rem;background:#f0f8ff;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem;">
+          <strong>理由:</strong> 模倣可能な要素は競争で価値が消失するため、模倣困難な能力だけが持続的な利益を保証する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🏗️ アーキテクチャ</h3>
+        <ul>
+          <li>社内外の関係・契約・知識の結節構造</li>
+          <li>暗黙知の配線で模倣が難しい</li>
+          <li>組織の設計図そのもの</li>
+        </ul>
+        <span class="badge">関係の設計図</span>
+        <div class="reason" style="margin-top:1rem;background:#f0f8ff;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem;">
+          <strong>理由:</strong> 関係性や暗黙知は外部から観察・再現が困難で、因果の曖昧性が模倣障壁となるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🏆 レピュテーション</h3>
+        <ul>
+          <li>信頼と期待の資産</li>
+          <li>取引コストを下げる</li>
+          <li>選好と価格決定力を高める</li>
+        </ul>
+        <span class="badge">信頼の資本</span>
+        <div class="reason" style="margin-top:1rem;background:#f0f8ff;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem;">
+          <strong>理由:</strong> 信頼は時間をかけて蓄積され、短期的な模倣では獲得できない無形資産だから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔒 模倣困難性</h3>
+        <ul>
+          <li>因果曖昧性・社会的複雑性</li>
+          <li>経路依存性により再現困難</li>
+          <li>追随者が真似しにくい性質</li>
+        </ul>
+        <span class="badge">真似しにくさ</span>
+        <div class="reason" style="margin-top:1rem;background:#f0f8ff;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem;">
+          <strong>理由:</strong> 競争優位の持続性は模倣障壁の高さに比例し、利益の浸食を防ぐ堤防となるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🛤️ 経路依存性</h3>
+        <ul>
+          <li>過去の選択が現在の実行可能集合を規定</li>
+          <li>同じ到達点を他社が再現しにくい</li>
+          <li>歴史が資産になる</li>
+        </ul>
+        <span class="badge">歴史は資産</span>
+        <div class="reason" style="margin-top:1rem;background:#f0f8ff;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem;">
+          <strong>理由:</strong> 企業の歴史的経緯は独自の能力蓄積を生み、後発が同じ道を辿れない非対称性を作るため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔄 探索と活用</h3>
+        <ul>
+          <li>新奇性の探索と既存資産の活用</li>
+          <li>模倣は活用を強化</li>
+          <li>探索は差別化を生む</li>
+        </ul>
+        <span class="badge">配分の妙</span>
+        <div class="reason" style="margin-top:1rem;background:#f0f8ff;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem;">
+          <strong>理由:</strong> 過剰な模倣は同質化を招き、過剰な探索は効率を損なうため、バランスが成果を左右する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌐 ネットワーク効果</h3>
+        <ul>
+          <li>利用者増が価値を高める外部性</li>
+          <li>標準化と模倣が拡散を促進</li>
+          <li>勝者総取りを加速</li>
+        </ul>
+        <span class="badge">つながりの力</span>
+        <div class="reason" style="margin-top:1rem;background:#f0f8ff;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem;">
+          <strong>理由:</strong> 臨界質量を超えると自己強化ループが働き、先行者が圧倒的優位を築くため、模倣戦略でも早期参入が鍵となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔀 オブリクイティ</h3>
+        <ul>
+          <li>目的は間接的アプローチで達成</li>
+          <li>模倣→適応→学習の迂回路</li>
+          <li>遠回りが近道になる</li>
+        </ul>
+        <span class="badge">遠回りが近道</span>
+        <div class="reason" style="margin-top:1rem;background:#f0f8ff;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem;">
+          <strong>理由:</strong> 直接的な利潤追求は市場の複雑性で失敗しやすく、顧客価値への適応を通じた間接的成果が現実的だから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🚀 ファストセカンド</h3>
+        <ul>
+          <li>先行者の失敗から学ぶ</li>
+          <li>改良して市場を奪取</li>
+          <li>巧速の二番手戦略</li>
+        </ul>
+        <span class="badge">巧速の二番手</span>
+        <div class="reason" style="margin-top:1rem;background:#f0f8ff;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem;">
+          <strong>理由:</strong> 先行者は市場教育コストを負担し、追随者はそのリスクを回避しつつ改良版で優位を得られるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🧩 モジュール化と標準化</h3>
+        <ul>
+          <li>部品化・共通化で模倣が容易に</li>
+          <li>統合の妙で差別化余地が残る</li>
+          <li>同じ部品で違いを出す</li>
+        </ul>
+        <span class="badge">同じ部品で違いを出す</span>
+        <div class="reason" style="margin-top:1rem;background:#f0f8ff;padding:0.75rem;border-radius:0.5rem;font-size:0.85rem;">
+          <strong>理由:</strong> 標準化は模倣を促進するが、統合設計や補完資産の組み合わせで独自価値を創出できるため。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>🔗 概念間の因果関係フロー</h3>
+      <div class="concept-flow">
+        <div class="flow-item">先行者の試行錯誤 → 情報外部性発生 → 模倣の経済性↑ → 追随者のリスク・コスト↓</div>
+        <div class="flow-item">模倣の経済性↑ → 普及速度↑ → 競争圧力↑ → 超過利潤の浸食 → 不可模倣性の重要性↑</div>
+        <div class="flow-item">経路依存性 × 社会的複雑性 → 模倣困難性↑ → 特色能力の収益持続性↑</div>
+        <div class="flow-item">モジュール化/標準化↑ → 表層の模倣容易化 → 統合・アーキテクチャで差がつく</div>
+        <div class="flow-item">探索↔活用の配分 → 過剰模倣で同質化 → レピュテーション/顧客理解で再差別化</div>
+        <div class="flow-item">ネットワーク効果↑ → 早期臨界質量の確保が鍵 → 模倣は補完者の獲得設計と連動</div>
+        <div class="flow-item">選択環境（市場） → 変異（多様な試み）× 適応（学習・模倣）× 保持（能力の定着）で進化が進む</div>
+        <div class="flow-item">オブリクイティ → 直接の利潤最大化を狙うより、顧客価値適合を高めた模倣・改良が成果に直結</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="chapters" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📍 第1章: 問題提起 - 先行者神話の再検討</h3>
+      <ul style="list-style:none;padding-left:0;">
+        <li style="margin-bottom:0.5rem;">▸ 先行者優位は絶対ではない</li>
+        <li style="margin-bottom:0.5rem;">▸ 模倣の役割と限界を定義</li>
+        <li style="margin-bottom:0.5rem;">▸ 成功の多くは巧みな模倣から生まれる</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 先行者神話を相対化し、模倣が戦略的選択肢として正当であることを示すため。市場の現実は「最初」より「最適」を評価する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📍 第2章: 基礎理論 - 模倣の経済性</h3>
+      <ul style="list-style:none;padding-left:0;">
+        <li style="margin-bottom:0.5rem;">▸ 情報外部性がコストを削減</li>
+        <li style="margin-bottom:0.5rem;">▸ 不確実性の低減が学習を加速</li>
+        <li style="margin-bottom:0.5rem;">▸ 模倣は合理的な戦略選択</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 模倣の経済的合理性を理論的に裏づけ、実務家が模倣戦略を採用する根拠を提供するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📍 第3章: 進化的視座 - 市場は選択環境</h3>
+      <ul style="list-style:none;padding-left:0;">
+        <li style="margin-bottom:0.5rem;">▸ 変異・選択・保持のプロセス</li>
+        <li style="margin-bottom:0.5rem;">▸ 模倣は適応メカニズムの一部</li>
+        <li style="margin-bottom:0.5rem;">▸ 市場が最適設計を選び出す</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 戦略を進化論的に捉えることで、試行錯誤と学習の重要性を強調し、完璧な計画より適応力が鍵であることを示すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📍 第4章: 持続優位の条件 - 特色能力の分解</h3>
+      <ul style="list-style:none;padding-left:0;">
+        <li style="margin-bottom:0.5rem;">▸ アーキテクチャ、レピュテーション、革新</li>
+        <li style="margin-bottom:0.5rem;">▸ 模倣困難性が利益を守る</li>
+        <li style="margin-bottom:0.5rem;">▸ 因果曖昧性と社会的複雑性</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 模倣可能な要素と不可能な要素を区別し、どこに投資すべきかの指針を与えるため。持続的優位は模倣障壁に依存する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📍 第5章: 適用設計 - 何を標準化し何を差別化するか</h3>
+      <ul style="list-style:none;padding-left:0;">
+        <li style="margin-bottom:0.5rem;">▸ モジュール化と統合設計のバランス</li>
+        <li style="margin-bottom:0.5rem;">▸ 補完資産の戦略的配置</li>
+        <li style="margin-bottom:0.5rem;">▸ 標準化で効率、統合で差別化</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 実務での設計判断を支援するため。標準化は模倣を促すが、統合の妙で独自価値を生む余地が残ることを示す。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📍 第6章: 実務指針 - ファストセカンドとオブリクイティ</h3>
+      <ul style="list-style:none;padding-left:0;">
+        <li style="margin-bottom:0.5rem;">▸ 先行者の失敗から学ぶ</li>
+        <li style="margin-bottom:0.5rem;">▸ 探索と活用のバランス調整</li>
+        <li style="margin-bottom:0.5rem;">▸ 間接的アプローチで成果を得る</li>
+      </ul>
+      <div class="reason">
+        <strong>理由:</strong> 理論を実行可能な手順に落とし込み、模倣→適応→学習のサイクルを回す具体的方法を提示するため。
+      </div>
+    </div>
+  </div>
+
+  <div id="examples" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>🎯 例1: ファストフード業界の標準化と差別化</h4>
+      <div class="context">
+        マクドナルドが確立したオペレーション標準（キッチン設計、サプライチェーン、品質管理）は業界全体に模倣され、効率性のベースラインとなった。しかし各社は立地戦略、メニュー、ブランド体験で差別化し、独自の顧客基盤を構築している。
+      </div>
+      <div class="insight">
+        <strong>💡 この例が示すこと（理由）:</strong> 標準化された要素は模倣されやすく競争優位を生まないが、それを前提に自社文脈（地域、顧客嗜好）へ適合させた統合設計が持続的価値を生む。模倣と差別化は対立ではなく補完関係にある。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🎯 例2: スマートフォン市場のファストセカンド戦略</h4>
+      <div class="context">
+        Appleが初代iPhoneで市場を創造したが、Samsungは迅速に模倣しつつ大画面・多様な価格帯・Android OSの柔軟性で差別化。先行者の市場教育コストを回避し、改良版で市場シェアを獲得した。
+      </div>
+      <div class="insight">
+        <strong>💡 この例が示すこと（理由）:</strong> 先行者は不確実性とコストを負担し市場を開拓するが、追随者は失敗を学習し改良版で優位を得られる。ファストセカンドは模倣の経済性を最大化する戦略である。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🎯 例3: トヨタ生産方式のアーキテクチャ優位</h4>
+      <div class="context">
+        トヨタのカンバン方式やカイゼン文化は広く知られ、多くの企業が模倣を試みたが、成功例は限定的。理由は、暗黙知・組織文化・サプライヤーとの長期関係という社会的複雑性と経路依存性にある。
+      </div>
+      <div class="insight">
+        <strong>💡 この例が示すこと（理由）:</strong> 表層的な手法は模倣可能だが、組織のアーキテクチャ（関係性・暗黙知・歴史）は因果が曖昧で再現困難。模倣困難性が持続的優位の源泉となる。
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>📊 模倣と差別化のバランス指標</h3>
+      <div class="bar-chart">
+        <div class="bar-item">
+          <div class="bar-label">🔄 模倣の経済性（コスト削減）</div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="width:85%;">85%</div>
+          </div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label">⚡ 学習速度の向上</div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="width:90%;">90%</div>
+          </div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label">🔒 模倣困難性（利益保護）</div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="width:70%;">70%</div>
+          </div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label">🎨 差別化の余地</div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="width:65%;">65%</div>
+          </div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label">🌐 ネットワーク効果の活用</div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="width:75%;">75%</div>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-light);margin-top:1rem;text-align:center;">※ 数値は概念的重要度を示す相対指標</p>
+    </div>
+  </div>
+
+  <div id="quotes" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>成功は独創の一撃より、良いアイデアを適切な文脈へ移植・改良する能力から生まれる。</p>
+      <div class="note">
+        <strong>なぜ重要か:</strong> 模倣の質（適合設計）が成果を分ける中核原理を端的に表す。革新神話を相対化し、実務的な戦略指針を示す。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <p>市場は設計者より賢い。私たちは試み、学び、適応することでしか最適に近づけない。</p>
+      <div class="note">
+        <strong>なぜ重要か:</strong> 進化的試行錯誤こそが競争優位の生成メカニズムであることを示す。完璧な計画より適応力が鍵である。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <p>模倣が容易な成功は長続きしない。模倣されにくい組織上の"つながり"が利潤を守る。</p>
+      <div class="note">
+        <strong>なぜ重要か:</strong> アーキテクチャとレピュテーションへの投資の正当性を裏づける。模倣困難性が持続的優位の条件である。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <p>目標に直線で向かうほど迷う。遠回りの学習と適応が近道になる。</p>
+      <div class="note">
+        <strong>なぜ重要か:</strong> オブリクイティが戦略実行の現実的指針であることを示す。間接的アプローチが複雑な市場で有効である。
+      </div>
+    </div>
+  </div>
+
+  <div id="actions" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>🎯 アクション1: ベンチマーク対象を3社選定</h4>
+      <div class="details">
+        業界内外から成功事例を3社選び、各社の主要施策（製品設計、マーケティング、オペレーション）を1ページにまとめる。
+        <strong>目的:</strong> 模倣の出発点となる良策を特定し、学習コストを削減する。
+        <strong>期待効果:</strong> 自社の現状とのギャップを可視化し、優先的に模倣すべき要素を明確化できる。15分で各社の公開情報を収集し、箇条書きで整理。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🎯 アクション2: 自社の独自資産を3件洗い出す</h4>
+      <div class="details">
+        自社が持つ模倣困難な資産（顧客関係、技術ノウハウ、組織文化、サプライヤー網など）を3つリストアップし、各資産の模倣困難性の理由を1行で記述する。
+        <strong>目的:</strong> 特色能力を自覚し、差別化の軸を明確にする。
+        <strong>期待効果:</strong> 模倣戦略と差別化戦略の境界を引き、投資優先度を判断できる。20分で社内ヒアリングまたはブレストを実施。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🎯 アクション3: 模倣と差別の境界を描く</h4>
+      <div class="details">
+        2×2マトリクス（横軸:模倣容易性、縦軸:戦略的重要性）を作成し、自社の主要活動を配置。右上（重要×容易）は迅速模倣、左上（重要×困難）は差別化投資、右下は標準化、左下は撤退候補とする。
+        <strong>目的:</strong> 資源配分の優先順位を可視化する。
+        <strong>期待効果:</strong> 何を真似、何を守り、何を捨てるかの戦略マップが完成し、次の施策が明確になる。30分でマトリクスを描き、主要10項目を配置。
+      </div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,#fff9e6,#ffe6f0);padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;">
+      <h3 style="font-size:1.1rem;color:var(--secondary);margin-bottom:1rem;text-align:center;">📚 関連書籍</h3>
+      <div style="display:grid;gap:1rem;">
+        <div style="background:white;padding:1rem;border-radius:0.5rem;border-left:3px solid var(--primary);">
+          <strong style="color:var(--primary);">Obliquity</strong> - John Kay<br>
+          <span style="font-size:0.85rem;color:var(--text-light);">間接的アプローチで成果を得る理論が、模倣→適応の実践に直結する。</span>
+        </div>
+        <div style="background:white;padding:1rem;border-radius:0.5rem;border-left:3px solid var(--primary);">
+          <strong style="color:var(--primary);">Foundations of Corporate Success</strong> - John Kay<br>
+          <span style="font-size:0.85rem;color:var(--text-light);">特色能力と模倣困難性の枠組みが本書の核命題を理論化する。</span>
+        </div>
+        <div style="background:white;padding:1rem;border-radius:0.5rem;border-left:3px solid var(--primary);">
+          <strong style="color:var(--primary);">The Innovator's Dilemma</strong> - Clayton M. Christensen<br>
+          <span style="font-size:0.85rem;color:var(--text-light);">破壊的技術への対応で、模倣と差別化の設計課題を補完する。</span>
+        </div>
+        <div style="background:white;padding:1rem;border-radius:0.5rem;border-left:3px solid var(--primary);">
+          <strong style="color:var(--primary);">Diffusion of Innovations</strong> - Everett M. Rogers<br>
+          <span style="font-size:0.85rem;color:var(--text-light);">アイデアの採用・模倣の拡散プロセスを実証的に説明する古典。</span>
+        </div>
+        <div style="background:white;padding:1rem;border-radius:0.5rem;border-left:3px solid var(--primary);">
+          <strong style="color:var(--primary);">Fast Second</strong> - Constantinos C. Markides, Paul A. Geroski<br>
+          <span style="font-size:0.85rem;color:var(--text-light);">先行者神話を相対化し、巧妙な追随戦略の条件を具体化する。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+  
+  const barFills = document.querySelectorAll('.bar-fill');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.width = entry.target.getAttribute('style').match(/width:\s*(\d+%)/)[1];
+      }
+    });
+  }, { threshold: 0.5 });
+  
+  barFills.forEach(bar => {
+    const originalWidth = bar.style.width;
+    bar.style.width = '0%';
+    observer.observe(bar);
+    setTimeout(() => {
+      bar.style.width = originalWidth;
+    }, 100);
+  });
+});
+</script>
+</body>
+</html>
