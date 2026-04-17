@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>禅とオートバイ修理技術 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-button {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-button.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, #f093fb22, #667eea22);
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary)11, var(--secondary)11);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.8rem;
+}
+.action-card {
+  background: var(--card-bg);
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.action-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+.action-card .meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+.action-card .meta span {
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.visual-diagram {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.visual-diagram h3 {
+  text-align: center;
+  color: var(--secondary);
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+}
+.flow-item .node {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.flow-item .arrow {
+  margin: 0 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+.flow-item .desc {
+  color: var(--text-light);
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  font-size: 1.05rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding: 0;
+}
+.chapter-card li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.example-card {
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.example-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  border-left: 3px solid var(--primary);
+}
+.book-card h4 {
+  color: var(--primary);
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+.book-card .author {
+  color: var(--text-light);
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+.book-card p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tab-button {
+    font-size: 0.8rem;
+    padding: 0.75rem 0.25rem;
+    min-width: 100px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 禅とオートバイ修理技術</h1>
+  <p>技術と人間性を統合する「質」の哲学</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 核心メッセージ</h2>
+  <p>技術と人間性の対立は見かけにすぎない。主客を分ける前に働く「質（クオリティ）」への配慮が、理性と感性、仕事と生活を統合し、よく生きよく作る道をひらく。</p>
+</div>
+
+<div class="summary-block">
+  <h2>📖 要約=問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>技術と人間性、理性と感性をどう統合し、よく生きる基準をどう得るか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>主客分割に先行する価値「質（クオリティ）」を中心原理とし、対象へのケアをもって古典派（分析・構造）とロマン派（直観・美）を往還する。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか？）</strong>
+    <p>旅とメンテナンス、教育現場の成功・失敗、内的分裂（フェードラス）からの回復が、質が経験に先立つ働きであることと、配慮が成果と意味を同時に高めることを示す。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには？）</strong>
+    <p>ガンプショントラップの回避、問題の分解（分析の刃）の適用と限界の自覚、明確な品質基準の言語化、静かな注意（禅的態度）で手を動かす実践を積む。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-button active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="visual-diagram">
+    <h3>🔗 概念の関係性</h3>
+    <div class="flow-item">
+      <div class="node">質</div>
+      <div class="arrow">→</div>
+      <div class="desc">古典派とロマン派を統合する上位原理</div>
+    </div>
+    <div class="flow-item">
+      <div class="node">ケア</div>
+      <div class="arrow">→</div>
+      <div class="desc">メンテナンス精度↑ と 意味充足↑ → 質の体現</div>
+    </div>
+    <div class="flow-item">
+      <div class="node">主客二元論</div>
+      <div class="arrow">←</div>
+      <div class="desc">質が先行することで相対化・架橋される</div>
+    </div>
+    <div class="flow-item">
+      <div class="node">分析の刃</div>
+      <div class="arrow">→</div>
+      <div class="desc">問題分解→理解↑→不安↓→罠回避</div>
+    </div>
+    <div class="flow-item">
+      <div class="node">切りすぎた分析</div>
+      <div class="arrow">→</div>
+      <div class="desc">生気喪失→ロマン派の反発→分裂深化</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💎 質（クオリティ）</h3>
+    <ul>
+      <li>主客どちらにも還元できない、経験に先立つ価値のはたらき</li>
+      <li>よさを感じ取り、行為を方向づける根源</li>
+      <li>定義より先に感じ取られる第一原因</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 理論化の前に価値が働くという本書の核心命題。技術と人間性の統合を可能にする唯一の基盤。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔬 古典派の見方</h3>
+    <ul>
+      <li>構造・因果・機能を重視し、対象を分解し理解する態度</li>
+      <li>整備書的世界観で仕組みを愛する</li>
+      <li>分析の刃で問題を切り分ける</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 技術的理解と問題解決の基礎。ただし切りすぎると生命感を失う限界を持つため、ロマン派との統合が必要。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎨 ロマン派の見方</h3>
+    <ul>
+      <li>外観・感性・瞬間の生気を重視する態度</li>
+      <li>作品や風景の「感じ」を味わう直観の眼</li>
+      <li>分析では捉えきれない全体性を尊重</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 人間的意味と美的価値を保持。古典派の冷たさを補完し、生きた経験の豊かさを守る視点。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>❤️ ケア（配慮）</h3>
+    <ul>
+      <li>対象に注意と敬意を払う心的姿勢</li>
+      <li>結果と意味を同時に高める媒介</li>
+      <li>よくやろうとする心が道具と結果を変える</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 質を実践に落とす具体的態度。成果の向上と人生の充実を同時に実現する鍵。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏍️ チャウタクア</h3>
+    <ul>
+      <li>旅の途上で行われる公開講義ふうの省察</li>
+      <li>物語と哲学を結ぶ語りの形式</li>
+      <li>体験を概念化し読者の実践へ橋渡し</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 抽象的哲学を具体的旅の体験と結びつけ、理解を深める本書独自の語り口。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👤 フェードラス</h3>
+    <ul>
+      <li>語り手の過去の人格で、質の探究に没頭し分裂を経験した思索者</li>
+      <li>内的対話の相手として物語に登場</li>
+      <li>探究の過剰が分裂と治療へ至った経緯を体現</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 質の探究の危険と可能性を人格化。内的統合のプロセスを物語的に示す装置。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ 主客二元論</h3>
+    <ul>
+      <li>主体（心）と客体（物）を切り分ける近代的枠組み</li>
+      <li>質はこの分割に先行する</li>
+      <li>分ける思考の限界を露呈</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 技術と人間性の対立の根源。質による架橋がなければ分裂は深まるばかり。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔧 メンテナンス（保守）</h3>
+    <ul>
+      <li>道具や制度を生かし続ける実践</li>
+      <li>よい注意と手順が質を具体化する場</li>
+      <li>質の実践場として機能</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 抽象的な質を手を動かして体現する最も身近な場。日常に質を根づかせる実践。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ ガンプショントラップ</h3>
+    <ul>
+      <li>焦り・倦怠・自尊心などが原因で意欲と判断が損なわれる落とし穴</li>
+      <li>やる気の罠として作業を妨げる</li>
+      <li>注意と手順で回避可能</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 実務で誰もが陥る心理的障害を言語化。対処法を知ることで質の実践を持続可能にする。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔪 分析の刃（ナイフの比喩）</h3>
+    <ul>
+      <li>対象を概念的に切り分ける方法</li>
+      <li>切って理解する道具</li>
+      <li>切りすぎは生命感を失わせる</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 分析の有効性と限界を同時に意識させる警句。方法の自覚的使用を促す。
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3><span class="badge">第1章</span>出発</h3>
+    <ul>
+      <li>友人夫妻とのツーリング開始</li>
+      <li>表層の旅と内面の旅の二重構造を提示</li>
+      <li>オートバイという道具を通じた世界との関わり方の違いを示唆</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 物語の枠組みを設定し、技術と人間性の対比を日常的な旅の中に埋め込む。読者を具体的体験へ誘う導入。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3><span class="badge">第2章</span>二つの見方</h3>
+    <ul>
+      <li>古典派/ロマン派の対比をオートバイ整備と日常美学で描出</li>
+      <li>仕組みを愛する者と風合いを愛する者の断絶</li>
+      <li>どちらも不完全であることを暗示</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 本書の中心的対立軸を明確化。統合の必要性を読者に実感させる基盤を築く。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3><span class="badge">第3章</span>教育批判と質の登場</h3>
+    <ul>
+      <li>大学での経験を回想し、定義不能だが指向できる「質」を提起</li>
+      <li>成績評価の無意味さと質の直観的把握</li>
+      <li>質が主客分割に先行する価値であることを示唆</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 質という核心概念を導入し、既存の評価体系の限界を露呈。新しい価値基準の必要性を訴える。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3><span class="badge">第4章</span>方法の鍛錬</h3>
+    <ul>
+      <li>分析の刃・手順・工具・注意力を通じて質を実務に落とす道具立てを提示</li>
+      <li>問題の分解と段階的解決の技法</li>
+      <li>道具と心の準備が質を左右する</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 抽象的な質を具体的な作業手順に翻訳。実践可能な方法論を提供し、読者の行動変容を促す。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3><span class="badge">第5章</span>ガンプショントラップ</h3>
+    <ul>
+      <li>焦り・倦怠・自尊心などの罠と対処法を具体化</li>
+      <li>心の状態が作業の質を決定する</li>
+      <li>注意と手順で罠を回避する実践知</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 誰もが陥る心理的障害を言語化し、対処法を示すことで質の実践を持続可能にする。実務的価値が高い。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3><span class="badge">第6章</span>フェードラスの過去</h3>
+    <ul>
+      <li>探究の過剰が分裂と治療へ至った経緯を省察</li>
+      <li>主客分割の限界を露呈</li>
+      <li>質の形而上学の萌芽と危険性</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 質の探究が持つ危険性を示し、統合の困難さを物語化。内的対話を通じて読者に深い省察を促す。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3><span class="badge">第7章</span>山への登攀</h3>
+    <ul>
+      <li>自然と対話しつつ、父子の緊張と和解</li>
+      <li>内的統合の兆しを物語で体現</li>
+      <li>質を生きる態度の定着</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 物語のクライマックスとして内的統合を象徴的に描く。父子関係の修復が質の実践の成果であることを示す。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3><span class="badge">第8章</span>統合</h3>
+    <ul>
+      <li>旅の終盤で質中心の生き方を肯定</li>
+      <li>技術と人間性の和解を実感知へ結着</li>
+      <li>古典派とロマン派の往還が可能になる</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 全体の結論として質による統合を肯定。読者に新しい生き方の可能性を提示し、実践への意欲を喚起する。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h4>🔧 例1: オートバイのメンテナンス</h4>
+    <p><strong>背景:</strong> 友人はバイクを「乗るもの」と見て整備を嫌うが、語り手は構造を理解し自ら手入れする。</p>
+    <p><strong>示唆:</strong> 道具への配慮が故障を減らし、乗る喜びを深める。ケアが成果と意味を同時に高める。</p>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> 古典派とロマン派の対比を日常的な道具で具体化。ケアの有無が体験の質を左右することを実感させる。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>📝 例2: 成績評価の廃止実験</h4>
+    <p><strong>背景:</strong> 大学で成績をつけず「質」だけを基準に指導したところ、学生の創造性と意欲が向上した。</p>
+    <p><strong>示唆:</strong> 外的評価より内的な質への感受性が学びを深める。定義不能でも質は指向できる。</p>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> 質が主客分割に先行する価値であることを教育現場で実証。既存の評価体系の限界を露呈する。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🏔️ 例3: 山登りと父子の和解</h4>
+    <p><strong>背景:</strong> 息子との緊張を抱えながら山を登る中で、自然と対話し内的統合が進む。</p>
+    <p><strong>示唆:</strong> 質を生きる態度が人間関係を修復し、分裂した自己を統合する。</p>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> 質の実践が内面と外面の両方に作用することを物語的に示す。統合の困難さと可能性を同時に伝える。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🛠️ 例4: ビールの空き缶でバイクを修理</h4>
+    <p><strong>背景:</strong> 正規部品がなくても、手元の材料で工夫して修理する。</p>
+    <p><strong>示唆:</strong> 形式より機能と配慮が重要。質は道具や材料に依存しない。</p>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> 質が外的条件ではなく心的姿勢に宿ることを示す。創意工夫とケアの力を具体化。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>「質は定義より先に感じ取られる。」</p>
+    <small><strong>重要性:</strong> 理論化の前に価値が働くという核心命題を簡潔に示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「よくやろうとする心が道具と結果を変える。」</p>
+    <small><strong>重要性:</strong> ケアが成果と意味の両方を高める因果を押さえる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「古典派は仕組みを、ロマン派は風合いを愛す。」</p>
+    <small><strong>重要性:</strong> 対立図式を直観的に理解させ、統合課題を可視化する。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「分析の刃で切りすぎると生命感が失われる。」</p>
+    <small><strong>重要性:</strong> 方法の有効性と限界を同時に意識させる警句となる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「罠は心の状態から生まれ、注意と手順で避けられる。」</p>
+    <small><strong>重要性:</strong> 実務に直結する再現可能な対処原理を与える。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>🧹 アクション1: 愛用道具を清掃し点検する</h4>
+    <p>日常使う道具（ペン、カバン、自転車など）を一つ選び、丁寧に清掃・点検する。</p>
+    <div class="meta">
+      <span>⏱️ 15分</span>
+      <span>🎯 目的: ケアの実践</span>
+    </div>
+    <div class="reason">
+      <strong>期待効果:</strong> 道具への配慮が使い心地と愛着を高めることを体感。質の実践の第一歩。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>📋 アクション2: 作業の品質基準を3つ書く</h4>
+    <p>自分の仕事や趣味で「よい」と感じる基準を3つ言語化してメモする。</p>
+    <div class="meta">
+      <span>⏱️ 20分</span>
+      <span>🎯 目的: 質の言語化</span>
+    </div>
+    <div class="reason">
+      <strong>期待効果:</strong> 曖昧な「よさ」を明確化し、意識的に質を追求できるようになる。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🔩 アクション3: 机上の小物を分解清掃組立</h4>
+    <p>ボールペンやホッチキスなど身近な小物を分解し、清掃して組み立て直す。</p>
+    <div class="meta">
+      <span>⏱️ 30分</span>
+      <span>🎯 目的: 構造理解とケア</span>
+    </div>
+    <div class="reason">
+      <strong>期待効果:</strong> 仕組みを理解する喜びと、手を動かす集中がもたらす充足感を体験。古典派の視点を獲得。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🧘 アクション4: 5分間の静かな観察</h4>
+    <p>目の前の対象（植物、道具、風景など）を5分間じっと観察し、気づいたことをメモする。</p>
+    <div class="meta">
+      <span>⏱️ 5分</span>
+      <span>🎯 目的: 注意力の訓練</span>
+    </div>
+    <div class="reason">
+      <strong>期待効果:</strong> 静かな注意が質を感じ取る基盤であることを体感。禅的態度の入口。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>📖 アクション5: 関連書籍を1冊選ぶ</h4>
+    <p>下記の関連書籍から興味を引かれた1冊を選び、目次を眺めて読書計画を立てる。</p>
+    <div class="meta">
+      <span>⏱️ 15分</span>
+      <span>🎯 目的: 学びの継続</span>
+    </div>
+    <div class="reason">
+      <strong>期待効果:</strong> 質の探究を深化させる次の一歩を踏み出す。知的好奇心を持続。
+    </div>
+  </div>
+
+  <h3 style="margin: 2rem 1rem 1rem; color: var(--secondary);">📚 関連書籍</h3>
+
+  <div class="book-card">
+    <h4>Lila: An Inquiry into Morals</h4>
+    <p class="author">ロバート・M・パーシグ</p>
+    <p>質の形而上学を道徳へ拡張し本書の理論編を深化。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>クラフツマン</h4>
+    <p class="author">リチャード・セネット</p>
+    <p>手仕事の倫理とケアが質の実践面を補強。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>週末はソウルメイキング〈ぼくらの実験室〉</h4>
+    <p class="author">マシュー・B・クロフォード</p>
+    <p>手で考えることの価値が技術と人間性の統合を裏づけ。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>禅マインド ビギナーズ・マインド</h4>
+    <p class="author">鈴木俊隆</p>
+    <p>初心の心と注意がメンテナンスの態度に直結。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>スモール イズ ビューティフル</h4>
+    <p class="author">E・F・シューマッハー</p>
+    <p>人間中心の技術観が質重視の世界像と響き合う。</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetTab = button.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      button.classList.add('active');
+      button.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
