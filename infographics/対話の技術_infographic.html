@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>対話の技術 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --text: #2d3748;
+  --card-bg: #ffffff;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+.tab-btn:hover {
+  border-color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  margin-bottom: 0.4rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--primary);
+  font-weight: bold;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--accent);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--accent);
+  opacity: 0.3;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+.quote-text {
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  padding-left: 1rem;
+  font-size: 0.95rem;
+}
+.quote-importance {
+  font-size: 0.85rem;
+  color: var(--secondary);
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.95;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.metric-box {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+}
+.metric-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.flow-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.book-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: #718096;
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 対話の技術</h1>
+  <p>理解を育てる共同思考のインフラ</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>💡 要約 - 問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      分断や炎上が常態化する社会で、互いに学び合いながら決定できる対話の技術とは何か。
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      対話は意見の勝敗ではなく、相互の思考を可視化し再編する共同作業であり、聞く・問う・言い換える・保留する・記録するという技術と、合意ではなく理解の到達点を設定する倫理が中核となる。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      人の発言は感情や権力関係に左右され、放置すれば討論や同調圧力に流れるため、対話には意図的な設計と手続き的公正が不可欠である。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      場の設計（目的の明確化、時間・人数・ルール設計、記録と可視化）、手続き（ターンテイキング、要約と確認、根拠の提示、少数意見の保護）、感情の取り扱い（アフェクトの言語化と共有、中動態的視点による責任の再配置）を実装する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">関連書籍</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab7" data-tab="tab7">概念の関係性</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">🧩 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>💬 対話</h3>
+        <ul>
+          <li>相互の思考を可視化する</li>
+          <li>互いの前提を更新していく</li>
+          <li>共同的思考のプロセス</li>
+          <li>勝敗より理解を最大化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 分断を超え、学習と創造を可能にする唯一の方法だから
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚔️ 討論（ディベート）</h3>
+        <ul>
+          <li>主張の正当性を競う</li>
+          <li>説得や反駁で優位を取る</li>
+          <li>対話と目的が異なる</li>
+          <li>勝ち負けのゲーム</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 対話との混同が理解の質を下げ、排除を生むから
+        </div>
+      </div>
+      <div class="card">
+        <h3>👂 アクティブ・リスニング</h3>
+        <ul>
+          <li>注意深く聴く</li>
+          <li>要約や言い換えで確認</li>
+          <li>相手の意味を拡張する</li>
+          <li>思考生成を助ける技法</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 聴くことが受動でなく能動的行為であり、対話の質を決定するから
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔄 中動態</h3>
+        <ul>
+          <li>能動/受動の二分を越える</li>
+          <li>出来事の中で生成される関係に焦点</li>
+          <li>責任追及より関係調整</li>
+          <li>関係が行為を生む視点</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 個人責任の罠を超え、制度と関係の再設計を可能にするから
+        </div>
+      </div>
+      <div class="card">
+        <h3>❤️ アフェクト（情動）</h3>
+        <ul>
+          <li>思考や判断に先行する</li>
+          <li>身体に生じる感情的傾き</li>
+          <li>対話の質を左右する</li>
+          <li>言語化と共有が重要</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 感情を無視すると防衛反応が思考を停止させるから
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎯 フレーミング／問いの設計</h3>
+        <ul>
+          <li>議題の切り取り方を設計</li>
+          <li>問いの形式を意図的に選ぶ</li>
+          <li>回答可能性を規定</li>
+          <li>創造性を左右する</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 問いの質が対話の結果を決定的に規定するから
+        </div>
+      </div>
+      <div class="card">
+        <h3>⏸️ ターンテイキングと沈黙</h3>
+        <ul>
+          <li>発言順序・時間の運用</li>
+          <li>意図的な沈黙の設計</li>
+          <li>思考の熟成を担保</li>
+          <li>公平性を確保</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 間合いが深い理解と公正な参加を生むから
+        </div>
+      </div>
+      <div class="card">
+        <h3>🤝 合意可能性と留保</h3>
+        <ul>
+          <li>完全合意を目的化しない</li>
+          <li>理解の到達点に目標を置く</li>
+          <li>少数意見の留保を認める</li>
+          <li>次回に持ち越す設計</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 合意の強要が排除と同調圧力を生むから
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌍 コモン・ワールド（共通世界）</h3>
+        <ul>
+          <li>多様な視点が共存する場</li>
+          <li>相互に参照可能な知識</li>
+          <li>記録・規範が蓄積</li>
+          <li>対話の持続条件</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 共有された参照地図がなければ対話は継続できないから
+        </div>
+      </div>
+      <div class="card">
+        <h3>🗣️ メタ対話（手続きの合意）</h3>
+        <ul>
+          <li>内容の前に進め方を話す</li>
+          <li>ルールを話し合う</li>
+          <li>手続き的公正の前提</li>
+          <li>安全性の基盤</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 手続きの合意なしに内容の公正は成立しないから
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--secondary);">📖 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3>第1章: 問題提起 - 分断と炎上の時代</h3>
+      <ul>
+        <li>分断や炎上が常態化する社会の現状</li>
+        <li>対話と討論の明確な区別</li>
+        <li>対話の危機と必要性の提示</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 現代社会の課題を明確化し、対話の再定義の必要性を示すため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第2章: 定義と理念 - 対話とは何か</h3>
+      <ul>
+        <li>対話を共同的思考の装置として定義</li>
+        <li>合意の副産物化という倫理</li>
+        <li>少数意見の尊重原則</li>
+        <li>理解の最大化を目標に設定</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 対話の本質を明確にし、実践の指針となる倫理を確立するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第3章: 理論的基盤 - 中動態とアフェクト</h3>
+      <ul>
+        <li>中動態による行為と責任の再考</li>
+        <li>スピノザ的視点からの感情理解</li>
+        <li>行為と感情の関係性の分析</li>
+        <li>関係性が行為を生む視点の導入</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 個人責任論を超え、関係と制度の再設計を可能にする理論的支点を提供するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第4章: 場の設計 - 対話の条件整備</h3>
+      <ul>
+        <li>目的・人数・時間の明確化</li>
+        <li>座席配置と空間設計</li>
+        <li>可視化と記録の原則</li>
+        <li>手続き的公正の担保</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 対話は自然発生せず、意図的な設計が質を決定するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第5章: 技法編 - 実践的スキル</h3>
+      <ul>
+        <li>聴く・問う・言い換える技術</li>
+        <li>保留する・要約と確認の方法</li>
+        <li>根拠の提示と論点の分節化</li>
+        <li>具体的な実践手引き</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 理念を実践可能な行動に変換し、誰でも使える技術として提示するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第6章: 感情と権力 - 非対称性への配慮</h3>
+      <ul>
+        <li>安全な場の構築方法</li>
+        <li>合意可能性と留保の制度化</li>
+        <li>権力の非対称性への配慮</li>
+        <li>順番・時間配分・ルールの工夫</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 権力関係を無視すると対話は討論や沈黙に堕するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第7章: 失敗類型と再設計 - 対話の修復</h3>
+      <ul>
+        <li>脱線・同調圧力の兆候</li>
+        <li>専門知の独占への対処</li>
+        <li>仮想敵の出現パターン</li>
+        <li>介入策と修復方法</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 失敗を予測し、リアルタイムで修正できる力を養うため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第8章: 適用と含意 - 対話の社会実装</h3>
+      <ul>
+        <li>学校・職場・市民討議への応用</li>
+        <li>民主主義のインフラとしての対話</li>
+        <li>持続可能な対話の制度化</li>
+        <li>公共圏における対話の意義</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 対話を個人技術から社会インフラへと拡張し、民主主義の基盤とするため
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--accent);">💡 具体例</h2>
+    
+    <div class="card">
+      <h3>🏫 例1: 学校での対話実践</h3>
+      <ul>
+        <li><strong>背景:</strong> クラス会議で意見が対立し、声の大きい生徒の意見だけが通る状況</li>
+        <li><strong>介入:</strong> ターンテイキング（1人2分）と沈黙時間（30秒）を導入し、全員が発言する前に決定しないルールを設定</li>
+        <li><strong>結果:</strong> 普段発言しない生徒から新しい視点が出て、多数派の意見が修正された</li>
+        <li><strong>示唆:</strong> 手続きの設計が参加の質と結果の多様性を決定する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 権力の非対称性は手続き的公正で緩和でき、沈黙と順番が新しい知を生む
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏢 例2: 職場での意思決定</h3>
+      <ul>
+        <li><strong>背景:</strong> 新プロジェクトの方針会議で、上司の意見に誰も反対できず形式的な合意に</li>
+        <li><strong>介入:</strong> 匿名で懸念を書き出す時間を設け、メタ対話で「合意ではなく理解の到達点」を目標に再設定</li>
+        <li><strong>結果:</strong> 3つの重大なリスクが可視化され、方針が大幅に修正された</li>
+        <li><strong>示唆:</strong> 合意の強要が情報の損失を生み、匿名性と目標の再設定が安全性を高める</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 階層構造下では合意目標が自己検閲を生み、理解目標が情報の質を上げる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌆 例3: 市民討議での対立解消</h3>
+      <ul>
+        <li><strong>背景:</strong> 地域開発計画で賛成派と反対派が対立し、感情的な非難合戦に</li>
+        <li><strong>介入:</strong> 中動態の視点で「誰が悪いか」から「どの関係がこの対立を生んだか」に問いを変更し、アフェクトの言語化セッションを実施</li>
+        <li><strong>結果:</strong> 双方の不安と期待が共有され、第三の選択肢（段階的実施と評価の制度化）が生まれた</li>
+        <li><strong>示唆:</strong> 責任の個人化を超え、関係と制度の再設計に焦点を移すと創造的解決が可能になる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 問いのフレーミングと感情の扱いが対立を学習機会に変える
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📚 例4: オンライン対話の設計</h3>
+      <ul>
+        <li><strong>背景:</strong> リモート会議で発言が一部の人に集中し、沈黙が続く</li>
+        <li><strong>介入:</strong> チャットで全員が同時に意見を書き込む時間を設け、ランダムに指名して要約を求める</li>
+        <li><strong>結果:</strong> 発言機会が均等化し、書き込みを見て考えを深める時間が生まれた</li>
+        <li><strong>示唆:</strong> メディアの特性を活かした手続き設計が参加の質を変える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 技術的制約は工夫次第で対話の質を高める資源になる
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">📜 重要な引用</h2>
+    
+    <div class="quote-card">
+      <div class="quote-text">
+        対話は意見の交換ではなく、互いの前提を露わにし、修正していくための装置である。
+      </div>
+      <div class="quote-importance">
+        <strong>重要性:</strong> 目的を勝敗から学習と更新へと切り替える本書の立場を端的に示す。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        合意は目的ではなく副産物であり、理解の到達点を適切に設定せよ。
+      </div>
+      <div class="quote-importance">
+        <strong>重要性:</strong> 合意偏重が生む排除や同調圧力を回避する規範を提供する。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        聴くことは受動ではない。相手の思考条件を整える積極的な行為である。
+      </div>
+      <div class="quote-importance">
+        <strong>重要性:</strong> 聞き手の役割を能動化し、実践可能な改善点を明確化する。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        中動態の視点は、誰がやったかより、どの関係が行為を生んだかを問う。
+      </div>
+      <div class="quote-importance">
+        <strong>重要性:</strong> 責任の個人化を超え、関係や制度の再設計へ向かう理論的支点となる。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        民主主義は対話の制度化された継続であり、単発の意思決定ではない。
+      </div>
+      <div class="quote-importance">
+        <strong>重要性:</strong> 対話を公共圏のインフラと位置づけ、実践の持続性を要請する。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--accent);">🚀 今日のアクション</h2>
+    
+    <div class="action-card">
+      <h3>📝 アクション1: 開かれた質問を10個作る</h3>
+      <p><strong>目的:</strong> 次の会議やミーティングで使える、相手の思考を引き出す質問を準備する</p>
+      <p><strong>方法:</strong> 「なぜ?」「どのように?」「何が?」で始まる質問を10個リストアップし、Yes/Noで答えられないか確認する</p>
+      <p><strong>期待効果:</strong> 問いの質が対話の深さを決めることを体感し、フレーミングの技術が向上する</p>
+      <p><strong>所要時間:</strong> 15分</p>
+    </div>
+
+    <div class="action-card">
+      <h3>👥 アクション2: 要約→確認を繰り返す練習</h3>
+      <p><strong>目的:</strong> アクティブ・リスニングの基本技術を身につける</p>
+      <p><strong>方法:</strong> 同僚や友人と15分間、一方が話し、もう一方が「つまり〜ということですか?」と要約し、確認を繰り返す。その後役割を交代</p>
+      <p><strong>期待効果:</strong> 聴くことが能動的行為であることを実感し、相手の思考を深める力が育つ</p>
+      <p><strong>所要時間:</strong> 15分</p>
+    </div>
+
+    <div class="action-card">
+      <h3>⏸️ アクション3: 沈黙→発言→振り返りを3セット</h3>
+      <p><strong>目的:</strong> 沈黙の力と熟考の重要性を体験する</p>
+      <p><strong>方法:</strong> テーマを決め、5分沈黙で考える→2分で発言→1分で「沈黙で何が変わったか」を振り返る、を3回繰り返す</p>
+      <p><strong>期待効果:</strong> 即座の反応と熟考の違いを体感し、ターンテイキングと沈黙の設計の意義を理解する</p>
+      <p><strong>所要時間:</strong> 24分</p>
+    </div>
+
+    <div class="action-card">
+      <h3>📋 アクション4: メタ対話の実践</h3>
+      <p><strong>目的:</strong> 次の会議で手続きの合意を取る習慣をつける</p>
+      <p><strong>方法:</strong> 会議の冒頭5分で「今日の目的」「発言ルール」「時間配分」「記録方法」を全員で確認し、合意する</p>
+      <p><strong>期待効果:</strong> 手続き的公正が内容の質を高めることを実感し、安全な場の基盤ができる</p>
+      <p><strong>所要時間:</strong> 5分（会議冒頭）</p>
+    </div>
+
+    <div class="action-card">
+      <h3>🎯 アクション5: 感情の言語化練習</h3>
+      <p><strong>目的:</strong> アフェクトを認識し、言葉にする力を養う</p>
+      <p><strong>方法:</strong> 今日感じた感情を3つ選び、「いつ・何に対して・どんな感情・なぜそう感じたか」を各100字でメモする</p>
+      <p><strong>期待効果:</strong> 感情を観察し言語化する習慣がつき、対話中の感情への配慮が可能になる</p>
+      <p><strong>所要時間:</strong> 15分</p>
+    </div>
+  </div>
+
+  <div id="tab6" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--secondary);">📚 関連書籍</h2>
+    
+    <div class="book-card">
+      <h4>📖 中動態の世界</h4>
+      <div class="author">著者: 國分功一郎</div>
+      <div class="relation">
+        <strong>関連性:</strong> 能動/受動を超える視点が、対話での責任配置と関係再設計に直結する。
+      </div>
+    </div>
+
+    <div class="book-card">
+      <h4>📖 暇と退屈の倫理学</h4>
+      <div class="author">著者: 國分功一郎</div>
+      <div class="relation">
+        <strong>関連性:</strong> 注意資源と余白の倫理が、深い聴取や熟考の条件を支える。
+      </div>
+    </div>
+
+    <div class="book-card">
+      <h4>📖 ダイアローグ 対話する組織</h4>
+      <div class="author">著者: ウィリアム・アイザックス</div>
+      <div class="relation">
+        <strong>関連性:</strong> 対話の原理・実践・組織導入の具体論を補完する古典。
+      </div>
+    </div>
+
+    <div class="book-card">
+      <h4>📖 非暴力コミュニケーション</h4>
+      <div class="author">著者: マーシャル・B・ローゼンバーグ</div>
+      <div class="relation">
+        <strong>関連性:</strong> 感情とニーズの言語化という技術が、アフェクトの取り扱いを強化する。
+      </div>
+    </div>
+
+    <div class="book-card">
+      <h4>📖 ファシリテーターの道具箱（参加型意思決定の技法）</h4>
+      <div class="author">著者: サム・カナーほか</div>
+      <div class="relation">
+        <strong>関連性:</strong> 手続き設計・可視化・意思決定の具体的ツールが実装に役立つ。
+      </div>
+    </div>
+
+    <div class="book-card">
+      <h4>📖 来るべき民主主義</h4>
+      <div class="author">著者: 東浩紀</div>
+      <div class="relation">
+        <strong>関連性:</strong> 日本の公共圏での熟議・参加の課題を考える参照枠となる。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab7" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">🔗 概念の関係性</h2>
+    
+    <div class="flow-diagram">
+      <h3 style="margin-bottom:1rem;color:var(--secondary);">因果関係の可視化</h3>
+      
+      <div class="flow-item">
+        <span>権力の非対称性が大</span>
+        <span class="flow-arrow">→</span>
+        <span>自己検閲↑</span>
+        <span class="flow-arrow">→</span>
+        <span>多様性↓</span>
+        <span class="flow-arrow">→</span>
+        <span>討論化</span>
+        <span class="flow-arrow">→</span>
+        <span>理解の質↓</span>
+      </div>
+
+      <div class="flow-item">
+        <span>明確なメタ対話</span>
+        <span class="flow-arrow">→</span>
+        <span>手続き的公正↑</span>
+        <span class="flow-arrow">→</span>
+        <span>発言安全性↑</span>
+        <span class="flow-arrow">→</span>
+        <span>情報量↑</span>
+        <span class="flow-arrow">→</span>
+        <span>学習効果↑</span>
+      </div>
+
+      <div class="flow-item">
+        <span>良いフレーミング</span>
+        <span class="flow-arrow">→</span>
+        <span>問いの開放度↑</span>
+        <span class="flow-arrow">→</span>
+        <span>新規知の生成↑</span>
+      </div>
+
+      <div class="flow-item">
+        <span>アクティブ・リスニング</span>
+        <span class="flow-arrow">→</span>
+        <span>相互理解↑</span>
+        <span class="flow-arrow">→</span>
+        <span>防衛的感情↓</span>
+        <span class="flow-arrow">→</span>
+        <span>協働意欲↑</span>
+      </div>
+
+      <div class="flow-item">
+        <span>沈黙の設計</span>
+        <span class="flow-arrow">→</span>
+        <span>熟考時間↑</span>
+        <span class="flow-arrow">→</span>
+        <span>短絡的反応↓</span>
+        <span class="flow-arrow">→</span>
+        <span>根拠提示↑</span>
+      </div>
+
+      <div class="flow-item">
+        <span>中動態の視点</span>
+        <span class="flow-arrow">→</span>
+        <span>責任の再配置</span>
+        <span class="flow-arrow">→</span>
+        <span>非難合戦↓</span>
+        <span class="flow-arrow">→</span>
+        <span>原因共有と再設計↑</span>
+      </div>
+
+      <div class="flow-item">
+        <span>記録と可視化</span>
+        <span class="flow-arrow">→</span>
+        <span>記憶の外部化</span>
+        <span class="flow-arrow">→</span>
+        <span>合意可能性の検証容易化</span>
+        <span class="flow-arrow">→</span>
+        <span>次回接続性↑</span>
+      </div>
+
+      <div class="flow-item">
+        <span>合意の副産物化</span>
+        <span class="flow-arrow">→</span>
+        <span>多数派圧力↓</span>
+        <span class="flow-arrow">→</span>
+        <span>少数意見の保全↑</span>
+        <span class="flow-arrow">→</span>
+        <span>視野の拡張↑</span>
+      </div>
+    </div>
+
+    <div class="metric-grid" style="margin-top:2rem;">
+      <div class="metric-box">
+        <div class="metric-value">3</div>
+        <div class="metric-label">対話の三要素<br>場・手続き・感情</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-value">10</div>
+        <div class="metric-label">主要概念<br>実践の基盤</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-value">8</div>
+        <div class="metric-label">因果関係<br>設計の指針</div>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem;padding:1.5rem;background:var(--card-bg);border-radius:0.75rem;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+      <h3 style="color:var(--primary);margin-bottom:1rem;">🎯 核心的メッセージ</h3>
+      <p style="font-size:0.95rem;line-height:1.8;">
+        対話は相手を打ち負かすための技ではなく、相互の思考を可視化し更新するための実践と倫理である。よく設計された場、適切な手続き、感情への配慮という三位一体の技術によって、合意の強要ではなく理解と共同行為の可能性を最大化する。
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
