@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Culture Code インフォグラフィック</title>
+<!--
+カラーパレット（メタデータ）:
+プライマリー: #667eea
+セカンダリー: #764ba2
+アクセント: #f093fb
+-->
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#333;line-height:1.6;padding-bottom:2rem;}
+.container{max-width:1200px;margin:0 auto;padding:1rem;}
+header{background:#fff;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+h1{font-size:1.8rem;color:#667eea;margin-bottom:0.5rem;}
+.subtitle{font-size:0.95rem;color:#666;margin-bottom:1rem;}
+.summary-block{background:linear-gradient(135deg,#f093fb 0%,#667eea 100%);color:#fff;padding:1.2rem;border-radius:8px;margin-top:1rem;}
+.summary-block h2{font-size:1.2rem;margin-bottom:0.8rem;border-bottom:2px solid rgba(255,255,255,0.3);padding-bottom:0.4rem;}
+.summary-item{margin-bottom:0.8rem;}
+.summary-item strong{display:block;font-size:1rem;margin-bottom:0.3rem;}
+.summary-item span{font-size:0.9rem;line-height:1.5;}
+.tabs{display:flex;flex-wrap:wrap;gap:0.5rem;background:#fff;padding:0.8rem;border-radius:8px;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.tab-btn{flex:1 1 auto;min-width:120px;padding:0.7rem 1rem;background:#f5f5f5;border:none;border-radius:6px;cursor:pointer;font-size:0.9rem;font-weight:600;color:#555;transition:all 0.3s;}
+.tab-btn:hover{background:#e0e0e0;}
+.tab-btn.active{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;}
+.tab-content{display:none;background:#fff;border-radius:12px;padding:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+.tab-content.active{display:block;}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-top:1rem;}
+.card{background:linear-gradient(135deg,#fafafa,#fff);border-left:4px solid #667eea;padding:1rem;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.06);}
+.card h3{font-size:1.1rem;color:#667eea;margin-bottom:0.6rem;display:flex;align-items:center;gap:0.4rem;}
+.card ul{list-style:none;padding-left:0;}
+.card li{margin-bottom:0.5rem;padding-left:1.2rem;position:relative;font-size:0.9rem;}
+.card li:before{content:'▸';position:absolute;left:0;color:#764ba2;font-weight:bold;}
+.reason{background:#f093fb;color:#fff;padding:0.5rem;border-radius:6px;margin-top:0.6rem;font-size:0.85rem;font-style:italic;}
+.chapter-card{background:#fff;border:2px solid #e0e0e0;padding:1rem;border-radius:8px;margin-bottom:1rem;}
+.chapter-card h3{color:#764ba2;margin-bottom:0.5rem;font-size:1.05rem;}
+.chapter-card ul{margin-top:0.5rem;}
+.example-card{background:linear-gradient(135deg,#fff,#f9f9f9);border:2px solid #f093fb;padding:1rem;border-radius:8px;margin-bottom:1rem;}
+.example-card h4{color:#764ba2;margin-bottom:0.5rem;}
+.example-card p{font-size:0.9rem;margin-bottom:0.4rem;}
+.quote-card{background:#fafafa;border-left:4px solid #f093fb;padding:1rem;margin-bottom:1rem;border-radius:6px;font-style:italic;color:#555;}
+.quote-card strong{display:block;margin-bottom:0.4rem;color:#333;font-style:normal;}
+.action-card{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;padding:1rem;border-radius:8px;margin-bottom:1rem;}
+.action-card h4{margin-bottom:0.5rem;font-size:1rem;}
+.action-card p{font-size:0.85rem;margin-bottom:0.3rem;}
+.badge{display:inline-block;background:#f093fb;color:#fff;padding:0.3rem 0.7rem;border-radius:20px;font-size:0.8rem;font-weight:bold;margin-right:0.5rem;}
+.chart-container{margin:1.5rem 0;}
+.bar-chart{display:flex;flex-direction:column;gap:0.8rem;}
+.bar-item{display:flex;align-items:center;gap:0.8rem;}
+.bar-label{min-width:120px;font-size:0.9rem;font-weight:600;color:#555;}
+.bar{height:30px;background:linear-gradient(90deg,#667eea,#f093fb);border-radius:15px;display:flex;align-items:center;padding-left:0.8rem;color:#fff;font-size:0.85rem;font-weight:bold;}
+.relation-diagram{background:#fafafa;padding:1rem;border-radius:8px;margin-top:1rem;}
+.relation-diagram ul{list-style:none;}
+.relation-diagram li{margin-bottom:0.6rem;padding:0.6rem;background:#fff;border-left:3px solid #764ba2;border-radius:4px;font-size:0.9rem;}
+@media(max-width:768px){
+h1{font-size:1.5rem;}
+.tabs{flex-direction:column;}
+.tab-btn{min-width:100%;}
+.card-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>📘 The Culture Code</h1>
+<p class="subtitle">強い文化は偶然ではなく設計される</p>
+<div class="summary-block">
+<h2>🎯 要約：問い×答え×根拠</h2>
+<div class="summary-item">
+<strong>❓ 問い</strong>
+<span>なぜ同じ人材でもチーム成果が大きく変わるのか？</span>
+</div>
+<div class="summary-item">
+<strong>💡 答え</strong>
+<span>安全（所属感）・脆弱性の共有・目的の旗印という3つの技能を意図的に実践しているかで、情報流通・学習速度・整合的行動が劇的に変わる。</span>
+</div>
+<div class="summary-item">
+<strong>🔍 Why（なぜそうなのか）</strong>
+<span>神経科学と行動研究は「所属合図」が心理的安全を生み、先出しの脆弱性が信頼ループを起動し、物語と合言葉が意思決定の基準を統一することを示す。</span>
+</div>
+<div class="summary-item">
+<strong>🛠 How（そのためには）</strong>
+<span>①近接・目線・名前呼称・ターンテイク等で安全を可視化、②リーダーがまず弱さを開示し率直なフィードバック場を設計、③最優先事項を合言葉・儀礼・ルールに落とし込み10倍繰り返す。</span>
+</div>
+</div>
+</header>
+
+<div class="tabs" role="tablist">
+<button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true">主要概念の詳細</button>
+<button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false">各章の要約</button>
+<button class="tab-btn" data-tab="examples" role="tab" aria-selected="false">具体例</button>
+<button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false">重要な引用</button>
+<button class="tab-btn" data-tab="actions" role="tab" aria-selected="false">今日のアクション</button>
+</div>
+
+<div id="concepts" class="tab-content active" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">🧩 主要概念の詳細</h2>
+<div class="card-grid">
+<div class="card">
+<h3>🛡 安全（Belonging/Safety）</h3>
+<ul>
+<li>所属合図を絶えず送る</li>
+<li>誰もが声を出しても罰されない場をつくる</li>
+<li>初動で土台となる</li>
+<li><strong>一言要約：</strong>ここはあなたの居場所だ</li>
+</ul>
+<div class="reason"><strong>理由：</strong>安全は発言・学習・協力の土台であり、他の施策の前提となるため。</div>
+</div>
+<div class="card">
+<h3>💬 脆弱性の共有</h3>
+<ul>
+<li>不確実さや助けの必要を先に明かす</li>
+<li>協力を誘発する</li>
+<li>強固な信頼の出発点</li>
+<li><strong>一言要約：</strong>弱さの先出しは強さ</li>
+</ul>
+<div class="reason"><strong>理由：</strong>先出しの脆弱性が信頼ループを起動し、学習速度を加速させるため。</div>
+</div>
+<div class="card">
+<h3>🔄 脆弱性ループ</h3>
+<ul>
+<li>誰かの開示に他者が誠実に応答</li>
+<li>相互の開示と支援が連鎖</li>
+<li>信頼が増幅する循環</li>
+<li><strong>一言要約：</strong>信頼の増幅器</li>
+</ul>
+<div class="reason"><strong>理由：</strong>信頼の連鎖が高速改善サイクルを生み、エラー発見と修正を促進するため。</div>
+</div>
+<div class="card">
+<h3>🎯 目的の旗印</h3>
+<ul>
+<li>物語・合言葉・行動規範で最優先事項を明確化</li>
+<li>日々の判断を揃える</li>
+<li>方向の磁石となる</li>
+<li><strong>一言要約：</strong>方向の磁石</li>
+</ul>
+<div class="reason"><strong>理由：</strong>日々の選択を揃えるには過剰な明確化と一貫性が必要だから。</div>
+</div>
+<div class="card">
+<h3>📡 所属合図</h3>
+<ul>
+<li>近接、アイコンタクト、名前呼称</li>
+<li>ターンテイク、エネルギー</li>
+<li>安全を伝える微細信号</li>
+<li><strong>一言要約：</strong>安全の言語</li>
+</ul>
+<div class="reason"><strong>理由：</strong>微細な信号が心理的安全性を可視化し、発言量と情報流通を増やすため。</div>
+</div>
+<div class="card">
+<h3>🗣 率直さの場</h3>
+<ul>
+<li>権威に頼らない</li>
+<li>温かさと率直さを両立</li>
+<li>フィードバック機構（例：ブレイントラスト）</li>
+<li><strong>一言要約：</strong>温かい率直さ</li>
+</ul>
+<div class="reason"><strong>理由：</strong>率直なフィードバックが学習と改善を加速し、複雑性に適応するため。</div>
+</div>
+<div class="card">
+<h3>🍎 バッドアップル効果</h3>
+<ul>
+<li>否定・無関心・不遜などの行動</li>
+<li>規範を侵食</li>
+<li>集団の成果を大幅に下げる</li>
+<li><strong>一言要約：</strong>負の感染</li>
+</ul>
+<div class="reason"><strong>理由：</strong>負の行動が規範を破壊し、文化の耐久性を損なうため、即時是正が必要。</div>
+</div>
+<div class="card">
+<h3>🔟 10倍の明確さ</h3>
+<ul>
+<li>目的・優先を「しつこいほど」繰り返す</li>
+<li>制度・儀礼・物理環境に埋め込む</li>
+<li>過剰に明確にする原則</li>
+<li><strong>一言要約：</strong>過剰に明確に</li>
+</ul>
+<div class="reason"><strong>理由：</strong>迷い・解釈の幅を縮小し、実行の一貫性を高めるため。</div>
+</div>
+</div>
+
+<div class="chart-container">
+<h3 style="color:#764ba2;margin-bottom:1rem;">📊 概念の重要度（視覚化）</h3>
+<div class="bar-chart">
+<div class="bar-item">
+<div class="bar-label">安全</div>
+<div class="bar" style="width:95%;">土台 95%</div>
+</div>
+<div class="bar-item">
+<div class="bar-label">脆弱性の共有</div>
+<div class="bar" style="width:90%;">信頼 90%</div>
+</div>
+<div class="bar-item">
+<div class="bar-label">目的の旗印</div>
+<div class="bar" style="width:88%;">方向 88%</div>
+</div>
+<div class="bar-item">
+<div class="bar-label">所属合図</div>
+<div class="bar" style="width:85%;">可視化 85%</div>
+</div>
+<div class="bar-item">
+<div class="bar-label">10倍の明確さ</div>
+<div class="bar" style="width:82%;">一貫性 82%</div>
+</div>
+</div>
+</div>
+
+<div class="relation-diagram">
+<h3 style="color:#764ba2;margin-bottom:1rem;">🔗 概念間の関係性</h3>
+<ul>
+<li>所属合図 → 心理的安全性↑ → 発言量・情報流通↑</li>
+<li>心理的安全性↑ → 脆弱性の共有が可能 → 学習速度・エラー発見↑</li>
+<li>脆弱性ループ × 率直なフィードバック機構 → 高速改善サイクル</li>
+<li>目的の旗印 → 意思決定基準の統一 → 自律性・整合性↑</li>
+<li>10倍の明確さ → 迷い・解釈の幅を縮小 → 実行の一貫性↑</li>
+<li>バッドアップル対策（採用・規範・即時是正） → 規範保全 → 文化の耐久性↑</li>
+<li>三技能（安全→脆弱性→目的）は段階的かつ相互補完的。欠けると他も機能低下</li>
+</ul>
+</div>
+</div>
+
+<div id="chapters" class="tab-content" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">📚 各章の要約</h2>
+<div class="chapter-card">
+<h3>序章：文化は設計可能な技能</h3>
+<ul>
+<li>文化は生きた関係性の集合</li>
+<li>抽象ではなく観察・設計可能な相互作用</li>
+<li>三技能（安全・脆弱性・目的）の枠組みを提示</li>
+</ul>
+<div class="reason"><strong>理由：</strong>文化を「偶然の産物」から「意図的に設計できるもの」へと再定義し、実践の土台を築くため。</div>
+</div>
+<div class="chapter-card">
+<h3>Part I：安全の構築</h3>
+<ul>
+<li>所属合図の実例（近接・目線・名前呼称）</li>
+<li>微細なコミュニケーション設計</li>
+<li>バッドアップル効果と対策</li>
+<li>安全は発言・学習・協力の土台</li>
+</ul>
+<div class="reason"><strong>理由：</strong>安全がなければ他の施策は機能せず、情報流通と学習の前提となるため。</div>
+</div>
+<div class="chapter-card">
+<h3>Part II：脆弱性の共有</h3>
+<ul>
+<li>リーダーの先出しの重要性</li>
+<li>率直なフィードバック場の設計（例：ブレイントラスト）</li>
+<li>小さな失敗の受容</li>
+<li>信頼ループの起動と増幅</li>
+</ul>
+<div class="reason"><strong>理由：</strong>脆弱性の先出しが信頼ループを起動し、高速改善サイクルを生むため。</div>
+</div>
+<div class="chapter-card">
+<h3>Part III：目的の確立</h3>
+<ul>
+<li>合言葉・物語・優先順位の過剰明確化</li>
+<li>日々の意思決定を揃える方法</li>
+<li>制度・儀礼・物理環境への埋め込み</li>
+<li>10倍の明確さの原則</li>
+</ul>
+<div class="reason"><strong>理由：</strong>目的の過剰明確化が迷いを減らし、自律的で整合的な行動を促進するため。</div>
+</div>
+<div class="chapter-card">
+<h3>全体の論理展開</h3>
+<ul>
+<li>安全→脆弱性→目的の順で実装</li>
+<li>各パート末に現場で使える具体的行動リスト</li>
+<li>三技能は相互に強化し合う</li>
+<li>欠けると他も機能低下</li>
+</ul>
+<div class="reason"><strong>理由：</strong>段階的かつ相互補完的な実装により、文化の持続的な強化が可能になるため。</div>
+</div>
+</div>
+
+<div id="examples" class="tab-content" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">💡 具体例</h2>
+<div class="example-card">
+<h4>🏀 例1：NBAサンアントニオ・スパーズ</h4>
+<p><strong>背景：</strong>長期にわたり高い成果を維持するチーム文化を構築。</p>
+<p><strong>実践：</strong>コーチが選手の名前を呼び、目を見て話し、ターンテイクを徹底。食事や移動時の近接を重視し、所属合図を絶えず送る。</p>
+<p><strong>示唆：</strong>微細な所属合図の積み重ねが心理的安全性を高め、チームの一体感と成果を生む。</p>
+<div class="reason"><strong>理由：</strong>所属合図が安全の土台を築き、発言量と情報流通を増やすことを示すため。</div>
+</div>
+<div class="example-card">
+<h4>🎬 例2：ピクサーのブレイントラスト</h4>
+<p><strong>背景：</strong>映画制作の途中で率直なフィードバックを行う仕組み。</p>
+<p><strong>実践：</strong>権威に頼らず、温かさと率直さを両立。監督が脆弱性を先に開示し、参加者が誠実に応答。失敗を受容し、学習を促進。</p>
+<p><strong>示唆：</strong>率直なフィードバック場が信頼ループを起動し、高速改善サイクルを生む。</p>
+<div class="reason"><strong>理由：</strong>脆弱性の共有と率直さが学習速度を加速し、複雑性に適応することを示すため。</div>
+</div>
+<div class="example-card">
+<h4>🍽 例3：ダニー・マイヤーのレストラン</h4>
+<p><strong>背景：</strong>「おもてなし」を最優先事項とする文化を設計。</p>
+<p><strong>実践：</strong>「おもてなし」を合言葉・儀礼・採用基準に埋め込み、10倍繰り返す。物理環境（オープンキッチン）や日々の行動規範に反映。</p>
+<p><strong>示唆：</strong>目的の過剰明確化が意思決定基準を統一し、自律的で整合的な行動を促進する。</p>
+<div class="reason"><strong>理由：</strong>10倍の明確さが迷いを減らし、実行の一貫性を高めることを示すため。</div>
+</div>
+<div class="example-card">
+<h4>⚠️ 例4：バッドアップル実験</h4>
+<p><strong>背景：</strong>否定・無関心・不遜などの行動が集団に与える影響を検証。</p>
+<p><strong>実践：</strong>1人のバッドアップルが規範を侵食し、集団の成果を大幅に下げることが判明。即時是正と採用段階での対策が重要。</p>
+<p><strong>示唆：</strong>負の行動が規範を破壊し、文化の耐久性を損なうため、規範保全が不可欠。</p>
+<div class="reason"><strong>理由：</strong>バッドアップル対策が文化の耐久性を保つために必要であることを示すため。</div>
+</div>
+</div>
+
+<div id="quotes" class="tab-content" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">📖 重要な引用</h2>
+<div class="quote-card">
+<strong>要旨1</strong>
+「文化とは、共有目標に向かう生きた関係性の総体である。」
+<p style="margin-top:0.5rem;font-style:normal;color:#764ba2;"><strong>なぜ重要か：</strong>文化を抽象ではなく観察・設計可能な相互作用として捉え直せるから。</p>
+</div>
+<div class="quote-card">
+<strong>要旨2</strong>
+「まず安全をつくれ。安全がなければ何も始まらない。」
+<p style="margin-top:0.5rem;font-style:normal;color:#764ba2;"><strong>なぜ重要か：</strong>安全は発言・学習・協力の土台であり他の施策の前提だから。</p>
+</div>
+<div class="quote-card">
+<strong>要旨3</strong>
+「リーダーは答えを与えるより、学習が起こる場を設計せよ。」
+<p style="margin-top:0.5rem;font-style:normal;color:#764ba2;"><strong>なぜ重要か：</strong>現代の複雑性においては適応学習が成果を左右するため。</p>
+</div>
+<div class="quote-card">
+<strong>要旨4</strong>
+「目的は語るだけでなく、見せ、繰り返し、埋め込むものだ。」
+<p style="margin-top:0.5rem;font-style:normal;color:#764ba2;"><strong>なぜ重要か：</strong>日々の選択を揃えるには過剰な明確化と一貫性が必要だから。</p>
+</div>
+</div>
+
+<div id="actions" class="tab-content" role="tabpanel">
+<h2 style="color:#667eea;margin-bottom:1rem;">✅ 今日のアクション（15〜30分で実行可能）</h2>
+<div class="action-card">
+<h4>🎤 アクション1：1on1で相手の発言を要約返答する</h4>
+<p><strong>目的：</strong>相手が「聞かれている」と感じる所属合図を送る。</p>
+<p><strong>期待効果：</strong>心理的安全性が高まり、発言量と情報流通が増える。</p>
+<p><strong>実行時間：</strong>15分（次回の1on1で実践）</p>
+</div>
+<div class="action-card">
+<h4>📝 アクション2：チームの最優先1つを紙に書き掲示</h4>
+<p><strong>目的：</strong>目的の旗印を可視化し、日々の判断基準を揃える。</p>
+<p><strong>期待効果：</strong>迷いが減り、自律的で整合的な行動が促進される。</p>
+<p><strong>実行時間：</strong>20分（紙に書き、共有スペースに掲示）</p>
+</div>
+<div class="action-card">
+<h4>💬 アクション3：自分の弱さと学びを先に短く共有</h4>
+<p><strong>目的：</strong>脆弱性の先出しで信頼ループを起動する。</p>
+<p><strong>期待効果：</strong>他者も開示しやすくなり、協力と学習が加速する。</p>
+<p><strong>実行時間：</strong>15分（次回のミーティング冒頭で実践）</p>
+</div>
+<div class="action-card">
+<h4>👀 アクション4：会議で全員の名前を呼び、目を見て話す</h4>
+<p><strong>目的：</strong>所属合図を送り、全員が参加していると感じさせる。</p>
+<p><strong>期待効果：</strong>発言のハードルが下がり、多様な意見が出やすくなる。</p>
+<p><strong>実行時間：</strong>会議中に意識するだけ（追加時間なし）</p>
+</div>
+<div class="action-card">
+<h4>🔄 アクション5：小さな失敗を共有し、学びを言語化する</h4>
+<p><strong>目的：</strong>失敗を受容する文化をつくり、学習を促進する。</p>
+<p><strong>期待効果：</strong>エラー発見と修正が早まり、高速改善サイクルが回る。</p>
+<p><strong>実行時間：</strong>30分（週次の振り返りで実践）</p>
+</div>
+</div>
+
+<div style="background:#fff;border-radius:12px;padding:1.5rem;margin-top:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+<h2 style="color:#667eea;margin-bottom:1rem;">📚 関連書籍</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;">
+<div style="border:2px solid #e0e0e0;padding:1rem;border-radius:8px;">
+<h4 style="color:#764ba2;margin-bottom:0.5rem;">恐れのない組織</h4>
+<p style="font-size:0.85rem;margin-bottom:0.5rem;"><strong>著者：</strong>エイミー・C・エドモンドソン</p>
+<p style="font-size:0.85rem;color:#555;">心理的安全性の理論と実践を体系化し、本書の安全の土台を補強する。</p>
+</div>
+<div style="border:2px solid #e0e0e0;padding:1rem;border-radius:8px;">
+<h4 style="color:#764ba2;margin-bottom:0.5rem;">クリエイティビティ・インク</h4>
+<p style="font-size:0.85rem;margin-bottom:0.5rem;"><strong>著者：</strong>エド・キャットムル</p>
+<p style="font-size:0.85rem;color:#555;">率直さの場づくり（例：ブレイントラスト）の運用知見が豊富。</p>
+</div>
+<div style="border:2px solid #e0e0e0;padding:1rem;border-radius:8px;">
+<h4 style="color:#764ba2;margin-bottom:0.5rem;">Team of Teams</h4>
+<p style="font-size:0.85rem;margin-bottom:0.5rem;"><strong>著者：</strong>スタンリー・マクリスタル</p>
+<p style="font-size:0.85rem;color:#555;">共有意識と権限分散により目的と自律性を両立する方法を示す。</p>
+</div>
+<div style="border:2px solid #e0e0e0;padding:1rem;border-radius:8px;">
+<h4 style="color:#764ba2;margin-bottom:0.5rem;">The Five Dysfunctions of a Team</h4>
+<p style="font-size:0.85rem;margin-bottom:0.5rem;"><strong>著者：</strong>Patrick Lencioni</p>
+<p style="font-size:0.85rem;color:#555;">信頼欠如から生じる機能不全と規範設計の重要性を物語形式で解説。</p>
+</div>
+<div style="border:2px solid #e0e0e0;padding:1rem;border-radius:8px;">
+<h4 style="color:#764ba2;margin-bottom:0.5rem;">NO RULES 無敵の組織</h4>
+<p style="font-size:0.85rem;margin-bottom:0.5rem;"><strong>著者：</strong>リード・ヘイスティングス／エリン・メイヤー</p>
+<p style="font-size:0.85rem;color:#555;">フィードバックと自由・責任の文化設計が三技能の応用例となる。</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+const tabs=document.querySelectorAll('.tab-btn');
+const contents=document.querySelectorAll('.tab-content');
+tabs.forEach(tab=>{
+tab.addEventListener('click',()=>{
+tabs.forEach(t=>{t.classList.remove('active');t.setAttribute('aria-selected','false');});
+contents.forEach(c=>c.classList.remove('active'));
+tab.classList.add('active');
+tab.setAttribute('aria-selected','true');
+const target=tab.getAttribute('data-tab');
+document.getElementById(target).classList.add('active');
+});
+});
+</script>
+</body>
+</html>
