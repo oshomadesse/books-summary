@@ -8,6 +8,7 @@ gemini_recommend.py
 import os
 import json
 import re
+import time
 import unicodedata
 import shutil
 import difflib
@@ -35,7 +36,7 @@ if GEMINI_API_KEY and genai is not None:
     except Exception:
         pass
 
-FLASH_MODEL = os.getenv("GEMINI_FLASH_MODEL", "gemini-2.5-flash")
+FLASH_MODEL = os.getenv("GEMINI_FLASH_MODEL", "gemini-3-flash-preview")
 FLASH_TEMPERATURE = float(os.getenv("GEMINI_FLASH_TEMPERATURE", "0.35"))
 FLASH_MAX_OUTPUT = int(os.getenv("GEMINI_PRO_MAX_TOKENS", "8192"))
 
@@ -170,9 +171,23 @@ def normalize_category(cat: str, title: str, reason: str) -> str:
     return pool[0] if pool else "その他"
 
 
+_TRANSIENT_ERROR_MARKERS = (
+    "429", "503", "500", "504",
+    "quota", "rate limit", "rate_limit",
+    "unavailable", "deadline", "timeout",
+    "internal", "resource_exhausted", "resource exhausted",
+)
+
+
+def _is_transient_error(exc: Exception) -> bool:
+    msg = str(exc or "").lower()
+    return any(m in msg for m in _TRANSIENT_ERROR_MARKERS)
+
+
 class GeminiConnector:
     def __init__(self, verbose: bool = True):
         self.verbose = verbose
+        self._last_call_transient = False
         if genai is not None:
             try:
                 self.fast = genai.GenerativeModel(
@@ -214,6 +229,7 @@ class GeminiConnector:
         )
 
     def _call_flash_json(self, prompt):
+        self._last_call_transient = False
         if self.verbose:
             try:
                 preview = (prompt or "")[:300]
@@ -272,8 +288,10 @@ class GeminiConnector:
                 print("DEBUG: parsed candidates count =", len(data) if isinstance(data, list) else 0)
             return data if isinstance(data, list) else []
         except Exception as e:
+            self._last_call_transient = _is_transient_error(e)
             if self.verbose:
-                print("ERROR in _call_flash_json:", e)
+                tag = "TRANSIENT" if self._last_call_transient else "FATAL"
+                print(f"ERROR in _call_flash_json [{tag}]:", e)
             return []
 
     def get_book_recommendations(self, excluded_books: List[str]) -> List[Dict]:
@@ -281,12 +299,24 @@ class GeminiConnector:
         collected: List[Dict] = []
         ban_titles: List[str] = list(excluded_books or [])
         attempts = 0
-        max_attempts = 3
+        max_attempts = 5
+        transient_backoff_sec = 60
 
         while attempts < max_attempts and len(collected) < target:
             attempts += 1
             prompt = self.book_selection_prompt(ban_titles + [c.get("title", "") for c in collected])
             batch = self._call_flash_json(prompt) if hasattr(self, "_call_flash_json") else []
+
+            # Gemini API 側の一時障害 (429/503/quota 等) で空が返った場合は
+            # 次の attempt まで長めに待ってリトライする。
+            if not batch and getattr(self, "_last_call_transient", False) and attempts < max_attempts:
+                if self.verbose:
+                    print(
+                        f"INFO: transient Gemini error on attempt {attempts}; "
+                        f"sleeping {transient_backoff_sec}s before retry"
+                    )
+                time.sleep(transient_backoff_sec)
+                continue
 
             for x in batch:
                 if not isinstance(x, dict):

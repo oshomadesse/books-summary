@@ -22,7 +22,7 @@ from gemini_recommend import GeminiConnector as GeminiRecommendConnector
 try:
     from gemini_recommend import FLASH_MODEL
 except Exception:
-    FLASH_MODEL = getattr(gemini_research, "FLASH_MODEL", "gemini-2.5-flash")
+    FLASH_MODEL = getattr(gemini_research, "FLASH_MODEL", "gemini-3-flash-preview")
 
 import claude_infographic
 
@@ -809,8 +809,7 @@ def step7_save_to_obsidian_simple(mid_summary):
     Step7: Step6で集めた変数を、指定の「ノート構成」テンプレに流し込んで 100_Inbox に保存。
     ファイル名: Books-YYYY-MM-DD.md
     """
-    # JST対応: GitHub Actions (UTC) でも日本時間の日付にする
-    date_str = (datetime.now() + timedelta(hours=9)).strftime("%Y-%m-%d")
+    date_str = datetime.now().strftime("%Y-%m-%d")
     note_path = INBOX_DIR / f"Books-{date_str}.md"
 
     g = lambda k: (mid_summary.get(k) if isinstance(mid_summary, dict) else "")
@@ -946,7 +945,7 @@ def step8_run_list_py(mid_summary=None):
         env["VAULT_ROOT"] = str(VAULT_ROOT)
 
         # 非AIロジックのみ（正規表現リンク）
-        script1 = str(Path(PROJECT_DIR) / "link_books.py")
+        script1 = str(Path(PROJECT_DIR) / "src" / "link_books.py")
         r1 = subprocess.run([sys.executable, script1], env=env, capture_output=True, text=True)
         if (r1.stdout or "").strip():
             print((r1.stdout or "").strip())
@@ -982,8 +981,7 @@ def step8_append_to_excluded_list(mid_summary):
     try:
         import json as _json
 
-        # 今日（Asia/Tokyo想定: UTC+9）
-        date_str = (datetime.now() + timedelta(hours=9)).strftime("%Y-%m-%d")
+        date_str = datetime.now().strftime("%Y-%m-%d")
 
         # Step6のサマリをそのまま利用
         g = (lambda k: (mid_summary.get(k) if isinstance(mid_summary, dict) else ""))  # 既存の書き方に合わせる
