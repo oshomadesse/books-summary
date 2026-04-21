@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今やる人になる - インフォグラフィック</title>
+<style>
+/* カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb */
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1.1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  color: var(--primary);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--primary);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.card h3 {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 6px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid var(--border);
+}
+.example-card h4 {
+  color: var(--primary);
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.quote-card small {
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+.action-card h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+.action-card p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  margin: 0.25rem;
+  font-size: 0.9rem;
+}
+.flow-diagram {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+.flow-step-num {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+.flow-step-text {
+  flex: 1;
+  font-size: 1rem;
+}
+.visual-chart {
+  margin: 2rem 0;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 今やる人になる</h1>
+  <p>先延ばしは設計の問題。仕組みで「今やる」を標準動作に。</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ人は重要なことを後回しにし、どうすれば即行動できるのか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      人は不確実性と不快の回避で着手を遅らせる。タスクの解像度を上げ、開始コストを下げ、時間と環境を先に設計すれば行動は加速する。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      認知負荷・感情回避・選択過多が実行抑制を生み、意志力は変動的で当てにできないため、仕組みで意思決定を簡略化する必要がある。
+    </div>
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      If-Then実行意図、タイムボクシング、タスクの粒度調整、プレコミットメント、誘惑バンドル、進捗の可視化、注意遮断の環境設計、10分だけ着手ルールを用いる。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🧩 主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📚 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">🧩 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🚧 開始摩擦</h3>
+        <ul>
+          <li>着手前に感じる不確実性・不快・準備の面倒くささ</li>
+          <li>これが高いほど後回しになる</li>
+          <li>最初の一歩の抵抗を下げることが鍵</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>行動開始の最大障壁を特定し、設計で除去できる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔬 タスクの解像度（粒度）</h3>
+        <ul>
+          <li>行動単位の具体度</li>
+          <li>曖昧な目標を"次の1アクション"まで分解</li>
+          <li>解像度が上がるほど開始が容易になる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>不確実性を減らし、脳が「何をすべきか」を即座に理解できる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚡ 実行意図（If-Then）</h3>
+        <ul>
+          <li>「もしXが起きたら、Yをする」と事前に条件と行動を結びつける</li>
+          <li>意思決定を省略する</li>
+          <li>行動の自動化スイッチ</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>その場の判断を不要にし、意志力の消耗を防ぐ。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📦 タイムボクシング／ポモドーロ</h3>
+        <ul>
+          <li>作業を固定時間枠で先に"予約"</li>
+          <li>着手のハードルを下げ持続を促す</li>
+          <li>時間を先に埋める</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>計画倒れを防ぎ、実行をデフォルトにできる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔒 プレコミットメント</h3>
+        <ul>
+          <li>締切共有やデポジットなど、未来の自分を拘束</li>
+          <li>選択の余地を減らす仕掛け</li>
+          <li>逃げ道封鎖</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>行動一貫性の圧力で後戻りを防ぐ。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎁 誘惑バンドル</h3>
+        <ul>
+          <li>快い行為と難しい行為を同時に行う設計</li>
+          <li>報酬期待を高め着手を促す</li>
+          <li>ごほうび併走</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>即時報酬で回避傾向を中和できる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🛡️ 注意の遮断</h3>
+        <ul>
+          <li>通知オフやサイトブロックなど、外的中断を物理的に遮る</li>
+          <li>環境設定で邪魔を遠ざける</li>
+          <li>ディストラクション・シールド</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>中断率を下げ、深い作業時間を確保できる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📊 進捗の可視化</h3>
+        <ul>
+          <li>チェックリストやハビットトラッカーで達成を見える化</li>
+          <li>フィードバックで継続を強化</li>
+          <li>見える達成感</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>即時フィードバックが動機づけを高める。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎭 アイデンティティ型習慣</h3>
+        <ul>
+          <li>「やる人」という自己像と日々の行動を結ぶ</li>
+          <li>自己整合性で継続力を高める</li>
+          <li>自分らしさで続ける</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>行動が自己概念と一致すると、継続が自然になる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚙️ デフォルト設計</h3>
+        <ul>
+          <li>望ましい行動が最も容易になる初期設定を整える</li>
+          <li>例：作業アプリを自動起動</li>
+          <li>良い初期設定</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>実行の手間を下げ、後回し抑制を高める。
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-diagram">
+      <h3 style="color: var(--secondary); margin-bottom: 1.5rem;">🔗 概念間の因果関係</h3>
+      <div class="flow-step">
+        <div class="flow-step-num">1</div>
+        <div class="flow-step-text">開始摩擦↑ → 先延ばし↑</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">2</div>
+        <div class="flow-step-text">タスク解像度↑ → 不確実性↓ → 開始摩擦↓</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">3</div>
+        <div class="flow-step-text">実行意図×環境トリガー → 意思決定負荷↓ → 着手率↑</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">4</div>
+        <div class="flow-step-text">タイムボクシング → 意志力依存↓ → 持続時間↑</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">5</div>
+        <div class="flow-step-text">誘惑バンドル／報酬設計 → 期待報酬↑ → 回避傾向↓</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">6</div>
+        <div class="flow-step-text">プレコミットメント → 選択自由度↓ → 行動一貫性↑</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">7</div>
+        <div class="flow-step-text">注意遮断 → 中断率↓ → 深い作業時間↑</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">8</div>
+        <div class="flow-step-text">進捗可視化 → 即時フィードバック↑ → 動機づけ↑</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">9</div>
+        <div class="flow-step-text">アイデンティティ型習慣 → 自己整合性圧力↑ → 継続力↑</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-step-num">10</div>
+        <div class="flow-step-text">デフォルト設計 → 実行の手間↓ → 後回し抑制↑</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">📚 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3>第1部：先延ばしの正体</h3>
+      <ul>
+        <li>脳の快回避・時間割引・不確実性が着手を阻む</li>
+        <li>意志力は資源であり環境に左右される</li>
+        <li>先延ばしは意志の弱さではなく、脳の自然な反応</li>
+        <li>感情回避と認知負荷が主要因</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（なぜこの章が必要か）：</strong>原因を理解することで、自己批判から設計思考へ転換できる。意志力に頼らない仕組み作りの必要性を認識する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第2部：土台設計</h3>
+      <ul>
+        <li>目的の明確化で方向性を定める</li>
+        <li>タスク分解で解像度を上げる</li>
+        <li>デフォルト設計と注意遮断で開始摩擦を体系的に下げる</li>
+        <li>環境が行動の8割を決める</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（なぜこの章が必要か）：</strong>実行前の準備段階で摩擦を除去することが、後の行動を劇的に容易にする。土台なしでは技術も機能しない。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第3部：実行プロトコル</h3>
+      <ul>
+        <li>実行意図で行動を自動化</li>
+        <li>タイムボクシングで時間を先に確保</li>
+        <li>プレコミットメントで逃げ道を封鎖</li>
+        <li>誘惑バンドルで報酬を併走</li>
+        <li>進捗可視化で達成感を即座にフィードバック</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（なぜこの章が必要か）：</strong>土台の上に具体的な実行手順を統合することで、日々の行動が自動化され、意志力の消耗を最小化できる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第4部：維持とリカバリー</h3>
+      <ul>
+        <li>日次レビューで小さな成功を蓄積</li>
+        <li>スリップ時の再起動手順（10分だけ着手）</li>
+        <li>長期維持のための習慣化とアイデンティティ形成</li>
+        <li>完璧主義を手放し、継続を優先</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（なぜこの章が必要か）：</strong>一時的な成功ではなく、長期的な行動変容を実現するため。失敗からの回復力が持続の鍵となる。
+      </div>
+    </div>
+
+    <div style="background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1)); padding: 1.5rem; border-radius: 0.75rem; margin-top: 2rem;">
+      <h3 style="color: var(--secondary); margin-bottom: 1rem;">📖 論理の流れ</h3>
+      <p style="font-size: 1.05rem; line-height: 1.8;">
+        <strong>原因の理解</strong> → <strong>摩擦を下げる土台作り</strong> → <strong>行動を引き出す具体手順</strong> → <strong>維持と再起動の仕組み化</strong>
+      </p>
+      <p style="margin-top: 1rem; color: var(--text-light);">
+        各段階が次の段階の前提となり、統合的なシステムを形成する。
+      </p>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">💼 具体例</h2>
+    
+    <div class="example-card">
+      <h4>📝 例1：論文執筆の先延ばし克服</h4>
+      <p><strong>背景：</strong>大学院生が論文執筆を3週間先延ばしし、締切直前にパニックに陥っていた。</p>
+      <p><strong>適用した手法：</strong></p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>タスク分解：「論文を書く」→「序論の最初の段落を150字書く」</li>
+        <li>タイムボクシング：毎朝9時に25分の執筆枠を予約</li>
+        <li>誘惑バンドル：好きな音楽を執筆時のみ聴く</li>
+      </ul>
+      <p><strong>結果：</strong>初日に着手でき、2週間で初稿完成。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>解像度を上げ、時間を先に確保し、報酬を併走させることで、巨大タスクへの着手障壁が劇的に下がる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🏃 例2：運動習慣の定着</h4>
+      <p><strong>背景：</strong>ビジネスパーソンが「運動しなければ」と思いつつ、半年間一度も実行できなかった。</p>
+      <p><strong>適用した手法：</strong></p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>実行意図：「朝食後にリビングに戻ったら、即座に運動着に着替える」</li>
+        <li>デフォルト設計：運動着を前夜に椅子に置く</li>
+        <li>10分だけルール：「とりあえず10分だけ」で開始</li>
+        <li>進捗可視化：カレンダーに✓を記入</li>
+      </ul>
+      <p><strong>結果：</strong>3週間で習慣化、平均週5回実施。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>環境トリガーと最小開始ルールの組み合わせが、意志力に頼らない自動実行を生む。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>💼 例3：プロジェクト提案書の作成</h4>
+      <p><strong>背景：</strong>マネージャーが重要提案書を2ヶ月放置し、昇進機会を逃しかけた。</p>
+      <p><strong>適用した手法：</strong></p>
+      <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+        <li>プレコミットメント：上司に「金曜に初稿を共有します」と宣言</li>
+        <li>注意遮断：作業中はメール・Slackを完全オフ</li>
+        <li>タイムボクシング：火・木の午前を提案書専用時間に固定</li>
+        <li>アイデンティティ型習慣：「私は戦略的に動く人だ」と自己定義</li>
+      </ul>
+      <p><strong>結果：</strong>4日で初稿完成、提案が承認され昇進。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>社会的コミットメントと環境遮断、自己像の再定義が、高難度タスクの実行を強力に後押しする。
+      </div>
+    </div>
+
+    <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 0.75rem; margin-top: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+      <h3 style="color: var(--secondary); margin-bottom: 1rem;">🔑 共通パターン</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        <span class="metric-badge">解像度↑</span>
+        <span class="metric-badge">時間の先行確保</span>
+        <span class="metric-badge">環境設計</span>
+        <span class="metric-badge">最小開始</span>
+        <span class="metric-badge">即時フィードバック</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">💬 重要な引用</h2>
+    
+    <div class="quote-card">
+      <p>"やる気は行動の前提ではなく、行動の結果として立ち上がる。"</p>
+      <small><strong>なぜ重要か：</strong>着手を先に置く設計に発想を転換できる。モチベーション待ちの罠から脱却する。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>"時間は空くのを待たず、先に埋める（タイムボクシング）。"</p>
+      <small><strong>なぜ重要か：</strong>計画倒れを防ぎ、実行をデフォルトにできる。受動的な時間管理から能動的な時間設計へ。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>"完璧主義は先延ばしの洗練された別名にすぎない。"</p>
+      <small><strong>なぜ重要か：</strong>基準を"まず着手・あとで改善"へ変えられる。完璧の追求が行動を止めていることに気づく。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>"開始摩擦を1つ減らせば、継続は3倍楽になる。"</p>
+      <small><strong>なぜ重要か：</strong>最小の環境介入が大きな成果を生むことを示す。レバレッジポイントの発見を促す。</small>
+    </div>
+
+    <div style="background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1)); padding: 1.5rem; border-radius: 0.75rem; margin-top: 2rem;">
+      <h3 style="color: var(--secondary); margin-bottom: 1rem;">💡 引用から読み取れる核心</h3>
+      <ul style="margin-left: 1.5rem; line-height: 1.8;">
+        <li>行動が先、感情は後</li>
+        <li>時間は設計するもの</li>
+        <li>完璧より着手</li>
+        <li>小さな変更、大きな効果</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">✅ 今日のアクション（15〜30分で実行可能）</h2>
+    
+    <div class="action-card">
+      <h4>⏱️ アクション1：25分の集中タイマーを1回実施</h4>
+      <p><strong>目的：</strong>タイムボクシングの効果を体感し、着手の心理的ハードルを下げる。</p>
+      <p><strong>期待効果：</strong>「時間を区切れば集中できる」という成功体験を得て、今後の実行意図形成の土台となる。</p>
+      <p style="margin-top: 0.75rem; font-size: 0.9rem; opacity: 0.9;">
+        📌 手順：タイマーを25分にセット → 1つのタスクのみに集中 → 終了後5分休憩
+      </p>
+    </div>
+
+    <div class="action-card">
+      <h4>📝 アクション2：明日の最重要1タスクを分解記述</h4>
+      <p><strong>目的：</strong>タスクの解像度を上げ、明日の着手摩擦を事前に除去する。</p>
+      <p><strong>期待効果：</strong>「何をすべきか」が明確になり、朝一番の意思決定負荷がゼロになる。実行率が大幅に向上。</p>
+      <p style="margin-top: 0.75rem; font-size: 0.9rem; opacity: 0.9;">
+        📌 手順：タスクを書き出す → 最初の1アクションを具体化（例：「ファイルを開く」「最初の3行を書く」）
+      </p>
+    </div>
+
+    <div class="action-card">
+      <h4>🧹 アクション3：作業環境の邪魔要因を3つ除去</h4>
+      <p><strong>目的：</strong>注意遮断の環境を物理的に構築し、中断率を下げる。</p>
+      <p><strong>期待効果：</strong>集中の持続時間が延び、深い作業が可能になる。環境設計の威力を実感。</p>
+      <p style="margin-top: 0.75rem; font-size: 0.9rem; opacity: 0.9;">
+        📌 例：スマホを別室に置く / 通知をオフ / SNSをブロック / デスクを片付ける
+      </p>
+    </div>
+
+    <div style="background: var(--card-bg); padding: 1.5rem; border-radius: 0.75rem; margin-top: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+      <h3 style="color: var(--secondary); margin-bottom: 1rem;">🎯 実行のコツ</h3>
+      <ul style="margin-left: 1.5rem; line-height: 1.8;">
+        <li><strong>完璧を目指さない：</strong>まず1つだけ、今すぐ始める</li>
+        <li><strong>記録する：</strong>実行したら✓を付け、達成感を可視化</li>
+        <li><strong>明日も続ける：</strong>1日の成功を2日、3日と積み重ねる</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top: 3rem; background: var(--card-bg); padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">📚 関連書籍</h2>
+    <div style="display: grid; gap: 1rem;">
+      <div style="border-left: 4px solid var(--accent); padding-left: 1rem;">
+        <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">The Procrastination Equation</h4>
+        <p style="font-size: 0.95rem; color: var(--text-light); margin-bottom: 0.5rem;">著者: Piers Steel</p>
+        <p style="font-size: 0.95rem;">先延ばしの原因を動機×期待×遅延の数理で説明し、対策の理論基盤を提供。</p>
+      </div>
+      <div style="border-left: 4px solid var(--accent); padding-left: 1rem;">
+        <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">Atomic Habits（ジェームズ・クリアー式 複利で伸びる1つの習慣）</h4>
+        <p style="font-size: 0.95rem; color: var(--text-light); margin-bottom: 0.5rem;">著者: James Clear</p>
+        <p style="font-size: 0.95rem;">摩擦最小化と環境設計を核に、小さな習慣で行動を自動化する手法が一致。</p>
+      </div>
+      <div style="border-left: 4px solid var(--accent); padding-left: 1rem;">
+        <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">Eat That Frog!</h4>
+        <p style="font-size: 0.95rem; color: var(--text-light); margin-bottom: 0.5rem;">著者: Brian Tracy</p>
+        <p style="font-size: 0.95rem;">最重要タスクの先行着手と時間ブロックの実践を簡潔に提示。</p>
+      </div>
+      <div style="border-left: 4px solid var(--accent); padding-left: 1rem;">
+        <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">Deep Work</h4>
+        <p style="font-size: 0.95rem; color: var(--text-light); margin-bottom: 0.5rem;">著者: Cal Newport</p>
+        <p style="font-size: 0.95rem;">注意の遮断と時間の箱詰めにより高強度の集中を設計する方法が補完的。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// タブ切替
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => c.classList.remove('active'));
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
