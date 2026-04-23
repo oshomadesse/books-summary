@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Subtle Art of Not Giving a F*ck - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 32px 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 20px;
+  margin: 24px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.summary-item {
+  margin-bottom: 16px;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 4px;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  margin-left: 12px;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 24px 0 16px;
+  overflow-x: auto;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.15rem;
+  color: var(--secondary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  border-left: 5px solid var(--secondary);
+  padding: 16px;
+  margin: 12px 0;
+  border-radius: 8px;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.quote-card small {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+  margin-top: 8px;
+}
+.action-card {
+  background: var(--card-bg);
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 12px 0;
+}
+.action-card h4 {
+  color: var(--primary);
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin: 4px 0;
+  line-height: 1.6;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 8px;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--primary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.15rem;
+  margin-bottom: 12px;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.chapter-card .reason {
+  background: #f0f4ff;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.chapter-card .reason strong {
+  color: var(--secondary);
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h4 {
+  color: var(--primary);
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin: 8px 0;
+  line-height: 1.7;
+}
+.example-card .insight {
+  background: #fff3e0;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.example-card .insight strong {
+  color: var(--secondary);
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 24px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-diagram h3 {
+  text-align: center;
+  color: var(--secondary);
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin: 12px 0;
+  font-size: 0.9rem;
+}
+.flow-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+}
+.flow-arrow {
+  margin: 0 12px;
+  color: var(--accent);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.book-item h4 {
+  color: var(--primary);
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+.book-item .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+.book-item .relation {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    font-size: 0.85rem;
+  }
+  .tab-btn {
+    padding: 10px 14px;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 The Subtle Art of Not Giving a F*ck</h1>
+  <p>幸福は問題の不在ではなく、より良い問題を選び取り、その結果に責任を引き受けることで生まれる。限られた注意を何に配るか（＝何を気にするか）を厳選し、健全な価値観に沿って行動せよ。</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜ多くの人は努力しても満たされず、人生が"狂う"のか？どうすれば実質的に良い方向へ変えられるのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>気にする対象を絞り、良い価値観に基づいて"引き受けたい苦労"を選ぶ。原因よりも責任を重視し、小さな行動から不確実性に踏み込む。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>注意は有限で、誤った価値観（他者承認・快楽至上・常にポジティブ等）は"足りなさ"を増幅し続ける。責任の引き受けは主体性と意味を復元し、行動は感情を後追いで変えるため、好循環が生まれる。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>1) 価値観を棚卸しし、測定可能・行動可能・現実適合の基準へ置換する。2) "より良い問題"を選び、その結果に責任を持つ。3) 小さな行動を先行させ（Do Something）、不確実性を受容しつつ境界線と"ノー"で注意を守る。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🎯 限られた注意（何を気にするか）</h3>
+        <ul>
+          <li>人の注意資源は希少であり、配分先の選択が感情と意思決定を規定する</li>
+          <li>支出先を選ぶことが生の質を決める</li>
+          <li>一言要約：<strong>注意は人生の予算</strong></li>
+        </ul>
+        <div class="badge">理由：注意配分という実装可能なレバーを示し、抽象論を行動に落とせるから</div>
+      </div>
+      <div class="card">
+        <h3>⚖️ 価値観の質（良い/悪い価値観）</h3>
+        <ul>
+          <li>良い価値観：自分で制御可能・現実に適合・検証可能</li>
+          <li>悪い価値観：外部依存・曖昧・非現実で、慢性的な不満を生む</li>
+          <li>一言要約：<strong>基準が現実をつくる</strong></li>
+        </ul>
+        <div class="badge">理由：価値観の質が人生体験の質を直接決定するため</div>
+      </div>
+      <div class="card">
+        <h3>🔄 責任と原因の分離</h3>
+        <ul>
+          <li>出来事の原因は他者や偶然でも、反応の選択と次の一手の責任は自分にある</li>
+          <li>無力感を打破し、主体性を回復する核心</li>
+          <li>一言要約：<strong>原因は外でも責任は内</strong></li>
+        </ul>
+        <div class="badge">理由：責任の引き受けが自己効力感と意味を生むから</div>
+      </div>
+      <div class="card">
+        <h3>🎭 より良い問題を選ぶ</h3>
+        <ul>
+          <li>痛みのない人生は存在せず、意味は"どの痛みを選ぶか"から生まれる</li>
+          <li>望ましい苦労を主体的に選択する</li>
+          <li>一言要約：<strong>選んだ苦労が幸福</strong></li>
+        </ul>
+        <div class="badge">理由：快楽追求ではなく、意味ある苦労の選択が満足を生むから</div>
+      </div>
+      <div class="card">
+        <h3>🌀 フィードバックループ地獄</h3>
+        <ul>
+          <li>不安を不安が増幅し、自己評価の低下が自己嫌悪を呼ぶ負の循環</li>
+          <li>回避するほど強化される</li>
+          <li>一言要約：<strong>負の自己増殖</strong></li>
+        </ul>
+        <div class="badge">理由：悪い価値観が負のループを駆動するメカニズムを理解するため</div>
+      </div>
+      <div class="card">
+        <h3>🚀 行動先行の原則（Do Something）</h3>
+        <ul>
+          <li>動機→行動の順ではなく、微小な行動が動機と自信を生成する逆流モデル</li>
+          <li>先延ばしの中核メカニズムを反転させる</li>
+          <li>一言要約：<strong>まず動け、気持ちは後</strong></li>
+        </ul>
+        <div class="badge">理由：最小行動で突破口を開き、好循環を起動できるから</div>
+      </div>
+      <div class="card">
+        <h3>🚧 境界線と"ノー"</h3>
+        <ul>
+          <li>自他の責任範囲を明確にし、注意資源を守るために断る力を持つ</li>
+          <li>関係の健全性を高める</li>
+          <li>一言要約：<strong>断ることは護ること</strong></li>
+        </ul>
+        <div class="badge">理由："ノー"の罪悪感を外し、関係の健全化と注意保全を両立できるから</div>
+      </div>
+      <div class="card">
+        <h3>🤔 不確実性の受容と謙虚さ</h3>
+        <ul>
+          <li>自分の物語や確信は暫定的だと認め、誤り修正を前提に学習を続ける姿勢</li>
+          <li>確信より更新を優先する</li>
+          <li>一言要約：<strong>確信より更新</strong></li>
+        </ul>
+        <div class="badge">理由：学習と修正の継続が価値観を精緻化し、適応力を高めるから</div>
+      </div>
+      <div class="card">
+        <h3>💀 死と意味づけ</h3>
+        <ul>
+          <li>有限性の自覚が価値観を淘汰し、重要なことへの集中を促す</li>
+          <li>死は最強の編集者</li>
+          <li>一言要約：<strong>有限性が選別する</strong></li>
+        </ul>
+        <div class="badge">理由：死の自覚が無駄な"気にする"を削除し、価値観を再編集するから</div>
+      </div>
+    </div>
+
+    <div class="visual-diagram">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-item">
+        <div class="flow-box">限られた注意</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">価値観の質が人生体験を決定</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">悪い価値観</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">フィードバックループ地獄を強化</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">責任と原因の分離</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">主体性回復</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">行動先行の原則</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">良い価値観の強化</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">境界線と"ノー"</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">より良い問題の選択が可能</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">不確実性の受容</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">価値観の精緻化</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-box">死の自覚</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">無駄な"気にする"を削除</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 第1章：問題設定</h3>
+      <ul>
+        <li>常時ポジティブ幻想と承認依存が不満を増やすという逆説を提示</li>
+        <li>"気にしない"ことの重要性を導入</li>
+        <li>幸福は問題の不在ではなく、良い問題を選ぶことから生まれる</li>
+      </ul>
+      <div class="reason">
+        <strong>理由（なぜこの章が必要か）：</strong>現代社会の"ポジティブ至上主義"が逆に不満を増幅させるメカニズムを明らかにし、読者の前提を揺さぶるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第2章：資源の再定義</h3>
+      <ul>
+        <li>注意は有限であり、何を気にするかの選択が最重要というフレームを導入</li>
+        <li>注意配分が人生の質を決定する</li>
+        <li>悪い価値観が注意を浪費させる</li>
+      </ul>
+      <div class="reason">
+        <strong>理由（なぜこの章が必要か）：</strong>抽象的な"幸福論"を具体的な"注意の予算管理"に落とし込み、実装可能にするため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第3章：価値観の診断</h3>
+      <ul>
+        <li>良い価値観と悪い価値観の基準を明確化</li>
+        <li>良い価値観：制御可能・現実適合・検証可能</li>
+        <li>悪い価値観：外部依存・曖昧・非現実</li>
+        <li>指標の置換を提案</li>
+      </ul>
+      <div class="reason">
+        <strong>理由（なぜこの章が必要か）：</strong>読者が自分の価値観を診断し、具体的に置換できる基準を提供するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第4章：責任の再配置</h3>
+      <ul>
+        <li>原因と責任を分離し、選択可能性に焦点を当てる</li>
+        <li>出来事の原因は選べないが、反応と次の一手は選べる</li>
+        <li>責任の引き受けが主体性と自己効力感を生む</li>
+      </ul>
+      <div class="reason">
+        <strong>理由（なぜこの章が必要か）：</strong>無力感を打破し、"自分にできること"へ焦点を移すことで行動を促すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第5章：行動モデル</h3>
+      <ul>
+        <li>Do Something原則で"感情は後からついてくる"を実証的に説明</li>
+        <li>動機→行動ではなく、行動→動機の逆流モデル</li>
+        <li>小さな行動が自信と動機を生成する</li>
+      </ul>
+      <div class="reason">
+        <strong>理由（なぜこの章が必要か）：</strong>先延ばしの中核メカニズムを反転させ、最小行動で突破口を開く実践法を示すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第6章：関係性と境界</h3>
+      <ul>
+        <li>ノーと言う力と責任境界の設定で健全さを回復</li>
+        <li>境界線は愛情の欠如ではなく、尊重の表明</li>
+        <li>注意資源を守るために断る力を持つ</li>
+      </ul>
+      <div class="reason">
+        <strong>理由（なぜこの章が必要か）：</strong>"ノー"の罪悪感を外し、関係の健全化と注意保全を両立する方法を提供するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第7章：不確実性</h3>
+      <ul>
+        <li>確信を手放し、試行錯誤を常態化する思考法を提示</li>
+        <li>自分の物語や確信は暫定的だと認める</li>
+        <li>誤り修正を前提に学習を続ける姿勢</li>
+      </ul>
+      <div class="reason">
+        <strong>理由（なぜこの章が必要か）：</strong>学習と修正の継続が価値観を精緻化し、適応力を高めるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第8章：有限性と意味</h3>
+      <ul>
+        <li>死を通して価値観を編集し、"より良い問題"を選ぶ実践へ収束</li>
+        <li>有限性の自覚が価値観を淘汰し、重要なことへの集中を促す</li>
+        <li>死は最強の編集者</li>
+      </ul>
+      <div class="reason">
+        <strong>理由（なぜこの章が必要か）：</strong>死の自覚が無駄な"気にする"を削除し、価値観を再編集する最終的な動機づけを提供するため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>💼 例1：起業家の失敗と責任</h4>
+      <p><strong>背景：</strong>ある起業家が事業に失敗し、多額の負債を抱えた。市場環境や投資家の判断ミスなど、外部要因も多かった。</p>
+      <p><strong>展開：</strong>彼は"原因は外部にあるが、次の一手の責任は自分にある"と捉え、負債返済計画を立て、小さな副業から再スタートした。</p>
+      <div class="insight">
+        <strong>理由（この例が示すこと）：</strong>原因と責任の分離が無力感を打破し、主体性を回復させる。外部要因を認めつつも、自分にできることに焦点を当てることで行動が生まれる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🎨 例2：アーティストの"Do Something"</h4>
+      <p><strong>背景：</strong>あるアーティストが創作意欲を失い、数ヶ月間何も描けなくなった。"やる気が出たら描こう"と待ち続けた。</p>
+      <p><strong>展開：</strong>彼は"5分だけ鉛筆を持つ"という最小行動を始めた。すると、描き始めると自然に続き、やる気が後から湧いてきた。</p>
+      <div class="insight">
+        <strong>理由（この例が示すこと）：</strong>行動先行の原則（Do Something）が先延ばしを打破する。動機→行動ではなく、行動→動機の逆流モデルが実際に機能することを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>👨‍👩‍👧 例3：親子関係と境界線</h4>
+      <p><strong>背景：</strong>ある母親が成人した息子の問題（仕事・金銭・人間関係）をすべて引き受け、疲弊していた。息子も依存的で自立できなかった。</p>
+      <p><strong>展開：</strong>母親は"息子の問題は息子の責任"と境界線を引き、支援を限定した。最初は罪悪感があったが、息子は徐々に自立し、関係も健全化した。</p>
+      <div class="insight">
+        <strong>理由（この例が示すこと）：</strong>境界線と"ノー"が関係の健全性を高める。断ることは愛情の欠如ではなく、尊重の表明であり、双方の成長を促す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🏃 例4：マラソンランナーの価値観転換</h4>
+      <p><strong>背景：</strong>あるランナーが"他者より速く走ること"を価値観にしていたが、常に不満で、怪我も多かった。</p>
+      <p><strong>展開：</strong>彼は価値観を"自分の限界に挑戦し、昨日の自分を超えること"に置換した。結果、楽しみながら走れるようになり、パフォーマンスも向上した。</p>
+      <div class="insight">
+        <strong>理由（この例が示すこと）：</strong>良い価値観（制御可能・現実適合・検証可能）への置換が満足度を高める。外部依存の悪い価値観から、内的基準の良い価値観へのシフトが鍵。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>"あなたの人生の質は、何を気にするかの質で決まる。"</p>
+      <small><strong>なぜ重要か：</strong>注意配分という実装可能なレバーを示し、抽象論を行動に落とせるから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>"原因は選べないが、反応と次の一手は選べる。"</p>
+      <small><strong>なぜ重要か：</strong>無力感を打破し、責任の引き受けが自己効力感を生む核だから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>"良い人生は、良い問題を選ぶ技術である。"</p>
+      <small><strong>なぜ重要か：</strong>快楽追求ではなく、意味ある苦労の選択が満足を生むと転地させるため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>"行動が動機をつくる。小さく動けば、やる気は後から来る。"</p>
+      <small><strong>なぜ重要か：</strong>先延ばしの中核メカニズムを反転させ、最小行動で突破口を開けるから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>"境界線は愛情の欠如ではなく、尊重の表明である。"</p>
+      <small><strong>なぜ重要か：</strong>"ノー"の罪悪感を外し、関係の健全化と注意保全を両立できるから。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>✅ アクション1：価値観を3つ書き出し順位付け</h4>
+      <p><strong>具体的な手順：</strong>紙とペンを用意し、自分が大切にしている価値観を3つ書き出す。次に、それぞれが"制御可能・現実適合・検証可能"かをチェックし、順位をつける。</p>
+      <p class="meta"><strong>目的：</strong>自分の価値観を可視化し、良い価値観と悪い価値観を区別する。</p>
+      <p class="meta"><strong>期待効果：</strong>注意配分の優先順位が明確になり、無駄な"気にする"を削減できる。15分で完了。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション2：気にしない3項目を決め宣言</h4>
+      <p><strong>具体的な手順：</strong>最近気にしていること（SNSの反応、他人の評価、完璧主義など）をリストアップし、その中から"気にしない"と決める3項目を選ぶ。紙に書き、声に出して宣言する。</p>
+      <p class="meta"><strong>目的：</strong>注意資源を守り、重要なことに集中する境界線を引く。</p>
+      <p class="meta"><strong>期待効果：</strong>無駄な注意の漏れを防ぎ、精神的な余裕が生まれる。15分で完了。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション3：避けていた作業を15分だけ実行</h4>
+      <p><strong>具体的な手順：</strong>先延ばしにしている作業（メール返信、書類整理、運動など）を1つ選び、タイマーを15分にセットして開始する。完璧を目指さず、"とにかく手をつける"ことだけを目標にする。</p>
+      <p class="meta"><strong>目的：</strong>行動先行の原則（Do Something）を体験し、動機が後から湧くことを実感する。</p>
+      <p class="meta"><strong>期待効果：</strong>先延ばしの壁を突破し、小さな成功体験が自信と動機を生む。15分で完了。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション4：今日1つ"ノー"を言う</h4>
+      <p><strong>具体的な手順：</strong>今日中に、自分の注意資源を守るために1つ"ノー"を言う機会を見つける（不要な会議、SNSの誘惑、他人の依頼など）。断る理由を簡潔に伝え、罪悪感を手放す。</p>
+      <p class="meta"><strong>目的：</strong>境界線を引く練習をし、"ノー"が関係を壊さないことを体験する。</p>
+      <p class="meta"><strong>期待効果：</strong>注意資源が守られ、重要なことに集中できる。関係の健全性も向上する。30分以内で完了。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション5：死を意識する5分間の瞑想</h4>
+      <p><strong>具体的な手順：</strong>静かな場所で目を閉じ、5分間"自分がいつか死ぬこと"を意識する。今日が最後の日だとしたら、何を気にし、何を気にしないかを考える。</p>
+      <p class="meta"><strong>目的：</strong>有限性の自覚を通して、価値観を再編集し、無駄な"気にする"を削除する。</p>
+      <p class="meta"><strong>期待効果：</strong>重要なことへの集中力が高まり、日常の些事への執着が減る。5分で完了。</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 40px;">
+    <h2 style="color: var(--secondary); margin-bottom: 16px;">📚 関連書籍</h2>
+    <div class="book-list">
+      <div class="book-item">
+        <h4>The Subtle Art of Not Giving a F*ck</h4>
+        <div class="author">Mark Manson</div>
+        <div class="relation">本書の中核テーマ（注意の選択・価値観・責任）の原典的展開。</div>
+      </div>
+      <div class="book-item">
+        <h4>Everything Is F*cked: A Book About Hope</h4>
+        <div class="author">Mark Manson</div>
+        <div class="relation">希望の心理と価値観の衝突を掘り下げ、不確実性と意味を補強。</div>
+      </div>
+      <div class="book-item">
+        <h4>嫌われる勇気</h4>
+        <div class="author">岸見一郎・古賀史健</div>
+        <div class="relation">原因ではなく"課題の分離"と責任範囲を重視する実践哲学が響き合う。</div>
+      </div>
+      <div class="book-item">
+        <h4>エッセンシャル思考</h4>
+        <div class="author">グレッグ・マキューン</div>
+        <div class="relation">限られた資源を本質に集中させる"選択とノー"の技法が一致。</div>
+      </div>
+      <div class="book-item">
+        <h4>7つの習慣</h4>
+        <div class="author">スティーブン・R・コヴィー</div>
+        <div class="relation">影響の輪・主体性・価値観中心主義など、責任と選択の枠組みが補完的。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
