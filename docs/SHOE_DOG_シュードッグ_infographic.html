@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shoe Dog インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-light);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 1.5rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.05rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+.chapter-card p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+.example-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border: 2px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.05rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+.example-card .detail {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--accent);
+  opacity: 0.3;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-card small {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 10px rgba(102,126,234,0.3);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  line-height: 1.5;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-flow {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  margin: 0 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+.metric-box .number {
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.metric-box .label {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+.book-list {
+  list-style: none;
+}
+.book-list li {
+  background: var(--card-bg);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  border-left: 3px solid var(--primary);
+}
+.book-list .book-title {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 0.95rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.book-list .book-author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.book-list .book-relation {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+@media (max-width: 600px) {
+  header h1 { font-size: 1.5rem; }
+  .tabs { margin: 0.5rem; }
+  .tab-btn { font-size: 0.8rem; padding: 0.6rem 0.75rem; min-width: 100px; }
+  .card, .chapter-card, .example-card, .quote-card, .action-card { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 Shoe Dog インフォグラフィック</h1>
+  <p>起業は長距離走だ。不確実性・資金難・裏切りが常態でも、顧客価値と仲間に賭け続け、走り続けた者だけがブランドを築ける。</p>
+</header>
+
+<div class="summary-block">
+  <h2>📌 要約（問い×答え×根拠）</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>無名の若者はどうNikeを世界的ブランドにしたのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    <p>走り続ける執念と顧客・選手起点の製品づくり、資金繰りとサプライチェーンの綱渡りを同時に解く実行で達成した。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>仕入先の裏切りや恒常的な資金不足に直面しつつも、品質改善と選手の声に投資し続け、信頼できる仲間・商社・銀行を巻き込んだため。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠 How（そのためには）</strong>
+    <p>1) クレイジー・アイデアを小さく検証し初期顧客を獲得、2) サプライヤー依存を脱し自社ブランドへ転換、3) 現金回転を可視化し資金調達を多元化、4) 顧客志向の開発文化(ワッフルソール等)を組織に埋め込む。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card">
+    <h3>💡 クレイジー・アイデア</h3>
+    <ul>
+      <li><strong>定義:</strong> 常識外れだが市場への仮説を伴う大胆な構想</li>
+      <li><strong>特徴:</strong> 旅と観察から生まれ、まず小さく検証する</li>
+      <li><strong>一言:</strong> 大胆×小さく試す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜ重要か:</strong> 起業の出発点は非常識な仮説。小さく試すことでリスクを抑えつつ市場の反応を確認できる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏢 ブルーリボン・スポーツ（BRS）</h3>
+    <ul>
+      <li><strong>定義:</strong> ナイキ前身の輸入販売会社</li>
+      <li><strong>役割:</strong> 外部ブランドで需要検証とキャッシュ回転を学ぶ器</li>
+      <li><strong>一言:</strong> 前哨基地</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜ重要か:</strong> 自社ブランド前に市場を理解し、運営ノウハウを蓄積する実験場として機能した。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ サプライヤー依存リスク</h3>
+    <ul>
+      <li><strong>定義:</strong> 単一供給源への依存が交渉力と存続を脅かす構造的脆弱性</li>
+      <li><strong>顕在化:</strong> 契約切れや裏切りで露呈</li>
+      <li><strong>一言:</strong> 土台の弱点</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜ重要か:</strong> 成長期に最も危険。供給を握られると価格・品質・存続すべてが他者に依存する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✨ 自社ブランド化（Nike立ち上げ）</h3>
+    <ul>
+      <li><strong>定義:</strong> 他社製の販売から脱却し、設計・製造・ブランド物語を自ら掌握する転換点</li>
+      <li><strong>効果:</strong> 主導権の奪回</li>
+      <li><strong>一言:</strong> 主導権の奪回</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜ重要か:</strong> 依存から自立へ。ブランドと品質を自らコントロールし、長期競争優位を築く基盤となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏃 ランナー思考</h3>
+    <ul>
+      <li><strong>定義:</strong> 一歩ずつ前進し痛みを糧にする持久のメンタルモデル</li>
+      <li><strong>適用:</strong> 意思決定と文化の基調</li>
+      <li><strong>一言:</strong> 走り続ける心</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜ重要か:</strong> 起業は短距離走ではなく長距離走。継続と忍耐が戦略より重要な局面が多い。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💰 資金繰りの綱渡り</h3>
+    <ul>
+      <li><strong>定義:</strong> 成長に先行する在庫・輸送費を賄うための銀行・商社・社債の組合せ運用</li>
+      <li><strong>比喩:</strong> キャッシュは酸素</li>
+      <li><strong>一言:</strong> キャッシュは酸素</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜ重要か:</strong> 成長と資金繰りはトレードオフ。現金が尽きれば事業は即座に停止する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 アスリート共創</h3>
+    <ul>
+      <li><strong>定義:</strong> トップ選手のフィードバックを設計へ即時反映し、性能物語で差別化する手法</li>
+      <li><strong>効果:</strong> 現場起点R&D</li>
+      <li><strong>一言:</strong> 現場起点R&D</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜ重要か:</strong> 顧客の声が最良のイノベーション源。使用体験が広告より強力な差別化を生む。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 文化の核（勝利への偏愛）</h3>
+    <ul>
+      <li><strong>定義:</strong> 反権威・実験・誠実な競争を重視する内的規範</li>
+      <li><strong>適用:</strong> 採用・評価・デザイン判断の基準</li>
+      <li><strong>一言:</strong> 勝つための作法</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💭 なぜ重要か:</strong> 文化が意思決定の一貫性を保ち、長期的な競争優位の源泉となる。
+    </div>
+  </div>
+
+  <div class="visual-flow">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">🔄 概念間の関係性</h3>
+    <div class="flow-item">
+      <span>旅の観察</span>
+      <span class="flow-arrow">→</span>
+      <span>クレイジー・アイデア誕生</span>
+      <span class="flow-arrow">→</span>
+      <span>小規模輸入で需要検証</span>
+    </div>
+    <div class="flow-item">
+      <span>需要成長 × 単一仕入れ</span>
+      <span class="flow-arrow">=</span>
+      <span>サプライヤー依存リスク顕在化</span>
+    </div>
+    <div class="flow-item">
+      <span>依存リスク</span>
+      <span class="flow-arrow">→</span>
+      <span>自社ブランド化決断（Nike）</span>
+      <span class="flow-arrow">→</span>
+      <span>設計・品質を自前化</span>
+    </div>
+    <div class="flow-item">
+      <span>アスリート共創</span>
+      <span class="flow-arrow">→</span>
+      <span>製品性能向上</span>
+      <span class="flow-arrow">→</span>
+      <span>口コミ・ブランド物語強化</span>
+    </div>
+    <div class="flow-item">
+      <span>成長加速</span>
+      <span class="flow-arrow">→</span>
+      <span>在庫・運転資金逼迫</span>
+      <span class="flow-arrow">→</span>
+      <span>資金繰りの綱渡り</span>
+    </div>
+    <div class="flow-item">
+      <span>ランナー思考</span>
+      <span class="flow-arrow">→</span>
+      <span>逆境下でも継続的実行</span>
+      <span class="flow-arrow">→</span>
+      <span>臨界点でのブレイクスルー</span>
+    </div>
+    <div class="flow-item">
+      <span>文化の核</span>
+      <span class="flow-arrow">→</span>
+      <span>採用・意思決定の一貫性</span>
+      <span class="flow-arrow">→</span>
+      <span>長期競争優位の維持</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📅 1962–1964 旅と着想</h3>
+    <p><strong>要点:</strong> 世界一周で日本の靴に可能性を見出し輸入販売の構想を持ち帰る。小さな注文で市場を検証。</p>
+    <div class="reason-box">
+      <strong>💭 なぜこの章が必要か:</strong> アイデアの起源と初期検証の重要性を示す。大胆な仮説も小さく試すことで現実化できる。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📅 1964–1971 BRSの成長と依存の罠</h3>
+    <p><strong>要点:</strong> 会計士として働きつつ副業で拡大。仕入先に依存しつつ選手に寄り添い品質改善を要求。資金繰りは常にタイト。</p>
+    <div class="reason-box">
+      <strong>💭 なぜこの章が必要か:</strong> 成長の裏にある構造的リスクと資金の綱渡りを可視化。依存の危険性を実感させる。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📅 1971–1972 自社ブランドNikeの誕生</h3>
+    <p><strong>要点:</strong> 契約不安を契機に自社ブランドへ舵切り。名称・ロゴを迅速に決定し初期ラインを投入。</p>
+    <div class="reason-box">
+      <strong>💭 なぜこの章が必要か:</strong> 危機が転換点となる瞬間を描く。主導権を取り戻す決断の重要性を強調。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📅 1972–1976 製品物語と現金回転</h3>
+    <p><strong>要点:</strong> ワッフルソール等のイノベーションがヒット。スポーツ現場の物語が販売を牽引する一方、在庫と現金の綱渡りが続く。</p>
+    <div class="reason-box">
+      <strong>💭 なぜこの章が必要か:</strong> 製品差別化と資金管理の両立が成長の鍵であることを示す。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📅 1976–1980 組織化と資本戦略</h3>
+    <p><strong>要点:</strong> 商社・銀行との関係を組み替え、幹部と文化を固める。法的・資金的危機を突破し上場で資本基盤を獲得。</p>
+    <div class="reason-box">
+      <strong>💭 なぜこの章が必要か:</strong> スケール段階での組織化と資本戦略の必要性を実例で示す。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📅 終章 学びの抽象化</h3>
+    <p><strong>要点:</strong> 恐怖と野心を燃料にし続けた過程を総括し、挑戦者へのメッセージを提示。</p>
+    <div class="reason-box">
+      <strong>💭 なぜこの章が必要か:</strong> 具体的経験を普遍的な教訓に昇華し、読者の行動を促す。
+    </div>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-box">
+      <span class="number">6</span>
+      <span class="label">章構成</span>
+    </div>
+    <div class="metric-box">
+      <span class="number">18年</span>
+      <span class="label">描かれた期間</span>
+    </div>
+    <div class="metric-box">
+      <span class="number">∞</span>
+      <span class="label">走り続ける精神</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🔍 具体例1: 日本の靴メーカーとの初接触</h3>
+    <p class="detail"><strong>背景:</strong> 世界一周旅行中、日本製の高品質で低価格なランニングシューズに着目。帰国後、小規模な輸入注文で市場の反応を確認した。</p>
+    <p class="detail"><strong>示唆:</strong> 大胆な仮説も小さく試すことでリスクを抑えつつ検証できる。初期顧客の反応が次のステップを決める。</p>
+    <div class="reason-box">
+      <strong>💭 この例が示すこと:</strong> クレイジー・アイデアは観察と小さな実験から始まる。市場検証なしに大規模投資は危険。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🔍 具体例2: ワッフルソールの開発</h3>
+    <p class="detail"><strong>背景:</strong> コーチがワッフル焼き器からヒントを得て、軽量で高グリップのソールを開発。アスリートのフィードバックを即座に反映し、製品化に成功。</p>
+    <p class="detail"><strong>示唆:</strong> 顧客（アスリート）の声を設計に直結させることで、広告に頼らない差別化が可能になる。</p>
+    <div class="reason-box">
+      <strong>💭 この例が示すこと:</strong> イノベーションは現場の観察と顧客共創から生まれる。性能物語が最強のマーケティング。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🔍 具体例3: 仕入先の契約打ち切りと自社ブランド化</h3>
+    <p class="detail"><strong>背景:</strong> 成長に伴い仕入先が契約を一方的に打ち切る危機に直面。これを契機に自社ブランド「Nike」を立ち上げ、設計・製造を自前化した。</p>
+    <p class="detail"><strong>示唆:</strong> 依存リスクは成功の瞬間に最大化する。危機を転換点として主導権を奪回する決断が必要。</p>
+    <div class="reason-box">
+      <strong>💭 この例が示すこと:</strong> サプライヤー依存は構造的脆弱性。自社ブランド化が長期的な自立と成長の鍵。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🔍 具体例4: 資金繰りの綱渡りと銀行交渉</h3>
+    <p class="detail"><strong>背景:</strong> 急成長に伴い在庫と輸送費が先行し、常に現金不足。銀行・商社・社債を組み合わせて資金を調達し続けた。</p>
+    <p class="detail"><strong>示唆:</strong> 成長と資金繰りはトレードオフ。現金は酸素であり、尽きれば即座に終わる。</p>
+    <div class="reason-box">
+      <strong>💭 この例が示すこと:</strong> キャッシュフロー管理が成長企業の生命線。多元的な資金調達戦略が不可欠。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>起業とは前に進み続ける長距離走である。</p>
+    <small><strong>なぜ重要か:</strong> 戦略より継続の比重が高い本書の精神を一言で表す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>仕入先への全面依存は、成功の瞬間に最大の脅威となる。</p>
+    <small><strong>なぜ重要か:</strong> スケール段階での構造リスクを可視化し、内製化の必然を示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>顧客=アスリートの声が最良のR&Dラボだ。</p>
+    <small><strong>なぜ重要か:</strong> 差別化の源泉が広告ではなく使用体験にあると強調する。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>現金はビジネスの酸素であり、なくなれば終わる。</p>
+    <small><strong>なぜ重要か:</strong> 成長と資金繰りのトレードオフを忘れない指針となる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>怖れは消えないが、行動すれば小さくなる。</p>
+    <small><strong>なぜ重要か:</strong> 意思決定の心理障壁を超える実践的な洞察。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>✍️ 10年ビジョンを200字で書く</h3>
+    <p><strong>目的:</strong> 長期的な方向性を明確にし、日々の意思決定の基準を持つ。</p>
+    <p><strong>期待効果:</strong> 短期的な困難に惑わされず、一貫した行動を取れるようになる。ランナー思考の起点となる。</p>
+  </div>
+
+  <div class="action-card">
+    <h3>⚠️ 主要リスクと対策を3つ列挙</h3>
+    <p><strong>目的:</strong> 構造的脆弱性を可視化し、事前に対策を講じる。</p>
+    <p><strong>期待効果:</strong> サプライヤー依存や資金繰りリスクを早期に認識し、危機を未然に防ぐ。</p>
+  </div>
+
+  <div class="action-card">
+    <h3>🎤 顧客ヒアリング質問を5件作る</h3>
+    <p><strong>目的:</strong> 顧客の声を製品・サービス改善に直結させる仕組みを作る。</p>
+    <p><strong>期待効果:</strong> アスリート共創の手法を実践し、使用体験に基づく差別化を実現する。</p>
+  </div>
+
+  <div style="background: white; border-radius: 10px; padding: 1.5rem; margin-top: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">📚 関連書籍</h3>
+    <ul class="book-list">
+      <li>
+        <span class="book-title">Onward 改革は足元から始めよ</span>
+        <span class="book-author">ハワード・シュルツ</span>
+        <span class="book-relation">ブランド再生と文化づくりの実践が、Nikeの文化醸成と響き合う。</span>
+      </li>
+      <li>
+        <span class="book-title">The Hard Thing About Hard Things</span>
+        <span class="book-author">ベン・ホロウィッツ</span>
+        <span class="book-relation">危機下の意思決定と組織運営が、資金繰り・人事の綱渡りと重なる。</span>
+      </li>
+      <li>
+        <span class="book-title">The Everything Store</span>
+        <span class="book-author">ブラッド・ストーン</span>
+        <span class="book-relation">供給網とキャッシュフローの拡張戦略が、Nikeの成長痛と対比できる。</span>
+      </li>
+      <li>
+        <span class="book-title">Made in Japan</span>
+        <span class="book-author">盛田昭夫</span>
+        <span class="book-relation">日本企業との取引や品質志向の背景理解に役立つ。</span>
+      </li>
+      <li>
+        <span class="book-title">Founders at Work</span>
+        <span class="book-author">ジェシカ・リヴィングストン</span>
+        <span class="book-relation">創業初期の泥臭い問題解決と学びを多事例で補強できる。</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => c.classList.remove('active'));
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
