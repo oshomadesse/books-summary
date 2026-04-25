@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>メモの魔力 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 0.95rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 1.5rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.metric-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(102,126,234,0.3);
+}
+.metric-card .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.metric-card .label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.quote-card blockquote {
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.quote-card .importance {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  padding-top: 0.5rem;
+  border-top: 1px solid #eee;
+}
+.action-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(240,147,251,0.05));
+  border: 2px solid var(--accent);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+}
+.action-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.action-card .purpose {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  margin: 0.75rem 0;
+  font-size: 0.9rem;
+}
+.flow-step .arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-size: 1.2rem;
+}
+.book-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+}
+.book-card h4 {
+  color: var(--primary);
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+.book-card .author {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding: 0;
+}
+.chapter-card li {
+  padding: 0.3rem 0;
+  font-size: 0.9rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.visual-concept {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 10px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.visual-concept .step {
+  text-align: center;
+  flex: 1;
+  min-width: 80px;
+}
+.visual-concept .step-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  font-weight: bold;
+}
+.visual-concept .step:nth-child(1) .step-icon {
+  background: var(--primary);
+}
+.visual-concept .step:nth-child(2) .step-icon {
+  background: var(--secondary);
+}
+.visual-concept .step:nth-child(3) .step-icon {
+  background: var(--accent);
+}
+.visual-concept .step-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.visual-concept .arrow-sep {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+@media (max-width: 600px) {
+  header h1 { font-size: 1.5rem; }
+  .tabs { margin: 0.5rem; }
+  .tab-btn { font-size: 0.8rem; padding: 0.6rem 0.75rem; min-width: 100px; }
+  .card h3 { font-size: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📝 メモの魔力</h1>
+  <p>事実を抽象化し転用する知的生産装置</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約（問い×答え×根拠）</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>メモはなぜ人生と仕事の成果を変えるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    <p>事実を抽象化し転用する思考装置としてメモを使うと、観察→洞察→行動の学習ループが回り続けるから。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>単なる記録では思考は深まらないが、「ファクト→抽象化→転用」の三段階により経験が汎用知へ昇華し、意思決定とアイデア創出の質・量が飛躍する。</p>
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    <p>三カラム（ファクト/抽象化/転用）で日常・会議・読書をメモ化し、Why/What/Howの問いを量産、自己分析で価値観を言語化して目標を逆算し、現場で試行→検証→改良を回す。</p>
+  </div>
+</div>
+
+<div class="visual-concept">
+  <div class="step">
+    <div class="step-icon">1</div>
+    <div class="step-label">ファクト<br>（素材）</div>
+  </div>
+  <div class="arrow-sep">→</div>
+  <div class="step">
+    <div class="step-icon">2</div>
+    <div class="step-label">抽象化<br>（本質化）</div>
+  </div>
+  <div class="arrow-sep">→</div>
+  <div class="step">
+    <div class="step-icon">3</div>
+    <div class="step-label">転用<br>（応用）</div>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card">
+    <h3>📌 ファクト（事実）</h3>
+    <ul>
+      <li><strong>定義:</strong> 自分の五感や一次情報から得た観察・出来事・発言などの具体的データ</li>
+      <li><strong>一言:</strong> 素材</li>
+      <li><strong>役割:</strong> 思考の出発点となる生の情報</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 伝聞や要約ではなく自分で観察した事実こそが、独自の洞察と行動を生む源泉となるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔬 抽象化</h3>
+    <ul>
+      <li><strong>定義:</strong> 複数の事実に共通する規則・本質・構造を言語化して汎用化すること</li>
+      <li><strong>一言:</strong> 本質化</li>
+      <li><strong>役割:</strong> 個別事象を普遍的な原理へ昇華</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 抽象化により経験が再利用可能な知識となり、異なる状況でも応用できる思考資産が蓄積されるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚀 転用</h3>
+    <ul>
+      <li><strong>定義:</strong> 抽象化で得た原理を別領域・別課題へ適用し、具体的行動や施策に落とすこと</li>
+      <li><strong>一言:</strong> 応用</li>
+      <li><strong>役割:</strong> 知識を成果に変換する実行段階</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 転用がなければ知識は机上の空論に終わり、行動と成果を生まないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 三カラム・メモ</h3>
+    <ul>
+      <li><strong>定義:</strong> ノートを「ファクト/抽象化/転用」の3列で運用し、左から右へ思考を進める技法</li>
+      <li><strong>一言:</strong> 思考レーン</li>
+      <li><strong>実装:</strong> 物理ノートやデジタルツールで3列を作成</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 構造化により思考の抜け漏れを防ぎ、誰でも再現可能な形で知的生産を習慣化できるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👁️ 一次情報志向</h3>
+    <ul>
+      <li><strong>定義:</strong> 伝聞や要約に頼らず、自分で見聞き・体験して得た情報を優先する姿勢</li>
+      <li><strong>一言:</strong> 現場主義</li>
+      <li><strong>実践:</strong> 会議・商談・現場で自ら観察し記録</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 一次情報は解釈の歪みがなく、独自の視点と差別化された洞察を生むため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 仮説思考</h3>
+    <ul>
+      <li><strong>定義:</strong> 限られた情報で暫定解を立て、メモで検証観点を明確化し更新する思考法</li>
+      <li><strong>一言:</strong> 当てにいく</li>
+      <li><strong>効果:</strong> 学習速度と意思決定の質が向上</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 仮説があると観察の焦点が定まり、検証サイクルが高速化して成長が加速するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 具体と抽象の往復</h3>
+    <ul>
+      <li><strong>定義:</strong> 事実→抽象→適用→検証を反復し、解像度と一般性を同時に高める運動</li>
+      <li><strong>一言:</strong> 行き来</li>
+      <li><strong>結果:</strong> 深い理解と広い応用力の両立</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 往復により表面的理解を脱し、本質を掴みながら実践力も磨かれるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏷️ ラベリング</h3>
+    <ul>
+      <li><strong>定義:</strong> 事象に短い名前やタグを付けて再利用・検索・結合を容易にする技法</li>
+      <li><strong>一言:</strong> 名づけ</li>
+      <li><strong>活用:</strong> 概念の整理と想起の高速化</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 名前を付けることで概念が固定化され、他の要素と組み合わせやすくなりアイデア創出が加速するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🪞 自己分析メモ（1000問）</h3>
+    <ul>
+      <li><strong>定義:</strong> 過去の体験・感情・価値観を問いで掘り、意思決定の原理と目標を言語化する</li>
+      <li><strong>一言:</strong> 人生の棚卸し</li>
+      <li><strong>成果:</strong> 価値観の明確化と目標設定の精度向上</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 自己理解が深まると選択の軸が定まり、迷いなく行動でき成果到達が早まるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 逆算思考</h3>
+    <ul>
+      <li><strong>定義:</strong> 理想の状態を先に定義し、現在からの最短経路を段階目標に分解する設計法</li>
+      <li><strong>一言:</strong> ゴール起点</li>
+      <li><strong>手順:</strong> 目標→マイルストーン→今日の行動</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> ゴールから逆算すると無駄な努力を排除でき、最短距離で成果に到達するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 外部脳</h3>
+    <ul>
+      <li><strong>定義:</strong> メモに思考と知識を退避・構造化し、脳内資源を創造と判断に集中させる発想</li>
+      <li><strong>一言:</strong> 脳の拡張</li>
+      <li><strong>効果:</strong> 認知負荷の軽減と創造性の向上</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 記憶に頼らず外部化すると脳のリソースが解放され、高次の思考に集中できるため。
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">🔗 概念間の関係性</h3>
+    <div class="flow-step">
+      <span>一次情報の観察（ファクト）</span>
+      <span class="arrow">→</span>
+      <span>抽象化（本質・規則）</span>
+    </div>
+    <div class="flow-step">
+      <span>抽象化</span>
+      <span class="arrow">→</span>
+      <span>転用（行動・施策）</span>
+    </div>
+    <div class="flow-step">
+      <span>転用</span>
+      <span class="arrow">→</span>
+      <span>新しいファクト</span>
+      <span class="arrow">→</span>
+      <span>学習ループ強化</span>
+    </div>
+    <div class="flow-step">
+      <span>メモ習慣の強化</span>
+      <span class="arrow">→</span>
+      <span>観察力↑</span>
+      <span class="arrow">→</span>
+      <span>問いの量と質↑</span>
+    </div>
+    <div class="flow-step">
+      <span>問いの質↑</span>
+      <span class="arrow">→</span>
+      <span>洞察↑</span>
+      <span class="arrow">→</span>
+      <span>アイデア量/精度↑</span>
+      <span class="arrow">→</span>
+      <span>成果↑</span>
+    </div>
+    <div class="flow-step">
+      <span>ラベリング/構造化</span>
+      <span class="arrow">→</span>
+      <span>想起と結合が容易</span>
+      <span class="arrow">→</span>
+      <span>発想速度↑</span>
+    </div>
+    <div class="flow-step">
+      <span>自己分析メモ</span>
+      <span class="arrow">→</span>
+      <span>価値観の言語化</span>
+      <span class="arrow">→</span>
+      <span>目標の明確化</span>
+    </div>
+    <div class="flow-step">
+      <span>目標の明確化</span>
+      <span class="arrow">→</span>
+      <span>逆算計画</span>
+      <span class="arrow">→</span>
+      <span>行動一貫性↑</span>
+    </div>
+    <div class="flow-step">
+      <span>仮説思考 × 三カラム・メモ</span>
+      <span class="arrow">→</span>
+      <span>検証ポイント可視化</span>
+      <span class="arrow">→</span>
+      <span>学習速度↑</span>
+    </div>
+    <div class="flow-step">
+      <span>外部脳（メモ）</span>
+      <span class="arrow">→</span>
+      <span>記憶依存の低減</span>
+      <span class="arrow">→</span>
+      <span>認知資源の解放</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📖 序章: メモは記録ではなく知的生産</h3>
+    <ul>
+      <li>メモの目的は記録ではなく思考と行動の生成</li>
+      <li>成果の差は思考の可視化にある</li>
+      <li>メモを知的生産装置として再定義</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 従来の「記録」という固定観念を破壊し、メモを成果直結のツールとして位置づけることで、読者の行動変容を促すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📖 第1部: メモで思考を深める基礎</h3>
+    <ul>
+      <li>三カラム（ファクト→抽象化→転用）の原理</li>
+      <li>左から右へ思考を進める具体的書き方</li>
+      <li>誰でも再現できる手順の提示</li>
+      <li>一次情報の重要性と観察の技術</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 抽象的な「思考法」を具体的な手順に落とし込むことで、習慣化のハードルを下げ、即実践可能にするため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📖 第2部: アイデア創出の実践</h3>
+    <ul>
+      <li>観察の質を上げる訓練法</li>
+      <li>ラベリングによる概念の固定化</li>
+      <li>具体と抽象の往復運動</li>
+      <li>既存要素の新結合でアイデアを量産</li>
+      <li>発想速度と精度の向上技法</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> アイデアは才能ではなく技術であることを示し、メモを使った体系的な発想法を提供することで、誰でも創造性を高められると証明するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📖 第3部: ビジネス活用</h3>
+    <ul>
+      <li>会議・商談・読書でのテンプレート化</li>
+      <li>仮説検証サイクルの高速化</li>
+      <li>検討の抜け漏れ防止（MECE的思考）</li>
+      <li>企画立案と意思決定の質向上</li>
+      <li>現場での即時適用と改善ループ</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 実務シーンでの具体的活用法を示すことで、メモが単なる自己啓発ではなく、ビジネス成果に直結する実践ツールであることを実証するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📖 第4部: 夢を叶えるメモ</h3>
+    <ul>
+      <li>自己分析で価値観・強みを言語化</li>
+      <li>1000問による徹底的な内省</li>
+      <li>意思決定の軸を明確化</li>
+      <li>逆算思考でロードマップ化</li>
+      <li>目標達成の最短経路設計</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 自己理解が深まると選択の一貫性が生まれ、迷いなく行動できるようになり、目標到達が加速するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📖 終章/付録: 習慣化の指南</h3>
+    <ul>
+      <li>自己分析1000問の提示</li>
+      <li>日次/週次レビューの設計</li>
+      <li>学習ループの常態化</li>
+      <li>継続のための仕組みづくり</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由:</strong> 知識を一過性で終わらせず、習慣として定着させる具体的な仕組みを提供することで、長期的な成長を支援するため。
+    </div>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <span class="number">3</span>
+      <span class="label">カラム構造</span>
+    </div>
+    <div class="metric-card">
+      <span class="number">1000</span>
+      <span class="label">自己分析問</span>
+    </div>
+    <div class="metric-card">
+      <span class="number">∞</span>
+      <span class="label">学習ループ</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>💼 具体例1: 会議でのメモ活用</h3>
+    <ul>
+      <li><strong>背景:</strong> 営業会議で顧客の発言「予算が厳しい」を記録</li>
+      <li><strong>ファクト:</strong> 「予算が厳しい」という発言</li>
+      <li><strong>抽象化:</strong> 顧客は価格ではなく投資対効果を重視している</li>
+      <li><strong>転用:</strong> 次回提案では費用対効果を数値で示す資料を作成</li>
+      <li><strong>結果:</strong> 成約率が向上</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 表面的な発言の裏にある本質（投資対効果重視）を抽象化で掴み、転用で具体的行動（数値資料作成）に落とすことで、成果に直結する提案ができることを示している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📚 具体例2: 読書メモの転用</h3>
+    <ul>
+      <li><strong>背景:</strong> マーケティング本で「顧客は商品ではなく体験を買う」を読む</li>
+      <li><strong>ファクト:</strong> 「顧客は体験を買う」という記述</li>
+      <li><strong>抽象化:</strong> 価値は機能ではなく感情的満足にある</li>
+      <li><strong>転用:</strong> 自社サービスの紹介ページに顧客の成功ストーリーを追加</li>
+      <li><strong>結果:</strong> コンバージョン率が改善</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 読書で得た知識を自分の文脈に抽象化し、別領域（自社サービス）へ転用することで、知識が実務成果に変換されることを実証している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 具体例3: 自己分析からの目標設定</h3>
+    <ul>
+      <li><strong>背景:</strong> 1000問の自己分析で「人の成長を支援する瞬間に喜びを感じる」と気づく</li>
+      <li><strong>ファクト:</strong> 過去の充実体験を列挙し共通点を発見</li>
+      <li><strong>抽象化:</strong> 自分の価値観は「他者の成長支援」にある</li>
+      <li><strong>転用:</strong> 3年後に教育事業を立ち上げる目標を設定し、逆算で今年は講師経験を積むと決定</li>
+      <li><strong>結果:</strong> 迷いなく行動でき、目標に向かって加速</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 自己分析メモで価値観を言語化すると意思決定の軸が定まり、逆算思考で具体的行動計画に落とせることで、目標達成の確度と速度が飛躍的に高まることを示している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 具体例4: 日常観察からのアイデア創出</h3>
+    <ul>
+      <li><strong>背景:</strong> 通勤電車で「多くの人がスマホで動画を見ている」を観察</li>
+      <li><strong>ファクト:</strong> 通勤時間に動画視聴が多い</li>
+      <li><strong>抽象化:</strong> 移動時間は受動的コンテンツ消費に適している</li>
+      <li><strong>転用:</strong> 自社の研修コンテンツを短尺動画化し、移動中に学習できる形式に変更</li>
+      <li><strong>結果:</strong> 受講完了率が向上</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 日常の何気ない観察をファクトとして記録し、抽象化で行動原理を掴み、転用で自社課題の解決策に変換できることを示している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧪 具体例5: 仮説検証サイクルの高速化</h3>
+    <ul>
+      <li><strong>背景:</strong> 新商品の販売戦略を立案中</li>
+      <li><strong>ファクト:</strong> 競合A社は若年層向けSNS広告で成功</li>
+      <li><strong>抽象化:</strong> ターゲット層が集まる場所で接触頻度を上げることが有効</li>
+      <li><strong>転用（仮説）:</strong> 自社ターゲット（30代）はビジネス系Podcastをよく聞くのでは？</li>
+      <li><strong>検証:</strong> メモに検証項目を列挙し、顧客インタビューで確認</li>
+      <li><strong>結果:</strong> 仮説が的中し、Podcast広告で高いROIを達成</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 仮説思考とメモを組み合わせることで検証ポイントが明確化され、学習サイクルが高速化し、意思決定の精度が上がることを実証している。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <blockquote>
+      「メモの目的は『記録』ではなく、事実を抽象化して転用し、行動を生むことにある。」
+    </blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> メモの存在意義を成果直結の思考装置へと再定義する中核命題だから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>
+      「三カラム（ファクト/抽象化/転用）で左から右へ思考を進める。」
+    </blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> 誰でも再現できる具体的な手順に落ちており、習慣化のハードルを下げるから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>
+      「自己分析は人生のコンパスをつくる作業である。」
+    </blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> 価値観の言語化が意思決定の一貫性と目標達成の速度を高めるため。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>
+      「アイデアは既存要素の新しい組み合わせで生まれる（引用思想の実装としてのメモ）。」
+    </blockquote>
+    <div class="importance">
+      <strong>重要性:</strong> 観察とラベリングを通じた素材集めが発想の量産に直結することを示すから。
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1)); padding: 1.5rem; border-radius: 10px; margin-top: 1rem;">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">📚 関連書籍</h3>
+    
+    <div class="book-card">
+      <h4>📖 知的生産の技術</h4>
+      <div class="author">著者: 梅棹忠夫</div>
+      <div class="relation">カード/外部脳の思想がメモを思考装置にする原点として補完的。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>📖 アイデアのつくり方</h4>
+      <div class="author">著者: ジェームス・W・ヤング</div>
+      <div class="relation">既存要素の新結合という発想原理が抽象化/転用の理屈を裏打ち。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>📖 エッセンシャル思考 最少の時間で成果を最大にする</h4>
+      <div class="author">著者: グレッグ・マキューン</div>
+      <div class="relation">価値観に基づく選択と集中が自己分析メモの実装に直結。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>📖 学びを結果に変える アウトプット大全</h4>
+      <div class="author">著者: 樺沢紫苑</div>
+      <div class="relation">記録から行動へ橋渡しする実践法がメモの転用段階と親和的。</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>🚶 アクション1: 観察せよ通勤中を15分メモ化</h4>
+    <ul style="list-style: none; padding: 0;">
+      <li style="padding: 0.3rem 0; padding-left: 0;"><strong>具体的手順:</strong></li>
+      <li style="padding-left: 1.5rem;">• 通勤・移動中にスマホのメモアプリを開く</li>
+      <li style="padding-left: 1.5rem;">• 周囲の人の行動、会話、風景を3つ以上記録（ファクト）</li>
+      <li style="padding-left: 1.5rem;">• 各ファクトから「なぜそうなのか？」を1行で書く（抽象化）</li>
+      <li style="padding-left: 1.5rem;">• 「自分の仕事/生活にどう活かせるか？」を1行で書く（転用）</li>
+    </ul>
+    <div class="purpose">
+      <strong>🎯 目的:</strong> 日常観察を思考の素材に変える習慣をつける<br>
+      <strong>✨ 期待効果:</strong> 観察力が向上し、アイデアの種が日常から自然に集まるようになる。15分で3サイクル回すことで思考の型が身につく。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>✍️ アクション2: 書け会議をFACT抽象転用で整理</h4>
+    <ul style="list-style: none; padding: 0;">
+      <li style="padding: 0.3rem 0; padding-left: 0;"><strong>具体的手順:</strong></li>
+      <li style="padding-left: 1.5rem;">• 次の会議でノートを3列に分割（物理/デジタル問わず）</li>
+      <li style="padding-left: 1.5rem;">• 左列に発言・データ・決定事項を記録（ファクト）</li>
+      <li style="padding-left: 1.5rem;">• 中列に「この発言の背景にある意図は？」を書く（抽象化）</li>
+      <li style="padding-left: 1.5rem;">• 右列に「自分が次にすべきアクションは？」を書く（転用）</li>
+      <li style="padding-left: 1.5rem;">• 会議終了後5分で右列を見直し、最優先1つを即実行</li>
+    </ul>
+    <div class="purpose">
+      <strong>🎯 目的:</strong> 会議を記録の場から行動創出の場に変える<br>
+      <strong>✨ 期待効果:</strong> 会議の生産性が劇的に向上し、議論の本質を掴む力と即座に行動に移す習慣が身につく。30分会議なら5分の整理で十分。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🪞 アクション3: 自己分析せよ過去1週間を20分</h4>
+    <ul style="list-style: none; padding: 0;">
+      <li style="padding: 0.3rem 0; padding-left: 0;"><strong>具体的手順:</strong></li>
+      <li style="padding-left: 1.5rem;">• 過去1週間で「嬉しかった瞬間」を3つ書き出す</li>
+      <li style="padding-left: 1.5rem;">• 過去1週間で「イライラした瞬間」を3つ書き出す</li>
+      <li style="padding-left: 1.5rem;">• 各瞬間について「なぜそう感じたのか？」を掘り下げる（3回Why）</li>
+      <li style="padding-left: 1.5rem;">• 共通点を見つけ「自分が大切にしている価値観」を1行で言語化</li>
+      <li style="padding-left: 1.5rem;">• その価値観に沿った「今週の行動目標」を1つ設定</li>
+    </ul>
+    <div class="purpose">
+      <strong>🎯 目的:</strong> 感情の裏にある価値観を言語化し、意思決定の軸を作る<br>
+      <strong>✨ 期待効果:</strong> 自己理解が深まり、選択に迷わなくなる。週次で繰り返すと価値観が明確化され、目標設定の精度が上がる。20分で人生の方向性が見えてくる。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>📖 アクション4: 読書メモを転用まで完結させる（30分）</h4>
+    <ul style="list-style: none; padding: 0;">
+      <li style="padding: 0.3rem 0; padding-left: 0;"><strong>具体的手順:</strong></li>
+      <li style="padding-left: 1.5rem;">• 今読んでいる本/記事から「重要だ」と感じた箇所を3つ抜粋（ファクト）</li>
+      <li style="padding-left: 1.5rem;">• 各箇所について「著者が伝えたい本質は何か？」を1行で書く（抽象化）</li>
+      <li style="padding-left: 1.5rem;">• 「自分の仕事/生活のどの場面で使えるか？」を具体的に書く（転用）</li>
+      <li style="padding-left: 1.5rem;">• 転用アイデアの中から1つを選び、今日中に実行する</li>
+    </ul>
+    <div class="purpose">
+      <strong>🎯 目的:</strong> 読書を知識の蓄積から行動変容へ変える<br>
+      <strong>✨ 期待効果:</strong> 読書の投資対効果が飛躍的に向上し、知識が実務成果に直結する。30分で1冊分のエッセンスを行動に落とせる。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🎯 アクション5: 今日の目標を逆算で設計（15分）</h4>
+    <ul style="list-style: none; padding: 0;">
+      <li style="padding: 0.3rem 0; padding-left: 0;"><strong>具体的手順:</strong></li>
+      <li style="padding-left: 1.5rem;">• 「1年後の理想の状態」を1文で書く</li>
+      <li style="padding-left: 1.5rem;">• そのために「3ヶ月後に達成すべきこと」を1つ書く</li>
+      <li style="padding-left: 1.5rem;">• そのために「今月中にすべきこと」を1つ書く</li>
+      <li style="padding-left: 1.5rem;">• そのために「今週すべきこと」を1つ書く</li>
+      <li style="padding-left: 1.5rem;">• そのために「今日すべきこと」を1つ書き、今すぐ着手する</li>
+    </ul>
+    <div class="purpose">
+      <strong>🎯 目的:</strong> 長期目標を今日の行動に分解し、迷いなく動けるようにする<br>
+      <strong>✨ 期待効果:</strong> 日々の行動が目標に直結し、無駄な努力が減る。15分の設計で1年後の成果が変わる。逆算思考が習慣化すると達成速度が加速する。
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 1.5rem; border-radius: 10px; margin-top: 1.5rem; text-align: center;">
+    <h3 style="margin-bottom: 0.5rem;">🚀 今すぐ始めよう</h3>
+    <p style="font-size: 0.9rem; opacity: 0.95;">上記5つのアクションから1つ選び、今日中に実行してください。メモは行動して初めて価値を生みます。</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
