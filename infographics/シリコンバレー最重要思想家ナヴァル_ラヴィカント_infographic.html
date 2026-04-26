@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>富と幸福の設計図 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+
+.reason strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+
+.quote-card .quote-text {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.quote-card .quote-meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 0.25rem;
+}
+
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  margin: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.flow-diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.flow-arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+
+.book-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  border-left: 3px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.book-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.book-card .relation {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>💎 富と幸福の設計図</h1>
+  <p>時間を切り売りせず、価値を拡張し、心を満たす生き方</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    どうすれば富と幸福を同時に獲得し、持続させられるか？
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    特殊知に基づく価値創造へレバレッジを掛け、責任とオーナーシップで成果を複利化しつつ、欲望を最小化して内的平穏を鍛える。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    希少な能力は高い報酬を呼び、コードやメディア等のレバレッジは限界費用ゼロでスケールする。責任は評判と信頼を蓄積し、長期ゲームで複利が働く。一方、幸福は外的獲得ではなく欲望管理と心の訓練に依存するため。
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    好奇心主導で特殊知を深め、コード/メディア/資本を使ってプロダクト化する。名指しで責任を負い、エクイティを持つ長期ゲームを長期の仲間と続ける。読書と実験で判断力を高め、ステータスゲームを避ける。日々、瞑想・健康・欲望の棚卸しで平穏を養う。
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>💰 富・お金・地位の違い</h3>
+      <ul>
+        <li>富は価値を生み続ける資産（事業・知識・自動化）</li>
+        <li>お金は交換権、地位は相対的序列</li>
+        <li>狙うべきは富（価値の蓄積）</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>富は時間から独立し、複利で成長する唯一の資産だから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧠 特殊知（Specific Knowledge）</h3>
+      <ul>
+        <li>模倣困難であなた固有の能力</li>
+        <li>深い好奇心と経験の組合せから生まれる</li>
+        <li>唯一性が希少価値を生む</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>代替不可能な能力だけが市場で高い報酬を引き出せるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚡ レバレッジ</h3>
+      <ul>
+        <li>労働・資本・コード・メディアで成果を増幅</li>
+        <li>コード/メディアは限界費用ゼロで無限スケール</li>
+        <li>増幅装置が富の速度を決める</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>時間の制約を超えて価値を拡張できる唯一の手段だから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 責任（アカウンタビリティ）</h3>
+      <ul>
+        <li>名指しで成果と評判を引き受ける姿勢</li>
+        <li>信頼を資本化し機会を拡張する</li>
+        <li>評判担保が長期ゲームの入場券</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>リスクを負う者だけが大きなリターンと信頼を得られるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏆 オーナーシップ（エクイティ）</h3>
+      <ul>
+        <li>時間売りから資産保有へシフト</li>
+        <li>価値創造の配当を受け取る権利</li>
+        <li>権利と配当が富の源泉</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>労働収入には上限があるが、資産収入は複利で成長するため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🤝 長期ゲームと長期の仲間</h3>
+      <ul>
+        <li>信頼を土台に反復し続ける協力関係</li>
+        <li>学習と成果が複利で積み上がる</li>
+        <li>複利関係が最大の資産</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>短期取引コストがゼロに近づき、信頼が価値創造を加速するため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧭 判断力（Judgment）</h3>
+      <ul>
+        <li>知識×経験×明晰さで意思決定の質を高める力</li>
+        <li>高レバレッジ下で決定的</li>
+        <li>意思決定質が結果分布を変える</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>レバレッジが大きいほど、一つの判断の影響が指数的に拡大するため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🍀 反復可能な運の設計</h3>
+      <ul>
+        <li>行動量・準備・評判・特殊知で運を呼び込む</li>
+        <li>確率を上げる設計が可能</li>
+        <li>運の設計が成功の再現性を高める</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>運は偶然ではなく、準備と行動の関数として設計できるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📦 プロダクト化された自分</h3>
+      <ul>
+        <li>技能や知恵をソフト/メディア/仕組みに埋め込む</li>
+        <li>再現性を高め、可搬な自己を作る</li>
+        <li>スケールの鍵</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>自分の時間を売らずに価値を届けられる唯一の方法だから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📈 複利</h3>
+      <ul>
+        <li>資本・知識・関係の再投資で加速度的に成果が伸びる</li>
+        <li>雪だるま式の成長法則</li>
+        <li>時間が最大の味方</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>小さな改善の積み重ねが指数関数的な差を生むため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📚 読書・学習戦略</h3>
+      <ul>
+        <li>興味駆動で大量に読み、捨てる勇気を持つ</li>
+        <li>一次情報と思考の質を重視</li>
+        <li>知の摂取が判断力の土台</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>質の高いインプットが質の高いアウトプットを決定するため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧘 欲望の最小化と内的平穏</h3>
+      <ul>
+        <li>欲望を観察/手放し、比較を断つ</li>
+        <li>瞑想で心の設定を最適化する</li>
+        <li>足るを知ることが幸福の鍵</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>幸福は外的獲得ではなく内的設定（欲望管理）で決まるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🚫 ステータスゲーム回避</h3>
+      <ul>
+        <li>ゼロサムな序列争いを避ける</li>
+        <li>価値創造という正の和ゲームへ集中</li>
+        <li>協調が競争を超える</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>ステータス競争は消耗戦であり、価値創造は全員が勝てるゲームだから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💪 健康・睡眠・運動</h3>
+      <ul>
+        <li>エネルギーと注意資源の土台</li>
+        <li>生産性と幸福の支点</li>
+        <li>すべての基盤</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>健康なくして持続的な価値創造も幸福も不可能だから。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⏰ 時間の主権</h3>
+      <ul>
+        <li>予定と依頼に「ノー」を増やす</li>
+        <li>深い仕事と休息を確保する</li>
+        <li>自由度が創造性を生む</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>時間の主権がなければ特殊知もレバレッジも活かせないため。
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="margin-bottom:1rem;color:var(--primary);">🔗 概念間の因果関係</h3>
+    <div class="flow-item">好奇心の追求 <span class="flow-arrow">→</span> 特殊知の形成 <span class="flow-arrow">→</span> 希少性↑</div>
+    <div class="flow-item">特殊知 × レバレッジ × 責任 <span class="flow-arrow">→</span> 報酬と影響力↑</div>
+    <div class="flow-item">責任 <span class="flow-arrow">→</span> 評判の蓄積 <span class="flow-arrow">→</span> 良質な機会 <span class="flow-arrow">→</span> オーナーシップ獲得</div>
+    <div class="flow-item">長期ゲーム × 長期の仲間 <span class="flow-arrow">→</span> 信頼の複利 <span class="flow-arrow">→</span> 取引コスト↓/成果↑</div>
+    <div class="flow-item">読書と実験 <span class="flow-arrow">→</span> 判断力↑ <span class="flow-arrow">→</span> 良い意思決定 <span class="flow-arrow">→</span> 結果の分布の裾が厚くなる</div>
+    <div class="flow-item">プロダクト化 × コード/メディア <span class="flow-arrow">→</span> 限界費用ゼロの拡張 <span class="flow-arrow">→</span> 収益スケール</div>
+    <div class="flow-item">欲望の削減 <span class="flow-arrow">→</span> ベースライン幸福↑ <span class="flow-arrow">→</span> 雑念↓ <span class="flow-arrow">→</span> 判断の質↑</div>
+    <div class="flow-item">健康の最適化 <span class="flow-arrow">→</span> 集中/創造性↑ <span class="flow-arrow">→</span> 価値創造力↑</div>
+    <div class="flow-item">ステータスゲーム回避 <span class="flow-arrow">→</span> 協調関係↑ <span class="flow-arrow">→</span> 正の和機会↑</div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📖 序章：編者の意図</h3>
+    <ul style="list-style:none;padding-left:0;">
+      <li style="margin-bottom:0.5rem;">▸ ナヴァルの発言群（ツイート/対談）を体系化</li>
+      <li style="margin-bottom:0.5rem;">▸ 断片的な知恵を実践可能な設計図へ</li>
+      <li style="margin-bottom:0.5rem;">▸ 富と幸福の二輪駆動モデルを提示</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>散在する洞察を統合し、読者が即座に行動できる形に再構成するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>💎 第I部：富の設計</h3>
+    <ul style="list-style:none;padding-left:0;">
+      <li style="margin-bottom:0.5rem;">▸ 富とお金/地位の区別を明確化</li>
+      <li style="margin-bottom:0.5rem;">▸ 特殊知の見つけ方と育て方</li>
+      <li style="margin-bottom:0.5rem;">▸ レバレッジの種類（労働/資本/コード/メディア）</li>
+      <li style="margin-bottom:0.5rem;">▸ 責任と評判の蓄積メカニズム</li>
+      <li style="margin-bottom:0.5rem;">▸ オーナーシップとエクイティの獲得</li>
+      <li style="margin-bottom:0.5rem;">▸ 判断力/意思決定の質向上</li>
+      <li style="margin-bottom:0.5rem;">▸ プロダクト化と自動化</li>
+      <li style="margin-bottom:0.5rem;">▸ 長期ゲームと信頼の複利</li>
+      <li style="margin-bottom:0.5rem;">▸ 読書・学習と交渉の技術</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>時間を切り売りせず価値を拡張する「富のエンジン」を構築するため。外的成功の設計図を提供する。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🧘 第II部：幸福の設計</h3>
+    <ul style="list-style:none;padding-left:0;">
+      <li style="margin-bottom:0.5rem;">▸ 欲望の本質と観察</li>
+      <li style="margin-bottom:0.5rem;">▸ 比較の罠と脱却</li>
+      <li style="margin-bottom:0.5rem;">▸ 瞑想と心の再訓練</li>
+      <li style="margin-bottom:0.5rem;">▸ 健康/睡眠/運動の最適化</li>
+      <li style="margin-bottom:0.5rem;">▸ 人間関係と平穏の維持</li>
+      <li style="margin-bottom:0.5rem;">▸ 意味と充足の探求</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>外的獲得だけでは幸福は得られない。内的設定（欲望管理と心の訓練）が持続的幸福を決定するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>✅ 終章/付録：実践への橋渡し</h3>
+    <ul style="list-style:none;padding-left:0;">
+      <li style="margin-bottom:0.5rem;">▸ 実践チェックリストで日々の行動を誘導</li>
+      <li style="margin-bottom:0.5rem;">▸ 推奨書目で学習を深化</li>
+      <li style="margin-bottom:0.5rem;">▸ 引用集で再学習を促進</li>
+    </ul>
+    <div class="reason">
+      <strong>理由：</strong>知識を行動に変換し、継続的な改善サイクルを回すため。
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(102,126,234,0.1),rgba(240,147,251,0.1));padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;">
+    <h3 style="color:var(--primary);margin-bottom:1rem;">🏗️ 全体設計の論理</h3>
+    <p style="font-size:0.95rem;line-height:1.7;">
+      外的成功（富のエンジン）と内的成功（平穏のエンジン）を並行構築する二輪駆動モデル。富だけでは幸福は得られず、幸福だけでは持続的な価値創造は困難。両輪を同時に回すことで、長期的に豊かで満たされた人生を設計できる。
+    </p>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>💡 具体例1：コード×特殊知のスケール</h3>
+    <ul>
+      <li><strong>背景：</strong>あるエンジニアが独自のアルゴリズムを開発</li>
+      <li><strong>行動：</strong>それをオープンソースライブラリとして公開</li>
+      <li><strong>結果：</strong>世界中の開発者が利用し、評判と機会が雪だるま式に増加</li>
+      <li><strong>示唆：</strong>コードは限界費用ゼロで無限にスケールし、特殊知が評判を生む</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>レバレッジ（コード）と特殊知の組合せが、時間を売らずに価値を拡張する実例だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💡 具体例2：長期ゲームと信頼の複利</h3>
+    <ul>
+      <li><strong>背景：</strong>二人の起業家が10年間、共同プロジェクトを反復</li>
+      <li><strong>行動：</strong>短期利益より信頼と学習を優先し続けた</li>
+      <li><strong>結果：</strong>取引コストがゼロに近づき、新規事業の立ち上げが高速化</li>
+      <li><strong>示唆：</strong>長期の仲間との反復が信頼を資本化し、成果を複利化する</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>長期ゲームが短期取引の摩擦を消し、協力の価値を指数的に高めるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💡 具体例3：欲望の最小化と幸福</h3>
+    <ul>
+      <li><strong>背景：</strong>高収入だが常に不満を抱えていた経営者</li>
+      <li><strong>行動：</strong>毎朝の瞑想と欲望リストの棚卸しを習慣化</li>
+      <li><strong>結果：</strong>収入は変わらないが、日々の満足度が劇的に向上</li>
+      <li><strong>示唆：</strong>幸福は外的獲得ではなく内的設定（欲望管理）で決まる</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>欲望を減らすことがベースライン幸福を上げ、外的条件に依存しない平穏を生むため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💡 具体例4：プロダクト化された自分</h3>
+    <ul>
+      <li><strong>背景：</strong>デザイナーが自分のデザイン手法をテンプレート化</li>
+      <li><strong>行動：</strong>オンラインコースとツールキットとして販売</li>
+      <li><strong>結果：</strong>時間を売らずに収益が自動化され、自由時間が増加</li>
+      <li><strong>示唆：</strong>技能をプロダクト化すれば、時間の制約から解放される</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>自分の知恵を仕組みに埋め込むことで、スケールと自由を同時に獲得できるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💡 具体例5：ステータスゲーム回避</h3>
+    <ul>
+      <li><strong>背景：</strong>業界内の序列争いに疲弊していた研究者</li>
+      <li><strong>行動：</strong>競争から離れ、独自の研究テーマに集中</li>
+      <li><strong>結果：</strong>協力者が増え、画期的な成果を発表</li>
+      <li><strong>示唆：</strong>ゼロサムゲームを避け、価値創造に集中すると協調が生まれる</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）：</strong>ステータス競争は消耗戦であり、価値創造は全員が勝てる正の和ゲームだから。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <div class="quote-text">"Learn to sell. Learn to build."</div>
+    <div class="quote-meta">【原文引用】</div>
+    <div class="reason" style="margin-top:0.75rem;">
+      <strong>なぜ重要か：</strong>価値創造（作る）と価値実現（売る）の二軸が富の必須要件だから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"Earn with your mind, not your time."</div>
+    <div class="quote-meta">【原文引用】</div>
+    <div class="reason" style="margin-top:0.75rem;">
+      <strong>なぜ重要か：</strong>時間切り売りから知的資本への転換がスケールの鍵だから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"Play long-term games with long-term people."</div>
+    <div class="quote-meta">【原文引用】</div>
+    <div class="reason" style="margin-top:0.75rem;">
+      <strong>なぜ重要か：</strong>信頼と学習が反復で複利化し、成果分布の上振れを生むから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"欲望を減らせば幸福は近づく。"</div>
+    <div class="quote-meta">【要旨】</div>
+    <div class="reason" style="margin-top:0.75rem;">
+      <strong>なぜ重要か：</strong>外的獲得よりも内的設定（望まない力）が持続的幸福を決めるため。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"複利は富・学習・関係すべてに効く。"</div>
+    <div class="quote-meta">【要旨】</div>
+    <div class="reason" style="margin-top:0.75rem;">
+      <strong>なぜ重要か：</strong>長期一貫の小さな改良が大差を生む行動原理を示すため。
+    </div>
+  </div>
+
+  <div style="background:var(--card-bg);padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+    <h3 style="color:var(--primary);margin-bottom:1rem;">📌 引用の共通テーマ</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+      <span class="metric-badge">時間からの解放</span>
+      <span class="metric-badge">長期思考</span>
+      <span class="metric-badge">内的設定</span>
+      <span class="metric-badge">複利の力</span>
+      <span class="metric-badge">価値創造</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>✅ アクション1：自分の特殊知を10個列挙する</h3>
+    <p><strong>目的：</strong>自分固有の能力を可視化し、価値創造の起点を明確にする</p>
+    <p><strong>期待効果：</strong>希少性の高い能力に気づき、それを軸にしたキャリア設計が可能になる</p>
+    <p><strong>所要時間：</strong>15分</p>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション2：Twitterで長期志向の人を3人フォロー</h3>
+    <p><strong>目的：</strong>長期ゲームを実践する仲間候補を見つけ、学習環境を整える</p>
+    <p><strong>期待効果：</strong>短期思考から長期思考へのマインドシフトが促進され、質の高い情報に触れる機会が増える</p>
+    <p><strong>所要時間：</strong>10分</p>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション3：欲望リストを3件書き捨てる</h3>
+    <p><strong>目的：</strong>不要な欲望を観察し、手放す練習をする</p>
+    <p><strong>期待効果：</strong>ベースライン幸福が上がり、雑念が減り、判断の質が向上する</p>
+    <p><strong>所要時間：</strong>10分</p>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション4：今日読んだ本の要点を3行でまとめる</h3>
+    <p><strong>目的：</strong>読書の質を高め、判断力の土台を強化する</p>
+    <p><strong>期待効果：</strong>知識の定着率が上がり、意思決定の精度が向上する</p>
+    <p><strong>所要時間：</strong>15分</p>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション5：5分間の瞑想を実践する</h3>
+    <p><strong>目的：</strong>心の訓練を開始し、内的平穏の基礎を築く</p>
+    <p><strong>期待効果：</strong>注意力が高まり、ストレスが減り、幸福感が向上する</p>
+    <p><strong>所要時間：</strong>5分</p>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション6：自分のスキルをプロダクト化するアイデアを1つ書く</h3>
+    <p><strong>目的：</strong>時間を売らずに価値を届ける方法を考える</p>
+    <p><strong>期待効果：</strong>レバレッジの設計が始まり、スケールの可能性が見えてくる</p>
+    <p><strong>所要時間：</strong>20分</p>
+  </div>
+
+  <div style="background:linear-gradient(135deg,rgba(102,126,234,0.1),rgba(240,147,251,0.1));padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;">
+    <h3 style="color:var(--primary);margin-bottom:1rem;">🎯 アクションの共通原則</h3>
+    <ul style="list-style:none;padding-left:0;">
+      <li style="margin-bottom:0.5rem;">▸ 小さく始めて習慣化する</li>
+      <li style="margin-bottom:0.5rem;">▸ 外的成功と内的成功の両輪を回す</li>
+      <li style="margin-bottom:0.5rem;">▸ 長期思考で複利を活かす</li>
+      <li style="margin-bottom:0.5rem;">▸ 行動→観察→改善のサイクルを回す</li>
+    </ul>
+  </div>
+
+  <div style="background:var(--card-bg);padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+    <h3 style="color:var(--secondary);margin-bottom:1rem;">📚 関連書籍</h3>
+    
+    <div class="book-card">
+      <h4>ゼロ・トゥ・ワン</h4>
+      <div class="author">著：ピーター・ティール</div>
+      <div class="relation">独自性とモノポリー構築が特殊知と長期ゲームに直結する。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>リーン・スタートアップ</h4>
+      <div class="author">著：エリック・リース</div>
+      <div class="relation">実験と学習で判断力を高め、プロダクト化を高速反復する実践論。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>プリンシプルズ</h4>
+      <div class="author">著：レイ・ダリオ</div>
+      <div class="relation">原則に基づく意思決定が責任と長期的成功を支える。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>スキン・イン・ザ・ゲーム</h4>
+      <div class="author">著：ナシム・ニコラス・タレブ</div>
+      <div class="relation">責任（当事者性）と評判のリスク管理が富の基盤である点が重なる。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>アトミック・ハビッツ</h4>
+      <div class="author">著：ジェームズ・クリアー</div>
+      <div class="relation">小さな習慣の複利効果が富と幸福の両輪を強化する。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>自省録</h4>
+      <div class="author">著：マルクス・アウレリウス</div>
+      <div class="relation">欲望の最小化と内的平穏のストア哲学が幸福編と響き合う。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>大きな成果を生む小さな習慣</h4>
+      <div class="author">著：カル・ニューポート</div>
+      <div class="relation">ディープワークが特殊知の蓄積とレバレッジ活用を加速する。</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
