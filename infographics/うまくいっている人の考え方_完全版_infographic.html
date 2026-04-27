@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>うまくいく人の思考習慣 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  border-left: 3px solid var(--primary);
+}
+
+.reason-box strong {
+  color: var(--secondary);
+  font-size: 0.85rem;
+}
+
+.reason-box p {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  color: var(--text-light);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.chapter-card li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+
+.example-card h4 {
+  font-size: 1.05rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(118, 75, 162, 0.05), rgba(102, 126, 234, 0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+.quote-card blockquote {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.quote-card cite {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  display: block;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  opacity: 0.95;
+}
+
+.action-card .time {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.metric-badge {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.metric-badge .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.metric-badge .label {
+  font-size: 0.85rem;
+  opacity: 0.95;
+}
+
+.flow-diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.flow-item .arrow {
+  color: var(--primary);
+  font-size: 1.5rem;
+  margin: 0 0.75rem;
+}
+
+.flow-item span {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .flow-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .flow-item .arrow {
+    transform: rotate(90deg);
+    margin: 0.5rem 0;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 うまくいく人の思考習慣</h1>
+  <p>自尊心を高める日々の実践で人生の質を変える</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>💡 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>どうすれば「うまくいく人」の思考に変わるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    <p>自尊心を高める思考習慣（自己受容・肯定的セルフトーク・境界線・主体性）を、日々の小さな行動で反復する。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>自尊心は意思決定の質・挑戦回数・回復力を底上げし、長期的成果と満足度を同時に押し上げるレバーだから。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>1) 否定的セルフトークを修正 2) 他者比較を停止 3) 断る力で境界線を明確化 4) 小さな成功を可視化・称賛 5) 目標を具体化・分解して即一歩を踏み出す。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🧠 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📖 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">🚀 今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--secondary);">🧠 主要概念の詳細</h2>
+  
+  <div class="card-grid">
+    <div class="card">
+      <h3>🏛️ 自尊心（セルフエスティーム）</h3>
+      <ul>
+        <li>自分の価値と有能感への基本的な信頼</li>
+        <li>行動の大胆さと回復力を規定する心理的土台</li>
+        <li>一言要約：人生のベース体力</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か</strong>
+        <p>すべての意思決定・挑戦・人間関係の質を左右する中核資産であり、日々の積み重ねで強化できるから。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💭 セルフトーク</h3>
+      <ul>
+        <li>自分に向ける内的言葉</li>
+        <li>自尊心を強化もしくは侵食する日次プログラム</li>
+        <li>一言要約：心のOS言語</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か</strong>
+        <p>無意識の自己対話が行動の天井を決めるため、意図的に設計することで成果が変わる。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🛡️ 境界線（バウンダリー）</h3>
+      <ul>
+        <li>自分の時間・感情・価値観を守る線引き</li>
+        <li>Noと言う権利の宣言</li>
+        <li>一言要約：尊重の防波堤</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か</strong>
+        <p>エネルギー漏れを防ぎ、重要な目標に集中するための前提条件だから。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ 比較の罠</h3>
+      <ul>
+        <li>他者基準で自己評価する思考癖</li>
+        <li>満足度と集中力を低下させる</li>
+        <li>一言要約：幸せの減点法</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か</strong>
+        <p>他人軸から自分軸へ転換することで、モチベーションが安定し継続性が高まるから。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 完璧主義の手放し</h3>
+      <ul>
+        <li>欠点ゼロより進歩を優先する姿勢</li>
+        <li>行動量と学習速度を上げる</li>
+        <li>一言要約：完了は完璧に勝る</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か</strong>
+        <p>試行回数を増やし早い改善サイクルを回すことで、結果的に品質も向上するから。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎮 主体性（選択の責任）</h3>
+      <ul>
+        <li>外部要因より自分の選択に焦点を当てる態度</li>
+        <li>影響可能領域を拡大する</li>
+        <li>一言要約：舵を握る</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か</strong>
+        <p>可制御領域への投資が成果の再現性と自己効力感を高めるから。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📈 小さな成功の蓄積</h3>
+      <ul>
+        <li>達成を可視化・称賛して自己効力感を高める方法</li>
+        <li>一言要約：勝ち癖づくり</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か</strong>
+        <p>成功の自己強化ループを起動し、さらなる前進を促すエンジンになるから。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⏱️ 期待管理</h3>
+      <ul>
+        <li>現実的な基準設定で失望を減らす</li>
+        <li>継続可能性を高める</li>
+        <li>一言要約：燃費の良い目標</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か</strong>
+        <p>過度な期待による挫折を防ぎ、長期的な実行力を維持できるから。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🙏 感謝の焦点化</h3>
+      <ul>
+        <li>足りないものより在るものに注意を向ける</li>
+        <li>心理的余裕を生む</li>
+        <li>一言要約：豊かさのレンズ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か</strong>
+        <p>欠乏マインドから脱却し、前向きな行動エネルギーを生み出すから。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎖️ 自己承認の儀式化</h3>
+      <ul>
+        <li>意図的に自分を認める習慣を仕組みにする実践</li>
+        <li>一言要約：自分の味方になる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>💡 なぜ重要か</strong>
+        <p>他者承認に依存せず、自己基準で価値を確認できる力を育てるから。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="margin-bottom:1rem;color:var(--secondary);">🔄 概念間の因果関係</h3>
+    <div class="flow-item">
+      <span>自己受容</span>
+      <div class="arrow">→</div>
+      <span>自尊心↑</span>
+      <div class="arrow">→</div>
+      <span>不安↓・挑戦回数↑</span>
+      <div class="arrow">→</div>
+      <span>成果・満足度↑</span>
+    </div>
+    <div class="flow-item">
+      <span>肯定的セルフトーク</span>
+      <div class="arrow">→</div>
+      <span>行動ハードル↓</span>
+      <div class="arrow">→</div>
+      <span>実行率↑</span>
+      <div class="arrow">→</div>
+      <span>小さな成功↑</span>
+      <div class="arrow">→</div>
+      <span>自尊心さらに↑（好循環）</span>
+    </div>
+    <div class="flow-item">
+      <span>境界線の明確化</span>
+      <div class="arrow">→</div>
+      <span>エネルギー漏れ↓</span>
+      <div class="arrow">→</div>
+      <span>集中力↑</span>
+      <div class="arrow">→</div>
+      <span>重要目標の進捗↑</span>
+    </div>
+    <div class="flow-item">
+      <span>比較の罠停止</span>
+      <div class="arrow">→</div>
+      <span>注意の再配分（自分の成長指標へ）</span>
+      <div class="arrow">→</div>
+      <span>モチベ安定</span>
+      <div class="arrow">→</div>
+      <span>継続性↑</span>
+    </div>
+    <div class="flow-item">
+      <span>完璧主義放棄</span>
+      <div class="arrow">→</div>
+      <span>試行回数↑・学習速度↑</span>
+      <div class="arrow">→</div>
+      <span>早い改善サイクル</span>
+      <div class="arrow">→</div>
+      <span>成果品質↑</span>
+    </div>
+    <div class="flow-item">
+      <span>主体性強化</span>
+      <div class="arrow">→</div>
+      <span>可制御領域への投資↑</span>
+      <div class="arrow">→</div>
+      <span>成果の再現性↑</span>
+      <div class="arrow">→</div>
+      <span>自己効力感↑</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--secondary);">📖 各章の要約</h2>
+  
+  <div class="chapter-card">
+    <h3>第1章：導入 - 自尊心が人生の中枢KPI</h3>
+    <ul>
+      <li>自尊心は仕事・人間関係・健康など人生の質を左右する中核資産</li>
+      <li>他人の評価ではなく、自分の選択とセルフトークが価値を決める</li>
+      <li>日々の思考習慣を微調整することで誰でも強化できる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か</strong>
+      <p>自尊心が単なる気分ではなく、測定可能な成果に直結する資産であると認識させ、投資する動機を与えるため。</p>
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章：原理編 - コア原則の理解</h3>
+    <ul>
+      <li>自己受容：ありのままの自分を認める土台</li>
+      <li>比較の停止：他者基準から自分基準への転換</li>
+      <li>境界線：時間と感情を守る線引きの技術</li>
+      <li>主体性：影響可能領域に焦点を当てる姿勢</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か</strong>
+      <p>行動の前提となる思考の枠組みを整理し、表面的なテクニックではなく原則に基づく変化を促すため。</p>
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章：思考習慣編 - 内的対話の設計</h3>
+    <ul>
+      <li>セルフトーク修正：否定的な自己対話を肯定的に書き換える</li>
+      <li>期待管理：現実的な基準で失望を減らす</li>
+      <li>感謝の焦点化：在るものに注意を向け心理的余裕を生む</li>
+      <li>完璧主義の手放し：進歩を優先し行動量を増やす</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か</strong>
+      <p>日々の内的対話が行動の天井を決めるため、意図的に設計する具体的方法を提供するため。</p>
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章：行動編 - 即実行可能な指針</h3>
+    <ul>
+      <li>断る練習：境界線を守るフレーズと実践</li>
+      <li>小さな成功の可視化：達成を記録し称賛する仕組み</li>
+      <li>目標の分解：大きな目標を即実行可能なステップに分ける</li>
+      <li>強みの棚卸し：自分の価値を具体的に言語化する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か</strong>
+      <p>理解を行動に変換する具体的な手順を示し、今日から実践できる状態にするため。</p>
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章：統合編 - 実践フレームの構築</h3>
+    <ul>
+      <li>小さな実験→記録→称賛のループで自尊心を逓増させる</li>
+      <li>習慣化の仕組み：儀式化と環境設計</li>
+      <li>挫折からの回復：失敗を学習機会に変える視点</li>
+      <li>長期的な自己投資：継続可能な成長サイクルの設計</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か</strong>
+      <p>個別の技術を統合し、持続可能な成長システムとして機能させるフレームを提供するため。</p>
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章：結語 - 自分基準への舵切り</h3>
+    <ul>
+      <li>他人基準から自分基準への転換が長期的な自由と充実を生む</li>
+      <li>自尊心は一度の決断ではなく、日々の選択の積み重ね</li>
+      <li>小さな前進を認め続けることが、さらなる前進を生む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か</strong>
+      <p>全体のメッセージを統合し、読者が自分の人生の舵を握る決意を固めるため。</p>
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--secondary);">💼 具体例：核心メッセージが伝わるケース</h2>
+  
+  <div class="example-card">
+    <h4>🎯 例1：セルフトークの書き換えで行動が変わった営業担当</h4>
+    <p><strong>背景：</strong>新規顧客へのアプローチを躊躇していた営業担当が、「断られたら恥ずかしい」という内的対話を「断られても学びがある」に書き換えた。</p>
+    <p><strong>結果：</strong>アプローチ回数が週5件→15件に増加し、3ヶ月で成約率も向上。</p>
+    <p><strong>示唆：</strong>行動の制約は外部環境ではなく、自分の内的言葉が作っていることが多い。</p>
+    <div class="reason-box">
+      <strong>💡 この例が示すこと</strong>
+      <p>セルフトークを意図的に設計することで、行動のハードルが下がり、試行回数と成果が同時に向上する。</p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🛡️ 例2：境界線を引いて集中力を取り戻したプロジェクトマネージャー</h4>
+    <p><strong>背景：</strong>常に他部署の依頼を引き受けていたPMが、「重要度の低い依頼は丁寧に断る」ルールを設定。</p>
+    <p><strong>結果：</strong>週の作業時間の30%が本来の重要業務に再配分され、プロジェクト進捗が20%改善。</p>
+    <p><strong>示唆：</strong>Noと言うことは、自分の時間と尊厳を守る行為であり、成果の質を高める。</p>
+    <div class="reason-box">
+      <strong>💡 この例が示すこと</strong>
+      <p>境界線を明確にすることで、エネルギー漏れを防ぎ、重要な目標に集中できる環境を自ら作れる。</p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>📈 例3：小さな成功を記録して自信を回復した起業家</h4>
+    <p><strong>背景：</strong>事業の伸び悩みで自信を失っていた起業家が、毎日「今日できたこと3つ」を記録する習慣を開始。</p>
+    <p><strong>結果：</strong>2週間後には「自分は前進している」という実感が戻り、新施策への挑戦意欲が復活。6ヶ月後に売上30%増。</p>
+    <p><strong>示唆：</strong>小さな前進を可視化・称賛することで、自己効力感が回復し、さらなる行動を促す好循環が生まれる。</p>
+    <div class="reason-box">
+      <strong>💡 この例が示すこと</strong>
+      <p>成功の自己強化ループを意図的に起動することで、停滞から脱却し持続的な成長軌道に乗れる。</p>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>⚖️ 例4：比較をやめて自分軸を取り戻したクリエイター</h4>
+    <p><strong>背景：</strong>SNSで他者の成功を見て焦燥感に駆られていたデザイナーが、SNS閲覧を週1回に制限し、自分の成長指標（スキル習得・作品数）に焦点を移した。</p>
+    <p><strong>結果：</strong>制作ペースが2倍になり、3ヶ月後にポートフォリオが充実。クライアントからの評価も向上。</p>
+    <p><strong>示唆：</strong>他者基準から自分基準への転換が、モチベーションの安定と継続性を生む。</p>
+    <div class="reason-box">
+      <strong>💡 この例が示すこと</strong>
+      <p>比較の罠を停止し、自分の成長に注意を向けることで、集中力と満足度が同時に高まる。</p>
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--secondary);">💬 重要な引用</h2>
+  
+  <div class="quote-card">
+    <blockquote>"あなたの価値は他人の承認で決まらない。"</blockquote>
+    <cite><strong>💡 なぜ重要か：</strong>比較依存を断ち、自己基準への転換を促す中核命題だから。</cite>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"小さな前進を認めるほど、さらに前進しやすくなる。"</blockquote>
+    <cite><strong>💡 なぜ重要か：</strong>成功の自己強化ループを自覚的に起動できるから。</cite>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"Noと言うことは、あなたの時間と尊厳を守る行為である。"</blockquote>
+    <cite><strong>💡 なぜ重要か：</strong>境界線が集中と自己尊重の前提条件であると示すから。</cite>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"完璧ではなく進歩を選べ。"</blockquote>
+    <cite><strong>💡 なぜ重要か：</strong>行動量と学習速度を最大化し停滞を防ぐ合言葉だから。</cite>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"自分に向ける言葉が、行動の天井を決める。"</blockquote>
+    <cite><strong>💡 なぜ重要か：</strong>セルフトーク設計が成果の隠れたレバーであると気づかせるから。</cite>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-badge">
+      <span class="number">5</span>
+      <span class="label">核心的引用</span>
+    </div>
+    <div class="metric-badge">
+      <span class="number">10</span>
+      <span class="label">主要概念</span>
+    </div>
+    <div class="metric-badge">
+      <span class="number">6</span>
+      <span class="label">因果関係</span>
+    </div>
+    <div class="metric-badge">
+      <span class="number">3</span>
+      <span class="label">即実行アクション</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--secondary);">🚀 今日のアクション（15〜30分で実行可能）</h2>
+  
+  <div class="action-card">
+    <h4>✍️ アクション1：自分の強みを10個書き出す</h4>
+    <p><strong>目的：</strong>自己価値を具体的に言語化し、自己受容の土台を作る。</p>
+    <p><strong>期待効果：</strong>漠然とした自信不足が、具体的な強みの認識に変わり、自尊心が底上げされる。</p>
+    <p><strong>手順：</strong>紙またはノートに「私の強み」と書き、思いつく限り列挙する。小さなことでもOK（例：時間を守る、人の話を聞く、など）。</p>
+    <span class="time">⏱️ 所要時間：15分</span>
+  </div>
+
+  <div class="action-card">
+    <h4>🔄 アクション2：否定的セルフトークを書き換える</h4>
+    <p><strong>目的：</strong>無意識の自己批判を意識化し、肯定的な言葉に置き換える習慣を開始する。</p>
+    <p><strong>期待効果：</strong>行動のハードルが下がり、挑戦への心理的抵抗が減少する。</p>
+    <p><strong>手順：</strong>最近自分に言った否定的な言葉を3つ書き出し、それぞれを肯定的な表現に書き換える（例：「失敗したらどうしよう」→「失敗しても学びがある」）。</p>
+    <span class="time">⏱️ 所要時間：20分</span>
+  </div>
+
+  <div class="action-card">
+    <h4>🛡️ アクション3：断るフレーズを3つ用意する</h4>
+    <p><strong>目的：</strong>境界線を守るための具体的な言葉を準備し、実践のハードルを下げる。</p>
+    <p><strong>期待効果：</strong>不要な依頼を断る勇気が生まれ、重要な目標に集中できる時間が増える。</p>
+    <p><strong>手順：</strong>よくある依頼パターンを3つ想定し、それぞれに対する丁寧な断りフレーズを書く（例：「ありがとうございます。今は別の優先事項があるため、お引き受けできません」）。</p>
+    <span class="time">⏱️ 所要時間：15分</span>
+  </div>
+
+  <div class="action-card">
+    <h4>📝 アクション4：今日できたこと3つを記録する</h4>
+    <p><strong>目的：</strong>小さな成功を可視化し、自己効力感を高める習慣を開始する。</p>
+    <p><strong>期待効果：</strong>前進している実感が生まれ、翌日以降の行動意欲が向上する。</p>
+    <p><strong>手順：</strong>寝る前に「今日できたこと」を3つ書き出す。どんなに小さなことでもOK（例：メールを返信した、10分散歩した、など）。</p>
+    <span class="time">⏱️ 所要時間：10分</span>
+  </div>
+
+  <div class="action-card">
+    <h4>🎯 アクション5：1つの目標を3ステップに分解する</h4>
+    <p><strong>目的：</strong>大きな目標を即実行可能な小さなステップに分け、行動を開始しやすくする。</p>
+    <p><strong>期待効果：</strong>圧倒感が減り、最初の一歩を踏み出せる。完了体験が自信を強化する。</p>
+    <p><strong>手順：</strong>達成したい目標を1つ選び、それを3つの具体的なステップに分解する（例：「英語を学ぶ」→「1.教材を1つ選ぶ 2.毎日10分学習時間を確保 3.1週間継続する」）。</p>
+    <span class="time">⏱️ 所要時間：20分</span>
+  </div>
+
+  <div style="background:var(--card-bg);padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;border-left:4px solid var(--accent);">
+    <h3 style="color:var(--secondary);margin-bottom:0.75rem;">📚 関連書籍</h3>
+    <ul style="list-style:none;padding:0;">
+      <li style="padding:0.5rem 0;border-bottom:1px solid var(--border);">
+        <strong>『自尊心の六つの柱』</strong> - ナサニエル・ブランデン<br>
+        <span style="font-size:0.85rem;color:var(--text-light);">自尊心を行動原則に落とす体系書で、概念の土台を補強できる。</span>
+      </li>
+      <li style="padding:0.5rem 0;border-bottom:1px solid var(--border);">
+        <strong>『7つの習慣』</strong> - スティーブン・R・コヴィー<br>
+        <span style="font-size:0.85rem;color:var(--text-light);">主体性・価値観基軸など、自己基準で生きる枠組みが重なる。</span>
+      </li>
+      <li style="padding:0.5rem 0;border-bottom:1px solid var(--border);">
+        <strong>『嫌われる勇気』</strong> - 岸見一郎・古賀史健<br>
+        <span style="font-size:0.85rem;color:var(--text-light);">課題の分離と承認依存からの自立が境界線思考と響き合う。</span>
+      </li>
+      <li style="padding:0.5rem 0;">
+        <strong>『アファメーション』</strong> - ルー・タイス<br>
+        <span style="font-size:0.85rem;color:var(--text-light);">セルフトークを意図的に設計する実践法が学べる。</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+</div>
+
+<script>
+// タブ切り替え機能
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    // すべてのタブとコンテンツから active を削除
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブとコンテンツに active を追加
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
