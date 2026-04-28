@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世界一やさしい「やりたいこと」の見つけ方 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 32px 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 8px;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 20px;
+  margin: 24px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 12px;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 4px;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0 16px;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  position: relative;
+  bottom: -2px;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 12px;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #f093fb22, #667eea22);
+  border-left: 3px solid var(--accent);
+  padding: 10px 12px;
+  margin-top: 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 4px 0 4px 18px;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 10px;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 4rem;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  opacity: 0.3;
+  font-family: Georgia, serif;
+}
+.quote-card p {
+  font-size: 1rem;
+  font-style: italic;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+.quote-card small {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  display: block;
+  margin-top: 8px;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.action-card h3 {
+  font-size: 1.05rem;
+  color: var(--primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+.diagram {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 24px;
+  margin: 24px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.venn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  min-height: 280px;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.metric-badge {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.metric-badge .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+}
+.metric-badge .label {
+  font-size: 0.85rem;
+  opacity: 0.95;
+}
+.related-books {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.book-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.4;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 10px 12px;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .metric-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 世界一やさしい「やりたいこと」の見つけ方</h1>
+  <p>才能×情熱×価値観の交点を見つけ、自分軸で生きる</p>
+</header>
+
+<div class="container">
+
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      どうすれば自分の「やりたいこと」を確実に見つけられるか？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      『才能×情熱×価値観』の重なりを特定し、仮説を立てて小さく行動しフィードバックで磨く。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      欲求の源泉は内面にあり、他人軸の基準では持続・納得・成果が同時成立しにくいが、この3要素が交わると強みで貢献でき、好きで続けられ、価値観に沿うため挫折しにくい。
+    </div>
+    <div class="summary-item">
+      <strong>🛠 How（そのためには）</strong>
+      過去の棚卸し→「得意・好き・大事」の各リスト化→共通パターンを言語化→1つのテーマに絞る→15〜30分規模の行動実験→結果を振り返り再定義（ループ）。
+    </div>
+  </div>
+
+  <div class="diagram">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">💡 核心的メッセージ</h2>
+    <p style="font-size: 1rem; line-height: 1.7; max-width: 800px; margin: 0 auto;">
+      「やりたいこと」は外に探すものではなく、内側の<strong style="color: var(--primary);">『才能（得意）×情熱（好き）×価値観（大事）』</strong>の交点を言語化し、小さく試して検証することで誰でも見つけられる。他人軸を手放し、自分軸で選択せよ。
+    </p>
+  </div>
+
+  <div class="venn-container">
+    <svg width="320" height="280" viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+          <feOffset dx="0" dy="2" result="offsetblur"/>
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.3"/>
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <circle cx="120" cy="100" r="70" fill="#667eea" opacity="0.5" filter="url(#shadow)"/>
+      <circle cx="200" cy="100" r="70" fill="#f093fb" opacity="0.5" filter="url(#shadow)"/>
+      <circle cx="160" cy="170" r="70" fill="#764ba2" opacity="0.5" filter="url(#shadow)"/>
+      <text x="90" y="70" font-size="13" font-weight="bold" fill="#333">才能</text>
+      <text x="205" y="70" font-size="13" font-weight="bold" fill="#333">情熱</text>
+      <text x="140" y="220" font-size="13" font-weight="bold" fill="#333">価値観</text>
+      <circle cx="160" cy="125" r="28" fill="#667eea" opacity="0.8"/>
+      <text x="135" y="132" font-size="12" font-weight="bold" fill="white">交点</text>
+      <text x="115" y="260" font-size="11" fill="#666" text-anchor="middle" x="160">やりたいこと = 3要素の重なり</text>
+    </svg>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true" aria-controls="tab-concepts">主要概念の詳細</button>
+    <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false" aria-controls="tab-chapters">各章の要約</button>
+    <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false" aria-controls="tab-examples">具体例</button>
+    <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false" aria-controls="tab-quotes">重要な引用</button>
+    <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false" aria-controls="tab-actions">今日のアクション</button>
+  </div>
+
+  <div id="tab-concepts" class="tab-content active" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">🔑 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🧭 自己理解</h3>
+        <ul>
+          <li>自分の才能・情熱・価値観を事実ベースで把握し言語化するプロセス</li>
+          <li>外部比較を排し内側のデータを集める</li>
+          <li>一言要約：<strong>内側の棚卸し</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>外部基準に頼ると他人軸に陥り、長期的な納得感が得られない。内側の事実を集めることで自分軸の土台ができる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎯 自分軸</h3>
+        <ul>
+          <li>自分の基準（価値観）に基づき意思決定する姿勢</li>
+          <li>長期の納得感と一貫性を生む</li>
+          <li>一言要約：<strong>自分で決める</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>自分軸で選ぶと後悔が減り、困難に直面しても「自分で選んだ」という納得感が継続を支える。
+        </div>
+      </div>
+      <div class="card">
+        <h3>👥 他人軸</h3>
+        <ul>
+          <li>評価・肩書・常識など外部基準で選ぶ姿勢</li>
+          <li>短期の安心は得ても不全感を招きやすい</li>
+          <li>一言要約：<strong>外の目で決める</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>外的報酬は一時的な満足しか与えず、内発的動機が欠けると燃え尽きや虚無感につながる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💪 才能（得意なこと）</h3>
+        <ul>
+          <li>努力感が薄く成果が出やすい特性やパターン</li>
+          <li>過去の成功・周囲の称賛に現れる</li>
+          <li>一言要約：<strong>結果が出る型</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>才能を活かすと少ない労力で高い成果を生み、自己効力感と貢献実感が得られる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔥 情熱（好きなこと）</h3>
+        <ul>
+          <li>没頭・時間忘却・探求欲を伴う対象や活動</li>
+          <li>継続のエネルギー源</li>
+          <li>一言要約：<strong>続けられる燃料</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>好きなことは苦にならず長く続けられ、継続が成果と学習を加速させる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚖️ 価値観（大事なこと）</h3>
+        <ul>
+          <li>譲れない判断基準</li>
+          <li>何に時間・お金・注意を投じたいかを決める土台</li>
+          <li>一言要約：<strong>意思決定の羅針盤</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>価値観に沿わない選択は認知的不協和を生み、ストレスと離脱を招く。
+        </div>
+      </div>
+      <div class="card">
+        <h3>✨ 交点（やりたいこと）</h3>
+        <ul>
+          <li>才能×情熱×価値観の重なる領域</li>
+          <li>成果・充実・持続可能性が同時に満たされる</li>
+          <li>一言要約：<strong>三位一体の核</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>3要素が揃うと、得意で成果が出て、好きで続けられ、大事にしたいことに沿うため最も満足度が高い。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📝 言語化</h3>
+        <ul>
+          <li>曖昧な感覚を具体的な言葉とタグに落とし込む作業</li>
+          <li>行動と他者共有が容易になる</li>
+          <li>一言要約：<strong>名前をつける</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>言語化すると自己理解が明確になり、次の行動や他者への説明が具体化する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🧪 小さな実験</h3>
+        <ul>
+          <li>低リスク・短時間で仮説を試す行動</li>
+          <li>学習速度を最大化し軌道修正を容易にする</li>
+          <li>一言要約：<strong>プロトタイプ行動</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>完璧主義を崩し、現実データで仮説を検証することで失敗コストを下げ学習を加速する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔄 フィードバックループ</h3>
+        <ul>
+          <li>仮説→行動→結果→学び→再定義の循環</li>
+          <li>自己理解を動的に更新する仕組み</li>
+          <li>一言要約：<strong>回して磨く</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>ループを回すほど自己理解の解像度が上がり、交点の定義が具体化して満足度と成果が向上する。
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 32px;">
+      <h3 style="color: var(--primary); margin-bottom: 16px;">🔗 概念間の関係性</h3>
+      <div class="card">
+        <ul>
+          <li>[才能]∩[情熱]∩[価値観] → 交点=『やりたいこと』</li>
+          <li>自分軸 → 判断基準が明確化 → 選択の迷い/後悔が減る</li>
+          <li>他人軸 → 外的報酬依存 ↑ → 長期的不全/燃え尽き ↑</li>
+          <li>言語化の精度 ↑ → 実験の質 ↑ → 学習速度 ↑ → 自己理解の解像度 ↑</li>
+          <li>小さな実験 → 低コストで現実データ取得 → 仮説検証 → 次の一歩が具体化</li>
+          <li>才能×価値観の一致 → 貢献実感/自己効力感 ↑ → 継続意欲（情熱）を補強</li>
+          <li>情熱のみ偏重 → 成果/市場適合の不足 → 失望 → モチベ低下</li>
+          <li>才能のみ偏重 → 退屈/意味喪失 → 継続困難</li>
+          <li>価値観不一致 → 認知的不協和 → ストレス累積 → 離脱</li>
+          <li>フィードバックループを回すほど → 交点の定義が具体化 → 満足度と成果が同時向上</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-chapters" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">📚 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3>第1章：導入 - 誤解を解体する</h3>
+      <ul>
+        <li>「やりたいことがわからない」は誤解であり、探し方を知らないだけ</li>
+        <li>他人軸（評価・肩書）から自分軸（内面の基準）への転換を提示</li>
+        <li>外に答えを求めるのではなく、内側を見る姿勢が重要</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>多くの人が外部情報に溺れ、自分の内側を見ていない。この章で視点を内向きに転換させることが全ての出発点。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第2章：フレーム提示 - 3要素モデル</h3>
+      <ul>
+        <li>才能・情熱・価値観の3要素を定義</li>
+        <li>『交点=やりたいこと』という明確な定義を提示</li>
+        <li>3要素が揃うと成果・充実・持続可能性が同時に満たされる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>曖昧な「やりたいこと」を具体的な3要素に分解することで、探索可能な対象に変換する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第3章：自己理解ワーク1 - 才能の特定</h3>
+      <ul>
+        <li>過去の成功体験・他者評価・短時間で成果が出た事例を列挙</li>
+        <li>共通する強みパターンを抽出</li>
+        <li>才能謙遜バイアスに注意し、事実ベースで記録</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>才能は自覚しにくいため、過去の事実から客観的に抽出する必要がある。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第4章：自己理解ワーク2 - 情熱の特定</h3>
+      <ul>
+        <li>没頭体験・時間を忘れた瞬間・情報収集の偏りを振り返る</li>
+        <li>好きの傾向を言語化</li>
+        <li>「楽しい」と「楽」を区別し、前者を重視</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>情熱は継続のエネルギー源であり、長期的な取り組みに不可欠。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第5章：自己理解ワーク3 - 価値観の特定</h3>
+      <ul>
+        <li>逸脱時に強い違和感を覚えた経験を振り返る</li>
+        <li>理想の一日・時間の使い方から譲れない基準を抽出</li>
+        <li>価値観リストを5〜7語に絞る</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>価値観は意思決定の羅針盤であり、これが不明確だと選択に迷い続ける。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第6章：統合 - テーマの言語化</h3>
+      <ul>
+        <li>3リスト（才能・情熱・価値観）の共通タグを見出す</li>
+        <li>仮の『テーマ/方向性』を一文にまとめる</li>
+        <li>完璧を求めず、暫定版でOK</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>3要素を統合することで、行動の指針となる具体的なテーマが生まれる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第7章：行動計画 - 小さな実験の設計</h3>
+      <ul>
+        <li>リスク最小の『小さな実験』を複数設計</li>
+        <li>時間・費用・検証指標を明確に設定</li>
+        <li>15〜30分で実行できる規模に分解</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>完璧主義を崩し、低コストで現実データを取得することで学習を加速する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第8章：検証と修正 - ループの実践</h3>
+      <ul>
+        <li>実験→振り返り→タグの更新を繰り返す</li>
+        <li>解像度を上げていく実践プロセスを定着</li>
+        <li>失敗は学習データとして扱う</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>フィードバックループを回すほど自己理解が深まり、交点の定義が具体化する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第9章：よくある罠と対処</h3>
+      <ul>
+        <li>才能謙遜バイアス：他者評価を素直に受け取る</li>
+        <li>完璧主義：小さく試すことを優先</li>
+        <li>情報収集過多：行動を先に、情報は後</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>典型的な失敗パターンを事前に知ることで、無駄な遠回りを避けられる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第10章：長期設計 - 交点の活用</h3>
+      <ul>
+        <li>見つかった交点をキャリア設計・発信・機会選択に接続</li>
+        <li>継続的にループを回し、自己理解を更新</li>
+        <li>環境変化に応じて交点を再定義</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>交点は固定ではなく、人生のステージに応じて進化する。継続的な更新が長期的な満足を生む。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-examples" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">💡 具体例</h2>
+    
+    <div class="example-card">
+      <h3>例1：転職を繰り返していたAさんのケース</h3>
+      <p><strong>背景：</strong>Aさんは年収や肩書を基準に転職を繰り返していたが、どの職場でも3年以内に不全感を覚えて退職していた。</p>
+      <p><strong>転換：</strong>自己理解ワークで「人の成長を支援する（才能）」「学びの場を作る（情熱）」「自律性を尊重する（価値観）」が交点と判明。</p>
+      <p><strong>結果：</strong>企業研修の講師に転身し、5年以上継続。年収は下がったが満足度は大幅に向上。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>他人軸（年収・肩書）では長期的な満足は得られず、自分軸（交点）に沿った選択が継続と充実を生む。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>例2：「好き」だけで起業して失敗したBさん</h3>
+      <p><strong>背景：</strong>Bさんはカフェが好きで脱サラして開業したが、経営の才能がなく2年で閉店。</p>
+      <p><strong>転換：</strong>振り返りで「空間デザイン（才能）」「人が集まる場（情熱）」「創造性（価値観）」が交点と再定義。</p>
+      <p><strong>結果：</strong>カフェ開業支援のコンサルタントに転身し、自分の才能を活かしながら好きな領域に関われるようになった。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>情熱だけでは成果が出ず、才能と価値観を統合することで持続可能な形が見つかる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>例3：「得意」だけで選んで燃え尽きたCさん</h3>
+      <p><strong>背景：</strong>Cさんは営業成績トップで昇進したが、数字を追うことに意味を感じられず燃え尽き症候群に。</p>
+      <p><strong>転換：</strong>自己理解ワークで「関係構築（才能）」「社会課題解決（情熱）」「誠実さ（価値観）」が交点と判明。</p>
+      <p><strong>結果：</strong>NPOの営業職に転職し、才能を活かしながら価値観に沿った活動ができるようになった。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>才能だけでは意味を感じられず、情熱と価値観が揃うことで内発的動機が生まれる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>例4：小さな実験で方向性を見つけたDさん</h3>
+      <p><strong>背景：</strong>Dさんは「やりたいこと」が漠然としていたが、完璧主義で行動できずにいた。</p>
+      <p><strong>転換：</strong>「週末に3時間だけブログを書く」という小さな実験を開始。反応を見ながらテーマを絞り込んだ。</p>
+      <p><strong>結果：</strong>半年後にライター案件を受注し、副業として成立。1年後に独立。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>完璧を求めず小さく試すことで、現実データから学び、軌道修正しながら進める。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-quotes" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">📖 重要な引用</h2>
+    
+    <div class="quote-card">
+      <p>やりたいことは『才能×情熱×価値観』の交点で見つかる</p>
+      <small>💡 重要性：本書の中核フレームで、以後の全てのワークと判断基準の根拠になる。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>他人軸ではなく自分軸で選べ</p>
+      <small>💡 重要性：迷いと後悔を減らし、長期に続く納得感を得るための態度を示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>小さく試し、速く学べ</p>
+      <small>💡 重要性：完璧主義を崩し、現実データで自己理解を更新する実践原則を示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>答えは外ではなく自分の中にある</p>
+      <small>💡 重要性：情報過多の時代における探索の方角を正し、内省の優先度を高める。</small>
+    </div>
+  </div>
+
+  <div id="tab-actions" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">🚀 今日のアクション</h2>
+    
+    <div class="action-card">
+      <h3>📝 アクション1：過去3年の楽しかった事を5つ書く</h3>
+      <p>ノートやスマホのメモアプリに、過去3年で「楽しかった」「時間を忘れた」瞬間を5つ書き出す。</p>
+      <div class="meta">
+        <strong>目的：</strong>情熱（好きなこと）の傾向を可視化する<br>
+        <strong>期待効果：</strong>自分が何に没頭するかのパターンが見え、情熱の方向性が明確になる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>👏 アクション2：直近で褒められた行為を3つ列挙</h3>
+      <p>最近1年以内に他者から褒められた・感謝された行為を3つ思い出して書く。</p>
+      <div class="meta">
+        <strong>目的：</strong>才能（得意なこと）を客観的に把握する<br>
+        <strong>期待効果：</strong>自分では当たり前と思っている強みが明確になり、才能の自覚が進む
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>⚖️ アクション3：大切な価値観を5語に絞って書く</h3>
+      <p>「自由」「誠実」「成長」など、自分が大切にしたい価値観を5つの単語で書き出す。</p>
+      <div class="meta">
+        <strong>目的：</strong>価値観（大事なこと）を言語化する<br>
+        <strong>期待効果：</strong>意思決定の基準が明確になり、選択の迷いが減る
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🔍 アクション4：3リストの共通タグを探す</h3>
+      <p>上記3つのアクションで書き出した内容を見比べ、共通するキーワードやテーマを1〜2個見つける。</p>
+      <div class="meta">
+        <strong>目的：</strong>才能・情熱・価値観の交点を仮定義する<br>
+        <strong>期待効果：</strong>「やりたいこと」の方向性が具体化し、次の行動が明確になる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🧪 アクション5：15分の小さな実験を1つ設計する</h3>
+      <p>共通タグに関連する行動を1つ、15分で試せる形に分解して実行する（例：ブログ1記事、SNS投稿、誰かに話す）。</p>
+      <div class="meta">
+        <strong>目的：</strong>仮説を現実で検証し、フィードバックを得る<br>
+        <strong>期待効果：</strong>完璧主義を崩し、行動→学習のループが回り始める
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 48px;">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">📊 重要指標</h2>
+    <div class="metric-grid">
+      <div class="metric-badge">
+        <span class="number">3</span>
+        <span class="label">要素の交点</span>
+      </div>
+      <div class="metric-badge">
+        <span class="number">5</span>
+        <span class="label">価値観の数</span>
+      </div>
+      <div class="metric-badge">
+        <span class="number">15分</span>
+        <span class="label">最小実験時間</span>
+      </div>
+      <div class="metric-badge">
+        <span class="number">∞</span>
+        <span class="label">ループ回数</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 48px;">
+    <h2 style="color: var(--primary); margin-bottom: 16px;">📚 関連書籍</h2>
+    <div class="related-books">
+      <div class="book-card">
+        <h4>さあ、才能(じぶん)に目覚めよう</h4>
+        <div class="author">トム・ラス</div>
+        <div class="relation">才能の客観把握に役立ち、『得意』の特定を補強する。</div>
+      </div>
+      <div class="book-card">
+        <h4>エッセンシャル思考</h4>
+        <div class="author">グレッグ・マキューン</div>
+        <div class="relation">価値観に沿った選択と集中を実行面から支える。</div>
+      </div>
+      <div class="book-card">
+        <h4>嫌われる勇気</h4>
+        <div class="author">岸見一郎・古賀史健</div>
+        <div class="relation">他人軸から自分軸への転換という態度変容を強化する。</div>
+      </div>
+      <div class="book-card">
+        <h4>7つの習慣</h4>
+        <div class="author">スティーブン・R・コヴィー</div>
+        <div class="relation">ミッション・価値観の明確化と主体性の実践を体系化する。</div>
+      </div>
+      <div class="book-card">
+        <h4>LIFE SHIFT</h4>
+        <div class="author">リンダ・グラットン／アンドリュー・スコット</div>
+        <div class="relation">長寿時代のキャリア設計において『交点』を持続的に更新する視点を与える。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetTab = button.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      button.classList.add('active');
+      button.setAttribute('aria-selected', 'true');
+      
+      const targetContent = document.getElementById('tab-' + targetTab);
+      if (targetContent) {
+        targetContent.classList.add('active');
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
