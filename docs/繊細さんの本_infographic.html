@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>繊細さんの本 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin: 0 1rem;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-button {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-button.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #f093fb22, #667eea22);
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+.quote-card small {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border: 2px solid var(--accent);
+}
+.action-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.visual-diagram {
+  background: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  margin: 0 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.book-card h4 {
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  color: var(--primary);
+}
+.book-card .author {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+@media (min-width: 768px) {
+  .tabs {
+    margin: 0 2rem;
+  }
+  .tab-content {
+    padding: 2rem;
+  }
+  .summary-block {
+    margin: 2rem;
+    padding: 2rem;
+  }
+  header h1 {
+    font-size: 2.5rem;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 繊細さんの本</h1>
+  <p>繊細さは強み。刺激を設計し、境界線で守り、エネルギーを管理する</p>
+</header>
+
+<div class="summary-block">
+  <h2>💡 要約（問い×答え×根拠）</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>繊細で疲れやすい自分はどうすれば楽に力を発揮できるか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    <p>気質を前提に刺激を調整し、境界線と休息を設計して強みが活きる環境を作る。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>HSPは情報処理が深く微細な変化に反応しやすいため過剰刺激で消耗しやすいが、同時に洞察・共感・危機回避などの強みを持つ。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>刺激源の特定→削減・選択（音・光・予定・人間関係）／バウンダリーと言語化で期待と役割を明確化／休息・回復ルーティンを仕組み化／強みが活きるタスク・働き方を選ぶ。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-button active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-button" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card">
+    <h3>🧠 HSP（繊細さん）</h3>
+    <ul>
+      <li>刺激に敏感で、情報を深く処理する</li>
+      <li>共感性が高く微細な変化に気づく</li>
+      <li>病気ではなく生まれ持った特性</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>自己理解の出発点。欠点ではなく前提として捉えることで最適化が始まる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ 過剰刺激</h3>
+    <ul>
+      <li>音・光・予定・感情情報が閾値を超える</li>
+      <li>集中低下や疲労・不安を招く</li>
+      <li>パフォーマンス低下の主因</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>消耗の正体を知ることで、対策（削減・選別）が可能になる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔬 深い情報処理</h3>
+    <ul>
+      <li>一度に多くの手掛かりを統合</li>
+      <li>意思決定は遅いが精度が高い</li>
+      <li>丁寧に考える傾向</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>強みの源泉。速度より質で勝負する戦略の根拠となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔍 微細な察知</h3>
+    <ul>
+      <li>小さな変化や暗黙の合図に気づく</li>
+      <li>リスク回避や品質管理に有利</li>
+      <li>細部への感度が高い</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>危機察知・品質向上で組織に貢献できる差別化要素。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💞 共感性と同調</h3>
+    <ul>
+      <li>他者の感情を拾いやすい</li>
+      <li>影響を受けやすく疲弊しやすい</li>
+      <li>支援力と消耗の両面を持つ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>人間関係の強みと弱点を理解し、境界線設定の必要性を認識できる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚧 バウンダリー（境界線）</h3>
+    <ul>
+      <li>自分の時間・役割・感情と他者を区別</li>
+      <li>要求に上限を設ける技術</li>
+      <li>関係を長持ちさせるための線引き</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>過剰な期待や役割から自分を守り、持続可能な関係を築く鍵。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎛️ 刺激コントロール（環境設計）</h3>
+    <ul>
+      <li>物理・デジタル・対人刺激を選別</li>
+      <li>量とタイミングを調整</li>
+      <li>入力ノイズを減らす工夫</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>過剰刺激を予防し、強みが発揮できる環境を能動的に作る。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔋 エネルギー管理</h3>
+    <ul>
+      <li>活動と回復の比率を最適化</li>
+      <li>休息・単独時間・自然接触で充電</li>
+      <li>充放電を設計する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>安定的なパフォーマンスには回復の仕組み化が不可欠。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💪 強みの活かし方</h3>
+    <ul>
+      <li>洞察・共感・危機察知・品質志向が活きる役割</li>
+      <li>手順・速度を選ぶ</li>
+      <li>適材適所の設計</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>特性を価値に変換し、成果と満足度を同時に高める。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌱 自己受容</h3>
+    <ul>
+      <li>特性を「欠点」ではなく「前提」と捉える</li>
+      <li>罪悪感なく最適化する態度</li>
+      <li>行動の一貫性を支える</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>すべての実践の土台。受容なしに継続的な改善は困難。
+    </div>
+  </div>
+
+  <div class="visual-diagram">
+    <h3 style="margin-bottom:1rem; color: var(--secondary);">📊 概念間の関係性</h3>
+    <div class="flow-item">
+      <span>高感受性</span>
+      <span class="flow-arrow">→</span>
+      <span>情報の深処理 ↑</span>
+      <span class="flow-arrow">→</span>
+      <span>過剰刺激リスク ↑</span>
+    </div>
+    <div class="flow-item">
+      <span>過剰刺激 ↑</span>
+      <span class="flow-arrow">→</span>
+      <span>注意散漫・疲労 ↑</span>
+      <span class="flow-arrow">→</span>
+      <span>パフォーマンス低下</span>
+    </div>
+    <div class="flow-item">
+      <span>バウンダリー強化</span>
+      <span class="flow-arrow">→</span>
+      <span>要求の選別</span>
+      <span class="flow-arrow">→</span>
+      <span>過剰刺激 ↓</span>
+    </div>
+    <div class="flow-item">
+      <span>環境設計</span>
+      <span class="flow-arrow">→</span>
+      <span>入力ノイズ ↓</span>
+      <span class="flow-arrow">→</span>
+      <span>強み顕在化</span>
+    </div>
+    <div class="flow-item">
+      <span>エネルギー管理</span>
+      <span class="flow-arrow">→</span>
+      <span>回復力 ↑</span>
+      <span class="flow-arrow">→</span>
+      <span>安定的貢献</span>
+    </div>
+    <div class="flow-item">
+      <span>自己受容</span>
+      <span class="flow-arrow">→</span>
+      <span>罪悪感 ↓</span>
+      <span class="flow-arrow">→</span>
+      <span>行動の一貫性 ↑</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>1️⃣ 定義と誤解の解消</h3>
+    <ul>
+      <li>繊細さは病気ではなく気質</li>
+      <li>弱さではなく特性として位置付ける</li>
+      <li>自己受容の起点を作る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>誤解を解くことで罪悪感を外し、前向きな最適化行動に移れる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>2️⃣ 特性の理解</h3>
+    <ul>
+      <li>深い処理・微細察知・共感性のメカニズム</li>
+      <li>刺激過多がもたらす影響を具体例で示す</li>
+      <li>強みと弱点の両面を可視化</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>自分の反応パターンを理解することで、予測と対策が可能になる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>3️⃣ 刺激の棚卸し</h3>
+    <ul>
+      <li>物理（音・光・匂い）の刺激源を特定</li>
+      <li>時間（予定・締切）のプレッシャーを可視化</li>
+      <li>対人（期待・感情）のトリガーを洗い出す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>見えない消耗源を可視化し、削減の優先順位をつけられる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>4️⃣ 減らす技術</h3>
+    <ul>
+      <li>優先順位をつけて選別する</li>
+      <li>断り方と境界線の言語化</li>
+      <li>入力を制限し疲弊の元を断つ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>具体的な技術を習得することで、実行可能性が高まる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>5️⃣ 回復の設計</h3>
+    <ul>
+      <li>単独時間・休息・自然接触の確保</li>
+      <li>ルーティン化でエネルギーを安定供給</li>
+      <li>充電の仕組みを日常に組み込む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>回復を偶然に任せず、意図的に設計することで持続可能性が高まる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>6️⃣ 働き方と関係性</h3>
+    <ul>
+      <li>強みが活きるタスク配分を選ぶ</li>
+      <li>コミュニケーションの前提を共有</li>
+      <li>齟齬を減らし期待を調整する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>職務設計と関係性の質が、日々の消耗度を大きく左右する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>7️⃣ 強みの最大化</h3>
+    <ul>
+      <li>洞察・品質・共感を価値に変える</li>
+      <li>役割設計と意思決定のスピード調整</li>
+      <li>適合度を高めて成果を出す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>特性を活かす場を選ぶことで、努力対効果が劇的に改善する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>8️⃣ 実践への落とし込み</h3>
+    <ul>
+      <li>具体的チェックリストと言い回し</li>
+      <li>ミニ習慣で継続を支援</li>
+      <li>日常に統合する仕組み</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>知識を行動に変えるには、小さく始められる具体策が必要。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h4>🎧 例1：オープンオフィスでの消耗</h4>
+    <p><strong>背景：</strong>周囲の会話・電話・足音が常に耳に入り、集中が途切れ続ける。夕方には頭痛と疲労感が蓄積。</p>
+    <p><strong>示唆：</strong>物理刺激の削減（ノイズキャンセリングイヤホン、静かな時間帯の確保）で生産性が回復。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>環境設計が消耗を防ぎ、深い処理の強みを発揮できることを示す典型例。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>📅 例2：予定の詰め込みと疲弊</h4>
+    <p><strong>背景：</strong>連続する会議と締切で休息なく働き、週末には動けなくなる。回復に2日かかる。</p>
+    <p><strong>示唆：</strong>予定間にバッファを設け、単独時間を確保することでエネルギーが安定。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>時間刺激の管理が持続可能なパフォーマンスの鍵であることを実証。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🤝 例3：頼まれごとを断れない</h4>
+    <p><strong>背景：</strong>相手の期待を察知し、断ると関係が壊れると恐れて引き受け続け、自分の時間が消失。</p>
+    <p><strong>示唆：</strong>「今は難しい」と境界線を言語化することで、関係は維持されむしろ信頼が深まる。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>バウンダリーが関係を守る手段であり、拒絶ではないことを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🌿 例4：自然の中での回復</h4>
+    <p><strong>背景：</strong>都市生活で刺激過多が続き、週末に公園や森を訪れると心身が軽くなる。</p>
+    <p><strong>示唆：</strong>自然接触が副交感神経を優位にし、過剰刺激をリセットする効果。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>回復手段の具体例として、自然が持つ治癒力を裏付ける。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h4>🔍 例5：細部への気づきが品質を守る</h4>
+    <p><strong>背景：</strong>プロジェクトで小さな矛盾や見落としに気づき、大きなトラブルを未然に防ぐ。</p>
+    <p><strong>示唆：</strong>微細察知の強みが組織に貢献し、評価される場面。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>繊細さが価値を生む具体的シーンを示し、自己肯定感を支える。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>繊細さは欠点ではなく、生かし方を選べる資質だ。</p>
+    <small><strong>なぜ重要か：</strong>自己受容の起点となり、最適化の行動に移れる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>刺激を減らす工夫は逃避ではなく戦略である。</p>
+    <small><strong>なぜ重要か：</strong>罪悪感を外し、環境設計を正当化できる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>境界線は相手を拒むためでなく、関係を長持ちさせるためにある。</p>
+    <small><strong>なぜ重要か：</strong>断る行為を関係維持の手段と再定義できる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>自分の感覚を最優先のセンサーとして信頼する。</p>
+    <small><strong>なぜ重要か：</strong>外的基準に振り回されず、消耗の早期察知が可能。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>✅ 刺激トリガーを15分洗い出す</h4>
+    <p>紙やメモアプリに、音・光・予定・人間関係で消耗する場面を書き出す。</p>
+    <div class="meta">
+      <strong>目的：</strong>見えない消耗源を可視化<br>
+      <strong>期待効果：</strong>削減の優先順位が明確になり、対策の第一歩を踏める
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>✅ 断り文句を3つメモし練習する</h4>
+    <p>「今は難しい」「別の方法を提案できる」「〇日なら可能」など、自分が使いやすい表現を書き、声に出して練習。</p>
+    <div class="meta">
+      <strong>目的：</strong>境界線を言語化し実行可能にする<br>
+      <strong>期待効果：</strong>実際の場面で迷わず使え、罪悪感が減る
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>✅ 作業環境の刺激を15分整える</h4>
+    <p>デスク周りの不要物を片付け、照明を調整し、ノイズ対策（イヤホン・耳栓）を試す。</p>
+    <div class="meta">
+      <strong>目的：</strong>物理刺激を即座に削減<br>
+      <strong>期待効果：</strong>集中力が上がり、疲労感が軽減される
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>✅ 単独時間を10分確保する</h4>
+    <p>今日のスケジュールに「何もしない10分」を入れ、静かな場所で深呼吸や窓の外を眺める。</p>
+    <div class="meta">
+      <strong>目的：</strong>回復の仕組みを体験<br>
+      <strong>期待効果：</strong>エネルギーが少し戻り、回復の重要性を実感できる
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>✅ 強みが活きた場面を1つ思い出す</h4>
+    <p>過去に「細かく気づいた」「共感で助けた」「丁寧に仕上げた」場面をメモし、自分の価値を確認。</p>
+    <div class="meta">
+      <strong>目的：</strong>自己肯定感の強化<br>
+      <strong>期待効果：</strong>特性を強みと捉え直し、前向きな行動が増える
+    </div>
+  </div>
+</div>
+
+<div style="margin: 2rem 1rem;">
+  <h2 style="font-size: 1.3rem; margin-bottom: 1rem; color: var(--secondary);">📚 関連書籍</h2>
+  
+  <div class="book-card">
+    <h4>ささいなことにもすぐに「動揺」してしまうあなたへ</h4>
+    <div class="author">エレイン・N・アーロン</div>
+    <div class="relation">HSP概念の基礎理論とDOES特性を体系化。原典に近い理解を補強。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>繊細さんの幸せリスト</h4>
+    <div class="author">武田友紀</div>
+    <div class="relation">同著者による実践リストで、日常への落とし込みが可能。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>敏感すぎる自分を好きになれる本</h4>
+    <div class="author">長沼睦雄</div>
+    <div class="relation">日本人の生活文脈に即した具体的セルフケアが学べる。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>内向型人間の時代 静かな人が世界を変える</h4>
+    <div class="author">スーザン・ケイン</div>
+    <div class="relation">静かな特性を強みに変える戦略が重なる。職場適応の示唆が豊富。</div>
+  </div>
+
+  <div class="book-card">
+    <h4>エッセンシャル思考 最少の時間で成果を最大にする</h4>
+    <div class="author">グレッグ・マキューン</div>
+    <div class="relation">優先順位と選択の技術が刺激削減と境界線実践を後押し。</div>
+  </div>
+</div>
+
+<script>
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const targetTab = button.getAttribute('data-tab');
+    
+    tabButtons.forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    button.classList.add('active');
+    button.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
