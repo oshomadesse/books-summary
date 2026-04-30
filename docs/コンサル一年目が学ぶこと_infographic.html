@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>入社1年目のコンサル - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 0.75rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  border-bottom: 2px solid var(--border);
+  margin: 1.5rem 0 1rem;
+  padding-bottom: 0;
+  -webkit-overflow-scrolling: touch;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.05rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card .tag {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), var(--secondary));
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding-left: 1.25rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: #fef3c7;
+  border-left: 3px solid #f59e0b;
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+.reason strong {
+  color: #d97706;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-weight: bold;
+}
+.example-card {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.example-card h3 {
+  color: #92400e;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-style: italic;
+}
+.quote-card .quote-text {
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.quote-card .quote-why {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.action-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 0.25rem;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  margin: 0.25rem;
+}
+.flow-diagram {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow-x: auto;
+}
+.flow-step {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin: 0.5rem;
+  font-size: 0.85rem;
+  text-align: center;
+  min-width: 120px;
+  position: relative;
+}
+.flow-step:after {
+  content: "→";
+  position: absolute;
+  right: -1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary);
+  font-weight: bold;
+}
+.flow-step:last-child:after {
+  content: "";
+}
+.metric-bar {
+  background: var(--border);
+  height: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+  position: relative;
+}
+.metric-fill {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: width 1s;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    font-size: 0.85rem;
+  }
+  .tab-btn {
+    padding: 0.6rem 0.75rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📊 入社1年目のコンサル</h1>
+  <p>イシュー起点で仮説を置き、構造化して検証、ストーリーで伝える</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      一年目のコンサルはどうすれば短期間で確実に成果を出せるか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      イシューから始めて仮説を置き、MECEとロジックツリーで構造化し、ファクトで検証して、ピラミッド・SCQAのストーリーで結論から伝える。進捗・品質は期待値管理とWBS・タイムボックスで制御する。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      コンサルの価値は限られた時間で意思決定に貢献することにあり、論点集中と検証可能性がインパクトと再現性を最大化するため。
+    </div>
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      1) 期待値を明確化しゴールから逆算（アウトプット定義→WBS→KPI）<br>
+      2) 80/20と仮説思考で分析範囲を最小化<br>
+      3) ファクト収集→検証→学びの短サイクル<br>
+      4) ピラミッド構造と1スライド1メッセージで伝達の損失を最小化<br>
+      5) チェックリスト・レビューで品質を担保し、手戻りを抑制
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🎯 イシュー・ドリブン</h3>
+        <span class="tag">論点起点</span>
+        <ul>
+          <li>成果に直結する問い（イシュー）を特定</li>
+          <li>そこから着手する姿勢</li>
+          <li>無駄な作業を排除</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>価値に直結しない作業を排し、インパクトを最大化できる
+        </div>
+      </div>
+      <div class="card">
+        <h3>💭 仮説思考</h3>
+        <span class="tag">当たりを付ける</span>
+        <ul>
+          <li>暫定結論を先に置く</li>
+          <li>検証で精度を上げる問題解決法</li>
+          <li>最短距離で検証に入れる</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>無駄な探索を削減し、効率的に正解に近づける
+        </div>
+      </div>
+      <div class="card">
+        <h3>📐 MECE</h3>
+        <span class="tag">網羅と排他</span>
+        <ul>
+          <li>漏れなくダブりなく分解</li>
+          <li>全体像と抜け漏れを管理</li>
+          <li>構造化の基本原則</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>見落としを防ぎ、論理の完全性を担保する
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌳 ロジックツリー</h3>
+        <span class="tag">分解の地図</span>
+        <ul>
+          <li>目的から要因・施策を分解する樹形図</li>
+          <li>優先度と抜けを可視化</li>
+          <li>構造的思考の実践ツール</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>複雑な問題を整理し、打ち手の優先順位を明確化
+        </div>
+      </div>
+      <div class="card">
+        <h3>📊 80/20の法則</h3>
+        <span class="tag">重要少数に集中</span>
+        <ul>
+          <li>成果の大半は一部の要素が生む</li>
+          <li>集中投資で効果を最大化</li>
+          <li>限られた時間で最大成果</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>リソースを重要な20%に集中し、80%の成果を得る
+        </div>
+      </div>
+      <div class="card">
+        <h3>📈 ファクトベース</h3>
+        <span class="tag">事実起点</span>
+        <ul>
+          <li>主張はデータ・事実で裏付ける</li>
+          <li>仮説は検証可能であること</li>
+          <li>信頼性の源泉</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>主張の信頼性を高め、意思決定への影響力を増大
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔺 ピラミッド構造</h3>
+        <span class="tag">結論先出し</span>
+        <ul>
+          <li>結論→根拠→詳細の階層で論理を整理</li>
+          <li>提示する順序も同じ</li>
+          <li>理解しやすさの設計</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>相手の認知負荷を下げ、議論の焦点を合わせられる
+        </div>
+      </div>
+      <div class="card">
+        <h3>📖 SCQA/ストーリーライン</h3>
+        <span class="tag">流れで説得</span>
+        <ul>
+          <li>状況→複雑化→問い→答えの流れ</li>
+          <li>納得を設計する</li>
+          <li>情報ではなく理解を届ける</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>ストーリーで意思決定を動かせる
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎬 アウトプットドリブン</h3>
+        <span class="tag">逆算設計</span>
+        <ul>
+          <li>最終成果物の定義から逆算</li>
+          <li>作業計画を立てる</li>
+          <li>ゴールから始める</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>範囲を明確化し、工数削減とスピード向上を実現
+        </div>
+      </div>
+      <div class="card">
+        <h3>🤝 期待値マネジメント</h3>
+        <span class="tag">合意でブレ防止</span>
+        <ul>
+          <li>ステークホルダーと範囲・品質・納期の認識を同期</li>
+          <li>手戻りを未然防止</li>
+          <li>信頼関係の構築</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>合意形成で手戻りを減らし、品質/納期を安定化
+        </div>
+      </div>
+      <div class="card">
+        <h3>⏱️ WBS/タイムボクシング</h3>
+        <span class="tag">計画と集中</span>
+        <ul>
+          <li>作業分解と時間箱</li>
+          <li>スケジュールと集中を担保</li>
+          <li>進捗の可視化</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>計画的実行と集中力の維持で生産性を最大化
+        </div>
+      </div>
+      <div class="card">
+        <h3>📏 KGI/KPI設計</h3>
+        <span class="tag">測って管理</span>
+        <ul>
+          <li>目的と中間指標を数値で定義</li>
+          <li>進捗を可視化</li>
+          <li>客観的な評価基準</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>測定可能にすることで管理と改善が可能になる
+        </div>
+      </div>
+      <div class="card">
+        <h3>📄 1スライド1メッセージ</h3>
+        <span class="tag">要点一本化</span>
+        <ul>
+          <li>各スライドを単一主張に絞る</li>
+          <li>必要最小の証拠のみ</li>
+          <li>明快さの追求</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>伝達の損失を最小化し、理解を確実にする
+        </div>
+      </div>
+      <div class="card">
+        <h3>✅ チェックリスト/レビュー</h3>
+        <span class="tag">品質の仕組み化</span>
+        <ul>
+          <li>定型の品質項目</li>
+          <li>第三者視点で手戻りを未然防止</li>
+          <li>一貫性の担保</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>エラー検出と品質一貫性で信頼を獲得
+        </div>
+      </div>
+      <div class="card">
+        <h3>📢 報連相・早めの共有</h3>
+        <span class="tag">早く見せる</span>
+        <ul>
+          <li>早期にドラフト共有</li>
+          <li>認識ズレを最小化</li>
+          <li>フィードバックループ</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>早期フィードバックで方向修正のコストを低減
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-diagram">
+      <h3 style="margin-bottom:1rem;color:var(--primary);">🔄 概念間の関係性フロー</h3>
+      <div style="white-space:nowrap;overflow-x:auto;">
+        <span class="flow-step">イシュー特定</span>
+        <span class="flow-step">仮説設定</span>
+        <span class="flow-step">MECE分解</span>
+        <span class="flow-step">分析計画</span>
+        <span class="flow-step">データ収集</span>
+        <span class="flow-step">仮説検証</span>
+        <span class="flow-step">ストーリー化</span>
+        <span class="flow-step">提案/実行</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📘 導入：コンサルの価値とは</h3>
+      <ul>
+        <li>コンサルの価値=意思決定への貢献</li>
+        <li>時間制約下で成果を出す前提と覚悟</li>
+        <li>プロフェッショナルとしての姿勢</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>限られた時間で最大の価値を出すマインドセットを確立するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第1部：思考の土台</h3>
+      <ul>
+        <li>イシュー選定で論点を絞る</li>
+        <li>仮説思考で最短距離を目指す</li>
+        <li>MECEで漏れダブりを防ぐ</li>
+        <li>80/20で重要少数に集中</li>
+        <li>ロジックツリーで構造化</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>問題解決の設計図を描き、効率的な分析の基盤を作るため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第2部：ファクトと検証</h3>
+      <ul>
+        <li>リサーチ設計で検証計画を立てる</li>
+        <li>一次/二次情報の取り方を習得</li>
+        <li>前提の明確化と検証サイクル</li>
+        <li>データで仮説を裏付ける</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>主張の信頼性を高め、意思決定に耐える根拠を構築するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第3部：伝える技術</h3>
+      <ul>
+        <li>ピラミッド構造で結論から伝える</li>
+        <li>SCQAでストーリーを設計</li>
+        <li>1スライド1メッセージで明快に</li>
+        <li>グラフ/表の作法を守る</li>
+        <li>結論先出しの会話術</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>情報ではなく理解を届け、相手の意思決定を動かすため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第4部：実行と管理</h3>
+      <ul>
+        <li>アウトプット定義でゴールを明確化</li>
+        <li>WBSで作業を分解</li>
+        <li>タイムボクシングで集中</li>
+        <li>KGI/KPIで進捗を可視化</li>
+        <li>期待値マネジメントで合意形成</li>
+        <li>報連相で認識ズレを防ぐ</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>計画的実行と品質・納期の安定化で信頼を獲得するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 第5部：品質と成長</h3>
+      <ul>
+        <li>チェックリストで品質を仕組み化</li>
+        <li>レビュー運用で手戻りを防止</li>
+        <li>ふりかえり（学習ループ）で改善</li>
+        <li>ツール習熟と習慣化</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>再現可能な成果を継続的に出し、プロとして成長するため
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📘 結語：仕組み化したプロ意識</h3>
+      <ul>
+        <li>再現可能な成果を継続的に出す</li>
+        <li>仕組み化で属人性を排除</li>
+        <li>プロフェッショナルとしての自律</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>一時的な成功ではなく、持続的な価値創出を実現するため
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>💼 具体例1：イシュー設定の失敗と成功</h3>
+      <p><strong>背景：</strong>新規事業の市場調査を依頼されたコンサルタント</p>
+      <p><strong>失敗例：</strong>「市場全体を網羅的に調べる」→膨大な時間を費やし、結論が出ない</p>
+      <p><strong>成功例：</strong>「参入すべきセグメントはどこか？」とイシューを設定→重要な3セグメントに絞り、2週間で意思決定可能な提案を完成</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>イシューを明確にすることで、分析範囲が絞られ、限られた時間で意思決定に貢献できる成果を出せる
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>💼 具体例2：仮説思考による効率化</h3>
+      <p><strong>背景：</strong>売上低迷の原因分析プロジェクト</p>
+      <p><strong>従来型：</strong>全データを集めて分析→3ヶ月かかり、結論は「複合要因」</p>
+      <p><strong>仮説型：</strong>「新規顧客獲得コストの上昇が主因」と仮説→関連データのみ収集し2週間で検証→施策立案まで完了</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>仮説を先に置くことで検証範囲が明確になり、スピードと精度を両立できる
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>💼 具体例3：ピラミッド構造による伝達</h3>
+      <p><strong>背景：</strong>経営層への提案プレゼンテーション</p>
+      <p><strong>失敗例：</strong>分析プロセスから順に説明→途中で「で、結論は？」と遮られる</p>
+      <p><strong>成功例：</strong>「結論：A案を推奨します。理由は3つ…」と結論から開始→5分で承認、残り時間で詳細議論</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>結論先出しで相手の認知負荷を下げ、限られた時間で意思決定を引き出せる
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>💼 具体例4：期待値マネジメントの重要性</h3>
+      <p><strong>背景：</strong>クライアントから「市場分析」を依頼された</p>
+      <p><strong>失敗例：</strong>詳細な市場規模レポートを作成→クライアントは「競合比較が欲しかった」と不満</p>
+      <p><strong>成功例：</strong>初回MTGで「市場規模・成長率・競合3社比較・参入障壁の4点でよいか」と確認→期待通りの成果物で高評価</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>事前の期待値合わせで手戻りを防ぎ、限られた時間を価値創出に集中できる
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <div class="quote-text">「仕事は仮説から始めよ。」</div>
+      <div class="quote-why">💡 なぜ重要か：最短距離で検証に入れ、無駄な探索を削減できる。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">「イシューからはじめる。」</div>
+      <div class="quote-why">💡 なぜ重要か：価値に直結しない作業を排し、インパクトを最大化する。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">「スライドはストーリーで作る。」</div>
+      <div class="quote-why">💡 なぜ重要か：情報ではなく理解を届け、意思決定を動かせる。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">「完璧より速さ、80点を早く出す。」</div>
+      <div class="quote-why">💡 なぜ重要か：早期フィードバックで手戻りを最小化し品質も上げられる。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">「結論から話す。」</div>
+      <div class="quote-why">💡 なぜ重要か：相手の認知負荷を下げ、議論の焦点を合わせられる。</div>
+    </div>
+
+    <div style="margin-top:2rem;padding:1rem;background:var(--card-bg);border-radius:8px;">
+      <h3 style="color:var(--primary);margin-bottom:1rem;">📚 関連書籍</h3>
+      <div style="display:grid;gap:1rem;">
+        <div style="border-left:3px solid var(--accent);padding-left:1rem;">
+          <strong>イシューからはじめよ</strong> - 安宅和人<br>
+          <span style="font-size:0.9rem;color:var(--text-light);">論点設定と仮説思考の核を深掘りできる。</span>
+        </div>
+        <div style="border-left:3px solid var(--accent);padding-left:1rem;">
+          <strong>考える技術・書く技術</strong> - バーバラ・ミント<br>
+          <span style="font-size:0.9rem;color:var(--text-light);">ピラミッド原則とストーリー構築の原典。</span>
+        </div>
+        <div style="border-left:3px solid var(--accent);padding-left:1rem;">
+          <strong>マッキンゼー式ロジカルシンキング</strong> - 照屋華子・岡田昭人<br>
+          <span style="font-size:0.9rem;color:var(--text-light);">MECEと構造化の実践手法が近接。</span>
+        </div>
+        <div style="border-left:3px solid var(--accent);padding-left:1rem;">
+          <strong>入社1年目の教科書</strong> - 岩瀬大輔<br>
+          <span style="font-size:0.9rem;color:var(--text-light);">新人期のプロ意識と基本動作が補完関係。</span>
+        </div>
+        <div style="border-left:3px solid var(--accent);padding-left:1rem;">
+          <strong>ザ・ゴール</strong> - エリヤフ・ゴールドラット<br>
+          <span style="font-size:0.9rem;color:var(--text-light);">制約思考と80/20の着眼で生産性向上に通底。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>🎯 アクション1：担当業務のイシューを1つ定義</h3>
+      <p><strong>目的：</strong>現在の業務で最も重要な問いを明確にする</p>
+      <p><strong>実行方法：</strong>「この業務で意思決定に最も影響する問いは何か？」を15分考え、1文で書き出す</p>
+      <p><strong>期待効果：</strong>作業の優先順位が明確になり、無駄な作業を削減できる</p>
+    </div>
+
+    <div class="action-card">
+      <h3>💡 アクション2：仮説と検証観点を3点書く</h3>
+      <p><strong>目的：</strong>仮説思考を実践し、検証可能な形で問題を整理する</p>
+      <p><strong>実行方法：</strong>定義したイシューに対する暫定答え（仮説）を1つ書き、それを検証するための観点を3つリストアップ</p>
+      <p><strong>期待効果：</strong>分析の方向性が定まり、データ収集が効率化される</p>
+    </div>
+
+    <div class="action-card">
+      <h3>📊 アクション3：1枚の結論スライドを作る</h3>
+      <p><strong>目的：</strong>ピラミッド構造と1スライド1メッセージを体得する</p>
+      <p><strong>実行方法：</strong>現在進行中のプロジェクトについて「結論→理由3つ→各理由の根拠1つ」を1枚のスライドにまとめる</p>
+      <p><strong>期待効果：</strong>伝達力が向上し、上司やクライアントとの議論が効率化される</p>
+    </div>
+
+    <div style="margin-top:2rem;padding:1.5rem;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:8px;">
+      <h3 style="color:#92400e;margin-bottom:1rem;">⏱️ 実行時間の目安</h3>
+      <div style="margin-bottom:0.75rem;">
+        <div style="font-size:0.9rem;margin-bottom:0.25rem;color:#78350f;">アクション1：イシュー定義</div>
+        <div class="metric-bar">
+          <div class="metric-fill" style="width:50%;">15分</div>
+        </div>
+      </div>
+      <div style="margin-bottom:0.75rem;">
+        <div style="font-size:0.9rem;margin-bottom:0.25rem;color:#78350f;">アクション2：仮説と検証観点</div>
+        <div class="metric-bar">
+          <div class="metric-fill" style="width:67%;">20分</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:0.9rem;margin-bottom:0.25rem;color:#78350f;">アクション3：結論スライド作成</div>
+        <div class="metric-bar">
+          <div class="metric-fill" style="width:100%;">30分</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+
+  const metricFills = document.querySelectorAll('.metric-fill');
+  setTimeout(() => {
+    metricFills.forEach(fill => {
+      fill.style.width = fill.style.width;
+    });
+  }, 100);
+});
+</script>
+</body>
+</html>
