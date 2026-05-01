@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>異文化理解力 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.summary-item {
+  background: rgba(255,255,255,0.15);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.summary-item h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tab-btn:hover {
+  background: var(--bg);
+  border-color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  border-left: 3px solid var(--accent);
+  font-size: 0.85rem;
+}
+
+.reason-box strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+
+.example-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary);
+  position: relative;
+}
+
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--primary);
+  opacity: 0.2;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+
+.quote-card p {
+  font-size: 1rem;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+
+.quote-card small {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  display: block;
+  padding-left: 1rem;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--card-bg), rgba(240,147,251,0.1));
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 2px solid var(--accent);
+}
+
+.action-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.visual-section h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+  text-align: center;
+}
+
+.scale-viz {
+  margin: 1rem 0;
+}
+
+.scale-item {
+  margin-bottom: 1.5rem;
+}
+
+.scale-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.scale-bar {
+  background: var(--border);
+  height: 2rem;
+  border-radius: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.scale-fill {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  height: 100%;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: width 0.6s ease;
+}
+
+.relationship-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.rel-item {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.05));
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--primary);
+}
+
+.book-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+
+.book-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+
+.book-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.3rem;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    font-size: 0.85rem;
+  }
+  
+  .tab-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.emoji {
+  font-size: 1.2rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📊 異文化理解力（The Culture Map）</h1>
+  <p>8つの尺度で文化差を可視化し、協働の生産性を高める実践ガイド</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2><span class="emoji">💡</span>要約：問い×答え×根拠</h2>
+  <div class="summary-grid">
+    <div class="summary-item">
+      <h3><span class="emoji">❓</span>問い</h3>
+      <p>なぜ同じ言葉・手順でも国や組織を跨ぐと齟齬が生まれるのか？どうすれば協働の生産性を高められるのか？</p>
+    </div>
+    <div class="summary-item">
+      <h3><span class="emoji">✅</span>答え</h3>
+      <p>8スケールで差分をマップ化し、文脈密度・評価様式・説得ロジック・権限勾配・決定法・信頼基盤・対立耐性・時間観を文脈適合させる。</p>
+    </div>
+    <div class="summary-item">
+      <h3><span class="emoji">🔍</span>Why（なぜそうなのか）</h3>
+      <p>文化は認知バイアスとコミュニケーション様式を体系的に偏らせ、同じ行動の意味を変える。多国籍調査と現場事例が、特定次元の不一致が誤解と遅延を生むことを示す。</p>
+    </div>
+    <div class="summary-item">
+      <h3><span class="emoji">🛠️</span>How（そのためには）</h3>
+      <p>1) 自分の位置を測る 2) 相手の位置を把握する 3) ギャップの大きい次元に優先対応する 4) 明示的ルール（説明の深さ、決定プロセス、FB様式、時間運用）を合意し運用する。</p>
+    </div>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="visual-section">
+    <h3>📏 8つの文化次元スケール</h3>
+    <div class="scale-viz">
+      <div class="scale-item">
+        <div class="scale-label">コミュニケーション（ロー ← → ハイコンテクスト）</div>
+        <div class="scale-bar">
+          <div class="scale-fill" style="width: 50%;">どこまで言葉にするか</div>
+        </div>
+      </div>
+      <div class="scale-item">
+        <div class="scale-label">評価（直接 ← → 間接ネガティブFB）</div>
+        <div class="scale-bar">
+          <div class="scale-fill" style="width: 60%;">ダメ出しの濃度</div>
+        </div>
+      </div>
+      <div class="scale-item">
+        <div class="scale-label">説得（応用先行 ← → 原理先行）</div>
+        <div class="scale-bar">
+          <div class="scale-fill" style="width: 45%;">ロジックの入口</div>
+        </div>
+      </div>
+      <div class="scale-item">
+        <div class="scale-label">リーディング（平等主義 ← → 階層主義）</div>
+        <div class="scale-bar">
+          <div class="scale-fill" style="width: 55%;">権限の距離</div>
+        </div>
+      </div>
+      <div class="scale-item">
+        <div class="scale-label">ディサイディング（合意型 ← → トップダウン）</div>
+        <div class="scale-bar">
+          <div class="scale-fill" style="width: 70%;">決め方の型</div>
+        </div>
+      </div>
+      <div class="scale-item">
+        <div class="scale-label">トラスト（タスク型 ← → 関係型）</div>
+        <div class="scale-bar">
+          <div class="scale-fill" style="width: 40%;">信頼の土台</div>
+        </div>
+      </div>
+      <div class="scale-item">
+        <div class="scale-label">ディスアグリー（対立容認 ← → 回避）</div>
+        <div class="scale-bar">
+          <div class="scale-fill" style="width: 65%;">異論の許容量</div>
+        </div>
+      </div>
+      <div class="scale-item">
+        <div class="scale-label">スケジューリング（直線 ← → 柔軟時間）</div>
+        <div class="scale-bar">
+          <div class="scale-fill" style="width: 35%;">時間の硬さ</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3><span class="emoji">🗺️</span>カルチャー・マップ</h3>
+      <ul>
+        <li>8つの文化次元で自他の位置を相対配置</li>
+        <li>協働時のリスクと調整点を特定する手法</li>
+        <li>違いを図にして可視化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>抽象的な「文化差」を測定可能な座標に変換し、優先対応すべき次元を明確化できるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="emoji">💬</span>コミュニケーション</h3>
+      <ul>
+        <li>ロー：明示言語への依存度が高い</li>
+        <li>ハイ：共有文脈に多くを委ねる</li>
+        <li>言外の意味の扱いが正反対</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>文脈密度の不一致が「言ったはず」「聞いてない」の齟齬を生み、プロジェクト遅延の主因となるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="emoji">📝</span>評価（ネガティブFB）</h3>
+      <ul>
+        <li>直接：率直に否定的FBを伝える</li>
+        <li>間接：婉曲表現で関係維持を重視</li>
+        <li>同じ言葉でも受け取り方が異なる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>FB様式の不一致が信頼損失や成長機会の喪失を招き、チームの学習速度を低下させるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="emoji">🧠</span>説得（ロジック）</h3>
+      <ul>
+        <li>原理先行：理論→演繹（欧州大陸型）</li>
+        <li>応用先行：事例→帰納（英米型）</li>
+        <li>教育伝統に強く影響される</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>資料構成や議論の入口が合わないと「論理的でない」と誤解され、提案が通らなくなるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="emoji">👔</span>リーディング（権限勾配）</h3>
+      <ul>
+        <li>平等主義：権限の水平分散</li>
+        <li>階層主義：明確な上下関係</li>
+        <li>地位差の扱いと権威への距離</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>リーダー像の期待が異なると、同じ行動が「弱い」「独裁的」と正反対に評価されるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="emoji">⚖️</span>ディサイディング（意思決定）</h3>
+      <ul>
+        <li>合意型：広い合意を重視</li>
+        <li>トップダウン：スピードと権限を重視</li>
+        <li>権限勾配とは独立の軸</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>決定プロセスの不一致が会議の空転と実行遅延を生み、ROIを大きく損なうため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="emoji">🤝</span>トラスト（信頼基盤）</h3>
+      <ul>
+        <li>タスク型：成果や能力に基づく</li>
+        <li>関係型：交流や情緒的絆に基づく</li>
+        <li>信頼構築の時間軸が異なる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>信頼の源泉が違うと、同じ行動が「冷たい」「非効率」と誤解され、協力が得られなくなるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="emoji">⚡</span>ディスアグリー（対立管理）</h3>
+      <ul>
+        <li>容認：公開の場での異論を歓迎</li>
+        <li>回避：和を優先し衝突を避ける</li>
+        <li>心理的安全の定義が異なる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>対立許容度の差が「攻撃的」「意見がない」の誤解を生み、イノベーションを阻害するため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="emoji">⏰</span>スケジューリング（時間観）</h3>
+      <ul>
+        <li>直線：順序と締切を厳守</li>
+        <li>柔軟：同時進行と状況優先</li>
+        <li>時間の捉え方が根本的に異なる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>時間運用の不一致がストレスと不信を生み、プロジェクト管理の破綻を招くため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="emoji">🌉</span>アダプティブ・ブリッジング</h3>
+      <ul>
+        <li>ギャップの大きい次元でルールを明示</li>
+        <li>自分の振る舞いをスイッチする実践</li>
+        <li>橋を架けて切替える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>全方位対応は不可能なので、差の大きい軸に集中介入することで効果を最大化できるため。
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>🔗 概念間の関係性</h3>
+    <div class="relationship-diagram">
+      <div class="rel-item">
+        <strong>コミュニケーション → 評価：</strong> 文脈密度が高いほど、否定FBは婉曲になりがち。
+      </div>
+      <div class="rel-item">
+        <strong>評価 × ディスアグリー：</strong> 直接FBでも対立回避なら衝突は起きにくい（例: 蘭は直接でも比較的非攻撃的）。
+      </div>
+      <div class="rel-item">
+        <strong>リーディング ≠ ディサイディング：</strong> 権限勾配と決定法は独立軸（例: 日本=階層的かつ合意型／米国=平等的だがトップダウン）。
+      </div>
+      <div class="rel-item">
+        <strong>トラスト ↔ ディスアグリー：</strong> タスク型は異論が信頼を毀損しにくい。関係型は公開対立が信頼を損ないやすい。
+      </div>
+      <div class="rel-item">
+        <strong>説得 ↔ コミュニケーション：</strong> 原理先行文化は前提や理論の明示を期待、応用先行文化は具体→結論を好む。
+      </div>
+      <div class="rel-item">
+        <strong>スケジューリング ↔ トラスト：</strong> 柔軟時間文化では関係維持が締切より優先されうる。
+      </div>
+      <div class="rel-item">
+        <strong>ギャップの特定 → 優先対応：</strong> 全次元を同時最適化せず、差が大きい2〜3軸に対応を集中するのが効果的。
+      </div>
+      <div class="rel-item">
+        <strong>明示ルールの導入 → 誤解低減：</strong> 低文脈の規範に合わせた明文化は多文化チームのデフォルト安全策。
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>序章：文化の見えない壁と8スケールの地図化の意義</h3>
+    <ul>
+      <li>同じ言葉でも文化が違えば意味が変わる現実</li>
+      <li>個人の能力ではなくシステム要因として文化差を捉える</li>
+      <li>8つの次元で可視化することで対処可能にする</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>文化差を「見えない壁」から「測定可能な座標」に変換し、対処の起点を作るため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第1章：コミュニケーション - ロー/ハイ文脈の読み違いと対処</h3>
+    <ul>
+      <li>明示言語への依存度の差が誤解を生む</li>
+      <li>ローコンテクスト：言外を最小化し明示する</li>
+      <li>ハイコンテクスト：共有文脈に多くを委ねる</li>
+      <li>対処：相手に合わせて背景説明の量を調整</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「言ったはず」「聞いてない」の齟齬がプロジェクト遅延の最大要因であり、最優先で対処すべきため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章：評価 - ネガティブFBの直接性と安全な伝え方</h3>
+    <ul>
+      <li>否定的FBの率直さの規範差</li>
+      <li>直接文化：明確さを重視</li>
+      <li>間接文化：関係維持を重視</li>
+      <li>対処：相手の様式に合わせたFB設計</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>FB様式の不一致が信頼損失と成長機会の喪失を招き、チームの学習速度を低下させるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章：説得 - 原理先行vs応用先行のロジック差と資料設計</h3>
+    <ul>
+      <li>理論から演繹するか、事例から帰納するかの好み</li>
+      <li>原理先行：前提や理論の明示を期待</li>
+      <li>応用先行：具体→結論を好む</li>
+      <li>対処：資料構成と議論の入口を調整</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>ロジックの入口が合わないと「論理的でない」と誤解され、提案が通らなくなるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章：リーディング - 権限勾配とリーダー像の適合</h3>
+    <ul>
+      <li>地位差の扱いと権威への距離</li>
+      <li>平等主義：権限の水平分散</li>
+      <li>階層主義：明確な上下関係</li>
+      <li>対処：リーダー像の期待を明示し調整</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>リーダー像の期待が異なると、同じ行動が「弱い」「独裁的」と正反対に評価されるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章：ディサイディング - 合意型/トップダウンの意思決定設計</h3>
+    <ul>
+      <li>意思決定の作り方の差</li>
+      <li>合意型：広い合意を重視</li>
+      <li>トップダウン：スピードと権限を重視</li>
+      <li>対処：決定プロセスを事前に明文化</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>決定プロセスの不一致が会議の空転と実行遅延を生み、ROIを大きく損なうため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章：トラスト - タスク/関係ベースの信頼構築ストラテジー</h3>
+    <ul>
+      <li>信頼の源泉の差</li>
+      <li>タスク型：成果や能力に基づく</li>
+      <li>関係型：交流や情緒的絆に基づく</li>
+      <li>対処：信頼構築の時間軸と方法を調整</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>信頼の源泉が違うと、同じ行動が「冷たい」「非効率」と誤解され、協力が得られなくなるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7章：ディスアグリー - 衝突管理と心理的安全の作り方</h3>
+    <ul>
+      <li>公開の場での異論・衝突への許容度</li>
+      <li>容認文化：課題分離を重視</li>
+      <li>回避文化：和を優先</li>
+      <li>対処：対立のルールを明示し安全装置を設ける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>対立許容度の差が「攻撃的」「意見がない」の誤解を生み、イノベーションを阻害するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第8章：スケジューリング - 時間観のすり合わせと運用ルール</h3>
+    <ul>
+      <li>時間の捉え方の差</li>
+      <li>直線：順序と締切を厳守</li>
+      <li>柔軟：同時進行と状況優先</li>
+      <li>対処：時間運用の明示的ルールを設定</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>時間運用の不一致がストレスと不信を生み、プロジェクト管理の破綻を招くため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>終章：マッピング→適応→合意装置化の実装ロードマップ</h3>
+    <ul>
+      <li>見えにくい差を8軸に分解して可視化</li>
+      <li>自分の位置づけでバイアスに気づく</li>
+      <li>相手の位置を推定・検証する</li>
+      <li>差が大きい軸から行動とルールを調整</li>
+      <li>多文化チームでの共通規範を最小限明文化</li>
+      <li>学習サイクルで検証・微修正して定着</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>知識を実装可能な行動計画に変換し、継続的改善のサイクルを回すため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3><span class="emoji">🇺🇸🇯🇵</span>例1：米国マネージャーと日本チームの会議</h3>
+    <p><strong>背景：</strong>米国人マネージャーが日本チームに「質問は？」と聞いたが沈黙。マネージャーは「理解した」と判断したが、実際は多くの疑問が残っていた。</p>
+    <p><strong>示唆：</strong>ハイコンテクスト文化（日本）では公開の場での質問は「理解していない」と見なされリスクが高い。ローコンテクスト文化（米国）では質問は「関心の証」。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>この例はコミュニケーション次元のギャップが「沈黙の意味」を正反対に解釈させ、誤解を生むことを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3><span class="emoji">🇩🇪🇬🇧</span>例2：ドイツとイギリスのプレゼン様式</h3>
+    <p><strong>背景：</strong>ドイツ人が理論的前提から始めるプレゼンを、イギリス人は「回りくどい」と感じた。逆にイギリス人の事例先行プレゼンを、ドイツ人は「根拠が薄い」と評価。</p>
+    <p><strong>示唆：</strong>原理先行（ドイツ）と応用先行（イギリス）の説得様式の差が、同じ内容でも「論理的」の定義を変える。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>この例は説得次元のギャップが資料構成と議論の入口を変え、提案の通りやすさを左右することを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3><span class="emoji">🇨🇳🇺🇸</span>例3：中国と米国の意思決定プロセス</h3>
+    <p><strong>背景：</strong>米国チームは会議で即決を期待したが、中国チームは「上司の承認待ち」と回答。米国側は「権限がない」と不満、中国側は「尊重されていない」と感じた。</p>
+    <p><strong>示唆：</strong>リーディング（階層主義）とディサイディング（合意型）の組み合わせが、意思決定の速度と様式を規定する。米国は平等的だがトップダウン、中国は階層的かつ合意型。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>この例はリーディングとディサイディングが独立軸であり、両方を理解しないと会議設計を誤ることを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3><span class="emoji">🇧🇷🇩🇪</span>例4：ブラジルとドイツの時間運用</h3>
+    <p><strong>背景：</strong>ドイツ人は会議開始5分前に全員着席を期待したが、ブラジル人は15分遅れで到着。ドイツ側は「プロ意識がない」、ブラジル側は「柔軟性がない」と感じた。</p>
+    <p><strong>示唆：</strong>直線時間（ドイツ）と柔軟時間（ブラジル）の差が、同じ行動の評価を変える。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>この例はスケジューリング次元のギャップが相互不信を生み、プロジェクト管理の破綻を招くことを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3><span class="emoji">🇫🇷🇳🇱</span>例5：フランスとオランダの評価様式</h3>
+    <p><strong>背景：</strong>オランダ人マネージャーが「改善が必要」と直接伝えたところ、フランス人は「攻撃された」と感じた。逆にフランス人の婉曲なFBを、オランダ人は「問題ない」と誤解。</p>
+    <p><strong>示唆：</strong>評価次元のギャップが、同じFBの受け取り方を変え、信頼損失と成長機会の喪失を招く。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>この例は評価次元のギャップがFB様式の不一致を生み、学習速度を低下させることを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>同じ言葉でも、文化が違えば意味は変わる。</p>
+    <small><strong>重要性：</strong>誤解の原因を個人の能力ではなくシステム要因として再定義できる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>差の大きい次元にエネルギーを集中せよ。</p>
+    <small><strong>重要性：</strong>全方位対応の徒労を避け、改善効果の高い介入点を特定できる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>合意形成と権威勾配は別の軸である。</p>
+    <small><strong>重要性：</strong>意思決定設計を誤る典型的勘違いを防ぎ、会議設計を最適化できる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>高文脈には背景を、低文脈には明示を。</p>
+    <small><strong>重要性：</strong>相手に合わせた伝達設計の原則を一行で想起できる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>文化は認知バイアスとコミュニケーション様式を体系的に偏らせる。</p>
+    <small><strong>重要性：</strong>文化差を「個人の問題」ではなく「構造的パターン」として捉え直せる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>多文化チームでは低文脈の規範に合わせた明文化がデフォルト安全策。</p>
+    <small><strong>重要性：</strong>誤解を最小化する実践的ルールを提供し、即座に適用できる。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3><span class="emoji">📊</span>アクション1：自文化の8スケールを自己採点</h3>
+    <p>8つの次元それぞれについて、自分の文化的位置を1〜10で採点する。各次元の定義を見ながら、自分の行動パターンを振り返る。</p>
+    <div class="meta">
+      <strong>目的：</strong>自分のバイアスと前提を可視化する<br>
+      <strong>期待効果：</strong>相手との差分を測る基準点ができ、誤解の原因を特定しやすくなる<br>
+      <strong>所要時間：</strong>15分
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3><span class="emoji">🌍</span>アクション2：相手国の文化プロファイルを調査</h3>
+    <p>協働相手の国・組織の文化プロファイルを、オンライン資料や書籍で調べる。8次元のうち自分と差が大きい2〜3軸を特定する。</p>
+    <div class="meta">
+      <strong>目的：</strong>ギャップの大きい次元を特定する<br>
+      <strong>期待効果：</strong>優先対応すべき調整点が明確になり、介入効果を最大化できる<br>
+      <strong>所要時間：</strong>20分
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3><span class="emoji">📝</span>アクション3：次回会議の説明に背景を追記</h3>
+    <p>次回のプレゼン資料やメールに、前提・背景・理由を1〜2文追加する。特にローコンテクスト相手には「なぜこの提案か」を明示する。</p>
+    <div class="meta">
+      <strong>目的：</strong>コミュニケーション次元のギャップに即座に対応する<br>
+      <strong>期待効果：</strong>「言ったはず」「聞いてない」の齟齬を減らし、誤解による遅延を防ぐ<br>
+      <strong>所要時間：</strong>15分
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3><span class="emoji">🗣️</span>アクション4：FB様式を相手に合わせる</h3>
+    <p>次回のフィードバック前に、相手の評価次元（直接/間接）を確認し、伝え方を調整する。間接文化相手には肯定→改善点の順で伝える。</p>
+    <div class="meta">
+      <strong>目的：</strong>評価次元のギャップに対応し、信頼を維持する<br>
+      <strong>期待効果：</strong>FBが建設的に受け取られ、成長機会の喪失を防ぐ<br>
+      <strong>所要時間：</strong>10分
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3><span class="emoji">⚙️</span>アクション5：決定プロセスを明文化する</h3>
+    <p>次回プロジェクトの開始時に、意思決定の方法（誰が・いつ・どう決めるか）を1ページにまとめ、チームで合意する。</p>
+    <div class="meta">
+      <strong>目的：</strong>ディサイディング次元のギャップに対応し、会議の空転を防ぐ<br>
+      <strong>期待効果：</strong>決定プロセスの不一致による遅延とストレスを削減し、ROIを改善する<br>
+      <strong>所要時間：</strong>30分
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3><span class="emoji">🕐</span>アクション6：時間運用ルールを設定する</h3>
+    <p>多文化チームで、会議開始時刻・締切の扱い・遅延時の連絡方法を明示的に合意し、文書化する。</p>
+    <div class="meta">
+      <strong>目的：</strong>スケジューリング次元のギャップに対応し、相互不信を防ぐ<br>
+      <strong>期待効果：</strong>時間運用の不一致によるストレスを削減し、プロジェクト管理を安定化する<br>
+      <strong>所要時間：</strong>20分
+    </div>
+  </div>
+</div>
+
+<div class="visual-section">
+  <h3>📚 関連書籍</h3>
+  <div class="book-card">
+    <h4>異文化と国際経営（Riding the Waves of Culture）</h4>
+    <p><strong>著者：</strong>フォンス・トロンペナールス</p>
+    <p><strong>関連性：</strong>価値次元フレームで文化差を説明し、メイヤーの8軸と相互補完できる。</p>
+  </div>
+  <div class="book-card">
+    <h4>文化と組織（Cultures and Organizations: Software of the Mind）</h4>
+    <p><strong>著者：</strong>ヘールト・ホフステード 他</p>
+    <p><strong>関連性：</strong>宏観的な国民文化次元を提供し、チーム運用に落とす際の基礎比較に有用。</p>
+  </div>
+  <div class="book-card">
+    <h4>When Cultures Collide</h4>
+    <p><strong>著者：</strong>リチャード・D・ルイス</p>
+    <p><strong>関連性：</strong>国別コミュニケーション傾向の実務的プロファイルが、マッピングの具体化に役立つ。</p>
+  </div>
+  <div class="book-card">
+    <h4>グローバル・デクステリティ</h4>
+    <p><strong>著者：</strong>アンディ・モリンスキー</p>
+    <p><strong>関連性：</strong>状況に応じて行動を調整する"適応力"の磨き方が、本書の実装編となる。</p>
+  </div>
+  <div class="book-card">
+    <h4>The Culture Code</h4>
+    <p><strong>著者：</strong>ダニエル・コイル</p>
+    <p><strong>関連性：</strong>多様性を抱える組織で心理的安全と学習文化を作る実践が、対立管理に直結する。</p>
+  </div>
+</div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+  
+  const scaleFills = document.querySelectorAll('.scale-fill');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.width = entry.target.style.width;
+      }
+    });
+  }, { threshold: 0.5 });
+  
+  scaleFills.forEach(fill => observer.observe(fill));
+});
+</script>
+
+</body>
+</html>
