@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>苦しかったときの話をしようか - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+
+.reason-box strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.chapter-card li {
+  padding: 0.3rem 0 0.3rem 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.chapter-card li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.85rem;
+}
+
+.action-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+
+.action-card h3 {
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.visual-section h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.05));
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.book-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border-left: 3px solid var(--primary);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.book-item h4 {
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+}
+
+.book-item .author {
+  color: var(--text-light);
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.book-item .relation {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 苦しかったときの話をしようか</h1>
+  <p>森岡毅 著 - キャリア戦略の設計図</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 核心サマリー</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    苦しい時代に自分のキャリアをどう設計し、確実に前進させるか？
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    資本主義のゲームのルールを踏まえ、強み×市場（どこで戦うか）を最適化し、逆算思考で差別化の筋を作る。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    努力は土俵選びを誤ると報われにくい。需要が強く構造的に成長する領域で希少な価値を提供すれば、同じ努力でも成果と機会が雪だるま式に増える。
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    1) 自己理解（好き・得意・価値観）を棚卸し 2) 成長性と生産性が高い市場を選定 3) 数字で語れる実績づくりに資源集中 4) STP発想で"自分"を商品設計（誰に/何を/どう届ける） 5) 逆算ロードマップで学習と経験を積み上げ、継続的に検証・修正する。
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🎯 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📚 各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">🔗 関連書籍</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🎮 資本主義のゲームのルール</h3>
+      <ul>
+        <li>価値を大きく・効率的に生む主体へ報酬と機会が集中</li>
+        <li>仕組みを知り、優位に資源配分することが生存戦略の基礎</li>
+        <li>努力の方向性が成果を左右する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>ルールを知れば勝率が上がる。無知のまま努力しても報われにくい構造を理解することが第一歩。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🗺️ どこで戦うか</h3>
+      <ul>
+        <li>市場・領域・テーマの選定が最重要</li>
+        <li>成長性と構造的収益性が高い土俵を選ぶ</li>
+        <li>同じ努力で成果が跳ねやすくなる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>土俵選びが8割。努力の質より前に、戦う場所が成果を決定づける。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚔️ 強みの設計</h3>
+      <ul>
+        <li>得意×経験×資源を掛け合わせる</li>
+        <li>他者が真似しにくい提供価値へ翻訳</li>
+        <li>弱みの是正より強みの尖らせが費用対効果大</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>武器を作る。差別化の源泉は強みの掛け算にあり、弱み補強は最低限で良い。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 逆算思考（バックキャスト）</h3>
+      <ul>
+        <li>望む将来像から現在に向かって必要条件を遡る</li>
+        <li>段階的な到達点を決める意思決定法</li>
+        <li>優先順位が明確になり迷いが減る</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>ゴール起点で考えることで、今やるべきことが明確になり無駄な努力を排除できる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔍 選択と集中</h3>
+      <ul>
+        <li>限られた時間・注意・資金を絞る</li>
+        <li>最もレバレッジの高い施策とスキルに集中</li>
+        <li>捨てる勇気が戦略の本質</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>捨てて尖る。資源は有限なので、分散は凡庸を生む。集中が突破力を生む。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎨 STP（自分への適用）</h3>
+      <ul>
+        <li>セグメンテーション/ターゲティング/ポジショニング</li>
+        <li>"誰に・何を・どうやって"自分の価値を届けるか設計</li>
+        <li>個人を商品として戦略的に位置づける</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>自分を商品化。マーケティング思考を個人に適用することで市場価値を最大化できる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ 需要と供給の非対称</h3>
+      <ul>
+        <li>需要が強く供給が少ない領域で希少性を確保</li>
+        <li>価格決定力と交渉力が高まる</li>
+        <li>市場構造を読む力が必要</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>希少性＝交渉力。需給バランスを見極めることで、自分の立場を有利にできる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🤝 期待値マネジメント</h3>
+      <ul>
+        <li>関係者の期待水準を把握・調整</li>
+        <li>確実に超えるための設計を行う</li>
+        <li>信頼の複利を生む</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>信用の複利。小さな期待超えの積み重ねが、大きな機会を呼び込む。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📈 学習の複利</h3>
+      <ul>
+        <li>小さな改善の継続が指数関数的な成果差を生む</li>
+        <li>測定→改善→再挑戦のループが鍵</li>
+        <li>継続が最大の武器</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>積み上げは裏切らない。1%の改善を365日続ければ37倍の成長になる。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💼 キャリアのポートフォリオ</h3>
+      <ul>
+        <li>即戦力スキル（現金化しやすい）</li>
+        <li>将来の成長投資（希少性アップ）</li>
+        <li>攻守の配分設計が重要</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>攻守の配分。短期の安定と長期の成長をバランスさせることでリスクを管理しながら成長できる。
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>🔄 概念間の関係性</h3>
+    <div class="flow-diagram">
+      <div class="flow-item">
+        <span class="flow-arrow">→</span>
+        <span>自己理解 → 強みの設計 → STPでの差別化 → 市場価値向上</span>
+      </div>
+      <div class="flow-item">
+        <span class="flow-arrow">→</span>
+        <span>市場選定（どこで戦うか） → 努力のROI上昇 → 成果拡大 → 機会増加 → 学習の複利</span>
+      </div>
+      <div class="flow-item">
+        <span class="flow-arrow">→</span>
+        <span>逆算思考 → 優先順位の明確化 → 選択と集中 → 実績の可視化（数字/事例）</span>
+      </div>
+      <div class="flow-item">
+        <span class="flow-arrow">→</span>
+        <span>需要>供給の領域 × 希少スキルの保有 → 価格決定力・交渉力↑</span>
+      </div>
+      <div class="flow-item">
+        <span class="flow-arrow">→</span>
+        <span>期待値マネジメント → 信用の蓄積 → 高難度機会の獲得 → 更なる成長</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📖 導入：娘への手紙</h3>
+    <ul>
+      <li>苦しい時期の意味と向き合い方を提示</li>
+      <li>キャリアの岐路に立つ若者への実践的アドバイス</li>
+      <li>父親としての愛情と戦略家としての冷徹さの融合</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>読者の共感を得て、本書が単なる理論書ではなく実践的な人生指南書であることを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>💰 資本主義のルール</h3>
+    <ul>
+      <li>努力だけでは不十分な理由を構造的に説明</li>
+      <li>価値創出と希少性に報酬が集まる仕組み</li>
+      <li>ゲームのルールを知ることの重要性</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>現実を直視させ、感情論ではなく構造理解に基づく戦略の必要性を認識させるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎯 戦略の核心</h3>
+    <ul>
+      <li>"どこで戦うか"の重要性を強調</li>
+      <li>選択と集中の思想を提示</li>
+      <li>戦略とは捨てることであるという本質</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>努力の方向性が成果を決定づけることを理解させ、土俵選びの優先順位を明確にするため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🔍 自己分析</h3>
+    <ul>
+      <li>好き/得意/価値観の棚卸し法</li>
+      <li>強みの見つけ方・伸ばし方を解説</li>
+      <li>自己理解が戦略設計の出発点</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>自分を知らずに戦略は立てられない。客観的な自己分析の手法を提供するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📊 市場選定</h3>
+    <ul>
+      <li>成長性・生産性・参入障壁の観点で土俵を評価</li>
+      <li>市場構造を読む視点を提供</li>
+      <li>需給バランスの見極め方</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>どの市場で戦うかが成果を左右する。市場評価の具体的フレームワークを提供するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎨 STPと個人ブランディング</h3>
+    <ul>
+      <li>誰に・何を・どう届けるかを"自分"に適用</li>
+      <li>マーケティング思考の個人への転用</li>
+      <li>差別化ポジションの設計法</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>自分を商品として戦略的に位置づける実践的手法を提供し、市場価値を最大化するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>⚙️ 実行設計</h3>
+    <ul>
+      <li>逆算思考で中間目標と行動計画を作る</li>
+      <li>学習の複利ループを回す方法</li>
+      <li>測定・改善・再挑戦のサイクル</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>戦略を実行に落とし込む具体的プロセスを示し、継続的成長の仕組みを作るため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🎢 ケース・示唆：USJ再建</h3>
+    <ul>
+      <li>USJ再建の思考法から個人に転用できる原理を抽出</li>
+      <li>実務での戦略実践例</li>
+      <li>理論と実践の架橋</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>抽象的な戦略論を具体的な成功事例で補強し、個人への応用可能性を示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🌟 終章：苦しい時こそ</h3>
+    <ul>
+      <li>苦しい時こそ成長の芽が宿るというメッセージ</li>
+      <li>逆境を機会に変える思考法</li>
+      <li>読者の背中を押す励まし</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>戦略論だけでなく、実行する勇気とマインドセットを与え、行動変容を促すため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🎢 事例1：USJ再建の戦略転換</h3>
+    <ul>
+      <li><strong>背景：</strong>低迷していたUSJを数年でV字回復させた</li>
+      <li><strong>施策：</strong>"どこで戦うか"を再定義し、ファミリー層にターゲットを絞り込み</li>
+      <li><strong>結果：</strong>ハリーポッターエリアなど差別化施策で来場者数・収益が急増</li>
+      <li><strong>示唆：</strong>土俵選びと集中投資が成果を生む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>市場選定と選択集中の原則が、個人キャリアにも適用できる普遍的な戦略であることを実証している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💼 事例2：転職市場での希少性確保</h3>
+    <ul>
+      <li><strong>背景：</strong>汎用スキルだけでは差別化が難しい</li>
+      <li><strong>施策：</strong>成長市場（例：AI/データ分析）×既存専門性（例：マーケ）の掛け算</li>
+      <li><strong>結果：</strong>需要>供給の領域で希少人材として高評価</li>
+      <li><strong>示唆：</strong>スキルの掛け算で希少性を作る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>単一スキルの深化より、複数スキルの掛け算が市場価値を飛躍的に高めることを示している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📈 事例3：学習の複利による成長</h3>
+    <ul>
+      <li><strong>背景：</strong>毎日1時間の学習を1年継続</li>
+      <li><strong>施策：</strong>測定可能な小目標を設定し、週次で振り返り改善</li>
+      <li><strong>結果：</strong>365時間の積み上げで専門資格取得＋実務成果向上</li>
+      <li><strong>示唆：</strong>小さな継続が指数関数的成果を生む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>複利効果は金融だけでなく学習にも適用でき、継続の力が圧倒的な差を生むことを具体的に示している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 事例4：逆算思考でのキャリア設計</h3>
+    <ul>
+      <li><strong>背景：</strong>5年後に事業責任者になりたい</li>
+      <li><strong>施策：</strong>必要スキル（P&L管理/チームビルド/戦略立案）を逆算し、3年目までに小規模PJ責任者経験を積む計画</li>
+      <li><strong>結果：</strong>計画的な経験蓄積で目標達成の確度が上がる</li>
+      <li><strong>示唆：</strong>ゴールから逆算することで無駄な寄り道を避けられる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>漠然とした努力ではなく、ゴールから逆算した戦略的キャリア設計が成功確率を高めることを示している。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>「努力は方向を誤ると報われない。まず土俵を選べ。」</p>
+    <small><strong>重要性：</strong>"どこで戦うか"の優先順位を端的に示す指針だから。努力の質より前に場所選びが成果を決定づける。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「好きは燃料、得意は武器。武器で戦い、燃料で続ける。」</p>
+    <small><strong>重要性：</strong>情熱と実力の両輪がキャリア持続の鍵であるため。好きだけでも得意だけでも不十分で、両方の掛け算が必要。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「戦略とは捨てること。資源を一点に集中せよ。」</p>
+    <small><strong>重要性：</strong>限られた資源で勝率を最大化する原則を示すから。分散は凡庸を生み、集中が突破力を生む。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「自分を商品として設計せよ。誰に何をどう届けるかを決める。」</p>
+    <small><strong>重要性：</strong>個人へSTPを適用する核心で実務に直結するため。マーケティング思考を自分に適用することで市場価値を最大化できる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「苦しい時こそ学習の複利が効く。小さな前進を積め。」</p>
+    <small><strong>重要性：</strong>逆境を成長機会へ転換する実践的マインドセットだから。困難な時期こそ、継続的な小さな改善が大きな差を生む。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>✍️ アクション1：強み上位3つと根拠を書く</h3>
+    <p>自分の強みトップ3を紙に書き出し、それぞれについて「なぜそう言えるか」の具体的根拠（実績・フィードバック・成果）を添える。</p>
+    <div class="meta">
+      <strong>目的：</strong>自己理解の出発点を作る<br>
+      <strong>期待効果：</strong>強みの言語化により、STP設計の土台ができ、面接や提案での説得力が増す
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>🎯 アクション2：5年後の理想と逆算3手順を書く</h3>
+    <p>5年後のなりたい姿を1文で書き、そこから逆算して「3年後」「1年後」「今月」にやるべきことを各1つずつ書く。</p>
+    <div class="meta">
+      <strong>目的：</strong>逆算思考の実践<br>
+      <strong>期待効果：</strong>長期目標が具体的な行動に分解され、今日から動ける状態になる
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>🔍 アクション3：求人3件で必須スキル傾向を抜く</h3>
+    <p>興味ある職種の求人票を3件読み、共通して求められるスキル・経験をリストアップする。</p>
+    <div class="meta">
+      <strong>目的：</strong>市場の需要を把握する<br>
+      <strong>期待効果：</strong>市場が求めるスキルセットが明確になり、学習の優先順位が決まる
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>📊 アクション4：自分のSTPを1枚にまとめる</h3>
+    <p>「誰に（ターゲット）」「何を（提供価値）」「どう（差別化ポイント）」を各1行で書き、A4用紙1枚にまとめる。</p>
+    <div class="meta">
+      <strong>目的：</strong>自分を商品として設計する<br>
+      <strong>期待効果：</strong>自己PRや職務経歴書の軸が明確になり、一貫性のあるキャリア戦略が描ける
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>⏱️ アクション5：今週の学習時間を測定する</h3>
+    <p>今週1週間、何にどれだけ時間を使ったかを記録し、学習・成長に使った時間を集計する。</p>
+    <div class="meta">
+      <strong>目的：</strong>時間の使い方を可視化する<br>
+      <strong>期待効果：</strong>無駄な時間が明確になり、選択と集中の材料が得られる。学習の複利を回す第一歩。
+    </div>
+  </div>
+</div>
+
+<div id="tab6" class="tab-content" role="tabpanel">
+  <div class="book-list">
+    <div class="book-item">
+      <h4>📘 USJを劇的に変えた、たった1つの考え方</h4>
+      <div class="author">著者：森岡毅</div>
+      <div class="relation"><strong>関連性：</strong>本書の戦略発想の実務的源流であるマーケ思考を詳述。USJ再建の具体的プロセスから個人戦略への応用が学べる。</div>
+    </div>
+
+    <div class="book-item">
+      <h4>📗 確率思考の戦略論</h4>
+      <div class="author">著者：森岡毅 ほか</div>
+      <div class="relation"><strong>関連性：</strong>"どこで戦うか"と勝ち筋設計を理論化し個人戦略に転用可能。数学的アプローチで戦略の本質を理解できる。</div>
+    </div>
+
+    <div class="book-item">
+      <h4>📙 ストーリーとしての競争戦略</h4>
+      <div class="author">著者：楠木建</div>
+      <div class="relation"><strong>関連性：</strong>選択と集中を物語構造で捉え、差別化の一貫性を学べる。戦略の"筋の良さ"を理解する助けになる。</div>
+    </div>
+
+    <div class="book-item">
+      <h4>📕 グッド・ストラテジー/バッド・ストラテジー</h4>
+      <div class="author">著者：リチャード・ルメルト</div>
+      <div class="relation"><strong>関連性：</strong>良い戦略の要件（診断・方針・行動）を理解し個人に適用できる。戦略と目標の違いを明確に学べる。</div>
+    </div>
+
+    <div class="book-item">
+      <h4>📔 転職の思考法</h4>
+      <div class="author">著者：北野唯我</div>
+      <div class="relation"><strong>関連性：</strong>市場価値の捉え方と土俵選びの重要性が本書の主張と響き合う。キャリア戦略の実践的補完書。</div>
+    </div>
+
+    <div class="book-item">
+      <h4>📓 7つの習慣</h4>
+      <div class="author">著者：スティーブン・R・コヴィー</div>
+      <div class="relation"><strong>関連性：</strong>主体性と目的起点（逆算思考）の実践フレームを補強する。原則中心の生き方が本書の戦略思考と相乗効果を生む。</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// タブ切り替え機能
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    // すべてのタブとコンテンツから active を削除
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブとコンテンツに active を追加
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
