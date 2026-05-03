@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI時代のアンラーニング - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.summary-item:last-child {
+  margin-bottom: 0;
+}
+
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+
+.summary-item p {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  line-height: 1.5;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  border-left: 4px solid var(--accent);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.quote-card small {
+  display: block;
+  color: var(--text-light);
+  font-style: normal;
+  font-size: 0.85rem;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.action-card h4 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  line-height: 1.5;
+}
+
+.diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.flow-item:last-child {
+  margin-bottom: 0;
+}
+
+.flow-arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.metric-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.metric-label {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-top: 3px solid var(--primary);
+}
+
+.chapter-card h3 {
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.chapter-card .reason {
+  background: rgba(102, 126, 234, 0.1);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.chapter-card .reason strong {
+  color: var(--secondary);
+}
+
+.book-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  border-left: 3px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.book-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+.book-card .relation {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 AI時代のアンラーニング</h1>
+  <p>問いを発明し、越境し、小さく実験して学習を加速する</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 核心メッセージ</h2>
+  <p style="margin-bottom:1rem;">AIが答えを廉価に供給する時代、人間の価値は「問いを発明し、越境し、小さく実験して学習を加速する力」に移る。工業化時代の成功則を手放し（アンラーニング）、個人・組織・地域の学びの生態系を自ら設計せよ。</p>
+  
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>AI時代に人間は何で価値創出するのか？</p>
+    <strong>💡 答え</strong>
+    <p>正解ではなく「問い・目的・意味・倫理・関係性の設計」で価値を出す。</p>
+    <strong>🔍 Why</strong>
+    <p>答えの生産はAIが圧倒的に優位でコモディティ化するため、人間の差別化軸が上流（目的/問い）と文脈接続に移る。</p>
+    <strong>⚙️ How</strong>
+    <p>アンラーニングで前提を外し、越境対話→小さな実験→振り返りのループを回す場とリズムを設計する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--primary);">🔑 主要概念の詳細</h2>
+  
+  <div class="card-grid">
+    <div class="card">
+      <h3>🔄 アンラーニング</h3>
+      <span class="badge">前提を外す学びほぐし</span>
+      <ul>
+        <li>役に立たなくなった前提・物差し・成功パターンを意図的に外す</li>
+        <li>学び直しの余白をつくる実践</li>
+        <li>捨てることで学ぶ</li>
+      </ul>
+      <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+        <strong>理由:</strong> 過去の成功体験が未来の盲点になるため、意図的に外すことで新しい学習の余地を生む
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>❓ 問いのデザイン</h3>
+      <span class="badge">学習を駆動する起点設計</span>
+      <ul>
+        <li>行動と学習を誘発する良質な問いを構造化</li>
+        <li>目的・制約・文脈を可視化する技法</li>
+        <li>探索の方向性を定める</li>
+      </ul>
+      <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+        <strong>理由:</strong> AIが答えを出す時代、人間の価値は良い問いを立てる力に移るため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧪 小さな実験</h3>
+      <span class="badge">安く早く試す</span>
+      <ul>
+        <li>低コスト・短期間・限定リスクで仮説検証</li>
+        <li>学習速度を最大化する試行</li>
+        <li>セーフ・トゥ・トライの文化</li>
+      </ul>
+      <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+        <strong>理由:</strong> 不確実性が高い環境では大きな計画より小さな試行の反復が有効
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌉 越境</h3>
+      <span class="badge">境界をまたぐ</span>
+      <ul>
+        <li>分野・世代・地域・文化を横断</li>
+        <li>新結合を起こす振る舞い</li>
+        <li>創発の条件を増やす</li>
+      </ul>
+      <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+        <strong>理由:</strong> イノベーションは異質な要素の組み合わせから生まれる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏛️ コモンズ</h3>
+      <span class="badge">共用資源の設計</span>
+      <ul>
+        <li>知識・道具・スペースを共同管理</li>
+        <li>再利用と複利を生む仕組み</li>
+        <li>学習コストを下げる</li>
+      </ul>
+      <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+        <strong>理由:</strong> 共用資源が学習の車輪の再発明を防ぎ、集合知を蓄積する
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎁 ギブ・ファースト</h3>
+      <span class="badge">先に与える</span>
+      <ul>
+        <li>見返り前提ではなく先に価値提供</li>
+        <li>信頼とネットワーク外部性を高める</li>
+        <li>循環を生む姿勢</li>
+      </ul>
+      <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+        <strong>理由:</strong> 信頼資本が協働コストを下げ、実験回数を増やす
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⏸️ 余白</h3>
+      <span class="badge">探索の空き地</span>
+      <ul>
+        <li>探索・内省・試作のための時間と認知容量</li>
+        <li>意図的に空ける創造の土壌</li>
+        <li>効率の対極にある価値</li>
+      </ul>
+      <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+        <strong>理由:</strong> 余白がないと探索も内省も起きず、学習が停止する
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎨 制作駆動の学び</h3>
+      <span class="badge">作って学ぶ</span>
+      <ul>
+        <li>作品・プロトタイプづくりを通じて知を統合</li>
+        <li>評価はプロセスと反復</li>
+        <li>暗黙知の形式化</li>
+      </ul>
+      <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+        <strong>理由:</strong> 知識の受動的消費ではなく能動的生産が深い理解を生む
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌱 レジリエンス</h3>
+      <span class="badge">しなやかな適応</span>
+      <ul>
+        <li>不確実性下で素早く回復・適応・再設計</li>
+        <li>学習の速度と幅に依存する能力</li>
+        <li>脆弱性の対極</li>
+      </ul>
+      <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+        <strong>理由:</strong> 変化が常態化する時代、固定的な強さより柔軟な適応力が生存条件
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ 倫理と目的の設計</h3>
+      <span class="badge">価値の上流設計</span>
+      <ul>
+        <li>技術導入時に価値観・影響・ガバナンスを先に定義</li>
+        <li>負の外部性を抑制する実践</li>
+        <li>手段の前に目的を問う</li>
+      </ul>
+      <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+        <strong>理由:</strong> 技術は中立ではなく、設計時の価値観が結果を左右するため
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram">
+    <h3 style="margin-bottom:1rem;color:var(--primary);">🔗 概念間の関係性</h3>
+    <div class="flow-item">AI普及 <span class="flow-arrow">→</span> 答えのコモディティ化 <span class="flow-arrow">→</span> 問いの希少性↑</div>
+    <div class="flow-item">アンラーニング <span class="flow-arrow">→</span> 認知の余白創出 <span class="flow-arrow">→</span> 新奇な結合が起きやすい</div>
+    <div class="flow-item">余白 × 小さな実験 <span class="flow-arrow">→</span> 学習速度↑ <span class="flow-arrow">→</span> レジリエンス↑</div>
+    <div class="flow-item">越境 × コモンズ <span class="flow-arrow">→</span> アイデアの再結合率↑ <span class="flow-arrow">→</span> 独自性↑</div>
+    <div class="flow-item">ギブ・ファースト <span class="flow-arrow">→</span> 信頼資本蓄積 <span class="flow-arrow">→</span> 協働コスト↓ <span class="flow-arrow">→</span> 実験回数↑</div>
+    <div class="flow-item">制作駆動の学び <span class="flow-arrow">→</span> 暗黙知の形式化 <span class="flow-arrow">→</span> コモンズ価値↑</div>
+    <div class="flow-item">倫理・目的の設計 <span class="flow-arrow">→</span> 技術採用の方向付け <span class="flow-arrow">→</span> 望ましい外部性↑</div>
+    <div class="flow-item">問いのデザイン <span class="flow-arrow">→</span> 実験の焦点明確化 <span class="flow-arrow">→</span> 無駄な探索↓</div>
+    <div class="flow-item">過去の成功パターンの固定化 <span class="flow-arrow">→</span> 盲点拡大 <span class="flow-arrow">→</span> 破壊的変化への脆弱性↑</div>
+    <div class="flow-item">公開・共有（ポートフォリオ） <span class="flow-arrow">→</span> ピアからのフィードバック <span class="flow-arrow">→</span> 学習の複利化</div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--primary);">📚 各章の要約</h2>
+  
+  <div class="chapter-card">
+    <h3>第1章: 問題提起</h3>
+    <ul>
+      <li>AIが"答え"を過剰供給する時代の到来</li>
+      <li>人間の役割が「答えを出す」から「問いを立てる」へ転換</li>
+      <li>工業化時代の成功則が通用しなくなる</li>
+      <li>新しい価値創出の軸を再定義する必要性</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> この章は全体の前提となる問題意識を共有し、読者に「なぜ今アンラーニングが必要か」を納得させるため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章: 概念定義</h3>
+    <ul>
+      <li>アンラーニングの意味と対象を明確化</li>
+      <li>物差し・前提・成功体験を外す技法</li>
+      <li>学習の前提条件としてのアンラーニング</li>
+      <li>捨てることで得られる余白の価値</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 核心概念を定義することで、以降の議論の土台を作り、読者と共通言語を確立するため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章: 個人実践</h3>
+    <ul>
+      <li>問いのデザイン手法の具体化</li>
+      <li>小さな実験の設計と実行</li>
+      <li>振り返りと学習の反復プロセス</li>
+      <li>個人レベルでの実践可能な行動</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 概念を個人の日常行動に落とし込み、「明日から何をすればよいか」を示すため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章: 組織/教育</h3>
+    <ul>
+      <li>正解主義から制作・問い駆動型への移行</li>
+      <li>評価と制度設計の提案</li>
+      <li>スタジオ型学習、ピアレビュー、ポートフォリオ評価</li>
+      <li>時間の余白確保を制度化する</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 個人の努力だけでは限界があり、組織・教育システムの変革が必要だと示すため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章: コミュニティ/コモンズ</h3>
+    <ul>
+      <li>ギブ・ファーストの原則</li>
+      <li>弱いつながりと多様性の設計</li>
+      <li>共用資源の設計と運用</li>
+      <li>学習の生態系を作る</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 個人・組織を超えた生態系レベルの設計が、持続的な学習と創発を生むため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章: テクノロジー×倫理</h3>
+    <ul>
+      <li>目的・価値の上流設計</li>
+      <li>AIの使いどころの指針</li>
+      <li>負の外部性を抑制する実践</li>
+      <li>技術導入時の倫理的判断基準</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 技術は中立ではなく、設計時の価値観が結果を左右することを示し、責任ある導入を促すため
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7章: 行動への招待</h3>
+    <ul>
+      <li>今日からできる小さな冒険の設計</li>
+      <li>公開・循環による拡張</li>
+      <li>学習の複利を生む起点</li>
+      <li>最小の行動が惰性を断つ</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 読後すぐに行動を起こせるよう具体的な第一歩を示し、学習の複利を開始させるため
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--primary);">💡 具体例</h2>
+  
+  <div class="card">
+    <h3>🏢 例1: 企業の前提外し実験</h3>
+    <ul>
+      <li><strong>背景:</strong> ある製造業が「品質=不良率ゼロ」という前提を保留</li>
+      <li><strong>実験:</strong> 意図的に小さな失敗を許容する「学習ゾーン」を設定</li>
+      <li><strong>結果:</strong> 現場から改善提案が3倍に増加、イノベーション速度が向上</li>
+      <li><strong>示唆:</strong> 完璧主義が探索を阻害していたことが判明</li>
+    </ul>
+    <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+      <strong>理由:</strong> この例は「失敗は赤字ではなく学習の黒字」という核心メッセージを実証している
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎓 例2: 教育現場の問い駆動型授業</h3>
+    <ul>
+      <li><strong>背景:</strong> 従来の正解暗記型授業から脱却を試みた高校</li>
+      <li><strong>実験:</strong> 生徒が自ら問いを立て、プロトタイプを作る授業設計</li>
+      <li><strong>結果:</strong> 生徒の主体性と創造性が向上、進路選択の明確化</li>
+      <li><strong>示唆:</strong> 問いを立てる力が学習の起点になる</li>
+    </ul>
+    <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+      <strong>理由:</strong> この例は「問いのデザイン」が教育の質を変えることを示している
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌍 例3: 地域コミュニティのコモンズ設計</h3>
+    <ul>
+      <li><strong>背景:</strong> 過疎化が進む地域で知識・道具・場所を共有する仕組みを構築</li>
+      <li><strong>実験:</strong> ギブ・ファーストの原則で工具・レシピ・ノウハウをオープン化</li>
+      <li><strong>結果:</strong> 新規事業が年間10件以上生まれ、移住者が増加</li>
+      <li><strong>示唆:</strong> 共用資源が学習コストを下げ、創発を促す</li>
+    </ul>
+    <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+      <strong>理由:</strong> この例は「コモンズ」と「ギブ・ファースト」が生態系を活性化することを実証している
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤖 例4: AI導入時の倫理設計</h3>
+    <ul>
+      <li><strong>背景:</strong> 人事評価にAIを導入する際、目的と倫理を先に定義</li>
+      <li><strong>実験:</strong> 「公平性」「透明性」「説明可能性」を評価基準に組み込む</li>
+      <li><strong>結果:</strong> 従業員の信頼を維持しながら効率化を実現</li>
+      <li><strong>示唆:</strong> 技術導入前の価値設計が負の外部性を防ぐ</li>
+    </ul>
+    <div class="reason" style="margin-top:0.75rem;background:rgba(102,126,234,0.1);padding:0.75rem;border-radius:0.5rem;font-size:0.9rem;">
+      <strong>理由:</strong> この例は「倫理と目的の設計」が技術の望ましい活用を導くことを示している
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--primary);">📖 重要な引用</h2>
+  
+  <div class="quote-card">
+    <p>"AIが正解を量産するほど、人間は"不確実さと目的"を扱う役割に向かう。"</p>
+    <small><strong>なぜ重要か:</strong> 人間の希少資源が問い・意味・倫理に移ったことを端的に示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"学ぶとは新しい"当たり前"を発明すること。だからまず"当たり前"を外す。"</p>
+    <small><strong>なぜ重要か:</strong> アンラーニングを学習の前提条件として位置づける。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"冒険は遠くではなく、いまの前提の外に一歩出ることから始まる。"</p>
+    <small><strong>なぜ重要か:</strong> 行動のハードルを下げ、日常的実践へ接続する。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"コミュニティは最強の学習装置であり、ギブが循環を生む。"</p>
+    <small><strong>なぜ重要か:</strong> 個人を超えた生態系設計の要諦を示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"失敗は赤字ではなく、学習の黒字である。"</p>
+    <small><strong>なぜ重要か:</strong> 実験回数を増やす認知の転換を促す。</small>
+  </div>
+
+  <div class="metric-grid" style="margin-top:1.5rem;">
+    <div class="metric-card">
+      <div class="metric-value">∞</div>
+      <div class="metric-label">問いの可能性</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">3×</div>
+      <div class="metric-label">学習速度の向上</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">10+</div>
+      <div class="metric-label">年間新規事業</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="margin-bottom:1rem;color:var(--primary);">🚀 今日のアクション</h2>
+  
+  <div class="action-card">
+    <h4>📝 アクション1: 仕事での前提を3つ書き出す</h4>
+    <p><strong>目的:</strong> 無意識の前提を可視化し、アンラーニングの起点を作る</p>
+    <p><strong>期待効果:</strong> 固定観念に気づき、新しい視点で課題を再定義できる</p>
+    <p><strong>実行方法:</strong> 15分間、「当たり前だと思っていること」を3つノートに書き、それぞれ「本当にそうか？」と問い直す</p>
+  </div>
+
+  <div class="action-card">
+    <h4>❓ アクション2: AIに解けない自分の問いを3つ作る</h4>
+    <p><strong>目的:</strong> 人間固有の価値（目的・意味・倫理）を問う力を鍛える</p>
+    <p><strong>期待効果:</strong> 問いを立てる筋力が向上し、AIとの差別化軸が明確になる</p>
+    <p><strong>実行方法:</strong> 20分間、「なぜ？」「誰のため？」「どうあるべき？」という問いを3つ作り、AIに投げて比較する</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🧪 アクション3: 週内の小実験を1件設計する</h4>
+    <p><strong>目的:</strong> 小さく試す習慣を開始し、学習の複利を生む起点を作る</p>
+    <p><strong>期待効果:</strong> 失敗コストを下げ、実験回数を増やすことで学習速度が向上する</p>
+    <p><strong>実行方法:</strong> 30分で「仮説・検証方法・成功基準」を1枚の紙にまとめ、週内に実行し、24時間以内に学びを公開する</p>
+  </div>
+
+  <div style="background:var(--card-bg);padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+    <h3 style="color:var(--primary);margin-bottom:1rem;">📚 関連書籍</h3>
+    
+    <div class="book-card">
+      <h4>UNLEARN 常識を手放し変化に適応する思考法</h4>
+      <div class="author">著者: Barry O'Reilly</div>
+      <div class="relation">アンラーニングの理論と実践を体系化し、本書の核概念を補強する。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>ティール組織</h4>
+      <div class="author">著者: Frederic Laloux</div>
+      <div class="relation">正解主義から自律・目的駆動への組織転換を具体化する。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>リーン・スタートアップ</h4>
+      <div class="author">著者: Eric Ries</div>
+      <div class="relation">小さな実験と学習ループの設計思想が一致する。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>Scary Smart（恐ろしいほどスマート）</h4>
+      <div class="author">著者: Mo Gawdat</div>
+      <div class="relation">AI時代の倫理と目的設計の重要性を掘り下げる。</div>
+    </div>
+
+    <div class="book-card">
+      <h4>イシューからはじめよ</h4>
+      <div class="author">著者: 安宅和人</div>
+      <div class="relation">問いの設定（イシュー駆動）の実践が本書の主張と共鳴する。</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// タブ切り替え機能
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const targetTab = button.getAttribute('data-tab');
+    
+    // すべてのタブボタンとコンテンツから active クラスを削除
+    tabButtons.forEach(btn => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブボタンとコンテンツに active クラスを追加
+    button.classList.add('active');
+    button.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
