@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>お金の5つの力 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.7rem 1.2rem;
+  cursor: pointer;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--primary);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, #ffeef8, #fff5fc);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 1rem;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+.reason strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+  border-left: 4px solid var(--secondary);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card .text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.quote-card .note {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: var(--card-bg);
+  border: 2px solid var(--accent);
+  border-radius: 0.75rem;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.chart-container {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.bar-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.bar-label {
+  min-width: 120px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.bar-visual {
+  flex: 1;
+  height: 30px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 0.5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.flow-item {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.flow-item:after {
+  content: "↓";
+  display: block;
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--accent);
+  margin-top: 0.5rem;
+}
+.flow-item:last-child:after {
+  content: "";
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .bar-label {
+    min-width: 80px;
+    font-size: 0.8rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>💰 お金の5つの力</h1>
+  <p>貯める・稼ぐ・増やす・守る・使う で経済的自由を実現</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      どうすればお金に縛られず自由に生きられるか？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      「貯める・稼ぐ・増やす・守る・使う」の5つの力を段階的に伸ばし、安定的なキャッシュフローと資産を築く。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      経済的自由は収入−支出の差と運用益の複利で決まり、固定費削減・税/手数料最適化・長期分散という再現性の高い施策が、誰でも実行可能で効果が積み上がるから。
+    </div>
+    <div class="summary-item">
+      <strong>🛠 How（そのためには）</strong>
+      ①生活防衛資金の確保→②家計の見える化と固定費/保険の最適化→③副業・転職で稼ぐ力強化→④NISA/iDeCoを用いた低コストインデックスの長期分散積立→⑤詐欺/過度なリスク回避で守る→⑥価値観に沿ってお金を使い、仕組み化で継続。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">🔑 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>💪 お金の5つの力</h3>
+        <ul>
+          <li>貯める・稼ぐ・増やす・守る・使うを網羅</li>
+          <li>順序と相互補完で効果最大化</li>
+          <li>総合力で自由を獲得する実践フレーム</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>単一施策では限界があり、5つを組み合わせることで再現性と持続性が飛躍的に高まるから。</div>
+      </div>
+      <div class="card">
+        <h3>🏝 経済的自由</h3>
+        <ul>
+          <li>生活費を労働以外の収入で賄える状態</li>
+          <li>選択の自由と時間の支配を意味</li>
+          <li>資産と安定収入が土台</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>お金の不安から解放されることで、人生の選択肢が広がり本当にやりたいことに集中できるから。</div>
+      </div>
+      <div class="card">
+        <h3>🛡 生活防衛資金</h3>
+        <ul>
+          <li>数か月分の生活費を現預金で確保</li>
+          <li>投資継続と心理安定の土台</li>
+          <li>急な支出や収入減に対応</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>安全網があることでリスク許容度が上がり、市場の変動に動じず長期投資を継続できるから。</div>
+      </div>
+      <div class="card">
+        <h3>✂️ 固定費最適化</h3>
+        <ul>
+          <li>通信・保険・住居など恒常費用を削減</li>
+          <li>再現性が高く利回り確定に近い効果</li>
+          <li>一度見直せば継続的に効果</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>固定費削減は確実な利回りと同等で、手取りが恒常的に増え投資原資を確保できるから。</div>
+      </div>
+      <div class="card">
+        <h3>📈 つみたて投資</h3>
+        <ul>
+          <li>定期・定額で市場に投資</li>
+          <li>価格変動リスクを平準化</li>
+          <li>感情を排した自動化が肝</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>タイミングを計る必要がなく、ドルコスト平均法で高値掴みリスクを分散し継続しやすいから。</div>
+      </div>
+      <div class="card">
+        <h3>📊 インデックスファンド</h3>
+        <ul>
+          <li>市場平均に連動する低コスト投信</li>
+          <li>予測に依存せず幅広い分散が可能</li>
+          <li>長期で市場成長を享受</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>個別銘柄選択の失敗リスクを排除し、市場全体の成長を低コストで取り込めるから。</div>
+      </div>
+      <div class="card">
+        <h3>🎁 税制優遇（NISA・iDeCo）</h3>
+        <ul>
+          <li>運用益非課税・所得控除で手取り↑</li>
+          <li>長期投資の必須インフラ</li>
+          <li>複利効果を最大化</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>税負担を減らすことで実質リターンが大幅に向上し、複利の恩恵を最大限受けられるから。</div>
+      </div>
+      <div class="card">
+        <h3>🩹 保険の最適化</h3>
+        <ul>
+          <li>致命的リスクのみ掛け捨てでカバー</li>
+          <li>過剰保障は排除、貯蓄性は原則不要</li>
+          <li>必要保障額を定期的に見直し</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>過剰保険のコストを削り投資原資を確保でき、本当に必要な保障に集中できるから。</div>
+      </div>
+      <div class="card">
+        <h3>💼 副業・人的資本</h3>
+        <ul>
+          <li>市場価値を高め収入源を多角化</li>
+          <li>短期でキャッシュフローを伸ばす最有力策</li>
+          <li>スキル投資と転職も視野</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>収入の伸びは資産形成を加速させ、選択肢と交渉力を高めて人生の自由度を上げるから。</div>
+      </div>
+      <div class="card">
+        <h3>⚖️ リスク許容度</h3>
+        <ul>
+          <li>損失に耐えられる金額・心理の範囲</li>
+          <li>年齢・資産・収入安定性で変動</li>
+          <li>自己理解が投資継続の鍵</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>自分の耐性を超えた投資は暴落時にパニック売却を招き、長期戦略が崩壊するから。</div>
+      </div>
+      <div class="card">
+        <h3>🎯 資産配分（アセットアロケーション）</h3>
+        <ul>
+          <li>株・債券・現金の比率設計</li>
+          <li>リターンとリスクの大半を決める</li>
+          <li>再調整で一貫性を保つ</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>個別銘柄選択より配分比率が運用成果の9割を決めるという研究結果があるから。</div>
+      </div>
+      <div class="card">
+        <h3>🌐 分散・長期・低コスト</h3>
+        <ul>
+          <li>個別予測を捨て時間分散と幅広い銘柄分散</li>
+          <li>費用最小化で期待値を安定化</li>
+          <li>勝ち筋の基本原則</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>市場の予測不能性に対抗する唯一の合理的戦略で、歴史的に最も成功率が高いから。</div>
+      </div>
+      <div class="card">
+        <h3>💳 良い借金／悪い借金</h3>
+        <ul>
+          <li>資産を生む投資に使う借入は慎重に可</li>
+          <li>消費目的の高金利借入は不可</li>
+          <li>借金の質を見極める</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>借金の使途によって資産形成を加速させるか破綻させるかが決まるから。</div>
+      </div>
+      <div class="card">
+        <h3>💸 キャッシュフロー管理</h3>
+        <ul>
+          <li>収入−支出＝投資原資を最大化</li>
+          <li>自動的に積み立てる仕組みを構築</li>
+          <li>流れを最適化して継続</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>意志力に頼らず自動化することで、確実に投資原資を確保し複利を働かせられるから。</div>
+      </div>
+      <div class="card">
+        <h3>💰 高配当株投資</h3>
+        <ul>
+          <li>配当重視で現金収入を得る手法</li>
+          <li>分散・減配リスク管理・税コストに注意</li>
+          <li>現金の源泉として活用</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>定期的なキャッシュフローが心理的安定をもたらし、FIRE後の生活費に直結するから。</div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <h3 style="margin-bottom:1rem;color:var(--primary);">📊 概念間の因果関係</h3>
+      <div class="flow-diagram">
+        <div class="flow-item">収入−支出＝投資原資 → 原資が大きいほど複利が加速</div>
+        <div class="flow-item">生活防衛資金の確保 → リスク許容度↑ → 投資継続率↑</div>
+        <div class="flow-item">固定費削減 → 貯蓄率↑ → FIRE達成の前倒し</div>
+        <div class="flow-item">NISA/iDeCo活用 → 税・手数料↓ → 実質リターン↑</div>
+        <div class="flow-item">稼ぐ力↑（副業/転職） → 交渉力・選択肢↑ → 満足度↑</div>
+        <div class="flow-item">守る力（適正保険・詐欺回避） → 破綻確率↓</div>
+        <div class="flow-item">使う力（価値基準の支出） → 満足度/生産性↑ → 収入にも好影響</div>
+        <div class="flow-item">長期・分散・低コストの徹底 → 予測依存↓ → 期待値の安定化</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">📚 各章の要約</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>序章：全体像とゴール</h3>
+        <ul>
+          <li>お金の5つの力の全体像を提示</li>
+          <li>経済的自由というゴール設定</li>
+          <li>各力の相互補完関係を理解</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>全体像を把握することで、個別施策の意味と優先順位が明確になり、迷わず行動できるから。</div>
+      </div>
+      <div class="card">
+        <h3>第1部：貯める力</h3>
+        <ul>
+          <li>家計の見える化で現状把握</li>
+          <li>固定費・通信・保険・税控除の見直し</li>
+          <li>確実な利回りを手に入れる</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>支出最適化は即効性があり、投資原資を確保する最も確実な方法だから。</div>
+      </div>
+      <div class="card">
+        <h3>第2部：稼ぐ力</h3>
+        <ul>
+          <li>市場価値向上の戦略を学ぶ</li>
+          <li>副業/転職で収入源を多角化</li>
+          <li>時給思考とスキル投資で効率化</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>収入増は資産形成を加速させ、選択肢と交渉力を高めて人生の自由度を上げるから。</div>
+      </div>
+      <div class="card">
+        <h3>第3部：増やす力</h3>
+        <ul>
+          <li>NISA・iDeCoの活用で税制優遇</li>
+          <li>インデックス中心の長期分散投資</li>
+          <li>複利と手数料管理で期待値最大化</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>長期・分散・低コストは予測不能な市場で唯一の合理的戦略であり、歴史的に最も成功率が高いから。</div>
+      </div>
+      <div class="card">
+        <h3>第4部：守る力</h3>
+        <ul>
+          <li>必要保障額の算定と掛け捨て中心</li>
+          <li>詐欺・情報弱者対策でリスク回避</li>
+          <li>リスク管理で破綻確率を下げる</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>一度の失敗で資産を失うリスクを排除し、長期戦略を継続できる土台を作るから。</div>
+      </div>
+      <div class="card">
+        <h3>第5部：使う力</h3>
+        <ul>
+          <li>価値>価格の支出設計</li>
+          <li>時間の購入、経験・学び・寄付への投資</li>
+          <li>満足度と生産性を高める</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>価値観に沿った支出は満足度と生産性を高め、稼ぐ力にも好影響を与えるから。</div>
+      </div>
+      <div class="card">
+        <h3>終章：行動計画と継続</h3>
+        <ul>
+          <li>積立・再bal・口座分離で自動化</li>
+          <li>コミュニティ活用で学びと継続</li>
+          <li>仕組み化で意志力に頼らない</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>自動化と仕組み化により、意志力に頼らず確実に継続でき、複利の恩恵を最大限受けられるから。</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">💡 具体例</h2>
+    
+    <div class="card">
+      <h3>📱 格安SIMへの乗り換え</h3>
+      <ul>
+        <li><strong>背景：</strong>大手キャリアで月8,000円→格安SIMで月2,000円</li>
+        <li><strong>効果：</strong>年間7.2万円の削減＝利回り確定の投資原資</li>
+        <li><strong>示唆：</strong>固定費削減は一度の行動で継続的な効果</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>この例は固定費最適化の再現性と即効性を示し、誰でも実行可能で確実な利回りを得られることを証明するから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🏥 保険の見直し</h3>
+      <ul>
+        <li><strong>背景：</strong>貯蓄型保険を解約し掛け捨て医療保険に変更</li>
+        <li><strong>効果：</strong>月2万円→月3,000円、差額1.7万円を投資へ</li>
+        <li><strong>示唆：</strong>過剰保障を排除し必要最小限に絞る</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>保険最適化により投資原資を確保し、本当に必要な保障に集中できることを示すから。</div>
+    </div>
+
+    <div class="card">
+      <h3>📈 つみたてNISAで長期投資</h3>
+      <ul>
+        <li><strong>背景：</strong>月3万円を全世界株式インデックスに20年積立</li>
+        <li><strong>効果：</strong>年利5%想定で約1,200万円（元本720万円）</li>
+        <li><strong>示唆：</strong>複利と税制優遇の威力、自動化で継続</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>長期・分散・低コスト＋税制優遇の組み合わせが、予測不能な市場で確実に資産を増やす唯一の方法であることを示すから。</div>
+    </div>
+
+    <div class="card">
+      <h3>💼 副業で稼ぐ力を強化</h3>
+      <ul>
+        <li><strong>背景：</strong>本業のスキルを活かし週末にコンサル副業</li>
+        <li><strong>効果：</strong>月5万円の追加収入→年60万円の投資原資</li>
+        <li><strong>示唆：</strong>人的資本への投資が最も高リターン</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>収入増は資産形成を加速させ、選択肢と交渉力を高めて人生の自由度を上げることを実証するから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 価値観に沿った支出</h3>
+      <ul>
+        <li><strong>背景：</strong>不要な飲み会を減らし、家族旅行と学習に投資</li>
+        <li><strong>効果：</strong>満足度↑、スキル↑、家族関係↑</li>
+        <li><strong>示唆：</strong>価値>価格の支出が生産性と幸福度を高める</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>価値観に沿った支出は満足度と生産性を高め、稼ぐ力にも好影響を与えることを示すから。</div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">📖 重要な引用</h2>
+    
+    <div class="quote-card">
+      <div class="text">「完璧を目指すより、まず一歩動く」</div>
+      <div class="note">💡 なぜ重要か：行動の初速が複利と学習曲線を生むから。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="text">「固定費の削減は確実な利回り」</div>
+      <div class="note">💡 なぜ重要か：手取りが恒常的に増え、再現性が高い。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="text">「投資は長期・分散・低コストを徹底」</div>
+      <div class="note">💡 なぜ重要か：予測不能性に勝つ唯一の戦略だから。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="text">「保険は『滅多に起きないが致命的』だけ」</div>
+      <div class="note">💡 なぜ重要か：過剰保険のコストを削り投資原資を確保できる。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="text">「お金は道具。価値観に沿って使う」</div>
+      <div class="note">💡 なぜ重要か：満足度と生産性が上がり、稼ぐ力にも波及する。</div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1.5rem;color:var(--primary);">🚀 今日のアクション</h2>
+    
+    <div class="action-card">
+      <h4>📊 直近3か月の支出を分類記録</h4>
+      <p>家計簿アプリやスプレッドシートで固定費・変動費・浪費を分類し、削減ポイントを可視化する。</p>
+      <div class="meta">
+        <span class="badge">目的</span>現状把握と改善点の特定<br>
+        <span class="badge">期待効果</span>月1〜3万円の削減余地を発見、投資原資を確保
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>📱 格安SIM料金を2社比較</h4>
+      <p>現在の通信費と格安SIM（楽天モバイル、ahamo等）の料金・サービスを比較し、乗り換えシミュレーションを行う。</p>
+      <div class="meta">
+        <span class="badge">目的</span>固定費削減の即効施策<br>
+        <span class="badge">期待効果</span>年間5〜7万円の削減、確実な利回り確保
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>📈 つみたてNISAの投信を1本選ぶ</h4>
+      <p>証券会社サイトで全世界株式または米国株式のインデックスファンド（信託報酬0.2%以下）を1本選び、積立設定の準備をする。</p>
+      <div class="meta">
+        <span class="badge">目的</span>長期投資の第一歩<br>
+        <span class="badge">期待効果</span>複利と税制優遇で20年後に数百万円の資産形成
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🩹 保険証券を確認し必要保障額を計算</h4>
+      <p>現在の保険内容を確認し、家族構成・収入・貯蓄から必要保障額を算出。過剰保障があれば見直し候補をリストアップ。</p>
+      <div class="meta">
+        <span class="badge">目的</span>保険最適化の準備<br>
+        <span class="badge">期待効果</span>月1〜2万円の削減、投資原資の増加
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>💼 自分のスキルを棚卸しし副業候補を3つ挙げる</h4>
+      <p>現在のスキル・経験を書き出し、それを活かせる副業（コンサル、ライティング、デザイン等）を3つリストアップ。</p>
+      <div class="meta">
+        <span class="badge">目的</span>稼ぐ力の強化準備<br>
+        <span class="badge">期待効果</span>月3〜5万円の追加収入、人的資本の向上
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>📚 関連書籍を1冊選び読書計画を立てる</h4>
+      <p>「金持ち父さん 貧乏父さん」「敗者のゲーム」等から1冊選び、1週間で読み切る計画を立てる。</p>
+      <div class="meta">
+        <span class="badge">目的</span>知識の深化と視野拡大<br>
+        <span class="badge">期待効果</span>投資哲学の確立、行動の確信度向上
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
