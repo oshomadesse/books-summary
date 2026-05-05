@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>モムテスト - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+}
+.summary-block .item {
+  margin-bottom: 0.75rem;
+}
+.summary-block .item strong {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+}
+.summary-block .item span {
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: var(--card-bg);
+  margin: 1rem 1rem 0 1rem;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 0.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  background: var(--card-bg);
+  margin: 0 1rem 1rem 1rem;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.tab-content.active {
+  display: block;
+}
+.card {
+  background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.card .reason {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--primary);
+}
+.card .reason strong {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
+  color: #fff;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.quote-card blockquote {
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.quote-card .why {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+.action-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.action-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.visual-section {
+  margin: 1.5rem 0;
+}
+.visual-section h3 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  color: var(--secondary);
+}
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.flow-item {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #fff;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  position: relative;
+}
+.flow-item:after {
+  content: "↓";
+  display: block;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 0.25rem;
+}
+.flow-item:last-child:after {
+  content: "";
+}
+.bar-chart {
+  margin: 1rem 0;
+}
+.bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.bar-label {
+  flex: 0 0 100px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.bar-fill {
+  flex: 1;
+  height: 24px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+@media (min-width: 768px) {
+  .tabs {
+    margin: 1.5rem auto 0 auto;
+    max-width: 900px;
+  }
+  .tab-content {
+    margin: 0 auto 1.5rem auto;
+    max-width: 900px;
+  }
+  .summary-block {
+    margin: 1.5rem auto;
+    max-width: 900px;
+  }
+  .card {
+    padding: 1.5rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 モムテスト</h1>
+  <p>顧客の嘘を見抜き、真実を引き出す質問術</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約（問い×答え×Why×How）</h2>
+  <div class="item">
+    <strong>❓ 問い</strong>
+    <span>起業アイデアの妥当性をどう確かめるか？</span>
+  </div>
+  <div class="item">
+    <strong>✅ 答え</strong>
+    <span>顧客の意見や称賛ではなく、過去の具体行動・痛みの深さ・支払い/時間のコミットという事実から判断する。</span>
+  </div>
+  <div class="item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <span>人は未来の意図を過大評価し、好意で褒めがちで、予測は外れやすい。建前や誘導で得たデータは意思決定を誤らせる。</span>
+  </div>
+  <div class="item">
+    <strong>🛠 How（そのためには）</strong>
+    <span>モムテストに従い(1)過去と具体の質問をする(2)売り込みや仮説の押し付けを避ける(3)約束や次の具体ステップを引き出す。さらに、学習目標を事前に定め、同質なセグメントで短回転のインタビュー→記録→合意メモ→次の実験へと前進させる。</span>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card">
+    <h3>🧪 モムテスト</h3>
+    <ul>
+      <li>誰に聞いても真実が引き出せる質問原則</li>
+      <li>過去の具体・相手の生活に焦点</li>
+      <li>売り込み禁止で社交辞令を遮断</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か</strong>
+      顧客の好意的な嘘を排除し、事実ベースの判断を可能にする基盤となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>❌ 悪いデータ</h3>
+    <ul>
+      <li>称賛、仮の将来意図、あいまい意見</li>
+      <li>誘導により得た情報</li>
+      <li>意思決定を誤らせるノイズ</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か</strong>
+      聞こえは良いが無価値。これを避けることで開発リソースの無駄を防ぐ。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✅ 良いデータ</h3>
+    <ul>
+      <li>過去の具体行動、定量的事実</li>
+      <li>実被害、今すぐの約束/支払いの意志</li>
+      <li>行動と事実の証拠</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か</strong>
+      製品設計と優先順位決定の唯一の信頼できる根拠となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎓 ピッチ vs 学習</h3>
+    <ul>
+      <li>顧客開発では売り込み禁止</li>
+      <li>相手の生活・ワークフローを理解</li>
+      <li>学習を最大化する姿勢を保つ</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か</strong>
+      売り込みモードは相手の本音を封じ、バイアスを生む最大の原因。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚀 コミットメントと前進</h3>
+    <ul>
+      <li>時間、紹介、具体的次回予定、金銭</li>
+      <li>コミットが進捗の客観指標</li>
+      <li>前進は約束で測る</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か</strong>
+      褒め言葉ではなく、実際の行動で需要を検証できる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 セグメンテーション</h3>
+    <ul>
+      <li>同質な顧客群に絞る</li>
+      <li>問題の一貫性を高める</li>
+      <li>学習速度と製品適合を上げる</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か</strong>
+      狭く深く絞ることで、シグナルが強まり正しい答えが速く見つかる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📋 学習目標</h3>
+    <ul>
+      <li>インタビュー前に検証したい仮説と未知を明確化</li>
+      <li>会話を設計する</li>
+      <li>何を学ぶかを決める</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か</strong>
+      目的なき会話は時間の浪費。学習目標が質問の質を決定する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ 最も危険な仮説</h3>
+    <ul>
+      <li>事業成立を左右する前提を特定</li>
+      <li>課題の存在、頻度、支払い意志等</li>
+      <li>最優先で検証する</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か</strong>
+      致命傷を先に潰すことで、無駄な開発と時間損失を回避できる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 進捗の証跡</h3>
+    <ul>
+      <li>学びの記録、合意された次アクション</li>
+      <li>紹介数、事前予約やPoCの獲得</li>
+      <li>数字で示す前進</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か</strong>
+      客観ログが意思決定の透明性と再現性を保証する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📝 合意メモ（チーム同期）</h3>
+    <ul>
+      <li>各会話の要点と意思決定を短く共有</li>
+      <li>個人バイアスを減らす共同編集メモ</li>
+      <li>学びを組織化</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か</strong>
+      チーム全体で学習を共有し、個人の思い込みを排除する仕組み。
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>📖 序章：顧客は好意で嘘をつく</h3>
+    <ul>
+      <li>会話が起業家を誤らせる理由を提示</li>
+      <li>社交辞令と希望的観測の罠</li>
+      <li>事実と意見の区別の必要性</li>
+    </ul>
+    <div class="reason">
+      <strong>🔍 なぜこの章が必要か</strong>
+      問題意識を喚起し、従来の顧客インタビューの危険性を認識させる導入。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第1部：モムテストの原則</h3>
+    <ul>
+      <li>過去・具体・生活に焦点</li>
+      <li>売り込み禁止の徹底</li>
+      <li>質問設計の基本ルール</li>
+    </ul>
+    <div class="reason">
+      <strong>🔍 なぜこの章が必要か</strong>
+      真実を引き出す質問の原則を確立し、実践の土台を作る。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第2部：良い質問と悪い質問</h3>
+    <ul>
+      <li>事実問と意見問の違い</li>
+      <li>誘導を避ける質問の作り方</li>
+      <li>具体例を引き出すテクニック</li>
+    </ul>
+    <div class="reason">
+      <strong>🔍 なぜこの章が必要か</strong>
+      質問の良し悪しを判別する基準を示し、実践スキルを磨く。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第3部：前進の指標</h3>
+    <ul>
+      <li>コミットメント/次アクション/支払いの扱い</li>
+      <li>褒め言葉と進捗の区別</li>
+      <li>約束を引き出す方法</li>
+    </ul>
+    <div class="reason">
+      <strong>🔍 なぜこの章が必要か</strong>
+      客観的な進捗指標を定義し、虚偽の安心感を排除する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第4部：対象の絞り込み</h3>
+    <ul>
+      <li>セグメント定義と初期顧客の見つけ方</li>
+      <li>同質サンプルの重要性</li>
+      <li>狭く深く攻める戦略</li>
+    </ul>
+    <div class="reason">
+      <strong>🔍 なぜこの章が必要か</strong>
+      学習速度を最大化し、製品適合を早める実践手法を提供。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第5部：実践運用</h3>
+    <ul>
+      <li>アポイント獲得、記録、合意メモ</li>
+      <li>チーム同期の仕組み</li>
+      <li>学習ループの回し方</li>
+    </ul>
+    <div class="reason">
+      <strong>🔍 なぜこの章が必要か</strong>
+      理論を実務に落とし込み、組織的な学習体制を構築する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第6部：学習から意思決定へ</h3>
+    <ul>
+      <li>いつ作る/売る/やめるかの判断基準</li>
+      <li>仮説の収束と優先順位</li>
+      <li>データに基づく意思決定</li>
+    </ul>
+    <div class="reason">
+      <strong>🔍 なぜこの章が必要か</strong>
+      学習を具体的なアクションに変換し、事業判断の精度を上げる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 終章：反復ループ</h3>
+    <ul>
+      <li>最も危険な仮説に集中</li>
+      <li>短サイクルで検証する</li>
+      <li>継続的な学習文化の構築</li>
+    </ul>
+    <div class="reason">
+      <strong>🔍 なぜこの章が必要か</strong>
+      一度きりではなく、継続的な検証プロセスとして定着させる。
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>📊 構造の流れ</h3>
+    <div class="flow-diagram">
+      <div class="flow-item">問題提起：顧客の嘘</div>
+      <div class="flow-item">原則：モムテスト</div>
+      <div class="flow-item">実践：質問設計</div>
+      <div class="flow-item">検証：コミットメント</div>
+      <div class="flow-item">絞込：セグメント</div>
+      <div class="flow-item">運用：記録と同期</div>
+      <div class="flow-item">判断：意思決定</div>
+      <div class="flow-item">反復：継続検証</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>💼 具体例1：称賛の罠</h3>
+    <ul>
+      <li><strong>背景：</strong>起業家がプロトタイプを見せると「素晴らしい！」と褒められた</li>
+      <li><strong>結果：</strong>実際にローンチすると誰も使わなかった</li>
+      <li><strong>示唆：</strong>褒め言葉は社交辞令であり、購買意欲の証拠ではない</li>
+    </ul>
+    <div class="reason">
+      <strong>🔍 この例が示すこと</strong>
+      未来の意図や称賛は信頼できず、過去の行動と具体的コミットのみが真実を語る。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💼 具体例2：過去行動の質問</h3>
+    <ul>
+      <li><strong>背景：</strong>「この機能があれば使いますか？」ではなく「前回この問題にどう対処しましたか？」と聞く</li>
+      <li><strong>結果：</strong>実際の回避策や支払った金額が明らかになり、痛みの深さが測れた</li>
+      <li><strong>示唆：</strong>過去の具体行動は嘘をつきにくく、設計の優先順位を決める根拠となる</li>
+    </ul>
+    <div class="reason">
+      <strong>🔍 この例が示すこと</strong>
+      事実ベースの質問が、仮説を検証し無駄な機能開発を防ぐ。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💼 具体例3：コミットメントの獲得</h3>
+    <ul>
+      <li><strong>背景：</strong>インタビュー後「次回また話しましょう」で終わらず、「来週30分の時間を予約できますか？」と具体的に依頼</li>
+      <li><strong>結果：</strong>本当に関心がある人だけが時間を約束し、優先顧客が明確になった</li>
+      <li><strong>示唆：</strong>時間や紹介のコミットが実需の証拠であり、前進の指標となる</li>
+    </ul>
+    <div class="reason">
+      <strong>🔍 この例が示すこと</strong>
+      約束や支払いという行動が、口先だけの関心と真の需要を分ける。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💼 具体例4：セグメント絞り込み</h3>
+    <ul>
+      <li><strong>背景：</strong>「全ての中小企業向け」から「従業員10-50名のSaaS企業の営業マネージャー」に絞った</li>
+      <li><strong>結果：</strong>共通の課題が明確になり、3週間で製品仮説が収束した</li>
+      <li><strong>示唆：</strong>狭く深く絞ることで、学習速度が劇的に上がる</li>
+    </ul>
+    <div class="reason">
+      <strong>🔍 この例が示すこと</strong>
+      同質なセグメントへの集中が、シグナルを強化し正しい答えを速く導く。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <blockquote>「人は未来については嘘をつくが、過去の具体については嘘をつきにくい。」</blockquote>
+    <div class="why"><strong>なぜ重要か：</strong>事実質問に切り替える根拠となり、質問設計の軸が定まる。</div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>「褒め言葉は進捗ではない。前進は約束や支払いで測れ。」</blockquote>
+    <div class="why"><strong>なぜ重要か：</strong>虚偽の安心感を排し、実需に基づく判断を促す。</div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>「顧客開発は売り込みの場ではなく、学習の場である。」</blockquote>
+    <div class="why"><strong>なぜ重要か：</strong>会話の目的を明確にし、バイアス源を断つ姿勢を示す。</div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>「具体的な事例を聞けば、抽象的な意見は不要になる。」</blockquote>
+    <div class="why"><strong>なぜ重要か：</strong>行動データこそ設計に有効であると示す。</div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>「誰向けに作るかを狭めるほど、正しい答えは速く見つかる。」</blockquote>
+    <div class="why"><strong>なぜ重要か：</strong>セグメンテーションの重要性を端的に表す。</div>
+  </div>
+
+  <div class="visual-section">
+    <h3>📈 概念間の因果関係</h3>
+    <div class="bar-chart">
+      <div class="bar">
+        <div class="bar-label">誘導質問</div>
+        <div class="bar-fill" style="width:90%;">→ 悪いデータ → 誤判断</div>
+      </div>
+      <div class="bar">
+        <div class="bar-label">過去質問</div>
+        <div class="bar-fill" style="width:85%;">→ 良いデータ → 前進</div>
+      </div>
+      <div class="bar">
+        <div class="bar-label">学習目標</div>
+        <div class="bar-fill" style="width:80%;">→ 質問一貫性 → ノイズ低減</div>
+      </div>
+      <div class="bar">
+        <div class="bar-label">セグメント</div>
+        <div class="bar-fill" style="width:95%;">→ 同質サンプル → 製品適合</div>
+      </div>
+      <div class="bar">
+        <div class="bar-label">コミット</div>
+        <div class="bar-fill" style="width:88%;">→ 実需証拠 → 優先度確定</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>✅ アクション1：学習目標を3つ紙に書く</h3>
+    <p>次のインタビューで検証したい仮説を3つ明文化する。</p>
+    <div class="meta">
+      <strong>🎯 目的：</strong>会話の焦点を絞り、無駄な質問を排除する<br>
+      <strong>📊 期待効果：</strong>学習効率が上がり、1回の会話から得られる洞察が増える
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション2：依頼メールの素案を作る</h3>
+    <p>「アドバイスが欲しい」という姿勢で、売り込みを排除した依頼文を書く。</p>
+    <div class="meta">
+      <strong>🎯 目的：</strong>相手の警戒心を解き、本音を引き出しやすくする<br>
+      <strong>📊 期待効果：</strong>アポイント獲得率が上がり、質の高い会話が実現する
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション3：過去行動を問う質問を5つ作る</h3>
+    <p>「前回この問題にどう対処しましたか？」「いくら払いましたか？」など、事実を引き出す質問リストを作成。</p>
+    <div class="meta">
+      <strong>🎯 目的：</strong>未来の意図ではなく、過去の行動から真実を学ぶ<br>
+      <strong>📊 期待効果：</strong>社交辞令を排除し、痛みの深さと優先度が明確になる
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>🔗 関連書籍</h3>
+    <div class="card">
+      <h3>📚 リーン・スタートアップ</h3>
+      <p><strong>著者：</strong>エリック・リース</p>
+      <p><strong>関連性：</strong>仮説検証と学習のフレームを提供し、会話で得た学びを実験へ繋ぐ。</p>
+    </div>
+    <div class="card">
+      <h3>📚 Running Lean 実践リーンスタートアップ</h3>
+      <p><strong>著者：</strong>アッシュ・マウリャ</p>
+      <p><strong>関連性：</strong>最も危険な仮説の特定と検証手順がモムテストと補完関係。</p>
+    </div>
+    <div class="card">
+      <h3>📚 Lean Customer Development</h3>
+      <p><strong>著者：</strong>シンディ・アルバレス</p>
+      <p><strong>関連性：</strong>顧客インタビュー設計と実践ノウハウを体系化。</p>
+    </div>
+    <div class="card">
+      <h3>📚 Lean Analytics</h3>
+      <p><strong>著者：</strong>アリステア・クロール／ベン・ヨスコヴィッツ</p>
+      <p><strong>関連性：</strong>会話で得た仮説を指標で検証し前進を測る方法を示す。</p>
+    </div>
+    <div class="card">
+      <h3>📚 INSPIRED 熱狂させる製品を生み出す</h3>
+      <p><strong>著者：</strong>マーティ・ケーガン</p>
+      <p><strong>関連性：</strong>顧客理解から製品発見へ繋げる実務の視点を提供。</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => {
+      c.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
