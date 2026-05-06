@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>稀少性の科学 - インフォグラフィック</title>
+<!--
+カラーパレット（メタデータ）:
+  プライマリー: #667eea
+  セカンダリー: #764ba2
+  アクセント: #f093fb
+-->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item ul {
+  list-style: none;
+  padding-left: 1rem;
+}
+.summary-item li {
+  padding: 0.3rem 0;
+  position: relative;
+}
+.summary-item li:before {
+  content: "→";
+  position: absolute;
+  left: -1rem;
+  color: var(--accent);
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.7rem 1.2rem;
+  cursor: pointer;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+  color: var(--text);
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--primary);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.3rem;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+}
+.example-card p {
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 5px solid var(--primary);
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--accent);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.6rem;
+}
+.action-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.visual-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+.metric-box {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  margin: 0.5rem;
+  text-align: center;
+  min-width: 120px;
+}
+.metric-box .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+}
+.metric-box .label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 稀少性の科学</h1>
+  <p>不足が心を奪い、視野を狭め、思考余力を減らす。解決は意志ではなく、余白を生む設計にある。</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い × 答え × 根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜ私たちは常に時間やお金が足りず、悪い判断を繰り返すのか？抜け出すには何を変えるべきか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>稀少性が注意をトンネル化し、認知帯域を食い潰すため、短期最適に偏って長期を損なう。意志力ではなく、スラックを確保する制度設計・仕組み化で帯域を保護する。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか？）</strong>
+      <ul>
+        <li>実験と現地調査で、逼迫時に認知テスト成績が悪化しエラーが増加（例：収穫前の農家のスコア低下）</li>
+        <li>トンネリングにより「今の穴埋め」が優先され、延滞・先送り・高利借り入れなどの罠が連鎖</li>
+      </ul>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには？）</strong>
+      <ul>
+        <li>スラックを意図的に予算化（時間・資金・在庫にバッファ）</li>
+        <li>既定値・リマインダー・前払いや封筒分け等の仕組みで良い行動の摩擦を下げ、悪い行動の摩擦を上げる</li>
+        <li>重要タスクを先にブロックし、マルチタスクを排し、チェックリストで帯域消費を削減</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true" aria-controls="concepts-panel">主要概念の詳細</button>
+    <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false" aria-controls="chapters-panel">各章の要約</button>
+    <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false" aria-controls="examples-panel">具体例</button>
+    <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false" aria-controls="quotes-panel">重要な引用</button>
+    <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false" aria-controls="actions-panel">今日のアクション</button>
+  </div>
+
+  <div id="concepts-panel" class="tab-content active" role="tabpanel">
+    <div class="visual-diagram">
+      <h3 style="color: var(--primary); margin-bottom: 1rem;">稀少性の罠：負のスパイラル</h3>
+      <svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+          </linearGradient>
+          <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#f093fb" />
+          </marker>
+        </defs>
+        
+        <circle cx="150" cy="80" r="50" fill="url(#grad1)" opacity="0.8"/>
+        <text x="150" y="75" text-anchor="middle" fill="white" font-size="14" font-weight="bold">稀少性</text>
+        <text x="150" y="92" text-anchor="middle" fill="white" font-size="11">(不足)</text>
+        
+        <circle cx="450" cy="80" r="50" fill="url(#grad1)" opacity="0.8"/>
+        <text x="450" y="75" text-anchor="middle" fill="white" font-size="14" font-weight="bold">トンネリング</text>
+        <text x="450" y="92" text-anchor="middle" fill="white" font-size="11">(焦点化)</text>
+        
+        <circle cx="450" cy="220" r="50" fill="url(#grad1)" opacity="0.8"/>
+        <text x="450" y="215" text-anchor="middle" fill="white" font-size="14" font-weight="bold">帯域低下</text>
+        <text x="450" y="232" text-anchor="middle" fill="white" font-size="11">(思考余力減)</text>
+        
+        <circle cx="150" cy="220" r="50" fill="url(#grad1)" opacity="0.8"/>
+        <text x="150" y="215" text-anchor="middle" fill="white" font-size="14" font-weight="bold">将来資源減</text>
+        <text x="150" y="232" text-anchor="middle" fill="white" font-size="11">(罠)</text>
+        
+        <path d="M 200 80 L 400 80" stroke="#f093fb" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+        <path d="M 450 130 L 450 170" stroke="#f093fb" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+        <path d="M 400 220 L 200 220" stroke="#f093fb" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+        <path d="M 150 170 L 150 130" stroke="#f093fb" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+        
+        <rect x="220" y="250" width="160" height="40" rx="5" fill="#f093fb" opacity="0.9"/>
+        <text x="300" y="273" text-anchor="middle" fill="white" font-size="13" font-weight="bold">対策：スラック確保</text>
+        <text x="300" y="287" text-anchor="middle" fill="white" font-size="11">＋仕組み設計</text>
+      </svg>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔍 稀少性（Scarcity）</h3>
+        <ul>
+          <li>需要に対し資源（時間・金・注意）が不足する状態</li>
+          <li>思考を特定の不足へ過度に集中させる心的レンズを生む</li>
+          <li>一言要約：不足が心を支配する</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>稀少性を「状態」ではなく「レンズ」と捉えることで、解決策が意志力から設計へと転換するため重要。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎯 トンネリング（Tunneling）</h3>
+        <ul>
+          <li>目先の不足に注意が吸い寄せられる現象</li>
+          <li>周辺課題や将来影響を見落とす</li>
+          <li>一言要約：焦点化の副作用</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>短期の得（焦点の配当）と長期の損（トンネルの税）を同時に生むメカニズムを理解することが対策の前提。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🧠 帯域（Bandwidth）</h3>
+        <ul>
+          <li>実行機能・注意・ワーキングメモリ等の認知資源の総量</li>
+          <li>稀少性はこれを減らす</li>
+          <li>一言要約：思考の空き容量</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>帯域は有限で貴重。逼迫がこれを消費することを自覚すれば、保護策の必要性が明確になる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🛡️ スラック（Slack）</h3>
+        <ul>
+          <li>想定外に耐える余白（時間・予算・在庫）</li>
+          <li>エラー吸収と長期最適の前提条件</li>
+          <li>一言要約：クッション</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>余白は浪費ではなく信頼できる資産。削減こそがコスト増を生むという逆説を示す。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌀 稀少性の罠（Scarcity Trap）</h3>
+        <ul>
+          <li>不足→短期志向→将来悪化→さらなる不足の悪循環</li>
+          <li>一言要約：負のスパイラル</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>罠の構造を理解することで、断ち切るポイント（スラック確保）が見える。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📈 焦点の配当（Focus Dividend）</h3>
+        <ul>
+          <li>トンネリングにより当面課題のパフォーマンスが一時的に上がる効果</li>
+          <li>一言要約：短期的な得</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>稀少性が必ずしも悪ではないことを示し、適切な活用（締切効果等）の可能性を示唆。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💸 トンネルの税（Tunneling Tax）</h3>
+        <ul>
+          <li>焦点化の代償として発生する見落とし・遅延・ミス・将来コスト増</li>
+          <li>一言要約：長期的な損</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>短期最適が長期損失を生む具体的メカニズムを示し、設計介入の根拠となる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔒 事前コミットメント</h3>
+        <ul>
+          <li>未来の自分の迷いを封じるための前もっての拘束</li>
+          <li>自動送金・先約ブロック等</li>
+          <li>一言要約：先んじて縛る</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>意志力に頼らず、将来の選択肢を制限することで帯域を守る実践的手法。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚙️ 既定値（デフォルト）設計</h3>
+        <ul>
+          <li>最も望ましい行動を初期設定にする</li>
+          <li>変更コストで行動を誘導する設計</li>
+          <li>一言要約：初期設定で勝つ</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>選択の摩擦を操作することで、帯域を消費せずに良い行動を促進できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📦 仕切り予算（Partitioning）</h3>
+        <ul>
+          <li>資源を用途別に分割・封筒化</li>
+          <li>過剰消費を防ぐ</li>
+          <li>一言要約：使い道を仕切る</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>心理的な境界を作ることで、トンネリング時の過剰消費を物理的に防止する。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="chapters-panel" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 第1部：導入 - 稀少性というレンズ</h3>
+      <ul>
+        <li>時間・金・食料など資源の不足は共通の心理メカニズムを生む</li>
+        <li>稀少性は単なる状態ではなく、思考を変える「レンズ」である</li>
+        <li>異なる領域（貧困・時間管理・ダイエット）に共通する原理を提示</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（なぜこの章が必要か）：</strong>問題を再定義することで、個人の意志力や能力の問題ではなく、構造的・心理的メカニズムの問題として捉え直すため。これにより解決策が設計へと転換する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第2部：メカニズム1 - トンネリング</h3>
+      <ul>
+        <li>不足が注意を強く引き付け短期成績を上げる（焦点の配当）</li>
+        <li>一方で周辺課題と将来影響を見落とす（トンネルの税）</li>
+        <li>締切効果や緊急時の集中力向上の実例を示す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（章のメッセージの根拠）：</strong>トンネリングが短期的利益と長期的損失を同時に生むことを実証することで、稀少性の二面性を理解し、適切な活用と防御の両方が必要であることを示す。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第3部：メカニズム2 - 帯域の税</h3>
+      <ul>
+        <li>逼迫が実行機能を侵食し、判断・記憶・自己制御を悪化させる</li>
+        <li>収穫前後の農家の認知テストスコア変化などの実証データ</li>
+        <li>帯域低下が貧困・時間不足の悪循環を生むメカニズム</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（章のメッセージの根拠）：</strong>稀少性が認知資源そのものを減らすという科学的証拠を示すことで、「意志が弱い」という誤解を解き、環境設計の必要性を訴える。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第4部：ダイナミクス - 稀少性の罠とスラック</h3>
+      <ul>
+        <li>負の連鎖の構造：不足→短期志向→将来悪化→さらなる不足</li>
+        <li>スラックの経済：余白は無駄ではなく価値を生む</li>
+        <li>罠から抜け出すための条件（スラック確保）を論証</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（章のメッセージの根拠）：</strong>稀少性の罠の動的構造を明らかにすることで、一時的対処ではなく構造的解決（スラック確保）が必要であることを示す。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第5部：設計原則 - 意志ではなく環境を変える</h3>
+      <ul>
+        <li>既定値、事前コミット、仕切り、リマインダー、チェックリスト等の設計指針</li>
+        <li>良い行動の摩擦を下げ、悪い行動の摩擦を上げる</li>
+        <li>帯域を守る仕組みの具体例と実装方法</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（章のメッセージの根拠）：</strong>意志力に頼らない行動設計の原則を提示することで、持続可能な改善を可能にする。帯域が低下している状態でも機能する仕組みが鍵。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第6部：応用 - 時間管理・貧困・医療・政策</h3>
+      <ul>
+        <li>個人の生産性から社会政策まで、稀少性レンズの適用事例</li>
+        <li>貧困対策、医療アドヒアランス、教育、組織設計への示唆</li>
+        <li>設計提案：バッファ予算化、リマインダー、前払い制度等</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（章のメッセージの根拠）：</strong>理論を実践に落とし込み、個人・組織・社会の各レベルで稀少性の罠を断ち切る具体的方法を示すことで、実用性を証明する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第7部：結語 - スラックを守る習慣化</h3>
+      <ul>
+        <li>持続可能な仕組み構築と余白の制度化が長期最適の鍵</li>
+        <li>一度の改善ではなく、継続的にスラックを守る習慣が必要</li>
+        <li>稀少性レンズを日常に組み込む実践的まとめ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（章のメッセージの根拠）：</strong>知識を行動に変え、習慣化することで初めて稀少性の罠から抜け出せる。制度化と仕組み化が持続の鍵であることを強調。
+      </div>
+    </div>
+  </div>
+
+  <div id="examples-panel" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>🌾 例1：収穫前後の農家の認知能力変化</h4>
+      <p><strong>背景：</strong>インドの農家を対象に、収穫前（資金逼迫期）と収穫後（資金潤沢期）で同じ認知テストを実施。</p>
+      <p><strong>結果：</strong>収穫前のスコアは収穫後より有意に低下。IQ換算で約13ポイントの差。</p>
+      <p><strong>示唆：</strong>同じ人物でも稀少性の有無で認知能力が変動する。貧困は能力の問題ではなく、帯域を奪う環境の問題。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>稀少性が認知資源を直接減らすという因果関係を実証し、「意志が弱い」という誤解を科学的に否定する。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🛒 例2：ショッピングモールでの「借り入れ」実験</h4>
+      <p><strong>背景：</strong>被験者に仮想の買い物予算を与え、途中で予期せぬ出費（車の修理等）を提示。裕福層と貧困層で反応を比較。</p>
+      <p><strong>結果：</strong>貧困層は予期せぬ出費のシナリオを考えるだけで認知テストのスコアが低下。裕福層は変化なし。</p>
+      <p><strong>示唆：</strong>稀少性の「心配」だけで帯域が消費される。実際の不足がなくても、逼迫の想像が認知を侵食する。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>稀少性の心理的影響が実際の資源量だけでなく、認識や心配によっても生じることを示し、予防的スラック確保の重要性を裏付ける。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>⏰ 例3：締切前の集中力向上と見落とし</h4>
+      <p><strong>背景：</strong>学生や社会人を対象に、締切が迫るタスクと余裕のあるタスクでのパフォーマンスを比較。</p>
+      <p><strong>結果：</strong>締切直前は当該タスクの効率が上がる（焦点の配当）が、他の重要タスクや長期計画を見落とす（トンネルの税）。</p>
+      <p><strong>示唆：</strong>トンネリングは短期成果を上げるが、周辺コストを無視する。意図的なスラック（バッファ時間）がないと、連鎖的遅延が発生。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>稀少性の二面性（短期利益と長期損失）を日常的な時間管理の文脈で示し、スラック確保の実践的必要性を訴える。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>💳 例4：高利貸しの罠と封筒予算</h4>
+      <p><strong>背景：</strong>貧困層が高金利のペイデイローンを繰り返し利用し、負債が雪だるま式に増える現象。</p>
+      <p><strong>結果：</strong>トンネリングにより「今月の穴埋め」が優先され、将来コストを無視。帯域低下で計画能力も低下。</p>
+      <p><strong>示唆：</strong>封筒予算（用途別に現金を分ける）や自動貯蓄など、仕組みで将来資源を守る設計が罠を断ち切る。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>稀少性の罠の具体的連鎖を示し、意志力ではなく仕組み（仕切り予算・事前コミット）が解決策であることを実証する。
+      </div>
+    </div>
+  </div>
+
+  <div id="quotes-panel" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>「稀少性は単なる状態ではなく、心のレンズである。」</p>
+      <small><strong>重要性：</strong>問題の再定義により、解決策が意志力から設計へと転換するから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「トンネルは焦点を与えるが、周辺を見えなくする。」</p>
+      <small><strong>重要性：</strong>短期の得と長期の損の同時発生を一文で示すため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「帯域は有限で貴重だ。逼迫はそれを消費する。」</p>
+      <small><strong>重要性：</strong>注意資源の希少性を自覚させ、保護策の必要性を訴える。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「スラックは浪費ではない。信頼できる余白である。」</p>
+      <small><strong>重要性：</strong>余白削減こそがコスト増を生むという逆説を示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「解決は意志ではなく仕組みから始まる。」</p>
+      <small><strong>重要性：</strong>行動設計を最優先に据える実践原則を示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「稀少性の罠は、今日の穴を埋めるために明日を犠牲にする連鎖である。」</p>
+      <small><strong>重要性：</strong>負のスパイラルの本質を端的に表現し、構造的解決の必要性を示す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「焦点の配当は短期的な勝利をもたらすが、トンネルの税は長期的な敗北を招く。」</p>
+      <small><strong>重要性：</strong>トンネリングのトレードオフを明確にし、バランスの重要性を訴える。</small>
+    </div>
+  </div>
+
+  <div id="actions-panel" class="tab-content" role="tabpanel">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">🚀 今日から始める15〜30分アクション</h2>
+    
+    <div class="action-card">
+      <h4>⏰ アクション1：明日の最重要30分を先に確保</h4>
+      <p><strong>具体的手順：</strong>カレンダーを開き、明日の最も重要なタスク（例：企画書作成、重要な思考作業）のために30分のブロックを朝一番に予約する。他の予定が入らないよう「予約済み」とマークする。</p>
+      <p><strong>目的：</strong>トンネリングが始まる前に重要タスクを保護し、帯域が高い時間帯を確保する。</p>
+      <p><strong>期待効果：</strong>焦点の配当を意図的に活用しつつ、トンネルの税（重要タスクの先送り）を回避。スラックの実感を得る。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>📅 アクション2：来週の会議前後に15分バッファを追加</h4>
+      <p><strong>具体的手順：</strong>来週の全会議の前後15分を「移動・準備・振り返り時間」として予定に組み込む。会議を連続で入れない。</p>
+      <p><strong>目的：</strong>会議間のトンネリングを防ぎ、切り替えと準備のための帯域を確保する。</p>
+      <p><strong>期待効果：</strong>会議の質が向上し、遅延や準備不足によるストレスが減少。スラックが生産性を上げることを体感。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🔕 アクション3：通知を1日2回のまとめ配信に変更</h4>
+      <p><strong>具体的手順：</strong>スマホの通知設定を開き、メール・SNS・ニュースアプリの通知を「1日2回（例：10時と16時）のまとめ」に変更。または通知を完全オフにし、能動的に確認する時間を決める。</p>
+      <p><strong>目的：</strong>割り込みによる帯域消費を削減し、集中時間を守る。</p>
+      <p><strong>期待効果：</strong>トンネリングの頻度が減り、深い作業の質が向上。注意の主導権を取り戻す。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>💰 アクション4：封筒予算を1つ作る（デジタルでも可）</h4>
+      <p><strong>具体的手順：</strong>今月の予算から「娯楽費」「外食費」など1カテゴリを選び、専用の封筒（または銀行の別口座・アプリの予算機能）に分ける。その金額内でのみ使う。</p>
+      <p><strong>目的：</strong>仕切り予算により過剰消費を物理的に防ぎ、将来資源を守る。</p>
+      <p><strong>期待効果：</strong>トンネリング時の衝動的支出を抑制し、月末の逼迫を軽減。スラック確保の第一歩。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>📝 アクション5：重要タスクのチェックリストを作る</h4>
+      <p><strong>具体的手順：</strong>繰り返し行う重要タスク（例：プレゼン準備、レビュー作業）の手順を箇条書きにし、チェックリスト化する。次回から見ながら実行。</p>
+      <p><strong>目的：</strong>帯域を消費する「何をすべきか思い出す」作業を削減し、実行に集中する。</p>
+      <p><strong>期待効果：</strong>ミスと見落としが減り、逼迫時でも品質を維持。帯域の節約を実感。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🔄 アクション6：自動化できる支払いを1つ設定</h4>
+      <p><strong>具体的手順：</strong>毎月の固定費（家賃、光熱費、サブスク等）のうち1つを自動引き落としまたは自動送金に設定する。</p>
+      <p><strong>目的：</strong>事前コミットメントにより、支払い忘れと延滞を防ぎ、帯域を守る。</p>
+      <p><strong>期待効果：</strong>支払い管理の認知負荷が減り、トンネルの税（延滞料・督促ストレス）を回避。</p>
+    </div>
+
+    <div style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1)); border-radius: 0.75rem; border-left: 4px solid var(--accent);">
+      <h3 style="color: var(--secondary); margin-bottom: 1rem;">📚 関連書籍</h3>
+      <div style="display: grid; gap: 1rem;">
+        <div>
+          <strong style="color: var(--primary);">ファスト＆スロー</strong> - ダニエル・カーネマン<br>
+          <small>帯域を食うバイアスと二重過程を理解し、設計介入の根拠を補強する。</small>
+        </div>
+        <div>
+          <strong style="color: var(--primary);">実践 行動経済学（Nudge）</strong> - リチャード・セイラー／キャス・サンスティーン<br>
+          <small>既定値や選択設計で意志に頼らない改善を行う方法を具体化。</small>
+        </div>
+        <div>
+          <strong style="color: var(--primary);">Make Time</strong> - ジェイク・ナップ／ジョン・ゼラツキー<br>
+          <small>重要タスクの先取りと注意の設計で日々のスラックを作る実践書。</small>
+        </div>
+        <div>
+          <strong style="color: var(--primary);">深い仕事</strong> - カル・ニューポート<br>
+          <small>帯域を守る集中的作業環境の設計と分散注意の排除を提案。</small>
+        </div>
+        <div>
+          <strong style="color: var(--primary);">エッセンシャル思考</strong> - グレッグ・マキューン<br>
+          <small>トレードオフを受け入れ、スラック確保のために選択と集中を徹底する。</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetTab = button.getAttribute('data-tab');
+      
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      button.classList.add('active');
+      button.setAttribute('aria-selected', 'true');
+      
+      const targetContent = document.getElementById(targetTab + '-panel');
+      if (targetContent) {
+        targetContent.classList.add('active');
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
