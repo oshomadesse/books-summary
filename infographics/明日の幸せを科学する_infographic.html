@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>明日の幸福を予測する科学 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 5px solid var(--accent);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0 1rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, #f093fb22, #667eea22);
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 4rem;
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+  font-family: Georgia, serif;
+}
+.quote-card blockquote {
+  font-size: 1rem;
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+.quote-card p {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--accent);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.action-card .meta strong {
+  color: var(--secondary);
+}
+.visual-section {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.visual-section h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+.flow-item {
+  background: linear-gradient(135deg, #667eea22, #f093fb22);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+}
+.flow-item:after {
+  content: "↓";
+  display: block;
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--accent);
+  margin-top: 0.5rem;
+}
+.flow-item:last-child:after {
+  content: "";
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.book-item h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+.book-item .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-item .relation {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 明日の幸福を予測する科学</h1>
+  <p>なぜ私たちは未来の感情を外し、どう当てるか</p>
+</header>
+
+<div class="container">
+
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜ私たちは「明日の幸せ」を外し、どうすれば当てられるのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>想像の欠落補完・現在主義・比較枠組みの歪みと、心の免疫系・適応の見落としが感情の強さと持続を過大評価させるため。対策は、他者の経験を代用データにする、短期の現実テストを挟む、後悔を増やす設計（可逆性・過多な選択）を減らすこと。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>脳は未来を"埋めて"リアルに感じさせるが、その埋め草は現在の感情に汚染され、特定要素へ焦点化し、比較の基準に引きずられる。一方、現実の自分はヘドニック適応と認知的再評価（心の免疫系）で素早く回復し、予測よりも穏やかに落ち着く。これが影響・持続時間バイアスを生む。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>サロゲーション（自分に近い他者の実体験・レビューを参照）を標準化する／トライアルやサンプルで"想像"を"経験"に変換する／意思決定後の可逆性を下げ反芻を減らす／選択前に「影響の強さと期間の最悪/中央値」を明示記録し、後で較正する。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔮 感情予測</h3>
+        <ul>
+          <li>未来の出来事が感情に与える影響の大きさと持続を見積もる行為</li>
+          <li>系統的誤差が大きく、直感は当てにならない</li>
+          <li>一言要約：未来感情の見積もりは下手</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>意思決定の基盤だが、誤ると後悔や不満を生むため正確性が重要。</div>
+      </div>
+      <div class="card">
+        <h3>📈 影響バイアス</h3>
+        <ul>
+          <li>出来事のポジ/ネガ感情の強さを過大評価する傾向</li>
+          <li>実際より"大きく揺れる"と思い込む</li>
+          <li>一言要約：感情の強度を盛る</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>選択時の恐怖や期待を増幅し、リスク回避や過剰投資を招くため。</div>
+      </div>
+      <div class="card">
+        <h3>⏳ 持続時間バイアス</h3>
+        <ul>
+          <li>感情がどれだけ長く続くかを過大評価する誤り</li>
+          <li>実際は適応や免疫系で早く回復する</li>
+          <li>一言要約：長引くと錯覚</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>失敗や損失への恐れを過剰にし、挑戦を妨げるため。</div>
+      </div>
+      <div class="card">
+        <h3>🔍 焦点化の錯覚</h3>
+        <ul>
+          <li>一部の要素に注意が集中し、全体的な幸福への影響を過大視</li>
+          <li>給与・外見など単一要素が幸福を決めると錯覚</li>
+          <li>一言要約：部分が全体に見える</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>重要でない要素に資源を投じ、本質的な満足を逃すため。</div>
+      </div>
+      <div class="card">
+        <h3>🕰️ 現在主義</h3>
+        <ul>
+          <li>現在の気分や欲求を未来の自分にも当てはめてしまう傾向</li>
+          <li>空腹時に買い物すると過剰購入するのと同じ</li>
+          <li>一言要約：今の気分で未来を見る</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>未来の自分の状態を誤解し、計画や選択がズレるため。</div>
+      </div>
+      <div class="card">
+        <h3>🛡️ 心の免疫系</h3>
+        <ul>
+          <li>合理化・再評価などで逆境から心理的に回復する自動メカニズム</li>
+          <li>失敗を"学び"に変換し、満足を取り戻す</li>
+          <li>一言要約：心は勝手に立ち直る</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>予測時に見落とされ、実際の回復力を過小評価させるため。</div>
+      </div>
+      <div class="card">
+        <h3>✨ 合成的幸福</h3>
+        <ul>
+          <li>手に入った結果を好きになることで生まれる幸福</li>
+          <li>主観的には自然な幸福と同等に本物</li>
+          <li>一言要約：幸せは"つくれる"</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>選択後の満足を高め、後悔を減らす心的資源として活用できるため。</div>
+      </div>
+      <div class="card">
+        <h3>🔄 ヘドニック適応</h3>
+        <ul>
+          <li>快不快に慣れて基準線に戻る現象</li>
+          <li>昇給や新車の喜びは数ヶ月で薄れる</li>
+          <li>一言要約：大抵は慣れる</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>長期的な満足を過大評価し、短期的な快楽に過剰投資させるため。</div>
+      </div>
+      <div class="card">
+        <h3>⚖️ 参照点・比較フレーム</h3>
+        <ul>
+          <li>評価は絶対値でなく比較の文脈に依存して変わる</li>
+          <li>同じ給与でも周囲次第で満足度が変動</li>
+          <li>一言要約：文脈が価値を決める</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>比較の設計で満足を操作でき、選択の枠組みが結果を左右するため。</div>
+      </div>
+      <div class="card">
+        <h3>👥 サロゲーション</h3>
+        <ul>
+          <li>他者の実経験を未来の自分の代理データとして用いる方法</li>
+          <li>レビューや体験談を参照して予測精度を上げる</li>
+          <li>一言要約：他人を未来の自分に</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>想像の歪みを回避し、実データで予測誤差を縮める実践策だから。</div>
+      </div>
+      <div class="card">
+        <h3>🧠 記憶の再構成</h3>
+        <ul>
+          <li>記憶は編集され想像と混ざり、確信は高くても精度は低い</li>
+          <li>過去の感情も現在の視点で書き換わる</li>
+          <li>一言要約：記憶は作り変わる</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>過去の経験を未来予測に使う際、信頼性が低いことを認識すべきため。</div>
+      </div>
+      <div class="card">
+        <h3>🔀 可逆性と後悔</h3>
+        <ul>
+          <li>やり直せる選択ほど反芻や比較が続き満足を下げやすい</li>
+          <li>返品可能な商品ほど迷い続ける</li>
+          <li>一言要約：戻れるほど迷う</li>
+        </ul>
+        <div class="reason"><strong>理由：</strong>選択の設計で後悔を管理し、合成的幸福を促進できるため。</div>
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-diagram">
+        <div class="flow-item">現在主義 → 影響バイアス/持続時間バイアスを増幅</div>
+        <div class="flow-item">焦点化の錯覚 + 欠落補完 → 想像の歪み → 選択ミス</div>
+        <div class="flow-item">心の免疫系/ヘドニック適応 → 実際の感情回復↑ → 予測は過大評価に</div>
+        <div class="flow-item">参照点の変化 → 評価が相対的に上下 → 満足度が動く</div>
+        <div class="flow-item">可逆性↑ → 反芻・比較↑ → 合成的幸福の発動↓ → 後悔↑</div>
+        <div class="flow-item">サロゲーション/小規模トライアル → 想像→経験への置換 → 予測誤差↓</div>
+        <div class="flow-item">合成的幸福の承認 → 選択後の満足回復↑ → 後悔管理</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 第1章：問題提起</h3>
+      <ul>
+        <li>人間は未来を思い描ける唯一の動物</li>
+        <li>しかしその予測はしばしば外れるというパラドックス</li>
+        <li>幸福予測の誤りが意思決定の質を下げる</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>研究の出発点を示し、読者に"直感は当てにならない"と警鐘を鳴らすため。</div>
+    </div>
+    <div class="chapter-card">
+      <h3>🧩 第2章：想像と記憶の仕組み</h3>
+      <ul>
+        <li>脳は欠落を補完し現在の感情を混入する</li>
+        <li>記憶は再構成され、想像と区別がつかない</li>
+        <li>確信は高くても精度は低い</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>予測誤差の認知的メカニズムを解明し、対策の基盤を築くため。</div>
+    </div>
+    <div class="chapter-card">
+      <h3>⚖️第3章：比較と文脈</h3>
+      <ul>
+        <li>参照点・希少性・焦点化が評価をどう歪めるか</li>
+        <li>実験で比較フレームの影響を可視化</li>
+        <li>絶対値でなく相対評価が満足を決める</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>選択の枠組みを設計することで満足度を操作できることを示すため。</div>
+    </div>
+    <div class="chapter-card">
+      <h3>📊 第4章：予測誤差のパターン</h3>
+      <ul>
+        <li>影響バイアス：感情の強さを過大評価</li>
+        <li>持続時間バイアス：感情の長さを過大評価</li>
+        <li>系統的偏りを整理し、予測可能性を高める</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>誤差のパターンを知ることで、補正ルールを作れるため。</div>
+    </div>
+    <div class="chapter-card">
+      <h3>🛡️ 第5章：心の免疫系と適応</h3>
+      <ul>
+        <li>合理化・再評価による回復メカニズム</li>
+        <li>"合成的幸福"の妥当性を論証</li>
+        <li>予測時に見落とされる回復力を明示</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>選択後の満足を高め、後悔を減らす心的資源として活用できるため。</div>
+    </div>
+    <div class="chapter-card">
+      <h3>💊 第6章：処方箋</h3>
+      <ul>
+        <li>サロゲーション：他者の実体験を参照</li>
+        <li>小さな現実テスト：想像を経験に変換</li>
+        <li>選択の不可逆化・選択肢の絞り込み</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>実務的な意思決定ルールに落とし込み、行動変容を促すため。</div>
+    </div>
+    <div class="chapter-card">
+      <h3>🎯 第7章：結論</h3>
+      <ul>
+        <li>未来は想像より平凡で、回復力は予測より高い</li>
+        <li>データ（他者経験）と設計で幸福の当たりを取りにいく</li>
+        <li>合成的幸福を活かす選択設計が鍵</li>
+      </ul>
+      <div class="reason"><strong>理由：</strong>全体のメッセージを統合し、読者に実践への動機を与えるため。</div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🎓 例1：大学選択の後悔</h3>
+      <p><strong>背景：</strong>学生は第一志望に落ちた直後、長期的な不幸を予測するが、数ヶ月後には第二志望校での生活に満足している。</p>
+      <p><strong>示唆：</strong>心の免疫系が働き、合成的幸福が生まれる。選択後の適応力を過小評価している。</p>
+      <div class="reason"><strong>理由：</strong>持続時間バイアスと心の免疫系の実例として、予測誤差の典型を示すため。</div>
+    </div>
+    <div class="example-card">
+      <h3>💼 例2：昇給の喜びの短命</h3>
+      <p><strong>背景：</strong>昇給直後は大きな喜びを感じるが、3〜6ヶ月で新しい給与が"当たり前"になり、満足度は元の水準に戻る。</p>
+      <p><strong>示唆：</strong>ヘドニック適応により、物質的な変化の長期効果は限定的。焦点化の錯覚で給与を過大視していた。</p>
+      <div class="reason"><strong>理由：</strong>適応と焦点化の錯覚が組み合わさり、長期的満足を誤予測する典型例だから。</div>
+    </div>
+    <div class="example-card">
+      <h3>🍽️ 例3：レストラン選びとレビュー</h3>
+      <p><strong>背景：</strong>自分の想像だけで選ぶと期待外れが多いが、他者のレビュー（サロゲーション）を参照すると満足度が高まる。</p>
+      <p><strong>示唆：</strong>他者の実体験は自分の未来の代理データとして有効。想像の歪みを回避できる。</p>
+      <div class="reason"><strong>理由：</strong>サロゲーションの実用性を日常的な場面で示し、処方箋の有効性を裏付けるため。</div>
+    </div>
+    <div class="example-card">
+      <h3>🔄 例4：返品可能な商品の満足度</h3>
+      <p><strong>背景：</strong>返品可能な商品は購入後も比較・反芻が続き、満足度が下がる。返品不可の商品は合成的幸福が働き満足度が高い。</p>
+      <p><strong>示唆：</strong>可逆性が高いと心の免疫系が発動しにくく、後悔が増える。選択の不可逆化が満足を高める。</p>
+      <div class="reason"><strong>理由：</strong>可逆性と合成的幸福の関係を具体的に示し、選択設計の指針を提供するため。</div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <blockquote>人間は未来を思い描く唯一の動物だが、その想像は驚くほど誤る。</blockquote>
+      <p><strong>なぜ重要か：</strong>研究の出発点を示し、読者に"直感は当てにならない"と警鐘を鳴らすため。</p>
+    </div>
+    <div class="quote-card">
+      <blockquote>合成的幸福は自然な幸福と同じくらい本物である。</blockquote>
+      <p><strong>なぜ重要か：</strong>後悔を減らし、選択後の満足を高める心的メカニズムを肯定的に再評価する核心命題だから。</p>
+    </div>
+    <div class="quote-card">
+      <blockquote>他人の経験は自分の未来の最良のガイドである。</blockquote>
+      <p><strong>なぜ重要か：</strong>サロゲーションという処方箋を端的に表し、実務的な意思決定ルールに落とし込めるから。</p>
+    </div>
+    <div class="quote-card">
+      <blockquote>不確実性は感情の余韻を長引かせる。</blockquote>
+      <p><strong>なぜ重要か：</strong>感情の持続を操作する要因を示し、可逆性や反芻を管理する実践につながるため。</p>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>✍️ 直近の失敗の利点を3つ書く</h3>
+      <p>最近の失敗や後悔を1つ選び、そこから得た学び・成長・新しい視点を3つ箇条書きにする。</p>
+      <div class="meta">
+        <strong>目的：</strong>心の免疫系を意識的に発動させ、合成的幸福を体験する。<br>
+        <strong>期待効果：</strong>後悔の感情が和らぎ、失敗への耐性が高まる。予測時に回復力を過小評価していたことに気づく。
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>🔍 迷う選択で体験談を3件読む</h3>
+      <p>現在迷っている選択（商品・サービス・進路など）について、実際に経験した人のレビューや体験談を3件以上読む。</p>
+      <div class="meta">
+        <strong>目的：</strong>サロゲーションを実践し、想像の歪みを実データで補正する。<br>
+        <strong>期待効果：</strong>予測精度が上がり、選択後の満足度が高まる。他者の経験が自分の未来の代理データとして有効だと実感する。
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>📊 買いたい物の満足度予測を記録</h3>
+      <p>購入を検討している物について、「購入直後の満足度（0-10）」「3ヶ月後の満足度（0-10）」を予測し、日付とともに記録する。実際に購入したら3ヶ月後に振り返る。</p>
+      <div class="meta">
+        <strong>目的：</strong>自分の予測誤差のパターンを可視化し、較正する。<br>
+        <strong>期待効果：</strong>ヘドニック適応や影響バイアスを体感し、次回以降の予測精度が向上する。長期的な満足を過大評価していたことに気づく。
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>🔒 小さな選択を不可逆にする</h3>
+      <p>今日の小さな選択（ランチのメニュー、服装など）を決めたら、「これで確定」と宣言し、他の選択肢を見ない・考えないルールを設ける。</p>
+      <div class="meta">
+        <strong>目的：</strong>可逆性を下げて反芻を減らし、合成的幸福を促進する。<br>
+        <strong>期待効果：</strong>選択後の満足度が高まり、後悔が減る。不可逆性が心の免疫系を発動させることを体験する。
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-section">
+    <h3>📚 関連書籍</h3>
+    <div class="book-list">
+      <div class="book-item">
+        <h4>ファスト＆スロー</h4>
+        <div class="author">ダニエル・カーネマン</div>
+        <div class="relation">判断バイアスと比較枠組みの理論基盤が感情予測の誤り理解を補強。</div>
+      </div>
+      <div class="book-item">
+        <h4>予想どおりに不合理</h4>
+        <div class="author">ダン・アリエリー</div>
+        <div class="relation">行動経済学の実験で欲求・満足の錯覚を可視化し、処方箋の実務性を高める。</div>
+      </div>
+      <div class="book-item">
+        <h4>選択の科学</h4>
+        <div class="author">バリー・シュワルツ</div>
+        <div class="relation">選択肢の過多と可逆性が満足を下げるメカニズムを詳述し、設計指針に直結。</div>
+      </div>
+      <div class="book-item">
+        <h4>幸福の仮説</h4>
+        <div class="author">ジョナサン・ハイト</div>
+        <div class="relation">幸福心理学を古今の知恵と統合し、合成的幸福や適応の位置づけを広げる。</div>
+      </div>
+      <div class="book-item">
+        <h4>フロー体験 喜びの現象学</h4>
+        <div class="author">ミハイ・チクセントミハイ</div>
+        <div class="relation">主観的な最適経験の設計が"当てる幸福"と"作る幸福"の橋渡しになる。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabContents.forEach(c => {
+        c.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
