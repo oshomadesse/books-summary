@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radical Candor インフォグラフィック</title>
+<!-- カラーパレット: プライマリー=#667eea セカンダリー=#764ba2 アクセント=#f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 1.5rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, #f093fb22, #667eea22);
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media(min-width: 768px) {
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(102,126,234,0.3);
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+.quote-card small {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+.action-card {
+  background: linear-gradient(135deg, #f093fb, #667eea);
+  color: white;
+  padding: 1.25rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 10px rgba(240,147,251,0.3);
+}
+.action-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  opacity: 0.95;
+  margin-bottom: 0.25rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.diagram svg {
+  width: 100%;
+  height: auto;
+}
+.book-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  border-left: 3px solid var(--secondary);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.book-card h4 {
+  font-size: 0.95rem;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+.book-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+.book-card small {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 Radical Candor</h1>
+  <p>優しさと厳しさの両立で、信頼と成果を最大化する</p>
+</header>
+
+<div class="summary-block">
+  <h2>📌 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>なぜ率直さと配慮を両立させるとチームは強くなるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>「個人的な配慮×率直な挑戦」を同時に満たす対話が、信頼を基盤に学習速度・責任感・成果を高めるから。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>人は自分が大切にされていると感じると防御が解け、具体で明確な指摘を成長機会として受け止められる。配慮のみ/挑戦のみは、誤学習・反発・停滞を招く。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠 How（そのためには）</strong>
+    <p>関係性を築く→称賛と批判のガイダンスを即時・具体に行う→キャリア意図と役割を整合（ロックスター/スーパースター）→GSDホイールで議論・決定・実行・学習を循環させる。1on1を部下主導で継続し、称賛を増やし、批判を恐れず明確に伝える。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="diagram">
+    <h3 style="text-align:center; margin-bottom:1rem; color:var(--secondary);">📊 Radical Candor フレームワーク</h3>
+    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <line x1="50" y1="350" x2="350" y2="350" stroke="#333" stroke-width="2"/>
+      <line x1="50" y1="350" x2="50" y2="50" stroke="#333" stroke-width="2"/>
+      <text x="200" y="380" text-anchor="middle" font-size="14" fill="#666">率直な挑戦 →</text>
+      <text x="20" y="200" text-anchor="middle" font-size="14" fill="#666" transform="rotate(-90 20 200)">個人的な配慮 →</text>
+      <rect x="50" y="50" width="150" height="150" fill="#f093fb" opacity="0.3" stroke="#764ba2" stroke-width="2"/>
+      <text x="125" y="110" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">破壊的な共感</text>
+      <text x="125" y="130" text-anchor="middle" font-size="11" fill="#555">優しさの害</text>
+      <rect x="200" y="50" width="150" height="150" fill="url(#grad1)" opacity="0.5" stroke="#667eea" stroke-width="3"/>
+      <text x="275" y="110" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">徹底的な本音</text>
+      <text x="275" y="130" text-anchor="middle" font-size="11" fill="#fff">優しさと厳しさ</text>
+      <rect x="50" y="200" width="150" height="150" fill="#ccc" opacity="0.3" stroke="#999" stroke-width="2"/>
+      <text x="125" y="260" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">操作的な不誠実</text>
+      <text x="125" y="280" text-anchor="middle" font-size="11" fill="#555">打算的沈黙</text>
+      <rect x="200" y="200" width="150" height="150" fill="#ff6b6b" opacity="0.3" stroke="#c92a2a" stroke-width="2"/>
+      <text x="275" y="260" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">嫌な攻撃性</text>
+      <text x="275" y="280" text-anchor="middle" font-size="11" fill="#555">恐怖の管理</text>
+    </svg>
+  </div>
+
+  <div class="card">
+    <h3>🎯 徹底的な本音（Radical Candor）</h3>
+    <ul>
+      <li>高い『個人的な配慮』と高い『率直な挑戦』を同時に実行</li>
+      <li>優しさと厳しさの両立が信頼と成果を生む</li>
+      <li>相手を尊重しながら明確な期待を伝える</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong>信頼関係の上で率直に挑戦することで、防御反応を減らし学習速度を最大化できる。配慮だけでも挑戦だけでも持続的成長は実現しない。
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>❤️ 個人的な配慮</h3>
+      <ul>
+        <li>相手を役割ではなく一人の人間として尊重</li>
+        <li>関心をもって関わる</li>
+        <li>信頼の土台を築く</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 理由：</strong>人は大切にされていると感じると防御が解け、率直な指摘を成長機会として受け止められる。
+      </div>
+    </div>
+    <div class="card">
+      <h3>⚡ 率直な挑戦</h3>
+      <ul>
+        <li>期待・懸念・要求を明確かつ具体に伝える</li>
+        <li>相手の成長と成果のために必要</li>
+        <li>曖昧さを排除する</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 理由：</strong>明確な期待値が品質と責任感を高め、誤りの早期是正で手戻りコストを削減できる。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>😢 破壊的な共感（Ruinous Empathy）</h3>
+    <ul>
+      <li>配慮は高いが挑戦が低い</li>
+      <li>誤りを見過ごし相手の成長と成果を損なう</li>
+      <li>短期的には関係が良好に見えるが長期的に害</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong>優しさだけでは誤学習を招き、本人のキャリアとチームの成果を損なう。率直さの欠如は真の配慮ではない。
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>😠 嫌な攻撃性</h3>
+      <ul>
+        <li>配慮が低く挑戦だけが高い</li>
+        <li>恐怖や反発を生む</li>
+        <li>短期的成果は出ても持続しない</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 理由：</strong>恐怖ベースの管理は心理的安全性を破壊し、離職・隠蔽・創造性の低下を招く。
+      </div>
+    </div>
+    <div class="card">
+      <h3>🎭 操作的な不誠実</h3>
+      <ul>
+        <li>配慮も挑戦も低い</li>
+        <li>打算で沈黙や迎合を選ぶ</li>
+        <li>信頼を破壊する</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 理由：</strong>政治的な振る舞いは組織の透明性と学習能力を損ない、最も有害な状態。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💬 ガイダンス（称賛と批判）</h3>
+    <ul>
+      <li>望ましい行動を増やす称賛</li>
+      <li>改善を促す批判</li>
+      <li>具体・即時・短く・口頭中心で伝える</li>
+      <li>行動に焦点を当て、人格を攻撃しない</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong>即時かつ具体的なフィードバックが行動変容を最大化し、学習サイクルを加速する。
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>🗣️ 1on1ミーティング</h3>
+      <ul>
+        <li>部下主導で課題・目標・障害を共有</li>
+        <li>マネージャーは傾聴と支援に徹する</li>
+        <li>定期的な対話で信頼を深める</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 理由：</strong>部下主導の対話が問題の早期発見と関係の質を高め、フィードバックの土台を作る。
+      </div>
+    </div>
+    <div class="card">
+      <h3>🌟 ロックスター/スーパースター</h3>
+      <ul>
+        <li>安定成長志向（ロックスター）</li>
+        <li>急成長志向（スーパースター）</li>
+        <li>役割・期待・成長機会を最適化</li>
+      </ul>
+      <div class="reason">
+        <strong>💡 理由：</strong>成長軌道を見極めることで動機づけと配置を最適化し、離職と不満を防ぐ。
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 GSDホイール</h3>
+    <ul>
+      <li>Listen（傾聴）→ Clarify（明確化）→ Debate（論争）</li>
+      <li>Decide（決定）→ Persuade（説得）→ Execute（実行）</li>
+      <li>Learn（学習）→ 次のサイクルへ</li>
+      <li>意思決定と学習を循環させる実行ループ</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong>継続的な学習ループが意思決定の質と実行速度を高め、組織の適応力を強化する。
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>📖 序章：失敗から学ぶ</h3>
+    <ul>
+      <li>著者自身の失敗談を提示</li>
+      <li>率直さと配慮を両立できない組織の弊害</li>
+      <li>本書の目的と構成の紹介</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong>実体験に基づく問題提起が読者の共感を呼び、フレームワークの必要性を明確にする。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第1部：関係性の構築</h3>
+    <ul>
+      <li>個人的な配慮の重要性を解説</li>
+      <li>1on1の設計と実践方法</li>
+      <li>信頼の土台づくりの具体策</li>
+      <li>相手を人として尊重する姿勢</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong>信頼関係がなければ率直な挑戦は受け入れられない。関係性が全ての基盤となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第2部：ガイダンスの技法</h3>
+    <ul>
+      <li>称賛と批判の具体的な伝え方</li>
+      <li>即時・具体・短く・口頭中心の原則</li>
+      <li>言いにくさを乗り越える方法</li>
+      <li>フィードバックの受け取り方</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong>明確なガイダンスが行動変容を促し、学習速度と成果を最大化する実践的技法だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第3部：チームの育成</h3>
+    <ul>
+      <li>ロックスター/スーパースターの見極め</li>
+      <li>配置・育成・評価の最適化</li>
+      <li>解雇の判断と実践</li>
+      <li>キャリア軌道に応じた支援</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong>個々の成長志向を理解し最適な役割を与えることで、チーム全体のパフォーマンスと満足度が向上する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第4部：実行のプロセス</h3>
+    <ul>
+      <li>GSDホイールの詳細解説</li>
+      <li>傾聴→明確化→論争→決定→説得→実行→学習</li>
+      <li>各ステップの具体的な実践方法</li>
+      <li>継続的改善のサイクル</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong>構造化された実行プロセスが意思決定の質を高め、学習を組織に定着させる仕組みだから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 結び：落とし穴と定着</h3>
+    <ul>
+      <li>よくある失敗パターンへの対処</li>
+      <li>破壊的な共感・嫌な攻撃性・不誠実の回避</li>
+      <li>日常業務への定着方法</li>
+      <li>継続的な実践のためのヒント</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 理由：</strong>理論を知るだけでなく、実践の障害を乗り越え習慣化する方法を示すことで、持続的な変化を支援する。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🎯 具体例1：Googleでの称賛文化</h3>
+    <ul>
+      <li><strong>背景：</strong>著者がGoogleで実践した即時称賛の仕組み</li>
+      <li><strong>内容：</strong>良い行動を見たらその場で具体的に褒める文化を醸成</li>
+      <li><strong>結果：</strong>チームの士気向上と望ましい行動の再現性が高まった</li>
+      <li><strong>示唆：</strong>称賛は行動を増やす最も効果的な手段</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong>即時かつ具体的な称賛が、ポジティブな行動を強化し組織文化を形成する力を持つ。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 具体例2：部下への率直な批判</h3>
+    <ul>
+      <li><strong>背景：</strong>著者が部下のプレゼンに「えーと」が多いと指摘できなかった失敗</li>
+      <li><strong>内容：</strong>配慮を優先し批判を避けた結果、部下のキャリアに悪影響</li>
+      <li><strong>結果：</strong>後に上司から「なぜ教えなかったのか」と叱責される</li>
+      <li><strong>示唆：</strong>破壊的な共感は真の優しさではない</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong>短期的な居心地の良さを優先すると、長期的に相手の成長を妨げる。率直さこそが真の配慮。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 具体例3：1on1での傾聴</h3>
+    <ul>
+      <li><strong>背景：</strong>部下が抱える障害を早期に発見するための定期対話</li>
+      <li><strong>内容：</strong>マネージャーは話すのではなく聴くことに徹する</li>
+      <li><strong>結果：</strong>問題が小さいうちに解決でき、信頼関係が深まった</li>
+      <li><strong>示唆：</strong>1on1は部下のための時間であり、傾聴が鍵</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong>部下主導の対話が問題の早期発見と心理的安全性を高め、フィードバックの土台を作る。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 具体例4：ロックスターの価値</h3>
+    <ul>
+      <li><strong>背景：</strong>昇進を望まないが高いパフォーマンスを発揮する社員</li>
+      <li><strong>内容：</strong>安定志向の「ロックスター」として尊重し、適切な役割を提供</li>
+      <li><strong>結果：</strong>長期的に組織の安定と質を支える存在に</li>
+      <li><strong>示唆：</strong>全員が昇進を望むわけではない</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong>成長軌道の多様性を認めることで、個人の満足度と組織の持続性が両立する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 具体例5：GSDホイールの実践</h3>
+    <ul>
+      <li><strong>背景：</strong>新製品の意思決定プロセスでの混乱</li>
+      <li><strong>内容：</strong>傾聴→明確化→論争→決定→説得→実行→学習のステップを明示</li>
+      <li><strong>結果：</strong>決定の質が向上し、実行速度が加速</li>
+      <li><strong>示唆：</strong>構造化されたプロセスが混乱を防ぐ</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと：</strong>明確なプロセスが意思決定の透明性を高め、チームの学習と適応力を強化する。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>人を気にかけることと直接的に挑戦することは両立が必要だ。</p>
+    <small><strong>なぜ重要か：</strong>本書の中心命題であり、成果と信頼を同時に高める唯一の道を示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>称賛は行動を増やし、批判は誤りのコストを減らす。どちらも具体かつ即時に行う。</p>
+    <small><strong>なぜ重要か：</strong>行動変容を最大化する実践原則で、明日から使える指針となる。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>1on1は部下のための時間であり、マネージャーは主に聴く。</p>
+    <small><strong>なぜ重要か：</strong>関係の質と問題発見力を高め、フィードバックの土台を作るから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>キャリアは一つのはしごではなく、異なる成長速度のトラックがある。</p>
+    <small><strong>なぜ重要か：</strong>動機づけと配置を最適化し、離職と不満を防ぐ設計思想だから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>決めて、説得し、実行し、学ぶ——この輪を回し続ける。</p>
+    <small><strong>なぜ重要か：</strong>GSDホイールの要約で、チームの持続的改善を駆動するコアだから。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>✅ アクション1：同僚に具体的な称賛を送る</h4>
+    <p><strong>目的：</strong>称賛の習慣を身につけ、ポジティブな行動を強化する</p>
+    <p><strong>方法：</strong>今日または昨日の良い行動を1つ選び、「何が良かったか」を具体的に伝える（メール・口頭どちらでも可）</p>
+    <p><strong>期待効果：</strong>相手の士気向上と望ましい行動の再現性が高まる。自分も称賛する視点が養われる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>✅ アクション2：上司に改善提案を率直に伝える</h4>
+    <p><strong>目的：</strong>率直な挑戦を実践し、組織の改善に貢献する</p>
+    <p><strong>方法：</strong>現在の業務で改善できる点を1つ選び、具体的な提案とともに上司に伝える（配慮を忘れずに）</p>
+    <p><strong>期待効果：</strong>率直なコミュニケーションの練習になり、組織の問題解決が進む。上司との信頼関係も深まる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>✅ アクション3：次回1on1の質問3つを用意</h4>
+    <p><strong>目的：</strong>1on1を部下主導にし、傾聴の姿勢を強化する</p>
+    <p><strong>方法：</strong>「今週の課題は？」「何か障害はある？」「私にできる支援は？」など、部下が話しやすい質問を3つ準備する</p>
+    <p><strong>期待効果：</strong>部下の本音を引き出し、問題の早期発見と関係の質が向上する。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>✅ アクション4：自分のキャリア軌道を振り返る</h4>
+    <p><strong>目的：</strong>自分がロックスター志向かスーパースター志向かを明確にする</p>
+    <p><strong>方法：</strong>15分間、今後3年のキャリアで「安定」と「急成長」のどちらを優先したいか書き出す</p>
+    <p><strong>期待効果：</strong>自己理解が深まり、上司との期待値調整がしやすくなる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>✅ アクション5：GSDホイールの1ステップを実践</h4>
+    <p><strong>目的：</strong>意思決定プロセスを構造化し、学習サイクルを回す</p>
+    <p><strong>方法：</strong>現在進行中のプロジェクトで、Listen（傾聴）またはLearn（学習）のステップを意識的に実行する</p>
+    <p><strong>期待効果：</strong>プロセスの明確化により、決定の質と実行速度が向上する。</p>
+  </div>
+</div>
+
+<div style="padding:1rem;">
+  <h2 style="color:var(--secondary); margin-bottom:1rem;">📚 関連書籍</h2>
+  
+  <div class="book-card">
+    <h4>Thanks for the Feedback</h4>
+    <p><strong>著者：</strong>ダグラス・ストーン, シーラ・ヒーン</p>
+    <small><strong>関連性：</strong>率直な批判を受け止め学習に変えるスキルを補完する。</small>
+  </div>
+
+  <div class="book-card">
+    <h4>Dare to Lead</h4>
+    <p><strong>著者：</strong>ブレネー・ブラウン</p>
+    <small><strong>関連性：</strong>脆弱性と勇気の実践が、配慮と挑戦の両立を支える。</small>
+  </div>
+
+  <div class="book-card">
+    <h4>Crucial Conversations</h4>
+    <p><strong>著者：</strong>ケリー・パターソンほか</p>
+    <small><strong>関連性：</strong>高リスク状況での対話ツールが、率直な挑戦を安全に行う基盤となる。</small>
+  </div>
+
+  <div class="book-card">
+    <h4>High Output Management</h4>
+    <p><strong>著者：</strong>アンディ・グローブ</p>
+    <small><strong>関連性：</strong>1on1や成果志向のマネジメント手法で、実行の仕組み化を強化できる。</small>
+  </div>
+
+  <div class="book-card">
+    <h4>No Rules Rules</h4>
+    <p><strong>著者：</strong>リード・ヘイスティングス, エリン・メイヤー</p>
+    <small><strong>関連性：</strong>自由と責任、率直なフィードバック文化の構築事例として示唆に富む。</small>
+  </div>
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => {
+      c.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
