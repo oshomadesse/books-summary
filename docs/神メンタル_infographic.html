@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>未来基準ゴール設定 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card small {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.95;
+}
+.metric-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin: 0.25rem;
+}
+.flow-diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.flow-step .arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.75rem;
+}
+.flow-step span {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  flex: 1;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.book-card h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎯 未来基準ゴール設定の科学</h1>
+  <p>望む未来を先に決め、脳の選択フィルターを最適化する</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📋 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      どうすれば成果を出し続ける強いメンタルを作れるのか？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      未来基準で「叶った前提」のゴールを掲げ、セルフイメージ・質問の質・環境を同期させる。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      脳のRASは設定したゴールに沿う情報だけを拾い、解釈が感情を生み、自己像が行動の上限を決め、環境が継続を支配するため。
+    </div>
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      1) 欲しい未来を具体言語化 2) 達成済みアファメーションで自己像を書き換え 3) 毎日「どうすればできるか？」を自問 4) 行動トリガーと小ステップで習慣化 5) 逆境を目的起点でリフレーミング。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🧠 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📚 各章要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💡 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">📖 重要引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">🚀 今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🎯 未来基準ゴール</h3>
+        <ul>
+          <li>現在の延長ではなく望む未来を基準に逆算</li>
+          <li>達成前提で言語化する</li>
+          <li>脳の探索基準が切り替わる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>行動の出発点を"確定した未来"に置くことで、RASが目標達成に必要な情報を自動的に拾い始めるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>✨ 叶った前提（アファメーション）</h3>
+        <ul>
+          <li>達成済みの一人称・現在形で宣言</li>
+          <li>感情を伴って繰り返す</li>
+          <li>自己像と行動の不一致を解消</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>無意識の自己評価を上書きし、成果を拒む自己破壊行動を防ぐため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🪞 セルフイメージ</h3>
+        <ul>
+          <li>自分に対する無意識の評価・許容範囲</li>
+          <li>低いと成果を拒む自己破壊が起きる</li>
+          <li>行動の上限値を決定する</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>どれだけ努力しても、自己像が許容する範囲を超える成果は無意識に拒絶されるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔍 RAS（網様体賦活系）</h3>
+        <ul>
+          <li>脳幹の情報フィルター</li>
+          <li>重要と判断したものだけを意識に上げる</li>
+          <li>ゴール設定で選択が変わる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>膨大な情報の中から目標達成に必要なものだけを自動選別し、機会検知力を高めるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>❓ 質問の質</h3>
+        <ul>
+          <li>脳に投げる問いの方向性</li>
+          <li>「なぜ無理？」より「どうすれば可能？」</li>
+          <li>解決資源を活性化する</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>脳は投げかけた問いに答えようとするため、問いの質が思考の方向と解決策の質を決定するため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔄 解釈と感情（リフレーミング）</h3>
+        <ul>
+          <li>出来事の意味づけが感情を生む</li>
+          <li>目的起点で意味を再構成</li>
+          <li>行動が回復する</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>同じ出来事でも解釈次第で感情と行動が変わり、逆境を成長機会に転換できるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🏗️ 環境設計（トリガー）</h3>
+        <ul>
+          <li>物理・デジタル・人的環境を変える</li>
+          <li>行動しやすい形に設計</li>
+          <li>意志力より環境が継続を左右</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>意志力は有限だが環境は24時間作用し続け、習慣化の成否を決定するため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🪜 小さな行動・習慣化</h3>
+        <ul>
+          <li>抵抗が最小のステップを反復</li>
+          <li>成功体験でドーパミン回路を強化</li>
+          <li>微差の積上げが大きな変化を生む</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>小さな成功が感情記憶を形成し、セルフイメージを強化して次の挑戦を可能にするため。
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-diagram">
+      <h3 style="margin-bottom:1rem;color:var(--primary);">🔗 概念間の因果関係</h3>
+      <div class="flow-step">
+        <span>未来基準ゴール</span>
+        <div class="arrow">→</div>
+        <span>質問の質が好転</span>
+      </div>
+      <div class="flow-step">
+        <span>質問の質↑</span>
+        <div class="arrow">→</div>
+        <span>RASの選択が変化</span>
+      </div>
+      <div class="flow-step">
+        <span>RAS最適化</span>
+        <div class="arrow">→</div>
+        <span>機会検知・資源探索↑</span>
+      </div>
+      <div class="flow-step">
+        <span>資源探索↑</span>
+        <div class="arrow">→</div>
+        <span>行動量/質が向上</span>
+      </div>
+      <div class="flow-step">
+        <span>叶った前提の宣言</span>
+        <div class="arrow">→</div>
+        <span>セルフイメージ上方修正</span>
+      </div>
+      <div class="flow-step">
+        <span>セルフイメージ↑</span>
+        <div class="arrow">→</div>
+        <span>自己一致行動↑・自己破壊↓</span>
+      </div>
+      <div class="flow-step">
+        <span>リフレーミング</span>
+        <div class="arrow">→</div>
+        <span>感情安定/回復力↑</span>
+      </div>
+      <div class="flow-step">
+        <span>環境設計</span>
+        <div class="arrow">→</div>
+        <span>意志力依存↓・習慣化速度↑</span>
+      </div>
+      <div class="flow-step">
+        <span>小さな行動反復</span>
+        <div class="arrow">→</div>
+        <span>成功記憶形成→さらなる挑戦</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📌 導入：成果は才能ではなく"前提"で決まる</h3>
+      <ul>
+        <li>才能や環境より、自分が設定した"前提"が結果を左右する</li>
+        <li>無意識の前提が行動・選択・感情を支配している</li>
+        <li>前提を変えれば、同じ能力でも異なる結果が生まれる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>読者に「変えられるのは前提であり、それが全ての起点」という希望と責任を示すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🧠 脳の仕組み：RAS・前頭前野・感情生成</h3>
+      <ul>
+        <li>RASは重要と判断した情報だけを意識に上げる</li>
+        <li>前頭前野は問いに答えようと資源を探索する</li>
+        <li>感情は出来事ではなく解釈から生まれる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>メンタル強化が"根性"ではなく"脳の仕組みの理解と活用"であることを科学的に示すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎯 ゴール設定：未来基準・達成前提・感情伴走</h3>
+      <ul>
+        <li>現在の延長ではなく、望む未来を先に決める</li>
+        <li>「達成した」前提で一人称・現在形で言語化</li>
+        <li>達成時の感情を今感じることで脳が本気になる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>ゴールの設定方法が脳の探索方向とモチベーション持続を決定するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🪞 自己像の書換え：アファメーションと成功体験</h3>
+      <ul>
+        <li>セルフイメージが行動の上限を決める</li>
+        <li>達成済み宣言を感情込めて反復し、無意識を上書き</li>
+        <li>小さな成功体験を積み重ね、自己評価を更新</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>どれだけ目標を立てても、自己像が許容しなければ無意識に自己破壊するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>💭 感情マネジメント：リフレーミングと目的起点</h3>
+      <ul>
+        <li>出来事の意味は一つではなく、解釈次第で変わる</li>
+        <li>「この出来事は何のため？」と目的起点で問い直す</li>
+        <li>逆境を学習機会・成長材料に再定義する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>感情制御を技術として扱い、逆境時の行動継続力を高めるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>⚙️ 実行設計：環境トリガー・小ステップ・可視化</h3>
+      <ul>
+        <li>行動トリガーを物理環境に埋め込む（意志力に頼らない）</li>
+        <li>抵抗最小の一歩を設計し、反復で習慣化</li>
+        <li>進捗を可視化し、成功体験を感情記憶に刻む</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>継続のボトルネックは性格ではなく設計不足であり、環境が意志力に勝つため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔗 統合：ゴール×自己像×問い×環境の同期</h3>
+      <ul>
+        <li>未来基準ゴール、叶った前提、質問の質、環境設計を統合</li>
+        <li>4要素が同期すると"結果が出続ける状態"が再現可能になる</li>
+        <li>一時的な成果ではなく、持続的成長システムを構築</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>個別技術を統合し、再現可能な成果創出メカニズムとして提示するため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="card">
+      <h3>💼 具体例1：起業家のゴール設定</h3>
+      <p><strong>背景：</strong>起業を考えているが「資金がない」「経験がない」と躊躇していた人物が、「3年後に年商1億円を達成している」と未来基準で宣言。</p>
+      <p><strong>展開：</strong>毎朝「私は年商1億円の経営者だ」とアファメーションし、「どうすれば達成できるか？」と自問。RASが投資家・メンター・顧客候補を自動検知し始め、1年後に初の資金調達に成功。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>未来基準ゴールとアファメーションがRASを最適化し、現在の制約を超えた資源探索を可能にすることを実証。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🏃 具体例2：習慣化の環境設計</h3>
+      <p><strong>背景：</strong>毎朝ランニングを始めたいが三日坊主を繰り返していた人物が、環境トリガーを設置。</p>
+      <p><strong>展開：</strong>前夜にランニングシューズを玄関に置き、起床後すぐ目に入るようにした。さらに「5分だけ歩く」という最小ステップに変更。3週間後には自然と30分走れるようになり、セルフイメージが「走る人」に更新された。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>意志力ではなく環境設計と小ステップが習慣化を加速し、自己像を書き換えることを示す。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎓 具体例3：試験失敗のリフレーミング</h3>
+      <p><strong>背景：</strong>資格試験に落ちて落ち込んでいた受験生が、「なぜ自分はダメなのか？」と自問し続け、さらに意欲を失っていた。</p>
+      <p><strong>展開：</strong>問いを「この失敗は何を教えてくれるのか？」に変更。弱点分野が明確になり、学習計画を再設計。「失敗は成長の材料」とリフレーミングし、次回試験で合格。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>出来事の解釈を変えることで感情と行動が回復し、逆境が成長機会に転換されることを実証。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>👥 具体例4：人間関係の質問転換</h3>
+      <p><strong>背景：</strong>職場の人間関係に悩み、「なぜあの人は分かってくれないのか？」と不満を抱えていた。</p>
+      <p><strong>展開：</strong>問いを「どうすれば相手の視点を理解できるか？」に変更。相手の背景や目的を観察し始め、コミュニケーション方法を調整。関係が改善し、協力体制が生まれた。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>質問の質が思考の方向を変え、問題解決資源を活性化することを示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>「未来が先、現実は後—先に決めた前提に脳は現実を合わせにいく。」</p>
+      <small><strong>重要性：</strong>行動の出発点を"確定した未来"に置く意義を端的に示すから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「脳は投げかけた問いに答えようとする。『どうすればできるか？』で資源探索が始まる。」</p>
+      <small><strong>重要性：</strong>問いの設計が注意配分と解決策生成を左右する核心だから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「出来事は一つ、解釈は無数—感情は解釈の産物である。」</p>
+      <small><strong>重要性：</strong>逆境時の感情制御と行動継続を技術として扱えるようになるから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「環境が意志力に勝つ—行動は設計できる。」</p>
+      <small><strong>重要性：</strong>継続のボトルネックを"性格"ではなく"仕組み"で解決できるから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「セルフイメージが許容する範囲を超える成果は、無意識に拒絶される。」</p>
+      <small><strong>重要性：</strong>目標達成の真の障壁が自己像にあることを明示し、介入ポイントを示すから。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>✍️ アクション1：未来ゴールを3件手書きする</h3>
+      <p><strong>手順：</strong>紙とペンを用意し、「1年後/3年後/5年後に達成している状態」を一人称・現在形で3つ書く。「私は〜している」形式で、感情を込めて記述。</p>
+      <p><strong>目的：</strong>未来基準のゴールを明確化し、RASの探索基準を切り替える。</p>
+      <p><strong>期待効果：</strong>書いた瞬間から脳が目標達成に必要な情報を自動検知し始め、機会認識力が向上する。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>🗣️ アクション2：叶った前提の宣言文を3本作る</h3>
+      <p><strong>手順：</strong>上記ゴールを「私は〜を達成した」「私は〜である」という現在完了形・現在形に変換。朝晩2回、鏡の前で声に出して読む。</p>
+      <p><strong>目的：</strong>セルフイメージを上方修正し、自己破壊行動を防ぐ。</p>
+      <p><strong>期待効果：</strong>2週間の反復で無意識の自己評価が更新され、目標に一致した行動が自然に増える。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>🔧 アクション3：行動トリガーを1つ設置する</h3>
+      <p><strong>手順：</strong>習慣化したい行動を1つ選び、物理的トリガーを設置。例：読書習慣なら本をベッドサイドに置く、運動習慣ならシューズを玄関に置く。</p>
+      <p><strong>目的：</strong>意志力に頼らず環境で行動を誘発する。</p>
+      <p><strong>期待効果：</strong>トリガーが視界に入るたびに行動想起が起き、習慣化速度が3倍以上加速する。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>❓ アクション4：質問を1つ転換する</h3>
+      <p><strong>手順：</strong>今抱えている問題を1つ選び、「なぜできないのか？」を「どうすればできるか？」に書き換える。5分間、解決策をブレインストーミング。</p>
+      <p><strong>目的：</strong>問いの質を変え、解決資源を活性化する。</p>
+      <p><strong>期待効果：</strong>問題焦点から解決焦点に思考が切り替わり、具体的な次の一歩が見えてくる。</p>
+    </div>
+
+    <div class="action-card">
+      <h3>🔄 アクション5：1つの出来事をリフレーミングする</h3>
+      <p><strong>手順：</strong>最近の失敗や逆境を1つ選び、「この出来事は何を教えてくれるのか？」「この経験は将来どう役立つか？」と問い直す。</p>
+      <p><strong>目的：</strong>解釈を目的起点で再構成し、感情を回復させる。</p>
+      <p><strong>期待効果：</strong>ネガティブ感情が軽減し、学習機会として捉え直すことで行動継続力が回復する。</p>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <h2 style="color:var(--primary);margin-bottom:1rem;">📚 関連書籍</h2>
+    <div class="book-card">
+      <h4>📖 サイコ・サイバネティクス</h4>
+      <div class="author">著者：マクスウェル・マルツ</div>
+      <div class="relation"><strong>関連性：</strong>セルフイメージが成果の上限を決めるという中核理論を補強する。</div>
+    </div>
+    <div class="book-card">
+      <h4>📖 習慣の力</h4>
+      <div class="author">著者：チャールズ・デュヒッグ</div>
+      <div class="relation"><strong>関連性：</strong>トリガー–ルーティン–報酬の枠組みで環境設計と習慣化を具体化できる。</div>
+    </div>
+    <div class="book-card">
+      <h4>📖 マインドセット「やればできる!」の研究</h4>
+      <div class="author">著者：キャロル・S・ドゥエック</div>
+      <div class="relation"><strong>関連性：</strong>解釈と信念が努力・学習・結果を変えるメカニズムを実証的に示す。</div>
+    </div>
+    <div class="book-card">
+      <h4>📖 思考は現実化する</h4>
+      <div class="author">著者：ナポレオン・ヒル</div>
+      <div class="relation"><strong>関連性：</strong>明確な目的・確信・反復の重要性が"叶った前提"実践と共鳴する。</div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
