@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>仮説思考 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 1.1rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+
+.reason-box strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--accent);
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary);
+  font-style: italic;
+}
+
+.quote-card p {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.quote-card small {
+  display: block;
+  color: var(--text-light);
+  font-style: normal;
+  margin-top: 0.5rem;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  margin-bottom: 0.5rem;
+  opacity: 0.95;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.visual-metric {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.metric-bar {
+  flex: 1;
+  height: 2rem;
+  background: var(--border);
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: width 1s ease-out;
+}
+
+.flow-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.flow-step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.flow-step:last-child {
+  margin-bottom: 0;
+}
+
+.flow-arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+
+.book-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+
+.book-item h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+
+.book-item p {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📊 仮説思考</h1>
+  <p>不確実な時代を最短距離で突破する思考法</p>
+</header>
+
+<div class="container">
+  
+  <div class="summary-block">
+    <h2>💡 核心メッセージ</h2>
+    <p>不確実で複雑な課題ほど、まず大胆な結論仮説を立て、重要部分に資源を集中して素早く検証・修正することで、最短距離で本質と解を掴める。</p>
+    
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜビジネスの問題解決に仮説思考が有効か？どう実践するか？
+    </div>
+    
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      先に結論仮説を置き、イシューを特定し、80/20で重要因子に絞って検証を回すと、スピードと質を両立できる。
+    </div>
+    
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      情報は無限だが意思決定の時間は有限。仮説が焦点を与え、分析の設計ミスや手戻りを減らす。外れた仮説も学習を促進する。
+    </div>
+    
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      1) 問いを定義（イシューの特定/フレーミング） 2) 結論から逆算して仮説と検証項目を設計（イシュー・ツリー/MECE/フェルミ） 3) 小さく速く検証（一次情報・スモールデータ・仮説更新） 4) 物語で伝える（So-What/Why-So、チャート最小）
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true">主要概念の詳細</button>
+    <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false">各章の要約</button>
+    <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false">具体例</button>
+    <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false">重要な引用</button>
+    <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false">今日のアクション</button>
+  </div>
+
+  <div id="concepts" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      
+      <div class="card">
+        <h3>🎯 仮説思考</h3>
+        <ul>
+          <li>十分な情報が揃う前に結論仮説を立てる</li>
+          <li>検証を通じて素早く修正・更新</li>
+          <li>探索の方向と優先順位を明確化</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 情報収集の無限ループを断ち、意思決定を前進させるため。精度より速度が競争優位を生む。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🏁 結論先行</h3>
+        <ul>
+          <li>最初に暫定結論を置く</li>
+          <li>必要な検証項目を逆算で設計</li>
+          <li>意思決定のスピードを高める</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> ゴールが明確だと無駄な分析を避け、必要最小限のデータで判断できるから。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>❗ イシュー</h3>
+        <ul>
+          <li>解く価値が高い核心的な問い</li>
+          <li>解が行動や結果に直結する</li>
+          <li>問題の中の問題を特定</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 間違った問いに答えても成果はゼロ。問題設定の質がアウトプットの上限を決める。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🖼️ フレーミング</h3>
+        <ul>
+          <li>対象範囲・視点・評価基準を明確化</li>
+          <li>解くべき問いを見誤らない設計</li>
+          <li>土俵を正しく定める</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> フレームが甘いと分析が深まるほど無駄が拡大。最初の設計が全てを左右する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌳 イシュー・ツリー</h3>
+        <ul>
+          <li>上位の問いを分解</li>
+          <li>検証すべき下位要因を網羅・独立に洗い出す</li>
+          <li>検証計画の骨格になる構造図</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 分解が適切なら検証漏れや重複を防ぎ、限られた時間で質を確保できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📐 MECE</h3>
+        <ul>
+          <li>モレなくダブりなくの原則</li>
+          <li>分解や分類の質を担保</li>
+          <li>分析の過不足を防ぐ</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 網羅性と独立性が保証されると、検証の信頼性が高まり手戻りが減る。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📊 80/20ルール</h3>
+        <ul>
+          <li>結果の大半は一部の要因に規定される</li>
+          <li>資源配分と優先順位付けの基準</li>
+          <li>少数重要主義で集中投資</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 重要因子に絞ることで検証スピードと学習効率が劇的に向上する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📈 ファクトベース</h3>
+        <ul>
+          <li>推論を観察事実やデータに裏打ち</li>
+          <li>主観や思い込みを抑制</li>
+          <li>事実駆動の意思決定</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> バイアスを低減し、仮説の当たり外れを早期に判定できるから。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔢 フェルミ推定</h3>
+        <ul>
+          <li>概算の前提を置きオーダー感で答えに迫る</li>
+          <li>早期検証や仮説の当たり外れ確認に有効</li>
+          <li>荒く速く見積もる</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 精密データを待たずに方向性を判断でき、検証コストを大幅削減できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔄 仮説検証サイクル</h3>
+        <ul>
+          <li>仮説立案→検証設計→データ取得→更新を反復</li>
+          <li>外れた仮説も次の精度を高める学習ループ</li>
+          <li>回して学ぶ</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 失敗を前提にサイクルを速回しすることで、最終的な精度と速度を両立できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💬 So-What/Why-So</h3>
+        <ul>
+          <li>主張の含意(So-What)と根拠(Why-So)をセット提示</li>
+          <li>説得力と簡潔さを両立</li>
+          <li>結論と根拠の対</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 結論と根拠が整合すると意思決定を前に進め、合意形成が加速する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📖 ストーリーライン</h3>
+        <ul>
+          <li>論点の並べ方と因果の流れを一貫</li>
+          <li>受け手が結論に自然到達できる構成</li>
+          <li>筋の通った物語</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 論理の流れが明確だと理解と納得が早まり、実行への移行がスムーズになる。
+        </div>
+      </div>
+
+    </div>
+
+    <div class="flow-diagram">
+      <h3 style="margin-bottom:1rem; color:var(--primary);">🔗 概念間の関係性</h3>
+      <div class="flow-step">
+        課題認識 <span class="flow-arrow">→</span> フレーミング <span class="flow-arrow">→</span> イシュー特定
+      </div>
+      <div class="flow-step">
+        <span class="flow-arrow">→</span> 結論先行の仮説設定 <span class="flow-arrow">→</span> イシュー・ツリー/MECEで分解
+      </div>
+      <div class="flow-step">
+        <span class="flow-arrow">→</span> 80/20で優先付け <span class="flow-arrow">→</span> ファクト収集/フェルミ推定
+      </div>
+      <div class="flow-step">
+        <span class="flow-arrow">→</span> 検証 <span class="flow-arrow">→</span> 仮説更新 <span class="flow-arrow">→</span> ストーリー化/So-What提示
+      </div>
+    </div>
+
+    <div class="visual-metric">
+      <span style="min-width:120px; font-weight:bold;">重要度の集中</span>
+      <div class="metric-bar">
+        <div class="metric-fill" style="width:80%;">80%の成果</div>
+      </div>
+      <span style="min-width:100px; font-size:0.9rem; color:var(--text-light);">20%の要因</span>
+    </div>
+
+  </div>
+
+  <div id="chapters" class="tab-content" role="tabpanel">
+    
+    <div class="chapter-card">
+      <h3>📌 導入: 情報完備を待つリスク</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="margin-bottom:0.5rem;">▸ 変化が速い環境で「情報完備を待つ」と手遅れになる</li>
+        <li style="margin-bottom:0.5rem;">▸ 不確実性下での意思決定の必要性</li>
+        <li style="margin-bottom:0.5rem;">▸ 仮説思考がスピードと質を両立させる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 完璧な情報は存在せず、待つコストが機会損失を生むため、早期行動の重要性を示す必要がある。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🧠 基本原理: 仮説先行の価値</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="margin-bottom:0.5rem;">▸ 仮説が焦点を与え、分析の設計ミスを減らす</li>
+        <li style="margin-bottom:0.5rem;">▸ 先に結論を置くことで検証項目を逆算</li>
+        <li style="margin-bottom:0.5rem;">▸ 外れた仮説も学習を促進する資産</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 仮説がないと分析が散漫になり、時間とコストが無限に膨らむため、原理の理解が不可欠。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>❓ 問いの設計: フレーミングとイシュー特定</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="margin-bottom:0.5rem;">▸ 良い問いの条件と見極め方</li>
+        <li style="margin-bottom:0.5rem;">▸ 対象範囲・視点・評価基準の明確化</li>
+        <li style="margin-bottom:0.5rem;">▸ 問題設定の質がアウトプットの上限を規定</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 間違った問いに答えても成果はゼロ。最初の設計が全体の成否を決めるから。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🌲 分解と優先度: イシュー・ツリーとMECE</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="margin-bottom:0.5rem;">▸ 問いを網羅・独立に分解する手法</li>
+        <li style="margin-bottom:0.5rem;">▸ 80/20で検証の的を絞る</li>
+        <li style="margin-bottom:0.5rem;">▸ 限られた時間で質を確保する設計</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 分解が適切なら検証漏れや重複を防ぎ、資源を重要因子に集中できるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔬 検証の技術: フェルミ推定と一次情報</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="margin-bottom:0.5rem;">▸ 概算で早期に方向性を判断</li>
+        <li style="margin-bottom:0.5rem;">▸ 一次情報の取り方と小さく速い実験</li>
+        <li style="margin-bottom:0.5rem;">▸ 仮説を磨く反復プロセス</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 精密データを待たずに検証を回すことで、学習速度と意思決定の質が向上するから。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📣 伝え方: So-What/Why-Soとストーリーライン</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="margin-bottom:0.5rem;">▸ 結論と根拠をセットで提示</li>
+        <li style="margin-bottom:0.5rem;">▸ 論理の流れを一貫させる構成</li>
+        <li style="margin-bottom:0.5rem;">▸ チャートを最小化し物語で通す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 説得力と簡潔さが両立すると合意形成が加速し、実行への移行がスムーズになるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>⚠️ 実践の落とし穴: データ過多と分析麻痺</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="margin-bottom:0.5rem;">▸ 情報収集の無限ループに陥るリスク</li>
+        <li style="margin-bottom:0.5rem;">▸ 仮説への固執と確証バイアス</li>
+        <li style="margin-bottom:0.5rem;">▸ 対策: 検証期限と更新ルールの設定</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 典型的な失敗パターンを知ることで、実践時の罠を回避し成功確率を高められるから。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🔁 習慣化: 日々の意思決定への組み込み</h3>
+      <ul style="list-style:none; padding:0;">
+        <li style="margin-bottom:0.5rem;">▸ 会議や日常業務でのルーチン化</li>
+        <li style="margin-bottom:0.5rem;">▸ チーム運用と共通言語の形成</li>
+        <li style="margin-bottom:0.5rem;">▸ 継続的な学習サイクルの構築</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 一度きりの適用では効果が限定的。習慣化することで組織全体の思考品質が向上するため。
+      </div>
+    </div>
+
+  </div>
+
+  <div id="examples" class="tab-content" role="tabpanel">
+    
+    <div class="example-card">
+      <h3>🏢 例1: 新規事業の市場参入判断</h3>
+      <p><strong>背景:</strong> 完全な市場調査を待つと競合に先行される状況。</p>
+      <p><strong>適用:</strong> 「市場規模100億円以上、競合3社以下なら参入」という仮説を立て、フェルミ推定で市場規模を概算。競合分析は上位3社に絞り、2週間で判断。</p>
+      <p><strong>示唆:</strong> 仮説が外れても撤退基準が明確なため損失を限定でき、早期参入で先行者利益を獲得。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 完璧な情報を待たず、仮説と検証基準を先に決めることで、スピードとリスク管理を両立できることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🛠️ 例2: 業務効率化プロジェクトの優先順位</h3>
+      <p><strong>背景:</strong> 全部門の業務を詳細分析すると半年かかる。</p>
+      <p><strong>適用:</strong> 「工数の80%は営業・製造・物流の3部門に集中」という仮説を立て、まず3部門の主要業務5つずつを1週間で可視化。ボトルネック上位3つに絞って改善案を検証。</p>
+      <p><strong>示唆:</strong> 80/20ルールで重要部分に集中し、1ヶ月で全社工数20%削減を達成。残り部門は後回しでも影響軽微。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 少数の重要因子に資源を集中することで、短期間で大きな成果を出せることを実証する。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>💡 例3: 顧客離反の原因特定</h3>
+      <p><strong>背景:</strong> 全顧客アンケートを実施すると回収に2ヶ月、分析に1ヶ月かかる。</p>
+      <p><strong>適用:</strong> 「離反顧客の50%は価格不満」という仮説を立て、離反顧客10社に直接ヒアリング（1週間）。実際は「サポート対応の遅さ」が主因と判明し、仮説を即修正。サポート体制を2週間で改善。</p>
+      <p><strong>示唆:</strong> 一次情報で仮説を素早く検証し、外れても学習が進む。結果、離反率を3ヶ月で半減。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 外れた仮説も次の精度を高める資産であり、小さく速い検証が学習速度を加速することを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🎯 例4: 製品開発の機能優先順位</h3>
+      <p><strong>背景:</strong> 全機能を実装すると開発期間が2年、予算オーバー。</p>
+      <p><strong>適用:</strong> 「ユーザーの80%は基本機能3つしか使わない」という仮説を立て、既存ユーザー50名の利用ログを分析（1週間）。仮説通り3機能に集中し、MVP（最小実行可能製品）を3ヶ月でリリース。</p>
+      <p><strong>示唆:</strong> 市場フィードバックを早期に得て、残り機能は需要を見ながら追加。開発コスト60%削減。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 仮説で優先順位を明確にし、小さく始めることで市場リスクとコストを大幅に削減できることを示す。
+      </div>
+    </div>
+
+  </div>
+
+  <div id="quotes" class="tab-content" role="tabpanel">
+    
+    <div class="quote-card">
+      <p>「仮説は最初から正確でなくてよい。動くための旗印である。」</p>
+      <small><strong>なぜ重要か:</strong> 精度よりスピードを優先し、手戻りコストを減らせるから。完璧主義が意思決定を遅らせる罠を回避できる。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「良い問いを間違えると、良い分析も無価値になる。」</p>
+      <small><strong>なぜ重要か:</strong> 問題設定の質がアウトプットの上限を規定するため。どれだけ精緻に分析しても、問いが間違っていれば成果はゼロ。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「分析の成果は着手前の設計で大半が決まる。」</p>
+      <small><strong>なぜ重要か:</strong> 設計が優れていれば必要最小データで結論に届くから。事前設計の重要性を端的に示す金言。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「外れた仮説は、次の仮説を良くするための投資だ。」</p>
+      <small><strong>なぜ重要か:</strong> 失敗学習を前提にサイクルを速回しできるから。失敗を恐れず仮説を立てる心理的安全性を提供する。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「80/20ルールは資源配分の羅針盤である。」</p>
+      <small><strong>なぜ重要か:</strong> 少数の重要因子に集中することで、限られた時間と予算で最大の成果を出せるから。優先順位付けの原則を明示。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「So-WhatとWhy-Soは説得の両輪である。」</p>
+      <small><strong>なぜ重要か:</strong> 結論と根拠が整合すると意思決定を前に進め、合意形成が加速するから。コミュニケーションの質を高める核心原理。</small>
+    </div>
+
+  </div>
+
+  <div id="actions" class="tab-content" role="tabpanel">
+    
+    <div class="action-card">
+      <h3>✅ アクション1: 今週の最重要イシューを1行定義</h3>
+      <p><strong>目的:</strong> 解くべき問いを明確にし、焦点を絞る。</p>
+      <p><strong>期待効果:</strong> 優先順位が明確になり、無駄な作業を削減できる。チーム内で共通認識が形成される。</p>
+      <p><strong>実行方法:</strong> 紙またはメモアプリに「今週解くべき最も重要な問いは何か？」を1行（30字以内）で書き出す。上司や同僚に共有して合意を得る。</p>
+      <span class="badge">⏱️ 15分</span>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション2: 結論仮説を30字で書き出す</h3>
+      <p><strong>目的:</strong> 暫定結論を先に置き、検証項目を逆算する。</p>
+      <p><strong>期待効果:</strong> 分析の設計ミスを減らし、必要最小限のデータで判断できる。手戻りコストを削減。</p>
+      <p><strong>実行方法:</strong> 定義したイシューに対し「おそらく答えはこうだ」という仮説を30字以内で書く。根拠は不要、直感でOK。</p>
+      <span class="badge">⏱️ 10分</span>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション3: 検証に必要な3ファクトを列挙</h3>
+      <p><strong>目的:</strong> 仮説を検証するために最低限必要な事実を特定する。</p>
+      <p><strong>期待効果:</strong> 情報収集の無限ループを断ち、80/20で重要データに集中できる。検証スピードが上がる。</p>
+      <p><strong>実行方法:</strong> 仮説が正しいか判断するために「これだけは確認すべき」という事実・データを3つリストアップ。入手方法と期限も併記。</p>
+      <span class="badge">⏱️ 20分</span>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション4: イシュー・ツリーを3階層で描く</h3>
+      <p><strong>目的:</strong> 問いを分解し、検証すべき下位要因を可視化する。</p>
+      <p><strong>期待効果:</strong> 検証漏れや重複を防ぎ、MECEな分析設計ができる。チーム内で検証計画を共有しやすくなる。</p>
+      <p><strong>実行方法:</strong> 紙に最重要イシューを頂点に置き、「なぜ？」「何が？」で2〜3階層に分解。各ノードがMECEか確認。</p>
+      <span class="badge">⏱️ 25分</span>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション5: 一次情報を1件取得する</h3>
+      <p><strong>目的:</strong> 現場の生の声やデータで仮説を素早く検証する。</p>
+      <p><strong>期待効果:</strong> 二次情報では見えない本質が掴め、仮説の精度が上がる。外れても学習が進む。</p>
+      <p><strong>実行方法:</strong> 顧客・現場担当者・ユーザーに直接電話またはメールで1つ質問し、回答を記録。仮説との整合を確認。</p>
+      <span class="badge">⏱️ 30分</span>
+    </div>
+
+    <div class="action-card">
+      <h3>✅ アクション6: So-What/Why-Soで1スライド作る</h3>
+      <p><strong>目的:</strong> 結論と根拠をセットで伝える練習をする。</p>
+      <p><strong>期待効果:</strong> 説得力が高まり、上司や関係者の合意を得やすくなる。コミュニケーションの質が向上。</p>
+      <p><strong>実行方法:</strong> パワポまたは紙に「結論（So-What）」を1行、「根拠（Why-So）」を箇条3点で書く。同僚にレビュー依頼。</p>
+      <span class="badge">⏱️ 20分</span>
+    </div>
+
+  </div>
+
+  <div style="margin-top:3rem; padding:2rem; background:var(--card-bg); border-radius:1rem; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+    <h2 style="color:var(--secondary); margin-bottom:1rem;">📚 関連書籍</h2>
+    <div class="book-list">
+      
+      <div class="book-item">
+        <h4>📖 イシューからはじめよ</h4>
+        <p><strong>著者:</strong> 安宅和人</p>
+        <p><strong>関連性:</strong> 解くべき問いの選別基準を深掘りし、仮説思考の起点を強化できる。イシュー特定の技術を体系的に学べる。</p>
+      </div>
+
+      <div class="book-item">
+        <h4>📖 考える技術・書く技術〈新版〉ピラミッド原則</h4>
+        <p><strong>著者:</strong> バーバラ・ミント</p>
+        <p><strong>関連性:</strong> So-What/Why-Soやストーリーラインの骨格設計に直結する。論理構成の技術を実践的に習得できる。</p>
+      </div>
+
+      <div class="book-item">
+        <h4>📖 ロジカル・シンキング</h4>
+        <p><strong>著者:</strong> 照屋華子・岡田恵子</p>
+        <p><strong>関連性:</strong> MECEや分解の型を体系的に学べ、仮説検証の土台が固まる。日本語での論理思考トレーニングに最適。</p>
+      </div>
+
+      <div class="book-item">
+        <h4>📖 ゼロ秒思考</h4>
+        <p><strong>著者:</strong> 赤羽雄二</p>
+        <p><strong>関連性:</strong> 即時に仮説を立てるスピード思考と書き出し法が実践的。日々の習慣化に直結する具体的手法を提供。</p>
+      </div>
+
+      <div class="book-item">
+        <h4>📖 エッセンシャル思考</h4>
+        <p><strong>著者:</strong> グレッグ・マキューン</p>
+        <p><strong>関連性:</strong> 80/20的な選択と集中の意思決定を磨ける。優先順位付けの哲学と実践法を学べる。</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+// タブ切り替え
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+
+// メトリックバーのアニメーション
+window.addEventListener('load', () => {
+  const metricFills = document.querySelectorAll('.metric-fill');
+  metricFills.forEach(fill => {
+    const width = fill.style.width;
+    fill.style.width = '0%';
+    setTimeout(() => {
+      fill.style.width = width;
+    }, 300);
+  });
+});
+</script>
+
+</body>
+</html>
