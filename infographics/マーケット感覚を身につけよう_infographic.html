@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マーケット感覚を身につけよう - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  flex: 1 1 auto;
+  min-width: 120px;
+  text-align: center;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+  font-weight: 600;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(102,126,234,0.2);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid #f59e0b;
+}
+.reason-box strong {
+  color: #92400e;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.example-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, #e0e7ff, #f3e8ff);
+  border-left: 4px solid var(--primary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card .quote-text {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card .quote-why {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid #10b981;
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  color: #065f46;
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.95rem;
+  color: #064e3b;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.diagram h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-item {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  text-align: center;
+  position: relative;
+}
+.flow-item:after {
+  content: "↓";
+  display: block;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+.flow-item:last-child:after {
+  content: "";
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+.metric-box .metric-value {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+}
+.metric-box .metric-label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    min-width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📊 マーケット感覚を身につけよう</h1>
+  <p>価値の交換を読み解き、賢い選択と価格判断を手に入れる</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ一部の人は正しい価格や選択を直感的に見抜けるのか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      需給・希少性・代替・情報ギャップ・文脈に即して価値の相対性を捉える「マーケット感覚」を持つから。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      市場は貨幣だけでなく時間・注意・信頼も交換する場で、価値は常に比較と文脈で変動するため、構造を読める者が意思決定で優位に立つ。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      日々の観察と小実験（相場観測・価格当て・比較分析・レビュー活用）を回し、顧客視点で仮説検証を積むことで、感度と判断精度を継続的に引き上げられる。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🎯 マーケット感覚</h3>
+        <ul>
+          <li>お金・時間・注意・信頼の流れを直感的に把握</li>
+          <li>相対価値で選択・価格判断を下す能力</li>
+          <li>訓練で誰でも高められる</li>
+          <li>一言要約：<span class="badge">価値レーダー</span></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>価値の単位を拡張して捉えると、見過ごしていた機会やコストが見えるから。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💎 希少性</h3>
+        <ul>
+          <li>需要に対して供給が限られる度合い</li>
+          <li>希少ほど選好が集中し価格上昇</li>
+          <li>供給増で価格下落圧力</li>
+          <li>一言要約：<span class="badge">限り</span></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>希少性が価格メカニズムの根幹であり、差別化と収益性を左右するため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚖️ 相対価値</h3>
+        <ul>
+          <li>価値は絶対でなく代替選択肢との比較で決まる</li>
+          <li>隣の選択肢との差が意思決定を左右</li>
+          <li>競合設定が価格戦略の鍵</li>
+          <li>一言要約：<span class="badge">比較価値</span></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>顧客は常に比較して選ぶため、相対的優位性の設計が成否を分けるから。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔄 代替可能性</h3>
+        <ul>
+          <li>他の手段で置き換えられる程度</li>
+          <li>高いと価格下落圧力が強まる</li>
+          <li>差別化が必須になる</li>
+          <li>一言要約：<span class="badge">置換性</span></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>代替が容易なほど価格競争に巻き込まれ、独自価値の創出が生存条件となるため。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📊 情報の非対称性</h3>
+        <ul>
+          <li>売り手・買い手の情報量の差</li>
+          <li>誤価格やミスマッチを生む</li>
+          <li>評価・保証・透明化で緩和可能</li>
+          <li>一言要約：<span class="badge">情報ギャップ</span></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>情報格差が市場の失敗を招き、信頼構築と透明性が取引効率を高めるから。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔍 価格の発見</h3>
+        <ul>
+          <li>観察・比較・試行で妥当な相場を見極める</li>
+          <li>小さく売って学ぶのが近道</li>
+          <li>仮説検証の反復で精度向上</li>
+          <li>一言要約：<span class="badge">相場感</span></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>実地の試行錯誤が最速の学習であり、感覚の再現性を高めるから。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👥 顧客視点</h3>
+        <ul>
+          <li>提供者の都合でなく顧客が感じる価値から逆算</li>
+          <li>需要原点で設計する考え方</li>
+          <li>ミスマッチを防ぎ満足度を高める</li>
+          <li>一言要約：<span class="badge">需要原点</span></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>顧客が価値を感じなければ取引は成立せず、視点転換が成功の前提だから。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌐 文脈価値</h3>
+        <ul>
+          <li>時間・場所・状況により同じモノでも価値が変わる</li>
+          <li>文脈設計で価値を増幅できる</li>
+          <li>体験デザインが鍵</li>
+          <li>一言要約：<span class="badge">コンテクスト</span></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>同一商品でも文脈次第で支払意思額が変わり、設計で収益を最大化できるから。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎒 スキルのポータビリティ</h3>
+        <ul>
+          <li>特定企業依存でなく市場で評価される能力</li>
+          <li>希少な組み合わせの設計が重要</li>
+          <li>持ち運べる力で個人価値を高める</li>
+          <li>一言要約：<span class="badge">持ち運べる力</span></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>環境変化に左右されず、市場で持続的に評価される個人価値を築けるから。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔁 仮説検証ループ</h3>
+        <ul>
+          <li>観察→仮説→小実験→学習を回す反復</li>
+          <li>感度と判断の再現性が高まる</li>
+          <li>継続が感覚を研ぎ澄ます</li>
+          <li>一言要約：<span class="badge">学習循環</span></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>反復が経験知を蓄積し、直感の精度と意思決定速度を向上させるから。
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-item">需要↑／供給↓（希少性↑）→ 価格上昇 → 相対価値の認識強化</div>
+      <div class="flow-item">代替可能性↑ → 価格下落圧力↑ → 差別化・文脈設計の必要性↑</div>
+      <div class="flow-item">情報の非対称性↑ → 誤った価格設定・選択ミス → 評判・レビュー・保証で緩和</div>
+      <div class="flow-item">顧客視点欠如 → 提供価値と価格の乖離 → 需要低下・機会損失</div>
+      <div class="flow-item">文脈設計（時間/場所/体験） → 体感価値↑ → 支払意思額（WTP）↑</div>
+      <div class="flow-item">観察→仮説→価格の発見→学習 の反復 → マーケット感覚の精度↑</div>
+      <div class="flow-item">スキルのポータビリティ↑ × 希少な組み合わせ設計 → 個人の市場価値↑</div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>第1章：問題提起</h3>
+      <ul>
+        <li>社会の前提が変わり続ける中、正しい選択と価格判断が個人・組織の成果を左右する</li>
+        <li>従来の知識や経験だけでは対応できない</li>
+        <li>新しい感覚＝マーケット感覚が必要</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>環境変化が加速する時代に、固定観念では機会を逃し、適応力が競争優位の源泉となるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第2章：定義提示</h3>
+      <ul>
+        <li>マーケット感覚＝価値の相対性と交換構造を読む直感</li>
+        <li>訓練で鍛えられると主張</li>
+        <li>特別な才能ではなく、誰でも習得可能</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>感覚を明確に定義し、習得可能性を示すことで、読者に実践への道筋を与えるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第3章：要素分解</h3>
+      <ul>
+        <li>希少性・相対価値・代替可能性・情報の非対称性・文脈価値を解説</li>
+        <li>価格と選択のメカニズムを可視化</li>
+        <li>各要素が相互に影響し合う構造を理解</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>複雑な市場を構成要素に分解することで、理解と応用が容易になり、実践の精度が上がるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第4章：観察と実験</h3>
+      <ul>
+        <li>行列・相場・レビュー・価格差を材料に仮説検証</li>
+        <li>具体的トレーニング法を提示</li>
+        <li>日常の中で感覚を磨く方法</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>実地の観察と小実験が最速の学習であり、日常を訓練場に変えることで継続的成長が可能になるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第5章：応用展開</h3>
+      <ul>
+        <li>仕事選び・商品設計・価格戦略・時間配分など生活とキャリアの意思決定に適用</li>
+        <li>マーケット感覚を実生活で活用</li>
+        <li>具体的な成果につなげる方法</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>理論を実践に橋渡しし、読者が自分の文脈で即座に応用できる具体例を示すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第6章：ケース的考察</h3>
+      <ul>
+        <li>飲食/ネットサービス/中古市場等で、感覚の有無が成果に与える差を示す</li>
+        <li>成功例と失敗例の比較</li>
+        <li>感覚の実践的価値を証明</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>実例が説得力を高め、感覚の有無が具体的な成果差を生むことを可視化するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第7章：結論</h3>
+      <ul>
+        <li>日々の小さな観察と実験の継続こそ、誰でもマーケット感覚を高められる最短路</li>
+        <li>特別な才能は不要</li>
+        <li>継続的な実践が鍵</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>実践への行動を促し、継続の重要性を強調することで、読者の長期的成長を支援するため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🍜 具体例1：行列のできる店と空いている店</h3>
+      <p><strong>背景：</strong>同じ立地・同じ価格帯でも、一方は行列、一方はガラガラ。</p>
+      <p><strong>示唆：</strong>希少性（席数制限）、文脈価値（雰囲気・体験）、情報の非対称性（口コミ・評判）が価値認識を左右する。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>同一カテゴリーでも、顧客が感じる価値は多次元であり、希少性と文脈設計が需要を生み出すことを証明する。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>💻 具体例2：フリマアプリの価格差</h3>
+      <p><strong>背景：</strong>同じ商品でも出品者により価格が数倍異なる。売れる価格と売れない価格が存在。</p>
+      <p><strong>示唆：</strong>相対価値（競合との比較）、情報の非対称性（商品説明・写真の質）、代替可能性（他の選択肢の有無）が価格発見を左右する。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>市場価格は固定でなく、情報提示と比較環境により変動し、観察と実験で最適価格を発見できることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>🎓 具体例3：スキルの組み合わせ設計</h3>
+      <p><strong>背景：</strong>単一スキルでは代替可能性が高いが、複数スキルの希少な組み合わせは市場価値が高い。</p>
+      <p><strong>示唆：</strong>スキルのポータビリティ（持ち運べる力）、希少性（組み合わせの独自性）、顧客視点（市場が求める価値）が個人の市場価値を決定する。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>個人の市場価値は意図的に設計でき、希少な組み合わせが代替不能性と収益性を高めることを実証する。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>☕ 具体例4：コーヒーの価格差</h3>
+      <p><strong>背景：</strong>コンビニ100円、カフェ500円、高級店2000円。同じコーヒーでも文脈で価格が20倍変わる。</p>
+      <p><strong>示唆：</strong>文脈価値（場所・時間・体験）が支払意思額を大きく左右し、商品そのものより体験設計が価格を決める。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>価値は商品自体でなく文脈で決まり、体験デザインが収益性を劇的に変えることを明示する。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <div class="quote-text">
+        「要旨: 市場はお金だけでなく時間・注意・信頼も交換する場だ。」
+      </div>
+      <div class="quote-why">
+        <strong>なぜ重要か：</strong>価値の単位を拡張して捉えると、見過ごしていた機会やコストが見えるから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「要旨: 価値は絶対ではなく、常に比較対象との相対で決まる。」
+      </div>
+      <div class="quote-why">
+        <strong>なぜ重要か：</strong>競合設定と代替の理解が、価格と差別化の成否を左右するため。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「要旨: 行列や価格差など日常のシグナルを観察し、仮説→小実験で学べ。」
+      </div>
+      <div class="quote-why">
+        <strong>なぜ重要か：</strong>実地の反復が感覚の精度を上げ、再現性ある意思決定につながるから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「要旨: 自分の希少性はスキルの組み合わせ設計で生み出せる。」
+      </div>
+      <div class="quote-why">
+        <strong>なぜ重要か：</strong>特定環境依存を避け、市場で持続的に評価される個人価値を築けるから。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>🛒 アクション1：フリマ相場を10件調べる</h3>
+      <p><strong>目的：</strong>同一商品の価格差を観察し、相対価値と情報の非対称性を体感する。</p>
+      <p><strong>期待効果：</strong>価格発見の感覚が磨かれ、適正価格の見極め精度が向上する。</p>
+      <p><strong>実行時間：</strong>15分</p>
+    </div>
+
+    <div class="action-card">
+      <h3>🏪 アクション2：行列店と空店の違いを観察する</h3>
+      <p><strong>目的：</strong>希少性・文脈価値・顧客視点の違いを現場で確認し、仮説を立てる。</p>
+      <p><strong>期待効果：</strong>需要を生む要素の理解が深まり、ビジネス設計の視点が養われる。</p>
+      <p><strong>実行時間：</strong>20分</p>
+    </div>
+
+    <div class="action-card">
+      <h3>📦 アクション3：不要品10個を相対評価し採点する</h3>
+      <p><strong>目的：</strong>自分の持ち物を市場視点で評価し、代替可能性と希少性を判断する訓練。</p>
+      <p><strong>期待効果：</strong>価値判断の基準が明確になり、売買や選択の意思決定速度が上がる。</p>
+      <p><strong>実行時間：</strong>30分</p>
+    </div>
+
+    <div class="action-card">
+      <h3>📝 アクション4：レビューを5件読み、価値要素を抽出する</h3>
+      <p><strong>目的：</strong>顧客が何に価値を感じるかを言語化し、顧客視点を内面化する。</p>
+      <p><strong>期待効果：</strong>顧客ニーズの理解が深まり、商品・サービス設計の精度が向上する。</p>
+      <p><strong>実行時間：</strong>20分</p>
+    </div>
+
+    <div class="action-card">
+      <h3>💡 アクション5：自分のスキルを3つ書き出し、組み合わせの希少性を評価する</h3>
+      <p><strong>目的：</strong>スキルのポータビリティと希少性を可視化し、市場価値向上の戦略を立てる。</p>
+      <p><strong>期待効果：</strong>個人の市場価値が明確になり、キャリア設計の方向性が定まる。</p>
+      <p><strong>実行時間：</strong>25分</p>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-box">
+        <span class="metric-value">5</span>
+        <span class="metric-label">実行可能アクション</span>
+      </div>
+      <div class="metric-box">
+        <span class="metric-value">15-30</span>
+        <span class="metric-label">分で完了</span>
+      </div>
+      <div class="metric-box">
+        <span class="metric-value">即効</span>
+        <span class="metric-label">感覚向上</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// タブ切り替え機能
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    // すべてのタブとコンテンツから active を削除
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    // クリックされたタブとコンテンツに active を追加
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+
+// キーボードナビゲーション対応
+tabBtns.forEach((btn, index) => {
+  btn.addEventListener('keydown', (e) => {
+    let newIndex;
+    if (e.key === 'ArrowRight') {
+      newIndex = (index + 1) % tabBtns.length;
+      tabBtns[newIndex].focus();
+      tabBtns[newIndex].click();
+    } else if (e.key === 'ArrowLeft') {
+      newIndex = (index - 1 + tabBtns.length) % tabBtns.length;
+      tabBtns[newIndex].focus();
+      tabBtns[newIndex].click();
+    }
+  });
+});
+</script>
+</body>
+</html>
