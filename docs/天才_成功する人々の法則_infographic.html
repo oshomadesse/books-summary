@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outliers インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.metric-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(102,126,234,0.3);
+}
+.metric-card .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.metric-card .label {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+.quote-card {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.quote-card blockquote {
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+.quote-card p {
+  font-size: 0.88rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(240,147,251,0.15));
+  padding: 1.25rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  border: 2px solid var(--accent);
+}
+.action-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+.action-card .detail {
+  font-size: 0.88rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.flow-item .arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.75rem;
+}
+.flow-item span {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  flex: 1;
+  text-align: center;
+}
+.book-card {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--secondary);
+}
+.book-card h4 {
+  color: var(--primary);
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.88rem;
+  color: var(--text);
+}
+@media (max-width: 600px) {
+  header h1 { font-size: 1.5rem; }
+  .tabs { margin: 0.5rem; }
+  .tab-btn { font-size: 0.8rem; padding: 0.6rem 0.75rem; min-width: 100px; }
+  .card { padding: 1rem; }
+  .metric-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 Outliers（天才！）</h1>
+  <p>成功の真実：才能×機会×文化×タイミング</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>天才や超一流の成功は個人の才能で決まるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    <p>いいえ。成功は、与えられた機会と文化的レガシー、適切なタイミングの上に、意図的な練習を長期にわたり積むことで実現する「生態系の産物」である。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>誕生月が選抜機会を左右する事例（マタイ効果）、卓越に必要な累積練習量（約1万時間）、文化がコミュニケーションや意思決定に与える影響（権力距離、文化的名誉）などの実証とケースが、才能単独説では説明できない差を説明するから。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠 How（そのためには）</strong>
+    <p>早期機会の設計（選抜の見直し・練習環境の整備）、長時間の意図的練習の制度化、文化的バイアスの緩和（言語・権力距離の調整）、意味ある仕事と支援ネットワークの構築によって、誰にでも累積優位を生み出す仕組みをつくる。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card">
+    <h3>🔄 マタイ効果（累積的優位）</h3>
+    <ul>
+      <li><strong>定義:</strong> 初期の小さな有利さが選抜・資源配分を通じて拡大し、大きな成果差になる現象</li>
+      <li><strong>例:</strong> スポーツや教育で顕著に観察される</li>
+      <li><strong>一言:</strong> 小さな先行が大差を生む</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 才能の差ではなく機会の差が成果を決定づけることを示し、選抜制度の見直しを促す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏱ 一万時間の法則</h3>
+    <ul>
+      <li><strong>定義:</strong> 高度な専門性にはおよそ1万時間規模の意図的練習が必要という経験則</li>
+      <li><strong>重要点:</strong> 量だけでなく質が重要</li>
+      <li><strong>一言:</strong> 量×質の練習が卓越をつくる</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 努力の量と質を制度的に確保する重要性を強調し、練習環境の整備を促す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 意図的練習</h3>
+    <ul>
+      <li><strong>定義:</strong> 明確な目標、即時のフィードバック、限界域での反復を伴う計画的訓練</li>
+      <li><strong>対比:</strong> 惰性的反復と異なる</li>
+      <li><strong>一言:</strong> 狙って上手くなる練習</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 単なる時間投資ではなく、戦略的な学習設計が成長を加速させることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌍 文化的レガシー</h3>
+    <ul>
+      <li><strong>定義:</strong> 地域・民族・家族の歴史が行動様式や価値観として残存し、意思決定やコミュニケーションに影響</li>
+      <li><strong>影響範囲:</strong> 安全性、学習効率、対人関係</li>
+      <li><strong>一言:</strong> 文化は見えない操作系</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 見えない文化要因が成果に直結することを認識し、文化的バイアスの緩和を促す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📅 タイミングとコホート効果</h3>
+    <ul>
+      <li><strong>定義:</strong> 出生年・時代背景が市場や技術の波と噛み合うことで、機会の質と量が変わる現象</li>
+      <li><strong>例:</strong> IT革命期の起業家世代</li>
+      <li><strong>一言:</strong> 波に合えば進む</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 個人努力だけでなく、時代の波を読む重要性を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 実践的知性</h3>
+    <ul>
+      <li><strong>定義:</strong> 状況を読み、他者と交渉し、制度を活用する力</li>
+      <li><strong>特徴:</strong> IQでは測れない成功の要素</li>
+      <li><strong>一言:</strong> 場を動かす知恵</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 学力以外の社会的スキルが機会アクセスを左右することを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💼 意味のある仕事</h3>
+    <ul>
+      <li><strong>定義:</strong> 自律性・複雑性・努力と報酬の因果が感じられる仕事</li>
+      <li><strong>効果:</strong> 長期的動機づけを支える</li>
+      <li><strong>一言:</strong> やる意味が努力を支える</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 持続的な努力投資を可能にする環境設計の重要性を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👨‍👩‍👧‍👦 家庭・コミュニティの資本</h3>
+    <ul>
+      <li><strong>定義:</strong> 言語環境、期待、ネットワークなどの社会的・文化的資本</li>
+      <li><strong>効果:</strong> 機会アクセスと学習速度を高める</li>
+      <li><strong>一言:</strong> 周囲が才能を増幅</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 個人の努力を支える社会的基盤の整備が不可欠であることを示す。
+    </div>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <span class="number">10,000</span>
+      <span class="label">時間の練習</span>
+    </div>
+    <div class="metric-card">
+      <span class="number">365</span>
+      <span class="label">日の差（誕生月）</span>
+    </div>
+    <div class="metric-card">
+      <span class="number">3</span>
+      <span class="label">つの要素（機会×文化×練習）</span>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">🔗 概念間の因果関係</h3>
+    <div class="flow-item">
+      <span>出生月/環境の小差</span>
+      <div class="arrow">→</div>
+      <span>選抜機会の差</span>
+    </div>
+    <div class="flow-item">
+      <span>選抜機会の差</span>
+      <div class="arrow">→</div>
+      <span>指導/練習時間の差</span>
+    </div>
+    <div class="flow-item">
+      <span>指導/練習時間の差</span>
+      <div class="arrow">→</div>
+      <span>成果の大差（マタイ効果）</span>
+    </div>
+    <div class="flow-item">
+      <span>文化的レガシー</span>
+      <div class="arrow">→</div>
+      <span>コミュニケーション様式</span>
+    </div>
+    <div class="flow-item">
+      <span>コミュニケーション様式</span>
+      <div class="arrow">→</div>
+      <span>判断エラー/安全性</span>
+    </div>
+    <div class="flow-item">
+      <span>タイミング（技術・市場の波）</span>
+      <div class="arrow">→</div>
+      <span>機会の質</span>
+    </div>
+    <div class="flow-item">
+      <span>家庭・コミュニティ資本</span>
+      <div class="arrow">→</div>
+      <span>実践的知性の獲得</span>
+    </div>
+    <div class="flow-item">
+      <span>意味のある仕事</span>
+      <div class="arrow">→</div>
+      <span>持続的動機づけ</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>📖 導入：成功の再定義</h3>
+    <ul>
+      <li>成功物語を個人要因から環境・文化・時間の物語へと再定義</li>
+      <li>「誰か」の物語から「どこ」の物語へ</li>
+      <li>才能神話の解体と生態系視点の提示</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 読者の成功観を根本から問い直し、以降の議論の土台を築く。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第1部：機会 - マタイ効果</h3>
+    <ul>
+      <li>誕生月の偏りがスポーツ選抜に与える影響を実証</li>
+      <li>初期優位が累積的に拡大するメカニズム</li>
+      <li>選抜制度の設計が才能の発見を左右する</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 才能の差ではなく機会の差が成果を決定づけることを具体的に示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第1部：機会 - 一万時間の法則</h3>
+    <ul>
+      <li>卓越に必要な練習量と機会配分の関係を提示</li>
+      <li>ビートルズ、ビル・ゲイツなどの事例分析</li>
+      <li>練習環境へのアクセスが成功を左右する</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 努力の量と質を制度的に確保する重要性を強調する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第1部：機会 - IQ神話と実践的知性</h3>
+    <ul>
+      <li>IQ神話を検討し、実践的知性と社会的資本の重要性を事例比較で示す</li>
+      <li>高IQでも成功しない事例と、実践的知性で成功する事例</li>
+      <li>家庭環境が実践的知性の獲得に与える影響</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 学力以外の社会的スキルが機会アクセスを左右することを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第1部：機会 - 法律業界のタイミング</h3>
+    <ul>
+      <li>世代・移民背景・市場変化が特定人物の成功を後押しした過程を解析</li>
+      <li>ユダヤ系移民弁護士の事例</li>
+      <li>時代の波と個人努力の交差点</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 個人努力だけでなく、時代の波を読む重要性を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第2部：レガシー - 名誉文化</h3>
+    <ul>
+      <li>名誉文化などの歴史的慣行が現代行動に残るメカニズムを描く</li>
+      <li>南部の暴力率と牧畜文化の関係</li>
+      <li>文化的レガシーの持続性と影響力</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 見えない文化要因が行動パターンに直結することを認識させる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第2部：レガシー - 権力距離と航空安全</h3>
+    <ul>
+      <li>権力距離と間接表現が複雑系（航空）の安全性に与える影響を解剖</li>
+      <li>韓国航空の事故率と文化的コミュニケーション</li>
+      <li>文化的バイアスの緩和による安全性向上</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 文化が生死を分ける実例を通じ、文化的バイアスの緩和の重要性を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第2部：レガシー - 稲作文化と数学</h3>
+    <ul>
+      <li>稲作文化の勤勉性が数学学習に与える効果をデータで示す</li>
+      <li>アジア系学生の数学成績と文化的背景</li>
+      <li>意味のある仕事が学習動機を支える</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 文化的レガシーが学習効率を高めるメカニズムを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 第2部：レガシー - 学校制度の再設計</h3>
+    <ul>
+      <li>学校制度（学期長・放課後支援）が累積優位を再設計できる実例を紹介</li>
+      <li>KIPP（Knowledge Is Power Program）の事例</li>
+      <li>機会の平等化による成果の向上</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 制度設計によって累積優位を誰にでも生み出せることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📖 結語：家族史と機会の交差</h3>
+    <ul>
+      <li>著者の家族史を通じ、偶然と選好・制度が交差して機会が生成されることを総括</li>
+      <li>個人の物語と社会構造の相互作用</li>
+      <li>成功の生態系モデルの完成</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 理論を個人の物語に落とし込み、読者に共感と行動を促す。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🏒 具体例1：カナダのホッケー選手の誕生月</h3>
+    <ul>
+      <li><strong>背景:</strong> カナダのエリートホッケーリーグの選手の多くが1〜3月生まれ</li>
+      <li><strong>メカニズム:</strong> 選抜基準日（1月1日）により、早生まれの子供が身体的に有利→選抜→より多くの練習機会→さらなる成長</li>
+      <li><strong>示唆:</strong> 才能ではなく誕生月という偶然が機会を左右する</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 初期の小さな差が累積的優位を生み、才能の差と誤認されることを直感的に示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💻 具体例2：ビル・ゲイツの1万時間</h3>
+    <ul>
+      <li><strong>背景:</strong> ビル・ゲイツは高校時代に大学のコンピュータ施設に無制限アクセスできた</li>
+      <li><strong>メカニズム:</strong> 1968年という早期タイミング×豊富な練習機会×意図的練習→1万時間達成</li>
+      <li><strong>示唆:</strong> 天才ではなく、機会と練習環境が卓越を生んだ</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 成功は個人の才能ではなく、機会と練習環境の産物であることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✈️ 具体例3：韓国航空の事故率と文化</h3>
+    <ul>
+      <li><strong>背景:</strong> 1990年代、韓国航空は事故率が異常に高かった</li>
+      <li><strong>メカニズム:</strong> 高い権力距離文化→副操縦士が機長に直接的に警告できない→判断ミス→事故</li>
+      <li><strong>改善:</strong> 英語での操縦（文化的バイアスの緩和）→事故率の劇的低下</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 文化的レガシーが生死を分ける実例であり、文化的バイアスの緩和が成果を劇的に改善することを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📚 具体例4：KIPP（Knowledge Is Power Program）</h3>
+    <ul>
+      <li><strong>背景:</strong> 低所得層の子供向けチャータースクール</li>
+      <li><strong>メカニズム:</strong> 長い学期（年間200日以上）×放課後支援×意味のある学習→累積優位の創出</li>
+      <li><strong>成果:</strong> 低所得層の子供が大学進学率で中流層を上回る</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 制度設計によって累積優位を誰にでも生み出せることを実証する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ 具体例5：ユダヤ系移民弁護士の成功</h3>
+    <ul>
+      <li><strong>背景:</strong> 1930年代、ユダヤ系弁護士は大手事務所に就職できなかった</li>
+      <li><strong>転機:</strong> 企業買収ブーム（1970年代）→大手が扱わない分野→ユダヤ系事務所が独占</li>
+      <li><strong>成果:</strong> 時代の波と個人努力の交差点で大成功</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> タイミングと市場の波が機会を創出し、個人努力と交差して成功を生むことを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <blockquote>"成功は『誰か』の物語であり『どこ』の物語だ"</blockquote>
+    <p><strong>重要性:</strong> 個人中心の神話から環境・文化・歴史の視点へ転換させる主題を要約する。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"一万時間の練習が卓越を生む"</blockquote>
+    <p><strong>重要性:</strong> 努力の量と質を制度的に確保する重要性を強調する。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"生まれ月の差が機会の差を生む"</blockquote>
+    <p><strong>重要性:</strong> 初期の小差が累積的優位に化ける仕組みを直感的に示す。</p>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"文化は意思決定と対話の型を形作る"</blockquote>
+    <p><strong>重要性:</strong> 見えない文化要因が安全性や成果に直結することを示す。</p>
+  </div>
+
+  <div class="card">
+    <h3>📚 関連書籍</h3>
+  </div>
+
+  <div class="book-card">
+    <h4>Peak: Secrets from the New Science of Expertise</h4>
+    <p class="author">Anders Ericsson, Robert Pool</p>
+    <p class="relation"><strong>関連性:</strong> 意図的練習の科学的根拠を深化し、一万時間の法則の中身を補完する。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>Grit: The Power of Passion and Perseverance</h4>
+    <p class="author">Angela Duckworth</p>
+    <p class="relation"><strong>関連性:</strong> 長期的努力を支える情熱と粘りの役割を数量的に示す。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>Range: Why Generalists Triumph in a Specialized World</h4>
+    <p class="author">David Epstein</p>
+    <p class="relation"><strong>関連性:</strong> 専門化のタイミングと多様経験が機会設計に与える示唆を提供する。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>Mindset: The New Psychology of Success</h4>
+    <p class="author">Carol S. Dweck</p>
+    <p class="relation"><strong>関連性:</strong> 成長志向が学習投資と累積優位の形成にどう影響するかを説明する。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>🎯 アクション1：目標分野の練習計画を30分設計</h4>
+    <p>自分が卓越したい分野を1つ選び、今後1年間の練習計画を30分で設計する。</p>
+    <div class="detail">
+      <strong>目的:</strong> 意図的練習の第一歩を踏み出す<br>
+      <strong>期待効果:</strong> 漠然とした目標が具体的な行動計画に変わり、累積優位の形成が始まる
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🌍 アクション2：自分の出身文化の強みを3つ書く</h4>
+    <p>自分の出身文化（地域・家族・コミュニティ）の強みを3つ書き出し、それが自分の行動にどう影響しているかを振り返る。</p>
+    <div class="detail">
+      <strong>目的:</strong> 文化的レガシーを自覚し、強みとして活用する<br>
+      <strong>期待効果:</strong> 無意識の文化的資本を意識化し、戦略的に活用できるようになる
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>👥 アクション3：メンター候補を3名リスト化</h4>
+    <p>自分の目標分野で実践的知性を持つメンター候補を3名リストアップし、接触方法を考える。</p>
+    <div class="detail">
+      <strong>目的:</strong> 社会的資本を構築し、機会アクセスを高める<br>
+      <strong>期待効果:</strong> 実践的知性の獲得と、機会へのアクセスが加速する
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>📊 アクション4：自分の累積優位を可視化</h4>
+    <p>これまでの人生で得た小さな優位（機会・環境・タイミング）を書き出し、それが現在の自分にどう影響しているかを分析する。</p>
+    <div class="detail">
+      <strong>目的:</strong> マタイ効果を自分の人生で確認する<br>
+      <strong>期待効果:</strong> 機会の重要性を実感し、他者への機会提供の動機が高まる
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🔍 アクション5：選抜制度のバイアスを1つ特定</h4>
+    <p>自分の所属組織や業界の選抜制度（採用・昇進・評価）で、マタイ効果を生むバイアスを1つ特定し、改善案を考える。</p>
+    <div class="detail">
+      <strong>目的:</strong> 制度設計の視点を獲得する<br>
+      <strong>期待効果:</strong> 機会の平等化に貢献し、組織全体の成果向上につながる
+    </div>
+  </div>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab-btn');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.getAttribute('data-tab');
+    
+    tabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    contents.forEach(c => c.classList.remove('active'));
+    
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    document.getElementById(target).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
