@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サブスクリプション・エコノミー インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--primary);
+}
+
+.reason-box strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+
+.chapter-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.75rem;
+}
+
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 2px solid var(--accent);
+}
+
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+
+.quote-card p {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.85rem;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 0.25rem;
+}
+
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin: 0.25rem;
+}
+
+.flow-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.flow-arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  border-left: 3px solid var(--accent);
+}
+
+.book-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--primary);
+}
+
+.book-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+
+.book-card small {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 サブスクリプション・エコノミー</h1>
+  <p>所有から成果へ。継続収益で企業価値を最大化する全体像</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 エグゼクティブ・サマリー</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    なぜ今サブスクリプションが最適で、どう実装するか？
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    顧客は所有ではなく成果を求めるため、継続収益モデルに転換し、顧客中心で価格・パッケージ・体験・財務を動的に運用する。
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    デジタル化と選択肢の爆発により、顧客は柔軟性とアップデートを前提に価値を評価する。継続収益は予測可能性を高め、キャッシュ効率と企業価値（LTV/CAC）を押し上げる。
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    1) 価値単位に基づく価格設計とバンドリング、2) オンボーディングとカスタマーサクセスでアダプションを最大化、3) MRR/チャーン/LTV/CACのユニットエコノミクス管理、4) 受注〜請求〜収益認識のサブスク対応システム、5) 目標・予算・評価をリテンション/拡張中心へ再設計する。
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🧩 主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📚 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">📖 関連書籍</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🌐 サブスクリプション・エコノミー</h3>
+      <ul>
+        <li>所有から利用・成果への大転換</li>
+        <li>継続課金で関係と価値提供を更新</li>
+        <li>市場構造そのものの変化</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 顧客の価値観が「持つ」から「使う」へシフトし、企業は継続的な関係構築が競争優位の源泉になるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 アウトカム志向</h3>
+      <ul>
+        <li>製品機能ではなく顧客の達成結果を提供</li>
+        <li>価格やSLAも成果基準で整合</li>
+        <li>顧客の成功が企業の成功に直結</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 顧客は機能ではなく結果に対価を払う。成果を中心に設計することで価値の整合性と顧客満足が最大化される。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💰 MRR/ARR</h3>
+      <ul>
+        <li>月次/年次の再帰的収益</li>
+        <li>成長・健全性・予測可能性の中核KPI</li>
+        <li>投資家が最も注目する指標</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 継続収益は将来キャッシュフローの予測を可能にし、企業価値評価と資金調達の基盤となるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🚪 解約率（チャーン）</h3>
+      <ul>
+        <li>一定期間で離脱した顧客/収益の比率</li>
+        <li>成長の最大の敵</li>
+        <li>改善は即座に企業価値へ反映</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> どれだけ獲得しても穴が開いていれば成長しない。チャーン改善は最も費用対効果の高い成長施策。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📊 LTV/CAC</h3>
+      <ul>
+        <li>顧客生涯価値と獲得コストの比</li>
+        <li>単位経済性と成長の持続可能性を測定</li>
+        <li>3:1以上が健全な目安</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 獲得コストを回収できなければビジネスは破綻する。この比率が成長の「燃費」を決定する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📏 価格の価値単位（Value Metric）</h3>
+      <ul>
+        <li>顧客価値の増減に連動する課金単位</li>
+        <li>公平性と拡張余地を同時に実現</li>
+        <li>ユーザー数、データ量、取引数など</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 価値と価格が連動すれば顧客は納得して支払い、利用拡大が自然に収益拡大につながるため。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📦 パッケージング/バンドリング</h3>
+      <ul>
+        <li>機能・容量・サポートの組合せ最適化</li>
+        <li>選択のしやすさとARPUを両立</li>
+        <li>Good-Better-Best構造が基本</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 選択肢が多すぎると決断麻痺が起き、少なすぎると機会損失。最適なパッケージが購買率と単価を最大化する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🚀 オンボーディング</h3>
+      <ul>
+        <li>契約直後に価値体験を定着させる</li>
+        <li>早期のアハ体験が解約率を左右</li>
+        <li>最初の30日が勝負</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 初期体験が悪ければ顧客は離脱する。早期に成功体験を提供することが継続の前提条件。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🤝 カスタマーサクセス</h3>
+      <ul>
+        <li>継続利用と成果達成を支援</li>
+        <li>拡張・アップセルを創出する組織能力</li>
+        <li>営業ではなく伴走者</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 顧客が成功しなければ継続しない。能動的な支援が解約防止と収益拡大の両方を実現する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💼 サブスク財務（収益認識）</h3>
+      <ul>
+        <li>使用・契約変更・返金等を動的に扱う</li>
+        <li>コホート別に健全性を把握</li>
+        <li>従来の会計では対応不可</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 継続課金は契約変更が頻繁。動的な会計処理がなければ正確な収益把握と意思決定ができない。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 オーダー・トゥ・キャッシュ（サブスク版）</h3>
+      <ul>
+        <li>見積→契約→課金→請求→回収→計上を自動化</li>
+        <li>変更・拡張に耐える業務基盤</li>
+        <li>手作業では破綻する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> サブスクは契約変更が常態。柔軟なシステムがなければ運用コストが爆発し、顧客体験も悪化する。
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📈 拡張収益（アップセル/クロスセル）</h3>
+      <ul>
+        <li>同一顧客へ上位プラン/追加機能を提供</li>
+        <li>ARPUを伸ばす高効率の成長源</li>
+        <li>新規獲得より低コスト</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 既存顧客は信頼関係があり、獲得コストゼロで収益を拡大できる最も効率的な成長手段。
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="margin-bottom:1rem; color: var(--secondary);">🔗 概念間の関係性</h3>
+    <div class="flow-item">価値単位の適合度↑ <span class="flow-arrow">→</span> 公平感↑/利用増↑ <span class="flow-arrow">→</span> ARPU↑ & チャーン↓ <span class="flow-arrow">→</span> LTV↑</div>
+    <div class="flow-item">優れたオンボーディング <span class="flow-arrow">→</span> 早期アハ体験 <span class="flow-arrow">→</span> 利用頻度↑ <span class="flow-arrow">→</span> 解約率↓ <span class="flow-arrow">→</span> アップセル機会↑</div>
+    <div class="flow-item">カスタマーサクセス強化 <span class="flow-arrow">→</span> 成果達成率↑ <span class="flow-arrow">→</span> NPS↑ <span class="flow-arrow">→</span> リファラル/拡張収益↑</div>
+    <div class="flow-item">パッケージ最適化 <span class="flow-arrow">→</span> 選択コスト↓ <span class="flow-arrow">→</span> コンバージョン↑ <span class="flow-arrow">→</span> 獲得効率↑ <span class="flow-arrow">→</span> CAC↓ <span class="flow-arrow">→</span> LTV/CAC↑</div>
+    <div class="flow-item">サブスク財務/システム整備 <span class="flow-arrow">→</span> 変更対応の摩擦↓ <span class="flow-arrow">→</span> 実験速度↑ <span class="flow-arrow">→</span> 価格/プランの学習加速</div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📖 第I部: 所有から利用へ</h3>
+    <ul>
+      <li>メディア/ソフト/製造/自動車など各業界でサブスク化が進む実例</li>
+      <li>需要の中心が"成果"へ移ったことを証明</li>
+      <li>デジタル化が所有の価値を低下させた</li>
+      <li>顧客は柔軟性とアップデートを求める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 市場全体のパラダイムシフトを示し、サブスク転換が一時的トレンドではなく構造変化であることを証明するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>💡 第II部: サブスクモデルの設計</h3>
+    <ul>
+      <li>価格の価値単位、パッケージング、バンドリングの具体的設計指針</li>
+      <li>フリーミアム/トライアル、使用量課金の是非</li>
+      <li>価格は価値の言語で設計せよ</li>
+      <li>顧客セグメント別の最適化</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 価格設計が収益性と成長率を決定する。適切な価値単位とパッケージが顧客獲得とARPU拡大の両立を可能にする。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🔄 第III部: 継続的な運用と拡張</h3>
+    <ul>
+      <li>オンボーディング、カスタマーサクセス、解約抑制の仕組み化</li>
+      <li>アップセル/クロスセルでLTVを最大化</li>
+      <li>製品は出荷で終わらない、そこが始まり</li>
+      <li>成功は獲得より継続で決まる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 契約後の体験が企業価値の大半を決める。継続と拡張の仕組みがなければサブスクは成立しない。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>📊 第IV部: 財務・IT・組織の再設計</h3>
+    <ul>
+      <li>MRR/ARR/チャーン/LTV/CACの計測とコホート分析</li>
+      <li>収益認識、サブスク対応オーダー・トゥ・キャッシュ基盤</li>
+      <li>KPI/予算/評価の刷新</li>
+      <li>財務・ITは変化に最適化せよ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 従来の財務・ITシステムは単発取引前提。サブスクの動的な変化に対応できなければ成長が阻害される。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🚀 終章: トランスフォーメーションのロードマップ</h3>
+    <ul>
+      <li>小さく始め、素早く学ぶ</li>
+      <li>価値単位・パッケージ・体験を反復改善</li>
+      <li>"関係の経済"への移行を提案</li>
+      <li>組織文化と評価制度の変革が必須</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 一度に全てを変えるのは不可能。段階的な移行と学習サイクルが成功の鍵となる。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🎵 例1: Spotify（音楽ストリーミング）</h3>
+    <p><strong>背景:</strong> CDやダウンロード販売から月額定額制へ転換。所有から利用へのシフトを象徴。</p>
+    <p><strong>示唆:</strong> 顧客は「音楽を所有すること」ではなく「いつでも好きな音楽を聴けること」に価値を見出す。アクセスが所有を上回る。</p>
+    <div class="reason-box">
+      <strong>理由:</strong> デジタル化により所有の意味が変化し、継続的なアクセスと更新が新たな価値基準になったことを示す典型例。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>☁️ 例2: Adobe Creative Cloud</h3>
+    <p><strong>背景:</strong> パッケージ販売から月額サブスクへ移行。常に最新版を提供し、収益の予測可能性が向上。</p>
+    <p><strong>示唆:</strong> 高額な初期投資を分散し、継続的なアップデートで顧客ロックインを実現。企業価値が大幅に向上した。</p>
+    <div class="reason-box">
+      <strong>理由:</strong> サブスク転換により顧客の参入障壁が下がり、継続収益が企業の安定性と成長性を同時に高めることを証明。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🚗 例3: 自動車のサブスクリプション</h3>
+    <p><strong>背景:</strong> 所有からシェア・サブスクへ。保険・メンテナンス込みの月額定額で車を利用できるサービスが登場。</p>
+    <p><strong>示唆:</strong> 高額資産でも「成果（移動の自由）」を提供する形に再定義できる。若年層の所有離れに対応。</p>
+    <div class="reason-box">
+      <strong>理由:</strong> 製造業でもサブスク化が可能であり、顧客の価値観変化に合わせたビジネスモデル転換が競争優位を生むことを示す。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>💻 例4: SaaS企業の価値単位設計</h3>
+    <p><strong>背景:</strong> Slackはアクティブユーザー課金、Twilioは送信メッセージ数課金など、価値単位を顧客の成果に連動させる。</p>
+    <p><strong>示唆:</strong> 使った分だけ払う公平性と、利用拡大が自然に収益拡大につながる仕組みが顧客満足と成長を両立。</p>
+    <div class="reason-box">
+      <strong>理由:</strong> 価値単位の適切な設計が顧客の納得感とARPU拡大の両方を実現し、LTVを最大化する核心であることを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>"人々は製品を欲していない。欲しいのは結果だ。"</p>
+    <small><strong>なぜ重要か:</strong> アウトカム志向への転換が価格設計と組織設計の前提になるため。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"成功は獲得より継続で決まる。"</p>
+    <small><strong>なぜ重要か:</strong> 解約抑制と拡張収益がサブスクの企業価値を規定する核心だから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"価格は価値の言語で設計せよ。"</p>
+    <small><strong>なぜ重要か:</strong> 価値単位の整合がARPU拡大と公平感の両立を生むため。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"製品は出荷で終わらない。そこが始まりだ。"</p>
+    <small><strong>なぜ重要か:</strong> 契約後のオンボーディングとCSが成長の主戦場であると示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>"財務・ITは変化に最適化せよ。"</p>
+    <small><strong>なぜ重要か:</strong> 頻繁な契約変更に耐える基盤が実験速度と成長を決めるから。</small>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>✅ アクション1: 顧客の成功指標を3つ書き出す</h3>
+    <p><strong>目的:</strong> 自社が提供すべき「成果」を明確化する</p>
+    <p><strong>期待効果:</strong> アウトカム志向の価格設計とカスタマーサクセス戦略の起点になる</p>
+    <p><strong>所要時間:</strong> 15分</p>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション2: 料金の価値単位を仮決めする</h3>
+    <p><strong>目的:</strong> 顧客価値と連動する課金単位の候補を洗い出す</p>
+    <p><strong>期待効果:</strong> 公平性と拡張性を両立する価格設計の第一歩となる</p>
+    <p><strong>所要時間:</strong> 20分</p>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション3: 解約要因の仮説を3つ列挙する</h3>
+    <p><strong>目的:</strong> チャーンの主要因を特定し、改善の優先順位をつける</p>
+    <p><strong>期待効果:</strong> 解約抑制施策の方向性が定まり、LTV向上の土台ができる</p>
+    <p><strong>所要時間:</strong> 15分</p>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション4: 現在のMRRとチャーン率を確認する</h3>
+    <p><strong>目的:</strong> 継続収益の現状を数値で把握する</p>
+    <p><strong>期待効果:</strong> 成長の健全性を測る基準ができ、改善目標が明確になる</p>
+    <p><strong>所要時間:</strong> 20分</p>
+  </div>
+
+  <div class="action-card">
+    <h3>✅ アクション5: オンボーディングの最初の成功体験を定義する</h3>
+    <p><strong>目的:</strong> 顧客が「アハ体験」を得るポイントを特定する</p>
+    <p><strong>期待効果:</strong> 初期離脱を防ぎ、継続率を高める施策の起点になる</p>
+    <p><strong>所要時間:</strong> 25分</p>
+  </div>
+</div>
+
+<div id="tab6" class="tab-content" role="tabpanel">
+  <div class="book-card">
+    <h4>📚 メンバーシップ・エコノミー</h4>
+    <p><strong>著者:</strong> ロビー・ケルマン・バクスター</p>
+    <small><strong>関連性:</strong> 継続関係の設計とコミュニティ化を補完。</small>
+  </div>
+
+  <div class="book-card">
+    <h4>📚 サブスクリプション・マーケティング</h4>
+    <p><strong>著者:</strong> アン・ヤンザー</p>
+    <small><strong>関連性:</strong> 契約後価値（ポストセールス）に焦点。</small>
+  </div>
+
+  <div class="book-card">
+    <h4>📚 モネタイズ: 顧客中心の価格戦略</h4>
+    <p><strong>著者:</strong> マダヴァン・ラマヌジャム／ゲオルグ・タッケ</p>
+    <small><strong>関連性:</strong> 価値単位と価格設計の実務フレームを提供。</small>
+  </div>
+
+  <div class="book-card">
+    <h4>📚 リーン・アナリティクス</h4>
+    <p><strong>著者:</strong> アリスター・クロール／ベンジャミン・ヨスコヴィッツ</p>
+    <small><strong>関連性:</strong> MRR/チャーン等の指標運用と学習を強化。</small>
+  </div>
+
+  <div class="book-card">
+    <h4>📚 Hooked ハマるしかけ</h4>
+    <p><strong>著者:</strong> ニール・エイヤル</p>
+    <small><strong>関連性:</strong> 習慣化設計でアダプションと継続を高める。</small>
+  </div>
+
+  <div class="book-card">
+    <h4>📚 キャズム</h4>
+    <p><strong>著者:</strong> ジェフリー・A・ムーア</p>
+    <small><strong>関連性:</strong> 市場拡大の段階戦略がサブスク拡張に有効。</small>
+  </div>
+
+  <div class="book-card">
+    <h4>📚 Predictable Revenue</h4>
+    <p><strong>著者:</strong> アーロン・ロス／メアリー・ルー・タイラー</p>
+    <small><strong>関連性:</strong> SaaS型の獲得エンジン構築に直結。</small>
+  </div>
+
+  <div class="book-card">
+    <h4>📚 Measure What Matters</h4>
+    <p><strong>著者:</strong> ジョン・ドーア</p>
+    <small><strong>関連性:</strong> OKRでCSやリテンションKPIを組織に埋め込む。</small>
+  </div>
+</div>
+
+</div>
+
+<script>
+// タブ切替
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
