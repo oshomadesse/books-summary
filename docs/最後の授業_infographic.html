@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Last Lecture - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.6rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+}
+.example-card p {
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-left: 4px solid var(--primary);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card blockquote {
+  font-size: 1.05rem;
+  margin-bottom: 0.8rem;
+  color: var(--text);
+}
+.quote-card cite {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.95;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-flow {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.visual-flow h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📚 The Last Lecture</h1>
+  <p>限られた時間で夢を叶え、他者の夢も後押しする生き方</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      どうすれば限られた時間で自分の夢を叶え、他者の夢も後押しできるか？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      誠実に生き、基本を徹底し、障壁を学びの機会と捉え、周囲に貢献する。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      末期がんという現実の中で、著者が実際に子どもの頃の夢を多数叶え、学生や同僚の夢を育てた経験が、原則の有効性を実証している。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      夢を具体化し優先順位を明確化する / 時間を資産として配分する / メンターと学び合う / 厳しいフィードバックを歓迎する / チーム環境を設計し他者の成長を促す / 感謝を習慣化する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🌟 子どもの頃の夢</h3>
+        <ul>
+          <li>幼少期に描いた具体的な憧れ</li>
+          <li>行動のコンパスとして意思決定を助ける</li>
+          <li>一言要約：原点の北極星</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>夢が明確だと、日々の選択が一貫し、迷いが減る。長期的な方向性を保つ羅針盤となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🧱 レンガの壁（障壁）</h3>
+        <ul>
+          <li>挑戦の途中で現れる大きな困難</li>
+          <li>本気度を試し、創意工夫を引き出す装置</li>
+          <li>一言要約：本気度の試験</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>障壁は挫折の合図ではなく、本当に望むかを確認する機会。乗り越えた先に成長がある。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎭 頭フェイク（Head Fake）</h3>
+        <ul>
+          <li>直接の目標とは別に、過程で本質的なスキルや価値観を学ぶこと</li>
+          <li>一言要約：学びの副産物</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>表面的な目標を追う中で、暗黙知や人間力が育つ。長期的な競争力の源泉となる。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🤝 誠実さは最強の戦略</h3>
+        <ul>
+          <li>器用さよりも約束を守り、透明であることが長期の信頼と機会を生む</li>
+          <li>一言要約：信頼の通貨</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>短期的な利益より、長期的な信頼が大きなリターンをもたらす。信頼は複利で増える。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💬 フィードバックの受容</h3>
+        <ul>
+          <li>耳の痛い指摘を歓迎し、改善計画に落とし込む姿勢</li>
+          <li>一言要約：成長の燃料</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>批判を避けると成長が止まる。フィードバックを受け入れることで改善サイクルが加速する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📐 基本の徹底</h3>
+        <ul>
+          <li>基礎体力・礼節・準備を反復し、土台を強固にする</li>
+          <li>一言要約：土台の強化</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>応用は基本の上に成り立つ。基本が弱いと、困難時に崩れやすい。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⏰ 時間は資産</h3>
+        <ul>
+          <li>お金より希少な資産として時間を設計・投資・回収する発想</li>
+          <li>一言要約：最重要資本</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>時間は唯一、取り戻せない資源。意識的に配分しないと浪費される。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🌱 他者の夢を叶える</h3>
+        <ul>
+          <li>指導・環境設計・機会提供によって周囲の成長を促す</li>
+          <li>一言要約：共創の加速器</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>他者を支援すると、強いチームが形成され、相互支援で自分の夢も加速する。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🙏 感謝と謙虚さ</h3>
+        <ul>
+          <li>支援への感謝を言語化し、学び続ける姿勢を保つ</li>
+          <li>一言要約：関係の潤滑油</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>感謝は関係性を強化し、支援ネットワークを拡大する。謙虚さは学びの扉を開く。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-flow">
+      <h3>🔗 概念間の因果関係</h3>
+      <div class="flow-item">
+        誠実さ <span class="flow-arrow">→</span> 信頼の蓄積 <span class="flow-arrow">→</span> 新たな機会 <span class="flow-arrow">→</span> 夢実現の確率上昇
+      </div>
+      <div class="flow-item">
+        基本の徹底 <span class="flow-arrow">→</span> 実力の安定化 <span class="flow-arrow">→</span> 困難突破力向上
+      </div>
+      <div class="flow-item">
+        レンガの壁 <span class="flow-arrow">→</span> 本気度の選別 <span class="flow-arrow">→</span> 優先順位の明確化 <span class="flow-arrow">→</span> 集中投資
+      </div>
+      <div class="flow-item">
+        フィードバック受容 <span class="flow-arrow">→</span> 改善サイクル短縮 <span class="flow-arrow">→</span> 成果の逓増
+      </div>
+      <div class="flow-item">
+        時間は資産 <span class="flow-arrow">→</span> 浪費削減 <span class="flow-arrow">→</span> 実行量増 <span class="flow-arrow">→</span> 達成速度向上
+      </div>
+      <div class="flow-item">
+        他者の夢支援 <span class="flow-arrow">→</span> 強いチーム形成 <span class="flow-arrow">→</span> 相互支援 <span class="flow-arrow">→</span> 自分の夢も加速
+      </div>
+      <div class="flow-item">
+        感謝と謙虚さ <span class="flow-arrow">→</span> 関係性強化 <span class="flow-arrow">→</span> 支援ネットワーク拡大
+      </div>
+      <div class="flow-item">
+        頭フェイク <span class="flow-arrow">→</span> 暗黙知の獲得 <span class="flow-arrow">→</span> 長期的競争力の源泉
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 序章：背景と目的</h3>
+      <ul>
+        <li>膵臓がんの診断と「最後の授業」の開催</li>
+        <li>人生の教訓を家族と学生に遺す意図</li>
+        <li>限られた時間の中で何を伝えるかの選択</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>死を前にした状況が、本質的な価値観と優先順位を浮き彫りにする。読者に「今」を意識させる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🎯 第1部：子どもの頃の夢</h3>
+      <ul>
+        <li>具体的な夢の列挙（無重力体験、NFLプレイヤー、百科事典執筆など）</li>
+        <li>それぞれの夢をどう追いかけ、実現または未達だったかの事例</li>
+        <li>夢が行動の指針となり、人生を豊かにする過程</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>夢を具体化し追いかけることで、人生に方向性と充実感が生まれる。実現の有無より、挑戦の過程が重要。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🛠️ 第2部：夢を可能にする原則</h3>
+      <ul>
+        <li>レンガの壁：困難は本気度を試す装置</li>
+        <li>誠実さ：約束を守り透明であることが信頼を生む</li>
+        <li>基本の徹底：基礎体力と準備が土台</li>
+        <li>フィードバック受容：批判を成長の燃料に</li>
+        <li>頭フェイク：過程で本質的スキルを学ぶ</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>夢を実現するには、才能だけでなく原則に基づいた行動が必要。挫折と成功の対比が教訓を明確にする。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>🌟 第3部：他者の夢を叶える</h3>
+      <ul>
+        <li>学生指導とチームづくりの実践</li>
+        <li>場づくり：環境設計と期待値設定</li>
+        <li>称賛と挑戦のバランス：支援と厳しさの両立</li>
+        <li>機会提供：他者の成長を促す仕組み</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>他者を支援することで、強いチームが形成され、相互支援が自分の夢も加速させる。共創の力を示す。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>⏱️ 第4部：仕事の仕方と時間</h3>
+      <ul>
+        <li>優先順位付け：重要なことに集中</li>
+        <li>ミーティング設計：無駄を削減し効率化</li>
+        <li>時間を資産として扱う：投資と回収の発想</li>
+        <li>実務的ヒント：日々の小さな改善</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>時間は唯一取り戻せない資源。意識的に設計しないと浪費される。実務レベルの具体策が行動を促す。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>💖 第5部：人間関係と価値観</h3>
+      <ul>
+        <li>感謝：支援への感謝を言語化</li>
+        <li>謙虚さ：学び続ける姿勢</li>
+        <li>正直さ：透明性が信頼を生む</li>
+        <li>約束の重み：信頼の蓄積が機会を生む</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>人間関係の質が人生の質を決める。感謝と謙虚さが関係性を強化し、支援ネットワークを拡大する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>👨‍👩‍👧‍👦 終章：家族へのメッセージ</h3>
+      <ul>
+        <li>子どもたちと配偶者に向けた愛情と指針</li>
+        <li>人生の意義の再定義：生き方の質が結果を呼ぶ</li>
+        <li>遺すべきものは物ではなく価値観</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>最も大切な人への言葉が、本書の核心を凝縮する。愛と価値観の継承が人生の意義を示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>🚀 具体例1：無重力体験の夢</h4>
+      <p><strong>背景：</strong>子どもの頃、宇宙飛行士になりたかった著者は、NASAの無重力体験プログラムに応募したが、がん患者は参加不可と断られた。</p>
+      <p><strong>行動：</strong>諦めず、ジャーナリストとして取材する形で参加する道を見つけ、実際に無重力を体験した。</p>
+      <p><strong>示唆：</strong>レンガの壁（障壁）は、本気度を試す装置。創意工夫で迂回路を見つけることができる。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>直接の道が閉ざされても、別のアプローチで夢に近づける。障壁は挫折の合図ではなく、創造性を引き出す機会。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🎓 具体例2：学生プロジェクトの指導</h3>
+      <p><strong>背景：</strong>カーネギーメロン大学で、学生に仮想現実プロジェクトを任せた。当初、学生は自信がなく、小さな目標を設定しようとした。</p>
+      <p><strong>行動：</strong>著者は高い期待値を設定し、「君たちならできる」と信じて任せた。結果、学生は予想を超える成果を出し、自信を得た。</p>
+      <p><strong>示唆：</strong>他者の夢を叶えるには、高い期待と信頼を示すこと。環境設計と機会提供が成長を促す。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>期待値が低いと成長が制限される。高い期待と支援のバランスが、他者の潜在能力を引き出す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🏈 具体例3：NFLプレイヤーの夢と頭フェイク</h4>
+      <p><strong>背景：</strong>著者は子どもの頃、NFLプレイヤーになりたかったが、体格的に不可能だった。しかし、フットボールを続けた。</p>
+      <p><strong>行動：</strong>フットボールを通じて、チームワーク・粘り強さ・リーダーシップを学んだ。夢は叶わなかったが、過程で得たスキルが人生全体に役立った。</p>
+      <p><strong>示唆：</strong>頭フェイク（Head Fake）：表面的な目標を追う中で、本質的なスキルや価値観が育つ。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>夢の実現より、過程で得る暗黙知や人間力が長期的な競争力の源泉となる。失敗も学習資産に転換できる。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <blockquote>"It's not about how to achieve your dreams. It's about how to lead your life."</blockquote>
+      <cite><strong>理由：</strong>生き方の質が結果を呼ぶという本書の中核を一文で示すから。夢の達成より、日々の選択と行動が重要。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Brick walls are there for a reason."</blockquote>
+      <cite><strong>理由：</strong>困難は挫折の合図ではなく、本気度を測る試験だと再定義するから。障壁を乗り越える過程で成長が生まれる。</cite>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Experience is what you get when you didn't get what you wanted."</blockquote>
+      <cite><strong>理由：</strong>失敗を学習資産に転換する視点が、継続的挑戦を可能にするから。失敗は終わりではなく、次の挑戦への燃料。</cite>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>✍️ アクション1：子どもの頃の夢を3つ書く</h4>
+      <p><strong>目的：</strong>自分の原点を再確認し、現在の行動との一貫性を見直す。</p>
+      <p><strong>期待効果：</strong>夢が明確になると、日々の選択が一貫し、迷いが減る。長期的な方向性を保つ羅針盤となる。</p>
+      <p><span class="badge">15分</span>紙とペンを用意し、幼少期に憧れたことを3つ書き出す。実現の有無は問わない。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🎯 アクション2：夢の次の1歩を今日の予定に入れる</h4>
+      <p><strong>目的：</strong>夢を抽象的な願望から具体的な行動に落とし込む。</p>
+      <p><strong>期待効果：</strong>小さな一歩が積み重なり、夢への距離が縮まる。行動が習慣化すると、達成速度が向上する。</p>
+      <p><span class="badge">10分</span>カレンダーやToDoリストに、夢に関連する具体的なタスクを1つ追加する（例：調べる、連絡する、試す）。</p>
+    </div>
+
+    <div class="action-card">
+      <h4>💌 アクション3：メンター1人へ感謝の連絡を送る</h4>
+      <p><strong>目的：</strong>支援への感謝を言語化し、関係性を強化する。</p>
+      <p><strong>期待効果：</strong>感謝は関係性を強化し、支援ネットワークを拡大する。相手も喜び、さらなる支援が得られる可能性が高まる。</p>
+      <p><span class="badge">15分</span>メール・メッセージ・手紙で、具体的なエピソードを添えて感謝を伝える。</p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
