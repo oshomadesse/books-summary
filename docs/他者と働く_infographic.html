@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>他者と働く インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  margin-left: 1rem;
+  font-size: 0.95rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  flex: 1 1 auto;
+  min-width: 120px;
+  text-align: center;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+  font-weight: bold;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.6rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.chapter-section {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-section h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.5rem;
+}
+.chapter-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-section li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.chapter-section li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.example-card h4 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+}
+.example-card p {
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid var(--primary);
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  color: var(--text);
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+.action-card {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.diagram svg {
+  width: 100%;
+  height: auto;
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.book-item {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--accent);
+}
+.book-item h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.3rem;
+}
+.book-item p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-item small {
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    flex-direction: column;
+  }
+  .tab-btn {
+    min-width: 100%;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 他者と働く</h1>
+  <p>わかりあえなさから始める組織論</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>なぜ職場で衝突や形骸化が繰り返されるのか？どうすれば他者と生産的に働けるのか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>「わかりあえなさ」を出発点に、問題解決モードから探究モードへ切り替え、前提を可視化する対話とダブルループ学習を習慣化する。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>正解志向と早合意は防衛的思考を生み、学習と関係性の更新を止める一方、ズレを問い直す探究は意味の再構成を促し、協働の質を高める。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>良い問いをデザインし（前提は何か/他の見え方は？/検証可能か）、対話のルール（評価中断・具体例・仮説言語）と心理的安全性を整え、定例のリフレクションで行動原理そのものを見直す。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔄 わかりあえなさ</h3>
+        <ul>
+          <li>人は異なる前提と文脈で世界を見る</li>
+          <li>完全な相互理解は不可能</li>
+          <li>ズレを脅威ではなく資源とみなす</li>
+          <li>一言要約：ズレは前提</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>出発点を転換することで、衝突回避から学習創出へ舵を切れる。他者との違いを否定せず、探究の起点とする姿勢が協働の質を根本から変える。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚡ 問題解決モード</h3>
+        <ul>
+          <li>既知の正解を迅速に当てはめる</li>
+          <li>合意と収束を急ぐ思考様式</li>
+          <li>短期効率は高いが学習を止めやすい</li>
+          <li>一言要約：正解志向</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>複雑な状況では正解が不明確なため、早合意は表面的な解決に留まり、根本原因や前提の検証を妨げる。結果として同じ問題が繰り返される。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔍 探究モード</h3>
+        <ul>
+          <li>現象の意味や前提を問い直す</li>
+          <li>複数の見方を検証しながら進む</li>
+          <li>新しい理解を共創する姿勢</li>
+          <li>一言要約：問い志向</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>不確実性の高い環境では、問いを通じて前提を更新し続けることが適応力を生む。探究は学習と関係性の質を同時に高める。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔁 ダブルループ学習</h3>
+        <ul>
+          <li>結果に対する行動修正だけでなく</li>
+          <li>背後の前提・目標・規範を見直す</li>
+          <li>行動原理そのものを更新する学習</li>
+          <li>一言要約：前提を更新</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>シングルループ（手段調整）では環境変化に対応できない。前提を問い直すことで、根本的な適応と革新が可能になる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔂 シングルループ学習</h3>
+        <ul>
+          <li>設定した目標や前提は固定のまま</li>
+          <li>行動や手段だけを調整する学習</li>
+          <li>効率的だが変化への適応力は低い</li>
+          <li>一言要約：手段調整</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>既存の枠組みが有効な場合は効率的だが、前提が陳腐化すると無駄な努力を繰り返すことになる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👁️ 前提の可視化</h3>
+        <ul>
+          <li>自他の「当たり前」を言語化する</li>
+          <li>検証可能な仮説として机上に置く</li>
+          <li>暗黙の前提を共有財産にする実践</li>
+          <li>一言要約：当たり前を出す</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>前提が暗黙のままでは検証も更新もできない。可視化により、対話と学習の対象として扱えるようになる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💬 対話（ダイアローグ）</h3>
+        <ul>
+          <li>勝ち負けや説得を目的にしない</li>
+          <li>意味の生成と理解の更新を目的とする</li>
+          <li>複数の視点を統合する会話</li>
+          <li>一言要約：理解の共創</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>議論（ディベート）は既存の立場を強化するが、対話は新しい意味を生成する。探究の核心的実践。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🛡️ 心理的安全性</h3>
+        <ul>
+          <li>不利益への恐れなく発言できる状態</li>
+          <li>質問・失敗の共有が歓迎される</li>
+          <li>探究の前提条件</li>
+          <li>一言要約：安心して問う場</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>恐れがあると防衛的思考が働き、前提の開示や問いの提示が抑制される。安全性なしに探究は成立しない。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎨 関係のデザイン</h3>
+        <ul>
+          <li>関係性を成果の副産物ではなく</li>
+          <li>意図的に設計・運用する</li>
+          <li>ルール、リズム、場を整える</li>
+          <li>一言要約：協働のOS設計</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>関係性は偶然の産物ではなく、設計可能な対象。意図的な設計により、探究を習慣化できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>❓ 問いのデザイン</h3>
+        <ul>
+          <li>行動を促す良質な問いをつくる</li>
+          <li>前提・視点・検証を含む問い</li>
+          <li>学習を駆動する技法</li>
+          <li>一言要約：学習を起動</li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>問いは思考と行動の設計図。良い問いが探究の質と方向を決定し、学習を加速する。
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <h3 style="color: var(--primary); margin-bottom: 1rem;">📊 概念間の関係性</h3>
+      <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+          </linearGradient>
+          <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <polygon points="0 0, 10 3, 0 6" fill="#764ba2" />
+          </marker>
+        </defs>
+        
+        <rect x="50" y="50" width="180" height="60" rx="10" fill="url(#grad1)" opacity="0.8"/>
+        <text x="140" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">わかりあえなさ</text>
+        
+        <rect x="310" y="50" width="180" height="60" rx="10" fill="url(#grad1)" opacity="0.8"/>
+        <text x="400" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">探究モード</text>
+        
+        <rect x="570" y="50" width="180" height="60" rx="10" fill="url(#grad1)" opacity="0.8"/>
+        <text x="660" y="85" text-anchor="middle" fill="white" font-size="14" font-weight="bold">ダブルループ学習</text>
+        
+        <rect x="180" y="180" width="180" height="60" rx="10" fill="#f093fb" opacity="0.6"/>
+        <text x="270" y="215" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">前提の可視化</text>
+        
+        <rect x="440" y="180" width="180" height="60" rx="10" fill="#f093fb" opacity="0.6"/>
+        <text x="530" y="215" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">問いのデザイン</text>
+        
+        <rect x="180" y="310" width="180" height="60" rx="10" fill="#667eea" opacity="0.3"/>
+        <text x="270" y="345" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">対話</text>
+        
+        <rect x="440" y="310" width="180" height="60" rx="10" fill="#667eea" opacity="0.3"/>
+        <text x="530" y="345" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">心理的安全性</text>
+        
+        <rect x="310" y="440" width="180" height="60" rx="10" fill="#764ba2" opacity="0.3"/>
+        <text x="400" y="475" text-anchor="middle" fill="#333" font-size="14" font-weight="bold">関係のデザイン</text>
+        
+        <line x1="230" y1="80" x2="310" y2="80" stroke="#764ba2" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <line x1="490" y1="80" x2="570" y2="80" stroke="#764ba2" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <line x1="400" y1="110" x2="270" y2="180" stroke="#764ba2" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <line x1="400" y1="110" x2="530" y2="180" stroke="#764ba2" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <line x1="270" y1="240" x2="270" y2="310" stroke="#764ba2" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <line x1="530" y1="240" x2="530" y2="310" stroke="#764ba2" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <line x1="270" y1="370" x2="350" y2="440" stroke="#764ba2" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <line x1="530" y1="370" x2="450" y2="440" stroke="#764ba2" stroke-width="2" marker-end="url(#arrowhead)"/>
+        <line x1="400" y1="500" x2="660" y2="110" stroke="#f093fb" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+        
+        <text x="400" y="560" text-anchor="middle" fill="#666" font-size="12">探究を仕組み化し、学習を習慣として定着させる</text>
+      </svg>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-section">
+      <h3>📖 導入：わかりあえなさという出発点</h3>
+      <ul>
+        <li>問題が解けても関係が痩せる理由を提示</li>
+        <li>「わかりあえなさ」を前提とする視座の転換</li>
+        <li>ズレを資源化する発想の重要性</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>従来の「わかりあう」前提では、ズレを脅威とみなし回避・抑圧する。出発点を変えることで、学習と協働の可能性が開かれる。
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>📖 第1部：正解志向が学習を止めるメカニズム</h3>
+      <ul>
+        <li>早合意と正解志向の弊害を解剖</li>
+        <li>防衛的思考が前提の検証を妨げる</li>
+        <li>シングルループ学習の限界を明示</li>
+        <li>問題解決モードが関係性を劣化させる構造</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>なぜ努力しても同じ問題が繰り返されるのかを理解するため。正解志向の裏にある防衛メカニズムを可視化し、脱却の必要性を示す。
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>📖 第2部：探究モードへの転換</h3>
+      <ul>
+        <li>前提の可視化と言語化の技法</li>
+        <li>複数視点を保持する姿勢</li>
+        <li>仮説言語と検証可能性の原則</li>
+        <li>問いを中心に据えた思考様式</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>問題解決から探究への転換は具体的な技法と原則を必要とする。この章は探究の「やり方」を実践可能な形で提供する。
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>📖 第3部：対話の実践技法</h3>
+      <ul>
+        <li>評価の保留と判断の先送り</li>
+        <li>具体例の提示による共通理解</li>
+        <li>言い換え・要約による意味の確認</li>
+        <li>メタ会話（対話についての対話）</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>探究は対話を通じて実現される。具体的な会話技法を習得することで、理解の共創を日常に組み込める。
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>📖 第4部：関係のデザイン</h3>
+      <ul>
+        <li>心理的安全性を構造的に担保する</li>
+        <li>問いを先に出すルールの設定</li>
+        <li>意図の明示と合意の再定義</li>
+        <li>場・リズム・ルールの三位一体設計</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>個人の努力だけでは探究は続かない。関係性を意図的に設計することで、探究を組織の習慣として定着させる。
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>📖 第5部：ダブルループ学習の運用</h3>
+      <ul>
+        <li>定期リフレクションの制度化</li>
+        <li>学習ログによる前提の追跡</li>
+        <li>仮説と実験のサイクル設計</li>
+        <li>行動原理そのものを見直す習慣</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>ダブルループ学習は一度きりのイベントではなく継続的な実践。運用の仕組みを整えることで、組織の適応力が持続的に高まる。
+      </div>
+    </div>
+
+    <div class="chapter-section">
+      <h3>📖 終章：探究を組織文化へ</h3>
+      <ul>
+        <li>ズレを資源化する組織文化の展望</li>
+        <li>探究を個人技から組織の習慣へ</li>
+        <li>学習する関係と組織の未来像</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>個人の変化を組織全体の変容につなげるビジョンを示し、読者に長期的な実践への動機を与える。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>🏢 例1：会議での早合意の罠</h4>
+      <p><strong>背景：</strong>プロジェクトの方向性を決める会議で、リーダーが「これで行きましょう」と早々に結論を出した。メンバーは異論を持ちながらも空気を読んで同意した。</p>
+      <p><strong>結果：</strong>実行段階で前提のズレが露呈し、手戻りが発生。メンバーは「最初から言えばよかった」と後悔するが、次回も同じパターンを繰り返す。</p>
+      <p><strong>示唆：</strong>早合意は表面的な効率を生むが、前提の検証を省略するため、後工程で大きなコストを生む。合意よりも理解の共有を優先すべき。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>問題解決モードの限界と、心理的安全性の欠如が学習を止めるメカニズムを具体的に示している。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🔍 例2：前提の可視化による突破</h4>
+      <p><strong>背景：</strong>営業とエンジニアが顧客対応方針で対立。営業は「スピード重視」、エンジニアは「品質重視」を主張し、平行線が続いた。</p>
+      <p><strong>転換：</strong>ファシリテーターが「それぞれが大事にしている前提は何か？」と問い、双方の「当たり前」を可視化。営業は「顧客満足=即応」、エンジニアは「顧客満足=信頼性」と定義していたことが判明。</p>
+      <p><strong>結果：</strong>「顧客満足」の定義を再構築し、状況に応じた優先順位の判断基準を共創。対立が協働に転換した。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>前提の可視化が対立を学習の機会に変え、ダブルループ学習を駆動する実例。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>💡 例3：問いのデザインが学習を加速</h4>
+      <p><strong>背景：</strong>チームの定例会議が報告の場と化し、学習が停滞していた。</p>
+      <p><strong>介入：</strong>リーダーが会議の冒頭に「今週、私たちの前提で揺らいだものは何か？」という問いを導入。メンバーは自分の「当たり前」が通用しなかった場面を共有し始めた。</p>
+      <p><strong>結果：</strong>報告会議が探究の場に変化。前提の更新が習慣化し、チームの適応力が向上した。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>良い問いが思考と行動を設計し、探究を日常に組み込む力を持つことを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🌱 例4：心理的安全性の構造的担保</h4>
+      <p><strong>背景：</strong>あるチームでは「失敗を共有しよう」と呼びかけても、誰も発言しなかった。</p>
+      <p><strong>介入：</strong>リーダーが自ら失敗を開示し、「この失敗から何を学んだか」を問う形式を定例化。さらに「失敗の共有=貢献」と明示的に評価する仕組みを導入。</p>
+      <p><strong>結果：</strong>失敗の共有が増え、学習サイクルが加速。心理的安全性は呼びかけではなく、構造とリーダーの行動で担保されることが実証された。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>心理的安全性は精神論ではなく、設計可能な構造であることを示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>「他者はわかりきれない存在であり、ズレは避ける対象ではなく扱う対象だ。」</p>
+      <small><strong>なぜ重要か：</strong>出発点を転換することで、衝突回避から学習創出へ舵を切れるため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「合意よりも理解の共有を優先せよ。合意は理解の副産物である。」</p>
+      <small><strong>なぜ重要か：</strong>早合意の弊害を避け、質の高い協働を実現する原理だから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「問いは行動を生む設計図であり、良い問いが学習の質を決める。」</p>
+      <small><strong>なぜ重要か：</strong>探究を実務に落とし込む具体的なてこだから。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「前提を可視化しなければ、検証も更新もできない。暗黙の前提は学習の敵である。」</p>
+      <small><strong>なぜ重要か：</strong>ダブルループ学習の実践的な第一歩を示すため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「心理的安全性は呼びかけではなく、構造とリーダーの行動で担保される。」</p>
+      <small><strong>なぜ重要か：</strong>精神論を超えた実践可能な設計原則を提供するため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「探究は個人の技術ではなく、関係性の中に埋め込まれる習慣である。」</p>
+      <small><strong>なぜ重要か：</strong>個人の努力を組織の仕組みに転換する視点を与えるため。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>✅ アクション1：自分の当たり前を3つ書き出す</h4>
+      <p><strong>目的：</strong>自分の前提を可視化し、検証可能な対象にする。</p>
+      <p><strong>やり方：</strong>「私は〇〇が当然だと思っている」という形で、仕事や人間関係における自分の「当たり前」を3つノートに書く。</p>
+      <p><strong>期待効果：</strong>暗黙の前提が言語化されることで、他者とのズレの源泉が見えやすくなり、対話の準備が整う。</p>
+      <p><span class="badge">所要時間：15分</span></p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション2：相手の意図を問う1問を準備</h4>
+      <p><strong>目的：</strong>評価や判断を保留し、探究的な問いを実践する。</p>
+      <p><strong>やり方：</strong>次の会議や1on1で、「それはどういう意図ですか？」「他にどんな見方がありますか？」など、相手の前提を引き出す問いを1つ用意し、実際に使う。</p>
+      <p><strong>期待効果：</strong>問いが対話の質を変え、相手の前提が可視化される体験を得られる。</p>
+      <p><span class="badge">所要時間：20分</span></p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション3：会議で仮説ではなく問いを出す</h4>
+      <p><strong>目的：</strong>正解志向から探究志向へ自分の発言スタイルを転換する。</p>
+      <p><strong>やり方：</strong>次の会議で、「〇〇すべきだ」ではなく「〇〇という前提は妥当でしょうか？」「他の見方はありますか？」と問いの形で発言する。</p>
+      <p><strong>期待効果：</strong>問いが場の思考を開き、他者の前提を引き出すきっかけになる。探究モードの実践体験を得られる。</p>
+      <p><span class="badge">所要時間：30分</span></p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション4：今週の「ズレ」を1つ記録する</h4>
+      <p><strong>目的：</strong>ズレを脅威ではなく学習の資源として扱う習慣をつくる。</p>
+      <p><strong>やり方：</strong>今週、他者との認識のズレを感じた場面を1つ選び、「何がズレたか」「なぜズレたか」「そこから何を学べるか」を3行でメモする。</p>
+      <p><strong>期待効果：</strong>ズレを観察する視点が育ち、探究の起点を日常の中に見出せるようになる。</p>
+      <p><span class="badge">所要時間：15分</span></p>
+    </div>
+
+    <div class="action-card">
+      <h4>✅ アクション5：チームに「学習の問い」を1つ提案する</h4>
+      <p><strong>目的：</strong>探究を個人から関係性へ拡張する。</p>
+      <p><strong>やり方：</strong>次の定例会議で、「今週、私たちの前提で揺らいだものは何か？」など、学習を促す問いを1つ提案し、5分間の対話時間を設ける。</p>
+      <p><strong>期待効果：</strong>チーム全体で探究する習慣の種を蒔き、関係のデザインへの第一歩を踏み出せる。</p>
+      <p><span class="badge">所要時間：25分</span></p>
+    </div>
+  </div>
+
+  <div style="margin-top: 3rem; padding: 2rem; background: var(--card-bg); border-radius: 0.75rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem; text-align: center;">📚 関連書籍</h2>
+    <div class="book-list">
+      <div class="book-item">
+        <h4>学習する組織</h4>
+        <p><strong>著者：</strong>ピーター・M・センゲ</p>
+        <small>探究とシステム思考により組織学習を制度化する枠組みを提供。</small>
+      </div>
+      <div class="book-item">
+        <h4>プロセス・コンサルテーション</h4>
+        <p><strong>著者：</strong>エドガー・H・シャイン</p>
+        <small>対話を通じて前提を明らかにし、関係を設計する実践知が近接。</small>
+      </div>
+      <div class="book-item">
+        <h4>省察的実践とは何か</h4>
+        <p><strong>著者：</strong>ドナルド・A・ショーン</p>
+        <small>行為の最中と事後の省察によりダブルループ学習を促す理論基盤。</small>
+      </div>
+      <div class="book-item">
+        <h4>恐れのない組織</h4>
+        <p><strong>著者：</strong>エイミー・C・エドモンドソン</p>
+        <small>心理的安全性が探究と発言を支える条件であることを実証的に示す。</small>
+      </div>
+      <div class="book-item">
+        <h4>知識創造企業</h4>
+        <p><strong>著者：</strong>野中郁次郎・竹内弘高</p>
+        <small>暗黙知の相互作用と場の設計が学習と共創を生む点で相補的。</small>
+      </div>
+      <div class="book-item">
+        <h4>ダイアローグ 対立から共生へ</h4>
+        <p><strong>著者：</strong>ウィリアム・アイザックス</p>
+        <small>対話による意味生成の技法が他者と働く核心実践と重なる。</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
