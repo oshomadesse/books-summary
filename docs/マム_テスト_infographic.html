@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Mom Test - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.88rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.75rem;
+}
+.chapter-card li {
+  padding: 0.3rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.88rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+.example-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  position: relative;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  color: var(--primary);
+  opacity: 0.2;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+}
+.quote-card blockquote {
+  font-style: italic;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card p {
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 3px 8px rgba(102,126,234,0.3);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.88rem;
+  opacity: 0.95;
+  margin-bottom: 0.3rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-metric {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  border-radius: 8px;
+}
+.metric-bar {
+  flex: 1;
+  height: 24px;
+  background: #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.metric-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 100px;
+}
+.flow-diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  margin: 0.75rem 0;
+  font-size: 0.9rem;
+}
+.flow-arrow {
+  color: var(--accent);
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+}
+.flow-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+}
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    margin: 0.5rem;
+  }
+  .tab-btn {
+    font-size: 0.8rem;
+    padding: 0.6rem 0.75rem;
+    min-width: 100px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 The Mom Test</h1>
+  <p>顧客に聞くべきこと、聞いてはいけないこと</p>
+</header>
+
+<div class="summary-block">
+  <h2>📌 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>なぜ顧客に聞いても役立つ答えが得られず、どうすれば実用的な学びに変えられるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>アイデアを伏せ、相手の過去の具体と行動を深掘りし、発言ではなくコミットメント（時間・金・評判）で本気度を判定する。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜ）</strong>
+    <p>人は未来の自分を正確に予測できず、好意ゆえにお世辞を言うため、一般論や仮定は"悪いデータ"になる。一方、過去の具体的事実は再現性があり、意思決定に耐える。</p>
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    <p>①3原則〔相手の生活に集中／過去の具体を聞く／話すより聞く〕を守る ②良問テンプレ〔最後にXで困ったのはいつ？どう対処？いくらかかった？誰が決める？〕を使う ③会話のゴールを"前進（紹介・デモ設定・試用・支払いテスト）"に置く ④セグメントを狭め、短い面談を反復 ⑤お世辞や形容詞を数値・出来事・日時に翻訳し、記録をチームで共有する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card">
+    <h3>🎯 マム・テスト</h3>
+    <ul>
+      <li>自分のアイデアを語らず、相手の生活と過去の具体的事実だけを質問する原則</li>
+      <li>母親（マム）でも嘘のお世辞を言えない問いにする</li>
+      <li>一言要約：アイデアを隠して事実を聞く</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> アイデア披露が誘導とお世辞を招き、意思決定を誤らせるため。事実ベースの質問だけが再現性のある学びを生む。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✅ 良い質問</h3>
+    <ul>
+      <li>過去の行動・頻度・直近事例を尋ねる</li>
+      <li>代替手段・コスト・意思決定プロセスを掘り下げる</li>
+      <li>一般論や未来予測を避ける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 過去の具体的行動だけが検証可能で、製品開発の方向性を正しく導く唯一の情報源だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>❌ 悪いデータ</h3>
+    <ul>
+      <li>お世辞、仮説的未来、曖昧な形容詞</li>
+      <li>一般論から得られる誤誘導情報</li>
+      <li>意思決定に使うと失敗を招く</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 虚飾や仮定に基づく判断は、リソースの浪費と製品の失敗に直結するため、識別と排除が必須。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💰 コミットメントの通貨</h3>
+    <ul>
+      <li>本気度を測る三つの指標：時間・金・評判</li>
+      <li>いずれかの差し出しが前進シグナルになる</li>
+      <li>一言要約：本気の印</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 言葉だけの賛同は無価値。実際のコミットメントだけが顧客の本気度と市場性を証明する。
+    </div>
+  </div>
+
+  <div class="visual-metric">
+    <span class="metric-label">時間</span>
+    <div class="metric-bar">
+      <div class="metric-fill" style="width:90%">90%</div>
+    </div>
+  </div>
+  <div class="visual-metric">
+    <span class="metric-label">金</span>
+    <div class="metric-bar">
+      <div class="metric-fill" style="width:85%">85%</div>
+    </div>
+  </div>
+  <div class="visual-metric">
+    <span class="metric-label">評判</span>
+    <div class="metric-bar">
+      <div class="metric-fill" style="width:75%">75%</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚀 前進と約束</h3>
+    <ul>
+      <li>会話の成果を"次の具体的行動"で測る</li>
+      <li>紹介、共同検証、デモ日程、試用、支払いテストなど</li>
+      <li>一言要約：次の一歩</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 曖昧な好意ではなく、明確な次のステップがあって初めて進捗と言える。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 セグメンテーションと対象者選定</h3>
+    <ul>
+      <li>同質の問題を持つ狭い顧客群に絞る</li>
+      <li>学びの一貫性とシグナルの強さを高める</li>
+      <li>一言要約：狭く深く</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 広すぎるターゲットはノイズを増やし、狭い集中が明確なパターンと検証速度を生む。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗣️ 面談の設計と実行</h3>
+    <ul>
+      <li>学びたい仮説を明確化</li>
+      <li>3つの核質問を用意</li>
+      <li>カジュアルかつ短時間の会話を反復</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 準備なき会話は時間の浪費。軽く頻繁に回すことで学習サイクルが加速する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 ノイズとお世辞の翻訳</h3>
+    <ul>
+      <li>賛辞や形容詞を数字・日時・手順・支払い実績へ置き換える</li>
+      <li>観測可能な事実へ変換する作業</li>
+      <li>一言要約：事実化</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 曖昧な言葉は意思決定に使えない。事実化して初めてデータとして機能する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ リスク仮説の優先順位</h3>
+    <ul>
+      <li>事業の致命傷になり得る前提を先に検証</li>
+      <li>需要、採用、支払い、流通の順</li>
+      <li>一言要約：致命傷先行</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 小さなリスクから検証すると、致命的な前提が崩れたときに全てが無駄になる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📝 記録とチーム共有</h3>
+    <ul>
+      <li>逐語記録と要点の共有</li>
+      <li>個人バイアスを抑える</li>
+      <li>集団的に意思決定の質を上げる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 記録なき学びは個人の記憶に依存し、バイアスと忘却で歪む。共有が客観性を担保する。
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="margin-bottom:1rem;color:var(--primary);">📊 概念間の関係性</h3>
+    <div class="flow-step">
+      <div class="flow-box">ピッチ中心の会話</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">誘導質問</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-box">お世辞/一般論</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">悪いデータ</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-box">誤った製品意思決定</div>
+    </div>
+    <hr style="margin:1.5rem 0;border:none;border-top:2px dashed var(--accent);">
+    <div class="flow-step">
+      <div class="flow-box">マム・テスト原則</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">良い質問</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-box">過去の具体事実</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">信頼できる学び</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-box">リスク仮説の検証</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">方向性の精度向上</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>第1章：問題提起</h3>
+    <ul>
+      <li>顧客会話が"嘘の学び"を生むメカニズム</li>
+      <li>お世辞・未来予測・誘導の罠</li>
+      <li>好意が意思決定を狂わせる構造</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か：</strong> 多くの起業家が陥る"顧客は嘘をつく"現象の根本原因を理解し、問題意識を共有するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章：原則提示</h3>
+    <ul>
+      <li>マム・テストの3原則を明示</li>
+      <li>相手の生活に集中する</li>
+      <li>過去の具体を聞く</li>
+      <li>話すより聞く</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か：</strong> 実践可能な行動指針を提示し、悪い会話から良い会話への転換点を示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章：悪いデータの識別</h3>
+    <ul>
+      <li>褒め言葉・形容詞・一般論の見分け方</li>
+      <li>仮説的回答の危険性</li>
+      <li>ノイズの具体例と対処法</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か：</strong> 何が"悪いデータ"かを具体的に識別できなければ、原則を実践できないため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章：良い質問の設計</h3>
+    <ul>
+      <li>直近事例・頻度・現在の代替を問う</li>
+      <li>コスト・意思決定者を明らかにする</li>
+      <li>質問テンプレートと実例</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か：</strong> 原則を具体的な質問文に落とし込み、即座に使える武器を提供するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章：成果の定義</h3>
+    <ul>
+      <li>前進とコミットメントの通貨（時間・金・評判）</li>
+      <li>会話を評価する客観指標</li>
+      <li>言葉ではなく行動で測る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か：</strong> 会話の成否を主観ではなく客観的に判定する基準がなければ、改善サイクルが回らないため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章：実行編</h3>
+    <ul>
+      <li>会話の見つけ方とアポの取り方</li>
+      <li>短く頻繁に回す運用法</li>
+      <li>カジュアルな接触の設計</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か：</strong> 理論を知っていても実行できなければ無意味。実務の障壁を下げる具体策を示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7章：対象者の選定</h3>
+    <ul>
+      <li>セグメントを狭める理由と手順</li>
+      <li>同質の問題群に集中する利点</li>
+      <li>ターゲット選定の失敗パターン</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か：</strong> 誰に聞くかが間違っていれば、どんなに良い質問も無駄になるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第8章：学びの定着</h3>
+    <ul>
+      <li>ノイズの翻訳と記録の仕方</li>
+      <li>チーム共有と意思決定への落とし込み</li>
+      <li>学習サイクルの回し方</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か：</strong> 個人の頭の中にある学びは組織の資産にならない。定着と共有が再現性を生むため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第9章：落とし穴と対策</h3>
+    <ul>
+      <li>ピッチ癖とリードの浪費</li>
+      <li>バイアスへの対処法</li>
+      <li>よくある失敗と回避策</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 なぜこの章が必要か：</strong> 実践者が必ず遭遇する罠を事前に知ることで、失敗コストを削減するため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>🔍 具体例1：お世辞の罠</h3>
+    <p><strong>背景：</strong> 起業家が友人に新アプリのアイデアを説明したところ、「すごくいいね！絶対使うよ！」と言われた。</p>
+    <p><strong>示唆：</strong> 友人は好意から賛同したが、実際にはその問題を抱えておらず、リリース後も使わなかった。</p>
+    <div class="reason-box">
+      <strong>💡 この例が示すこと：</strong> 未来の意図表明は信頼できない。過去に同様の問題でどう行動したかを聞くべきだった。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>💰 具体例2：コミットメントの通貨</h3>
+    <p><strong>背景：</strong> B2B SaaSの創業者が見込み客に「これ欲しい」と言われたが、デモ日程の調整を依頼すると「来月また連絡して」と返された。</p>
+    <p><strong>示唆：</strong> 時間のコミットメントがない＝本気度ゼロ。言葉だけの関心は意思決定に使えない。</p>
+    <div class="reason-box">
+      <strong>💡 この例が示すこと：</strong> 前進（具体的な次のステップ）がなければ、その会話は失敗。時間・金・評判のいずれかを差し出させることが検証。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>📊 具体例3：過去の具体を掘る</h3>
+    <p><strong>背景：</strong> 「経費精算が面倒」という声を聞いた起業家が、「最後に経費精算で困ったのはいつ？」「どう対処した？」「いくら時間がかかった？」と深掘り。</p>
+    <p><strong>示唆：</strong> 相手は実は月1回しか困っておらず、手作業で5分で済んでいた。ペインは小さく、有料ツールの需要はなかった。</p>
+    <div class="reason-box">
+      <strong>💡 この例が示すこと：</strong> 一般論（「面倒」）ではなく、頻度・コスト・代替手段の具体を聞くことで、真の市場性が見える。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🎯 具体例4：セグメントの狭化</h3>
+    <p><strong>背景：</strong> 「中小企業向け」と広く設定したため、製造業・小売・IT企業で全く異なるニーズが出て混乱。</p>
+    <p><strong>示唆：</strong> 「従業員10〜50名のIT受託開発会社」に絞ったところ、共通の課題が明確になり、製品の方向性が定まった。</p>
+    <div class="reason-box">
+      <strong>💡 この例が示すこと：</strong> 広いターゲットはノイズを増やし、狭い集中が明確なシグナルと検証速度を生む。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <blockquote>"Talk about their life, not your idea."</blockquote>
+    <p><strong>補足：</strong> アイデア披露が誘導とお世辞を招くという中核原則を一行で示す。</p>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> この一文が本書の全てを凝縮している。相手の生活に焦点を当てることで、バイアスのない事実が得られる。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"Ask about specifics in the past instead of generics or opinions."</blockquote>
+    <p><strong>補足：</strong> 未来予測や一般論ではなく再現性のある事実に限定する指針。</p>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 過去の具体的行動だけが検証可能で、製品開発の方向性を正しく導く唯一の情報源だから。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>"People are bad at predicting their future behavior."</blockquote>
+    <p><strong>補足：</strong> "欲しい"という宣言より実際の過去行動を信頼すべき根拠。</p>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 人間の予測能力の限界を科学的に示し、過去行動重視の正当性を与える。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>要旨: 明確な約束（時間・金・評判）がなければ、それは単なる好意。</blockquote>
+    <p><strong>補足：</strong> 言葉よりコミットメントで本気度を測る判断基準。</p>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 曖昧な好意と本気の関心を区別する客観的な指標を提供し、リソースの浪費を防ぐ。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <blockquote>要旨: 賛辞や形容詞は数字と出来事に翻訳せよ。</blockquote>
+    <p><strong>補足：</strong> ノイズの除去と意思決定可能なデータ化の実務を端的に示す。</p>
+    <div class="reason-box">
+      <strong>💡 なぜ重要か：</strong> 曖昧な言葉を事実に変換する具体的な作業指示であり、実践の核心。
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>📝 アクション1：次回面談用に良問を3つ準備する</h3>
+    <p><strong>目的：</strong> マム・テストの原則を実践可能な質問文に落とし込む</p>
+    <p><strong>期待効果：</strong> 次の顧客会話で誘導を避け、過去の具体的事実を引き出せる</p>
+    <p><strong>所要時間：</strong> 15分</p>
+    <p><strong>具体的手順：</strong></p>
+    <ul style="list-style:none;padding-left:0;">
+      <li>• 「最後にXで困ったのはいつですか？」</li>
+      <li>• 「そのときどう対処しましたか？」</li>
+      <li>• 「それにいくら（時間/お金）かかりましたか？」</li>
+    </ul>
+  </div>
+
+  <div class="action-card">
+    <h3>📞 アクション2：候補3人に過去事例の依頼連絡</h3>
+    <p><strong>目的：</strong> カジュアルな会話の機会を作り、学習サイクルを回し始める</p>
+    <p><strong>期待効果：</strong> 実際の顧客データを収集し、仮説を検証できる</p>
+    <p><strong>所要時間：</strong> 20分</p>
+    <p><strong>具体的手順：</strong></p>
+    <ul style="list-style:none;padding-left:0;">
+      <li>• ターゲットセグメントの知人3名をリストアップ</li>
+      <li>• 「Xについて教えてほしい」とメッセージ（アイデアは伏せる）</li>
+      <li>• 15分のカジュアルな電話/コーヒーを提案</li>
+    </ul>
+  </div>
+
+  <div class="action-card">
+    <h3>🔄 アクション3：最近の顧客メモを事実に翻訳する</h3>
+    <p><strong>目的：</strong> 過去の会話から"悪いデータ"を識別し、事実だけを抽出する訓練</p>
+    <p><strong>期待効果：</strong> ノイズ除去のスキルが身につき、意思決定の質が上がる</p>
+    <p><strong>所要時間：</strong> 20分</p>
+    <p><strong>具体的手順：</strong></p>
+    <ul style="list-style:none;padding-left:0;">
+      <li>• 直近3件の顧客会話メモを開く</li>
+      <li>• 形容詞・賛辞・一般論にマーカー</li>
+      <li>• 各項目を「いつ？いくら？誰が？」の事実に書き換える</li>
+      <li>• 翻訳できない項目は「不明→要追加質問」とメモ</li>
+    </ul>
+  </div>
+
+  <div class="action-card">
+    <h3>🎯 アクション4：セグメントを1文で定義する</h3>
+    <p><strong>目的：</strong> ターゲット顧客を明確化し、学びの一貫性を高める</p>
+    <p><strong>期待効果：</strong> 誰に聞くべきかが明確になり、ノイズが減る</p>
+    <p><strong>所要時間：</strong> 15分</p>
+    <p><strong>具体的手順：</strong></p>
+    <ul style="list-style:none;padding-left:0;">
+      <li>• 「〇〇な状況で、△△に困っている、××な人」の形式で記述</li>
+      <li>• 例：「従業員10〜50名のIT受託開発会社で、案件管理に週3時間以上使っているPM」</li>
+    </ul>
+  </div>
+
+  <div class="action-card">
+    <h3>📊 アクション5：コミットメント通貨のチェックリストを作る</h3>
+    <p><strong>目的：</strong> 会話の成否を客観的に判定する基準を持つ</p>
+    <p><strong>期待効果：</strong> 曖昧な好意と本気の関心を区別でき、リソースを正しく配分できる</p>
+    <p><strong>所要時間：</strong> 10分</p>
+    <p><strong>具体的手順：</strong></p>
+    <ul style="list-style:none;padding-left:0;">
+      <li>• 時間：次回面談の日程確定、紹介の実行</li>
+      <li>• 金：試用版への支払い意思、予算枠の確認</li>
+      <li>• 評判：社内への推薦、SNSでの言及</li>
+      <li>• 会話後、いずれか1つ以上あれば「前進」と記録</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab-btn');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.getAttribute('data-tab');
+    
+    tabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    contents.forEach(c => {
+      c.classList.remove('active');
+    });
+    
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    document.getElementById(target).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
