@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Happiness Trap インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 0.8rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+}
+.tab-content.active {
+  display: block;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+  color: var(--text-light);
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.visual-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.05), rgba(118,75,162,0.05));
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  text-align: center;
+}
+.flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.flow-item {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  position: relative;
+  font-size: 0.9rem;
+}
+.flow-item:after {
+  content: "↓";
+  display: block;
+  text-align: center;
+  color: var(--primary);
+  font-size: 1.5rem;
+  margin-top: 0.5rem;
+}
+.flow-item:last-child:after {
+  content: "";
+}
+.quote-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  position: relative;
+  font-style: italic;
+}
+.quote-card:before {
+  content: """;
+  font-size: 3rem;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+.quote-why {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  font-style: normal;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding-top: 0.75rem;
+}
+.action-card {
+  background: var(--card-bg);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+.action-meta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.action-meta div {
+  flex: 1;
+  min-width: 120px;
+}
+.action-meta strong {
+  display: block;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.metric-card {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.metric-value {
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.metric-label {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+svg {
+  max-width: 100%;
+  height: auto;
+}
+@media (min-width: 768px) {
+  header h1 {
+    font-size: 2.5rem;
+  }
+  .tabs {
+    margin: 2rem auto;
+    max-width: 900px;
+  }
+  .tab-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  .summary-block {
+    max-width: 900px;
+    margin: 2rem auto;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 The Happiness Trap</h1>
+  <p>不快を受容し、価値に沿って生きる心理的柔軟性の実践</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 エグゼクティブ・サマリー</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    幸福になる最短の方法は？
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    不快を排除せず受容し、価値に沿って行動する（ACT）
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか？）</strong>
+    人の心は脅威検知に偏り、感情のコントロールは逆効果となり回避が苦悩を拡大する「幸福の罠」を生む
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには？）</strong>
+    脱フュージョン・受容・現在との接触・自己としての文脈・価値の明確化・コミットされた行動という6プロセスを日常に実装する
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card">
+    <h3>🪤 幸福の罠（ハピネス・トラップ）</h3>
+    <ul>
+      <li><strong>定義:</strong> 常に良い気分でいようと不快を避け・抑え・支配しようとして苦悩が増える循環</li>
+      <li><strong>一言:</strong> 避けるほど苦しくなる</li>
+      <li>短期的な安心が長期的な苦痛を生む</li>
+      <li>回避行動が人生の可能性を狭める</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 多くの人が陥る根本的な誤りを示し、アプローチ転換の必要性を明確にするため
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎭 幸福の神話</h3>
+    <ul>
+      <li><strong>定義:</strong> 「幸福＝ポジティブ感情の持続」「問題がなければ幸せ」などの誤信念</li>
+      <li><strong>一言:</strong> 誤った幸福観</li>
+      <li>メディアや文化が強化する非現実的期待</li>
+      <li>ネガティブ感情を異常視する風潮</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 苦悩の源泉となる文化的前提を解体し、現実的な幸福観への転換を促すため
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏃 体験回避</h3>
+    <ul>
+      <li><strong>定義:</strong> 不快な内的体験を避ける行動や戦略の総称</li>
+      <li><strong>一言:</strong> 逃げの副作用</li>
+      <li>短期的には楽だが長期的損失が増える</li>
+      <li>アルコール・過食・先延ばしなど多様な形態</li>
+      <li>回避が問題を維持・悪化させる</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 苦悩を拡大する主要メカニズムを特定し、介入ポイントを示すため
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔗 認知的フュージョン</h3>
+    <ul>
+      <li><strong>定義:</strong> 思考と現実が癒着し、思考に支配される状態</li>
+      <li><strong>一言:</strong> 思考＝事実と誤認</li>
+      <li>「私はダメだ」という思考を真実として扱う</li>
+      <li>思考の内容に巻き込まれ行動が制限される</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 思考の過剰な影響力を認識し、脱フュージョンへの動機を高めるため
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔓 脱フュージョン</h3>
+    <ul>
+      <li><strong>定義:</strong> 思考を「言葉・音」として観察し、距離を取るスキル</li>
+      <li><strong>一言:</strong> 思考と距離を置く</li>
+      <li>思考を「役に立つか」で評価する</li>
+      <li>ラベリング・繰り返し・歌にするなどの技法</li>
+      <li>思考の支配から行動の自由を取り戻す</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 心理的柔軟性の中核スキルであり、思考に振り回されない基盤を作るため
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤲 受容</h3>
+    <ul>
+      <li><strong>定義:</strong> 不快な感情・感覚に開き、そのまま共存する選択</li>
+      <li><strong>一言:</strong> 抵抗しない器</li>
+      <li>苦痛＋抵抗＝苦悩の式を理解する</li>
+      <li>感情を敵視せず体験として許容する</li>
+      <li>抵抗のエネルギーを価値ある行動に向ける</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 体験回避の対極にあり、苦悩を減らす実践的戦略を提供するため
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧘 現在との接触（マインドフルネス）</h3>
+    <ul>
+      <li><strong>定義:</strong> 今この瞬間に注意をやさしく戻す練習</li>
+      <li><strong>一言:</strong> いまに気づく</li>
+      <li>過去の後悔・未来の不安から離れる</li>
+      <li>五感を通じて現在を体験する</li>
+      <li>自動操縦モードから覚醒する</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 思考の嵐の中でも行動を選べる土台となり、人生の豊かさを取り戻すため
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧭 価値</h3>
+    <ul>
+      <li><strong>定義:</strong> 自分が生き方として大切にしたい方向性や質</li>
+      <li><strong>一言:</strong> 生の羅針盤</li>
+      <li>目標（到達点）ではなく方向性（旅）</li>
+      <li>他人の期待ではなく自分の心の声</li>
+      <li>行動の意味と動機を与える</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 苦痛の中でも行動を続ける理由を提供し、充足感の源泉となるため
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚶 コミットされた行動</h3>
+    <ul>
+      <li><strong>定義:</strong> 価値に基づく具体的で継続的な行動の実行と調整</li>
+      <li><strong>一言:</strong> 価値を行動に</li>
+      <li>小さく確実なステップを重ねる</li>
+      <li>障害に直面しても柔軟に調整する</li>
+      <li>完璧ではなく方向性を重視する</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 価値を現実化する唯一の手段であり、意味ある人生の実質を作るため
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👁️ 自己としての文脈</h3>
+    <ul>
+      <li><strong>定義:</strong> 思考感情の内容に巻き込まれない、気づきを持つ観察者の自己感</li>
+      <li><strong>一言:</strong> 観る自分</li>
+      <li>「私＝思考」ではなく「私＝気づき」</li>
+      <li>感情嵐の中でも安定した視点</li>
+      <li>内的体験を俯瞰する能力</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 感情に飲み込まれず行動を選べる自己感を育て、心理的安定性を高めるため
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌿 心理的柔軟性</h3>
+    <ul>
+      <li><strong>定義:</strong> 現在の瞬間にオープンで、価値に沿って行動を選べる能力</li>
+      <li><strong>一言:</strong> 折れずにたわむ力</li>
+      <li>6つのプロセスの統合的機能</li>
+      <li>困難に適応しながら成長する力</li>
+      <li>ACTの最終目標</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜ重要か:</strong> 本書全体の目的であり、豊かで意味ある人生を実現する核心能力だから
+    </div>
+  </div>
+
+  <div class="visual-box">
+    <h3>🔄 概念間の関係性</h3>
+    <svg viewBox="0 0 400 300" style="max-width:500px;margin:1rem auto;">
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect x="10" y="10" width="180" height="50" rx="8" fill="url(#grad1)" opacity="0.8"/>
+      <text x="100" y="40" text-anchor="middle" fill="white" font-size="14" font-weight="bold">幸福の神話</text>
+      <path d="M 100 60 L 100 90" stroke="#764ba2" stroke-width="3" marker-end="url(#arrowhead)"/>
+      <rect x="10" y="90" width="180" height="50" rx="8" fill="url(#grad1)" opacity="0.8"/>
+      <text x="100" y="120" text-anchor="middle" fill="white" font-size="14" font-weight="bold">体験回避</text>
+      <path d="M 100 140 L 100 170" stroke="#764ba2" stroke-width="3" marker-end="url(#arrowhead)"/>
+      <rect x="10" y="170" width="180" height="50" rx="8" fill="#f093fb" opacity="0.9"/>
+      <text x="100" y="200" text-anchor="middle" fill="white" font-size="14" font-weight="bold">幸福の罠</text>
+      
+      <rect x="210" y="10" width="180" height="50" rx="8" fill="url(#grad1)" opacity="0.8"/>
+      <text x="300" y="35" text-anchor="middle" fill="white" font-size="12" font-weight="bold">脱フュージョン+受容</text>
+      <text x="300" y="50" text-anchor="middle" fill="white" font-size="12" font-weight="bold">+現在との接触</text>
+      <path d="M 300 60 L 300 90" stroke="#667eea" stroke-width="3" marker-end="url(#arrowhead)"/>
+      <rect x="210" y="90" width="180" height="50" rx="8" fill="url(#grad1)" opacity="0.8"/>
+      <text x="300" y="120" text-anchor="middle" fill="white" font-size="14" font-weight="bold">価値+行動</text>
+      <path d="M 300 140 L 300 170" stroke="#667eea" stroke-width="3" marker-end="url(#arrowhead)"/>
+      <rect x="210" y="170" width="180" height="50" rx="8" fill="#667eea" opacity="0.9"/>
+      <text x="300" y="200" text-anchor="middle" fill="white" font-size="14" font-weight="bold">心理的柔軟性</text>
+      
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+          <polygon points="0 0, 10 5, 0 10" fill="#764ba2" />
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="metric-value">6</div>
+      <div class="metric-label">コアプロセス</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">11</div>
+      <div class="metric-label">主要概念</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">∞</div>
+      <div class="metric-label">実践の可能性</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>📌 第1部: 問題提起</h3>
+    <ul>
+      <li>「常に良い気分＝幸福」という神話を解体</li>
+      <li>感情コントロールの逆効果を実証</li>
+      <li>幸福の罠に陥るメカニズムを説明</li>
+      <li>現代社会が強化する誤った期待</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 読者の前提を揺さぶり、新しいアプローチへの準備を整えるため。多くの人が無自覚に持つ幸福観の限界を示すことで、変化の動機を生む。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 第2部: 理論フレーム</h3>
+    <ul>
+      <li>ACTの目的は不快の減少ではなく心理的柔軟性の向上</li>
+      <li>6つのコアプロセスの全体像を提示</li>
+      <li>価値に基づく生き方の重要性を定義</li>
+      <li>従来の認知行動療法との違いを明確化</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 本書全体の地図を提供し、個別スキルが統合的にどう機能するかを理解させるため。目的地を示すことで学習の方向性が定まる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 第3部: スキル1 - 脱フュージョン</h3>
+    <ul>
+      <li>思考との距離を取る具体技法を紹介</li>
+      <li>言語遊び・ラベリング・繰り返しなどの実践</li>
+      <li>「思考は事実ではない」を体験的に学ぶ</li>
+      <li>日常場面での応用例を提示</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 思考支配からの解放という最も即効性のあるスキルを最初に提供し、早期の成功体験を促すため。思考の柔軟な扱いが後続スキルの土台となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 第4部: スキル2 - 受容と現在との接触</h3>
+    <ul>
+      <li>感情への開放とマインドフルな注意を鍛える</li>
+      <li>短い練習（呼吸・ボディスキャン）を提示</li>
+      <li>抵抗をやめることの機能的効果を説明</li>
+      <li>「苦痛＋抵抗＝苦悩」の式を実感する</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 体験回避の対極にある受容を実践的に習得させ、苦悩の軽減を体験させるため。マインドフルネスが行動選択の基盤となることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 第5部: スキル3 - 価値とコミットされた行動</h3>
+    <ul>
+      <li>価値の明確化ワークを実施</li>
+      <li>目標と価値の違いを理解する</li>
+      <li>障害に対する行動計画を立てる</li>
+      <li>小さな実験から始める重要性を強調</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> スキルを「何のために使うか」を明確にし、行動の方向性と動機を与えるため。価値が行動の羅針盤となり、挫折時の回復力を高める。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📌 第6部: 応用と維持</h3>
+    <ul>
+      <li>人間関係・仕事・健康など場面別の適用</li>
+      <li>挫折時のリカバリー戦略を示す</li>
+      <li>長期的な実践のコツを伝授</li>
+      <li>セルフコンパッションの重要性を強調</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 なぜこの章が必要か:</strong> 学んだスキルを現実生活に統合し、持続可能な変化を支援するため。完璧主義を手放し、柔軟な実践を促すことで長期的成功を高める。
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <strong>🎯 問題認識</strong><br>
+      幸福の神話と罠を理解する
+    </div>
+    <div class="flow-item">
+      <strong>🧠 思考の自由</strong><br>
+      脱フュージョンで思考支配から離れる
+    </div>
+    <div class="flow-item">
+      <strong>💚 感情の受容</strong><br>
+      抵抗をやめ現在に気づく
+    </div>
+    <div class="flow-item">
+      <strong>🧭 方向性の設定</strong><br>
+      価値を明確化し羅針盤を持つ
+    </div>
+    <div class="flow-item">
+      <strong>🚀 行動の実践</strong><br>
+      小さく確実なステップを重ねる
+    </div>
+    <div class="flow-item">
+      <strong>🌱 統合と成長</strong><br>
+      心理的柔軟性を日常に定着させる
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🌟 具体例1: 不安を抱えたまま面接に臨む</h3>
+    <ul>
+      <li><strong>背景:</strong> 就職面接を控え、強い不安と「失敗する」という思考に苦しむ求職者</li>
+      <li><strong>従来の対処:</strong> 不安を消そうと深呼吸や自己暗示を繰り返すが効果なし</li>
+      <li><strong>ACTアプローチ:</strong> 不安を「同乗者」として認め、「誠実に自分を伝える」という価値に沿って面接に臨む</li>
+      <li><strong>結果:</strong> 不安は残るが行動は制限されず、自然体で話せた</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 感情のコントロールではなく受容と価値に基づく行動が、実際の成果と心理的自由をもたらすこと。不快感と共存しながら前進できる可能性を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌟 具体例2: 「私はダメだ」という思考との付き合い方</h3>
+    <ul>
+      <li><strong>背景:</strong> 慢性的な自己批判思考に悩むビジネスパーソン</li>
+      <li><strong>従来の対処:</strong> ポジティブ思考で上書きしようとするが、かえって思考が強化される</li>
+      <li><strong>ACTアプローチ:</strong> 「私はダメだ」を「心が『私はダメだ』と言っている」とラベリングし、思考を音として繰り返す</li>
+      <li><strong>結果:</strong> 思考の影響力が低下し、行動選択の自由度が増す</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 脱フュージョン技法が思考の支配力を弱め、思考内容の真偽ではなく機能性で判断できるようになること。思考との関係性の変化が行動の自由を生む。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌟 具体例3: 慢性痛を抱えながら価値ある活動を続ける</h3>
+    <ul>
+      <li><strong>背景:</strong> 腰痛で趣味の登山を諦めた中年男性</li>
+      <li><strong>従来の対処:</strong> 痛みが消えるまで待ち、活動を全面的に制限</li>
+      <li><strong>ACTアプローチ:</strong> 「自然とつながる」という価値を再確認し、痛みを受容しながら短い散歩から再開</li>
+      <li><strong>結果:</strong> 痛みは残るが充足感が戻り、徐々に活動範囲が広がる</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 苦痛の完全除去を待たずに価値に沿った行動を始めることで、人生の質が向上すること。受容と行動の組み合わせが意味ある人生を取り戻す鍵となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌟 具体例4: 子育てストレスとマインドフルネス</h3>
+    <ul>
+      <li><strong>背景:</strong> 子どもの癇癪に反応的に怒鳴ってしまう親</li>
+      <li><strong>従来の対処:</strong> 怒りを抑え込もうとするが爆発してしまう</li>
+      <li><strong>ACTアプローチ:</strong> 怒りの身体感覚に気づき、「思いやりのある親」という価値を思い出し、一呼吸置いて対応を選ぶ</li>
+      <li><strong>結果:</strong> 怒りは感じるが反応的行動が減り、親子関係が改善</li>
+    </ul>
+    <div class="reason">
+      <strong>💡 この例が示すこと:</strong> 現在との接触（マインドフルネス）が自動反応と価値ある行動の間に選択の余地を生むこと。感情と行動を切り離す力が関係性の質を変える。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <div class="quote-text">
+      痛みを避けようと必死になるほど、人生の可能性は狭まる。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 回避戦略の限界とコストを一文で示し、受容への転回を促すから。体験回避が人生を制限する根本メカニズムを直観的に伝える。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      思考は事実ではない。役に立つかどうかで扱いを決める。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 脱フュージョンの核心であり、思考支配からの自由度を上げるから。思考の真偽ではなく機能性で判断する視点転換を促す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      価値は羅針盤、目標は道しるべ。嵐の中でも方向は失われない。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 成果に左右されず、行動の一貫性を保つ基盤を与えるから。価値と目標の違いを明確にし、挫折時の回復力を高める。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      苦痛＋抵抗＝苦悩。抵抗をやめれば苦悩は和らぐ。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か:</strong> 受容の機能的効果を直観的な式で説明するから。抵抗が苦悩を増幅するメカニズムを簡潔に示し、受容の実践動機を高める。
+    </div>
+  </div>
+
+  <div class="visual-box">
+    <h3>📊 引用の重要度分布</h3>
+    <svg viewBox="0 0 400 200" style="max-width:500px;margin:1rem auto;">
+      <rect x="50" y="150" width="80" height="40" fill="#667eea" opacity="0.8"/>
+      <text x="90" y="175" text-anchor="middle" fill="white" font-size="12">回避の限界</text>
+      
+      <rect x="140" y="120" width="80" height="70" fill="#764ba2" opacity="0.8"/>
+      <text x="180" y="155" text-anchor="middle" fill="white" font-size="12">思考の扱い</text>
+      
+      <rect x="230" y="100" width="80" height="90" fill="#f093fb" opacity="0.8"/>
+      <text x="270" y="145" text-anchor="middle" fill="white" font-size="12">価値の力</text>
+      
+      <rect x="320" y="130" width="80" height="60" fill="#667eea" opacity="0.8"/>
+      <text x="360" y="160" text-anchor="middle" fill="white" font-size="12">受容の式</text>
+      
+      <line x1="40" y1="190" x2="410" y2="190" stroke="#333" stroke-width="2"/>
+      <line x1="40" y1="50" x2="40" y2="190" stroke="#333" stroke-width="2"/>
+      <text x="20" y="120" font-size="12" fill="#666">影響度</text>
+    </svg>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>🧘‍♀️ アクション1: 呼吸瞑想を15分行う</h4>
+    <p>静かな場所で座り、呼吸に注意を向ける。思考が浮かんだら「考えている」とラベリングし、やさしく呼吸に戻す。</p>
+    <div class="action-meta">
+      <div>
+        <strong>🎯 目的</strong>
+        現在との接触スキルを体験的に習得する
+      </div>
+      <div>
+        <strong>✨ 期待効果</strong>
+        思考との距離感が生まれ、自動反応が減る
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🏷️ アクション2: 思考にラベル付けを15分練習</h4>
+    <p>日常で浮かぶネガティブ思考に「心が〇〇と言っている」とラベルを付ける。ノートに記録し、思考のパターンに気づく。</p>
+    <div class="action-meta">
+      <div>
+        <strong>🎯 目的</strong>
+        脱フュージョンスキルを日常に定着させる
+      </div>
+      <div>
+        <strong>✨ 期待効果</strong>
+        思考の支配力が弱まり、行動選択の自由度が増す
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>📝 アクション3: 大切な価値を3つ書き出す15分</h4>
+    <p>「人間関係」「仕事」「健康」などの領域で、自分が大切にしたい生き方の質を3つ書く。「なぜそれが大切か」も添える。</p>
+    <div class="action-meta">
+      <div>
+        <strong>🎯 目的</strong>
+        行動の羅針盤となる価値を明確化する
+      </div>
+      <div>
+        <strong>✨ 期待効果</strong>
+        日々の選択に方向性が生まれ、充足感が増す
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>🚶 アクション4: 価値に沿った小さな行動を1つ実行</h4>
+    <p>明確化した価値に基づき、今日できる5分の行動を1つ選んで実行する（例: 家族に感謝を伝える、姿勢を正して歩く）。</p>
+    <div class="action-meta">
+      <div>
+        <strong>🎯 目的</strong>
+        価値を行動に変換する実践力を養う
+      </div>
+      <div>
+        <strong>✨ 期待効果</strong>
+        小さな成功体験が自己効力感と継続意欲を高める
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h4>📖 アクション5: 1日の終わりに3行振り返り</h4>
+    <p>「今日気づいた思考」「受容できた感情」「価値に沿った行動」を各1行ずつ書く。評価せず観察のみ。</p>
+    <div class="action-meta">
+      <div>
+        <strong>🎯 目的</strong>
+        自己観察力を高め、実践の定着を促す
+      </div>
+      <div>
+        <strong>✨ 期待効果</strong>
+        パターンへの気づきが深まり、柔軟性が向上する
+      </div>
+    </div>
+  </div>
+
+  <div class="visual-box">
+    <h3>⏱️ 今日の15分タイムライン</h3>
+    <div style="text-align:left;max-width:400px;margin:1rem auto;">
+      <div style="display:flex;align-items:center;margin:0.75rem 0;">
+        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;margin-right:1rem;">1</div>
+        <div style="flex:1;">
+          <strong>0-5分:</strong> 呼吸に注意を向ける<br>
+          <span style="font-size:0.85rem;color:#666;">姿勢を整え、自然な呼吸を観察</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;margin:0.75rem 0;">
+        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;margin-right:1rem;">2</div>
+        <div style="flex:1;">
+          <strong>5-10分:</strong> 思考が浮かんだらラベリング<br>
+          <span style="font-size:0.85rem;color:#666;">「考えている」と気づき呼吸に戻る</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;margin:0.75rem 0;">
+        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;margin-right:1rem;">3</div>
+        <div style="flex:1;">
+          <strong>10-15分:</strong> 身体感覚を観察<br>
+          <span style="font-size:0.85rem;color:#666;">評価せず、ただ気づく練習</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab-btn');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const targetId = tab.getAttribute('data-tab');
+    
+    tabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    contents.forEach(c => {
+      c.classList.remove('active');
+    });
+    
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    document.getElementById(targetId).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
