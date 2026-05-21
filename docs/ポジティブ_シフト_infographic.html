@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マインドセットで人生を変える - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.15);
+  border-radius: 0.5rem;
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.summary-item ul {
+  margin-left: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.summary-item li {
+  margin-bottom: 0.25rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+}
+
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid #f59e0b;
+}
+
+.reason-box strong {
+  color: #92400e;
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+
+.example-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+
+.quote-card {
+  background: linear-gradient(135deg, #e0e7ff, #ddd6fe);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary);
+  font-style: italic;
+}
+
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  color: #4c1d95;
+}
+
+.quote-card small {
+  display: block;
+  margin-top: 0.5rem;
+  font-style: normal;
+  color: #6d28d9;
+  font-size: 0.9rem;
+}
+
+.action-card {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #10b981;
+}
+
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #065f46;
+}
+
+.action-card p {
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+  color: #047857;
+}
+
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.visual-diagram h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.flow-arrow {
+  margin: 0 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.metric-box .number {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.metric-box .label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.book-list {
+  list-style: none;
+}
+
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+
+.book-item strong {
+  color: var(--secondary);
+  font-size: 1.05rem;
+}
+
+.book-item em {
+  display: block;
+  margin: 0.25rem 0;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .metric-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 マインドセットで人生を変える</h1>
+  <p>心の向きが幸福・健康・長寿を決める科学的アプローチ</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 核心メッセージ</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>私たちの幸福・健康・寿命を高める最も影響力のあるレバーは何か？そして一般人でも現実的にそれをどう動かせるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>最大のレバーはマインドセット（注意・解釈・期待）であり、日々の小さな認知・感情・行動の調整によって可塑的に改善できる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>研究は、期待が生理反応を変える（プラセボ/ノセボ）、注意と解釈が感情と意思決定を導く、社会的つながりが死亡・疾病リスクを左右することを示す。出来事や遺伝の寄与はあるが、心の枠組みが結果を増幅・減衰させる中核ハブである。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <ul>
+      <li>認知的再評価で出来事の意味づけを再設計する</li>
+      <li>感謝・セイヴァリングで注意をポジティブ資源に向ける</li>
+      <li>ストレス・マインドセットを脅威→挑戦に切り替える</li>
+      <li>社会的つながりを計画的に強化する</li>
+      <li>環境プライミング（視覚・言葉・身体）で好ましい反応を誘発する</li>
+      <li>小さな介入を習慣化して累積効果を得る</li>
+    </ul>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🔑 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📚 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">🔗 関連書籍</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    <div class="card">
+      <h3>🧭 マインドセット</h3>
+      <ul>
+        <li>出来事をどう注意・解釈・予期するかという心の枠組み</li>
+        <li>経験の意味づけと行動を方向づける可塑的システム</li>
+        <li>一言要約：心の向きが結果を決める</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>マインドセットは遺伝や環境より柔軟に変えられ、人生の軌道を左右する最大のレバーだから。
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>🔄 認知的再評価</h3>
+      <ul>
+        <li>ストレスや失敗の意味を再解釈して感情と行動を変える技法</li>
+        <li>反応を選び直すことで影響を弱める/好転させる</li>
+        <li>一言要約：意味を変えて現実を変える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>出来事そのものは変えられなくても、解釈を変えれば感情・行動・結果が変わるから。
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>⚠️ ネガティビティ・バイアス</h3>
+      <ul>
+        <li>人は悪い情報に過度に注意・記憶・反応しやすい進化的傾向</li>
+        <li>放置すると悲観が自動化する</li>
+        <li>一言要約：悪目立ちの法則</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>このバイアスを認識しないと、現実以上に悲観的な世界観が固定化し、幸福を損なうから。
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>💊 期待効果（プラセボ/ノセボ）</h3>
+      <ul>
+        <li>信念がホルモン・免疫・痛覚などの生理と主観を変える現象</li>
+        <li>心身相関の実証例</li>
+        <li>一言要約：信じる力が体を動かす</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>期待が生理を変えることを知れば、意図的に好ましい期待を設計できるから。
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>🍃 セイヴァリング</h3>
+      <ul>
+        <li>良い出来事や感情を意図的に味わい、持続・増幅させる注意の技法</li>
+        <li>一言要約：良さを伸ばして味わう</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>ポジティブ体験は自然に流れ去るため、意図的に味わうことで効果を最大化できるから。
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>🤝 社会的つながり</h3>
+      <ul>
+        <li>他者との支援・信頼・所属感</li>
+        <li>幸福と健康の強力な予測因子</li>
+        <li>一言要約：人こそ資源</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>孤独は喫煙並みの健康リスクであり、つながりは最優先の投資対象だから。
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>💪 ストレス・マインドセット</h3>
+      <ul>
+        <li>ストレスを有害か有益かと捉える信念</li>
+        <li>挑戦視点は回復とパフォーマンスを高める</li>
+        <li>一言要約：ストレスは味方にできる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>ストレスを挑戦と捉えるだけで、生理反応とパフォーマンスが好転するから。
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>🎨 環境プライミング</h3>
+      <ul>
+        <li>言葉・映像・身体姿勢など環境刺激が無意識の評価や行動を方向づける現象</li>
+        <li>一言要約：場が心を動かす</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>環境を設計すれば、意志力に頼らず自動的に好ましい反応を引き出せるから。
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>🌟 習得性楽観</h3>
+      <ul>
+        <li>出来事の原因を一時的・特定的・内外のバランスで解釈する楽観スタイルを訓練で身につける考え方</li>
+        <li>一言要約：訓練可能な希望</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>楽観は生まれつきではなく、解釈パターンの訓練で獲得できるスキルだから。
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>🔬 微習慣介入</h3>
+      <ul>
+        <li>負荷の低い小行動を反復し、累積効果で心身の指標を改善する介入設計</li>
+        <li>一言要約：小さく始めて大きく効く</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>大きな変化は挫折しやすいが、小さな習慣は続けやすく、累積で大きな成果を生むから。
+      </div>
+    </div>
+  </div>
+  
+  <div class="visual-diagram">
+    <h3>🔗 概念間の関係性</h3>
+    <div class="flow-item">
+      <span>遺伝・環境</span>
+      <span class="flow-arrow">→</span>
+      <span>ベースライン気質（初期条件）</span>
+    </div>
+    <div class="flow-item">
+      <span>ベースライン気質 × マインドセット</span>
+      <span class="flow-arrow">→</span>
+      <span>注意の向き・解釈の癖</span>
+    </div>
+    <div class="flow-item">
+      <span>注意/解釈</span>
+      <span class="flow-arrow">→</span>
+      <span>感情</span>
+      <span class="flow-arrow">→</span>
+      <span>行動</span>
+      <span class="flow-arrow">→</span>
+      <span>習慣</span>
+      <span class="flow-arrow">→</span>
+      <span>成果（幸福・健康・寿命）</span>
+    </div>
+    <div class="flow-item">
+      <span>期待効果（プラセボ/ノセボ）</span>
+      <span class="flow-arrow">→</span>
+      <span>生理反応（ホルモン・免疫）</span>
+      <span class="flow-arrow">→</span>
+      <span>主観的健康</span>
+    </div>
+    <div class="flow-item">
+      <span>ネガティビティ・バイアス</span>
+      <span class="flow-arrow">→</span>
+      <span>脅威過大視</span>
+      <span class="flow-arrow">→</span>
+      <span>ストレス増大</span>
+      <span class="flow-arrow">→</span>
+      <span>健康悪化</span>
+    </div>
+    <div class="flow-item">
+      <span>認知的再評価/感謝/セイヴァリング</span>
+      <span class="flow-arrow">→</span>
+      <span>バイアス緩和</span>
+      <span class="flow-arrow">→</span>
+      <span>ポジティブ感情増幅</span>
+    </div>
+    <div class="flow-item">
+      <span>社会的つながり</span>
+      <span class="flow-arrow">↔</span>
+      <span>ポジティブ感情・レジリエンス（双方向強化）</span>
+    </div>
+    <div class="flow-item">
+      <span>ストレス・マインドセット（脅威→挑戦）</span>
+      <span class="flow-arrow">→</span>
+      <span>パフォーマンス・回復向上</span>
+    </div>
+    <div class="flow-item">
+      <span>環境プライミング</span>
+      <span class="flow-arrow">→</span>
+      <span>自動反応の質を底上げ</span>
+      <span class="flow-arrow">→</span>
+      <span>介入の持続性向上</span>
+    </div>
+    <div class="flow-item">
+      <span>微習慣介入の反復</span>
+      <span class="flow-arrow">→</span>
+      <span>恒常的なポジティブ・シフト（安定化）</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="chapter-card">
+    <h3>📖 導入：なぜ不必要に不幸になるのか</h3>
+    <ul>
+      <li>出来事偏重という思い込みを指摘</li>
+      <li>心の枠組みが結果を左右するという仮説を提示</li>
+      <li>幸福は出来事の総和ではなく意味づけの産物</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>多くの人は外的条件を変えようとするが、内的枠組みの変更が最も効率的なレバーだと示すため。
+    </div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>🧬 証拠編1：心→体のメカニズム</h3>
+    <ul>
+      <li>期待と信念が生理・痛み・回復を変えるプラセボ/ノセボ研究</li>
+      <li>姿勢や言語が感情と行動に与える影響</li>
+      <li>心身相関の実証データを提示</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>心が体を変えるという主張を科学的に裏付け、介入の正当性を確立するため。
+    </div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>📊 証拠編2：心→行動→人生の連鎖</h3>
+    <ul>
+      <li>注意・解釈・習慣が意思決定と関係性を通じて幸福・健康・長寿に及ぼすデータ</li>
+      <li>社会的つながりの力を強調</li>
+      <li>孤独が喫煙並みの健康リスクであることを示す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>心の変化が行動を変え、行動が人生全体を変えるという因果連鎖を明確化するため。
+    </div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>🚧 障壁の分析：なぜ変われないのか</h3>
+    <ul>
+      <li>ネガティビティ・バイアスの仕組み</li>
+      <li>メディア露出が悲観を増幅する構造</li>
+      <li>固定的自己観がポジティブ・シフトを阻む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>変化を阻む心理的・環境的障壁を理解することで、対策を講じやすくするため。
+    </div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>🛠️ 実践アプローチ：具体的技法</h3>
+    <ul>
+      <li>認知的再評価、感謝、セイヴァリング、セルフトーク</li>
+      <li>価値の明確化、環境プライミング、行動活性化</li>
+      <li>各技法の手順と効果を解説</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>理論を実践に落とし込み、読者が即座に行動できるツールキットを提供するため。
+    </div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>🔥 ストレスと加齢の再定義</h3>
+    <ul>
+      <li>ストレス・マインドセットの転換がパフォーマンス・健康に与える好影響</li>
+      <li>加齢観の転換が寿命と活力に及ぼす効果</li>
+      <li>脅威→挑戦の視点転換の実践</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>ストレスと加齢という避けられない現象を、成長の機会に変える視点を提供するため。
+    </div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>🔄 統合：小さく始めて続ける設計</h3>
+    <ul>
+      <li>微習慣化、トラッキング、社会的支援で介入を持続</li>
+      <li>累積効果で人生全体をシフトさせる戦略</li>
+      <li>小さな選択の反復が大きな違いを生む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>一時的な変化ではなく、持続可能な習慣として定着させる設計原理を示すため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="example-card">
+    <h3>💼 例1：ホテル清掃員の運動マインドセット</h3>
+    <p><strong>背景：</strong>ホテル清掃員に「この仕事は運動である」と伝えた群は、何も伝えられなかった群より体重・血圧・体脂肪が改善した。</p>
+    <p><strong>示唆：</strong>同じ活動でも、それを「運動」と意味づけるだけで生理的効果が変わる。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>期待が生理を変えるプラセボ効果の実例であり、日常活動の再解釈が健康に直結することを示すから。
+    </div>
+  </div>
+  
+  <div class="example-card">
+    <h3>🎓 例2：ストレステストの再評価</h3>
+    <p><strong>背景：</strong>学生に「ストレスは挑戦への準備」と教えた群は、「ストレスは有害」と教えられた群よりテストのパフォーマンスが高く、回復も早かった。</p>
+    <p><strong>示唆：</strong>ストレスの意味づけを変えるだけで、パフォーマンスと健康が向上する。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>ストレス・マインドセットの転換が実際の成果を左右することを実証し、介入の有効性を裏付けるから。
+    </div>
+  </div>
+  
+  <div class="example-card">
+    <h3>🤝 例3：社会的つながりと長寿</h3>
+    <p><strong>背景：</strong>75年にわたるハーバード成人発達研究は、強い人間関係が幸福・健康・長寿の最強の予測因子であることを示した。</p>
+    <p><strong>示唆：</strong>人間関係への投資は、健康への最も効果的な投資である。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>長期縦断研究が社会的つながりの圧倒的な重要性を証明し、人間関係を最優先課題と位置づける根拠となるから。
+    </div>
+  </div>
+  
+  <div class="example-card">
+    <h3>🌱 例4：感謝日記の累積効果</h3>
+    <p><strong>背景：</strong>毎晩3つの良いことを書く習慣を続けた人は、6ヶ月後も幸福度が高く、抑うつが低かった。</p>
+    <p><strong>示唆：</strong>小さな習慣の反復が、長期的な心理的健康を改善する。</p>
+    <div class="reason-box">
+      <strong>理由：</strong>微習慣介入の持続的効果を示し、誰でも実行可能な行動が大きな成果を生むことを証明するから。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>「私たちの期待は、体と行動を現実に合わせて変えてしまう。」</p>
+    <small><strong>重要性：</strong>プラセボ/ノセボの核を一文で表し、心身リンクの実用的レバーを示す。</small>
+  </div>
+  
+  <div class="quote-card">
+    <p>「幸福は出来事の総和ではなく、その意味づけの産物である。」</p>
+    <small><strong>重要性：</strong>再評価の中核原理を示し、介入の焦点が「意味」だと明確化する。</small>
+  </div>
+  
+  <div class="quote-card">
+    <p>「小さな選択の反復が、やがて大きな違いを生む。」</p>
+    <small><strong>重要性：</strong>微習慣の戦略的価値を強調し、行動設計を促す。</small>
+  </div>
+  
+  <div class="quote-card">
+    <p>「強い社会的つながりは、健康と長寿の強力な保護因子である。」</p>
+    <small><strong>重要性：</strong>人間関係の投資が最優先の介入だと位置づける。</small>
+  </div>
+  
+  <div class="metric-grid">
+    <div class="metric-box">
+      <span class="number">🎯</span>
+      <span class="label">マインドセット</span>
+    </div>
+    <div class="metric-box">
+      <span class="number">💪</span>
+      <span class="label">可塑性</span>
+    </div>
+    <div class="metric-box">
+      <span class="number">🔄</span>
+      <span class="label">累積効果</span>
+    </div>
+    <div class="metric-box">
+      <span class="number">🤝</span>
+      <span class="label">つながり</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h3>✍️ アクション1：感謝を3つ書く</h3>
+    <p><strong>目的：</strong>注意をポジティブ資源に向け、ネガティビティ・バイアスを緩和する。</p>
+    <p><strong>期待効果：</strong>幸福感の即時向上、ポジティブ感情の持続、睡眠の質改善。</p>
+    <p><strong>実行方法：</strong>寝る前に今日あった良いこと3つをノートに書く（各1行でOK）。</p>
+  </div>
+  
+  <div class="action-card">
+    <h3>🔄 アクション2：最近の失敗をABCで再解釈する</h3>
+    <p><strong>目的：</strong>認知的再評価を実践し、失敗の意味を成長機会に変える。</p>
+    <p><strong>期待効果：</strong>ネガティブ感情の軽減、レジリエンスの向上、次の行動への意欲。</p>
+    <p><strong>実行方法：</strong>A（出来事）、B（自動思考）、C（結果）を書き出し、Bを「一時的・特定的・学習機会」に書き換える。</p>
+  </div>
+  
+  <div class="action-card">
+    <h3>🚶 アクション3：15分散歩して景色を味わう</h3>
+    <p><strong>目的：</strong>セイヴァリングを実践し、ポジティブ体験を増幅する。</p>
+    <p><strong>期待効果：</strong>気分の向上、ストレス軽減、注意力の回復。</p>
+    <p><strong>実行方法：</strong>スマホを置いて外を15分歩き、空・木・音など5つの良いものに意識的に注意を向ける。</p>
+  </div>
+  
+  <div class="action-card">
+    <h3>💬 アクション4：誰かに感謝を伝える</h3>
+    <p><strong>目的：</strong>社会的つながりを強化し、相互のポジティブ感情を高める。</p>
+    <p><strong>期待効果：</strong>関係性の質向上、幸福感の共有、孤独感の軽減。</p>
+    <p><strong>実行方法：</strong>今日中に1人に「ありがとう」とその理由を具体的に伝える（メッセージでもOK）。</p>
+  </div>
+  
+  <div class="action-card">
+    <h3>🎯 アクション5：ストレスを挑戦と言い換える</h3>
+    <p><strong>目的：</strong>ストレス・マインドセットを転換し、パフォーマンスを向上させる。</p>
+    <p><strong>期待効果：</strong>不安の軽減、集中力の向上、回復の促進。</p>
+    <p><strong>実行方法：</strong>次にストレスを感じたら「これは脅威ではなく挑戦だ」と声に出して言う。</p>
+  </div>
+</div>
+
+<div id="tab6" class="tab-content" role="tabpanel">
+  <ul class="book-list">
+    <li class="book-item">
+      <strong>📘 マインドセット</strong>
+      <em>著者：キャロル・S・ドゥエック</em>
+      <p>信念が学習と成果を形づくるという基盤理論を補強する。</p>
+    </li>
+    <li class="book-item">
+      <strong>📗 オプティミストはなぜ成功するか</strong>
+      <em>著者：マーティン・E・P・セリグマン</em>
+      <p>習得性楽観の訓練法が再評価と期待設計を具体化する。</p>
+    </li>
+    <li class="book-item">
+      <strong>📙 ストレスを味方にする</strong>
+      <em>著者：ケリー・マクゴニガル</em>
+      <p>ストレス・マインドセット転換のメカニズムと実践を深掘り。</p>
+    </li>
+    <li class="book-item">
+      <strong>📕 幸せがずっと続く12の行動</strong>
+      <em>著者：ソニア・リュボミアスキー</em>
+      <p>感謝・セイヴァリングなどの実証介入の選択肢と効果量を提供。</p>
+    </li>
+    <li class="book-item">
+      <strong>📔 幸福優位7つの法則</strong>
+      <em>著者：ショーン・エイカー</em>
+      <p>ポジティブ感情が行動・成果を駆動する因果を職場文脈で展開。</p>
+    </li>
+  </ul>
+</div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
