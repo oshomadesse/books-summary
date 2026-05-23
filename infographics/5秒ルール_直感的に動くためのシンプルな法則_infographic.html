@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5秒ルール - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.15);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+}
+
+.summary-item ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.summary-item li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.25rem;
+}
+
+.summary-item li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.card li:before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--accent);
+}
+
+.reason-box strong {
+  color: var(--secondary);
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.example-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 2px solid var(--accent);
+}
+
+.example-card h3 {
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.quote-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.quote-card:before {
+  content: """;
+  position: absolute;
+  left: 0.75rem;
+  top: 0.5rem;
+  font-size: 3rem;
+  opacity: 0.3;
+  line-height: 1;
+}
+
+.quote-card p {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+
+.quote-card small {
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+
+.action-card {
+  background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(240,147,251,0.15));
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--accent);
+}
+
+.action-card h3 {
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+
+.action-meta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.action-meta span {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.75rem;
+  background: white;
+  border-radius: 1rem;
+  color: var(--text-light);
+}
+
+.visual-section {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.visual-section h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+.flow-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  min-width: 100px;
+}
+
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+.number-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.countdown-visual {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.countdown-num {
+  width: 3.5rem;
+  height: 3.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.book-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.book-item {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-left: 3px solid var(--secondary);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.book-item h4 {
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+}
+
+.book-item .author {
+  color: var(--text-light);
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.book-item .relation {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 1.5rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .tabs { font-size: 0.85rem; }
+  .tab-btn { padding: 0.6rem 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 5秒ルール</h1>
+  <p class="subtitle">行動は気分より先に起こせ</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>💡 エグゼクティブ・サマリー</h2>
+  
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>やるべきと分かっているのに動けないのはなぜか？どうすれば即行動に移せるか？</p>
+  </div>
+
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    <p>衝動を感知したら5-4-3-2-1と逆算し、0で体を動かす「5秒ルール」を使う。</p>
+  </div>
+
+  <div class="summary-item">
+    <strong>🧠 Why（なぜそうなのか）</strong>
+    <p>人の脳は不確実性や不快から守るために現状維持を選び、躊躇→回避のループを起こす。逆算カウントは自動思考を一時停止し、前頭前野を関与させて意図主導の行動を起動する。小さな実行が成功体験を生み、自己効力感が高まり、次の実行が容易になる。</p>
+  </div>
+
+  <div class="summary-item">
+    <strong>🔧 How（そのためには）</strong>
+    <ul>
+      <li>行動したい場面を特定し意図を一文で定義する</li>
+      <li>衝動・迷いを察知した瞬間に5-4-3-2-1と数える</li>
+      <li>0で物理的に小さく動き出す（立つ・開く・書く）</li>
+      <li>一般的トリガー（朝起きる・通知・会議前）に事前設定する</li>
+      <li>反復・記録して成功体験を可視化する</li>
+      <li>環境と習慣を整え、迷いの余地（摩擦）を減らす</li>
+    </ul>
+  </div>
+</div>
+
+<div class="visual-section">
+  <h3>⏱️ 5秒ルールの仕組み</h3>
+  <div class="countdown-visual">
+    <div class="countdown-num">5</div>
+    <div class="countdown-num">4</div>
+    <div class="countdown-num">3</div>
+    <div class="countdown-num">2</div>
+    <div class="countdown-num">1</div>
+    <div class="countdown-num" style="background: linear-gradient(135deg, var(--accent), var(--secondary));">GO</div>
+  </div>
+  <p style="text-align: center; color: var(--text-light); font-size: 0.95rem;">衝動を感じたら即カウント → 0で体を動かす</p>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🔑 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📖 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">🎯 今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    
+    <div class="card">
+      <h3>⚡ 5秒ルール</h3>
+      <ul>
+        <li>行動の衝動が生まれたら5-4-3-2-1と逆算</li>
+        <li>0で即実行する介入法</li>
+        <li>躊躇の発生を先回りして断つ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>躊躇が生じる前の短い窓に介入し、自動ブレーキを切断する核心技術
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧩 メタ認知介入</h3>
+      <ul>
+        <li>自動思考・感情の流れを意図的行為で遮断</li>
+        <li>望ましい行動に切り替える技法</li>
+        <li>脳の自動運転を外す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>無意識の回避パターンを意識的に上書きし、主導権を取り戻すため
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🚀 起動エネルギー</h3>
+      <ul>
+        <li>物事を始める最初の抵抗を越えるエネルギー</li>
+        <li>小さく始めるほど必要量は下がる</li>
+        <li>始めのひと押しが全てを変える</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>着手の障壁を最小化することで実行確率を劇的に高める
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 先延ばしの再定義</h3>
+      <ul>
+        <li>怠惰ではなく不快情動の自己調整</li>
+        <li>感情ではなく行動で対処する</li>
+        <li>不快回避の誤作動として理解</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>自己批判から脱却し、構造的な対策を打てるようになる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🧠 前頭前野の関与</h3>
+      <ul>
+        <li>逆算カウントで前頭前野が働く</li>
+        <li>反射的回避から意図的実行に舵を切る</li>
+        <li>理性の起動スイッチ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>神経科学的に実証された、意図と行動を直結させる経路
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💪 勇気の微習慣</h3>
+      <ul>
+        <li>小さな勇気ある行動を反復</li>
+        <li>自己像を書き換える</li>
+        <li>より大胆な実行の基盤を築く</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>自己効力感の蓄積が次の挑戦を容易にし、成長の螺旋を生む
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🎭 開始儀式</h3>
+      <ul>
+        <li>着手時の定型動作を固定化</li>
+        <li>カウント→動作のパターン</li>
+        <li>意思決定コストを減らす</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>習慣化により迷いを排除し、自動的に行動を起動できる
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🌐 汎用適用</h3>
+      <ul>
+        <li>仕事・健康・人間関係・自己表現</li>
+        <li>文脈を選ばず機能</li>
+        <li>どこでも効く万能ツール</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>単一の技法で人生の複数領域を同時に改善できる効率性
+      </div>
+    </div>
+
+  </div>
+
+  <div class="visual-section">
+    <h3>🔗 概念間の関係性</h3>
+    <div class="flow-diagram">
+      <div class="flow-box">刺激</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">躊躇</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">回避</div>
+    </div>
+    <p style="text-align: center; margin: 1rem 0; font-weight: bold; color: var(--accent);">↓ 5秒カウントで遮断 ↓</p>
+    <div class="flow-diagram">
+      <div class="flow-box">即行動</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">成功体験</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">自己効力感↑</div>
+    </div>
+    <ul style="margin-top: 1rem; padding-left: 1.5rem; font-size: 0.95rem;">
+      <li>逆算カウント → 前頭前野の関与↑ → 衝動・不安の勢い↓ → 意図主導の実行</li>
+      <li>小さな実行 → 成功体験 → 自己効力感↑ → 次の実行が容易 → 実行頻度↑</li>
+      <li>先延ばし＝情動調整 → 5秒で開始 → 不快の耐性↑ → 作業継続時間↑</li>
+      <li>開始儀式の反復 → 習慣化 → 意思決定コスト↓ → 生産性・自信↑</li>
+    </ul>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  
+  <div class="chapter-card">
+    <h3>📌 導入：著者の挫折体験と5秒ルール発見の経緯</h3>
+    <ul>
+      <li>著者自身の失業・借金・無気力の底からの出発</li>
+      <li>ロケット発射のカウントダウンを見て着想</li>
+      <li>翌朝5-4-3-2-1で起床に成功し人生が変わり始めた</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>理論ではなく実体験から生まれた手法であり、誰でも再現可能な普遍性を示す
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🔬 原理：5-4-3-2-1の仕組み</h3>
+    <ul>
+      <li>躊躇の遮断：5秒以内に行動すれば脳の回避回路が起動しない</li>
+      <li>前頭前野の関与：逆算という課題が理性的判断を呼び起こす</li>
+      <li>起動エネルギー：小さな一歩が慣性を生み継続を容易にする</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>神経科学・行動心理学の裏付けがあり、なぜ効くのかを理解することで信頼と継続が生まれる
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>⚙️ 適用1：先延ばし対策と生産性</h3>
+    <ul>
+      <li>着手の科学：最初の5秒が全てを決める</li>
+      <li>開始儀式の設計：カウント→物理動作を定型化</li>
+      <li>環境整備：摩擦を減らし迷いの余地を消す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>先延ばしは時間管理ではなく感情管理の問題であり、5秒ルールが直接介入する
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>💎 適用2：自信と勇気</h3>
+    <ul>
+      <li>小さな勇気の反復で自己像を更新</li>
+      <li>失敗への恐れを行動で上書き</li>
+      <li>自己効力感の蓄積が大胆さを育てる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>自信は思考ではなく行動の積み重ねから生まれ、5秒ルールがその起点となる
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🏃 適用3：健康習慣</h3>
+    <ul>
+      <li>運動・食事・睡眠の着手に5秒ルールを適用</li>
+      <li>依存トリガーの瞬間に介入し代替行動へ</li>
+      <li>健康は意志力ではなく開始の技術</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>健康行動の最大の障壁は着手であり、5秒で突破すれば継続は自然に続く
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🤝 適用4：人間関係・コミュニケーション</h3>
+    <ul>
+      <li>難しい会話・衝突回避の突破</li>
+      <li>感謝・謝罪・依頼を5秒で実行</li>
+      <li>関係性の質は小さな勇気の積み重ね</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>人間関係の改善は行動の問題であり、5秒ルールが心理的障壁を取り除く
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🛠️ 実践ガイド：よくある誤解と挫折時のリカバリー</h3>
+    <ul>
+      <li>完璧主義の罠：小さく始めることの重要性</li>
+      <li>挫折は失敗ではなくデータ：次の設計に活かす</li>
+      <li>環境・記録の工夫で継続を支える</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>実践の障害を事前に理解し、リカバリー戦略を持つことで長期的成功を確保する
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>🌟 結語：動けば変わる</h3>
+    <ul>
+      <li>シンプルな一手が人生の軌道を変える</li>
+      <li>5秒ルールは人生のあらゆる場面で使える</li>
+      <li>今この瞬間から始められる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>複雑な理論ではなく即実行可能な技術であり、誰もが今日から人生を変えられる
+    </div>
+  </div>
+
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  
+  <div class="example-card">
+    <h3>🌅 例1：朝の起床</h3>
+    <p><strong>背景：</strong>アラームを止めて二度寝してしまう習慣を変えたい。</p>
+    <p><strong>適用：</strong>アラームが鳴った瞬間に5-4-3-2-1と数え、0で足を床につける。</p>
+    <p><strong>示唆：</strong>起床後の時間が増え、朝のルーティンが確立され、一日の生産性が向上した。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>最も抵抗の大きい朝の瞬間でも5秒ルールが機能し、一日の流れ全体を変える起点となる
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>💼 例2：重要な電話・メール</h3>
+    <p><strong>背景：</strong>難しい会話や依頼を先延ばしにし、機会を逃していた。</p>
+    <p><strong>適用：</strong>「今やろう」と思った瞬間に5-4-3-2-1と数え、0で電話を取る・メールを開く。</p>
+    <p><strong>示唆：</strong>迅速な対応が信頼を生み、ビジネスチャンスが広がった。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>人間関係・仕事の成果は行動のタイミングで決まり、5秒ルールが決断を即実行に変える
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🏋️ 例3：運動習慣の開始</h3>
+    <p><strong>背景：</strong>ジムに行く気が起きず、健康目標が達成できない。</p>
+    <p><strong>適用：</strong>「行こうかな」と思った瞬間に5-4-3-2-1と数え、0でウェアを着る・玄関に向かう。</p>
+    <p><strong>示唆：</strong>着手さえすれば継続は容易になり、3ヶ月で習慣化に成功した。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>健康行動の障壁は意志力ではなく着手であり、5秒で突破すれば身体が自然に動く
+    </div>
+  </div>
+
+  <div class="example-card">
+    <h3>🎤 例4：自己表現・発言</h3>
+    <p><strong>背景：</strong>会議で意見があっても躊躇して発言できず、後悔していた。</p>
+    <p><strong>適用：</strong>発言したいと思った瞬間に5-4-3-2-1と数え、0で手を挙げる・口を開く。</p>
+    <p><strong>示唆：</strong>発言が評価され、自信とキャリアの機会が増えた。</p>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>自己表現の恐れは行動で克服でき、小さな勇気が自己像を書き換える
+    </div>
+  </div>
+
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  
+  <div class="quote-card">
+    <p>行動の衝動を感じたら5秒以内に動け。</p>
+    <small><strong>重要性：</strong>躊躇が生じる前の短い窓に介入する核心を示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>気分は行動の後からついてくる。</p>
+    <small><strong>重要性：</strong>モチベーション待ちをやめ、先に動く発想転換を促す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>小さな勇気が自信を積み上げる。</p>
+    <small><strong>重要性：</strong>継続的な微小実行が自己効力感を強化する理由を示す。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>先延ばしは感情の問題であり時間管理ではない。</p>
+    <small><strong>重要性：</strong>感情調整への直接介入としてルールを位置づける。</small>
+  </div>
+
+  <p style="text-align: center; color: var(--text-light); margin-top: 1rem; font-size: 0.9rem;">※ 上記は要旨として記載</p>
+
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  
+  <div class="action-card">
+    <h3>🎯 アクション1：優先タスクを5秒で開始し25分集中</h3>
+    <p>今日やるべき最優先タスクを1つ選び、5-4-3-2-1と数えて0でファイルを開く・ペンを取る。タイマーを25分セットして集中作業。</p>
+    <div class="action-meta">
+      <span>⏱️ 所要時間：30分</span>
+      <span>🎯 目的：着手の障壁を体感的に突破</span>
+      <span>✨ 期待効果：生産性向上・自己効力感の獲得</span>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>📧 アクション2：迷っていた連絡を5秒で送信し整理20分</h3>
+    <p>先延ばしにしていたメール・電話・メッセージを1件選び、5-4-3-2-1と数えて0で送信ボタンを押す。その後20分で受信箱を整理。</p>
+    <div class="action-meta">
+      <span>⏱️ 所要時間：25分</span>
+      <span>🎯 目的：人間関係の摩擦を解消</span>
+      <span>✨ 期待効果：信頼構築・心理的負担の軽減</span>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>📝 アクション3：妨げ要因と対策を15分で書き出す</h3>
+    <p>5秒ルールを使いたい場面を3つリストアップし、それぞれの妨げ要因（環境・感情・習慣）と対策を書き出す。明日の実行計画を立てる。</p>
+    <div class="action-meta">
+      <span>⏱️ 所要時間：15分</span>
+      <span>🎯 目的：実行の設計と障害の事前除去</span>
+      <span>✨ 期待効果：成功確率の向上・継続の基盤構築</span>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <h3>🏃 アクション4：今すぐ5分間の運動を開始</h3>
+    <p>5-4-3-2-1と数えて0で立ち上がり、その場で5分間のストレッチ・スクワット・ウォーキングを実行。</p>
+    <div class="action-meta">
+      <span>⏱️ 所要時間：5分</span>
+      <span>🎯 目的：健康行動の着手体験</span>
+      <span>✨ 期待効果：身体活性化・習慣化の第一歩</span>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top: 2rem;">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📚 関連書籍</h2>
+  <div class="book-list">
+    
+    <div class="book-item">
+      <h4>Atomic Habits</h4>
+      <p class="author">著者：James Clear</p>
+      <p class="relation"><strong>関連性：</strong>小さな行動の設計と環境づくりが5秒ルールの定着を補完する。</p>
+    </div>
+
+    <div class="book-item">
+      <h4>Eat That Frog!</h4>
+      <p class="author">著者：Brian Tracy</p>
+      <p class="relation"><strong>関連性：</strong>先延ばし克服と着手優先の実践法が共鳴する。</p>
+    </div>
+
+    <div class="book-item">
+      <h4>The Now Habit</h4>
+      <p class="author">著者：Neil Fiore</p>
+      <p class="relation"><strong>関連性：</strong>先延ばしを感情面から再定義し、開始の儀式化と相性が良い。</p>
+    </div>
+
+    <div class="book-item">
+      <h4>The War of Art</h4>
+      <p class="author">著者：Steven Pressfield</p>
+      <p class="relation"><strong>関連性：</strong>抵抗の正体を捉え、日々の突破行動を促す思想的基盤を提供する。</p>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+<script>
+// タブ切り替え
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
