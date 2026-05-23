@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超整理力 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  color: var(--secondary);
+  margin-bottom: 0.3rem;
+  font-size: 0.95rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  margin: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--text-light);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 1.5rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(240,147,251,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.8rem;
+}
+.action-card {
+  background: var(--card-bg);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+.flow-step .num {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+.flow-step span {
+  flex: 1;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+}
+.metric-box .value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.metric-box .label {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.book-card h4 {
+  font-size: 0.95rem;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+.book-card .author {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+@media (max-width: 600px) {
+  header h1 { font-size: 1.5rem; }
+  .tabs { margin: 0.5rem; }
+  .tab-btn { font-size: 0.8rem; padding: 0.6rem 0.75rem; min-width: 100px; }
+  .card { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 超整理力</h1>
+  <p>目的・基準・可視化で本質に一点集中させる設計活動</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 エグゼクティブ・サマリー</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>どうすれば複雑な情報や組織をシンプルにし、成果の質と速度を同時に高められるか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>目的中心の『超整理』を行い、俯瞰→構造化→基準化→可視化→共有の順序で本質に一点集中させる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <p>目的と制約を先に固定し、情報の意味づけと引き算を徹底するとノイズが除去され判断の再現性が向上する。著者の多数のブランド/組織変革案件で有効性が示されている。</p>
+  </div>
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    <p>1) 目的を一文化 2) 全体を紙1枚で俯瞰 3) 分類・タグ設計 4) 捨てる/残す基準を定義 5) コンセプトを一点化しビジュアル化 6) 会議・空間・資料を整える 7) 実行と検証で基準を更新</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card">
+    <h3>🧭 目的の一文化</h3>
+    <ul>
+      <li>プロジェクトの存在理由と成功状態を短い一文で言語化する</li>
+      <li>以後の判断の基点になる</li>
+      <li>一言要約: 方角を決める羅針盤</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> すべての意思決定の軸となり、迷いを排除して判断速度を上げるため。目的が曖昧だと整理の基準も曖昧になる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗺️ 俯瞰マップ</h3>
+    <ul>
+      <li>関係者・情報・制約・成果を一枚に可視化</li>
+      <li>全体像とボトルネックを捉える図</li>
+      <li>一言要約: 鳥の目で全体を見る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 部分最適に陥らず、全体の構造と依存関係を把握することで、本質的な課題を発見できるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏗️ 構造化と分類</h3>
+    <ul>
+      <li>情報を意味単位に分解</li>
+      <li>タグや階層で束ねて関係性を明確にする</li>
+      <li>一言要約: 整頓の骨組み</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 情報の検索性と再利用性が高まり、認知負荷が下がる。構造がないと情報は散乱し続ける。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📏 基準化（ルール設計）</h3>
+    <ul>
+      <li>何を残し何を捨てるかの評価軸を設ける</li>
+      <li>命名・書式など統一ルールを定義</li>
+      <li>一言要約: 迷わない物差し</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 判断の再現性と品質が向上し、チーム全体で一貫した行動が取れるようになるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✂️ 引き算のデザイン</h3>
+    <ul>
+      <li>目的に不要な要素を徹底的に除去</li>
+      <li>焦点と一貫性を際立たせる</li>
+      <li>一言要約: 減らして強くする</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> ノイズを削ることで本質が際立ち、伝達力と実行力が同時に高まるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 一点コンセプト</h3>
+    <ul>
+      <li>価値提案を最小限の言葉・記号へ圧縮</li>
+      <li>全活動の中心点に据える</li>
+      <li>一言要約: すべての中心点</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 全員が同じ一点を見ることで、組織のベクトルが揃い、意思決定と実行が加速するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👀 現場観察</h3>
+    <ul>
+      <li>実際の利用/運用の現場に赴く</li>
+      <li>事実に基づいて仮説を検証・修正</li>
+      <li>一言要約: 事実から学ぶ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 机上の空論を防ぎ、実態に即した基準と施策を設計できるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💬 コミュニケーションデザイン</h3>
+    <ul>
+      <li>誰に・何を・どう伝えるかを設計</li>
+      <li>理解と合意形成を加速する</li>
+      <li>一言要約: 伝わる仕組み</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 情報の受け手に最適化することで、誤解と手戻りを減らし、プロジェクト速度が上がるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚧 制約条件の明確化</h3>
+    <ul>
+      <li>時間・予算・法規・資産など動かせない条件を先に固定</li>
+      <li>解き方を限定する</li>
+      <li>一言要約: 境界線を描く</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 制約を先に認識することで、無駄な検討を排除し、実現可能な解に集中できるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 アラインメント（意識合わせ）</h3>
+    <ul>
+      <li>関係者が同じ目標・基準・言葉で認識を揃える</li>
+      <li>プロセスとして設計する</li>
+      <li>一言要約: 全員で同じ一点を見る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 認識のズレが最大のロスを生む。揃えることで組織の力が最大化されるため。
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="margin-bottom:1rem;color:var(--primary);">🔄 概念間の関係性フロー</h3>
+    <div class="flow-step"><div class="num">1</div><span>目的の一文化</span></div>
+    <div class="flow-step"><div class="num">2</div><span>制約条件の明確化</span></div>
+    <div class="flow-step"><div class="num">3</div><span>俯瞰マップ</span></div>
+    <div class="flow-step"><div class="num">4</div><span>構造化・分類</span></div>
+    <div class="flow-step"><div class="num">5</div><span>基準化</span></div>
+    <div class="flow-step"><div class="num">6</div><span>引き算のデザイン</span></div>
+    <div class="flow-step"><div class="num">7</div><span>一点コンセプト</span></div>
+    <div class="flow-step"><div class="num">8</div><span>可視化・共有</span></div>
+    <div class="flow-step"><div class="num">9</div><span>アラインメント</span></div>
+    <div class="flow-step"><div class="num">10</div><span>実行・検証</span></div>
+    <p style="margin-top:1rem;font-size:0.85rem;color:var(--text-light);">※ 現場観察 → 本質仮説の修正 → 基準更新（PDCAが回る）</p>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-box">
+      <span class="value">↓</span>
+      <span class="label">調整コスト</span>
+    </div>
+    <div class="metric-box">
+      <span class="value">↑</span>
+      <span class="label">意思決定速度</span>
+    </div>
+    <div class="metric-box">
+      <span class="value">↑</span>
+      <span class="label">品質の再現性</span>
+    </div>
+    <div class="metric-box">
+      <span class="value">↓</span>
+      <span class="label">認知負荷</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>📖 整理の定義と目的</h3>
+    <ul>
+      <li>整理は片付けではなく"意味づけの設計"</li>
+      <li>目的を言語化し、全活動の基準点を定める</li>
+      <li>減らすことではなく、本質に集中させる行為</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> この章で整理の本質を再定義することで、以降の具体的手法が「なぜ必要か」が明確になる。目的なき整理は単なる片付けに終わる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 頭と情報の整理</h3>
+    <ul>
+      <li>俯瞰→構造化→基準化の順序で思考と情報を整える</li>
+      <li>捨てる基準を先に決め、引き算を実行</li>
+      <li>情報の意味づけと関係性の可視化が鍵</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 思考と情報は表裏一体。正しい順序で整理することで、判断の質と速度が同時に向上する。順序を間違えると混乱が増す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏢 場の整理（会議・空間・資料）</h3>
+    <ul>
+      <li>会議体・資料形式・物理空間を設計</li>
+      <li>認知負荷を下げて合意形成を早める</li>
+      <li>環境が思考と行動の質を左右する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 個人の整理だけでは組織は変わらない。場を整えることで、チーム全体の生産性と創造性が引き出される。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎨 一点コンセプトと可視化</h3>
+    <ul>
+      <li>コアを一言/一枚/一図に凝縮</li>
+      <li>誰もが同じ"一点"を見る状態をつくる</li>
+      <li>ビジュアル化で伝達効率を最大化</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 言葉だけでは伝わらない。視覚化することで認識のズレが減り、組織のベクトルが揃う。一点集中が力を生む。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 実践プロセスと事例</h3>
+    <ul>
+      <li>現場観察と検証で基準を磨く</li>
+      <li>うまくいかない典型（目的不明、順序違い、可視化不足）への対処</li>
+      <li>PDCAを回して基準を更新し続ける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由:</strong> 理論だけでは実務で使えない。実例と失敗パターンを知ることで、自分の現場に適用できる。継続的改善が成果を生む。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>🏪 事例1: ブランドリニューアルプロジェクト</h3>
+    <ul>
+      <li><strong>背景:</strong> 複数部署が異なる方向を向き、意思決定が遅延</li>
+      <li><strong>施策:</strong> 目的を一文化し、俯瞰マップで関係者と制約を可視化</li>
+      <li><strong>結果:</strong> 会議時間が半減、プロジェクト期間が30%短縮</li>
+      <li><strong>示唆:</strong> 全員が同じ一点を見ることで、調整コストが劇的に下がる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 目的と俯瞰の力を実証。組織の複雑さは、整理の順序と可視化で解決できることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📂 事例2: 情報管理システムの再設計</h3>
+    <ul>
+      <li><strong>背景:</strong> 膨大な資料が散乱し、必要な情報が見つからない</li>
+      <li><strong>施策:</strong> 分類タグを5つに絞り、捨てる基準を明確化</li>
+      <li><strong>結果:</strong> 検索時間が1/3に、資料の再利用率が2倍に</li>
+      <li><strong>示唆:</strong> 基準化と引き算が情報の価値を高める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 情報は量ではなく質。基準を持つことで、情報が資産に変わることを実証。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 事例3: 新規事業の立ち上げ</h3>
+    <ul>
+      <li><strong>背景:</strong> アイデアは多いが、何に集中すべきか不明</li>
+      <li><strong>施策:</strong> 一点コンセプトを定義し、全施策をそこに紐づけ</li>
+      <li><strong>結果:</strong> チームの迷いが消え、初期ユーザー獲得が目標の150%達成</li>
+      <li><strong>示唆:</strong> 一点集中が実行力と成果を最大化する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 選択と集中の威力。コンセプトが明確だと、全員が自律的に動けることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏠 事例4: オフィス空間の再設計（メタファー）</h3>
+    <ul>
+      <li><strong>背景:</strong> 物が多く、集中できない環境</li>
+      <li><strong>施策:</strong> 目的別にゾーンを分け、不要物を徹底排除</li>
+      <li><strong>結果:</strong> 社員の集中度と満足度が向上、創造的なアイデアが増加</li>
+      <li><strong>示唆:</strong> 物理空間の整理が思考の整理に直結する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）:</strong> 環境が人の行動と思考を規定する。場の整理が組織文化を変えることを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>「整理とは、『目的に資するものだけを活かす設計』である。」</p>
+    <small><strong>なぜ重要か:</strong> 捨てること自体を目的化せず、意思決定の軸を明確に示すから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「正しい順番で考えれば、複雑さは自然に減る。」</p>
+    <small><strong>なぜ重要か:</strong> プロセス重視で再現性の高い成果を導く実務指針になるから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「全員が同じ一点を見た瞬間、組織は強くなる。」</p>
+    <small><strong>なぜ重要か:</strong> アラインメントの効果を端的に示し、行動の集中と速度を生むから。</small>
+  </div>
+
+  <div class="card">
+    <h3>💭 補足: 引用の背景</h3>
+    <ul>
+      <li>これらの言葉は著者の実務経験から抽出された本質</li>
+      <li>単なる理論ではなく、現場で検証された原則</li>
+      <li>整理の「目的」「順序」「一点集中」という3つの核心を表現</li>
+    </ul>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>✍️ アクション1: 目的を一文で書く</h4>
+    <p><span class="badge">15分</span></p>
+    <p><strong>目的:</strong> 現在取り組んでいるプロジェクトや業務の存在理由を明確にする</p>
+    <p><strong>方法:</strong> 「このプロジェクトは〇〇のために存在し、成功とは△△の状態である」という形式で一文にまとめる</p>
+    <p><strong>期待効果:</strong> 判断の軸が明確になり、優先順位の迷いが減る。チームで共有すれば認識のズレが減る</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🗂️ アクション2: 案件の関係者と制約を列挙</h4>
+    <p><span class="badge">20分</span></p>
+    <p><strong>目的:</strong> プロジェクトの全体像と動かせない条件を把握する</p>
+    <p><strong>方法:</strong> A4用紙に「関係者」「制約（時間・予算・法規など）」「成果物」を書き出し、関係性を線で結ぶ</p>
+    <p><strong>期待効果:</strong> ボトルネックと依存関係が見え、無駄な検討を避けられる。俯瞰力が身につく</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🏷️ アクション3: 情報の分類タグを5個決める</h4>
+    <p><span class="badge">15分</span></p>
+    <p><strong>目的:</strong> 散乱している情報を整理する基準を作る</p>
+    <p><strong>方法:</strong> 自分の業務で扱う情報を5つのカテゴリーに分類し、タグ名を決める（例: 顧客、企画、進行中、完了、参考）</p>
+    <p><strong>期待効果:</strong> 情報の検索性が上がり、認知負荷が下がる。基準化の第一歩になる</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🗑️ アクション4: 今日1つ「捨てる」を決める</h4>
+    <p><span class="badge">10分</span></p>
+    <p><strong>目的:</strong> 引き算の感覚を体験する</p>
+    <p><strong>方法:</strong> デスク・PC・スケジュールから、目的に合わない1つを選んで削除または保留にする</p>
+    <p><strong>期待効果:</strong> 引き算の効果を実感し、習慣化のきっかけになる</p>
+  </div>
+
+  <div class="action-card">
+    <h4>👥 アクション5: チームで「一点」を確認する</h4>
+    <p><span class="badge">30分</span></p>
+    <p><strong>目的:</strong> チーム全員が同じ目標を見ているか確認する</p>
+    <p><strong>方法:</strong> 次の会議で「このプロジェクトの一番大事なことは何か？」を各自1分で発表し、ズレを確認</p>
+    <p><strong>期待効果:</strong> 認識のズレが可視化され、アラインメントの重要性を体感できる</p>
+  </div>
+
+  <div class="card" style="margin-top:1.5rem;">
+    <h3>📚 関連書籍</h3>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 「超」整理法</h4>
+    <p class="author">著者: 野口悠紀雄</p>
+    <p class="relation"><strong>関連性:</strong> 情報整理の原理と実務技法の対比・補完になる。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 イシューからはじめよ</h4>
+    <p class="author">著者: 安宅和人</p>
+    <p class="relation"><strong>関連性:</strong> 本質（イシュー）への集中が"一点コンセプト"と響き合う。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 デザインのデザイン</h4>
+    <p class="author">著者: 原研哉</p>
+    <p class="relation"><strong>関連性:</strong> シンプルの思想と可視化の力を理論面から深められる。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 伝えることから始めよう</h4>
+    <p class="author">著者: 佐藤可士和</p>
+    <p class="relation"><strong>関連性:</strong> 同著者によるコミュニケーション設計の実践が学べる。</p>
+  </div>
+
+  <div class="book-card">
+    <h4>📖 ゼロ秒思考</h4>
+    <p class="author">著者: 赤羽雄二</p>
+    <p class="relation"><strong>関連性:</strong> A4メモで思考を可視化する訓練が"超整理"の基礎体力になる。</p>
+  </div>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab-btn');
+const contents = document.querySelectorAll('.tab-content');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    
+    tabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    contents.forEach(c => c.classList.remove('active'));
+    
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    document.getElementById(target).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
