@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>言ってはいけない - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #e0e0e0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 6px solid var(--accent);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  border-bottom: 2px solid var(--border);
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  color: var(--primary);
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, #f093fb22, #667eea22);
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  font-style: italic;
+  border-left: 3px solid var(--accent);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.15rem;
+  color: var(--secondary);
+  margin-bottom: 0.75rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.35rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+.example-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card {
+  background: linear-gradient(135deg, #667eea11, #764ba211);
+  border-left: 5px solid var(--secondary);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+.quote-card small {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--accent);
+}
+.action-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.action-card .meta {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.visual-section {
+  margin: 2rem 0;
+}
+.visual-section h3 {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+}
+.flow-diagram {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+.flow-item .arrow {
+  margin: 0 0.75rem;
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.book-item h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.book-item .author {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-item .relation {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    white-space: nowrap;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📖 言ってはいけない</h1>
+  <p>タブーを避けず、データで現実を直視し、公正を設計する</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      人の違いと社会の不平等はどこから生まれ、どう扱うべきか？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      能力・気質の生得的差と環境・制度・市場の相互作用で多くが説明できる。公正は「事実」を受け入れた上で設計する。
+    </div>
+    <div class="summary-item">
+      <strong>🔬 根拠</strong>
+      双生児・養子研究が示す高い遺伝率、性差・犯罪・美貌・教育効果の統計、相関と因果の識別。
+    </div>
+    <div class="summary-item">
+      <strong>🤔 Why（なぜそうなのか）</strong>
+      物語主義は善意でも誤配分を招き、格差や不信を増幅するため。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      データで原因を分解し、(1)再分配と保険でリスクを社会化、(2)機会の質を底上げ、(3)差別と区別を切り分け、(4)介入は限界効果と副作用で評価する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="font-size:1.4rem; color:var(--secondary); margin-bottom:1rem;">🧠 主要概念の詳細</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔬 行動遺伝学</h3>
+        <ul>
+          <li>行動や能力の個人差に対して遺伝と環境がどれほど寄与するかを推定する学問</li>
+          <li>双生児・養子研究が中核手法</li>
+          <li>一言要約：<strong>違いの源泉を因数分解</strong></li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>個人差の起源を科学的に理解し、政策や教育の限界と可能性を見極めるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📊 遺伝率</h3>
+        <ul>
+          <li>集団内の個人差のうち遺伝要因で説明できる割合</li>
+          <li>個人の運命確定ではなく、集団統計の指標</li>
+          <li>一言要約：<strong>集団の説明力</strong></li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>遺伝率を誤解すると決定論に陥り、環境改善の余地を見失うため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔗 相関と因果</h3>
+        <ul>
+          <li>二つの変数が一緒に動くこと（相関）は原因関係を意味しない</li>
+          <li>交絡・選択バイアスに注意が必要</li>
+          <li>一言要約：<strong>一緒≠原因ではない</strong></li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>相関を因果と誤読すると、無効な介入に資源を浪費し、副作用を招くため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚧️ 性差（平均差と分散差）</h3>
+        <ul>
+          <li>男女で平均傾向や分散が異なる特性がある</li>
+          <li>平均差が小さくても分散差で上位・下位に男女偏りが生じる</li>
+          <li>一言要約：<strong>分布の違いが結果を左右</strong></li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>分散差を無視すると、職域や報酬の偏りを差別と誤認し、適切な対策を逃すため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💰 市場による選別</h3>
+        <ul>
+          <li>市場は需要と供給を通じて特性（能力・容姿・信用）に価格をつける</li>
+          <li>配分を行うメカニズム</li>
+          <li>一言要約：<strong>価格で配分</strong></li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>市場の選別機能を理解しないと、格差の源泉を見誤り、再分配設計が空転するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚖️ 差別と区別</h3>
+        <ul>
+          <li>差別は不当な扱い、区別は統計的・機能的な差異の取り扱い</li>
+          <li>政策は両者の峻別が必要</li>
+          <li>一言要約：<strong>不当と正当の線引き</strong></li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>混同すると、正当な区別を禁じて効率を損なうか、不当な差別を放置して公正を失うため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📉 介入の限界効果</h3>
+        <ul>
+          <li>教育や福祉などの施策は投下資源ごとに逓減・副作用がある</li>
+          <li>費用対効果で最適化すべき</li>
+          <li>一言要約：<strong>効く所に効かせる</strong></li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>限界効果を無視すると、資源を薄く広げて誰も救えないか、過剰介入で逆効果を生むため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⚠️ 若年男性リスク</h3>
+        <ul>
+          <li>犯罪・暴力・リスク行動は若い男性に集中する統計的事実</li>
+          <li>分布特性が治安や保険設計に影響</li>
+          <li>一言要約：<strong>集中する危険</strong></li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>リスク集中を認識しないと、予防策や保険料設定が非効率になり、社会コストが増大するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔄 遺伝と環境の相互作用/相関</h3>
+        <ul>
+          <li>遺伝的素質が環境を選び取り、環境が素質の発現を強める</li>
+          <li>単純な二分法は不十分</li>
+          <li>一言要約：<strong>素質が場を呼ぶ</strong></li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>相互作用を見落とすと、環境改善の効果を過大評価し、介入の失敗を個人のせいにするため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📖 物語と制度</h3>
+        <ul>
+          <li>「努力すれば報われる」等の物語は規範を支えるが、過信は失敗の個人化を招く</li>
+          <li>制度は事実準拠で設計</li>
+          <li>一言要約：<strong>物語は甘く、制度は冷静に</strong></li>
+        </ul>
+        <div class="reason">
+          <strong>理由：</strong>物語に頼ると、構造的問題を個人の責任に転嫁し、制度改革の機会を逃すため。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-section">
+      <h3>🔗 概念間の関係性</h3>
+      <div class="flow-diagram">
+        <div class="flow-item">
+          <span>生得的差</span>
+          <span class="arrow">→</span>
+          <span>教育到達・職業選択の分布</span>
+          <span class="arrow">→</span>
+          <span>所得格差</span>
+        </div>
+        <div class="flow-item">
+          <span>遺伝率が高い領域ほど</span>
+          <span class="arrow">→</span>
+          <span>家庭教育の平均的効果は限定的</span>
+        </div>
+        <div class="flow-item">
+          <span>性差（分散差）</span>
+          <span class="arrow">→</span>
+          <span>上位/下位の過剰代表</span>
+          <span class="arrow">→</span>
+          <span>産業別・役職別の男女比偏り</span>
+        </div>
+        <div class="flow-item">
+          <span>若年男性比率↑</span>
+          <span class="arrow">→</span>
+          <span>犯罪率・事故率↑</span>
+          <span class="arrow">→</span>
+          <span>警備/保険コスト↑</span>
+        </div>
+        <div class="flow-item">
+          <span>美貌や社会資本</span>
+          <span class="arrow">→</span>
+          <span>市場での評価↑</span>
+          <span class="arrow">→</span>
+          <span>所得/機会の格差拡大</span>
+        </div>
+        <div class="flow-item">
+          <span>相関の誤読</span>
+          <span class="arrow">→</span>
+          <span>誤った介入設計</span>
+          <span class="arrow">→</span>
+          <span>効率低下と逆効果</span>
+        </div>
+        <div class="flow-item">
+          <span>遺伝×環境の相互作用</span>
+          <span class="arrow">→</span>
+          <span>早期支援の限界と可能性の両立</span>
+        </div>
+        <div class="flow-item">
+          <span>差別と区別の混同</span>
+          <span class="arrow">→</span>
+          <span>規制の過不足</span>
+          <span class="arrow">→</span>
+          <span>公正感の毀損</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="font-size:1.4rem; color:var(--secondary); margin-bottom:1rem;">📚 各章の要約</h2>
+    
+    <div class="chapter-card">
+      <h3><span class="badge">導入</span>タブーに向き合う姿勢</h3>
+      <ul>
+        <li>社会で"言ってはいけない"とされるテーマ（知能・性差・犯罪・移民・美貌）を扱う</li>
+        <li>感情でなくデータで議論する姿勢を宣言</li>
+        <li>タブー視が問題解決を妨げている現状を指摘</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>タブーを避けると、現実を直視できず、誤った政策や偏見が温存されるため。読者に認知の準備をさせる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3><span class="badge">基礎編</span>行動遺伝学と統計思考</h3>
+      <ul>
+        <li>遺伝率、双生児/養子研究、相関と因果の基礎を整理</li>
+        <li>"個人の決定論ではない集団指標"であることを強調</li>
+        <li>統計的思考の重要性と誤解の危険性を解説</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>基礎知識なしでは、後続の議論を誤読し、決定論や差別に陥るため。科学的リテラシーの土台を築く。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3><span class="badge">応用1</span>教育と能力の分布</h3>
+      <ul>
+        <li>教育介入の平均効果と限界を検証</li>
+        <li>親の養育の影響の過大視を修正</li>
+        <li>機会設計の現実的到達点を示す</li>
+        <li>遺伝率の高い領域での教育の役割を再定義</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>教育万能論は資源の誤配分と失敗の個人化を招く。限界を知ることで、効果的な支援設計が可能になる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3><span class="badge">応用2</span>性差と労働市場</h3>
+      <ul>
+        <li>平均差/分散差が職域・報酬に与える影響を分析</li>
+        <li>美貌や選好の市場価格化を検証</li>
+        <li>差別と統計的区別の線引きを議論</li>
+        <li>政策介入の効果と副作用を評価</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>性差を無視すると、格差の原因を誤認し、効果のない規制や逆差別を生む。分布の理解が公正な制度設計の前提。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3><span class="badge">応用3</span>犯罪・移民・社会秩序</h3>
+      <ul>
+        <li>若年男性リスクの統計的事実を提示</li>
+        <li>コミュニティの秩序維持コストを分析</li>
+        <li>統計と偏見の線引きを議論</li>
+        <li>移民政策と治安の関係を検証</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>リスク分布を無視すると、予防策が非効率になり、偏見と事実の区別がつかなくなる。データに基づく政策が必要。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3><span class="badge">統合</span>制度設計の枠組み</h3>
+      <ul>
+        <li>物語主義の誘惑を退ける</li>
+        <li>制度設計（再分配、保険、規制、ターゲティング）を限界効果と副作用で評価</li>
+        <li>事実準拠の政策立案フレームワークを提示</li>
+        <li>リスク配分と公正の両立を探る</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>物語に頼ると、構造的問題を個人化し、制度改革の機会を逃す。冷静な評価が持続的な連帯の基盤。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3><span class="badge">結語</span>事実直視と連帯</h3>
+      <ul>
+        <li>事実を直視することは冷酷さではなく、持続的な連帯の前提</li>
+        <li>読者の認知アップデートを促す</li>
+        <li>データと倫理の両立を呼びかける</li>
+      </ul>
+      <div class="reason">
+        <strong>理由：</strong>事実回避は短期的には優しく見えるが、長期的には不信と格差を拡大する。真の公正は現実認識から始まる。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="font-size:1.4rem; color:var(--secondary); margin-bottom:1rem;">💡 具体例</h2>
+    
+    <div class="example-card">
+      <h3>🧬 例1：双生児研究が示す遺伝の影響</h3>
+      <p><strong>背景：</strong>一卵性双生児は遺伝子を100%共有し、二卵性は平均50%。別々に育てられた一卵性双生児でも、知能・性格・嗜好が驚くほど似ている。</p>
+      <p><strong>示唆：</strong>環境が異なっても遺伝的素質が行動や能力に強く影響することを示す。親の養育スタイルの効果は限定的。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>教育や子育ての限界を認識し、過度な期待や自責を避け、資源を効果的に配分するため。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📊 例2：性差の分散差と職業分布</h3>
+      <p><strong>背景：</strong>数学的能力の平均は男女でほぼ同じだが、分散は男性の方が大きい。結果、上位1%には男性が多く、下位1%にも男性が多い。</p>
+      <p><strong>示唆：</strong>STEM分野の上位職に男性が多いのは、平均差ではなく分散差で説明できる。差別だけが原因ではない。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>分布の違いを無視すると、格差の原因を誤認し、効果のない介入や逆差別を生むため。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>⚠️ 例3：若年男性と犯罪率の関係</h3>
+      <p><strong>背景：</strong>犯罪統計では、15〜30歳の男性が暴力犯罪の大半を占める。年齢と性別で犯罪率は10倍以上変動する。</p>
+      <p><strong>示唆：</strong>治安政策や保険設計では、この統計的事実を考慮しないと、資源配分が非効率になり、社会コストが増大する。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>リスク集中を認識することで、予防策を効果的にターゲティングし、偏見と事実を区別できるため。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>💰 例4：美貌と所得の相関</h3>
+      <p><strong>背景：</strong>容姿の良い人は、同じ能力でも平均して高い所得を得る。市場は美貌に価格をつけている。</p>
+      <p><strong>示唆：</strong>市場の選別機能は能力だけでなく、外見や社会資本にも働く。格差の一部は市場メカニズムの結果。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>市場の選別を理解しないと、格差の源泉を見誤り、再分配設計が空転するため。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📚 例5：教育介入の限界効果</h3>
+      <p><strong>背景：</strong>早期教育プログラムは短期的には効果があるが、長期的には学力差が元に戻る（フェードアウト効果）。</p>
+      <p><strong>示唆：</strong>教育は万能ではなく、投下資源ごとに逓減する。費用対効果を見極め、ターゲティングが必要。</p>
+      <div class="reason">
+        <strong>理由（この例が示すこと）：</strong>限界効果を無視すると、資源を薄く広げて誰も救えないか、過剰介入で逆効果を生むため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="font-size:1.4rem; color:var(--secondary); margin-bottom:1rem;">💬 重要な引用</h2>
+    
+    <div class="quote-card">
+      <p>「集団の平均や分散の話は、個人の価値判断とは別問題である。」</p>
+      <small><strong>なぜ重要か：</strong>統計事実と道徳評価の混同を避け、議論を前に進めるため。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「教育は重要だが、できることとできないことの境界がある。」</p>
+      <small><strong>なぜ重要か：</strong>万能視を戒め、費用対効果とターゲティングの思考を促す。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「差別をなくすことと、差異を認めて制度を調整することは両立する。」</p>
+      <small><strong>なぜ重要か：</strong>公正な規制設計に必要な理念的基盤を与える。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「私たちは心地よい物語を信じやすいが、現実はしばしば残酷である。」</p>
+      <small><strong>なぜ重要か：</strong>データ優先の姿勢を動機づけ、バイアスに自覚的にさせる。</small>
+    </div>
+
+    <div class="quote-card">
+      <p>「若い男性にリスクが集中するという単純な事実が、治安と福祉のコスト構造を決める。」</p>
+      <small><strong>なぜ重要か：</strong>資源配分や予防策の設計に直結する示唆を与える。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="font-size:1.4rem; color:var(--secondary); margin-bottom:1rem;">✅ 今日のアクション</h2>
+    
+    <div class="action-card">
+      <h3>📝 アクション1：固定観念を3つ書き出す</h3>
+      <p>自分が持っている「努力すれば必ず報われる」「親の育て方で子どもは決まる」などの固定観念を3つ紙に書き出し、それぞれについて「本当にそうか？」と問い直す。</p>
+      <div class="meta">
+        <strong>目的：</strong>自分のバイアスを自覚する<br>
+        <strong>期待効果：</strong>物語主義から脱却し、データに基づく思考の準備ができる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🔍 アクション2：相関と因果の例を2つ挙げる</h3>
+      <p>日常やニュースで見かける「AとBが一緒に起きている」事例を2つ挙げ、それが相関なのか因果なのか、交絡要因は何かを考える。</p>
+      <div class="meta">
+        <strong>目的：</strong>相関と因果を区別する習慣をつける<br>
+        <strong>期待効果：</strong>誤った介入や判断を避け、論理的思考力が向上する
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>⚖️ アクション3：差別と区別の定義を書く</h3>
+      <p>「差別」と「区別」の違いを自分の言葉で定義し、具体例を1つずつ挙げる。例：年齢による保険料設定は区別か差別か？</p>
+      <div class="meta">
+        <strong>目的：</strong>不当と正当の線引きを明確にする<br>
+        <strong>期待効果：</strong>公正な制度設計の基準を持ち、感情的な議論を避けられる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>📊 アクション4：身近な統計を1つ調べる</h3>
+      <p>性差、犯罪率、教育効果など、本書で扱われたテーマの統計データを1つ調べ、自分の直感と比較する。</p>
+      <div class="meta">
+        <strong>目的：</strong>データで現実を確認する習慣をつける<br>
+        <strong>期待効果：</strong>直感とデータのギャップを認識し、事実ベースの判断力が高まる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🗣️ アクション5：1つのタブーについて話す</h3>
+      <p>信頼できる相手と、本書で扱われたタブーテーマ（遺伝、性差、犯罪など）を1つ選び、感情ではなくデータに基づいて10分間議論する。</p>
+      <div class="meta">
+        <strong>目的：</strong>タブーを避けず、建設的に議論する練習<br>
+        <strong>期待効果：</strong>対話力が向上し、多様な視点を受け入れる柔軟性が育つ
+      </div>
+    </div>
+
+    <div style="margin-top:2rem; padding:1.5rem; background:linear-gradient(135deg, #667eea22, #764ba222); border-radius:8px;">
+      <h3 style="color:var(--primary); margin-bottom:1rem;">📚 関連書籍</h3>
+      <div class="book-list">
+        <div class="book-item">
+          <h4>虚ろな人間観を超えて（原題: The Blank Slate）</h4>
+          <div class="author">スティーブン・ピンカー</div>
+          <div class="relation">人間性の生得的側面とタブーの衝突を包括的に論じる。</div>
+        </div>
+        <div class="book-item">
+          <h4>ブループリント 遺伝子があなたを決めるのか</h4>
+          <div class="author">ロバート・プラミン</div>
+          <div class="relation">行動遺伝学の最新知見と政策含意を平易に解説。</div>
+        </div>
+        <div class="book-item">
+          <h4>育児の大誤解（原題: The Nurture Assumption）</h4>
+          <div class="author">ジュディス・リッチ・ハリス</div>
+          <div class="relation">親の養育効果の限界と同輩集団の影響を検証。</div>
+        </div>
+        <div class="book-item">
+          <h4>ファクトフルネス</h4>
+          <div class="author">ハンス・ロスリング</div>
+          <div class="relation">心地よい物語よりデータで世界を見る実践的フレーム。</div>
+        </div>
+        <div class="book-item">
+          <h4>残酷な世界で生き延びるたったひとつの方法</h4>
+          <div class="author">橘玲</div>
+          <div class="relation">同著者。市場とリスク配分の思想的背景が接続。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabContents.forEach(c => {
+        c.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
