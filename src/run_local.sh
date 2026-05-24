@@ -12,7 +12,7 @@
 set -uo pipefail
 
 # ---- 設定 ----
-REPO_DIR="/Users/seihoushouba/Documents/Oshomadesse-pc/11_Engineering/📖 books-summary"
+REPO_DIR="/Users/seihoushouba/Documents/Oshomadesse-pc/11_Engineering/01_個人/📖 books-summary"
 VAULT_ROOT="/Users/seihoushouba/Documents/Oshomadesse-pc"
 INBOX_DIR="$VAULT_ROOT/100_Inbox"
 BRANCH="main"
@@ -32,12 +32,36 @@ log() {
     printf '[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" | tee -a "$LOG_FILE"
 }
 
-# ---- 多重起動防止 (mkdir は atomic) ----
-if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+# ---- 多重起動防止 (mkdir は atomic, stale lock 検出付き) ----
+# 前回の実行が SIGKILL 等で trap EXIT を発火せず終了した場合、
+# lock が残り続けて永久にブロックされる事故を防ぐため、
+# lock 内に PID を書いておき、kill -0 で生死を確認してから判断する。
+acquire_lock() {
+    if mkdir "$LOCK_DIR" 2>/dev/null; then
+        echo "$$" > "$LOCK_DIR/pid"
+        return 0
+    fi
+    local stale_pid=""
+    if [ -f "$LOCK_DIR/pid" ]; then
+        stale_pid=$(cat "$LOCK_DIR/pid" 2>/dev/null || true)
+    fi
+    if [ -n "$stale_pid" ] && kill -0 "$stale_pid" 2>/dev/null; then
+        return 1
+    fi
+    log "🧹 stale lock 検出 (pid=${stale_pid:-unknown}) → 削除して再取得"
+    rm -rf "$LOCK_DIR" 2>/dev/null || true
+    if mkdir "$LOCK_DIR" 2>/dev/null; then
+        echo "$$" > "$LOCK_DIR/pid"
+        return 0
+    fi
+    return 1
+}
+
+if ! acquire_lock; then
     log "⚠️  既に実行中のため終了: $LOCK_DIR"
     exit 0
 fi
-trap 'rmdir "$LOCK_DIR" 2>/dev/null || true' EXIT
+trap 'rm -rf "$LOCK_DIR" 2>/dev/null || true' EXIT
 
 # ---- LINE フォールバック通知（bash レベルの失敗用）----
 notify_line_failure() {
