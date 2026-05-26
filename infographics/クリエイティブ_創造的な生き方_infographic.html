@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Creative Act インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+.tab-btn:hover {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--primary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(240,147,251,0.1));
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(118,75,162,0.05), rgba(102,126,234,0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.85rem;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.action-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+.action-card .meta {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+.flow-item .arrow {
+  color: var(--accent);
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--secondary);
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.book-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.book-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--primary);
+}
+.book-card .author {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-card .relation {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 The Creative Act インフォグラフィック</h1>
+  <p>創造性は才能ではなく「在り方」と日々の実践で育つ。注意を研ぎ澄まし環境と習慣を整え、小さな種を反復実験と編集で育て、手放して循環させれば、誰もが世界に新しい形を生み出せる。</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      <p>どうすれば誰もが日常で創造的に生き、良い作品を生み出せるか？</p>
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      <p>受信機としての在り方を養い（注意・意図・環境）、現れる小さな種を拾い上げ、反復実験と大胆な編集で本質を残し、執着を手放して世に出す。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      <p>創造は外界から到来する可能性との協働であり、成果は才能よりも「注意の質×過程の設計（意図・制約・習慣）」で規定されるため。</p>
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      <p>1) 注意と気づきを鍛える（観察・記録）、2) 制約を設計し集中を生む（時間・道具・範囲）、3) 毎日の出力リズムを作る（量→質の転換）、4) 遊びと実験で幅を拡げる（試作・比較）、5) 編集で本質だけを残す（削る・並べ替える）、6) 仕上げて手放す（公開・学びの回収）、7) 循環として次へ進む（再投入・成長）。</p>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🧩 主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab6" data-tab="tab6">📚 関連書籍</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🌊 ソース（源）</h3>
+        <ul>
+          <li>創造的アイデアがやって来る外的・内的な可能性の場</li>
+          <li>作り手はそれを受信し形にする媒介者</li>
+          <li>一言要約：到来する可能性</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>創造を「自分が生み出す」から「到来するものを受け取る」へ転換することで、エゴの圧力が減り感度が上がるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📡 受信機としてのアーティスト</h3>
+        <ul>
+          <li>意志でひねり出すより、感度を上げて出現する兆しを捉える姿勢</li>
+          <li>自我を薄め、注意を澄ませる</li>
+          <li>一言要約：感度の仕事</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>力みを抜き受容的になることで、予期しない発見と独自性が生まれやすくなるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>👁️ 注意の質</h3>
+        <ul>
+          <li>何にどの深さで気づき続けられるか</li>
+          <li>作品の質を左右する最重要資源</li>
+          <li>一言要約：質＝注意</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>プロセスの質は注意の質に等しく、結果の良し悪しは日々の注意の積分で決まるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🧭 意図（インテンション）</h3>
+        <ul>
+          <li>作品が何でありたいかという北極星</li>
+          <li>編集や選択の評価軸になる</li>
+          <li>一言要約：北極星</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>明確な意図があれば迷いが減り、編集判断が一貫し、作品の核が保たれるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔒 制約（コンストレイント）</h3>
+        <ul>
+          <li>道具・時間・形式などの自発的な枠</li>
+          <li>選択肢を絞り深度と集中を高める</li>
+          <li>一言要約：枠が力に</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>無限の選択肢は麻痺を生むが、制約は集中を生み、独自の解を引き出すため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🔄 習慣とリズム</h3>
+        <ul>
+          <li>継続的な時間・環境・儀式化</li>
+          <li>出力の安定と偶然の捕獲率を上げる</li>
+          <li>一言要約：継続設計</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>習慣化により意志力の消耗が減り、反復量が確保され、質への転換が加速するため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>♻️ 反復と編集</h3>
+        <ul>
+          <li>多く作って厳しく削る二段階</li>
+          <li>量から質へ転換し本質を抽出する</li>
+          <li>一言要約：量→質</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>量が選択肢を生み、編集が本質を残すことで、偶然と必然が統合されるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🤝 協働とフィードバック</h3>
+        <ul>
+          <li>他者の視点で盲点を補正</li>
+          <li>意図との整合を点検し精度を上げる</li>
+          <li>一言要約：他者の目</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>自分の視野は限定的で、外部の目が誤差を露出し、伝わり方を調整できるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🏡 環境の整え</h3>
+        <ul>
+          <li>物理的・心理的ノイズを減らす</li>
+          <li>受信感度と没入を高める場づくり</li>
+          <li>一言要約：場づくり</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>雑音が減ると注意が深まり、微細な兆しを捉えやすくなるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🕊️ 手放し（リリース）</h3>
+        <ul>
+          <li>完成への執着を外し、ある時点で出す決断</li>
+          <li>学習を次の循環へ渡す</li>
+          <li>一言要約：出して循環</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>公開からの学びが次の意図を精緻化し、創造のサイクルが回り続けるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>⬜ 余白（空白）</h3>
+        <ul>
+          <li>意図的な間や静けさ</li>
+          <li>連想が生まれ新規性が立ち上がるスペース</li>
+          <li>一言要約：間が産む</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>詰め込みすぎると統合が起きず、余白が予期せぬ連想と独自性を生むため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🚧 抵抗・自己検閲</h3>
+        <ul>
+          <li>不安や先延ばし、評価恐怖</li>
+          <li>創作の流れを遮る力で、扱い方の設計が必要</li>
+          <li>一言要約：見えない摩擦</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>抵抗を認識し対策（小さく始める・時間を箱に入れる）を講じないと、リズムが断絶するため。
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <h3 style="margin-bottom:1rem;color:var(--primary);">🔗 概念間の関係性</h3>
+      <div class="flow-item">
+        <span>環境最適化</span><span class="arrow">→</span><span>雑音が減る</span><span class="arrow">→</span><span>受信感度↑</span><span class="arrow">→</span><span>種の発見数↑</span>
+      </div>
+      <div class="flow-item">
+        <span>注意の質↑</span><span class="arrow">→</span><span>観察の解像度↑</span><span class="arrow">→</span><span>実験の母集団↑</span><span class="arrow">→</span><span>当たりの確率↑</span>
+      </div>
+      <div class="flow-item">
+        <span>制約の設計</span><span class="arrow">→</span><span>選択肢が絞れる</span><span class="arrow">→</span><span>集中/深度↑</span><span class="arrow">→</span><span>本質抽出が容易</span>
+      </div>
+      <div class="flow-item">
+        <span>習慣とリズム</span><span class="arrow">→</span><span>反復量が確保</span><span class="arrow">→</span><span>編集材料が増加</span><span class="arrow">→</span><span>仕上がりの精度↑</span>
+      </div>
+      <div class="flow-item">
+        <span>意図の明確化</span><span class="arrow">↔</span><span>編集基準の一貫性</span><span class="arrow">→</span><span>迷い減少</span><span class="arrow">→</span><span>進行速度↑</span>
+      </div>
+      <div class="flow-item">
+        <span>協働/フィードバック</span><span class="arrow">→</span><span>盲点の露出</span><span class="arrow">→</span><span>誤差補正</span><span class="arrow">→</span><span>作品の信頼性↑</span>
+      </div>
+      <div class="flow-item">
+        <span>余白の確保</span><span class="arrow">→</span><span>予期せぬ連想/統合</span><span class="arrow">→</span><span>新規性/独自性↑</span>
+      </div>
+      <div class="flow-item">
+        <span>抵抗・不安</span><span class="arrow">→</span><span>先送り/回避</span><span class="arrow">→</span><span>リズム断絶</span><span class="arrow">⇒</span><span>対策: 小さく始める・時間を箱に入れる</span>
+      </div>
+      <div class="flow-item">
+        <span>手放し（公開）</span><span class="arrow">→</span><span>現実からの学び取得</span><span class="arrow">→</span><span>次サイクルの意図が精緻化</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>1️⃣ 前提の転換</h3>
+      <ul>
+        <li>創造は結果のテクニックではなく存在の在り方（受信する態度）で始まる</li>
+        <li>エゴ中心から受信中心へのシフト</li>
+        <li>才能より注意と過程の質が決定的</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>この転換がなければ、力みと自己検閲が創造を阻害し続けるため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>2️⃣ 土台づくり</h3>
+      <ul>
+        <li>注意・意図・感性のキャリブレーションを行う</li>
+        <li>エゴのノイズを減らし、受信感度を上げる</li>
+        <li>観察と記録の習慣を確立</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>土台が整わないと、種を見逃し、意図がブレ、質が安定しないため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>3️⃣ 場の設計</h3>
+      <ul>
+        <li>環境と制約、儀式化された習慣で集中と再現性を担保</li>
+        <li>物理的・心理的ノイズを減らす</li>
+        <li>時間・道具・範囲の枠を自発的に設定</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>場が整うと没入が深まり、偶然の捕獲率と出力の安定性が上がるため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>4️⃣ 展開と試行</h3>
+      <ul>
+        <li>小さな種を素早く多様に試作</li>
+        <li>遊びと偶然を取り込む</li>
+        <li>量を確保し、選択肢を増やす</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>試行の幅と量が、編集段階での選択肢と質の上限を決めるため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>5️⃣ 編集と統合</h3>
+      <ul>
+        <li>作品の核心に沿って大胆に削る</li>
+        <li>秩序を与え、矛盾を統合する</li>
+        <li>意図を評価軸に、本質だけを残す</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>編集が甘いと核が埋もれ、伝わらず、作品の力が弱まるため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>6️⃣ 外部との接続</h3>
+      <ul>
+        <li>協働・フィードバックで視点を拡張</li>
+        <li>伝わり方を調整し、盲点を補正</li>
+        <li>他者の目で意図との整合を点検</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>自分の視野は限定的で、外部の目が誤差を露出し精度を上げるため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>7️⃣ 完成の定義</h3>
+      <ul>
+        <li>完璧主義を手放し、到達可能な最良点でリリースを決断</li>
+        <li>「これ以上よくしない」と決められる地点を見極める</li>
+        <li>作品は世に出されてはじめて作品になる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>終わらせる力がないと、永遠に未完のまま学びが回収されず、次へ進めないため。
+      </div>
+    </div>
+    <div class="chapter-card">
+      <h3>8️⃣ 循環の継続</h3>
+      <ul>
+        <li>公開後の学びを次の意図へ還流させる</li>
+        <li>創造のサイクルを維持し、成長を加速</li>
+        <li>手放しと再投入のリズムを確立</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>循環が止まると成長が停滞し、創造が一回性の消費で終わるため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="card">
+      <h3>🎨 具体例1：朝の散歩と観察記録</h3>
+      <ul>
+        <li><strong>背景：</strong>毎朝30分の散歩で五感を開き、気づいたことをノートに記録</li>
+        <li><strong>示唆：</strong>日常の微細な変化（光・音・匂い）が創作の種になる</li>
+        <li><strong>効果：</strong>注意の質が上がり、アイデアの発見頻度が増加</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>受信感度は特別な才能ではなく、日々の注意の訓練で高められることを示す。
+      </div>
+    </div>
+    <div class="card">
+      <h3>✍️ 具体例2：制約としての「3色だけ」ルール</h3>
+      <ul>
+        <li><strong>背景：</strong>デザイナーが自発的に使用色を3色に限定</li>
+        <li><strong>示唆：</strong>選択肢を絞ることで、配色の深度と一貫性が増す</li>
+        <li><strong>効果：</strong>迷いが減り、独自のスタイルが確立される</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>制約は自由を奪うのではなく、集中と独自性を生む力になることを示す。
+      </div>
+    </div>
+    <div class="card">
+      <h3>🎵 具体例3：100曲作って10曲残す</h3>
+      <ul>
+        <li><strong>背景：</strong>音楽家が短期間に大量の試作を行い、厳選して公開</li>
+        <li><strong>示唆：</strong>量が質を生む。反復と編集の二段階が本質を抽出する</li>
+        <li><strong>効果：</strong>偶然の発見が増え、編集眼が鍛えられる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>量→質の転換は理論ではなく、実践可能な具体的プロセスであることを示す。
+      </div>
+    </div>
+    <div class="card">
+      <h3>🖼️ 具体例4：フィードバック・セッション</h3>
+      <ul>
+        <li><strong>背景：</strong>作品を信頼できる仲間に見せ、率直な意見を聞く</li>
+        <li><strong>示唆：</strong>自分では気づかない盲点や伝わり方のズレが露出</li>
+        <li><strong>効果：</strong>意図との整合が点検され、精度が上がる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>他者の目は補正装置であり、孤立した創作より協働が強いことを示す。
+      </div>
+    </div>
+    <div class="card">
+      <h3>🕰️ 具体例5：毎朝同じ時間・同じ場所で書く</h3>
+      <ul>
+        <li><strong>背景：</strong>作家が儀式化された習慣で執筆リズムを確立</li>
+        <li><strong>示唆：</strong>習慣が意志力の消耗を減らし、出力を安定させる</li>
+        <li><strong>効果：</strong>反復量が確保され、質への転換が加速</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>習慣とリズムは創造の再現性を担保し、才能に依存しない仕組みであることを示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <p>「私たちは作者というより、到来するものの通り道である。」</p>
+      <small><strong>重要性：</strong>エゴ中心から受信中心への転換が実践全体の基調になるため。</small>
+    </div>
+    <div class="quote-card">
+      <p>「仕事の質はプロセスの質で決まり、プロセスの質は注意の質に等しい。」</p>
+      <small><strong>重要性：</strong>結果よりも日々の注意と過程を磨くことが最短距離だと示す。</small>
+    </div>
+    <div class="quote-card">
+      <p>「制約は創造を縛る鎖ではなく、深く潜るためのレールだ。」</p>
+      <small><strong>重要性：</strong>自発的な枠づけが集中と独自性を生むことを示す。</small>
+    </div>
+    <div class="quote-card">
+      <p>「完成とは、これ以上よくしないと決められる地点である。」</p>
+      <small><strong>重要性：</strong>終わらせる力とリリースの判断基準を与える。</small>
+    </div>
+    <div class="quote-card">
+      <p>「作品は世に出されてはじめて作品になる。」</p>
+      <small><strong>重要性：</strong>公開からの学びと循環の重要性を強調する。</small>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>🌅 五感の記録を15分書き出す</h3>
+      <p>今この瞬間に見える・聞こえる・感じることを、判断せずそのまま書き出す。</p>
+      <div class="meta">
+        <span class="badge">目的</span>注意の質を鍛え、受信感度を上げる<br>
+        <span class="badge">期待効果</span>日常の微細な変化に気づく力が高まり、創作の種が増える
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>🧹 作業机を15分だけ整える</h3>
+      <p>物理的なノイズ（不要な物・散らかり）を減らし、集中できる環境を作る。</p>
+      <div class="meta">
+        <span class="badge">目的</span>環境を整え、没入の障壁を下げる<br>
+        <span class="badge">期待効果</span>雑音が減り、注意が深まり、受信感度が上がる
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>✏️ 未完の案を20分で粗く形にする</h3>
+      <p>完璧を目指さず、頭の中にある断片を手早くアウトプットする。</p>
+      <div class="meta">
+        <span class="badge">目的</span>反復量を確保し、編集材料を増やす<br>
+        <span class="badge">期待効果</span>量→質の転換が始まり、編集眼が鍛えられる
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>🎯 今日の制約を1つ決める</h3>
+      <p>使う道具・時間・色・言葉数など、1つだけ枠を設定して作業する。</p>
+      <div class="meta">
+        <span class="badge">目的</span>選択肢を絞り、集中と深度を高める<br>
+        <span class="badge">期待効果</span>迷いが減り、独自の解が引き出される
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>🗣️ 信頼できる人に1つ見せる</h3>
+      <p>未完でも良いので、作品や案を1人に見せて率直な意見を聞く。</p>
+      <div class="meta">
+        <span class="badge">目的</span>盲点を露出し、伝わり方を点検する<br>
+        <span class="badge">期待効果</span>意図との整合が確認され、精度が上がる
+      </div>
+    </div>
+  </div>
+
+  <div id="tab6" class="tab-content" role="tabpanel">
+    <div class="book-card">
+      <h4>📕 The War of Art</h4>
+      <div class="author">Steven Pressfield</div>
+      <div class="relation">抵抗や先延ばしへの対処法が、創作のリズム設計と補完的。</div>
+    </div>
+    <div class="book-card">
+      <h4>📗 Steal Like an Artist</h4>
+      <div class="author">Austin Kleon</div>
+      <div class="relation">影響の受け取り方とリミックス思考が受信の姿勢と響き合う。</div>
+    </div>
+    <div class="book-card">
+      <h4>📘 Show Your Work!</h4>
+      <div class="author">Austin Kleon</div>
+      <div class="relation">公開と循環の実践がリリースと学びの回収に直結。</div>
+    </div>
+    <div class="book-card">
+      <h4>📙 Art & Fear</h4>
+      <div class="author">David Bayles, Ted Orland</div>
+      <div class="relation">不安・評価恐怖の扱い方が継続と編集の胆に触れる。</div>
+    </div>
+    <div class="book-card">
+      <h4>📔 Flow</h4>
+      <div class="author">Mihaly Csikszentmihalyi</div>
+      <div class="relation">注意と没入の条件が、環境・制約・習慣の設計根拠になる。</div>
+    </div>
+    <div class="book-card">
+      <h4>📓 Daily Rituals</h4>
+      <div class="author">Mason Currey</div>
+      <div class="relation">創作者の習慣と場づくりの具体例がリズム設計のヒントに。</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabContents.forEach(c => {
+        c.classList.remove('active');
+      });
+      
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
