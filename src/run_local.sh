@@ -137,8 +137,32 @@ export VAULT_ROOT
 export WORKFLOW_START_TIME="$(date +%s)"
 
 # ---- メイン: 統合ワークフロー実行 ----
-log "🚀 integrated_reading_workflow.py 実行"
-if ! "$PYTHON_BIN" "$REPO_DIR/src/integrated_reading_workflow.py" >> "$LOG_FILE" 2>&1; then
+# スリープ復帰直後の I/O 競合で `OSError: [Errno 11] Resource deadlock avoided`
+# が出て即死するケースがあるため、検出時のみ短時間待ってリトライする。
+run_python_with_retry() {
+    local max_attempts=3
+    local attempt=1
+    local before_size rc
+    while [ "$attempt" -le "$max_attempts" ]; do
+        log "🚀 integrated_reading_workflow.py 実行 (attempt $attempt/$max_attempts)"
+        before_size=$(wc -c < "$LOG_FILE" 2>/dev/null | tr -d ' ')
+        before_size=${before_size:-0}
+        if "$PYTHON_BIN" "$REPO_DIR/src/integrated_reading_workflow.py" >> "$LOG_FILE" 2>&1; then
+            return 0
+        fi
+        rc=$?
+        if tail -c +$((before_size + 1)) "$LOG_FILE" | grep -q "Resource deadlock avoided"; then
+            log "⚠️  Resource deadlock avoided 検出 (attempt $attempt) → 30秒待ってリトライ"
+            sleep 30
+            attempt=$((attempt + 1))
+            continue
+        fi
+        return "$rc"
+    done
+    return 1
+}
+
+if ! run_python_with_retry; then
     log "❌ integrated_reading_workflow.py が非0終了"
     notify_line_failure "workflow python exited non-zero"
     exit 1
