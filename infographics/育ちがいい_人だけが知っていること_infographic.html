@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>育ちの良さ - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea / セカンダリー #764ba2 / アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  margin: 1rem;
+  padding: 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.summary-block h2 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 0.75rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.summary-item span {
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: linear-gradient(to bottom, rgba(102,126,234,0.05), transparent);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  border-left: 3px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.05rem;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason {
+  background: linear-gradient(135deg, rgba(102,126,234,0.08), rgba(240,147,251,0.08));
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason strong {
+  color: var(--secondary);
+}
+.quote-card {
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+}
+.quote-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+.quote-card small {
+  display: block;
+  font-style: normal;
+  color: var(--text-light);
+  font-size: 0.8rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--accent), var(--secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  opacity: 0.95;
+}
+.visual-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.visual-item {
+  background: var(--card-bg);
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+.visual-item .icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+.visual-item .label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+.visual-item .desc {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-top: 0.25rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.flow-step {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 0.75rem;
+}
+.flow-step .num {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+.flow-step .text {
+  font-size: 0.9rem;
+  flex: 1;
+}
+.badge {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0.25rem;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 育ちの良さ</h1>
+  <p>相手への敬意がにじむ小さな所作・言葉・準備の技法</p>
+</header>
+
+<div class="summary-block">
+  <h2>📌 要約（問い×答え×根拠）</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <span>育ちが良い人に共通する本質とは何か？</span>
+  </div>
+  <div class="summary-item">
+    <strong>✅ 答え</strong>
+    <span>相手と場への敬意を、所作・言葉遣い・清潔感・時間感覚・準備で一貫して可視化する力。</span>
+  </div>
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <span>人の評価は非言語と初動の細部で決まり、反復される小習慣が信頼と品格の印象を規定するため。</span>
+  </div>
+  <div class="summary-item">
+    <strong>🛠 How（そのためには）</strong>
+    <span>姿勢・動線・声量・席次・手土産・身だしなみ・食事作法などを場面別に標準化し、NG動作を除去→望ましい振る舞いを型として練習→準備のリスト化→日常で反復して自動化する。</span>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="visual-grid">
+    <div class="visual-item">
+      <div class="icon">👔</div>
+      <div class="label">品格</div>
+      <div class="desc">育ちの良さ</div>
+    </div>
+    <div class="visual-item">
+      <div class="icon">🧘</div>
+      <div class="label">佇まい</div>
+      <div class="desc">所作</div>
+    </div>
+    <div class="visual-item">
+      <div class="icon">💬</div>
+      <div class="label">敬意</div>
+      <div class="desc">言葉遣い</div>
+    </div>
+    <div class="visual-item">
+      <div class="icon">⏸</div>
+      <div class="label">余白</div>
+      <div class="desc">間</div>
+    </div>
+    <div class="visual-item">
+      <div class="icon">✨</div>
+      <div class="label">信頼感</div>
+      <div class="desc">清潔感</div>
+    </div>
+    <div class="visual-item">
+      <div class="icon">🎯</div>
+      <div class="label">配慮</div>
+      <div class="desc">文脈読解</div>
+    </div>
+    <div class="visual-item">
+      <div class="icon">📋</div>
+      <div class="label">段取り</div>
+      <div class="desc">先回り準備</div>
+    </div>
+    <div class="visual-item">
+      <div class="icon">🤝</div>
+      <div class="label">思いやり</div>
+      <div class="desc">公共心</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👔 育ちの良さ（品格）</h3>
+    <ul>
+      <li>相手と場を尊重する小さな習慣の総体</li>
+      <li>出自ではなく日々の選択で示される</li>
+      <li>誰でも磨ける技法</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 生まれや富に依存せず、行動変容で誰もが獲得可能な資質だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧘 所作（佇まい）</h3>
+    <ul>
+      <li>姿勢・立ち居振る舞い・手の動き</li>
+      <li>非言語が伝えるメッセージ</li>
+      <li>第一印象の大部分を決定</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 言葉より先に視覚情報が評価を形成し、信頼の土台となるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💬 言葉遣い（敬意）</h3>
+    <ul>
+      <li>敬語・語尾・話速・間合い</li>
+      <li>敬意の設計を言語化</li>
+      <li>関係を傷つけない話法</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 言葉の選択が相手の尊厳を守り、長期的な関係構築を可能にするから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏸ 間（余白）</h3>
+    <ul>
+      <li>行動や発話の始め方・終え方</li>
+      <li>沈黙の取り方</li>
+      <li>余裕を生む技術</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 適切な間が相手の認知負荷を下げ、会話満足度を高めるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✨ 清潔感（信頼感）</h3>
+    <ul>
+      <li>身だしなみ・持ち物・匂い・整頓</li>
+      <li>安心感を与える基盤</li>
+      <li>継続的な自己管理の証</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 清潔感は自己尊重と他者配慮の両方を可視化し、信頼の前提条件だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 場の文脈を読む力（配慮）</h3>
+    <ul>
+      <li>相手・時間・場所・目的に応じた調整</li>
+      <li>状況適応能力</li>
+      <li>最適な振る舞いの選択</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 一律の型ではなく文脈に応じた柔軟性が真の配慮を示すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📋 先回りの準備（段取り）</h3>
+    <ul>
+      <li>想定問答・動線・持ち物を事前整備</li>
+      <li>当日の負荷を下げる</li>
+      <li>余裕ある対応を可能に</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 準備が心理的余裕を生み、丁寧な所作と言葉を安定させるから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 公共心（思いやり）</h3>
+    <ul>
+      <li>共有空間や他者の時間を侵食しない</li>
+      <li>音量・匂い・スペースへの配慮</li>
+      <li>他者優先の判断基準</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 公共心が社会的信頼を構築し、品格の評判資本を形成するため。
+    </div>
+  </div>
+
+  <div class="flow-diagram">
+    <h3 style="color: var(--primary); margin-bottom: 1rem;">🔄 概念の因果関係</h3>
+    <div class="flow-step">
+      <div class="num">1</div>
+      <div class="text">先回りの準備 → 心理的余裕 → 丁寧な所作・言葉遣いが安定</div>
+    </div>
+    <div class="flow-step">
+      <div class="num">2</div>
+      <div class="text">清潔感 + 所作の滑らかさ → 第一印象の好転 → 信頼の土台形成</div>
+    </div>
+    <div class="flow-step">
+      <div class="num">3</div>
+      <div class="text">場の文脈読解 → 行為の選択最適化 → 公共心の発露</div>
+    </div>
+    <div class="flow-step">
+      <div class="num">4</div>
+      <div class="text">適切な「間」 → 相手の可処分認知の確保 → 会話満足度向上</div>
+    </div>
+    <div class="flow-step">
+      <div class="num">5</div>
+      <div class="text">小さな配慮の反復 → 一貫性の知覚 → 「育ちの良さ」という評判資本</div>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>1️⃣ 問題提起</h3>
+    <ul>
+      <li>育ちの良さは何で測られるのか</li>
+      <li>出自ではなく日常の細部だと転換</li>
+      <li>誰でも実践可能な技法として再定義</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 固定観念を覆し、行動変容の可能性を開くため。読者に希望と実践意欲を与える。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>2️⃣ 基礎編：非言語の型</h3>
+    <ul>
+      <li>姿勢・歩き方・手元の動き</li>
+      <li>印象形成の仕組みを解説</li>
+      <li>具体的な型を提示</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 非言語が評価の大部分を決めるため、最優先で習得すべき基盤だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>3️⃣ 言葉編：関係を守る話法</h3>
+    <ul>
+      <li>敬語・クッション言葉・断り方</li>
+      <li>お礼の順序</li>
+      <li>関係を傷つけない設計</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 言葉の選択ミスが信頼を一瞬で損なうため、型として習得が必要。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>4️⃣ 場面編：状況別の振る舞い</h3>
+    <ul>
+      <li>玄関・訪問・贈答・食事・乗り物・職場</li>
+      <li>NG/OKで具体化</li>
+      <li>場面ごとの最適解を提示</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 抽象論ではなく実践可能な行動リストが即効性を生むから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>5️⃣ 準備と段取り</h3>
+    <ul>
+      <li>手土産・時間管理・席次理解</li>
+      <li>持ち物チェック</li>
+      <li>失点を未然防止</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 準備が当日の余裕を生み、品格ある振る舞いを安定化させるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>6️⃣ 公共心と配慮</h3>
+    <ul>
+      <li>音量・匂い・スペースの使い方</li>
+      <li>他者優先の規範</li>
+      <li>共有空間での振る舞い</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 公共心が社会的評価を決定し、品格の証明となるから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>7️⃣ 実践・定着</h3>
+    <ul>
+      <li>チェックリスト化→日課化→振り返り</li>
+      <li>自動化のプロセス</li>
+      <li>品格を習慣として定着</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 知識だけでは変わらず、反復による自動化が本質的変容を生むため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <div class="card">
+    <h3>📍 具体例1：玄関での靴の揃え方</h3>
+    <ul>
+      <li><strong>背景:</strong> 訪問先で靴を脱ぐ際、後ろ向きにしゃがんで揃える</li>
+      <li><strong>示唆:</strong> 次に使う人（家主）への配慮が一瞬で伝わる</li>
+      <li><strong>対比:</strong> 脱ぎっぱなしは無関心の印象を与える</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> 小さな所作が相手への敬意を可視化し、第一印象を決定づける。準備不要で即実践可能な配慮の典型例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📍 具体例2：手土産の渡し方とタイミング</h3>
+    <ul>
+      <li><strong>背景:</strong> 玄関先ではなく、部屋に通されてから両手で渡す</li>
+      <li><strong>示唆:</strong> 場の文脈（席次・タイミング）を読む力の証明</li>
+      <li><strong>対比:</strong> 玄関で渡すと「早く済ませたい」印象</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> 同じ行為でもタイミングと場所で意味が変わる。文脈読解力が品格を左右する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📍 具体例3：食事中の箸の置き方</h3>
+    <ul>
+      <li><strong>背景:</strong> 箸を器に渡し掛けせず、箸置きに揃えて置く</li>
+      <li><strong>示唆:</strong> 基本作法の習得が育ちの良さの指標となる</li>
+      <li><strong>対比:</strong> 渡し掛けは「迷い箸」として忌避される</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> 反復練習で自動化できる型が、無意識の品格を形成する。日常の小習慣が評価を決める。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📍 具体例4：エレベーターでの立ち位置</h3>
+    <ul>
+      <li><strong>背景:</strong> 操作盤前に立ち、他者の階数ボタンを押す</li>
+      <li><strong>示唆:</strong> 公共空間での他者優先の姿勢</li>
+      <li><strong>対比:</strong> 奥に詰めて無関心は配慮不足の印象</li>
+    </ul>
+    <div class="reason">
+      <strong>理由（この例が示すこと）:</strong> 公共心が日常の小さな選択で試され、一貫性が信頼を生む。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <div class="quote-card">
+    <p>「育ちの良さは、生活の細部で決まる。」</p>
+    <small><strong>なぜ重要か:</strong> 本書の主張を最短距離で示し、実践の焦点を日々の小さな選択に絞らせるから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「お金ではなく、態度が人を品よく見せる。」</p>
+    <small><strong>なぜ重要か:</strong> 可及的に誰もが取り組める行動変容の道を開くから。</small>
+  </div>
+
+  <div class="quote-card">
+    <p>「思いやりは、先回りの準備から生まれる。」</p>
+    <small><strong>なぜ重要か:</strong> 好印象の偶然ではなく再現可能なプロセスだと示すから。</small>
+  </div>
+
+  <div class="card">
+    <h3>💡 引用の共通テーマ</h3>
+    <ul>
+      <li>育ちの良さは後天的に獲得可能</li>
+      <li>日常の小さな選択が積み重なる</li>
+      <li>準備と反復が品格を自動化する</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> これらの引用が、本書の実践可能性と民主性を保証し、読者の行動変容を促すため。
+    </div>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <div class="action-card">
+    <h4>🪞 アクション1：姿勢と歩き方を15分鏡で練習</h4>
+    <p><strong>目的:</strong> 非言語の基盤となる姿勢を体得</p>
+    <p><strong>期待効果:</strong> 第一印象が向上し、自信が内面から湧く。反復で自動化され、日常の佇まいが変わる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>✉️ アクション2：丁寧語で送るメールを1通作成</h4>
+    <p><strong>目的:</strong> 言葉遣いの型を実践で確認</p>
+    <p><strong>期待効果:</strong> 敬語・クッション言葉の使い方が身につき、文章での印象管理力が向上。相手との関係が円滑化。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🥢 アクション3：箸とナプキンの基本動作を練習</h4>
+    <p><strong>目的:</strong> 食事作法の型を体に覚えさせる</p>
+    <p><strong>期待効果:</strong> 会食時の不安が減り、余裕ある振る舞いが可能に。育ちの良さの指標となる作法が自然に。</p>
+  </div>
+
+  <div class="card">
+    <h3>📋 実践のコツ</h3>
+    <ul>
+      <li>1日1つのアクションに絞る</li>
+      <li>15〜30分のタイマーをセット</li>
+      <li>完璧を求めず、反復を優先</li>
+      <li>翌日に振り返りメモを1行書く</li>
+    </ul>
+    <div class="reason">
+      <strong>理由:</strong> 小さな成功体験の積み重ねが習慣化を促し、長期的な品格形成につながるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📚 関連書籍</h3>
+    <div style="margin-top: 0.75rem;">
+      <div style="margin-bottom: 0.75rem;">
+        <span class="badge">女性の品格</span>
+        <div style="font-size: 0.85rem; margin-top: 0.25rem; color: var(--text-light);">
+          著者: 坂東眞理子 | 日常のふるまいが品格を形づくるという主題が重なる
+        </div>
+      </div>
+      <div style="margin-bottom: 0.75rem;">
+        <span class="badge">人は見た目が9割</span>
+        <div style="font-size: 0.85rem; margin-top: 0.25rem; color: var(--text-light);">
+          著者: 竹内一郎 | 非言語が印象を決めるという本書の土台を補強
+        </div>
+      </div>
+      <div style="margin-bottom: 0.75rem;">
+        <span class="badge">Emily Post's Etiquette</span>
+        <div style="font-size: 0.85rem; margin-top: 0.25rem; color: var(--text-light);">
+          著者: Emily Post Institute | 現代マナーの包括的基準を国際的視点で学べる
+        </div>
+      </div>
+      <div style="margin-bottom: 0.75rem;">
+        <span class="badge">Debrett's Handbook</span>
+        <div style="font-size: 0.85rem; margin-top: 0.25rem; color: var(--text-light);">
+          著者: Debrett's | 場面別のエチケットと格式理解に役立つ
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    tabContents.forEach(c => c.classList.remove('active'));
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
