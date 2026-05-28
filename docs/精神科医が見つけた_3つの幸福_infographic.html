@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>精神科医が見つけた 3つの幸福 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー=#667eea セカンダリー=#48bb78 アクセント=#f6ad55 -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #48bb78;
+  --accent: #f6ad55;
+  --bg: #f7fafc;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+.subtitle {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+.tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+.tab-btn:hover {
+  background: #edf2f7;
+}
+.tab-btn.active {
+  background: var(--primary);
+  color: white;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fef5e7, #fdebd0);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent);
+}
+.reason-box strong {
+  color: var(--accent);
+}
+.chapter-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+.example-card {
+  background: var(--card-bg);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 3px solid var(--accent);
+}
+.example-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+.quote-card {
+  background: linear-gradient(135deg, #e6f2ff, #cce5ff);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid var(--primary);
+  font-style: italic;
+}
+.quote-card .quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+.quote-card .quote-why {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: linear-gradient(135deg, #e6fffa, #b2f5ea);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  border-left: 4px solid var(--secondary);
+}
+.action-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+.action-card .action-detail {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+.visual-diagram {
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.flow-item .arrow {
+  margin: 0 0.5rem;
+  color: var(--primary);
+  font-weight: bold;
+}
+.badge {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  margin-right: 0.5rem;
+}
+.badge.secondary {
+  background: var(--secondary);
+}
+.badge.accent {
+  background: var(--accent);
+}
+@media (max-width: 640px) {
+  h1 { font-size: 1.5rem; }
+  .tabs { font-size: 0.85rem; }
+  .tab-btn { padding: 0.6rem 0.75rem; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 精神科医が見つけた 3つの幸福</h1>
+  <p class="subtitle">幸福は「健康→つながり→成功」の順で積み上げる技術</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>📌 要約（問い×答え×根拠）</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ努力しても幸せが長続きしないのか?
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      幸福には持続性の異なる3層（健康・つながり・成功）があり、第一（セロトニン）→第二（オキシトシン）→第三（ドーパミン）の順で満たすことが必須だから。
+    </div>
+    <div class="summary-item">
+      <strong>🔬 Why（なぜそうなのか）</strong>
+      神経伝達物質の特性と臨床知見が、安定（セロトニン）と関係性（オキシトシン）が報酬の快感（ドーパミン）を安全に活かす土台であることを示す。
+    </div>
+    <div class="summary-item">
+      <strong>🛠 How（そのためには）</strong>
+      朝の光と歩行・運動・十分な睡眠で心身の安定をつくり、感謝・親切・対話でつながりを深め、小さな目標の分割と可視化で達成感を積み上げ、SNS等の過剰刺激を制御する。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="concepts" role="tab" aria-selected="true">主要概念の詳細</button>
+    <button class="tab-btn" data-tab="chapters" role="tab" aria-selected="false">各章の要約</button>
+    <button class="tab-btn" data-tab="examples" role="tab" aria-selected="false">具体例</button>
+    <button class="tab-btn" data-tab="quotes" role="tab" aria-selected="false">重要な引用</button>
+    <button class="tab-btn" data-tab="actions" role="tab" aria-selected="false">今日のアクション</button>
+  </div>
+
+  <div id="concepts" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🌱 第一の幸福（セロトニン的幸福）</h3>
+        <ul>
+          <li>心身の健康と情緒の安定から生まれる基礎的な幸福</li>
+          <li>気分の安定・集中・睡眠の質が核</li>
+          <li>一言要約: <strong>土台</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> すべての幸福の前提となる心身の安定を提供し、他の幸福を受け止める器となるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🤝 第二の幸福（オキシトシン的幸福）</h3>
+        <ul>
+          <li>信頼・愛着・貢献など、他者との良好な関係に由来する満足</li>
+          <li>孤立を和らげレジリエンスを高める</li>
+          <li>一言要約: <strong>絆</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 人間は社会的動物であり、つながりが安心感とストレス耐性を生み、長期的幸福を支えるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🏆 第三の幸福（ドーパミン的幸福）</h3>
+        <ul>
+          <li>目標達成・報酬・称賛による高揚感</li>
+          <li>短期的で習慣化すると依存に傾きやすい</li>
+          <li>一言要約: <strong>成功</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 強力な動機づけだが、土台なしでは燃え尽きや依存を招き、持続的幸福を損なうリスクがあるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>☀️ 朝散歩</h3>
+        <ul>
+          <li>起床後の光曝露と軽い歩行で体内時計を整える</li>
+          <li>セロトニン活性を高める習慣</li>
+          <li>一言要約: <strong>起動</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 即日から実践でき、一日の気分・集中・夜の睡眠を連鎖的に改善する高効果介入だから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💪 睡眠・運動・栄養の基本</h3>
+        <ul>
+          <li>十分な睡眠、定期的な有酸素運動、バランスの良い食事</li>
+          <li>心身の回復と安定を図る枠組み</li>
+          <li>一言要約: <strong>基本</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 生理的土台を整えることで、感情調整・認知機能・免疫が最適化され、すべての幸福の基盤となるため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>💖 感謝・親切・称賛</h3>
+        <ul>
+          <li>感謝を表す・親切にする・相手を認める行為</li>
+          <li>オキシトシンを促し、関係満足度を高める</li>
+          <li>一言要約: <strong>つながる</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 小さな行動で信頼と協力を育み、孤立を防ぎ、ストレス耐性と幸福感を同時に高めるから。
+        </div>
+      </div>
+      <div class="card">
+        <h3>📱 デジタル・ドーパミン</h3>
+        <ul>
+          <li>SNS・ゲーム・通知などの断続的報酬</li>
+          <li>注意を分散させ、満足の基準を歪める現象</li>
+          <li>一言要約: <strong>罠</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 過剰刺激が注意・睡眠・人間関係を侵食し、第一・第二の幸福を損ない、依存サイクルを生むため。
+        </div>
+      </div>
+      <div class="card">
+        <h3>🎯 小さな達成の設計</h3>
+        <ul>
+          <li>目標を細分化し進捗を可視化</li>
+          <li>成功体験を連鎖させる行動設計</li>
+          <li>一言要約: <strong>微習慣</strong></li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由:</strong> 小さな勝利の積み重ねが自己効力感を育て、健全なドーパミン報酬を持続的に得られるから。
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-diagram">
+      <h3 style="margin-bottom:1rem; color:var(--primary);">🔗 概念間の関係性</h3>
+      <div class="flow-item">
+        <span class="badge">第一の幸福↑</span>
+        <span class="arrow">→</span>
+        <span>自制・集中・共感↑</span>
+        <span class="arrow">→</span>
+        <span>第二・第三の幸福の実行力↑</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge secondary">第二の幸福↑</span>
+        <span class="arrow">→</span>
+        <span>ストレス↓・安心感↑</span>
+        <span class="arrow">→</span>
+        <span>睡眠質↑</span>
+        <span class="arrow">→</span>
+        <span>第一の幸福強化</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge accent">第三の幸福 適量</span>
+        <span class="arrow">→</span>
+        <span>自己効力感↑</span>
+        <span class="arrow">→</span>
+        <span>学習意欲↑</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge accent">第三の幸福 過剰</span>
+        <span class="arrow">→</span>
+        <span>不安・依存↑</span>
+        <span class="arrow">→</span>
+        <span>第一・第二を侵食</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge">朝散歩</span>
+        <span class="arrow">→</span>
+        <span>セロトニン↑</span>
+        <span class="arrow">→</span>
+        <span>体内時計整う</span>
+        <span class="arrow">→</span>
+        <span>日中の気分・集中↑</span>
+        <span class="arrow">→</span>
+        <span>夜の入眠改善</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge secondary">感謝・親切</span>
+        <span class="arrow">→</span>
+        <span>オキシトシン↑</span>
+        <span class="arrow">→</span>
+        <span>信頼・協力↑</span>
+        <span class="arrow">→</span>
+        <span>目標達成の支援資源↑</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge accent">デジタル過多</span>
+        <span class="arrow">→</span>
+        <span>ドーパミン過剰刺激</span>
+        <span class="arrow">→</span>
+        <span>注意散漫・慢性不満↑</span>
+        <span class="arrow">→</span>
+        <span>人間関係希薄化・睡眠悪化</span>
+      </div>
+      <div class="flow-item">
+        <span class="badge">睡眠不足</span>
+        <span class="arrow">→</span>
+        <span>扁桃体過敏・前頭前野機能↓</span>
+        <span class="arrow">→</span>
+        <span>衝動性↑</span>
+        <span class="arrow">→</span>
+        <span>短絡的な報酬追求↑</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="chapters" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>序章: 幸福は訓練可能</h3>
+      <ul style="list-style:none; padding-left:0;">
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          幸福は生まれつきではなく訓練可能という問題提起
+        </li>
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          本書のフレーム（三つの幸福モデル）を提示
+        </li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 幸福を「運」ではなく「技術」と位置づけることで、読者に実践可能性と希望を与えるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第一部: 三つの幸福モデルの定義</h3>
+      <ul style="list-style:none; padding-left:0;">
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          神経科学と臨床実感から三つの幸福を定義
+        </li>
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          持続性の序列（第一→第二→第三）を示す
+        </li>
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          各幸福の神経伝達物質との対応を解説
+        </li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 科学的根拠を示すことで、優先順位の正当性を理解させ、実践への納得感を高めるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第二部: 第一の幸福の実践</h3>
+      <ul style="list-style:none; padding-left:0;">
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          朝散歩・運動・睡眠・呼吸・姿勢などの具体策
+        </li>
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          心身の安定をつくる日常ルーチンの設計
+        </li>
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          セロトニン活性化のメカニズム解説
+        </li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 土台となる健康習慣を即日実践できる形で提示し、最も効果の高い介入点を明確化するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第三部: 第二の幸福の実践</h3>
+      <ul style="list-style:none; padding-left:0;">
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          感謝・親切・傾聴・スキンシップの技法
+        </li>
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          コミュニティ参加で絆を強化する方法
+        </li>
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          オキシトシン分泌を促す日常行動の設計
+        </li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 人間関係の質を高める具体的行動を示し、孤立リスクを減らし長期的幸福を支える基盤を築くため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>第四部: 第三の幸福の実践</h3>
+      <ul style="list-style:none; padding-left:0;">
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          目標設定・小分割・フィードバックの仕組み化
+        </li>
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          学習と成長のサイクル設計
+        </li>
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          デジタル刺激の扱い方と依存回避策
+        </li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 達成感を健全に得る方法と、過剰刺激の罠を避ける知恵を示し、第三の幸福を安全に活用するため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>終章: バランスと実装プラン</h3>
+      <ul style="list-style:none; padding-left:0;">
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          三つのバランスと優先順位の守り方
+        </li>
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          週次・日次ルーチンへの落とし込み
+        </li>
+        <li style="padding:0.4rem 0; padding-left:1.5rem; position:relative;">
+          <span style="position:absolute; left:0; color:var(--secondary); font-weight:bold;">▸</span>
+          再現可能な実装プランで締めくくる
+        </li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由:</strong> 知識を行動に変換する具体的な計画を示し、読後すぐに実践を開始できる道筋を提供するため。
+      </div>
+    </div>
+  </div>
+
+  <div id="examples" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h3>🌅 例1: 朝散歩の連鎖効果</h3>
+      <p style="margin-bottom:0.5rem; font-size:0.9rem;">
+        <strong>背景:</strong> 不眠と日中の集中力低下に悩むビジネスパーソンが、起床後15分の朝散歩を2週間継続。
+      </p>
+      <p style="margin-bottom:0.5rem; font-size:0.9rem;">
+        <strong>結果:</strong> 体内時計が整い、夜の入眠が改善。日中の気分が安定し、仕事の生産性が向上。
+      </p>
+      <p style="margin-bottom:0.5rem; font-size:0.9rem;">
+        <strong>示唆:</strong> 朝の光と歩行がセロトニンを活性化し、睡眠・気分・集中の好循環を生む。
+      </p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 単純な習慣が複数の幸福要素を連鎖的に改善し、第一の幸福が他の幸福の土台となることを実証している。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>💌 例2: 感謝日記がもたらす関係性の変化</h3>
+      <p style="margin-bottom:0.5rem; font-size:0.9rem;">
+        <strong>背景:</strong> 孤独感を抱える在宅ワーカーが、毎晩3つの感謝を書き出す習慣を1ヶ月実践。
+      </p>
+      <p style="margin-bottom:0.5rem; font-size:0.9rem;">
+        <strong>結果:</strong> 他者への感謝が増え、自発的に連絡を取る頻度が上昇。関係満足度が向上し、孤独感が軽減。
+      </p>
+      <p style="margin-bottom:0.5rem; font-size:0.9rem;">
+        <strong>示唆:</strong> 感謝の言語化がオキシトシンを促し、つながりへの意識と行動を変える。
+      </p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 内省的な習慣が外向的な行動変容を引き起こし、第二の幸福が自己強化サイクルを持つことを示している。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h3>📵 例3: デジタル・デトックスと集中力の回復</h3>
+      <p style="margin-bottom:0.5rem; font-size:0.9rem;">
+        <strong>背景:</strong> SNS依存で注意散漫だった学生が、スマホ通知をオフにし、1日2時間のSNS時間制限を設定。
+      </p>
+      <p style="margin-bottom:0.5rem; font-size:0.9rem;">
+        <strong>結果:</strong> 集中時間が延び、課題の質が向上。睡眠の質も改善し、対面での会話が増加。
+      </p>
+      <p style="margin-bottom:0.5rem; font-size:0.9rem;">
+        <strong>示唆:</strong> デジタル刺激の制御が注意・睡眠・人間関係を同時に改善し、第一・第二の幸福を回復させる。
+      </p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）:</strong> 過剰なドーパミン刺激が複数の幸福を侵食し、制御することで土台が回復することを明確に示している。
+      </div>
+    </div>
+  </div>
+
+  <div id="quotes" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <div class="quote-text">
+        「要旨: 幸福は鍛えられるスキルであり、三つの幸福を順番に積むほど安定して増える。」
+      </div>
+      <div class="quote-why">
+        <strong>なぜ重要か:</strong> 本書全体の仮説と行動指針を一文に凝縮している。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「要旨: 朝の光と歩行がセロトニンを活性化し、一日の気分と夜の睡眠を整える。」
+      </div>
+      <div class="quote-why">
+        <strong>なぜ重要か:</strong> 即日から実践できる高効果の介入で、土台作りの要になるから。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「要旨: 成功の快感（ドーパミン）は強力だが、健康と人間関係の土台を欠くと破綻する。」
+      </div>
+      <div class="quote-why">
+        <strong>なぜ重要か:</strong> 短期的快楽への偏重が長期幸福を損なうリスクを明確化するため。
+      </div>
+    </div>
+  </div>
+
+  <div id="actions" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h3>🚶 アクション1: 朝散歩を15分行う</h3>
+      <div class="action-detail">
+        <strong>目的:</strong> セロトニンを活性化し、体内時計を整える。
+      </div>
+      <div class="action-detail">
+        <strong>期待効果:</strong> 日中の気分安定・集中力向上・夜の入眠改善が連鎖的に得られる。
+      </div>
+      <div class="action-detail">
+        <strong>実行方法:</strong> 起床後1時間以内に屋外で15分歩く。曇りでも効果あり。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>📝 アクション2: 感謝日記を15分書く</h3>
+      <div class="action-detail">
+        <strong>目的:</strong> オキシトシンを促し、つながりへの意識を高める。
+      </div>
+      <div class="action-detail">
+        <strong>期待効果:</strong> 関係満足度の向上・孤独感の軽減・自発的なコミュニケーション増加。
+      </div>
+      <div class="action-detail">
+        <strong>実行方法:</strong> 今日感謝したこと3つを具体的に書き出す。人・出来事・小さな幸運すべて可。
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h3>🛌 アクション3: 今週の就寝時刻を決め準備する</h3>
+      <div class="action-detail">
+        <strong>目的:</strong> 睡眠の質を確保し、第一の幸福の土台を固める。
+      </div>
+      <div class="action-detail">
+        <strong>期待効果:</strong> 感情調整・認知機能・免疫の最適化により、すべての幸福の基盤が強化される。
+      </div>
+      <div class="action-detail">
+        <strong>実行方法:</strong> 理想の就寝時刻を設定し、1時間前にアラームをセット。スマホは寝室外に置く。
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
