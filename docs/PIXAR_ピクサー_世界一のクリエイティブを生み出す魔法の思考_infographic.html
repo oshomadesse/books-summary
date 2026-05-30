@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>創造と経営の中道 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+<style>
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f093fb;
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+  --border: #e2e8f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 0.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.summary-item ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.summary-item li {
+  padding-left: 1.25rem;
+  position: relative;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.summary-item li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.3s;
+  color: var(--text);
+}
+
+.tab-btn:hover {
+  border-color: var(--primary);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: transparent;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.15);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  padding-left: 1.25rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-top: 3px solid var(--secondary);
+}
+
+.chapter-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--secondary);
+}
+
+.chapter-card .reason {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid var(--accent);
+}
+
+.example-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+  color: var(--accent);
+}
+
+.quote-card {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+
+.quote-card .quote-text {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.quote-card .quote-why {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.action-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+}
+
+.visual-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.visual-diagram h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.flow-arrow {
+  margin: 0 0.5rem;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.metric-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-weight: bold;
+  margin: 0.25rem;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 創造と経営の中道</h1>
+  <p>ピクサーが示した、クリエイティブと財務を統合する設計思想</p>
+</header>
+
+<div class="container">
+
+<div class="summary-block">
+  <h2>📌 核心サマリー</h2>
+  
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>世界最高峰のクリエイティブを、なぜ持続可能な事業として成立させられたのか？</p>
+  </div>
+  
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>創造と財務の"デュアルOS"を中道的に設計し、権利・契約・資本市場・組織文化を貫く一貫した物語（ストーリー）で束ねたから。</p>
+  </div>
+  
+  <div class="summary-item">
+    <strong>🔍 Why（なぜそうなのか）</strong>
+    <ul>
+      <li>映像産業はヒット偏在と巨大先行投資で破綻しやすく、創造だけでも財務だけでも持続しない</li>
+      <li>配給契約やIP帰属、収益配分の設計が価値の大半を決めるため、戦略と法務・財務を創造に接続する必要がある</li>
+      <li>投資家・従業員・パートナーを動かすのは"数値だけでなく物語"であり、両者が整合すると資金・人材・時間が集まる</li>
+    </ul>
+  </div>
+  
+  <div class="summary-item">
+    <strong>⚙️ How（そのためには）</strong>
+    <ul>
+      <li>デュアルOS（クリエイティブOS×ビジネスOS）を定義し、衝突ではなく補完の運用原則に落とす</li>
+      <li>スレート戦略で作品ポートフォリオとパイプライン稼働率を最適化し、ヒット偏在リスクを平準化する</li>
+      <li>配給契約を再設計（ブランド表記、IP帰属、収益分配、続編権）し、価値が社内に残る構造にする</li>
+      <li>IPOアーキテクチャ（指標、予見性の物語、開示設計）を整え、資本市場と創造現場を接続する</li>
+      <li>相互信頼の文化（率直なフィードバックと透明性）で、創造の自由と財務の規律を両立させる</li>
+    </ul>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">🎯 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">📖 各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">💬 重要引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">✅ 今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <div class="card-grid">
+    
+    <div class="card">
+      <h3>⚖️ 中道経営</h3>
+      <ul>
+        <li>創造の自由と財務の規律という二律背反を"どちらかではなく両方"活かす設計思想</li>
+        <li>衝突点を運用ルールで架橋する</li>
+        <li><strong>理由:</strong> 二項対立を解く視点が全戦略の土台になるため</li>
+      </ul>
+      <div class="metric-badge">二項対立の架橋設計</div>
+    </div>
+    
+    <div class="card">
+      <h3>🖥️ デュアルOS</h3>
+      <ul>
+        <li>作品の質を最大化するOS（人・プロセス・評価軸）</li>
+        <li>事業を持続させるOS（資本・契約・指標）</li>
+        <li>別建てで最適化し、相互に干渉させない運用</li>
+        <li><strong>理由:</strong> 創造と経営の両立には独立した運用系が必要</li>
+      </ul>
+      <div class="metric-badge">二つの運用系の分離共存</div>
+    </div>
+    
+    <div class="card">
+      <h3>📊 スレート戦略</h3>
+      <ul>
+        <li>単発ヒット依存を避ける</li>
+        <li>複数作品の計画・制作・公開を連鎖管理</li>
+        <li>収益と学習を平準化する戦略</li>
+        <li><strong>理由:</strong> ヒット偏在リスクを分散し予見性を高める</li>
+      </ul>
+      <div class="metric-badge">ポートフォリオで平準化</div>
+    </div>
+    
+    <div class="card">
+      <h3>📜 配給契約設計</h3>
+      <ul>
+        <li>配給・宣伝・スクリーン確保の対価と引き換え</li>
+        <li>IP・ブランド表記・収益分配・続編権を最適化</li>
+        <li>交渉設計で価値を内製化</li>
+        <li><strong>理由:</strong> 契約条件が価値の大半を決定するため</li>
+      </ul>
+      <div class="metric-badge">権利と分配の再設計</div>
+    </div>
+    
+    <div class="card">
+      <h3>🏛️ IPOアーキテクチャ</h3>
+      <ul>
+        <li>資本市場が理解可能な"予見性の物語"とKPI</li>
+        <li>開示・統制を整備</li>
+        <li>創造の不確実性を投資可能なリスクへ翻訳</li>
+        <li><strong>理由:</strong> 資本調達には市場との共通言語が必須</li>
+      </ul>
+      <div class="metric-badge">不確実性の投資翻訳</div>
+    </div>
+    
+    <div class="card">
+      <h3>⭐ 北極星指標</h3>
+      <ul>
+        <li>意思決定を一貫させる長期価値の代理変数</li>
+        <li>例：作品ライフタイムの現金創出力×ブランド資産</li>
+        <li>部門間の優先順位を揃える</li>
+        <li><strong>理由:</strong> 組織全体の方向性を統一する軸が必要</li>
+      </ul>
+      <div class="metric-badge">価値を揃える一本軸</div>
+    </div>
+    
+    <div class="card">
+      <h3>📖 物語としての戦略</h3>
+      <ul>
+        <li>投資家・社員・パートナーが"なぜ今これをやるか"を直感できる</li>
+        <li>筋の通ったストーリー設計</li>
+        <li>数値とエピソードの両輪で語る</li>
+        <li><strong>理由:</strong> 人は論理だけでなく物語で動くため</li>
+      </ul>
+      <div class="metric-badge">戦略のナラティブ化</div>
+    </div>
+    
+    <div class="card">
+      <h3>🔓 透明性と率直さの文化</h3>
+      <ul>
+        <li>早期に弱点を可視化</li>
+        <li>立場に依らず意見を出せる場を制度化</li>
+        <li>クリエイティブ品質と学習速度を高める</li>
+        <li><strong>理由:</strong> 心理的安全性が創造の質を決めるため</li>
+      </ul>
+      <div class="metric-badge">心理的安全な熟議</div>
+    </div>
+    
+  </div>
+  
+  <div class="visual-diagram">
+    <h3>🔗 概念間の関係性</h3>
+    <div class="flow-item">
+      <span>ヒット偏在の産業構造</span>
+      <span class="flow-arrow">→</span>
+      <span>スレート戦略が必要</span>
+    </div>
+    <div class="flow-item">
+      <span>スレート戦略</span>
+      <span class="flow-arrow">→</span>
+      <span>パイプライン稼働率の安定</span>
+      <span class="flow-arrow">→</span>
+      <span>予見性の物語を構築</span>
+    </div>
+    <div class="flow-item">
+      <span>予見性の物語 + 北極星指標</span>
+      <span class="flow-arrow">→</span>
+      <span>IPOアーキテクチャの信頼性向上</span>
+    </div>
+    <div class="flow-item">
+      <span>不利な配給契約</span>
+      <span class="flow-arrow">→</span>
+      <span>価値の外部流出</span>
+      <span class="flow-arrow">→</span>
+      <span>契約再設計で内部化</span>
+    </div>
+    <div class="flow-item">
+      <span>創造の自由だけ</span>
+      <span class="flow-arrow">→</span>
+      <span>財務破綻のリスク</span>
+    </div>
+    <div class="flow-item">
+      <span>財務の規律だけ</span>
+      <span class="flow-arrow">→</span>
+      <span>品質劣化のリスク</span>
+    </div>
+    <div class="flow-item">
+      <span>中道経営</span>
+      <span class="flow-arrow">=</span>
+      <span>クリエイティブOS × ビジネスOSの補完関係</span>
+    </div>
+    <div class="flow-item">
+      <span>透明性の文化</span>
+      <span class="flow-arrow">→</span>
+      <span>早期是正</span>
+      <span class="flow-arrow">→</span>
+      <span>品質向上</span>
+      <span class="flow-arrow">→</span>
+      <span>ブランド資産の累積</span>
+    </div>
+    <div class="flow-item">
+      <span>強いブランド資産</span>
+      <span class="flow-arrow">→</span>
+      <span>交渉力上昇</span>
+      <span class="flow-arrow">→</span>
+      <span>契約条件改善</span>
+      <span class="flow-arrow">→</span>
+      <span>価値の内製化が加速</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  
+  <div class="chapter-card">
+    <h3>序章：招かれざるCFOの登場</h3>
+    <ul>
+      <li>創造と数字の断絶という"問題の定義"</li>
+      <li>クリエイティブ組織に財務の視点を持ち込む困難</li>
+      <li>両者の対立構造を明示</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 問題を正しく定義することが解決の第一歩であり、読者に共感を生むため</div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>診断：価値流出の構造的欠陥</h3>
+    <ul>
+      <li>配給契約・IP帰属・収益分配の不利な条件を特定</li>
+      <li>単発依存による収益の不安定性</li>
+      <li>ブランド表記の欠如による資産形成の失敗</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 具体的な欠陥を可視化することで、改善の方向性と優先順位が明確になるため</div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>設計：デュアルOSと北極星指標</h3>
+    <ul>
+      <li>クリエイティブOSとビジネスOSを定義</li>
+      <li>財務と創造の接点を運用ルール化</li>
+      <li>長期価値を測る北極星指標の設定</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 抽象的な理念を具体的な運用原則に落とし込むことで実行可能にするため</div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>資本戦略：IPOアーキテクチャ構築</h3>
+    <ul>
+      <li>"予見性の物語"の構築</li>
+      <li>開示・統制の整備</li>
+      <li>資本市場との共通言語の確立</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 創造産業が資本を調達するには、不確実性を投資可能なリスクに翻訳する必要があるため</div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>実証：初期ヒットと信認獲得</h3>
+    <ul>
+      <li>初期作品の成功による市場・組織の信頼獲得</li>
+      <li>学習ループの確立</li>
+      <li>仮説検証サイクルの回転</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 理論だけでなく実績が信頼を生み、次の投資を呼び込むため</div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>交渉：配給・IP・ブランドの再設計</h3>
+    <ul>
+      <li>配給契約の再交渉</li>
+      <li>IP帰属と続編権の確保</li>
+      <li>ブランド表記による資産形成</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 契約条件の改善が価値の内製化を実現し、長期的な競争優位を築くため</div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>スケール：スレート戦略とパイプライン運用</h3>
+    <ul>
+      <li>複数作品の計画的管理</li>
+      <li>品質と収益性の両立を制度化</li>
+      <li>パイプライン稼働率の最適化</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 単発成功を持続可能なシステムに変換することで、組織の成長を支えるため</div>
+  </div>
+  
+  <div class="chapter-card">
+    <h3>総括：中道経営の一般化</h3>
+    <ul>
+      <li>相反の統合が長期価値を最大化するという教訓</li>
+      <li>他産業への応用可能性</li>
+      <li>創造と経営の新しいパラダイム</li>
+    </ul>
+    <div class="reason"><strong>理由:</strong> 個別事例を普遍的な原則に昇華することで、読者が自身の文脈に適用できるようにするため</div>
+  </div>
+  
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  
+  <div class="example-card">
+    <h3>🎬 事例1：配給契約の再設計</h3>
+    <p><strong>背景:</strong> 初期のディズニーとの配給契約では、ピクサーのブランド表記がなく、IP権利も限定的で、収益分配も不利だった。</p>
+    <p><strong>示唆:</strong> 契約交渉で「ブランド表記」「IP帰属」「続編権」を確保することで、作品の成功が自社資産として蓄積される構造に転換した。</p>
+    <div class="reason"><strong>理由:</strong> この例は、契約条件が作品の質と同等以上に価値を左右することを示し、法務・財務と創造の接続の重要性を証明する</div>
+  </div>
+  
+  <div class="example-card">
+    <h3>📈 事例2：スレート戦略による平準化</h3>
+    <p><strong>背景:</strong> 映像産業は単発ヒット依存で収益が不安定。一作の失敗が組織を揺るがすリスクがあった。</p>
+    <p><strong>示唆:</strong> 複数作品を計画的にパイプライン管理することで、ヒット偏在リスクを分散し、投資家に予見性を提供できるようになった。</p>
+    <div class="reason"><strong>理由:</strong> この例は、ポートフォリオ思考が創造産業でも有効であり、財務の安定が創造の自由を支えることを示す</div>
+  </div>
+  
+  <div class="example-card">
+    <h3>🗣️ 事例3：透明性の文化とブレイントラスト</h3>
+    <p><strong>背景:</strong> クリエイティブの品質を高めるには、早期に弱点を発見し率直にフィードバックする仕組みが必要だった。</p>
+    <p><strong>示唆:</strong> 「ブレイントラスト」という制度を設け、立場に関わらず意見を出せる心理的安全性を確保。結果、作品の質が向上し、ブランド資産が累積した。</p>
+    <div class="reason"><strong>理由:</strong> この例は、組織文化が創造の質を決定し、長期的な競争優位の源泉になることを示す</div>
+  </div>
+  
+  <div class="example-card">
+    <h3>💰 事例4：IPOアーキテクチャと予見性の物語</h3>
+    <p><strong>背景:</strong> 創造産業は不確実性が高く、従来の財務指標だけでは投資家の信頼を得にくい。</p>
+    <p><strong>示唆:</strong> 「予見性の物語」（スレート計画、パイプライン稼働率、ブランド資産の蓄積）を数値とエピソードで語ることで、資本市場との共通言語を確立した。</p>
+    <div class="reason"><strong>理由:</strong> この例は、不確実性を投資可能なリスクに翻訳する手法を示し、創造と資本の架橋方法を具体化する</div>
+  </div>
+  
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  
+  <div class="quote-card">
+    <div class="quote-text">「創造と数字は敵ではなく、正しく設計すれば互いの前提を強くする。」</div>
+    <div class="quote-why">💡 <strong>なぜ重要か:</strong> 二項対立を解く視点が全戦略の土台になるため。</div>
+  </div>
+  
+  <div class="quote-card">
+    <div class="quote-text">「契約条件は作品の出来と同じくらい、あるいはそれ以上に価値を左右する。」</div>
+    <div class="quote-why">💡 <strong>なぜ重要か:</strong> 権利・分配の設計がキャッシュと交渉力を決めるから。</div>
+  </div>
+  
+  <div class="quote-card">
+    <div class="quote-text">「投資家を動かすのは完璧な予測ではなく、誠実で一貫した物語である。」</div>
+    <div class="quote-why">💡 <strong>なぜ重要か:</strong> 不確実な産業で資本を集める現実的手段を示すから。</div>
+  </div>
+  
+  <div class="quote-card">
+    <div class="quote-text">「自由は枠組みがあるほど機能する。」</div>
+    <div class="quote-why">💡 <strong>なぜ重要か:</strong> 創造の自由と運用ルールは両立するという逆説を示すから。</div>
+  </div>
+  
+  <div class="quote-card">
+    <div class="quote-text">「短期の最適化は長期の破綻を招く。」</div>
+    <div class="quote-why">💡 <strong>なぜ重要か:</strong> スレートとブランド資産の長期視点を正当化するから。</div>
+  </div>
+  
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  
+  <div class="action-card">
+    <h3>✏️ アクション1：自社の創造OSと経営OSを描く</h3>
+    <p><strong>目的:</strong> 自社の創造活動と経営活動がどう分離・接続されているかを可視化する</p>
+    <p><strong>期待効果:</strong> 衝突点と補完点が明確になり、運用ルールの改善ポイントが見える（15分）</p>
+  </div>
+  
+  <div class="action-card">
+    <h3>🎯 アクション2：次四半期の北極星指標を決める</h3>
+    <p><strong>目的:</strong> 部門間の優先順位を揃える長期価値の代理変数を設定する</p>
+    <p><strong>期待効果:</strong> 意思決定の一貫性が高まり、短期最適化の罠を避けられる（20分）</p>
+  </div>
+  
+  <div class="action-card">
+    <h3>📝 アクション3：交渉の譲れない条件を3つ書く</h3>
+    <p><strong>目的:</strong> 次の契約交渉で確保すべき権利・条件を明文化する</p>
+    <p><strong>期待効果:</strong> 交渉の軸が定まり、価値の外部流出を防ぐ準備ができる（15分）</p>
+  </div>
+  
+  <div class="action-card">
+    <h3>📖 アクション4：自社の"予見性の物語"を1ページで書く</h3>
+    <p><strong>目的:</strong> 投資家・社員・パートナーに向けた一貫したストーリーを整理する</p>
+    <p><strong>期待効果:</strong> 資金調達や採用の場で説得力が増し、共感を得やすくなる（30分）</p>
+  </div>
+  
+  <div class="action-card">
+    <h3>🔍 アクション5：透明性を高める仕組みを1つ導入する</h3>
+    <p><strong>目的:</strong> 率直なフィードバックを促す場や制度を試験的に設ける</p>
+    <p><strong>期待効果:</strong> 早期是正が進み、クリエイティブ品質と学習速度が向上する（20分）</p>
+  </div>
+  
+</div>
+
+</div>
+
+<script>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTab = btn.getAttribute('data-tab');
+    
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+    
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(targetTab).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
