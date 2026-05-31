@@ -419,7 +419,7 @@ def step5_generate_infographic(deep_research_text, book, usage_records):
 
     # usage抽出（実値で上書き）
     in_tok, out_tok = 0, 0
-    model = "claude-4-sonnet"
+    model = "claude-sonnet-4-6"
     if isinstance(res, dict):
         u = res.get("usage") or {}
         model = (u.get("model") or res.get("json", {}).get("model") or model)

@@ -28,7 +28,7 @@ try:
 except Exception as e:
     raise RuntimeError("anthropic パッケージが必要です: pip install anthropic") from e
 
-MODEL       = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-5-20250929")
+MODEL       = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6")
 MAX_TOKENS  = int(os.getenv("ANTHROPIC_MAX_TOKENS", "16384"))
 TEMPERATURE = float(os.getenv("ANTHROPIC_TEMPERATURE", "0"))
 
@@ -227,7 +227,7 @@ def _call_claude(user_text):
     )
 
     resp = _get_client().messages.create(
-        model=os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-5-20250929"),
+        model=os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6"),
         max_tokens=int(os.getenv("ANTHROPIC_MAX_TOKENS", "16384")),
         temperature=float(os.getenv("ANTHROPIC_TEMPERATURE", "0")),
         system=system_text,
