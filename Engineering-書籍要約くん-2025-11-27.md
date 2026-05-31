@@ -2,7 +2,8 @@
 tags:
   - engineering
   - books-summary
-  - done
+project_name: 📖 書籍要約くん
+summary: 毎朝AIが本を選定しインフォグラフィック付きサマリーをLINE通知
 ---
 # 読書サマリー自動生成システム
 
@@ -13,15 +14,14 @@ tags:
 **ローカル Mac の LaunchAgent** が毎朝 7:00 JST に `run_local.sh` を起動し、
 Python スクリプトで複数のAIモデル（Gemini, GPT-5, Claude）を組み合わせて
 高品質な読書ノートを生成、そのまま `main` ブランチに push する。
-GitHub Actions は手動フォールバック (`workflow_dispatch`) のみ。
 
 ### アーキテクチャ
-- **実行環境**: ローカル Mac (LaunchAgent) ／ フォールバック: GitHub Actions (Ubuntu latest)
+- **実行環境**: ローカル Mac (LaunchAgent)
 - **言語**: Python 3.11+
 - **AIモデル**:
-    - 推薦: Gemini 2.5 Flash
-    - リサーチ: GPT-5 (or Gemini Pro)
-    - 図解生成: Claude 4.5 Sonnet
+    - 推薦: Gemini 3.5 Flash
+    - リサーチ: GPT-5
+    - 図解生成: Claude 4.6 Sonnet
 - **データソース**: Google Custom Search API (補助), Google Sheets (除外リスト)
 - **通知**: LINE Messaging API (Flex Message)
 
@@ -33,7 +33,7 @@ GitHub Actions は手動フォールバック (`workflow_dispatch`) のみ。
 
 ### 2. 書籍推薦 (Step 2)
 - **担当**: `gemini_recommend.py`
-- **モデル**: Gemini 2.5 Flash
+- **モデル**: Gemini 3.5 Flash
 - **内容**: 除外リストを考慮し、指定カテゴリ（ビジネス、自己啓発、心理学など）から今日読むべき本を5冊推薦する。
 - **フィルタ**: 日本語タイトル以外の除外、禁止ワード（小説など）の除外。
 
@@ -47,30 +47,29 @@ GitHub Actions は手動フォールバック (`workflow_dispatch`) のみ。
 
 ### 5. インフォグラフィック生成 (Step 5)
 - **担当**: `claude_infographic.py`
-- **モデル**: Claude 4.5 Sonnet
+- **モデル**: Claude 4.6 Sonnet
 - **内容**: リサーチ結果を元に、概念図解を含む単一のHTMLファイルを生成する。
 - **出力**: `infographics/[書籍名]_infographic.html` + `docs/[書籍名]_infographic.html`
 - **公開**: GitHub Pages (`docs/`) で公開。URL: `https://oshomadesse.github.io/books-summary/`
 
 ### 6. ノート生成 (Step 6-7)
 - **内容**: リサーチ結果とインフォグラフィックへのリンクを含むMarkdownノートを作成する。
-- **出力**:
-    - ローカル実行時 (通常): `$VAULT_ROOT/100_Inbox/Books-YYYY-MM-DD.md` に直接書き込む
-    - GitHub Actions 手動実行時 (フォールバック): `artifacts/Books-YYYY-MM-DD.md` に書き込み commit & push。次回ローカル `run_local.sh` が先頭で `100_Inbox` へ回収する。
+- **出力**: リポジトリ内の `100_Inbox/Books-YYYY-MM-DD.md` に直接書き込む。
+- **Git管理**: `100_Inbox/` は `.gitignore` 対象外だが未追跡のまま運用しており、`main` には push しない（ローカルの Obsidian Vault からの参照専用）。
 
-### 7. 事後処理・通知 (Step 8-9)
+### 7. 事後処理・通知 (Step 8-10)
+- **関連書籍リンク**: `link_books.py` で既存ノート間のリンクを整形する。
 - **除外リスト更新**: 選ばれた本をGoogle Sheetsに追記する。
 - **通知**: LINE Messaging API (Flex Message) で、生成されたノートへのリンクとサマリーをユーザーに通知する。
 
 ## ディレクトリ構成
 ```
 📖 books-summary/
-├── .github/workflows/
-│   └── daily_workflow.yml              # CI 手動フォールバック (workflow_dispatch のみ)
+├── .env                                # ローカル実行用の環境変数 (.gitignore済み)
 ├── src/
 │   ├── integrated_reading_workflow.py  # 統合ワークフロー本体
 │   ├── chatgpt_research.py             # リサーチ (GPT-5)
-│   ├── claude_infographic.py           # インフォグラフィック生成 (Claude 4.5)
+│   ├── claude_infographic.py           # インフォグラフィック生成 (Claude 4.6)
 │   ├── gemini_recommend.py             # 推薦 (Gemini Flash)
 │   ├── line_messaging.py               # LINE通知
 │   ├── sheets_connector.py             # Google Sheets連携
@@ -81,7 +80,7 @@ GitHub Actions は手動フォールバック (`workflow_dispatch`) のみ。
 ├── data/
 │   ├── integrated/                     # 統合ログ・run_local ログ (.gitignore)
 │   └── modules/                        # モジュール別デバッグログ
-├── artifacts/                          # 手動 CI 実行時のみ一時利用。ローカル通常ルートでは空
+├── 100_Inbox/                          # 生成された Books-YYYY-MM-DD.md (git 未追跡、Obsidian から閲覧)
 ├── infographics/                       # 生成された HTML 図解 (マスター)
 └── docs/                               # GitHub Pages 公開用 (index.html + HTML 図解)
 ```
@@ -96,13 +95,12 @@ GitHub Actions は手動フォールバック (`workflow_dispatch`) のみ。
                                     ▼
    ┌─────────────────────────────────────────────────────────────┐
    │ src/run_local.sh                                            │
-   │   1. flock で多重起動防止                                   │
+   │   1. mkdir で多重起動防止                                   │
    │   2. ネット疎通確認 (スリープ復帰後対策)                    │
    │   3. git fetch / pull --ff-only                             │
-   │   4. artifacts/Books-*.md が残っていれば 100_Inbox へ回収   │
-   │   5. python integrated_reading_workflow.py  (下記)          │
-   │   6. git add infographics/ docs/ → commit                   │
-   │   7. git push (失敗時 2/4/8/16s バックオフ)                 │
+   │   4. python integrated_reading_workflow.py  (下記)          │
+   │   5. git add infographics/ docs/ → commit                   │
+   │   6. git push (失敗時 2/4/8/16s バックオフ)                 │
    └──────────────────────┬──────────────────────────────────────┘
                           │
                           ▼
@@ -121,22 +119,23 @@ GitHub Actions は手動フォールバック (`workflow_dispatch`) のみ。
    └─────────────────────────────────────────────────────────────┘
 
    生成物:
-     infographics/*.html   ─┐
-     docs/*.html           ─┼── git で main に push (run_local.sh 側)
-     docs/index.html       ─┘
-     $VAULT_ROOT/100_Inbox/Books-YYYY-MM-DD.md  (リポジトリ外、Obsidian Vault)
+     infographics/*.html              ─┐
+     docs/*.html                      ─┼── git で main に push (run_local.sh 側)
+     docs/index.html                  ─┘
+     100_Inbox/Books-YYYY-MM-DD.md     : リポジトリ内 (未追跡、git 管理対象外。Obsidian Vault からはディレクトリ参照で読む)
 ```
 
-## 環境変数 (GitHub Secrets)
+## 環境変数 (.env)
 
 | 変数名 | 説明 |
 |---|---|
+| `GEMINI_API_KEY` | Google AI Studio API Key (Gemini用) |
 | `OPENAI_API_KEY` | OpenAI API Key (GPT-5用) |
 | `ANTHROPIC_API_KEY` | Anthropic API Key (Claude用) |
-| `GEMINI_API_KEY` | Google AI Studio API Key (Gemini用) |
+| `LINE_ENABLED` | LINE通知の有効/無効 (`1` で有効) |
 | `LINE_CHANNEL_ACCESS_TOKEN` | LINE Messaging API Token |
-| `LINE_USER_ID` | LINE User ID (通知送信先) |
-| `GOOGLE_SERVICE_ACCOUNT_JSON` | Google Sheets/Drive API用 サービスアカウントJSON |
+| `LINE_TO` | LINE User ID (通知送信先) |
+| `GOOGLE_SERVICE_ACCOUNT_JSON_PATH` | Google SA JSONファイルパス (`~/.config/google/reading-workflow-sa.json`) |
 | `EXCLUDED_SHEET_ID` | 除外リスト用スプレッドシートID |
 
 ## 運用
@@ -150,22 +149,15 @@ GitHub Actions は手動フォールバック (`workflow_dispatch`) のみ。
 ```bash
 cp src/com.oshomadesse.bookssummary.run.plist \
    ~/Library/LaunchAgents/com.oshomadesse.bookssummary.run.plist
-launchctl unload ~/Library/LaunchAgents/com.oshomadesse.bookssummary.pull.plist 2>/dev/null || true
-rm -f ~/Library/LaunchAgents/com.oshomadesse.bookssummary.pull.plist
 launchctl load ~/Library/LaunchAgents/com.oshomadesse.bookssummary.run.plist
 # スリープ中に発火しないための wake 予約
 sudo pmset repeat wakeorpoweron MTWRFSU 06:55:00
 ```
 
 **ログ:**
-- `data/integrated/run_local.log` (スクリプト本体のログ)
+- `data/integrated/run_local.log` (Python stdout/stderr + bash ログ)
+- `data/integrated/integrated_run_YYYYMMDD.log` (Python 内部ログ)
 - `~/Library/Logs/BooksSummary/run-stdout.log` / `run-stderr.log` (LaunchAgent 側)
-
-### フォールバック: GitHub Actions 手動実行
-- `.github/workflows/daily_workflow.yml` は `workflow_dispatch` のみ有効
-- GitHub の Actions タブから手動キック可能
-- CI 実行時はノートを `artifacts/Books-YYYY-MM-DD.md` に書き出して push
-- 次回ローカル `run_local.sh` の先頭で自動的に `100_Inbox/` に回収される
 
 ### ⚠️ ローカル運用の注意点
 1. **スリープ中は LaunchAgent が発火しない**。`pmset repeat wakeorpoweron` で
@@ -180,3 +172,9 @@ sudo pmset repeat wakeorpoweron MTWRFSU 06:55:00
 5. **多重起動防止**: `/tmp/books-summary-run.lock` を `mkdir` で atomic ロック。
 6. **失敗時の通知**: Python 例外は既存ロジックで LINE に流れる。bash 段階の失敗は
    `run_local.sh` の `notify_line_failure` が `.env` からトークンを拾って送る。
+
+### 機密ファイルの配置
+| ファイル | パス |
+|---|---|
+| Google SA JSON | `~/.config/google/reading-workflow-sa.json` (chmod 600) |
+| GitHub 2FA リカバリーコード | `~/.config/github/recovery-codes.txt` (chmod 600) |
