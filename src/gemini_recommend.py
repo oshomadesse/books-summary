@@ -36,7 +36,7 @@ if GEMINI_API_KEY and genai is not None:
     except Exception:
         pass
 
-FLASH_MODEL = os.getenv("GEMINI_FLASH_MODEL", "gemini-3-flash-preview")
+FLASH_MODEL = os.getenv("GEMINI_FLASH_MODEL", "gemini-3.5-flash")
 FLASH_TEMPERATURE = float(os.getenv("GEMINI_FLASH_TEMPERATURE", "0.35"))
 FLASH_MAX_OUTPUT = int(os.getenv("GEMINI_PRO_MAX_TOKENS", "8192"))
 
@@ -248,6 +248,7 @@ class GeminiConnector:
                     "temperature": FLASH_TEMPERATURE,
                     "max_output_tokens": FLASH_MAX_OUTPUT,
                 },
+                request_options={"timeout": 180},
             )
             text = None
             if getattr(resp, "candidates", None):
