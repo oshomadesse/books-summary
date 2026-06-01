@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1兆ドルコーチ インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a2e4a
+  セカンダリー:  #2d7dd2
+  アクセント:    #f4a261
+-->
+<style>
+  /* ===== リセット & 基本 ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary:   #1a2e4a;
+    --secondary: #2d7dd2;
+    --accent:    #f4a261;
+    --bg:        #f0f4f8;
+    --card-bg:   #ffffff;
+    --text:      #1a2e4a;
+    --text-light:#4a6080;
+    --success:   #27ae60;
+    --radius:    12px;
+    --shadow:    0 4px 16px rgba(26,46,74,0.10);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Meiryo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ===== ヘッダー ===== */
+  .site-header {
+    background: linear-gradient(135deg, var(--primary) 0%, #2d4a6e 100%);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  .site-header .book-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .site-header h1 {
+    font-size: clamp(20px, 5vw, 32px);
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+  }
+  .site-header .subtitle {
+    font-size: 13px;
+    color: #a8c4e0;
+    margin-top: 6px;
+  }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: linear-gradient(135deg, #1a2e4a 0%, #2d7dd2 100%);
+    color: #fff;
+    padding: 24px 20px;
+  }
+  .summary-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media(max-width:600px){ .summary-inner { grid-template-columns: 1fr; } }
+  .summary-card {
+    background: rgba(255,255,255,0.10);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    border-left: 4px solid var(--accent);
+  }
+  .summary-card .sc-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .summary-card .sc-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .summary-card .sc-body {
+    font-size: 13px;
+    color: #d0e4f7;
+    line-height: 1.55;
+  }
+  .summary-full {
+    grid-column: 1 / -1;
+  }
+
+  /* ===== タブナビ ===== */
+  .tab-nav {
+    background: var(--primary);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-list {
+    display: flex;
+    list-style: none;
+    min-width: max-content;
+    padding: 0 8px;
+  }
+  .tab-list li { flex-shrink: 0; }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: #a8c4e0;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 14px 16px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: color .2s, border-color .2s;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .tab-btn:hover { color: #fff; }
+  .tab-btn[aria-selected="true"] {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ===== タブコンテンツ ===== */
+  .tab-content { display: none; padding: 20px 16px 40px; max-width: 960px; margin: 0 auto; }
+  .tab-content.active { display: block; }
+
+  /* ===== カード共通 ===== */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 18px 16px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .emoji { font-size: 18px; }
+  .card ul { padding-left: 0; list-style: none; }
+  .card ul li {
+    padding: 5px 0 5px 20px;
+    position: relative;
+    font-size: 13.5px;
+    color: var(--text);
+    border-bottom: 1px solid #f0f4f8;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-size: 12px;
+    top: 6px;
+  }
+  .card .reason-box {
+    background: #fff8f0;
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: #7a4a1a;
+  }
+  .card .reason-box strong { color: var(--accent); }
+
+  /* ===== グリッドレイアウト ===== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media(max-width:700px){ .grid-2,.grid-3 { grid-template-columns: 1fr; } }
+  @media(min-width:701px) and (max-width:900px){ .grid-3 { grid-template-columns: 1fr 1fr; } }
+
+  /* ===== セクション見出し ===== */
+  .section-heading {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--secondary);
+    margin: 24px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #d0dce8;
+  }
+
+  /* ===== 概念カード（主要概念タブ） ===== */
+  .concept-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    border-top: 4px solid var(--secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .concept-card.accent-top { border-top-color: var(--accent); }
+  .concept-card.success-top { border-top-color: var(--success); }
+  .concept-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+  .concept-badge {
+    display: inline-block;
+    background: var(--secondary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .concept-badge.accent { background: var(--accent); }
+  .concept-badge.success { background: var(--success); }
+  .concept-def {
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.55;
+  }
+  .concept-why {
+    background: #eef6ff;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 12px;
+    color: #1a4a7a;
+  }
+  .concept-why strong { color: var(--secondary); }
+
+  /* ===== 因果関係フロー ===== */
+  .flow-chain {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin: 6px 0;
+  }
+  .flow-node {
+    background: var(--primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .flow-arrow {
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 900;
+  }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    border-left: 5px solid var(--secondary);
+  }
+  .chapter-card:nth-child(2n) { border-left-color: var(--accent); }
+  .chapter-card:nth-child(3n) { border-left-color: var(--success); }
+  .chapter-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .chapter-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  /* ===== 引用カード ===== */
+  .quote-card {
+    background: linear-gradient(135deg, #1a2e4a 0%, #2d4a6e 100%);
+    border-radius: var(--radius);
+    padding: 20px 20px 16px;
+    margin-bottom: 14px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    font-size: 80px;
+    color: rgba(244,162,97,0.25);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .quote-text {
+    font-size: 16px;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--accent);
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .quote-note {
+    font-size: 12.5px;
+    color: #a8c4e0;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== 具体例カード ===== */
+  .example-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .example-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+  .example-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+  .example-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  @media(max-width:500px){ .example-meta { grid-template-columns: 1fr; } }
+  .example-meta-item {
+    background: #f0f4f8;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  .example-meta-item strong {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--secondary);
+    margin-bottom: 2px;
+  }
+
+  /* ===== アクションカード ===== */
+  .action-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-num {
+    background: linear-gradient(135deg, var(--secondary), #1a5fa0);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .action-body { flex: 1; }
+  .action-title { font-size: 15px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+  .action-time {
+    display: inline-block;
+    background: #fff0e0;
+    color: #c05a00;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+  }
+  .action-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+  @media(max-width:480px){ .action-meta { grid-template-columns: 1fr; } }
+  .action-meta-item { background: #f0f4f8; border-radius: 8px; padding: 8px 10px; font-size: 12px; }
+  .action-meta-item strong { display: block; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--secondary); margin-bottom: 2px; }
+
+  /* ===== SVG 視覚化 ===== */
+  .viz-wrap { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; margin-bottom: 16px; }
+  .viz-title { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 14px; }
+
+  /* 横棒グラフ */
+  .bar-row { margin-bottom: 10px; }
+  .bar-label { font-size: 12px; color: var(--text); margin-bottom: 3px; display: flex; justify-content: space-between; }
+  .bar-track { background: #e8eef5; border-radius: 20px; height: 14px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 20px; transition: width 1s ease; }
+
+  /* 数値バッジ */
+  .badge-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .num-badge {
+    background: linear-gradient(135deg, var(--primary), #2d4a6e);
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 16px;
+    text-align: center;
+    flex: 1;
+    min-width: 100px;
+  }
+  .num-badge .nb-num { font-size: 22px; font-weight: 900; color: var(--accent); }
+  .num-badge .nb-label { font-size: 11px; color: #a8c4e0; margin-top: 2px; }
+
+  /* ===== 関連書籍 ===== */
+  .book-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .book-icon { font-size: 28px; flex-shrink: 0; }
+  .book-info { flex: 1; }
+  .book-title { font-size: 14px; font-weight: 800; color: var(--primary); }
+  .book-author { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+  .book-rel { font-size: 12px; color: var(--text); }
+
+  /* ===== フッター ===== */
+  .site-footer {
+    background: var(--primary);
+    color: #a8c4e0;
+    text-align: center;
+    padding: 16px;
+    font-size: 11px;
+  }
+
+  /* ===== ユーティリティ ===== */
+  .mt8 { margin-top: 8px; }
+  .mt16 { margin-top: 16px; }
+  .text-accent { color: var(--accent); }
+  .text-secondary { color: var(--secondary); }
+  .fw700 { font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header class="site-header" role="banner">
+  <div class="book-label">📚 書籍インフォグラフィック</div>
+  <h1>1兆ドルコーチ<br><span style="font-size:0.6em;font-weight:400;color:#a8c4e0;">ビル・キャンベル流 コーチング原則</span></h1>
+  <p class="subtitle">シリコンバレーを支えた「愛と厳しさ」のリーダーシップ</p>
+</header>
+
+<!-- ===== ファーストビュー サマリーブロック ===== -->
+<section class="summary-block" aria-label="エグゼクティブサマリー">
+  <div class="summary-inner">
+    <div class="summary-card">
+      <div class="sc-label">❓ 問い</div>
+      <div class="sc-title">ハイパフォーマンス組織をどう作るか？</div>
+    </div>
+    <div class="summary-card">
+      <div class="sc-label">💡 答え</div>
+      <div class="sc-title">「信頼と愛に基づくコーチング」を中核に</div>
+      <div class="sc-body">チーム第一・率直さと優しさ・良い1on1・明確な意思決定・プロダクト重視を徹底する</div>
+    </div>
+    <div class="summary-card">
+      <div class="sc-label">🔍 Why（なぜ）</div>
+      <div class="sc-body">Google・Apple等で経営陣とチームの関係性を変え、巨額の企業価値創出を再現的に支えた実例が積み上がっているから</div>
+    </div>
+    <div class="summary-card">
+      <div class="sc-label">🛠 How（どうやって）</div>
+      <div class="sc-body">1on1設計・会議運営・D/A意思決定・フィードバック・価値観の儀式化・プロダクト重視を日次・週次の習慣として回す</div>
+    </div>
+    <div class="summary-card summary-full" style="border-left-color:#27ae60;">
+      <div class="sc-label">🏆 核心メッセージ</div>
+      <div class="sc-body" style="color:#fff;font-size:14px;font-weight:700;">偉大な成果は「人を大切にする厳しくも温かいコーチング」を習慣として組織に埋め込み、チームを第一にプロダクトへ集中させることで生まれる。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== タブナビ ===== -->
+<nav class="tab-nav" aria-label="コンテンツタブ">
+  <ul class="tab-list" role="tablist">
+    <li role="presentation"><button class="tab-btn" role="tab" aria-selected="true"  aria-controls="tab-concepts"  id="btn-concepts">🧠 主要概念</button></li>
+    <li role="presentation"><button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters"  id="btn-chapters">📖 各章の要約</button></li>
+    <li role="presentation"><button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples"  id="btn-examples">💼 具体例</button></li>
+    <li role="presentation"><button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes"   id="btn-quotes">💬 重要な引用</button></li>
+    <li role="presentation"><button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions"  id="btn-actions">⚡ 今日のアクション</button></li>
+  </ul>
+</nav>
+
+<!-- ===== タブ1: 主要概念 ===== -->
+<section class="tab-content active" id="tab-concepts" role="tabpanel" aria-labelledby="btn-concepts">
+
+  <div class="section-heading">📊 重要指標・数値</div>
+  <div class="viz-wrap">
+    <div class="viz-title">🔑 コーチング効果の構成要素（重要度イメージ）</div>
+    <div class="bar-row">
+      <div class="bar-label"><span>🤝 信頼・関係構築</span><span class="text-accent fw700">95%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:95%;background:linear-gradient(90deg,#2d7dd2,#1a5fa0);"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><span>👥 チーム・ファースト</span><span class="text-accent fw700">90%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#f4a261,#e07b30);"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><span>🗣 率直なフィードバック</span><span class="text-accent fw700">85%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#27ae60,#1e8449);"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><span>📋 1on1の質</span><span class="text-accent fw700">80%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#2d7dd2,#1a5fa0);"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><span>🎯 プロダクト重視</span><span class="text-accent fw700">80%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#f4a261,#e07b30);"></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label"><span>⚡ D/A意思決定</span><span class="text-accent fw700">75%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#27ae60,#1e8449);"></div></div>
+    </div>
+    <p style="font-size:11px;color:#888;margin-top:8px;">※ 重要度は本書の論点比重に基づくイメージ値</p>
+  </div>
+
+  <div class="badge-row" style="margin-bottom:16px;">
+    <div class="num-badge"><div class="nb-num">10</div><div class="nb-label">主要概念</div></div>
+    <div class="num-badge"><div class="nb-num">7</div><div class="nb-label">因果チェーン</div></div>
+    <div class="num-badge"><div class="nb-num">6</div><div class="nb-label">重要引用</div></div>
+    <div class="num-badge"><div class="nb-num">5</div><div class="nb-label">関連書籍</div></div>
+  </div>
+
+  <div class="section-heading">🧩 主要概念 10選</div>
+  <div class="grid-2">
+
+    <div class="concept-card">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="concept-name">🎓 コーチャビリティ</span>
+        <span class="concept-badge">学び続ける姿勢</span>
+      </div>
+      <div class="concept-def">学ぶ意思が強く、率直なフィードバックを受け入れ行動に移せる資質。コーチングの前提条件。</div>
+      <ul style="margin-top:4px;">
+        <li>フィードバックを防衛せず受け取る</li>
+        <li>行動に即座に反映できる</li>
+        <li>成長マインドセットの体現</li>
+      </ul>
+      <div class="concept-why"><strong>なぜ重要か：</strong>学び行動できる人材への投資が成果のレバレッジを最大化するから</div>
+    </div>
+
+    <div class="concept-card accent-top">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="concept-name">🔄 1on1</span>
+        <span class="concept-badge accent">成長の主戦場</span>
+      </div>
+      <div class="concept-def">上司と部下が人・関係・仕事・将来を深掘りする定例対話の場。</div>
+      <ul style="margin-top:4px;">
+        <li>人 → プロジェクト → 関係 → 進路の順で深掘り</li>
+        <li>部下主導のアジェンダ設定</li>
+        <li>早期課題発見と成長加速の場</li>
+      </ul>
+      <div class="concept-why"><strong>なぜ重要か：</strong>1on1の質が上がると早期課題発見・成長加速につながり個人・チームのパフォーマンスが向上するから</div>
+    </div>
+
+    <div class="concept-card success-top">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="concept-name">🌐 チーム・ファースト</span>
+        <span class="concept-badge success">全体最適</span>
+      </div>
+      <div class="concept-def">個人や部門最適より全体最適を優先する意思決定原則。</div>
+      <ul style="margin-top:4px;">
+        <li>サイロ（縦割り）を解消する</li>
+        <li>個人の利益より組織の利益を優先</li>
+        <li>価値創出の最大化につながる</li>
+      </ul>
+      <div class="concept-why"><strong>なぜ重要か：</strong>全体最適を優先する意思決定が価値創出を加速するから</div>
+    </div>
+
+    <div class="concept-card">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="concept-name">💬 キャンダー</span>
+        <span class="concept-badge">優しく厳しい</span>
+      </div>
+      <div class="concept-def">相手の尊厳を守りつつ本音を伝えるコミュニケーション。親切さ × 率直さの両立。</div>
+      <ul style="margin-top:4px;">
+        <li>批判ではなく成長を目的とする</li>
+        <li>受容性が上がり本音のFBが生まれる</li>
+        <li>意思決定の質が向上する</li>
+      </ul>
+      <div class="concept-why"><strong>なぜ重要か：</strong>率直さと優しさの両立が信頼と成長を同時に生むから</div>
+    </div>
+
+    <div class="concept-card accent-top">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="concept-name">🛡 心理的安全性</span>
+        <span class="concept-badge accent">本音の土台</span>
+      </div>
+      <div class="concept-def">報復を恐れずに発言・提案・失敗共有ができる状態。</div>
+      <ul style="margin-top:4px;">
+        <li>失敗を隠さず共有できる環境</li>
+        <li>率直な対話の前提条件</li>
+        <li>学習速度と修正力を高める</li>
+      </ul>
+      <div class="concept-why"><strong>なぜ重要か：</strong>信頼→心理的安全性→率直な対話→学習速度↑という連鎖が成果を生むから</div>
+    </div>
+
+    <div class="concept-card success-top">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="concept-name">🤝 トラスト・ファースト</span>
+        <span class="concept-badge success">関係が先</span>
+      </div>
+      <div class="concept-def">結果や手段の前に、まず信頼関係の構築を最優先する姿勢。</div>
+      <ul style="margin-top:4px;">
+        <li>成果より先に関係を築く</li>
+        <li>長期的なパフォーマンスの基盤</li>
+        <li>全ての原則の出発点</li>
+      </ul>
+      <div class="concept-why"><strong>なぜ重要か：</strong>信頼なしには率直な対話も心理的安全性も生まれないから</div>
+    </div>
+
+    <div class="concept-card">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="concept-name">⚡ D/A（意思決定オーナー）</span>
+        <span class="concept-badge">決める人を決める</span>
+      </div>
+      <div class="concept-def">誰が最終判断者かを明確化し、迅速な決断と実行を担保する仕組み。</div>
+      <ul style="margin-top:4px;">
+        <li>責任の所在を明確にする</li>
+        <li>意思決定の速度を上げる</li>
+        <li>実行速度の向上につながる</li>
+      </ul>
+      <div class="concept-why"><strong>なぜ重要か：</strong>D/A明確化→責任所在明瞭→迅速な決断→実行速度↑という連鎖があるから</div>
+    </div>
+
+    <div class="concept-card accent-top">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="concept-name">🔁 儀式化（Rituals）</span>
+        <span class="concept-badge accent">習慣が文化を作る</span>
+      </div>
+      <div class="concept-def">称賛・感謝・会議の型などを繰り返し定着させ価値観を行動に落とす。</div>
+      <ul style="margin-top:4px;">
+        <li>称賛・感謝を定期的に行う</li>
+        <li>会議の型を標準化する</li>
+        <li>価値観が一貫した行動になる</li>
+      </ul>
+      <div class="concept-why"><strong>なぜ重要か：</strong>儀式化→価値観定着→一貫した行動という連鎖で文化が形成されるから</div>
+    </div>
+
+    <div class="concept-card success-top">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="concept-name">🏆 プロダクト・イズ・キング</span>
+        <span class="concept-badge success">顧客価値基準</span>
+      </div>
+      <div class="concept-def">最終判断基準を顧客価値と製品の卓越性に置く考え方。</div>
+      <ul style="margin-top:4px;">
+        <li>顧客価値が全ての判断基準</li>
+        <li>製品の卓越性が競争優位を決める</li>
+        <li>収益性・持続性の源泉</li>
+      </ul>
+      <div class="concept-why"><strong>なぜ重要か：</strong>顧客価値に立脚した製品の卓越性が最終的な競争優位を決めるから</div>
+    </div>
+
+    <div class="concept-card">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <span class="concept-name">❤️ コーチの役割</span>
+        <span class="concept-badge">愛のある介入</span>
+      </div>
+      <div class="concept-def">愛情と厳しさで人と関係を整え、チームの衝突を建設的に導く。</div>
+      <ul style="margin-top:4px;">
+        <li>スターだけでなくチーム全体をコーチ</li>
+        <li>衝突を建設的に解決する</li>
+        <li>個人依存を避け組織能力を育てる</li>
+      </ul>
+      <div class="concept-why"><strong>なぜ重要か：</strong>個人依存を避け持続的に強い組織能力を育てるため</div>
+    </div>
+
+  </div>
+
+  <div class="section-heading">🔗 概念間の因果関係</div>
+  <div class="viz-wrap">
+    <div class="viz-title">📈 成果を生む因果チェーン</div>
+
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:4px;">チェーン①</div>
+      <div class="flow-chain">
+        <span class="flow-node">信頼</span><span class="flow-arrow">→</span>
+        <span class="flow-node">心理的安全性</span><span class="flow-arrow">→</span>
+        <span class="flow-node">率直な対話</span><span class="flow-arrow">→</span>
+        <span class="flow-node">学習速度↑</span><span class="flow-arrow">→</span>
+        <span class="flow-node" style="background:var(--accent);">成果↑</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:4px;">チェーン②</div>
+      <div class="flow-chain">
+        <span class="flow-node">チーム・ファースト</span><span class="flow-arrow">→</span>
+        <span class="flow-node">サイロ解消</span><span class="flow-arrow">→</span>
+        <span class="flow-node">全体最適</span><span class="flow-arrow">→</span>
+        <span class="flow-node" style="background:var(--accent);">価値創出最大化</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:4px;">チェーン③</div>
+      <div class="flow-chain">
+        <span class="flow-node">1on1の質↑</span><span class="flow-arrow">→</span>
+        <span class="flow-node">早期課題発見</span><span class="flow-arrow">→</span>
+        <span class="flow-node" style="background:var(--accent);">パフォーマンス↑</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:4px;">チェーン④</div>
+      <div class="flow-chain">
+        <span class="flow-node">キャンダー</span><span class="flow-arrow">→</span>
+        <span class="flow-node">受容性↑</span><span class="flow-arrow">→</span>
+        <span class="flow-node" style="background:var(--accent);">意思決定の質↑</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:4px;">チェーン⑤</div>
+      <div class="flow-chain">
+        <span class="flow-node">D/A明確化</span><span class="flow-arrow">→</span>
+        <span class="flow-node">責任所在明瞭</span><span class="flow-arrow">→</span>
+        <span class="flow-node" style="background:var(--accent);">実行速度↑</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:4px;">チェーン⑥</div>
+      <div class="flow-chain">
+        <span class="flow-node">儀式化</span><span class="flow-arrow">→</span>
+        <span class="flow-node">価値観定着</span><span class="flow-arrow">→</span>
+        <span class="flow-node" style="background:var(--accent);">一貫した行動</span>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:4px;">チェーン⑦</div>
+      <div class="flow-chain">
+        <span class="flow-node">プロダクト重視</span><span class="flow-arrow">→</span>
+        <span class="flow-node">顧客価値↑</span><span class="flow-arrow">→</span>
+        <span class="flow-node" style="background:var(--accent);">収益性・持続性↑</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== タブ2: 各章の要約 ===== -->
+<section class="tab-content" id="tab-chapters" role="tabpanel" aria-labelledby="btn-chapters">
+
+  <div class="section-heading">📖 章構成の全体像</div>
+
+  <!-- SVG 章構成フロー -->
+  <div class="viz-wrap">
+    <div class="viz-title">📐 論理展開フロー</div>
+    <svg viewBox="0 0 340 60" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;display:block;margin:0 auto;" aria-label="章構成フロー図">
+      <rect x="0" y="15" width="50" height="30" rx="6" fill="#1a2e4a"/>
+      <text x="25" y="34" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">序</text>
+      <polygon points="52,30 58,25 58,35" fill="#f4a261"/>
+      <rect x="60" y="15" width="50" height="30" rx="6" fill="#2d7dd2"/>
+      <text x="85" y="34" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">原則編</text>
+      <polygon points="112,30 118,25 118,35" fill="#f4a261"/>
+      <rect x="120" y="15" width="50" height="30" rx="6" fill="#2d7dd2"/>
+      <text x="145" y="34" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">実践編</text>
+      <polygon points="172,30 178,25 178,35" fill="#f4a261"/>
+      <rect x="180" y="15" width="50" height="30" rx="6" fill="#1a5fa0"/>
+      <text x="205" y="34" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">リーダー編</text>
+      <polygon points="232,30 238,25 238,35" fill="#f4a261"/>
+      <rect x="240" y="15" width="50" height="30" rx="6" fill="#1a5fa0"/>
+      <text x="265" y="34" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">製品/組織編</text>
+      <polygon points="292,30 298,25 298,35" fill="#f4a261"/>
+      <rect x="300" y="15" width="40" height="30" rx="6" fill="#27ae60"/>
+      <text x="320" y="34" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">結語</text>
+    </svg>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">序章</div>
+    <div class="chapter-title">🌟 ビル・キャンベルの人物像とシリコンバレーへの影響</div>
+    <ul class="card ul">
+      <li>フットボールコーチ出身という異色のキャリア</li>
+      <li>Google・Apple・Intuit等の経営陣を陰で支えた</li>
+      <li>「1兆ドルコーチ」と呼ばれる所以を事例で提示</li>
+      <li>コーチングが組織に与えるインパクトを概観</li>
+    </ul>
+    <div class="reason-box"><strong>📌 なぜこの章が必要か：</strong>ビルの実績と人物像を示すことで、以降の原則に説得力と具体性を与えるため</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">原則編</div>
+    <div class="chapter-title">🏗 信頼・愛・チーム第一・コーチャビリティ・キャンダーの基底原理</div>
+    <ul class="card ul">
+      <li>信頼とトラスト・ファーストが全ての出発点</li>
+      <li>コーチャビリティ（学ぶ意思）が前提条件</li>
+      <li>チーム・ファーストで個人最適を超える</li>
+      <li>キャンダー（親切×率直）で本音の対話を実現</li>
+      <li>心理的安全性が率直な対話の土台になる</li>
+    </ul>
+    <div class="reason-box"><strong>📌 なぜこの章が必要か：</strong>実践の前に「なぜそうするか」の価値観基盤を定義することで、行動の一貫性が生まれるから</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">実践編</div>
+    <div class="chapter-title">🛠 1on1設計・会議運営・D/A意思決定・フィードバック運用</div>
+    <ul class="card ul">
+      <li>1on1は「人→プロジェクト→関係→進路」の順で深掘り</li>
+      <li>会議は目的明確・オーナー定義・全員参加が原則</li>
+      <li>D/A（意思決定オーナー）で責任と速度を担保</li>
+      <li>フィードバックは親切×率直で行動変容を促す</li>
+      <li>日次・週次の習慣として仕組み化する</li>
+    </ul>
+    <div class="reason-box"><strong>📌 なぜこの章が必要か：</strong>原則を「再現可能な型」に落とし込むことで、誰でも実践できるプレイブックになるから</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">リーダー編</div>
+    <div class="chapter-title">👔 CEO・経営陣の整合・取締役会との関係・危機時の介入</div>
+    <ul class="card ul">
+      <li>CEO/経営陣間の関係性を整合させる役割</li>
+      <li>取締役会との信頼関係の構築法</li>
+      <li>危機時には直接介入し建設的に解決する</li>
+      <li>リーダー自身もコーチングを受ける姿勢が重要</li>
+    </ul>
+    <div class="reason-box"><strong>📌 なぜこの章が必要か：</strong>組織の上位層の関係性が整わないと、現場の原則実践が機能しないから</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">プロダクト/組織編</div>
+    <div class="chapter-title">🚀 顧客価値に収れんする製品志向と組織設計の同時最適</div>
+    <ul class="card ul">
+      <li>プロダクト・イズ・キング：顧客価値が最終判断基準</li>
+      <li>製品の卓越性が競争優位を決める</li>
+      <li>組織設計と製品戦略を同時に最適化する</li>
+      <li>収益性・持続性の源泉はプロダクトにある</li>
+    </ul>
+    <div class="reason-box"><strong>📌 なぜこの章が必要か：</strong>人・チームの整備だけでなく、最終的に顧客価値に収れんさせることで成果が完結するから</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">結語</div>
+    <div class="chapter-title">🔄 原則×習慣の再現可能性と仕組み化</div>
+    <ul class="card ul">
+      <li>全原則は日次・週次の習慣として回せる</li>
+      <li>儀式化（称賛・感謝・会議の型）で文化を定着</li>
+      <li>再現可能性が「1兆ドルコーチ」の本質</li>
+      <li>誰でも実践できるプレイブックとして収束</li>
+    </ul>
+    <div class="reason-box"><strong>📌 なぜこの章が必要か：</strong>「ビルだから」ではなく「誰でも再現できる」と示すことで、読者が行動に移せるから</div>
+  </div>
+
+</section>
+
+<!-- ===== タブ3: 具体例 ===== -->
+<section class="tab-content" id="tab-examples" role="tabpanel" aria-labelledby="btn-examples">
+
+  <div class="section-heading">💼 核心メッセージが伝わる具体例・メタファー</div>
+
+  <div class="example-card">
+    <div class="example-tag">📌 ケース①</div>
+    <div class="example-title">🏈 フットボールコーチからシリコンバレーの師へ</div>
+    <p style="font-size:13px;color:var(--text-light);margin-bottom:8px;">ビル・キャンベルはフットボールコーチ出身でありながら、Google・Apple・Intuitなど世界トップ企業の経営陣を陰でコーチングし続けた。</p>
+    <div class="example-meta">
+      <div class="example-meta-item">
+        <strong>背景</strong>
+        スポーツコーチの手法（チームビルディング・率直なFB・信頼構築）をビジネスに転用
+      </div>
+      <div class="example-meta-item">
+        <strong>示唆</strong>
+        コーチングの本質は業界を超えて機能する普遍的な原則
+      </div>
+      <div class="example-meta-item">
+        <strong>理由（この例が示すこと）</strong>
+        「コーチング＝スポーツ」という先入観を壊し、組織運営の核心に据えられることを証明する
+      </div>
+    </div>
+    <div class="reason-box mt8"><strong>💡 核心：</strong>役職や業界ではなく「人との関係と信頼」がリーダーシップの本質であることを体現した例</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-tag">📌 ケース②</div>
+    <div class="example-title">🔑 1on1の「人→プロジェクト→関係→進路」フレームワーク</div>
+    <p style="font-size:13px;color:var(--text-light);margin-bottom:8px;">ビルが実践した1on1は、まず「その人自身の状態」から始まり、仕事・関係・将来へと深掘りする構造を持つ。</p>
+    <div class="example-meta">
+      <div class="example-meta-item">
+        <strong>背景</strong>
+        多くの1on1が「進捗報告」で終わり、人の成長や関係構築に至らない問題への解答
+      </div>
+      <div class="example-meta-item">
+        <strong>示唆</strong>
+        順序を変えるだけで対話の深さと信頼が劇的に変わる
+      </div>
+      <div class="example-meta-item">
+        <strong>理由（この例が示すこと）</strong>
+        「型」を持つことで誰でも再現可能な高品質な対話が実現できることを示す
+      </div>
+    </div>
+    <div class="reason-box mt8"><strong>💡 核心：</strong>1on1は「成長の主戦場」であり、設計次第で個人・チームのパフォーマンスが大きく変わる</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-tag">📌 ケース③</div>
+    <div class="example-title">⚡ D/A（意思決定オーナー）による迅速な決断</div>
+    <p style="font-size:13px;color:var(--text-light);margin-bottom:8px;">「誰が最終判断者か」を会議の冒頭で明確にするだけで、議論の質と決断の速度が劇的に向上する。</p>
+    <div class="example-meta">
+      <div class="example-meta-item">
+        <strong>背景</strong>
+        責任の所在が曖昧な会議では決断が先送りされ、実行速度が落ちる
+      </div>
+      <div class="example-meta-item">
+        <strong>示唆</strong>
+        「決める人を決める」という単純なルールが組織の実行力を変える
+      </div>
+      <div class="example-meta-item">
+        <strong>理由（この例が示すこと）</strong>
+        仕組みの単純さと効果の大きさのギャップが、実践の価値を際立たせる
+      </div>
+    </div>
+    <div class="reason-box mt8"><strong>💡 核心：</strong>D/A明確化→責任所在明瞭→迅速な決断→実行速度↑という因果チェーンの実例</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-tag">📌 ケース④（メタファー）</div>
+    <div class="example-title">🌱 「コーチャブルな人だけをコーチする」という選択</div>
+    <p style="font-size:13px;color:var(--text-light);margin-bottom:8px;">ビルは「Only coach the coachable（学べる人だけをコーチせよ）」を原則とし、学ぶ意思のない人への投資を避けた。</p>
+    <div class="example-meta">
+      <div class="example-meta-item">
+        <strong>背景</strong>
+        コーチングリソースは有限であり、投資対効果を最大化する必要がある
+      </div>
+      <div class="example-meta-item">
+        <strong>示唆</strong>
+        採用・育成の優先順位を「コーチャビリティ」で判断することの重要性
+      </div>
+      <div class="example-meta-item">
+        <strong>理由（この例が示すこと）</strong>
+        「誰でも育てる」ではなく「育てられる人を選ぶ」という逆説的な愛情の形を示す
+      </div>
+    </div>
+    <div class="reason-box mt8"><strong>💡 核心：</strong>学び行動できる人材への集中投資が成果のレバレッジを最大化するという原則の体現</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-tag">📌 ケース⑤</div>
+    <div class="example-title">🏆 「チームをコーチせよ、スターだけでなく」</div>
+    <p style="font-size:13px;color:var(--text-light);margin-bottom:8px;">ビルはスター選手（エース社員）だけでなく、チーム全体の能力を底上げすることに注力した。</p>
+    <div class="example-meta">
+      <div class="example-meta-item">
+        <strong>背景</strong>
+        個人依存の組織は、その人が去ると崩壊するリスクがある
+      </div>
+      <div class="example-meta-item">
+        <strong>示唆</strong>
+        持続的に強い組織は「チーム全体の能力」で成り立つ
+      </div>
+      <div class="example-meta-item">
+        <strong>理由（この例が示すこと）</strong>
+        短期的な成果より長期的な組織能力の構築を優先する視点の重要性を示す
+      </div>
+    </div>
+    <div class="reason-box mt8"><strong>💡 核心：</strong>チーム・ファーストの原則が「スター依存」という組織の罠を回避させる</div>
+  </div>
+
+</section>
+
+<!-- ===== タブ4: 重要な引用 ===== -->
+<section class="tab-content" id="tab-quotes" role="tabpanel" aria-labelledby="btn-quotes">
+
+  <div class="section-heading">💬 重要な引用・フレーズ</div>
+
+  <div class="quote-card">
+    <div class="quote-text">"Your title makes you a manager. Your people make you a leader."</div>
+    <div class="quote-note">📌 役職ではなく人との関係と影響力がリーダーシップの本質だと示す。<br>→ 肩書きに頼るのではなく、人を動かす力こそがリーダーの証</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"Only coach the coachable."</div>
+    <div class="quote-note">📌 学び行動できる人材への投資が成果のレバレッジを最大化する。<br>→ コーチングは「受け取れる人」に集中することで初めて機能する</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"Be candid and kind."</div>
+    <div class="quote-note">📌 率直さと優しさの両立が信頼と成長を同時に生む。<br>→ 厳しさと温かさは対立しない。両立こそがキャンダーの本質</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"Team first."</div>
+    <div class="quote-note">📌 全体最適を優先する意思決定が価値創出を加速する。<br>→ 個人の利益より組織の利益を優先する姿勢が強いチームを作る</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"Coach the team, not just the star."</div>
+    <div class="quote-note">📌 個人依存を避け、持続的に強い組織能力を育てるため。<br>→ スターに頼る組織は脆い。チーム全体の底上げが持続的な強さを生む</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">"Product wins."</div>
+    <div class="quote-note">📌 顧客価値に立脚した製品の卓越性が最終的な競争優位を決める。<br>→ 組織・人・プロセスの整備は、最終的に優れたプロダクトに収れんする</div>
+  </div>
+
+  <div class="section-heading">📚 関連書籍</div>
+  <div class="book-card">
+    <div class="book-icon">📗</div>
+    <div class="book-info">
+      <div class="book-title">Measure What Matters</div>
+      <div class="book-author">ジョン・ドーア</div>
+      <div class="book-rel">OKRによる実行の型がコーチングと相補し、チームの集中を高める</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📘</div>
+    <div class="book-info">
+      <div class="book-title">High Output Management</div>
+      <div class="book-author">アンドリュー・S・グローブ</div>
+      <div class="book-rel">1on1や会議運営の実務が重なり、マネジメントの基礎を補強する</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📙</div>
+    <div class="book-info">
+      <div class="book-title">The Hard Thing About Hard Things</div>
+      <div class="book-author">ベン・ホロウィッツ</div>
+      <div class="book-rel">危機対応や人の課題への介入がビル流の厳しさと接続する</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📕</div>
+    <div class="book-info">
+      <div class="book-title">Creativity, Inc.</div>
+      <div class="book-author">エド・キャットムル</div>
+      <div class="book-rel">心理的安全性と率直な対話が創造性と品質を高める点で通底</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📒</div>
+    <div class="book-info">
+      <div class="book-title">Radical Candor</div>
+      <div class="book-author">キム・スコット</div>
+      <div class="book-rel">親切さと率直さの両立というコミュニケーション原則が一致する</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== タブ5: 今日のアクション ===== -->
+<section class="tab-content" id="tab-actions" role="tabpanel" aria-labelledby="btn-actions">
+
+  <div class="section-heading">⚡ 今日から15〜30分で実行できるアクション</div>
+
+  <!-- SVG 時計アイコン的な視覚要素 -->
+  <div class="viz-wrap" style="text-align:center;">
+    <div class="viz-title">⏱ 実行時間の目安</div>
+    <svg viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:400px;" aria-label="実行時間バー">
+      <rect x="10" y="20" width="280" height="20" rx="10" fill="#e8eef5"/>
+      <rect x="10" y="20" width="140" height="20" rx="10" fill="url(#grad1)"/>
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#2d7dd2"/>
+          <stop offset="100%" style="stop-color:#f4a261"/>
+        </linearGradient>
+      </defs>
+      <text x="10" y="55" font-size="10" fill="#1a2e4a" font-family="sans-serif">0分</text>
+      <text x="130" y="55" font-size="10" fill="#f4a261" font-family="sans-serif" font-weight="bold">15分</text>
+      <text x="255" y="55" font-size="10" fill="#1a2e4a" font-family="sans-serif">30分</text>
+      <text x="150" y="15" font-size="9" fill="#888" font-family="sans-serif" text-anchor="middle">← 推奨実行ゾーン →</text>
+    </svg>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">1</div>
+    <div class="action-body">
+      <div class="action-title">📝 1on1の目的を3つ書き出す</div>
+      <div class="action-time">⏱ 15〜20分</div>
+      <p style="font-size:13px;color:var(--text-light);margin-bottom:8px;">「なぜ1on1をするのか」を言語化し、目的を3つ明文化する。</p>
+      <ul style="font-size:13px;padding-left:16px;color:var(--text);">
+        <li>例：「部下の成長を支援する」「早期に課題を発見する」「信頼関係を深める」</li>
+        <li>紙またはメモアプリに書き出す</li>
+        <li>次回の1on1の冒頭で部下と共有する</li>
+      </ul>
+      <div class="action-meta">
+        <div class="action-meta-item">
+          <strong>🎯 目的</strong>
+          1on1を「進捗報告」から「成長の場」へ転換する意識を持つ
+        </div>
+        <div class="action-meta-item">
+          <strong>✨ 期待効果</strong>
+          目的が明確になることで対話の質が上がり、部下の信頼と成長が加速する
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">2</div>
+    <div class="action-body">
+      <div class="action-title">❓ 次回1on1の質問10個を用意する</div>
+      <div class="action-time">⏱ 20〜30分</div>
+      <p style="font-size:13px;color:var(--text-light);margin-bottom:8px;">「人→プロジェクト→関係→進路」の4カテゴリで各2〜3問を準備する。</p>
+      <ul style="font-size:13px;padding-left:16px;color:var(--text);">
+        <li>人：「最近どんな状態ですか？」「何が一番大変ですか？」</li>
+        <li>プロジェクト：「今週の最大の障害は？」「助けが必要なことは？」</li>
+        <li>関係：「チームとの関係で気になることは？」</li>
+        <li>進路：「半年後どうなりたいですか？」</li>
+      </ul>
+      <div class="action-meta">
+        <div class="action-meta-item">
+          <strong>🎯 目的</strong>
+          ビル流の1on1フレームワークを自分の言葉で実践する
+        </div>
+        <div class="action-meta-item">
+          <strong>✨ 期待効果</strong>
+          深い対話が生まれ、部下の本音・課題・成長ニーズが早期に把握できる
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">3</div>
+    <div class="action-body">
+      <div class="action-title">🌐 チームの価値観を3つ言語化する</div>
+      <div class="action-time">⏱ 20〜30分</div>
+      <p style="font-size:13px;color:var(--text-light);margin-bottom:8px;">「自分たちのチームが大切にしていること」を3つ言葉にする。</p>
+      <ul style="font-size:13px;padding-left:16px;color:var(--text);">
+        <li>例：「率直に話す」「チームの成功を個人の成功より優先する」「顧客価値を判断基準にする」</li>
+        <li>チームメンバーに共有し、フィードバックをもらう</li>
+        <li>会議の冒頭で読み上げる「儀式」として定着させる</li>
+      </ul>
+      <div class="action-meta">
+        <div class="action-meta-item">
+          <strong>🎯 目的</strong>
+          価値観を明文化し儀式化することで、チームの行動を一貫させる
+        </div>
+        <div class="action-meta-item">
+          <strong>✨ 期待効果</strong>
+          価値観が定着し、意思決定の基準が揃い、チームの一体感が高まる
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading">🗺 実践ロードマップ</div>
+  <div class="viz-wrap">
+    <div class="viz-title">📅 習慣化のステップ</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;">今日</div>
+        <div style="font-size:13px;">1on1の目的3つ・質問10個・価値観3つを書き出す</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="background:var(--secondary);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;">今週</div>
+        <div style="font-size:13px;">次回1on1で新フレームワークを試し、D/Aを会議で明確化する</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="background:var(--primary);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;">今月</div>
+        <div style="font-size:13px;">価値観を儀式化し、称賛・感謝を定例化。キャンダーFBを1回実践</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="background:var(--success);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;">3ヶ月後</div>
+        <div style="font-size:13px;">1on1・会議・FBの型が習慣化し、チームの心理的安全性と実行速度が向上</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== フッター ===== -->
+<footer class="site-footer" role="contentinfo">
+  <p>📚 1兆ドルコーチ インフォグラフィック</p>
+  <p style="margin-top:4px;">カラーパレット：プライマリー #1a2e4a ／ セカンダリー #2d7dd2 ／ アクセント #f4a261</p>
+</footer>
+
+<script>
+  // ===== タブ切替 =====
+  (function() {
+    var buttons = document.querySelectorAll('.tab-btn');
+    var panels  = document.querySelectorAll('.tab-content');
+
+    buttons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = btn.getAttribute('aria-controls');
+
+        // ボタン状態更新
+        buttons.forEach(function(b) {
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.setAttribute('aria-selected', 'true');
+
+        // パネル表示切替
+        panels.forEach(function(panel) {
+          if (panel.id === target) {
+            panel.classList.add('active');
+          } else {
+            panel.classList.remove('active');
+          }
+        });
+
+        // タブボタンをスクロールして見えるようにする
+        btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      });
+    });
+
+    // ===== バーアニメーション（IntersectionObserver） =====
+    var bars = document.querySelectorAll('.bar-fill');
+    var widths = [];
+    bars.forEach(function(bar) {
+      widths.push(bar.style.width);
+      bar.style.width = '0%';
+    });
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          bars.forEach(function(bar, i) {
+            setTimeout(function() {
+              bar.style.width = widths[i];
+            }, i * 100);
+          });
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+
+    var barSection = document.querySelector('.bar-track');
+    if (barSection) observer.observe(barSection);
+  })();
+</script>
+</body>
+</html>
