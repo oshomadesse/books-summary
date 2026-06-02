@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一流エンジニアの思考法 インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a1f3c
+  セカンダリー:  #2d6a9f
+  アクセント:    #f5a623
+-->
+<style>
+  /* ===== リセット & 基本 ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary:   #1a1f3c;
+    --secondary: #2d6a9f;
+    --accent:    #f5a623;
+    --bg:        #f0f4f8;
+    --card-bg:   #ffffff;
+    --text:      #1a1f3c;
+    --text-light:#5a6a7e;
+    --success:   #27ae60;
+    --danger:    #e74c3c;
+    --radius:    12px;
+    --shadow:    0 4px 16px rgba(26,31,60,0.10);
+  }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Meiryo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ===== ヘッダー ===== */
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  header .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+  }
+  header h1 {
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  header p.subtitle {
+    font-size: 0.85rem;
+    opacity: 0.82;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: linear-gradient(135deg, #1a1f3c 0%, #2d6a9f 60%, #1a4a7a 100%);
+    color: #fff;
+    padding: 24px 20px 28px;
+  }
+  .summary-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media(max-width:600px){ .summary-inner { grid-template-columns: 1fr; } }
+  .summary-card {
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+  }
+  .summary-card .sc-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .summary-card p {
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+  .summary-card.full { grid-column: 1 / -1; }
+  .summary-card .highlight { color: var(--accent); font-weight: 700; }
+
+  /* ===== コアメッセージ数値バッジ ===== */
+  .kpi-row {
+    background: var(--primary);
+    padding: 14px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .kpi-badge {
+    background: rgba(245,166,35,0.15);
+    border: 1.5px solid var(--accent);
+    border-radius: 8px;
+    padding: 8px 16px;
+    text-align: center;
+    min-width: 110px;
+  }
+  .kpi-badge .kpi-num {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--accent);
+    display: block;
+  }
+  .kpi-badge .kpi-label {
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.75);
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* ===== タブ ===== */
+  .tab-nav {
+    background: var(--primary);
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    border-bottom: 3px solid var(--accent);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.65);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 13px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    letter-spacing: 0.03em;
+  }
+  .tab-btn:hover { color: #fff; }
+  .tab-btn[aria-selected="true"] {
+    color: var(--accent);
+    border-bottom: 3px solid var(--accent);
+  }
+
+  /* ===== タブコンテンツ ===== */
+  .tab-content { display: none; padding: 20px 16px 40px; max-width: 900px; margin: 0 auto; }
+  .tab-content.active { display: block; }
+
+  /* ===== カード共通 ===== */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 18px 16px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon { font-size: 1.2rem; }
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    padding: 4px 0 4px 18px;
+    position: relative;
+    color: var(--text);
+    border-bottom: 1px solid #f0f4f8;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-size: 0.75rem;
+    top: 6px;
+  }
+  .card .reason-box {
+    background: linear-gradient(90deg, rgba(245,166,35,0.10) 0%, rgba(45,106,159,0.06) 100%);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    margin-top: 10px;
+    font-size: 0.80rem;
+    color: var(--text-light);
+    line-height: 1.55;
+  }
+  .reason-box strong { color: var(--accent); }
+
+  /* ===== グリッド ===== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width:600px){ .grid-2 { grid-template-columns: 1fr; } }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+  @media(max-width:700px){ .grid-3 { grid-template-columns: 1fr 1fr; } }
+  @media(max-width:440px){ .grid-3 { grid-template-columns: 1fr; } }
+
+  /* ===== セクションタイトル ===== */
+  .section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin: 22px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--secondary) 0%, transparent 100%);
+    opacity: 0.3;
+  }
+
+  /* ===== 概念カード（主要概念タブ） ===== */
+  .concept-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    border-top: 4px solid var(--secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .concept-card.accent-top { border-top-color: var(--accent); }
+  .concept-card .c-title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+  .concept-card .c-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 2px;
+  }
+  .concept-card .c-def {
+    font-size: 0.80rem;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+  .concept-card .c-why {
+    font-size: 0.78rem;
+    color: var(--secondary);
+    font-weight: 600;
+    border-top: 1px dashed #dde3ea;
+    padding-top: 6px;
+    margin-top: 2px;
+  }
+
+  /* ===== フロー図（SVG） ===== */
+  .flow-wrap {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+  }
+  .flow-wrap svg { display: block; margin: 0 auto; }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    border-left: 5px solid var(--secondary);
+    position: relative;
+  }
+  .chapter-card:nth-child(2n) { border-left-color: var(--accent); }
+  .chapter-num {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--secondary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .chapter-card:nth-child(2n) .chapter-num { color: var(--accent); }
+  .chapter-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  /* ===== 引用カード ===== */
+  .quote-card {
+    background: linear-gradient(135deg, var(--primary) 0%, #2d4a7a 100%);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 20px 16px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    font-size: 6rem;
+    color: rgba(245,166,35,0.15);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .quote-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.65;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .quote-note {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.72);
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 8px;
+    line-height: 1.55;
+  }
+  .quote-note strong { color: var(--accent); }
+
+  /* ===== アクションカード ===== */
+  .action-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-num {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 900;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .action-body { flex: 1; }
+  .action-title { font-size: 0.95rem; font-weight: 800; color: var(--primary); margin-bottom: 6px; }
+  .action-meta { font-size: 0.78rem; color: var(--text-light); line-height: 1.55; }
+  .action-meta span { display: block; }
+  .action-meta .purpose { color: var(--secondary); font-weight: 600; }
+  .action-meta .effect { color: var(--success); font-weight: 600; }
+
+  /* ===== 具体例カード ===== */
+  .example-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    margin-bottom: 14px;
+    border-top: 4px solid var(--accent);
+  }
+  .example-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .example-title { font-size: 0.95rem; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+  .example-body { font-size: 0.82rem; color: var(--text-light); line-height: 1.65; margin-bottom: 8px; }
+  .example-reason {
+    background: rgba(245,166,35,0.10);
+    border-left: 3px solid var(--accent);
+    padding: 7px 10px;
+    font-size: 0.78rem;
+    color: var(--text);
+    border-radius: 0 6px 6px 0;
+    line-height: 1.55;
+  }
+
+  /* ===== 横棒グラフ ===== */
+  .bar-chart { margin: 10px 0; }
+  .bar-row { margin-bottom: 10px; }
+  .bar-label { font-size: 0.75rem; color: var(--text); margin-bottom: 3px; font-weight: 600; }
+  .bar-track { background: #e8edf2; border-radius: 20px; height: 14px; overflow: hidden; }
+  .bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--secondary) 0%, var(--accent) 100%);
+    transition: width 1s ease;
+  }
+  .bar-val { font-size: 0.70rem; color: var(--text-light); margin-top: 2px; text-align: right; }
+
+  /* ===== 関係図ラベル ===== */
+  .relation-list { list-style: none; padding: 0; }
+  .relation-list li {
+    font-size: 0.80rem;
+    padding: 7px 10px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    background: #f7f9fc;
+    border-left: 3px solid var(--secondary);
+    line-height: 1.55;
+    color: var(--text);
+  }
+  .relation-list li:nth-child(2n) { border-left-color: var(--accent); }
+  .rel-arrow { color: var(--accent); font-weight: 700; }
+
+  /* ===== 関連書籍 ===== */
+  .book-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .book-icon { font-size: 1.8rem; flex-shrink: 0; }
+  .book-title { font-size: 0.88rem; font-weight: 800; color: var(--primary); }
+  .book-author { font-size: 0.72rem; color: var(--text-light); margin-bottom: 4px; }
+  .book-rel { font-size: 0.78rem; color: var(--secondary); line-height: 1.5; }
+
+  /* ===== フッター ===== */
+  footer {
+    background: var(--primary);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    font-size: 0.70rem;
+    padding: 16px;
+  }
+
+  /* ===== ユーティリティ ===== */
+  .mt8 { margin-top: 8px; }
+  .mb0 { margin-bottom: 0; }
+  .text-accent { color: var(--accent); }
+  .text-secondary { color: var(--secondary); }
+  .emoji-big { font-size: 1.4rem; }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header>
+  <div class="badge">📘 書籍インフォグラフィック</div>
+  <h1>一流エンジニアの思考法</h1>
+  <p class="subtitle">価値から逆算し、小さく速く学び続ける — 不確実性の中で成果を再現可能にする技術</p>
+</header>
+
+<!-- ===== ファーストビュー：エグゼクティブサマリー ===== -->
+<section class="summary-block" aria-label="エグゼクティブサマリー">
+  <div class="summary-inner">
+    <div class="summary-card">
+      <div class="sc-label">❓ 問い</div>
+      <p>不確実性の高い開発で、どうすれば一流エンジニアのように<span class="highlight">継続的に価値を最速で届けられるか？</span></p>
+    </div>
+    <div class="summary-card">
+      <div class="sc-label">💡 答え</div>
+      <p>価値仮説から逆算し、<span class="highlight">最小の実験を高速に回し</span>、計測・学習で設計とプロセスを更新し続ける。</p>
+    </div>
+    <div class="summary-card">
+      <div class="sc-label">🔍 Why（なぜそうなのか）</div>
+      <p>ソフトウェアは複雑適応系で事前計画の限界が大きい。<span class="highlight">高頻度のフィードバックと計測</span>がパフォーマンスを規定し、学習こそが持続的優位の源泉だから。</p>
+    </div>
+    <div class="summary-card">
+      <div class="sc-label">🛠 How（そのためには）</div>
+      <p>① 良い問いで問題定義 → ② 仮説-実験-計測ループを小さく高頻度で回す → ③ 抽象化と分割で変更容易性を確保 → ④ テスト・デリバリー・運用を自動化 → ⑤ ドキュメントと対話で認知を揃える</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== KPIバッジ ===== -->
+<div class="kpi-row" aria-label="主要指標">
+  <div class="kpi-badge">
+    <span class="kpi-num">12</span>
+    <span class="kpi-label">主要概念</span>
+  </div>
+  <div class="kpi-badge">
+    <span class="kpi-num">5</span>
+    <span class="kpi-label">構成パート</span>
+  </div>
+  <div class="kpi-badge">
+    <span class="kpi-num">7</span>
+    <span class="kpi-label">因果関係</span>
+  </div>
+  <div class="kpi-badge">
+    <span class="kpi-num">3</span>
+    <span class="kpi-label">今日のアクション</span>
+  </div>
+  <div class="kpi-badge">
+    <span class="kpi-num">5</span>
+    <span class="kpi-label">関連書籍</span>
+  </div>
+</div>
+
+<!-- ===== タブナビゲーション ===== -->
+<nav class="tab-nav" role="tablist" aria-label="コンテンツタブ">
+  <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="tab-concepts"  id="btn-concepts">🧠 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters"  id="btn-chapters">📖 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples"  id="btn-examples">💡 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes"    id="btn-quotes">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions"   id="btn-actions">🚀 今日のアクション</button>
+</nav>
+
+<!-- ===================================================
+     タブ1: 主要概念
+===================================================== -->
+<section class="tab-content active" id="tab-concepts" role="tabpanel" aria-labelledby="btn-concepts">
+
+  <p class="section-title">🔄 学習ループ全体像（フロー図）</p>
+  <div class="flow-wrap" aria-label="学習ループフロー図">
+    <svg viewBox="0 0 700 120" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="良い問い→価値仮説→仮説駆動開発→フィードバックループ→計測→学習→更新の循環">
+      <!-- ノード -->
+      <rect x="2"   y="35" width="90" height="50" rx="10" fill="#1a1f3c"/>
+      <rect x="112" y="35" width="90" height="50" rx="10" fill="#2d6a9f"/>
+      <rect x="222" y="35" width="90" height="50" rx="10" fill="#2d6a9f"/>
+      <rect x="332" y="35" width="90" height="50" rx="10" fill="#1a4a7a"/>
+      <rect x="442" y="35" width="90" height="50" rx="10" fill="#2d6a9f"/>
+      <rect x="552" y="35" width="90" height="50" rx="10" fill="#1a1f3c"/>
+      <!-- 矢印 -->
+      <path d="M92 60 L112 60" stroke="#f5a623" stroke-width="2.5" marker-end="url(#arr)"/>
+      <path d="M202 60 L222 60" stroke="#f5a623" stroke-width="2.5" marker-end="url(#arr)"/>
+      <path d="M312 60 L332 60" stroke="#f5a623" stroke-width="2.5" marker-end="url(#arr)"/>
+      <path d="M422 60 L442 60" stroke="#f5a623" stroke-width="2.5" marker-end="url(#arr)"/>
+      <path d="M532 60 L552 60" stroke="#f5a623" stroke-width="2.5" marker-end="url(#arr)"/>
+      <!-- フィードバック矢印 -->
+      <path d="M597 85 Q597 108 350 108 Q103 108 47 85" stroke="#f5a623" stroke-width="1.8" fill="none" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+      <!-- テキスト -->
+      <text x="47"  y="57" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">良い問い</text>
+      <text x="47"  y="70" text-anchor="middle" fill="#f5a623" font-size="8" font-family="sans-serif">問題定義</text>
+      <text x="157" y="57" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">価値仮説</text>
+      <text x="157" y="70" text-anchor="middle" fill="#f5a623" font-size="8" font-family="sans-serif">何を作るか</text>
+      <text x="267" y="57" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">仮説駆動</text>
+      <text x="267" y="70" text-anchor="middle" fill="#f5a623" font-size="8" font-family="sans-serif">最小実験</text>
+      <text x="377" y="57" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">計測</text>
+      <text x="377" y="70" text-anchor="middle" fill="#f5a623" font-size="8" font-family="sans-serif">北極星指標</text>
+      <text x="487" y="57" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">学習</text>
+      <text x="487" y="70" text-anchor="middle" fill="#f5a623" font-size="8" font-family="sans-serif">フィードバック</text>
+      <text x="597" y="57" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">更新</text>
+      <text x="597" y="70" text-anchor="middle" fill="#f5a623" font-size="8" font-family="sans-serif">設計改善</text>
+      <text x="350" y="118" text-anchor="middle" fill="#f5a623" font-size="8" font-family="sans-serif">← 高速フィードバックループ（短いほど学習加速）</text>
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#f5a623"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <p class="section-title">🧩 思考の土台（問い・仮説・逆算）</p>
+  <div class="grid-3">
+    <div class="concept-card accent-top">
+      <div class="c-tag">🎯 成果の入口</div>
+      <div class="c-title">良い問い（問題定義）</div>
+      <div class="c-def">制約・利害・価値を明確化し、解くべき本質的問題を言語化する行為。解の探索空間を正しく狭める。</div>
+      <div class="c-why">💡 なぜ重要か：問いの質が成果の上限を決める。間違った問いを解いても価値は生まれない。</div>
+    </div>
+    <div class="concept-card">
+      <div class="c-tag">🔬 何を作るか</div>
+      <div class="c-title">価値仮説／成長仮説</div>
+      <div class="c-def">ユーザーが価値を感じる理由と、価値提供が継続的に拡大する仕組みに関する検証可能な前提。</div>
+      <div class="c-why">💡 なぜ重要か：作る前に「なぜ価値があるか」を言語化しないと、実装後に無駄が判明する。</div>
+    </div>
+    <div class="concept-card accent-top">
+      <div class="c-tag">🔄 実験で学ぶ</div>
+      <div class="c-title">仮説駆動開発</div>
+      <div class="c-def">「もし〜なら、〜が起きる」を最小実験で検証し、データで意思決定する開発様式。</div>
+      <div class="c-why">💡 なぜ重要か：思い込みではなく証拠で進むため、無駄な実装を最小化できる。</div>
+    </div>
+    <div class="concept-card">
+      <div class="c-tag">🏹 目的から設計</div>
+      <div class="c-title">逆算思考（アウトカム・ドリブン）</div>
+      <div class="c-def">望ましい成果・指標から逆に要件・設計・計画を導く思考法。</div>
+      <div class="c-why">💡 なぜ重要か：手段の最適化に迷走せず、成果に直結する選択ができる。</div>
+    </div>
+    <div class="concept-card accent-top">
+      <div class="c-tag">⚖️ 最良より最適</div>
+      <div class="c-title">トレードオフと制約充足</div>
+      <div class="c-def">性能・コスト・納期など相反条件下で最適実用解（サティスファイシング）を選ぶ判断枠組み。</div>
+      <div class="c-why">💡 なぜ重要か：完璧を追うより「今の制約で最善」を選ぶ判断が速度を生む。</div>
+    </div>
+    <div class="concept-card">
+      <div class="c-tag">🔭 ズームイン・アウト</div>
+      <div class="c-title">抽象化／具体化の往復</div>
+      <div class="c-def">原理を抽出しつつ具体事例で検証する往復運動で理解を深める技法。</div>
+      <div class="c-why">💡 なぜ重要か：抽象だけでは実装できず、具体だけでは汎化できない。往復が本質理解を生む。</div>
+    </div>
+  </div>
+
+  <p class="section-title">🏗 設計・実行の原則</p>
+  <div class="grid-3">
+    <div class="concept-card">
+      <div class="c-tag">🧩 複雑性を解体</div>
+      <div class="c-title">分割統治と疎結合</div>
+      <div class="c-def">問題を独立性の高い要素に分解し、変更影響を局所化する設計原則。</div>
+      <div class="c-why">💡 なぜ重要か：変更影響が局所化されると実験の独立性が上がり、CDが加速する。</div>
+    </div>
+    <div class="concept-card accent-top">
+      <div class="c-tag">💓 学習の心臓部</div>
+      <div class="c-title">フィードバックループ</div>
+      <div class="c-def">観察→仮説→実験→計測→学習→更新の循環。短いほど学習が加速する。</div>
+      <div class="c-why">💡 なぜ重要か：ループが長いと誤りの発見が遅れ、無駄な実装が積み上がる。</div>
+    </div>
+    <div class="concept-card">
+      <div class="c-tag">📏 迷わない物差し</div>
+      <div class="c-title">計測と北極星指標</div>
+      <div class="c-def">価値に直結する単純で操作可能な指標を定め、行動とアウトカムを結ぶ。</div>
+      <div class="c-why">💡 なぜ重要か：計測なしでは学習が主観に依存し、誤学習・思い込みが増大する。</div>
+    </div>
+    <div class="concept-card accent-top">
+      <div class="c-tag">⚡ 学習速度の増幅器</div>
+      <div class="c-title">自動化と継続的デリバリー</div>
+      <div class="c-def">ビルド・テスト・リリースを自動化し、変更のリードタイムと失敗コストを最小化。</div>
+      <div class="c-why">💡 なぜ重要か：自動化でリードタイムとMTTRが下がり、ビジネスの応答性が上がる。</div>
+    </div>
+    <div class="concept-card">
+      <div class="c-tag">👁 見える化で速く直す</div>
+      <div class="c-title">可観測性</div>
+      <div class="c-def">ログ・メトリクス・トレースで内部状態を外から理解可能にする運用設計。</div>
+      <div class="c-why">💡 なぜ重要か：問題の原因が見えなければ修正も学習も遅れる。</div>
+    </div>
+    <div class="concept-card accent-top">
+      <div class="c-tag">🤝 集合知で誤り減</div>
+      <div class="c-title">知識共有（ドキュメントと対話）</div>
+      <div class="c-def">意思決定の背景・設計意図を軽量に記録し、レビューで認知を同期する。</div>
+      <div class="c-why">💡 なぜ重要か：暗黙知を形式知化することで認知のズレが減り、手戻りが下がる。</div>
+    </div>
+  </div>
+
+  <p class="section-title">🔗 概念間の因果関係</p>
+  <div class="card">
+    <div class="card-title"><span class="icon">⛓</span>因果チェーン</div>
+    <ul class="relation-list">
+      <li>良い問い <span class="rel-arrow">→</span> 適切な価値仮説設定 <span class="rel-arrow">→</span> 実験設計の質向上 <span class="rel-arrow">→</span> 学習効率↑</li>
+      <li>小さな実験 × 高頻度デリバリー <span class="rel-arrow">→</span> 速いフィードバック <span class="rel-arrow">→</span> 誤りの早期発見 <span class="rel-arrow">→</span> 学習速度↑</li>
+      <li>計測不備 <span class="rel-arrow">→</span> ループ鈍化 <span class="rel-arrow">→</span> 誤学習・思い込み増大 <span class="rel-arrow">→</span> 無駄な実装↑</li>
+      <li>分割統治＆疎結合 <span class="rel-arrow">→</span> 変更影響の局所化 <span class="rel-arrow">→</span> 実験の独立性↑ <span class="rel-arrow">→</span> CDを加速</li>
+      <li>自動化＆可観測性 <span class="rel-arrow">→</span> リードタイム↓・MTTR↓ <span class="rel-arrow">→</span> ビジネスの応答性↑</li>
+      <li>技術的負債↑ <span class="rel-arrow">↔</span> 変更コスト↑ <span class="rel-arrow">→</span> 実験速度↓ <span class="rel-arrow">→</span> 学習停滞 <span class="rel-arrow">→</span> 価値創出↓</li>
+      <li>ドキュメント＋レビュー <span class="rel-arrow">→</span> 暗黙知の形式知化 <span class="rel-arrow">→</span> 認知のズレ減 <span class="rel-arrow">→</span> 手戻り↓</li>
+    </ul>
+  </div>
+
+  <p class="section-title">📊 学習速度に影響する要因（相対的重要度）</p>
+  <div class="card">
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">🎯 問いの質（問題定義の精度）</div>
+        <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+        <div class="bar-val">最高インパクト</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">🔄 フィードバックループの速度</div>
+        <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
+        <div class="bar-val">非常に高い</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">📏 計測・北極星指標の明確さ</div>
+        <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+        <div class="bar-val">高い</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">⚡ 自動化・継続的デリバリー</div>
+        <div class="bar-track"><div class="bar-fill" style="width:80%"></div></div>
+        <div class="bar-val">高い</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">🧩 分割統治・疎結合設計</div>
+        <div class="bar-track"><div class="bar-fill" style="width:75%"></div></div>
+        <div class="bar-val">中〜高</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">🤝 知識共有・ドキュメント</div>
+        <div class="bar-track"><div class="bar-fill" style="width:65%"></div></div>
+        <div class="bar-val">中</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================
+     タブ2: 各章の要約
+===================================================== -->
+<section class="tab-content" id="tab-chapters" role="tabpanel" aria-labelledby="btn-chapters">
+
+  <div class="chapter-card">
+    <div class="chapter-num">第1部</div>
+    <div class="chapter-title">🏛 思考の土台</div>
+    <ul class="card" style="box-shadow:none;padding:0;background:transparent;">
+      <ul>
+        <li>価値から逆算する姿勢を最初に確立する</li>
+        <li>問いの立て方が成果の上限を決める</li>
+        <li>トレードオフ感覚など普遍的原理を提示</li>
+        <li>「最良」より「最適実用解」を選ぶ判断軸を養う</li>
+      </ul>
+    </ul>
+    <div class="reason-box"><strong>なぜこの部が必要か：</strong>思考の土台なしに技術を学んでも、間違った問題を速く解くだけになる。全ての実践の前提となる姿勢を最初に確立するため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">第2部</div>
+    <div class="chapter-title">🔬 問いと仮説</div>
+    <ul class="card" style="box-shadow:none;padding:0;background:transparent;">
+      <ul>
+        <li>価値仮説・成長仮説の立案方法を解説</li>
+        <li>検証可能性の条件を明確にする</li>
+        <li>成功基準（メトリクス）の定義方法を学ぶ</li>
+        <li>「もし〜なら〜が起きる」形式で仮説を言語化</li>
+      </ul>
+    </ul>
+    <div class="reason-box"><strong>なぜこの部が必要か：</strong>仮説が曖昧なまま実験しても学習できない。検証可能な仮説と成功基準の定義が、実験の質と学習効率を決定するから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">第3部</div>
+    <div class="chapter-title">🏗 構造化と設計</div>
+    <ul class="card" style="box-shadow:none;padding:0;background:transparent;">
+      <ul>
+        <li>分割統治・抽象化・疎結合の設計原則を展開</li>
+        <li>変更容易性を確保する具体策を提示</li>
+        <li>技術的負債が学習速度を下げるメカニズムを解説</li>
+        <li>設計の意思決定を記録・共有する方法を示す</li>
+      </ul>
+    </ul>
+    <div class="reason-box"><strong>なぜこの部が必要か：</strong>設計の質が実験の独立性と変更コストを決める。良い設計なしには高速な仮説検証ループを維持できないから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">第4部</div>
+    <div class="chapter-title">⚡ 実行と学習ループ</div>
+    <ul class="card" style="box-shadow:none;padding:0;background:transparent;">
+      <ul>
+        <li>小さな実験の設計と実行方法を具体化</li>
+        <li>計測・可観測性の整備で学習を加速</li>
+        <li>自動化・継続的デリバリーでリードタイムを最小化</li>
+        <li>MTTRを下げる運用設計の実務を解説</li>
+      </ul>
+    </ul>
+    <div class="reason-box"><strong>なぜこの部が必要か：</strong>思考と設計だけでは価値は届かない。実際に高速に動かし、計測し、学ぶ実務スキルが成果を再現可能にするから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">第5部</div>
+    <div class="chapter-title">🤝 チームと意思決定</div>
+    <ul class="card" style="box-shadow:none;padding:0;background:transparent;">
+      <ul>
+        <li>ドキュメンテーションで暗黙知を形式知化</li>
+        <li>レビューで認知を同期し手戻りを減らす</li>
+        <li>対話による集合知化の仕組みを構築</li>
+        <li>高速な意思決定のための情報共有設計を提示</li>
+      </ul>
+    </ul>
+    <div class="reason-box"><strong>なぜこの部が必要か：</strong>個人の学習だけでは組織の学習速度に限界がある。チームの認知を揃え、集合知で意思決定を高速化することが持続的な価値創出を支えるから。</div>
+  </div>
+
+  <!-- 構造俯瞰SVG -->
+  <p class="section-title">🗺 5部構成の俯瞰図</p>
+  <div class="flow-wrap">
+    <svg viewBox="0 0 680 200" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="5部構成の俯瞰図">
+      <!-- 背景帯 -->
+      <rect x="0" y="0" width="680" height="200" rx="12" fill="#f7f9fc"/>
+      <!-- 第1部 -->
+      <rect x="10"  y="20" width="120" height="160" rx="10" fill="#1a1f3c"/>
+      <text x="70"  y="55" text-anchor="middle" fill="#f5a623" font-size="10" font-weight="bold" font-family="sans-serif">第1部</text>
+      <text x="70"  y="72" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">思考の土台</text>
+      <text x="70"  y="92" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">価値逆算</text>
+      <text x="70"  y="106" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">問いの立て方</text>
+      <text x="70"  y="120" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">トレードオフ</text>
+      <!-- 第2部 -->
+      <rect x="142" y="20" width="120" height="160" rx="10" fill="#2d6a9f"/>
+      <text x="202" y="55" text-anchor="middle" fill="#f5a623" font-size="10" font-weight="bold" font-family="sans-serif">第2部</text>
+      <text x="202" y="72" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">問いと仮説</text>
+      <text x="202" y="92" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">価値仮説</text>
+      <text x="202" y="106" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">成長仮説</text>
+      <text x="202" y="120" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">成功基準定義</text>
+      <!-- 第3部 -->
+      <rect x="274" y="20" width="120" height="160" rx="10" fill="#1a4a7a"/>
+      <text x="334" y="55" text-anchor="middle" fill="#f5a623" font-size="10" font-weight="bold" font-family="sans-serif">第3部</text>
+      <text x="334" y="72" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">構造化と設計</text>
+      <text x="334" y="92" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">分割統治</text>
+      <text x="334" y="106" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">疎結合</text>
+      <text x="334" y="120" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">変更容易性</text>
+      <!-- 第4部 -->
+      <rect x="406" y="20" width="120" height="160" rx="10" fill="#2d6a9f"/>
+      <text x="466" y="55" text-anchor="middle" fill="#f5a623" font-size="10" font-weight="bold" font-family="sans-serif">第4部</text>
+      <text x="466" y="72" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">実行と学習</text>
+      <text x="466" y="92" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">小さな実験</text>
+      <text x="466" y="106" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">計測・可観測性</text>
+      <text x="466" y="120" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">自動化・CD</text>
+      <!-- 第5部 -->
+      <rect x="538" y="20" width="132" height="160" rx="10" fill="#1a1f3c"/>
+      <text x="604" y="55" text-anchor="middle" fill="#f5a623" font-size="10" font-weight="bold" font-family="sans-serif">第5部</text>
+      <text x="604" y="72" text-anchor="middle" fill="#fff" font-size="9" font-family="sans-serif">チームと意思決定</text>
+      <text x="604" y="92" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">ドキュメント</text>
+      <text x="604" y="106" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">レビュー</text>
+      <text x="604" y="120" text-anchor="middle" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">集合知化</text>
+      <!-- 矢印 -->
+      <path d="M130 100 L142 100" stroke="#f5a623" stroke-width="2" marker-end="url(#arr2)"/>
+      <path d="M262 100 L274 100" stroke="#f5a623" stroke-width="2" marker-end="url(#arr2)"/>
+      <path d="M394 100 L406 100" stroke="#f5a623" stroke-width="2" marker-end="url(#arr2)"/>
+      <path d="M526 100 L538 100" stroke="#f5a623" stroke-width="2" marker-end="url(#arr2)"/>
+      <!-- 底部ラベル -->
+      <text x="340" y="192" text-anchor="middle" fill="#2d6a9f" font-size="9" font-family="sans-serif" font-weight="bold">土台 → 仮説 → 設計 → 実行 → チーム の順で積み上がる構造</text>
+      <defs>
+        <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#f5a623"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<!-- ===================================================
+     タブ3: 具体例
+===================================================== -->
+<section class="tab-content" id="tab-examples" role="tabpanel" aria-labelledby="btn-examples">
+
+  <div class="example-card">
+    <div class="example-label">💡 具体例 1 — 仮説駆動開発のメタファー</div>
+    <div class="example-title">🧪 「新薬開発」と仮説駆動開発</div>
+    <div class="example-body">
+      製薬会社は「この化合物が病気に効く」という仮説を立て、最小規模の臨床試験から始める。全患者に投与してから効果を確認するのではなく、小さな実験で有効性を確認してから拡大する。<br><br>
+      ソフトウェア開発も同様に、「このUIを変えると離脱率が下がる」という仮説をA/Bテストで最小コストで検証し、データが出てから全ユーザーに展開する。
+    </div>
+    <div class="example-reason">
+      <strong>🔍 この例が示すこと：</strong>仮説を先に言語化し、最小実験で検証してから拡大することで、失敗コストを最小化しながら学習速度を最大化できる。「作ってから考える」ではなく「考えてから最小で作る」が一流の姿勢。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-label">💡 具体例 2 — 北極星指標の実践</div>
+    <div class="example-title">⭐ Netflixの「視聴完了率」という北極星指標</div>
+    <div class="example-body">
+      Netflixは「月間アクティブユーザー数」ではなく「視聴完了率（コンテンツを最後まで見た割合）」を北極星指標として設定した（要旨）。この指標が上がれば、ユーザーが本当に価値を感じているとみなせる。<br><br>
+      エンジニアチームはすべての機能改善をこの指標への影響で評価し、「再生ボタンのデザイン変更」から「レコメンドアルゴリズム改善」まで一貫した判断軸を持てた。
+    </div>
+    <div class="example-reason">
+      <strong>🔍 この例が示すこと：</strong>計測する指標が行動を決める。価値に直結する単一の北極星指標を定めることで、チーム全員が同じ方向を向き、意思決定が高速化される。指標なき開発は羅針盤なき航海。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-label">💡 具体例 3 — 技術的負債と学習停滞</div>
+    <div class="example-title">🏚 「泥の家」メタファー：技術的負債の罠</div>
+    <div class="example-body">
+      急いで建てた泥の家は最初は速く完成するが、増築のたびに壁が崩れるリスクが増す。やがて「1部屋追加するのに全体を補強しなければならない」状態になり、建築速度がゼロに近づく。<br><br>
+      技術的負債も同様に、短期的な速度優先で積み上げると変更コストが指数的に増大し、実験速度が低下、学習が停滞し、最終的に価値創出が止まる。
+    </div>
+    <div class="example-reason">
+      <strong>🔍 この例が示すこと：</strong>技術的負債は「今の速度」と「将来の学習速度」のトレードオフ。疎結合・分割統治の設計原則は、この負債の蓄積を防ぎ、長期的な実験速度を維持するための投資である。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-label">💡 具体例 4 — 問いの質が成果を決める</div>
+    <div class="example-title">🎯 「なぜユーザーが離脱するか」vs「離脱率を下げるには」</div>
+    <div class="example-body">
+      あるECサービスで「カート離脱率を下げたい」という問いを立てたチームは、UIの改善に注力した。しかし別のチームが「なぜユーザーはカートに入れても買わないのか」と問い直したところ、「送料が最後に表示されて驚く」という本質的原因を発見し、送料の早期表示だけで離脱率を大幅改善した（要旨）。
+    </div>
+    <div class="example-reason">
+      <strong>🔍 この例が示すこと：</strong>問いの立て方が解の探索空間を決める。「どう解くか」より「何を解くか」を正しく定義することが、実装量に依存しない高インパクトな成果を生む。問いの質が成果の上限を決める。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-label">💡 具体例 5 — 自動化と継続的デリバリー</div>
+    <div class="example-title">🚀 Amazonの「1日数千回デプロイ」</div>
+    <div class="example-body">
+      Amazonは継続的デリバリーの自動化により、1日に数千回のデプロイを実現している（要旨）。各変更は小さく、自動テストで品質を担保し、問題があれば即座にロールバックできる。<br><br>
+      これにより「大きなリリース」のリスクが消え、小さな仮説を高頻度で検証できる体制が整い、学習速度が飛躍的に向上した。
+    </div>
+    <div class="example-reason">
+      <strong>🔍 この例が示すこと：</strong>自動化は単なる効率化ではなく、学習速度の増幅器。デプロイ頻度が上がるほど仮説検証の回転数が上がり、フィードバックループが短縮され、ビジネスの応答性が高まる。
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================
+     タブ4: 重要な引用
+===================================================== -->
+<section class="tab-content" id="tab-quotes" role="tabpanel" aria-labelledby="btn-quotes">
+
+  <p style="font-size:0.78rem;color:var(--text-light);margin-bottom:14px;">※ 以下はすべて書籍の要旨として記載されています（原文引用ではありません）。</p>
+
+  <div class="quote-card">
+    <div class="quote-text">「問いの質が成果の上限を決める。まず何を解くのかを正しく定義せよ。」</div>
+    <div class="quote-note">
+      <strong>要旨</strong> ｜ <strong>なぜ重要か：</strong>実装量ではなく問題定義の精度がインパクトを規定するから。どれだけ速く実装しても、間違った問題を解いていれば価値はゼロになる。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">「仮説は小さく、検証は速く。結果に学び、方針を更新せよ。」</div>
+    <div class="quote-note">
+      <strong>要旨</strong> ｜ <strong>なぜ重要か：</strong>不確実性下での損失を抑えつつ学習速度を最大化できるから。大きな賭けより小さな実験の積み重ねが、長期的に最大の成果を生む。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">「技術は手段、価値が目的。指標で価値を観測せよ。」</div>
+    <div class="quote-note">
+      <strong>要旨</strong> ｜ <strong>なぜ重要か：</strong>手段の最適化に迷走せず、成果に直結する選択ができるから。技術的な美しさより、ユーザーへの価値提供が判断の基準になる。
+    </div>
+  </div>
+
+  <!-- 補足：核心メッセージ -->
+  <div class="card mt8">
+    <div class="card-title"><span class="icon">🌟</span>核心メッセージ（要旨）</div>
+    <ul>
+      <li>一流のエンジニアは「価値から逆算」し、「小さく速い仮説検証」と「計測に基づく学習」を絶えず回す</li>
+      <li>抽象化と分割で複雑性を制御し、自動化とチームの対話で学習速度を最大化する</li>
+      <li>不確実性の中でも成果を再現可能にすることが、一流エンジニアの本質的な能力</li>
+    </ul>
+    <div class="reason-box"><strong>補足：</strong>この核心メッセージは、12の主要概念すべてを貫く一本の軸。「価値→仮説→実験→計測→学習→更新」のループを高速に回すことが、全ての実践の根底にある。</div>
+  </div>
+
+  <!-- 関連書籍 -->
+  <p class="section-title">📚 関連書籍</p>
+  <div class="book-card">
+    <div class="book-icon">📗</div>
+    <div>
+      <div class="book-title">リーン・スタートアップ</div>
+      <div class="book-author">エリック・リース</div>
+      <div class="book-rel">仮説検証と学習ループの原則を体系化。本書の仮説駆動開発・フィードバックループの思想的源流。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📘</div>
+    <div>
+      <div class="book-title">LeanとDevOpsの科学（Accelerate）</div>
+      <div class="book-author">ニコール・フォースグレン、ジェズ・ハンブル、ジーン・キム</div>
+      <div class="book-rel">デリバリー指標と組織パフォーマンスの相関を実証。自動化・継続的デリバリーの効果を数値で裏付ける。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📙</div>
+    <div>
+      <div class="book-title">Team Geek</div>
+      <div class="book-author">ブライアン・W・フィッツパトリック、ベン・コリンズ＝サスマン</div>
+      <div class="book-rel">チームの対話・信頼・レビューが成果に直結する理由を解説。第5部「チームと意思決定」の実践に直結。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📕</div>
+    <div>
+      <div class="book-title">エンジニアリング組織論への招待</div>
+      <div class="book-author">広木大地</div>
+      <div class="book-rel">個人と組織の認知/学習を扱い、思考法の実装に有用。本書の「知識共有・集合知化」の理論的背景。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📓</div>
+    <div>
+      <div class="book-title">ドメイン駆動設計</div>
+      <div class="book-author">エリック・エヴァンス</div>
+      <div class="book-rel">抽象化・分割統治で複雑性を制御する設計思想を提供。第3部「構造化と設計」の実践的基盤。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================
+     タブ5: 今日のアクション
+===================================================== -->
+<section class="tab-content" id="tab-actions" role="tabpanel" aria-labelledby="btn-actions">
+
+  <div class="card" style="background:linear-gradient(135deg,#1a1f3c,#2d6a9f);color:#fff;margin-bottom:18px;">
+    <div class="card-title" style="color:var(--accent);">⏱ 今日から15〜30分で始められる3つのアクション</div>
+    <p style="font-size:0.82rem;opacity:0.85;line-height:1.6;">理論を知るだけでは変わらない。今日、小さく動くことが学習ループの第一歩。</p>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">1</div>
+    <div class="action-body">
+      <div class="action-title">🎯 最重要仮説を1つ書き出す</div>
+      <div class="action-meta">
+        <span class="purpose">📌 目的：今取り組んでいる課題の「もし〜なら〜が起きる」を言語化し、検証可能な形にする</span>
+        <span style="margin-top:4px;display:block;">⏱ 所要時間：15〜20分</span>
+        <span class="effect">✅ 期待効果：思い込みで動くリスクが減り、実験の設計精度が上がる。問いの質が上がることで成果の上限が引き上げられる。</span>
+      </div>
+      <div class="reason-box mt8">
+        <strong>やり方：</strong>① 今解こうとしている問題を1文で書く → ② 「もし〔施策〕をすれば、〔指標〕が〔方向〕に変化する」の形に変換 → ③ 検証できるか確認する
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">2</div>
+    <div class="action-body">
+      <div class="action-title">📏 成功指標と計測方法を決める</div>
+      <div class="action-meta">
+        <span class="purpose">📌 目的：仮説の検証結果を「感覚」ではなく「数値」で判断できるようにする</span>
+        <span style="margin-top:4px;display:block;">⏱ 所要時間：15〜25分</span>
+        <span class="effect">✅ 期待効果：実験後の「成功/失敗」の判断が明確になり、誤学習・思い込みを防げる。北極星指標が定まることでチームの方向が揃う。</span>
+      </div>
+      <div class="reason-box mt8">
+        <strong>やり方：</strong>① 仮説に対応する指標を1〜2個選ぶ → ② 現在の数値（ベースライン）を確認 → ③ 「何%改善したら成功か」を決める → ④ 計測ツール・方法を確認する
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">3</div>
+    <div class="action-body">
+      <div class="action-title">🧪 30分実験の計画を箇条書き</div>
+      <div class="action-meta">
+        <span class="purpose">📌 目的：仮説を最小コストで検証できる実験を設計し、今日中に動かせる状態にする</span>
+        <span style="margin-top:4px;display:block;">⏱ 所要時間：20〜30分</span>
+        <span class="effect">✅ 期待効果：「考えるだけ」から「動かして学ぶ」に移行できる。小さな実験の習慣化がフィードバックループを短縮し、学習速度を継続的に高める。</span>
+      </div>
+      <div class="reason-box mt8">
+        <strong>やり方：</strong>① 仮説を検証する最小の実験を1つ決める → ② 必要なステップを箇条書き（5項目以内）→ ③ 実験の期間・対象・計測タイミングを決める → ④ 今日中に最初のステップを実行する
+      </div>
+    </div>
+  </div>
+
+  <!-- アクションチェックリスト視覚化 -->
+  <p class="section-title">✅ アクション完了チェックリスト</p>
+  <div class="card">
+    <div class="card-title"><span class="icon">📋</span>今日のゴール確認</div>
+    <ul>
+      <li>「もし〜なら〜が起きる」形式の仮説を1つ書いた</li>
+      <li>成功指標（数値）とベースラインを確認した</li>
+      <li>最小実験の手順を5項目以内で箇条書きした</li>
+      <li>最初のステップを今日中に実行した</li>
+    </ul>
+    <div class="reason-box">
+      <strong>💡 ポイント：</strong>完璧な計画より「小さく動いて学ぶ」が一流エンジニアの姿勢。今日の30分が、明日の学習速度を決める。
+    </div>
+  </div>
+
+  <!-- 学習ループ再掲（アクション文脈） -->
+  <p class="section-title">🔄 あなたの学習ループを今日から回す</p>
+  <div class="flow-wrap">
+    <svg viewBox="0 0 500 130" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="今日から回す学習ループ">
+      <rect x="5"   y="30" width="80" height="70" rx="10" fill="#1a1f3c"/>
+      <rect x="110" y="30" width="80" height="70" rx="10" fill="#2d6a9f"/>
+      <rect x="215" y="30" width="80" height="70" rx="10" fill="#1a4a7a"/>
+      <rect x="320" y="30" width="80" height="70" rx="10" fill="#2d6a9f"/>
+      <rect x="415" y="30" width="80" height="70" rx="10" fill="#1a1f3c"/>
+      <text x="45"  y="60" text-anchor="middle" fill="#f5a623" font-size="16" font-family="sans-serif">🎯</text>
+      <text x="45"  y="78" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">仮説を</text>
+      <text x="45"  y="90" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">書き出す</text>
+      <text x="150" y="60" text-anchor="middle" fill="#f5a623" font-size="16" font-family="sans-serif">📏</text>
+      <text x="150" y="78" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">指標を</text>
+      <text x="150" y="90" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">決める</text>
+      <text x="255" y="60" text-anchor="middle" fill="#f5a623" font-size="16" font-family="sans-serif">🧪</text>
+      <text x="255" y="78" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">実験を</text>
+      <text x="255" y="90" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">計画する</text>
+      <text x="360" y="60" text-anchor="middle" fill="#f5a623" font-size="16" font-family="sans-serif">📊</text>
+      <text x="360" y="78" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">計測・</text>
+      <text x="360" y="90" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">観察する</text>
+      <text x="455" y="60" text-anchor="middle" fill="#f5a623" font-size="16" font-family="sans-serif">🔄</text>
+      <text x="455" y="78" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">学習・</text>
+      <text x="455" y="90" text-anchor="middle" fill="#fff" font-size="8" font-family="sans-serif">更新する</text>
+      <path d="M85 65 L110 65" stroke="#f5a623" stroke-width="2" marker-end="url(#arr3)"/>
+      <path d="M190 65 L215 65" stroke="#f5a623" stroke-width="2" marker-end="url(#arr3)"/>
+      <path d="M295 65 L320 65" stroke="#f5a623" stroke-width="2" marker-end="url(#arr3)"/>
+      <path d="M400 65 L415 65" stroke="#f5a623" stroke-width="2" marker-end="url(#arr3)"/>
+      <path d="M455 100 Q455 120 250 120 Q45 120 45 100" stroke="#f5a623" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arr3)"/>
+      <text x="250" y="128" text-anchor="middle" fill="#f5a623" font-size="7.5" font-family="sans-serif">← 繰り返すほど学習が加速する</text>
+      <defs>
+        <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#f5a623"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</section>
+
+<!-- ===== フッター ===== -->
+<footer>
+  <p>📘 一流エンジニアの思考法 インフォグラフィック</p>
+  <p style="margin-top:4px;">カラーパレット — プライマリー: #1a1f3c ／ セカンダリー: #2d6a9f ／ アクセント: #f5a623</p>
+</footer>
+
+<script>
+  // ===== タブ切替 =====
+  (function() {
+    var buttons = document.querySelectorAll('.tab-btn');
+    var panels  = document.querySelectorAll('.tab-content');
+
+    buttons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = btn.getAttribute('aria-controls');
+
+        // ボタン状態更新
+        buttons.forEach(function(b) {
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.setAttribute('aria-selected', 'true');
+
+        // パネル表示切替
+        panels.forEach(function(panel) {
+          if (panel.id === target) {
+            panel.classList.add('active');
+          } else {
+            panel.classList.remove('active');
+          }
+        });
+
+        // スクロール位置をタブナビ直下に
+        var nav = document.querySelector('.tab-nav');
+        if (nav) {
+          var navBottom = nav.getBoundingClientRect().bottom + window.scrollY;
+          window.scrollTo({ top: navBottom - 10, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // バーアニメーション（IntersectionObserver）
+    var bars = document.querySelectorAll('.bar-fill');
+    var widths = [];
+    bars.forEach(function(bar, i) {
+      widths[i] = bar.style.width;
+      bar.style.width = '0%';
+    });
+
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var bar = entry.target;
+          var idx = Array.prototype.indexOf.call(bars, bar);
+          setTimeout(function() {
+            bar.style.width = widths[idx];
+          }, idx * 80);
+          observer.unobserve(bar);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    bars.forEach(function(bar) { observer.observe(bar); });
+  })();
+</script>
+</body>
+</html>
