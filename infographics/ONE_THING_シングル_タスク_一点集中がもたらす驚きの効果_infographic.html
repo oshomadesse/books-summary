@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE ONE THING インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a1a2e
+  セカンダリー:  #e94560
+  アクセント:    #f5a623
+-->
+<style>
+  /* ===== リセット & ベース ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #1a1a2e;
+    --secondary: #e94560;
+    --accent: #f5a623;
+    --primary-light: #16213e;
+    --primary-mid: #0f3460;
+    --text-main: #f0f0f0;
+    --text-sub: #b0b8c8;
+    --card-bg: rgba(255,255,255,0.05);
+    --card-border: rgba(255,255,255,0.1);
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', sans-serif;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--primary-mid) 100%);
+    color: var(--text-main);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ===== ヘッダー ===== */
+  .site-header {
+    background: linear-gradient(90deg, var(--primary-mid) 0%, var(--primary) 100%);
+    border-bottom: 3px solid var(--secondary);
+    padding: 20px 16px 16px;
+    text-align: center;
+  }
+  .site-header .book-badge {
+    display: inline-block;
+    background: var(--secondary);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .site-header h1 {
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    background: linear-gradient(90deg, #fff 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .site-header .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-sub);
+    margin-top: 4px;
+  }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .hero-block {
+    max-width: 900px;
+    margin: 24px auto 0;
+    padding: 0 16px;
+  }
+  .hero-card {
+    background: linear-gradient(135deg, rgba(233,69,96,0.18) 0%, rgba(15,52,96,0.6) 100%);
+    border: 1.5px solid var(--secondary);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    box-shadow: var(--shadow);
+  }
+  .hero-card .hero-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 600px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero-item {
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--accent);
+  }
+  .hero-item.full { grid-column: 1 / -1; }
+  .hero-item .label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .hero-item p {
+    font-size: 0.88rem;
+    color: var(--text-main);
+    line-height: 1.65;
+  }
+  .hero-item.q { border-left-color: var(--secondary); }
+  .hero-item.q .label { color: var(--secondary); }
+  .hero-item.a { border-left-color: #4ecdc4; }
+  .hero-item.a .label { color: #4ecdc4; }
+
+  /* ===== タブナビ ===== */
+  .tab-nav-wrap {
+    max-width: 900px;
+    margin: 24px auto 0;
+    padding: 0 16px;
+  }
+  .tab-nav {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.07);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    color: var(--text-sub);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 9px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .tab-btn:hover { background: rgba(233,69,96,0.2); color: #fff; }
+  .tab-btn[aria-selected="true"] {
+    background: linear-gradient(90deg, var(--secondary), #c0392b);
+    border-color: var(--secondary);
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(233,69,96,0.4);
+  }
+
+  /* ===== タブコンテンツ ===== */
+  .tab-content-wrap {
+    max-width: 900px;
+    margin: 16px auto 40px;
+    padding: 0 16px;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ===== カード共通 ===== */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 18px 18px 16px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); }
+  .card-title {
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    font-size: 0.84rem;
+    color: var(--text-sub);
+    padding: 4px 0 4px 18px;
+    position: relative;
+    line-height: 1.55;
+  }
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.75rem;
+    top: 5px;
+  }
+  .card .reason-box {
+    margin-top: 12px;
+    background: rgba(245,166,35,0.1);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    color: var(--accent);
+    line-height: 1.5;
+  }
+  .card .reason-box strong { display: block; font-size: 0.72rem; letter-spacing: 0.08em; margin-bottom: 3px; }
+
+  /* ===== グリッドレイアウト ===== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 700px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  @media (min-width: 701px) and (max-width: 850px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin: 24px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(233,69,96,0.3);
+  }
+
+  /* ===== バッジ ===== */
+  .badge {
+    display: inline-block;
+    background: var(--secondary);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .badge.accent { background: var(--accent); color: var(--primary); }
+
+  /* ===== 数値ビジュアル ===== */
+  .stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .stat-box {
+    flex: 1;
+    min-width: 120px;
+    background: linear-gradient(135deg, rgba(233,69,96,0.15), rgba(15,52,96,0.5));
+    border: 1px solid rgba(233,69,96,0.3);
+    border-radius: 10px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+  .stat-box .num {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-box .unit { font-size: 0.75rem; color: var(--text-sub); margin-top: 4px; }
+
+  /* ===== 横棒グラフ ===== */
+  .bar-chart { margin: 16px 0; }
+  .bar-row { margin-bottom: 10px; }
+  .bar-label { font-size: 0.78rem; color: var(--text-sub); margin-bottom: 4px; display: flex; justify-content: space-between; }
+  .bar-track { background: rgba(255,255,255,0.08); border-radius: 20px; height: 10px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 20px; transition: width 1s ease; }
+  .bar-fill.primary { background: linear-gradient(90deg, var(--secondary), #c0392b); }
+  .bar-fill.accent { background: linear-gradient(90deg, var(--accent), #e67e22); }
+  .bar-fill.teal { background: linear-gradient(90deg, #4ecdc4, #1abc9c); }
+
+  /* ===== フロー図 ===== */
+  .flow-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 16px 0;
+  }
+  .flow-step {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-main);
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .flow-arrow { color: var(--accent); font-size: 1.1rem; flex-shrink: 0; }
+
+  /* ===== 引用カード ===== */
+  .quote-card {
+    background: linear-gradient(135deg, rgba(15,52,96,0.6), rgba(26,26,46,0.8));
+    border-left: 4px solid var(--secondary);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .quote-card blockquote {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: #fff;
+    line-height: 1.7;
+    margin-bottom: 8px;
+  }
+  .quote-card .q-note {
+    font-size: 0.78rem;
+    color: var(--accent);
+    line-height: 1.5;
+  }
+  .quote-card .q-note strong { color: var(--text-sub); font-weight: 400; }
+
+  /* ===== アクションカード ===== */
+  .action-card {
+    background: linear-gradient(135deg, rgba(245,166,35,0.1), rgba(15,52,96,0.5));
+    border: 1.5px solid rgba(245,166,35,0.35);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .action-card .action-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    color: var(--primary);
+    font-weight: 900;
+    font-size: 0.85rem;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+  .action-card .action-head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .action-card .action-title { font-size: 1rem; font-weight: 800; }
+  .action-card .action-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  @media (max-width: 500px) { .action-card .action-meta { grid-template-columns: 1fr; } }
+  .action-meta-item {
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+    color: var(--text-sub);
+  }
+  .action-meta-item strong { display: block; color: var(--accent); font-size: 0.7rem; letter-spacing: 0.08em; margin-bottom: 3px; }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .chapter-card .ch-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .chapter-card .ch-num {
+    background: linear-gradient(135deg, var(--secondary), #c0392b);
+    color: #fff;
+    font-weight: 900;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .chapter-card .ch-title { font-size: 1rem; font-weight: 800; line-height: 1.4; }
+
+  /* ===== 具体例カード ===== */
+  .example-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 14px;
+    border-top: 3px solid var(--accent);
+  }
+  .example-card .ex-head { font-size: 1rem; font-weight: 800; margin-bottom: 10px; }
+  .example-card .ex-section { margin-top: 8px; }
+  .example-card .ex-section-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .example-card .ex-section p { font-size: 0.83rem; color: var(--text-sub); line-height: 1.55; }
+
+  /* ===== 関連書籍 ===== */
+  .book-chip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .book-chip .book-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .book-chip .book-info .book-title { font-size: 0.85rem; font-weight: 700; }
+  .book-chip .book-info .book-author { font-size: 0.75rem; color: var(--text-sub); }
+  .book-chip .book-info .book-rel { font-size: 0.78rem; color: var(--accent); margin-top: 3px; }
+
+  /* ===== SVGドミノ ===== */
+  .domino-wrap { text-align: center; margin: 20px 0; }
+
+  /* ===== フッター ===== */
+  footer {
+    text-align: center;
+    padding: 20px 16px;
+    font-size: 0.72rem;
+    color: var(--text-sub);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header class="site-header" role="banner">
+  <div class="book-badge">📖 書籍インフォグラフィック</div>
+  <h1>THE ONE THING</h1>
+  <p class="subtitle">ゲアリー・ケラー著 ／ 一点集中で非凡な成果を生む方法</p>
+</header>
+
+<!-- ===== ファーストビュー：要約ブロック ===== -->
+<section class="hero-block" aria-label="エグゼクティブサマリー">
+  <div class="hero-card">
+    <div class="hero-title">🎯 エグゼクティブ・サマリー ― 問い × 答え × Why × How</div>
+    <div class="hero-grid">
+      <div class="hero-item q">
+        <div class="label">❓ 問い</div>
+        <p>どうすれば限られた時間とエネルギーで、圧倒的な成果を最短で出せるのか？</p>
+      </div>
+      <div class="hero-item a">
+        <div class="label">💡 答え</div>
+        <p>今すぐ着手すべき「たった一つ（The ONE Thing）」を特定し、時間ブロックで守り抜く。これによりドミノ効果が生まれ、他の作業が容易化・不要化する。</p>
+      </div>
+      <div class="hero-item">
+        <div class="label">🔍 Why ― なぜそうなのか？</div>
+        <p>人はマルチタスクや"全部大事"という思い込みで希釈される。意志力は有限で文脈切替の損失が大きい。80/20の不均衡が常に働くため、最重要のごく少数に集中したほうが総成果が最大化する。</p>
+      </div>
+      <div class="hero-item">
+        <div class="label">⚙️ How ― そのためには？</div>
+        <p>フォーカシング・クエスチョンで最重要を特定 → 目的・長期目標を「いま」へ逆算 → 朝の黄金時間を時間ブロック → ブロックを予定・人・通知から防衛 → "ノー"と環境設計で摩擦を下げる → 66日程度で習慣化し自動化する。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== タブナビ ===== -->
+<nav class="tab-nav-wrap" aria-label="コンテンツタブ">
+  <div class="tab-nav" role="tablist">
+    <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="panel-concepts" id="tab-concepts">🧠 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📚 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">💡 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes"   id="tab-quotes">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions"  id="tab-actions">✅ 今日のアクション</button>
+  </div>
+</nav>
+
+<!-- ===== タブコンテンツ ===== -->
+<main class="tab-content-wrap">
+
+  <!-- ========== TAB 1: 主要概念 ========== -->
+  <section id="panel-concepts" class="tab-panel active" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <!-- 数値バッジ -->
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="num">1</div>
+        <div class="unit">最重要の一手<br>ONE Thing</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">80<span style="font-size:1rem">%</span></div>
+        <div class="unit">成果の大半は<br>20%の行動から</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">66</div>
+        <div class="unit">日で習慣化<br>（平均）</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">0</div>
+        <div class="unit">マルチタスクで<br>得られる品質向上</div>
+      </div>
+    </div>
+
+    <!-- フロー図 -->
+    <div class="section-label">🔗 概念の因果フロー</div>
+    <div class="flow-wrap" aria-label="概念フロー図">
+      <div class="flow-step">🎯 目的</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">📌 優先事項</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">⚡ 生産性</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">🏆 非凡な成果</div>
+    </div>
+    <div class="flow-wrap">
+      <div class="flow-step">❓ フォーカシング・クエスチョン</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">1️⃣ ONE Thing特定</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">⏰ 時間ブロック</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">🎲 ドミノ効果</div>
+    </div>
+
+    <!-- ドミノSVG -->
+    <div class="domino-wrap" aria-label="ドミノ効果の視覚化">
+      <svg width="320" height="100" viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ドミノが連鎖して倒れるイメージ">
+        <defs>
+          <linearGradient id="dg1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e94560"/>
+            <stop offset="100%" stop-color="#c0392b"/>
+          </linearGradient>
+          <linearGradient id="dg2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#f5a623"/>
+            <stop offset="100%" stop-color="#e67e22"/>
+          </linearGradient>
+          <linearGradient id="dg3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4ecdc4"/>
+            <stop offset="100%" stop-color="#1abc9c"/>
+          </linearGradient>
+        </defs>
+        <!-- ドミノ1（小） -->
+        <rect x="10" y="70" width="14" height="22" rx="2" fill="url(#dg1)"/>
+        <!-- 矢印 -->
+        <text x="30" y="85" fill="#f5a623" font-size="14">→</text>
+        <!-- ドミノ2 -->
+        <rect x="50" y="62" width="18" height="30" rx="2" fill="url(#dg1)"/>
+        <text x="74" y="85" fill="#f5a623" font-size="14">→</text>
+        <!-- ドミノ3 -->
+        <rect x="94" y="52" width="22" height="40" rx="2" fill="url(#dg2)"/>
+        <text x="122" y="85" fill="#f5a623" font-size="14">→</text>
+        <!-- ドミノ4 -->
+        <rect x="142" y="40" width="26" height="52" rx="2" fill="url(#dg2)"/>
+        <text x="174" y="85" fill="#f5a623" font-size="14">→</text>
+        <!-- ドミノ5 -->
+        <rect x="194" y="26" width="30" height="66" rx="2" fill="url(#dg3)"/>
+        <text x="230" y="85" fill="#f5a623" font-size="14">→</text>
+        <!-- ドミノ6（大） -->
+        <rect x="250" y="8" width="36" height="84" rx="2" fill="url(#dg3)"/>
+        <!-- ラベル -->
+        <text x="10" y="98" fill="#b0b8c8" font-size="9" font-family="sans-serif">小さな一手</text>
+        <text x="230" y="98" fill="#4ecdc4" font-size="9" font-family="sans-serif">大きな成果</text>
+      </svg>
+      <p style="font-size:0.75rem;color:var(--text-sub);margin-top:4px;">小さな一手が次の一手を倒し、指数的な成果連鎖を生む「ドミノ効果」</p>
+    </div>
+
+    <!-- 80/20 横棒グラフ -->
+    <div class="section-label">📊 80/20 不均衡の法則</div>
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-title">⚖️ 成果の不均衡を可視化</div>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label"><span>上位20%の行動</span><span style="color:var(--accent)">80%の成果</span></div>
+          <div class="bar-track"><div class="bar-fill primary" style="width:80%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>残り80%の行動</span><span style="color:var(--text-sub)">20%の成果</span></div>
+          <div class="bar-track"><div class="bar-fill teal" style="width:20%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>マルチタスク時の集中品質</span><span style="color:var(--secondary)">低下</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:35%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>ONE Thingに集中した場合の成果</span><span style="color:#4ecdc4">最大化</span></div>
+          <div class="bar-track"><div class="bar-fill teal" style="width:95%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 概念カード群 -->
+    <div class="section-label">🧩 主要概念カード</div>
+    <div class="grid-2">
+
+      <div class="card">
+        <div class="card-title">1️⃣ The ONE Thing</div>
+        <ul>
+          <li>他のすべてを容易または不要にする最重要の一手</li>
+          <li>最小投入で最大レバレッジを生む選択</li>
+          <li>「一点突破」で成果を非線形に拡大する</li>
+        </ul>
+        <div class="reason-box"><strong>💡 なぜ重要か</strong>分散した努力は成果を希釈する。最重要の一手に絞ることで、ドミノ効果が連鎖し総成果が最大化する。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">❓ フォーカシング・クエスチョン</div>
+        <ul>
+          <li>「今やるべきたった一つは何か？」</li>
+          <li>「それをすれば他が容易/不要になるか？」</li>
+          <li>毎瞬の選択を絞り込む思考ツール</li>
+        </ul>
+        <div class="reason-box"><strong>💡 なぜ重要か</strong>問いの質が行動の質を決める。この問いを習慣化するだけで、優先の選定が自動化される。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🎲 ドミノ効果</div>
+        <ul>
+          <li>小さな一手が次の一手を倒す連鎖現象</li>
+          <li>指数的な成果拡大をもたらす</li>
+          <li>最初の一手の選択が全体を左右する</li>
+        </ul>
+        <div class="reason-box"><strong>💡 なぜ重要か</strong>正しい一手を選べば、後続の努力が自然に軽くなる。最初の選択の重要性を示す。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">⏰ 時間ブロッキング</div>
+        <ul>
+          <li>カレンダー上の大きな連続時間を先に確保</li>
+          <li>割り込み・通知・会議から防衛する</li>
+          <li>「先取り確保」で重要仕事を守る</li>
+        </ul>
+        <div class="reason-box"><strong>💡 なぜ重要か</strong>時間は使われなければ奪われる。先に確保しなければ、緊急事項に侵食される。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔢 Goal Setting to the Now</div>
+        <ul>
+          <li>将来の大目標を年→月→週→日→今へ逆算</li>
+          <li>「今日の一手」が大目標と直結する</li>
+          <li>迷いと切替損失を削減する</li>
+        </ul>
+        <div class="reason-box"><strong>💡 なぜ重要か</strong>遠い目標は行動を生まない。逆算で「今日やること」が明確になり、実行力が上がる。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📊 80/20（不均衡の法則）</div>
+        <ul>
+          <li>成果の大半はごく少数の原因から生じる</li>
+          <li>最重要少数へ資源集中すべき根拠</li>
+          <li>「少数精鋭」で効率を最大化</li>
+        </ul>
+        <div class="reason-box"><strong>💡 なぜ重要か</strong>全部に均等に投資するのは非効率。不均衡を認識し、高レバレッジな行動に集中する根拠となる。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🚫 マルチタスクの嘘</div>
+        <ul>
+          <li>同時並行は実質的に高速な切替に過ぎない</li>
+          <li>品質と速度を劣化させる</li>
+          <li>文脈切替コストが蓄積し疲弊する</li>
+        </ul>
+        <div class="reason-box"><strong>💡 なぜ重要か</strong>マルチタスクは生産性の幻想。シングルタスクへの切替が品質と速度を同時に改善する。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔋 意志力は有限</div>
+        <ul>
+          <li>意志力は日中で消耗する資源</li>
+          <li>重要仕事はピーク時間（朝）に充てるべき</li>
+          <li>消耗後の判断は質が低下する</li>
+        </ul>
+        <div class="reason-box"><strong>💡 なぜ重要か</strong>意志力を前提にした計画は崩れる。ピーク時間に重要仕事を配置することで再現性ある成果が生まれる。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">⚖️ カウンターバランス</div>
+        <ul>
+          <li>完全な均衡ではなく、重要領域へ一時的に偏らせる</li>
+          <li>周期的に他領域へ戻す動的配分</li>
+          <li>長期的な持続可能性を維持する</li>
+        </ul>
+        <div class="reason-box"><strong>💡 なぜ重要か</strong>完璧なバランスは幻想。意図的な偏りと回復のサイクルが、長期的な高パフォーマンスを支える。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔄 習慣化（約66日）</div>
+        <ul>
+          <li>継続により行動が自動化される</li>
+          <li>意志力への依存が減る</li>
+          <li>平均66日が習慣形成の目安</li>
+        </ul>
+        <div class="reason-box"><strong>💡 なぜ重要か</strong>習慣化すれば意志力を消費せずに実行できる。ブロック防衛が容易になり継続的成果が生まれる。</div>
+      </div>
+
+      <div class="card" style="grid-column: 1 / -1;">
+        <div class="card-title">🎯 目的 → 優先事項 → 生産性</div>
+        <ul>
+          <li>存在意義（目的）が最優先を規定する</li>
+          <li>最優先が日々の実行（生産性）を導く</li>
+          <li>三者が一直線に揃ったとき成果が最大化する</li>
+          <li>どれか一つが欠けても連鎖が崩れる</li>
+        </ul>
+        <div class="reason-box"><strong>💡 なぜ重要か</strong>目的なき優先事項は方向を失い、優先事項なき生産性は空回りする。三者の整列が非凡な成果の構造的条件。</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== TAB 2: 各章の要約 ========== -->
+  <section id="panel-chapters" class="tab-panel" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <div class="section-label">📖 本書の構造</div>
+    <div class="flow-wrap" style="margin-bottom:20px;">
+      <div class="flow-step" style="background:rgba(233,69,96,0.2);border-color:var(--secondary);">第I部：思い込みを論破</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="background:rgba(245,166,35,0.15);border-color:var(--accent);">第II部：真実の提示</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="background:rgba(78,205,196,0.15);border-color:#4ecdc4;">第III部：実践の確立</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="background:rgba(255,255,255,0.1);">結論：習慣化</div>
+    </div>
+
+    <!-- 第I部 -->
+    <div class="chapter-card">
+      <div class="ch-head">
+        <div class="ch-num">第I部</div>
+        <div class="ch-title">生産性を妨げる6つの思い込み（The Lies）</div>
+      </div>
+      <ul class="card" style="border:none;background:none;padding:0;">
+        <li>❌ <strong>「全部大事」</strong>― すべてに優先度をつけると何も優先されない</li>
+        <li>❌ <strong>「マルチタスク」</strong>― 同時並行は高速切替に過ぎず品質を劣化させる</li>
+        <li>❌ <strong>「規律があれば十分」</strong>― 習慣化すれば規律への依存は不要になる</li>
+        <li>❌ <strong>「意志力は常に使える」</strong>― 意志力は消耗する有限資源</li>
+        <li>❌ <strong>「完全なワークライフバランス」</strong>― 完璧な均衡は幻想、カウンターバランスが現実的</li>
+        <li>❌ <strong>「大きいことは悪い」</strong>― 大きな目標こそが大きな行動を引き出す</li>
+      </ul>
+      <div class="reason-box" style="margin-top:12px;"><strong>💡 この章が必要な理由</strong>誤った前提を持ったまま努力しても成果は出ない。まず思い込みを解体することで、正しい戦略を受け入れる土台を作る。</div>
+    </div>
+
+    <!-- 第II部 -->
+    <div class="chapter-card">
+      <div class="ch-head">
+        <div class="ch-num">第II部</div>
+        <div class="ch-title">真実（The Truth）― 一点集中の力と原則</div>
+      </div>
+      <ul class="card" style="border:none;background:none;padding:0;">
+        <li>✅ <strong>ドミノ効果</strong>― 正しい一手が連鎖的に成果を拡大する</li>
+        <li>✅ <strong>フォーカシング・クエスチョン</strong>― 「今やるべきたった一つは何か？」で優先を選別</li>
+        <li>✅ <strong>Goal Setting to the Now</strong>― 大目標を今日の一手へ逆算分解</li>
+        <li>✅ <strong>時間ブロッキング</strong>― 最重要仕事の時間を先に確保し防衛する</li>
+        <li>✅ <strong>カウンターバランス</strong>― 動的な偏りと回復で長期持続性を確保</li>
+      </ul>
+      <div class="reason-box" style="margin-top:12px;"><strong>💡 この章が必要な理由</strong>思い込みを壊した後に、代替となる正しい原則を提示する。「何をすべきか」の答えがここにある。</div>
+    </div>
+
+    <!-- 第III部 -->
+    <div class="chapter-card">
+      <div class="ch-head">
+        <div class="ch-num">第III部</div>
+        <div class="ch-title">非凡な成果の実践 ― 再現性の確立</div>
+      </div>
+      <ul class="card" style="border:none;background:none;padding:0;">
+        <li>🎯 <strong>目的・優先事項・生産性の整列</strong>― 三者を一直線に揃える</li>
+        <li>🛡️ <strong>ブロックの守り方</strong>― 割り込み・会議・通知から時間を防衛</li>
+        <li>🚫 <strong>ノーの技術</strong>― 重要でない依頼を断る勇気と方法</li>
+        <li>🏠 <strong>環境設計</strong>― 集中しやすい物理・デジタル環境を整える</li>
+        <li>👿 <strong>4つの盗人への対処</strong>― ①ノーと言えない ②混沌への恐れ ③悪い健康習慣 ④支援しない環境</li>
+        <li>🔄 <strong>66日習慣化</strong>― 継続で自動化し意志力依存を脱する</li>
+      </ul>
+      <div class="reason-box" style="margin-top:12px;"><strong>💡 この章が必要な理由</strong>原則を知っても実行できなければ意味がない。具体的な障害と対処法を示すことで、再現性ある実践を可能にする。</div>
+    </div>
+
+    <!-- 結論 -->
+    <div class="chapter-card" style="border-top:3px solid var(--accent);">
+      <div class="ch-head">
+        <div class="ch-num" style="background:linear-gradient(135deg,var(--accent),#e67e22);color:var(--primary);">結論</div>
+        <div class="ch-title">一点集中の習慣化 ― 最小の一手が最大の成果連鎖を生む</div>
+      </div>
+      <ul class="card" style="border:none;background:none;padding:0;">
+        <li>🏆 ONE Thingの習慣化により、毎日の選択が自動的に最適化される</li>
+        <li>🎲 ドミノ効果が継続的に働き、成果が指数的に拡大する</li>
+        <li>🌱 小さな一手の積み重ねが、やがて非凡な人生を形成する</li>
+      </ul>
+      <div class="reason-box" style="margin-top:12px;"><strong>💡 この章が必要な理由</strong>全体を統合し、「一点集中」という単純な原則が人生規模の成果をもたらすことを示す。行動への最終的な動機付けとなる。</div>
+    </div>
+
+    <!-- 関連書籍 -->
+    <div class="section-label">📚 関連書籍</div>
+    <div class="grid-2">
+      <div class="book-chip"><div class="book-icon">📗</div><div class="book-info"><div class="book-title">エッセンシャル思考</div><div class="book-author">グレッグ・マキューン</div><div class="book-rel">重要な少数に絞る原則がONE Thingと補完関係</div></div></div>
+      <div class="book-chip"><div class="book-icon">📘</div><div class="book-info"><div class="book-title">深い仕事 ディープ・ワーク</div><div class="book-author">カル・ニューポート</div><div class="book-rel">時間ブロックと集中の質を高める実践が重なる</div></div></div>
+      <div class="book-chip"><div class="book-icon">📙</div><div class="book-info"><div class="book-title">アトミック・ハビット</div><div class="book-author">ジェームズ・クリアー</div><div class="book-rel">小さな習慣の継続で大成果を生む点がドミノ効果と一致</div></div></div>
+      <div class="book-chip"><div class="book-icon">📕</div><div class="book-info"><div class="book-title">Eat That Frog!</div><div class="book-author">ブライアン・トレーシー</div><div class="book-rel">最重要課題を先に片づける時間術が一致</div></div></div>
+      <div class="book-chip"><div class="book-icon">📒</div><div class="book-info"><div class="book-title">7つの習慣</div><div class="book-author">スティーブン・R・コヴィー</div><div class="book-rel">第3の習慣（最優先事項を優先する）が同じ軸を支える</div></div></div>
+      <div class="book-chip"><div class="book-icon">📓</div><div class="book-info"><div class="book-title">やることは1つだけ!</div><div class="book-author">ジェイ・パパサン／ゲアリー・ケラー</div><div class="book-rel">同主題の関連版・実践ガイドとして補足になる</div></div></div>
+    </div>
+
+  </section>
+
+  <!-- ========== TAB 3: 具体例 ========== -->
+  <section id="panel-examples" class="tab-panel" role="tabpanel" aria-labelledby="tab-examples">
+
+    <div class="section-label">💡 核心メッセージが伝わる具体例・メタファー</div>
+
+    <div class="example-card">
+      <div class="ex-head">🎲 例1：ドミノの連鎖 ― 小さな一手が巨大な成果を生む</div>
+      <div class="ex-section">
+        <div class="ex-section-label">📖 背景</div>
+        <p>物理学的に、ドミノは自分の1.5倍の大きさのドミノを倒せる。18枚目のドミノはピサの斜塔と同じ高さになり、57枚目は地球から月までの距離に達する。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-section-label">🔍 示唆</div>
+        <p>最初の一手（ONE Thing）を正しく選べば、後続の成果は指数的に拡大する。最初の選択の重要性が、いかに大きいかを示す。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-section-label">💡 この例が示すこと（理由）</div>
+        <p>「小さく始めることへの躊躇」を解消する。最初の一手が小さくても、正しい方向に倒せば連鎖が生まれ、やがて想像を超える成果に到達できることを証明する。</p>
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-head">🏆 例2：成功者の共通点 ― 一点集中の実践者たち</div>
+      <div class="ex-section">
+        <div class="ex-section-label">📖 背景</div>
+        <p>スターバックスのハワード・シュルツはコーヒー体験の一点に集中し、アップルのスティーブ・ジョブズは製品ラインを大幅に絞り込んだ。ウォーレン・バフェットは「ノーと言うことが最大の投資戦略」と語る。いずれも「選択と集中」を徹底した。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-section-label">🔍 示唆</div>
+        <p>非凡な成果を出した人物は、多くのことをやったのではなく、最重要の一つに徹底的に集中した。分散ではなく集中が成功の構造的条件である。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-section-label">💡 この例が示すこと（理由）</div>
+        <p>「全部やらなければ」という思い込みを具体的な成功事例で論破する。ONE Thingの原則が抽象論ではなく、現実の成功者が実践してきた戦略であることを示す。</p>
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-head">🔋 例3：意志力の枯渇 ― 裁判官の判決と時間帯</div>
+      <div class="ex-section">
+        <div class="ex-section-label">📖 背景</div>
+        <p>研究によると、裁判官が仮釈放を認める確率は午前中（食後直後）に最も高く、午後になるにつれて低下する。意志力と判断力が時間とともに消耗することを示す実証的データ。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-section-label">🔍 示唆</div>
+        <p>重要な判断や創造的な仕事は、意志力がピークにある朝の時間帯に行うべき。午後に重要仕事を回すのは、消耗した状態で戦うことと同じ。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-section-label">💡 この例が示すこと（理由）</div>
+        <p>「いつでも頑張れる」という思い込みを科学的に否定する。時間ブロッキングを朝に設定すべき根拠を、感情論ではなく認知科学の観点から裏付ける。</p>
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-head">🎯 例4：フォーカシング・クエスチョンの実践 ― 毎朝の問いかけ</div>
+      <div class="ex-section">
+        <div class="ex-section-label">📖 背景</div>
+        <p>著者ゲアリー・ケラーは毎朝、「今日やるべきたった一つは何か？それをすれば他が容易または不要になるか？」と自問する習慣を持つ。この問いが1日の行動全体を方向付ける。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-section-label">🔍 示唆</div>
+        <p>問いの質が行動の質を決める。毎朝この問いを立てるだけで、ToDoリストの優先順位が自動的に整理され、最重要の一手が明確になる。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-section-label">💡 この例が示すこと（理由）</div>
+        <p>ONE Thingの実践が特別なスキルではなく、「問いを立てる習慣」という誰でも今日から始められる行動であることを示す。理論を即実践に橋渡しする。</p>
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-head">🏠 例5：環境設計 ― 摩擦を下げる仕組み</div>
+      <div class="ex-section">
+        <div class="ex-section-label">📖 背景</div>
+        <p>スマートフォンの通知をオフにし、SNSアプリを削除し、集中用の物理スペースを確保する。これらは意志力を使わずに集中を維持するための「環境設計」の実例。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-section-label">🔍 示唆</div>
+        <p>意志力で誘惑に打ち勝つより、誘惑が生まれない環境を作るほうが効率的。環境設計は意志力の節約装置として機能する。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-section-label">💡 この例が示すこと（理由）</div>
+        <p>「頑張れば集中できる」という精神論を否定し、システムで集中を担保する発想の転換を促す。4つの盗人（支援しない環境）への具体的な対処法を示す。</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========== TAB 4: 重要な引用 ========== -->
+  <section id="panel-quotes" class="tab-panel" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <div class="section-label">💬 原典の重要フレーズ</div>
+
+    <div class="quote-card">
+      <blockquote>"What's the ONE Thing I can do such that by doing it everything else will be easier or unnecessary?"</blockquote>
+      <div class="q-note">
+        <strong>📌 一言補足：</strong>本書の中核の問いであり、優先の選定基準を一行で定義する。この問いを毎朝立てるだけで、1日の行動が最適化される。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Success is sequential, not simultaneous."</blockquote>
+      <div class="q-note">
+        <strong>📌 一言補足：</strong>成果は同時並行ではなく、正しい順序の積み重ねで生まれることを示す。マルチタスクへの反論であり、ONE Thingの順序性を強調する。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Until my ONE Thing is done, everything else is a distraction."</blockquote>
+      <div class="q-note">
+        <strong>📌 一言補足：</strong>時間ブロックを守る実務ルールとして集中の境界を明確化する。ONE Thingが完了するまで、他のすべては「雑音」と定義する強い宣言。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Multitasking is merely the opportunity to screw up more than one thing at a time."</blockquote>
+      <div class="q-note">
+        <strong>📌 一言補足：</strong>マルチタスクの弊害を端的に表し、シングルタスクの必然性を強調する。ユーモアを交えながら、マルチタスクの本質的な問題を一刀両断する。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Extraordinary results require a narrow focus."</blockquote>
+      <div class="q-note">
+        <strong>📌 一言補足：</strong>非凡な成果と焦点の狭さの因果関係を総括する。「広く浅く」ではなく「狭く深く」が非凡への道であることを端的に示す。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <blockquote>"Willpower is not always on will-call."</blockquote>
+      <div class="q-note">
+        <strong>📌 一言補足：</strong>意志力の有限性を認識させ、重要仕事の時間配置の根拠となる。「やる気が出たらやる」という発想の危険性を警告する。
+      </div>
+    </div>
+
+    <!-- 概念間の関係性 -->
+    <div class="section-label">🔗 概念間の因果関係</div>
+    <div class="card">
+      <div class="card-title">📐 論理の連鎖マップ</div>
+      <ul>
+        <li>目的 →（定義）優先事項 →（実行）生産性 →（結果）非凡な成果</li>
+        <li>フォーカシング・クエスチョン → ONE Thing特定 → 時間ブロッキング → 集中実行 → ドミノ効果</li>
+        <li>80/20の認識 → "全部大事"の否定 → 選択と"ノー"の増加 → 資源集中 → 成果の非線形化</li>
+        <li>意志力は有限 → ピーク時間に重要業務配置 → 品質向上 → 再現性ある成果</li>
+        <li>逆算目標 → 今日のやるべき一手が明確 → 迷いと切替損失の削減</li>
+        <li>カウンターバランス → 短期的偏りを許容 → 長期的持続可能性維持</li>
+        <li>習慣化 → 意志力依存の低下 → ブロック防衛が容易 → 継続的成果</li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- ========== TAB 5: 今日のアクション ========== -->
+  <section id="panel-actions" class="tab-panel" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="section-label">✅ 今日から15〜30分で実行できるアクション</div>
+
+    <!-- 時間目安バッジ -->
+    <div class="stat-row" style="margin-bottom:20px;">
+      <div class="stat-box">
+        <div class="num">3</div>
+        <div class="unit">必須アクション数</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">15<span style="font-size:1rem">〜</span>30</div>
+        <div class="unit">分で実行可能</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">66</div>
+        <div class="unit">日で習慣化</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-head">
+        <div class="action-num">1</div>
+        <div class="action-title">🖊️ 最重要課題を1つ書き出す</div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-sub);margin-bottom:10px;">フォーカシング・クエスチョンを自分に問いかけ、「今やるべきたった一つ」を紙またはメモアプリに書き出す。</p>
+      <div class="action-meta">
+        <div class="action-meta-item">
+          <strong>🎯 目的</strong>
+          頭の中の曖昧な優先順位を可視化し、ONE Thingを明確に特定する
+        </div>
+        <div class="action-meta-item">
+          <strong>✨ 期待効果</strong>
+          迷いが消え、今日の行動の方向性が一本化される。意思決定コストが大幅に削減される
+        </div>
+        <div class="action-meta-item">
+          <strong>⏱️ 所要時間</strong>
+          5〜15分（毎朝の習慣にすると効果倍増）
+        </div>
+        <div class="action-meta-item">
+          <strong>📝 実行方法</strong>
+          「これをすれば他が容易または不要になるか？」と自問し、YESと答えられる一つを選ぶ
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-head">
+        <div class="action-num">2</div>
+        <div class="action-title">📅 明日の90分を時間ブロック</div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-sub);margin-bottom:10px;">明日のカレンダーに「ONE Thing専用」の90分ブロックを今すぐ入れる。午前中（できれば起床後2〜4時間以内）に設定する。</p>
+      <div class="action-meta">
+        <div class="action-meta-item">
+          <strong>🎯 目的</strong>
+          最重要仕事のための時間を先に確保し、割り込みや緊急事項による侵食を防ぐ
+        </div>
+        <div class="action-meta-item">
+          <strong>✨ 期待効果</strong>
+          意志力がピークの時間帯に最重要仕事を実行でき、品質と速度が同時に向上する
+        </div>
+        <div class="action-meta-item">
+          <strong>⏱️ 所要時間</strong>
+          2〜5分（カレンダーへの入力のみ）
+        </div>
+        <div class="action-meta-item">
+          <strong>📝 実行方法</strong>
+          カレンダーアプリを開き「ONE Thing」と名付けた90分ブロックを明日の午前中に追加する
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-head">
+        <div class="action-num">3</div>
+        <div class="action-title">🔕 通知を切り集中環境を整える</div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-sub);margin-bottom:10px;">スマートフォンとPCの通知を今すぐオフにし、集中を妨げるアプリをホーム画面から削除またはフォルダに格納する。</p>
+      <div class="action-meta">
+        <div class="action-meta-item">
+          <strong>🎯 目的</strong>
+          意志力を使わずに集中を維持できる環境を設計し、4つの盗人（支援しない環境）を排除する
+        </div>
+        <div class="action-meta-item">
+          <strong>✨ 期待効果</strong>
+          文脈切替コストがゼロになり、ONE Thingへの集中時間が実質的に増加する
+        </div>
+        <div class="action-meta-item">
+          <strong>⏱️ 所要時間</strong>
+          10〜20分（設定変更とアプリ整理）
+        </div>
+        <div class="action-meta-item">
+          <strong>📝 実行方法</strong>
+          設定→通知→全アプリをオフ。SNSアプリをホーム画面から削除し、集中用の作業スペースを物理的に確保する
+        </div>
+      </div>
+    </div>
+
+    <!-- 実行ロードマップ -->
+    <div class="section-label">🗺️ 66日間の習慣化ロードマップ</div>
+    <div class="card">
+      <div class="card-title">📈 段階的な習慣形成</div>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label"><span>🌱 1〜7日目：意識的な実践（毎日フォーカシング・クエスチョン）</span></div>
+          <div class="bar-track"><div class="bar-fill primary" style="width:11%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>🌿 8〜30日目：時間ブロックの定着（抵抗感が減る）</span></div>
+          <div class="bar-track"><div class="bar-fill accent" style="width:45%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>🌳 31〜66日目：自動化（意志力なしで実行できる）</span></div>
+          <div class="bar-track"><div class="bar-fill teal" style="width:100%"></div></div>
+        </div>
+      </div>
+      <ul style="margin-top:12px;">
+        <li>最初の7日間は「続けること」だけを目標にする</li>
+        <li>30日を超えると抵抗感が大幅に減少する</li>
+        <li>66日で習慣が自動化され、意志力への依存がなくなる</li>
+        <li>習慣化後はドミノ効果が加速し、成果が指数的に拡大する</li>
+      </ul>
+    </div>
+
+    <!-- 4つの盗人 -->
+    <div class="section-label">👿 集中を妨げる4つの盗人と対策</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">🚫 ノーと言えない</div>
+        <ul>
+          <li>他者の依頼を断れず時間が奪われる</li>
+          <li>対策：「ONE Thingが終わったら対応します」と伝える</li>
+          <li>ノーは相手への敬意でもある</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">😰 混沌への恐れ</div>
+        <ul>
+          <li>集中中に他が滞ることへの不安</li>
+          <li>対策：カウンターバランスを受け入れ、一時的な偏りを許容する</li>
+          <li>完璧な均衡は幻想と認識する</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">😴 悪い健康習慣</div>
+        <ul>
+          <li>睡眠不足・運動不足が意志力を枯渇させる</li>
+          <li>対策：睡眠・運動・食事を最優先インフラとして管理する</li>
+          <li>身体が資本、健康が生産性の土台</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">🏠 支援しない環境</div>
+        <ul>
+          <li>通知・雑音・散らかった空間が集中を妨げる</li>
+          <li>対策：通知オフ・専用スペース確保・周囲への宣言</li>
+          <li>環境設計は意志力の節約装置</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <p>📖 THE ONE THING ／ ゲアリー・ケラー著 ― インフォグラフィック</p>
+  <p style="margin-top:4px;">カラーパレット：プライマリー #1a1a2e ／ セカンダリー #e94560 ／ アクセント #f5a623</p>
+</footer>
+
+<script>
+  // ===== タブ切替 =====
+  (function() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    function activateTab(targetId) {
+      tabs.forEach(function(btn) {
+        const isTarget = btn.getAttribute('aria-controls') === targetId;
+        btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+      });
+      panels.forEach(function(panel) {
+        if (panel.id === targetId) {
+          panel.classList.add('active');
+        } else {
+          panel.classList.remove('active');
+        }
+      });
+    }
+
+    tabs.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const targetId = btn.getAttribute('aria-controls');
+        activateTab(targetId);
+        // スクロールをタブナビ付近へ
+        document.querySelector('.tab-nav-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      // キーボード操作
+      btn.addEventListener('keydown', function(e) {
+        const tabList = Array.from(tabs);
+        const idx = tabList.indexOf(btn);
+        if (e.key === 'ArrowRight') {
+          const next = tabList[(idx + 1) % tabList.length];
+          next.focus();
+          next.click();
+        } else if (e.key === 'ArrowLeft') {
+          const prev = tabList[(idx - 1 + tabList.length) % tabList.length];
+          prev.focus();
+          prev.click();
+        }
+      });
+    });
+
+    // ===== バーアニメーション（IntersectionObserver） =====
+    const bars = document.querySelectorAll('.bar-fill');
+    const originalWidths = [];
+    bars.forEach(function(bar) {
+      originalWidths.push(bar.style.width);
+      bar.style.width = '0%';
+    });
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          const bar = entry.target;
+          const idx = Array.from(bars).indexOf(bar);
+          setTimeout(function() {
+            bar.style.width = originalWidths[idx];
+          }, 100);
+          observer.unobserve(bar);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    bars.forEach(function(bar) {
+      observer.observe(bar);
+    });
+  })();
+</script>
+</body>
+</html>
