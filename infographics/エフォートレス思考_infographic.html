@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>エフォートレス思考 インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #2D6A4F
+  セカンダリー:  #52B788
+  アクセント:    #F4A261
+-->
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary:   #2D6A4F;
+    --secondary: #52B788;
+    --accent:    #F4A261;
+    --bg:        #F0F7F4;
+    --surface:   #FFFFFF;
+    --text:      #1A2E25;
+    --muted:     #6B8F7A;
+    --border:    #C8E6D4;
+    --shadow:    0 2px 12px rgba(45,106,79,0.10);
+    --radius:    14px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Meiryo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+  h1,h2,h3,h4 { line-height: 1.3; }
+  ul { list-style: none; }
+
+  /* ===== HEADER ===== */
+  .site-header {
+    background: linear-gradient(135deg, var(--primary) 0%, #1B4332 100%);
+    color: #fff;
+    padding: 28px 20px 22px;
+    text-align: center;
+  }
+  .site-header .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .site-header h1 {
+    font-size: clamp(20px, 5vw, 30px);
+    font-weight: 900;
+    letter-spacing: .04em;
+    margin-bottom: 6px;
+  }
+  .site-header .subtitle {
+    font-size: 13px;
+    opacity: .82;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ===== HERO SUMMARY BLOCK ===== */
+  .hero-summary {
+    background: var(--surface);
+    border-left: 5px solid var(--accent);
+    border-radius: var(--radius);
+    margin: 18px 16px;
+    padding: 20px 18px;
+    box-shadow: var(--shadow);
+  }
+  .hero-summary .hs-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: .06em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media(max-width:480px){ .hero-grid { grid-template-columns: 1fr; } }
+  .hero-cell {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .hero-cell .hc-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--secondary);
+    letter-spacing: .08em;
+    margin-bottom: 5px;
+  }
+  .hero-cell .hc-text {
+    font-size: 13px;
+    color: var(--text);
+  }
+  .hero-cell.full { grid-column: 1 / -1; }
+
+  /* ===== TABS ===== */
+  .tabs-wrapper { margin: 0 16px 24px; }
+  .tab-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-list::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 30px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .tab-btn[aria-selected="true"] {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+  .tab-btn:hover:not([aria-selected="true"]) {
+    border-color: var(--secondary);
+    color: var(--primary);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ===== CARD GRID ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  @media(max-width:360px){ .card-grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .card.accent-top { border-top-color: var(--accent); }
+  .card.primary-top { border-top-color: var(--primary); }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-icon {
+    font-size: 22px;
+    line-height: 1;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+  .card-tag {
+    display: inline-block;
+    background: var(--bg);
+    color: var(--secondary);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .card-bullets { display: flex; flex-direction: column; gap: 5px; }
+  .card-bullets li {
+    font-size: 13px;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .card-bullets li::before {
+    content: '▸';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .card-why {
+    background: linear-gradient(90deg, #E8F5EE 0%, #F0F7F4 100%);
+    border-left: 3px solid var(--secondary);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--primary);
+  }
+  .card-why strong { color: var(--secondary); }
+
+  /* ===== SECTION TITLE ===== */
+  .section-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-desc {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  /* ===== CHAPTER CARDS ===== */
+  .chapter-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border-left: 5px solid var(--primary);
+  }
+  .chapter-card.part1 { border-left-color: #52B788; }
+  .chapter-card.part2 { border-left-color: #F4A261; }
+  .chapter-card.part3 { border-left-color: #2D6A4F; }
+  .chapter-card.epilogue { border-left-color: #B7B7B7; }
+  .chapter-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .chapter-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+  .chapter-bullets { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+  .chapter-bullets li {
+    font-size: 13px;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .chapter-bullets li::before {
+    content: '✦';
+    color: var(--secondary);
+    flex-shrink: 0;
+    font-size: 10px;
+    margin-top: 3px;
+  }
+  .chapter-why {
+    background: #FFF8F0;
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #7A4A1E;
+  }
+  .chapter-why strong { color: var(--accent); }
+
+  /* ===== FLOW DIAGRAM ===== */
+  .flow-wrap {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-top: 14px;
+    overflow-x: auto;
+  }
+  .flow-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .flow-node {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .flow-node.accent { background: linear-gradient(135deg, var(--accent), #E07B3A); }
+  .flow-arrow {
+    color: var(--muted);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* ===== EXAMPLES ===== */
+  .example-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .example-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--secondary), var(--accent));
+  }
+  .example-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    border-radius: 50%;
+    margin-bottom: 8px;
+  }
+  .example-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+  .example-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  @media(max-width:400px){ .example-meta { grid-template-columns: 1fr; } }
+  .example-meta-cell {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .example-meta-cell .em-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: .06em;
+    margin-bottom: 3px;
+  }
+  .example-meta-cell .em-text {
+    font-size: 12px;
+    color: var(--text);
+  }
+  .example-reason {
+    background: #FFF8F0;
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #7A4A1E;
+  }
+  .example-reason strong { color: var(--accent); }
+
+  /* ===== QUOTES ===== */
+  .quote-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .quote-mark {
+    font-size: 48px;
+    line-height: .8;
+    color: var(--secondary);
+    opacity: .4;
+    flex-shrink: 0;
+    font-family: Georgia, serif;
+  }
+  .quote-body { flex: 1; }
+  .quote-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .quote-note {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .quote-note::before {
+    content: '💡';
+    flex-shrink: 0;
+  }
+
+  /* ===== ACTIONS ===== */
+  .action-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), #E07B3A);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 900;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .action-body { flex: 1; }
+  .action-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+  .action-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .action-meta-row {
+    font-size: 12px;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .action-meta-row .am-label {
+    font-weight: 700;
+    color: var(--secondary);
+    flex-shrink: 0;
+    min-width: 52px;
+  }
+  .action-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  /* ===== RELATED BOOKS ===== */
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .book-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 14px 14px;
+    box-shadow: var(--shadow);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .book-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .book-info { flex: 1; }
+  .book-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 2px;
+  }
+  .book-author {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .book-rel {
+    font-size: 11px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* ===== VISUAL: BAR CHART ===== */
+  .viz-wrap {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-top: 14px;
+  }
+  .viz-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 14px;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .bar-label {
+    font-size: 12px;
+    color: var(--text);
+    width: 110px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .bar-track {
+    flex: 1;
+    background: var(--bg);
+    border-radius: 20px;
+    height: 18px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--secondary), var(--primary));
+    transition: width .8s ease;
+  }
+  .bar-fill.accent { background: linear-gradient(90deg, var(--accent), #E07B3A); }
+  .bar-val {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary);
+    width: 36px;
+    flex-shrink: 0;
+  }
+
+  /* ===== CONCEPT RELATION SVG ===== */
+  .svg-wrap {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-top: 14px;
+    overflow-x: auto;
+  }
+  .svg-wrap svg {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+
+  /* ===== FOOTER ===== */
+  .site-footer {
+    text-align: center;
+    padding: 20px 16px;
+    font-size: 11px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 10px;
+  }
+
+  /* ===== UTILITY ===== */
+  .mt8 { margin-top: 8px; }
+  .mt14 { margin-top: 14px; }
+  .emoji-big { font-size: 20px; }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" role="banner">
+  <div class="badge">📖 書籍インフォグラフィック</div>
+  <h1>⚡ エフォートレス思考</h1>
+  <p class="subtitle">努力を減らし、成果を増やす「楽に進む設計」の全体像</p>
+</header>
+
+<!-- ===== HERO SUMMARY ===== -->
+<section class="hero-summary" aria-label="要約ブロック">
+  <div class="hs-title">🎯 ここだけ見れば全体がわかる：問い × 答え × Why × How</div>
+  <div class="hero-grid">
+    <div class="hero-cell">
+      <div class="hc-label">❓ 問い</div>
+      <div class="hc-text">なぜ大事なことほど重く難しく感じ、続かないのか？</div>
+    </div>
+    <div class="hero-cell">
+      <div class="hc-label">💡 答え</div>
+      <div class="hc-text">努力至上主義と設計不在が摩擦を増やし、心身をすり減らすから。意図的に「楽にする設計」を行えば、重要事項は軽く着実に進む。</div>
+    </div>
+    <div class="hero-cell">
+      <div class="hc-label">🔍 Why（なぜそうなのか）</div>
+      <div class="hc-text">認知資源は疲労・曖昧さ・不要な手間で浪費される。楽しさ・明確さ・休息・手放しが摩擦を減らし、継続性と質を高める。</div>
+    </div>
+    <div class="hero-cell">
+      <div class="hc-label">🛠 How（そのためには）</div>
+      <div class="hc-text">① エフォートレス・ステートを作る → ② 行動をエフォートレス化 → ③ 結果を持続化（自動化・資産化・信頼設計）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TABS ===== -->
+<div class="tabs-wrapper">
+  <div class="tab-list" role="tablist" aria-label="コンテンツタブ">
+    <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="tab-concepts" id="btn-concepts">🧠 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters" id="btn-chapters">📚 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples" id="btn-examples">💼 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes"   id="btn-quotes">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions"  id="btn-actions">✅ 今日のアクション</button>
+  </div>
+
+  <!-- ========== TAB 1: 主要概念 ========== -->
+  <div class="tab-panel active" id="tab-concepts" role="tabpanel" aria-labelledby="btn-concepts">
+    <div class="section-title">🧠 主要概念の詳細</div>
+    <p class="section-desc">各概念を噛み砕いて解説。「なぜ重要か」を必ず確認しよう。</p>
+
+    <!-- 概念間の関係図 (SVG) -->
+    <div class="svg-wrap" aria-label="概念の因果関係図">
+      <div class="flow-title">🔗 概念の因果フロー（全体像）</div>
+      <svg viewBox="0 0 560 200" width="560" height="200" aria-hidden="true">
+        <!-- boxes -->
+        <rect x="4"   y="80" width="90" height="36" rx="10" fill="#52B788"/>
+        <text x="49"  y="103" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">ステート整備</text>
+
+        <rect x="118" y="80" width="90" height="36" rx="10" fill="#2D6A4F"/>
+        <text x="163" y="103" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">摩擦の低下</text>
+
+        <rect x="232" y="80" width="90" height="36" rx="10" fill="#F4A261"/>
+        <text x="277" y="103" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">着手容易化</text>
+
+        <rect x="346" y="80" width="90" height="36" rx="10" fill="#2D6A4F"/>
+        <text x="391" y="103" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">一貫性向上</text>
+
+        <rect x="460" y="80" width="90" height="36" rx="10" fill="#52B788"/>
+        <text x="505" y="98"  text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">成果の</text>
+        <text x="505" y="112" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">質・量増加</text>
+
+        <!-- arrows -->
+        <line x1="94"  y1="98" x2="116" y2="98" stroke="#B7B7B7" stroke-width="2" marker-end="url(#arr)"/>
+        <line x1="208" y1="98" x2="230" y2="98" stroke="#B7B7B7" stroke-width="2" marker-end="url(#arr)"/>
+        <line x1="322" y1="98" x2="344" y2="98" stroke="#B7B7B7" stroke-width="2" marker-end="url(#arr)"/>
+        <line x1="436" y1="98" x2="458" y2="98" stroke="#B7B7B7" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- feedback loop -->
+        <path d="M505 116 Q505 160 277 160 Q49 160 49 116" fill="none" stroke="#F4A261" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr2)"/>
+        <text x="277" y="178" text-anchor="middle" fill="#F4A261" font-size="10">好循環フィードバック</text>
+
+        <defs>
+          <marker id="arr"  markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#B7B7B7"/>
+          </marker>
+          <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#F4A261"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- 摩擦スコア可視化 -->
+    <div class="viz-wrap mt14" aria-label="各概念の摩擦削減効果">
+      <div class="viz-title">📊 各概念の「摩擦削減効果」イメージ（相対スコア）</div>
+      <div class="bar-row">
+        <div class="bar-label">自動化・資産化</div>
+        <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+        <div class="bar-val">95</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">完了の定義</div>
+        <div class="bar-track"><div class="bar-fill" style="width:88%"></div></div>
+        <div class="bar-val">88</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">手放す</div>
+        <div class="bar-track"><div class="bar-fill" style="width:82%"></div></div>
+        <div class="bar-val">82</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">休息の先取り</div>
+        <div class="bar-track"><div class="bar-fill accent" style="width:78%"></div></div>
+        <div class="bar-val">78</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">楽しさの燃料化</div>
+        <div class="bar-track"><div class="bar-fill accent" style="width:75%"></div></div>
+        <div class="bar-val">75</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">最初の一歩</div>
+        <div class="bar-track"><div class="bar-fill" style="width:70%"></div></div>
+        <div class="bar-val">70</div>
+      </div>
+    </div>
+
+    <!-- 概念カード群 -->
+    <div class="card-grid mt14">
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">🌿</span>
+          <span class="card-title">エフォートレス・ステート</span>
+          <span class="card-tag">土台</span>
+        </div>
+        <ul class="card-bullets">
+          <li>重要なことを軽やかに進められる心身の状態</li>
+          <li>ストレスと疲労を減らし、注意と創造性を最大化</li>
+          <li>他の全概念の「土台」となる前提条件</li>
+        </ul>
+        <div class="card-why"><strong>なぜ重要か：</strong>土台が整わないと、どんな技術も機能しない。まず状態を整えることが最優先。</div>
+      </div>
+
+      <div class="card accent-top">
+        <div class="card-head">
+          <span class="card-icon">🔄</span>
+          <span class="card-title">逆転発想（Invert）</span>
+          <span class="card-tag">思考法</span>
+        </div>
+        <ul class="card-bullets">
+          <li>「どうすれば楽になるか？」から設計する</li>
+          <li>困難を前提にせず、摩擦源を先に取り除く</li>
+          <li>問題を解くより「問題を消す」発想</li>
+        </ul>
+        <div class="card-why"><strong>なぜ重要か：</strong>努力で乗り越えようとする前に、そもそも障壁を消せないか問うことで根本解決できる。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">🎉</span>
+          <span class="card-title">楽しさの燃料化（Enjoy）</span>
+          <span class="card-tag">継続</span>
+        </div>
+        <ul class="card-bullets">
+          <li>楽しさ・意味づけ・ご褒美を意図的に織り込む</li>
+          <li>継続と速度を自然に高める</li>
+          <li>義務感ではなく内発的動機で動く</li>
+        </ul>
+        <div class="card-why"><strong>なぜ重要か：</strong>楽しさは燃料。意図的に埋め込むことで継続と速度が自然に生まれ、強制力が不要になる。</div>
+      </div>
+
+      <div class="card accent-top">
+        <div class="card-head">
+          <span class="card-icon">🪶</span>
+          <span class="card-title">手放す（Release）</span>
+          <span class="card-tag">抵抗除去</span>
+        </div>
+        <ul class="card-bullets">
+          <li>完璧主義・恨み・不要なタスクを捨てる</li>
+          <li>抵抗と雑音を減らし、認知資源を解放</li>
+          <li>「持つ」より「手放す」ことで軽くなる</li>
+        </ul>
+        <div class="card-why"><strong>なぜ重要か：</strong>抱えすぎが最大の摩擦源。手放すことで認知資源が回復し、判断の質が上がる。</div>
+      </div>
+
+      <div class="card primary-top">
+        <div class="card-head">
+          <span class="card-icon">😴</span>
+          <span class="card-title">休息の先取り（Rest）</span>
+          <span class="card-tag">回復</span>
+        </div>
+        <ul class="card-bullets">
+          <li>疲れてから休むのではなく、先に回復を計画</li>
+          <li>成果の前提条件として休息を位置づける</li>
+          <li>「休む＝サボり」という誤解を捨てる</li>
+        </ul>
+        <div class="card-why"><strong>なぜ重要か：</strong>疲弊した状態での作業は質も量も低下する。先に休むことが最も効率的な投資。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">🎯</span>
+          <span class="card-title">完了の定義（Define Done）</span>
+          <span class="card-tag">明確化</span>
+        </div>
+        <ul class="card-bullets">
+          <li>何をもって終わりとするかを一文で明確化</li>
+          <li>迷走と過剰品質を防ぐ</li>
+          <li>「終わり」が見えると着手が楽になる</li>
+        </ul>
+        <div class="card-why"><strong>なぜ重要か：</strong>ゴールが曖昧な仕事は永遠に終わらない。一文の定義が全ての行動を方向づける。</div>
+      </div>
+
+      <div class="card accent-top">
+        <div class="card-head">
+          <span class="card-icon">👣</span>
+          <span class="card-title">最初の一歩（Start）</span>
+          <span class="card-tag">着手</span>
+        </div>
+        <ul class="card-bullets">
+          <li>「ばかばかしいほど小さく」着手できる第一歩を決める</li>
+          <li>先延ばしの摩擦を断ち切る</li>
+          <li>動き出せば慣性が働き継続しやすくなる</li>
+        </ul>
+        <div class="card-why"><strong>なぜ重要か：</strong>最大の摩擦は「始めること」。小さすぎる一歩は失敗しようがなく、着手の壁を消す。</div>
+      </div>
+
+      <div class="card primary-top">
+        <div class="card-head">
+          <span class="card-icon">✂️</span>
+          <span class="card-title">簡素化（Simplify）</span>
+          <span class="card-tag">効率</span>
+        </div>
+        <ul class="card-bullets">
+          <li>不要な工程・選択を削る</li>
+          <li>最短経路と標準手順で進める</li>
+          <li>「改善」より「削除」を先に考える</li>
+        </ul>
+        <div class="card-why"><strong>なぜ重要か：</strong>複雑さ自体が摩擦。削れるものを削ることで、残った本質に集中できる。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-icon">🐢</span>
+          <span class="card-title">ペース配分（Pace）</span>
+          <span class="card-tag">持続</span>
+        </div>
+        <ul class="card-bullets">
+          <li>無理のない速度と回復リズムで持続させる</li>
+          <li>燃え尽きを防ぎ、長期的成果を最大化</li>
+          <li>「速く走る」より「止まらない」が重要</li>
+        </ul>
+        <div class="card-why"><strong>なぜ重要か：</strong>スプリントは短期的に速いが長期では遅い。適正ペースが最終的に最も多くを達成する。</div>
+      </div>
+
+      <div class="card accent-top">
+        <div class="card-head">
+          <span class="card-icon">⚙️</span>
+          <span class="card-title">自動化・資産化（Automate）</span>
+          <span class="card-tag">仕組み</span>
+        </div>
+        <ul class="card-bullets">
+          <li>一度の努力を仕組み・テンプレ・学習資産に投資</li>
+          <li>以後の反復コストを限りなく下げる</li>
+          <li>努力が「資産」として積み上がる</li>
+        </ul>
+        <div class="card-why"><strong>なぜ重要か：</strong>毎回ゼロから始めるのは最大の無駄。一度の設計が永続的な成果を生む真のエフォートレス。</div>
+      </div>
+
+      <div class="card primary-top">
+        <div class="card-head">
+          <span class="card-icon">🤝</span>
+          <span class="card-title">信頼の設計（Trust）</span>
+          <span class="card-tag">委任</span>
+        </div>
+        <ul class="card-bullets">
+          <li>人・仕組み・ルールへの信頼を築く</li>
+          <li>確認や再作業といった摩擦コストを下げる</li>
+          <li>信頼があれば委任でき、レバレッジが上がる</li>
+        </ul>
+        <div class="card-why"><strong>なぜ重要か：</strong>不信は最大の摩擦源の一つ。信頼の設計が共同作業を軽くし、継続的成果を生む。</div>
+      </div>
+
+    </div><!-- /card-grid -->
+  </div><!-- /tab-concepts -->
+
+  <!-- ========== TAB 2: 各章の要約 ========== -->
+  <div class="tab-panel" id="tab-chapters" role="tabpanel" aria-labelledby="btn-chapters">
+    <div class="section-title">📚 各章の要約</div>
+    <p class="section-desc">本書の論理展開を章ごとに整理。「なぜその章が必要か」も確認しよう。</p>
+
+    <div class="chapter-card" style="border-left-color:#B7B7B7;">
+      <div class="chapter-num">序章</div>
+      <div class="chapter-title">🚨 努力至上主義の限界</div>
+      <ul class="chapter-bullets">
+        <li>「頑張れば報われる」という信念が摩擦を生んでいる</li>
+        <li>努力の量ではなく、設計の質が成果を決める</li>
+        <li>「楽にする設計」こそが生産性と持続性を高める</li>
+      </ul>
+      <div class="chapter-why"><strong>なぜこの章が必要か：</strong>前提となる価値観を転換しないと、以降の手法が「ズル」に見えてしまう。まず思想的な土台を壊す必要がある。</div>
+    </div>
+
+    <div class="chapter-card part1">
+      <div class="chapter-num">Part I</div>
+      <div class="chapter-title">🌿 エフォートレス・ステート（心身の土台）</div>
+      <ul class="chapter-bullets">
+        <li>逆転発想：困難を前提にせず、摩擦源を先に取り除く</li>
+        <li>楽しさの燃料化：意味づけとご褒美で継続力を高める</li>
+        <li>手放す：完璧主義・恨み・不要タスクを捨て認知資源を解放</li>
+        <li>休息の先取り：回復を成果の前提条件として計画する</li>
+      </ul>
+      <div class="chapter-why"><strong>なぜこの章が必要か：</strong>どんな行動技術も、心身の状態が整っていなければ機能しない。土台なき技術は砂上の楼閣。</div>
+    </div>
+
+    <div class="chapter-card part2">
+      <div class="chapter-num">Part II</div>
+      <div class="chapter-title">⚡ エフォートレス・アクション（行動の設計）</div>
+      <ul class="chapter-bullets">
+        <li>完了の定義：一文でゴールを明確化し、迷走を防ぐ</li>
+        <li>最初の一歩：ばかばかしいほど小さく着手し、先延ばしを断つ</li>
+        <li>簡素化：不要な工程を削り、最短経路で進む</li>
+        <li>ペース配分：無理のない速度で燃え尽きを防ぐ</li>
+      </ul>
+      <div class="chapter-why"><strong>なぜこの章が必要か：</strong>状態が整ったら、次は行動そのものを軽くする設計が必要。「やり方」の摩擦を体系的に除去する。</div>
+    </div>
+
+    <div class="chapter-card part3">
+      <div class="chapter-num">Part III</div>
+      <div class="chapter-title">♾️ エフォートレス・リザルツ（成果の持続化）</div>
+      <ul class="chapter-bullets">
+        <li>学習の資産化：知識・経験をテンプレ・仕組みに変換</li>
+        <li>自動化：一度の努力が継続的成果に変換される仕組みを作る</li>
+        <li>信頼の構築：委任と共同作業の摩擦コストを下げる</li>
+        <li>反復コストの逓減：積み上がる成果で余白を拡大する</li>
+      </ul>
+      <div class="chapter-why"><strong>なぜこの章が必要か：</strong>一時的な成果ではなく「持続する成果」を作るには、努力を仕組みに変換する視点が不可欠。</div>
+    </div>
+
+    <div class="chapter-card epilogue">
+      <div class="chapter-num">結語</div>
+      <div class="chapter-title">🌟 「楽はズルではない」という価値観転換</div>
+      <ul class="chapter-bullets">
+        <li>楽に進むことは怠惰ではなく、賢い設計の証</li>
+        <li>日々の実装ポイントを再確認し、習慣化を促す</li>
+        <li>エフォートレスな生き方が最も多くの価値を生む</li>
+      </ul>
+      <div class="chapter-why"><strong>なぜこの章が必要か：</strong>技術を学んでも価値観が変わらなければ元に戻る。「楽＝善」という再定義で行動変容を定着させる。</div>
+    </div>
+
+    <!-- 論理展開フロー -->
+    <div class="flow-wrap">
+      <div class="flow-title">📐 本書の論理展開フロー</div>
+      <div class="flow-row">
+        <div class="flow-node accent">問題提起</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">状態整備</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">行動設計</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">成果持続</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node accent">価値観転換</div>
+      </div>
+      <div class="flow-row">
+        <div style="font-size:11px;color:var(--muted);">序章：なぜ努力では限界か</div>
+        <div class="flow-arrow" style="opacity:0">→</div>
+        <div style="font-size:11px;color:var(--muted);">Part I：心身の摩擦を除去</div>
+        <div class="flow-arrow" style="opacity:0">→</div>
+        <div style="font-size:11px;color:var(--muted);">Part II：行動を軽くする</div>
+        <div class="flow-arrow" style="opacity:0">→</div>
+        <div style="font-size:11px;color:var(--muted);">Part III：仕組みで増幅</div>
+        <div class="flow-arrow" style="opacity:0">→</div>
+        <div style="font-size:11px;color:var(--muted);">結語：楽＝善の再定義</div>
+      </div>
+    </div>
+
+  </div><!-- /tab-chapters -->
+
+  <!-- ========== TAB 3: 具体例 ========== -->
+  <div class="tab-panel" id="tab-examples" role="tabpanel" aria-labelledby="btn-examples">
+    <div class="section-title">💼 具体例・メタファー</div>
+    <p class="section-desc">核心メッセージが伝わる実例を3件以上提示。「この例が示すこと」を必ず確認。</p>
+
+    <div class="example-card">
+      <div class="example-num">1</div>
+      <div class="example-title">🏃 マラソン選手のペース配分</div>
+      <div class="example-meta">
+        <div class="example-meta-cell">
+          <div class="em-label">📖 背景</div>
+          <div class="em-text">序盤に全力疾走した選手は後半に失速し、最終タイムが遅くなる。一方、適正ペースを守った選手は後半も安定して走り切り、好タイムを出す。</div>
+        </div>
+        <div class="example-meta-cell">
+          <div class="em-label">💡 示唆</div>
+          <div class="em-text">仕事も同じ。「今日だけ頑張る」を繰り返すと燃え尽きる。持続可能なペースが長期的に最も多くの成果を生む。</div>
+        </div>
+      </div>
+      <div class="example-reason"><strong>この例が示すこと：</strong>「速く走る」より「止まらない」が重要。ペース配分（Pace）の概念を体感的に理解できる。努力の総量より継続性が成果を決める。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-num">2</div>
+      <div class="example-title">📝 「完了の定義」がない会議の迷走</div>
+      <div class="example-meta">
+        <div class="example-meta-cell">
+          <div class="em-label">📖 背景</div>
+          <div class="em-text">「この件について話し合う」という議題だけで始まった会議は、何を決めれば終わりかが不明なため、1時間経っても結論が出ない。参加者全員が疲弊する。</div>
+        </div>
+        <div class="example-meta-cell">
+          <div class="em-label">💡 示唆</div>
+          <div class="em-text">「この会議は〇〇を決定したら終了」と一文で定義するだけで、議論が収束し、30分で終わる。完了基準が全ての行動を方向づける。</div>
+        </div>
+      </div>
+      <div class="example-reason"><strong>この例が示すこと：</strong>完了の定義（Define Done）の欠如が最大の時間・認知資源の浪費源。一文の明確化が摩擦を劇的に減らすことを示す。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-num">3</div>
+      <div class="example-title">🎮 ゲームの「チュートリアル設計」メタファー</div>
+      <div class="example-meta">
+        <div class="example-meta-cell">
+          <div class="em-label">📖 背景</div>
+          <div class="em-text">優れたゲームは最初に「ジャンプボタンを押してください」という超簡単な指示から始まる。プレイヤーは成功体験を積み重ねながら自然に難しい操作を習得する。</div>
+        </div>
+        <div class="example-meta-cell">
+          <div class="em-label">💡 示唆</div>
+          <div class="em-text">仕事の着手も同じ。「ファイルを開く」「タイトルだけ書く」という超小さな一歩が先延ばしの摩擦を消し、作業の慣性を生む。</div>
+        </div>
+      </div>
+      <div class="example-reason"><strong>この例が示すこと：</strong>最初の一歩（Start）の設計が着手の摩擦を消す。「ばかばかしいほど小さく」することが、実は最も賢い設計であることを示す。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-num">4</div>
+      <div class="example-title">⚙️ メールテンプレートの「一度の努力」</div>
+      <div class="example-meta">
+        <div class="example-meta-cell">
+          <div class="em-label">📖 背景</div>
+          <div class="em-text">毎回ゼロから書いていた問い合わせ返信メールを、一度テンプレート化した。以後は5分かかっていた作業が30秒で完了するようになった。</div>
+        </div>
+        <div class="example-meta-cell">
+          <div class="em-label">💡 示唆</div>
+          <div class="em-text">テンプレート作成に30分かけても、100回使えば合計50時間の節約。一度の努力を仕組みに変えることで、成果が指数関数的に積み上がる。</div>
+        </div>
+      </div>
+      <div class="example-reason"><strong>この例が示すこと：</strong>自動化・資産化（Automate）の本質。一度の努力が永続的な成果に変換される「エフォートレス・リザルツ」の具体的な実現例。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-num">5</div>
+      <div class="example-title">🎵 「楽しさ」を意図的に埋め込んだ運動習慣</div>
+      <div class="example-meta">
+        <div class="example-meta-cell">
+          <div class="em-label">📖 背景</div>
+          <div class="em-text">「健康のために走らなければ」と義務感で始めたランニングは3日で挫折。しかし「好きなポッドキャストはランニング中だけ聴く」というルールを設けたら毎日続くようになった。</div>
+        </div>
+        <div class="example-meta-cell">
+          <div class="em-label">💡 示唆</div>
+          <div class="em-text">楽しさを意図的に紐づけることで、義務が楽しみに変わる。強制力ではなく内発的動機が継続の鍵。</div>
+        </div>
+      </div>
+      <div class="example-reason"><strong>この例が示すこと：</strong>楽しさの燃料化（Enjoy）の実践例。楽しさは偶然ではなく「設計」できる。意図的な紐づけが継続と速度を自然に生む。</div>
+    </div>
+
+  </div><!-- /tab-examples -->
+
+  <!-- ========== TAB 4: 重要な引用 ========== -->
+  <div class="tab-panel" id="tab-quotes" role="tabpanel" aria-labelledby="btn-quotes">
+    <div class="section-title">💬 重要な引用・要旨</div>
+    <p class="section-desc">本書の核心フレーズ。一言補足で意味を深掘りしよう。（要旨として記載）</p>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-body">
+        <div class="quote-text">「がんばり」よりも「設計」が成果を決める。</div>
+        <div class="quote-note">努力崇拝から設計志向への転換が本書の核心。どれだけ頑張るかではなく、どれだけ摩擦を減らす設計ができるかが問われている。</div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-body">
+        <div class="quote-text">疲労は勲章ではない。回復は成果の前提条件だ。</div>
+        <div class="quote-note">休息を先に確保することで持続可能性と質が上がる。「疲れた＝頑張った」という誤った等式を解体する最重要メッセージ。</div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-body">
+        <div class="quote-text">終わりが定義されていない仕事は、永遠に終わらない。</div>
+        <div class="quote-note">完了基準の明確化が過剰品質と迷走を防ぐ要。ゴールが曖昧なまま走り続けることが最大の時間・エネルギーの浪費源。</div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-body">
+        <div class="quote-text">楽しい仕事は自ら回り出す。</div>
+        <div class="quote-note">楽しさを意図的に埋め込むことで継続と速度が自然に生まれる。楽しさは偶然ではなく設計できるものであり、最強の継続エンジン。</div>
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-body">
+        <div class="quote-text">一度の努力を仕組みに変えよ。</div>
+        <div class="quote-note">自動化・資産化が逓増する成果を生み、真のエフォートレスを実現する。努力を「消費」ではなく「投資」として捉える視点の転換。</div>
+      </div>
+    </div>
+
+    <!-- 関連書籍 -->
+    <div class="section-title mt14">📖 関連書籍</div>
+    <p class="section-desc">本書をさらに深める5冊。</p>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="book-icon">📗</div>
+        <div class="book-info">
+          <div class="book-title">エッセンシャル思考</div>
+          <div class="book-author">グレッグ・マキューン</div>
+          <div class="book-rel">何に集中すべきかを定める前著。本書はそれを楽に実行する設計論として補完関係にある。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📘</div>
+        <div class="book-info">
+          <div class="book-title">アトミック・ハビット</div>
+          <div class="book-author">ジェームズ・クリアー</div>
+          <div class="book-rel">小さな習慣と環境設計で自動性を高める点がエフォートレス化と直結する。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📙</div>
+        <div class="book-info">
+          <div class="book-title">DEEP WORK</div>
+          <div class="book-author">カル・ニューポート</div>
+          <div class="book-rel">集中力の確保と摩擦の低減という基盤づくりが補完関係にある。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📕</div>
+        <div class="book-info">
+          <div class="book-title">The ONE Thing</div>
+          <div class="book-author">ゲイリー・ケラー</div>
+          <div class="book-rel">最重要一件に絞る考えが「完了の定義」「小さく始める」と相乗効果を生む。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📓</div>
+        <div class="book-info">
+          <div class="book-title">Make Time</div>
+          <div class="book-author">ジェイク・ナップ／ジョン・ゼラツキー</div>
+          <div class="book-rel">日々の時間と注意を設計して摩擦を減らす実践が親和的。</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-quotes -->
+
+  <!-- ========== TAB 5: 今日のアクション ========== -->
+  <div class="tab-panel" id="tab-actions" role="tabpanel" aria-labelledby="btn-actions">
+    <div class="section-title">✅ 今日のアクション</div>
+    <p class="section-desc">今すぐ15〜30分で実行できる行動。目的と期待効果を確認してから動こう。</p>
+
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <div class="action-timer">⏱ 約15分</div>
+        <div class="action-title">最重要タスクの完了を一文で定義する</div>
+        <div class="action-meta">
+          <div class="action-meta-row">
+            <span class="am-label">🎯 目的</span>
+            <span>今日最も重要なタスクについて「〇〇が完了したら終わり」という完了基準を紙またはメモに一文で書く。</span>
+          </div>
+          <div class="action-meta-row">
+            <span class="am-label">✨ 効果</span>
+            <span>迷走と過剰品質を防ぎ、作業の方向性が明確になる。「終わり」が見えることで着手の摩擦も下がる。</span>
+          </div>
+          <div class="action-meta-row">
+            <span class="am-label">🔗 概念</span>
+            <span>完了の定義（Define Done）</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <div class="action-timer">⏱ 約20分</div>
+        <div class="action-title">作業を3ステップに簡素化して記す</div>
+        <div class="action-meta">
+          <div class="action-meta-row">
+            <span class="am-label">🎯 目的</span>
+            <span>上記タスクの実行手順を「ステップ1・2・3」の3行だけに絞り込んで書き出す。4つ以上は削除か後回し。</span>
+          </div>
+          <div class="action-meta-row">
+            <span class="am-label">✨ 効果</span>
+            <span>複雑さが消え、次に何をすべきかが瞬時にわかる。選択疲れがなくなり、実行速度が上がる。</span>
+          </div>
+          <div class="action-meta-row">
+            <span class="am-label">🔗 概念</span>
+            <span>簡素化（Simplify）・最初の一歩（Start）</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <div class="action-timer">⏱ 約15分</div>
+        <div class="action-title">15分タイマーで最初の一歩を実行する</div>
+        <div class="action-meta">
+          <div class="action-meta-row">
+            <span class="am-label">🎯 目的</span>
+            <span>ステップ1だけを15分タイマーをセットして実行する。完璧にやろうとせず「動き出すこと」だけを目標にする。</span>
+          </div>
+          <div class="action-meta-row">
+            <span class="am-label">✨ 効果</span>
+            <span>先延ばしの摩擦が消え、作業の慣性が生まれる。「始めた」という事実が次の行動を引き出す。</span>
+          </div>
+          <div class="action-meta-row">
+            <span class="am-label">🔗 概念</span>
+            <span>最初の一歩（Start）・ペース配分（Pace）</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3ステップ視覚化 -->
+    <div class="viz-wrap mt14" aria-label="アクションの3ステップ">
+      <div class="viz-title">🗺 今日の3アクション：実行フロー</div>
+      <div class="flow-row" style="justify-content:center;">
+        <div class="flow-node accent" style="text-align:center;">① 完了を<br>一文で定義</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="text-align:center;">② 3ステップに<br>簡素化</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node accent" style="text-align:center;">③ 15分で<br>最初の一歩</div>
+      </div>
+      <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:8px;">合計所要時間：約50分 ／ 今日から始められる最小セット</div>
+    </div>
+
+    <!-- 期待効果バー -->
+    <div class="viz-wrap mt14" aria-label="各アクションの期待効果">
+      <div class="viz-title">📈 各アクションの期待効果（相対スコア）</div>
+      <div class="bar-row">
+        <div class="bar-label">先延ばし解消</div>
+        <div class="bar-track"><div class="bar-fill accent" style="width:92%"></div></div>
+        <div class="bar-val">92</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">迷走防止</div>
+        <div class="bar-track"><div class="bar-fill" style="width:88%"></div></div>
+        <div class="bar-val">88</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">実行速度向上</div>
+        <div class="bar-track"><div class="bar-fill" style="width:80%"></div></div>
+        <div class="bar-val">80</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">認知負荷軽減</div>
+        <div class="bar-track"><div class="bar-fill accent" style="width:85%"></div></div>
+        <div class="bar-val">85</div>
+      </div>
+    </div>
+
+  </div><!-- /tab-actions -->
+
+</div><!-- /tabs-wrapper -->
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer" role="contentinfo">
+  <p>📗 エフォートレス思考 インフォグラフィック</p>
+  <p style="margin-top:4px;">カラーパレット：プライマリー #2D6A4F ／ セカンダリー #52B788 ／ アクセント #F4A261</p>
+</footer>
+
+<script>
+  // ===== TAB SWITCHING =====
+  (function() {
+    var buttons = document.querySelectorAll('.tab-btn');
+    var panels  = document.querySelectorAll('.tab-panel');
+
+    buttons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = btn.getAttribute('aria-controls');
+
+        // deactivate all
+        buttons.forEach(function(b) {
+          b.setAttribute('aria-selected', 'false');
+        });
+        panels.forEach(function(p) {
+          p.classList.remove('active');
+        });
+
+        // activate clicked
+        btn.setAttribute('aria-selected', 'true');
+        var panel = document.getElementById(target);
+        if (panel) {
+          panel.classList.add('active');
+          // animate bars in newly shown panel
+          animateBars(panel);
+        }
+      });
+    });
+
+    // ===== BAR ANIMATION =====
+    function animateBars(container) {
+      var fills = container.querySelectorAll('.bar-fill');
+      fills.forEach(function(fill) {
+        var target = fill.style.width;
+        fill.style.width = '0%';
+        setTimeout(function() {
+          fill.style.width = target;
+        }, 80);
+      });
+    }
+
+    // animate bars on initial load (tab-concepts is active)
+    var initialPanel = document.querySelector('.tab-panel.active');
+    if (initialPanel) {
+      setTimeout(function() { animateBars(initialPanel); }, 200);
+    }
+  })();
+</script>
+</body>
+</html>
