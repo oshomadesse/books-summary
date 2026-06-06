@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マインドフルネスとEQ インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #2D6A4F
+  セカンダリー:  #52B788
+  アクセント:    #F4A261
+-->
+<style>
+  /* ===== リセット & 基本 ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary:   #2D6A4F;
+    --secondary: #52B788;
+    --accent:    #F4A261;
+    --bg:        #F0F7F4;
+    --surface:   #FFFFFF;
+    --text:      #1A2E25;
+    --muted:     #5A7A6A;
+    --radius:    12px;
+    --shadow:    0 2px 12px rgba(45,106,79,0.10);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ===== ヘッダー ===== */
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  header .book-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  header h1 {
+    font-size: clamp(18px, 5vw, 28px);
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  header p.subtitle {
+    font-size: 13px;
+    opacity: 0.88;
+  }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: var(--surface);
+    border-left: 5px solid var(--accent);
+    border-radius: var(--radius);
+    margin: 18px 16px;
+    padding: 18px 18px 14px;
+    box-shadow: var(--shadow);
+  }
+  .summary-block .summary-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media(max-width:480px){ .summary-grid { grid-template-columns: 1fr; } }
+  .summary-item {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .summary-item .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .summary-item p {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .summary-item.full { grid-column: 1 / -1; }
+
+  /* ===== タブ ===== */
+  .tabs-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--surface);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tabs {
+    display: flex;
+    min-width: max-content;
+    padding: 0 8px;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    padding: 13px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    font-family: inherit;
+  }
+  .tab-btn[aria-selected="true"] {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+  }
+  .tab-btn:hover { color: var(--primary); }
+
+  /* ===== タブパネル ===== */
+  .tab-panel { display: none; padding: 16px; }
+  .tab-panel.active { display: block; }
+
+  /* ===== カード共通 ===== */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card ul {
+    padding-left: 0;
+    list-style: none;
+  }
+  .card ul li {
+    font-size: 13px;
+    padding: 4px 0;
+    border-bottom: 1px solid #EAF2EE;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li .dot {
+    color: var(--secondary);
+    font-size: 16px;
+    line-height: 1.4;
+    flex-shrink: 0;
+  }
+  .reason-box {
+    background: linear-gradient(90deg, #E8F5EE 0%, #F0F7F4 100%);
+    border-left: 3px solid var(--secondary);
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .reason-box strong { color: var(--primary); }
+
+  /* ===== グリッドレイアウト ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  @media(max-width:360px){ .card-grid { grid-template-columns: 1fr; } }
+
+  /* ===== 概念カード ===== */
+  .concept-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 14px;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .concept-card .badge {
+    display: inline-block;
+    background: var(--secondary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 20px;
+    padding: 2px 10px;
+    align-self: flex-start;
+  }
+  .concept-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .concept-card .def {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .concept-card .why {
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 6px 8px;
+    margin-top: 4px;
+  }
+  .concept-card .why strong { color: var(--accent); }
+
+  /* ===== 因果フロー図 ===== */
+  .flow-section {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    overflow-x: auto;
+  }
+  .flow-section h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .flow-node.accent { background: linear-gradient(135deg, var(--accent), #e07b3a); }
+  .flow-arrow { color: var(--secondary); font-size: 16px; font-weight: 700; }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border-left: 5px solid var(--primary);
+  }
+  .chapter-card.alt { border-left-color: var(--accent); }
+  .chapter-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .chapter-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  /* ===== 引用カード ===== */
+  .quote-card {
+    background: linear-gradient(135deg, #E8F5EE 0%, #F0F7F4 100%);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .quote-mark {
+    font-size: 48px;
+    color: var(--secondary);
+    opacity: 0.3;
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .quote-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    padding-left: 28px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .quote-note {
+    font-size: 12px;
+    color: var(--muted);
+    padding-left: 28px;
+    border-top: 1px solid #C8E6D4;
+    padding-top: 8px;
+    margin-top: 4px;
+  }
+  .quote-note strong { color: var(--accent); }
+
+  /* ===== 具体例カード ===== */
+  .example-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border-top: 4px solid var(--accent);
+  }
+  .example-card .ex-num {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 20px;
+    padding: 2px 10px;
+    margin-bottom: 6px;
+  }
+  .example-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .example-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  @media(max-width:400px){ .example-meta { grid-template-columns: 1fr; } }
+  .example-meta-item {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  .example-meta-item .meta-label {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+
+  /* ===== アクションカード ===== */
+  .action-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-num {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .action-body h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+  .action-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .action-tag {
+    background: var(--bg);
+    border: 1px solid var(--secondary);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 2px 10px;
+  }
+  .action-tag.accent-tag {
+    background: #FFF3E8;
+    border-color: var(--accent);
+    color: #b85c1a;
+  }
+
+  /* ===== 数値バッジ ===== */
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .stat-badge {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    text-align: center;
+    flex: 1;
+    min-width: 100px;
+  }
+  .stat-badge .num {
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1;
+    display: block;
+  }
+  .stat-badge .lbl {
+    font-size: 11px;
+    opacity: 0.88;
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* ===== 関連書籍 ===== */
+  .book-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    box-shadow: var(--shadow);
+    margin-bottom: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .book-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .book-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 2px;
+  }
+  .book-card .author {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .book-card .rel {
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  /* ===== セクションタイトル ===== */
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #C8E6D4;
+  }
+
+  /* ===== SVGグラフ ===== */
+  .chart-wrap {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .chart-wrap h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .bar-label {
+    font-size: 12px;
+    color: var(--text);
+    width: 110px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .bar-track {
+    flex: 1;
+    background: #E0EFE8;
+    border-radius: 20px;
+    height: 18px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: width 1s ease;
+  }
+  .bar-fill.accent { background: linear-gradient(90deg, var(--accent), #e07b3a); }
+  .bar-val {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--primary);
+    width: 36px;
+    flex-shrink: 0;
+  }
+
+  /* ===== フッター ===== */
+  footer {
+    text-align: center;
+    padding: 20px 16px;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid #C8E6D4;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header>
+  <div class="book-badge">📗 書籍インフォグラフィック</div>
+  <h1>マインドフルネスで<br>EQを鍛える</h1>
+  <p class="subtitle">注意力 × 情動知能 × 習慣化 ── 幸福と成果を同時に高める"心のスキル"</p>
+</header>
+
+<!-- ===== ファーストビュー サマリーブロック ===== -->
+<div class="summary-block" role="region" aria-label="エグゼクティブサマリー">
+  <div class="summary-title">⚡ ここだけ読めばわかる！ エグゼクティブ・サマリー</div>
+  <div class="summary-grid">
+    <div class="summary-item">
+      <div class="label">❓ 問い</div>
+      <p>高い成果と幸福を両立する最短ルートは何か？</p>
+    </div>
+    <div class="summary-item">
+      <div class="label">💡 答え</div>
+      <p>マインドフルネスによる注意力訓練を基盤にEQ（自己認識・自己制御・共感）を体系的に鍛えること。</p>
+    </div>
+    <div class="summary-item">
+      <div class="label">🔍 Why（なぜ？）</div>
+      <p>注意は心の基礎体力。自己の内的プロセスを識別し感情に賢く対処する能力を生む。衝動的反応を減らし、協働・創造性・意思決定の質を底上げする。神経可塑性により誰でも練習で強化できる。</p>
+    </div>
+    <div class="summary-item">
+      <div class="label">🛠 How（どうやって？）</div>
+      <p>① 毎日の呼吸瞑想で注意を安定させる<br>② ボディスキャン＋ジャーナリングで自己認識を深める<br>③ SBNRRで感情調整する<br>④ 慈悲の瞑想で共感を育む<br>⑤ 小さな習慣化で職場に定着させる</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 数値バッジ ===== -->
+<div class="stats-row" style="padding:0 16px;" role="region" aria-label="主要数値">
+  <div class="stat-badge">
+    <span class="num">10</span>
+    <span class="lbl">主要概念</span>
+  </div>
+  <div class="stat-badge">
+    <span class="num">5</span>
+    <span class="lbl">EQ構成要素</span>
+  </div>
+  <div class="stat-badge">
+    <span class="num">15<small style="font-size:14px">分</small></span>
+    <span class="lbl">今日から実践</span>
+  </div>
+  <div class="stat-badge">
+    <span class="num">5</span>
+    <span class="lbl">重要引用</span>
+  </div>
+</div>
+
+<!-- ===== タブ ===== -->
+<div class="tabs-wrapper" role="navigation" aria-label="タブナビゲーション">
+  <div class="tabs" role="tablist">
+    <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="panel-concepts" id="tab-concepts">🧠 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">💡 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes"   id="tab-quotes">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions"  id="tab-actions">✅ 今日のアクション</button>
+  </div>
+</div>
+
+<!-- ===== パネル1: 主要概念 ===== -->
+<div class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+  <!-- 因果フロー図 -->
+  <div class="flow-section" role="region" aria-label="概念の因果フロー">
+    <h3>🔗 概念の因果フロー（全体像）</h3>
+    <div class="flow-row">
+      <div class="flow-node">注意トレーニング</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">メタ認知向上</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">自己認識の深化</div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-node">自己認識</div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-node">SBNRR</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node">感情調整</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node accent">生産性向上</div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-node">慈悲の瞑想</div>
+      <div class="flow-arrow">+</div>
+      <div class="flow-node">マインドフル・リスニング</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node accent">チームパフォーマンス向上</div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-node">反復練習</div>
+      <div class="flow-arrow">×</div>
+      <div class="flow-node">神経可塑性</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-node accent">長期的行動変容</div>
+    </div>
+  </div>
+
+  <!-- EQ構成要素バーチャート -->
+  <div class="chart-wrap" role="region" aria-label="EQ構成要素の重要度">
+    <h3>📊 EQ（情動知能）の5構成要素と本書での扱い比重</h3>
+    <div class="bar-row">
+      <div class="bar-label">自己認識</div>
+      <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+      <div class="bar-val">95%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">自己制御</div>
+      <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
+      <div class="bar-val">90%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">共感</div>
+      <div class="bar-track"><div class="bar-fill" style="width:80%"></div></div>
+      <div class="bar-val">80%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">動機づけ</div>
+      <div class="bar-track"><div class="bar-fill accent" style="width:70%"></div></div>
+      <div class="bar-val">70%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">社会的スキル</div>
+      <div class="bar-track"><div class="bar-fill accent" style="width:65%"></div></div>
+      <div class="bar-val">65%</div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px;">※本書での記述量・強調度を基にした相対的な目安</p>
+  </div>
+
+  <!-- 概念カードグリッド -->
+  <div class="section-title">🃏 主要概念カード（全10概念）</div>
+  <div class="card-grid">
+
+    <div class="concept-card">
+      <div class="badge">🌿 気づきの土台</div>
+      <h3>マインドフルネス</h3>
+      <div class="def">今この瞬間の経験に評価を加えず注意を向け続ける心的態度と訓練。気づきの質を上げ、反応ではなく選択を可能にする。</div>
+      <div class="why"><strong>なぜ重要か：</strong>すべてのEQ訓練の出発点。気づきがなければ自己認識も感情調整も始まらない。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="badge">💪 心の筋トレ</div>
+      <h3>注意トレーニング</h3>
+      <div class="def">一点に注意を置き、逸れたら優しく戻す反復練習。集中と再注意喚起（リカバリー）を鍛える。</div>
+      <div class="why"><strong>なぜ重要か：</strong>神経可塑性により脳が変化する。練習量に比例してEQの基礎体力が上がる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="badge">🌟 人を動かす力</div>
+      <h3>情動知能（EQ）</h3>
+      <div class="def">自己認識・自己制御・動機づけ・共感・社会的スキルの総体。成果と幸福の共通因子。</div>
+      <div class="why"><strong>なぜ重要か：</strong>IQより成果・幸福・リーダーシップを予測する力が強いとされる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="badge">🔭 心を見る目</div>
+      <h3>メタ認知</h3>
+      <div class="def">自分の思考・感情・身体反応を"対象として観る"能力。巻き込まれずに扱える。</div>
+      <div class="why"><strong>なぜ重要か：</strong>感情に飲み込まれず観察者として立てると、選択肢が広がる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="badge">↔️ 距離を取る</div>
+      <h3>非同一化</h3>
+      <div class="def">「私は怒りだ」ではなく「怒りが生じている」と認識する姿勢。感情との距離が選択肢を増やす。</div>
+      <div class="why"><strong>なぜ重要か：</strong>感情を"自分"と切り離すことで衝動的行動を防ぎ、冷静な判断が可能になる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="badge">⏸️ 間をつくる</div>
+      <h3>SBNRR</h3>
+      <div class="def">Stop → Breathe → Notice → Reflect → Respondの手順で刺激と反応の間に"間"を作る感情調整技法。</div>
+      <div class="why"><strong>なぜ重要か：</strong>衝動的反応を止め、意図的な応答を選べるようになる実践的ツール。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="badge">🫀 身体の気づき</div>
+      <h3>ボディスキャン</h3>
+      <div class="def">身体感覚を順番に観察して内受容感覚を高める練習。微細な情動のシグナルを拾う。</div>
+      <div class="why"><strong>なぜ重要か：</strong>感情は身体に先に現れる。身体の声を聴けると早期に感情を認識できる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="badge">💚 善意を育む</div>
+      <h3>慈悲の瞑想</h3>
+      <div class="def">自他の幸せを意図し善意を育む想起練習。共感疲労を防ぎ心理的安全性を高める。</div>
+      <div class="why"><strong>なぜ重要か：</strong>チームの信頼と協働を生み、リーダーシップの土台となる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="badge">👂 注意の贈り物</div>
+      <h3>マインドフル・リスニング</h3>
+      <div class="def">判断や準備反応を脇に置き、全注意を相手に向けて聴く実践。信頼と洞察を生む。</div>
+      <div class="why"><strong>なぜ重要か：</strong>相手が「本当に聴かれた」と感じると信頼が急速に深まる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="badge">🎯 軸を合わせる</div>
+      <h3>意図−注意−行動の整合</h3>
+      <div class="def">価値・意図を明確化し、注意配分と具体行動を一致させる設計。迷いと摩擦を減らす。</div>
+      <div class="why"><strong>なぜ重要か：</strong>何のために練習するかが明確だと継続力が上がり、成果に直結する。</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== パネル2: 各章の要約 ===== -->
+<div class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+  <div class="chapter-card">
+    <div class="chapter-num">🔬 導入</div>
+    <h3>科学的背景とプログラムの目的</h3>
+    <ul>
+      <li><span class="dot">▶</span><span>注意・情動の脳神経科学（神経可塑性）を提示</span></li>
+      <li><span class="dot">▶</span><span>EQは才能ではなく練習で育つ"スキル"と定義</span></li>
+      <li><span class="dot">▶</span><span>幸福・生産性・リーダーシップを同時に高める可能性を示す</span></li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>「なぜ練習するのか」の科学的根拠を示し、読者の動機と信頼を確立するため。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <div class="chapter-num">🧘 第I部</div>
+    <h3>注意の訓練</h3>
+    <ul>
+      <li><span class="dot">▶</span><span>呼吸瞑想・姿勢・短時間練習で注意の安定を育成</span></li>
+      <li><span class="dot">▶</span><span>注意が逸れたら"優しく戻す"リカバリーを繰り返す</span></li>
+      <li><span class="dot">▶</span><span>1日数分から始められる段階的アプローチ</span></li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>注意力はEQ全体の基礎体力。ここを鍛えずに先へ進んでも効果が薄いため、最初に置かれる。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">🪞 第II部</div>
+    <h3>自己認識と自己制御</h3>
+    <ul>
+      <li><span class="dot">▶</span><span>ボディスキャンで身体感覚から感情を早期認識</span></li>
+      <li><span class="dot">▶</span><span>ジャーナリング（内省日記）で自己理解を深める</span></li>
+      <li><span class="dot">▶</span><span>SBNRRで刺激と反応の間に"間"を作る実践</span></li>
+      <li><span class="dot">▶</span><span>非同一化で感情との距離を保つ</span></li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>自己認識なき行動は衝動的になる。感情を"観る"力が選択の質を根本から変えるため。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <div class="chapter-num">🤝 第III部</div>
+    <h3>有用な心的習慣と関係性</h3>
+    <ul>
+      <li><span class="dot">▶</span><span>慈悲の瞑想で自他への善意を育む</span></li>
+      <li><span class="dot">▶</span><span>感謝の実践でレジリエンスを強化</span></li>
+      <li><span class="dot">▶</span><span>マインドフル・リスニングで対人信頼を構築</span></li>
+      <li><span class="dot">▶</span><span>共感的傾聴でチームの心理的安全性を高める</span></li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>個人の内的変化を対人・組織レベルに拡張し、リーダーシップへの橋渡しをするため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">🏢 応用</div>
+    <h3>職場への転用とリーダーシップ</h3>
+    <ul>
+      <li><span class="dot">▶</span><span>価値・意図の明確化で行動の軸を作る</span></li>
+      <li><span class="dot">▶</span><span>目標・習慣設計で継続的なEQ強化を仕組み化</span></li>
+      <li><span class="dot">▶</span><span>難しい会話（コンフリクト）へのEQ適用</span></li>
+      <li><span class="dot">▶</span><span>リーダーとしての内的静けさが外の効果性を高める</span></li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>個人練習を職場の実践に落とし込まないと、学びが日常に定着しないため。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <div class="chapter-num">🌱 まとめ</div>
+    <h3>小さな継続が大きな変化を生む</h3>
+    <ul>
+      <li><span class="dot">▶</span><span>小さく頻繁な練習が神経可塑性を活かす</span></li>
+      <li><span class="dot">▶</span><span>職場への実装ガイドで行動を促す</span></li>
+      <li><span class="dot">▶</span><span>幸福はスキルとして育てられると強調</span></li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>「続けられるか不安」という読者の懸念に応え、小さな一歩を踏み出す勇気を与えるため。</div>
+  </div>
+
+</div>
+
+<!-- ===== パネル3: 具体例 ===== -->
+<div class="tab-panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+
+  <div class="example-card">
+    <div class="ex-num">例 1</div>
+    <h3>🔥 会議中の怒り ── SBNRRの実践</h3>
+    <ul class="card" style="box-shadow:none;padding:0;background:none;">
+      <li><span class="dot">▶</span><span>上司に批判されカッとなった瞬間、まず「Stop」と心の中で唱える</span></li>
+      <li><span class="dot">▶</span><span>3回深呼吸（Breathe）し、胸の緊張に気づく（Notice）</span></li>
+      <li><span class="dot">▶</span><span>「批判への恐れ」と内省（Reflect）し、冷静に応答（Respond）</span></li>
+    </ul>
+    <div class="example-meta">
+      <div class="example-meta-item">
+        <div class="meta-label">📌 背景</div>
+        感情的反応は0.2秒で起きる。SBNRRはその後に"間"を挿入する技法。
+      </div>
+      <div class="example-meta-item">
+        <div class="meta-label">💡 示唆</div>
+        衝動的な言動を防ぎ、関係を壊さずに意見を伝えられる。
+      </div>
+      <div class="example-meta-item" style="grid-column:1/-1">
+        <div class="meta-label">🔍 この例が示すこと</div>
+        刺激と反応の間に"間"を置く技術は、日常の小さな場面から練習できる。EQは特別な状況でなく、毎日の会話の中で鍛えられる。
+      </div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">例 2</div>
+    <h3>🎧 1on1ミーティング ── マインドフル・リスニング</h3>
+    <ul class="card" style="box-shadow:none;padding:0;background:none;">
+      <li><span class="dot">▶</span><span>スマホを裏返し、次の返答を考えるのをやめて相手の言葉に全集中</span></li>
+      <li><span class="dot">▶</span><span>相手の表情・声のトーン・沈黙にも注意を向ける</span></li>
+      <li><span class="dot">▶</span><span>「本当に聴いてもらえた」と感じた部下が自発的に課題を打ち明ける</span></li>
+    </ul>
+    <div class="example-meta">
+      <div class="example-meta-item">
+        <div class="meta-label">📌 背景</div>
+        多くの人は聴きながら次の発言を準備している。これが相手の安心感を奪う。
+      </div>
+      <div class="example-meta-item">
+        <div class="meta-label">💡 示唆</div>
+        注意を贈ることが最大の信頼構築ツールになる。
+      </div>
+      <div class="example-meta-item" style="grid-column:1/-1">
+        <div class="meta-label">🔍 この例が示すこと</div>
+        マインドフルネスは内面の練習だが、その効果は対人関係に直接現れる。リーダーシップの核心は"聴く力"にある。
+      </div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">例 3</div>
+    <h3>🌅 朝の15分呼吸瞑想 ── 注意トレーニングの習慣化</h3>
+    <ul class="card" style="box-shadow:none;padding:0;background:none;">
+      <li><span class="dot">▶</span><span>毎朝起床後、椅子に座り呼吸に注意を向ける15分を確保</span></li>
+      <li><span class="dot">▶</span><span>注意が逸れるたびに"優しく"呼吸に戻す（批判しない）</span></li>
+      <li><span class="dot">▶</span><span>数週間後、会議中の集中力と感情の安定が向上したと実感</span></li>
+    </ul>
+    <div class="example-meta">
+      <div class="example-meta-item">
+        <div class="meta-label">📌 背景</div>
+        神経可塑性により、反復練習が脳の構造を変える。小さく始めることが継続の鍵。
+      </div>
+      <div class="example-meta-item">
+        <div class="meta-label">💡 示唆</div>
+        特別な環境や道具は不要。毎日の短時間練習が長期的変化を生む。
+      </div>
+      <div class="example-meta-item" style="grid-column:1/-1">
+        <div class="meta-label">🔍 この例が示すこと</div>
+        EQの向上は大きな変革ではなく、毎日の小さな練習の積み重ねで実現する。習慣化こそが最強の戦略。
+      </div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">例 4（メタファー）</div>
+    <h3>🏋️ 心の筋トレ ── 注意力と筋肉のアナロジー</h3>
+    <ul class="card" style="box-shadow:none;padding:0;background:none;">
+      <li><span class="dot">▶</span><span>筋肉は使わなければ衰え、鍛えれば強くなる</span></li>
+      <li><span class="dot">▶</span><span>注意力も同じ。使わなければ散漫になり、練習すれば安定する</span></li>
+      <li><span class="dot">▶</span><span>「注意が逸れる」＝「筋肉が震える」。それ自体が鍛錬の証</span></li>
+    </ul>
+    <div class="example-meta">
+      <div class="example-meta-item">
+        <div class="meta-label">📌 背景</div>
+        多くの人が「瞑想中に雑念が出る＝失敗」と誤解する。
+      </div>
+      <div class="example-meta-item">
+        <div class="meta-label">💡 示唆</div>
+        逸れて戻す繰り返しこそが練習の本質。失敗ではなく成長の機会。
+      </div>
+      <div class="example-meta-item" style="grid-column:1/-1">
+        <div class="meta-label">🔍 この例が示すこと</div>
+        マインドフルネスへの誤解を解き、誰でも始められるという心理的ハードルを下げる。完璧主義を手放すことがEQ向上の第一歩。
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== パネル4: 重要な引用 ===== -->
+<div class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+  <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">※以下はすべて本書の要旨（原文引用ではなく内容の要約）です。</p>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">注意は鍛えられる"心の筋肉"である。</div>
+    <div class="quote-note"><strong>なぜ重要か：</strong>練習可能性を示し、誰にでも再現可能な成長戦略になるから。EQは才能ではなくスキルという本書の核心を一言で表す。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">内なる静けさが外の効果性を高める。</div>
+    <div class="quote-note"><strong>なぜ重要か：</strong>パフォーマンスの源泉が内的状態にあると示すから。忙しいほど内側を整える必要があるという逆説的真実。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">刺激と反応の間に"間"を置けると自由が生まれる。</div>
+    <div class="quote-note"><strong>なぜ重要か：</strong>SBNRRの核心で、衝動から選択への転換を促すから。この"間"こそが人間の自由意志の実践場。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">真に聴くとは相手に注意を贈ること。</div>
+    <div class="quote-note"><strong>なぜ重要か：</strong>信頼構築とリーダーシップの実践原理を端的に表すから。最も安価で最も効果的なリーダーシップツール。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">幸福は結果ではなくスキルとして育てられる。</div>
+    <div class="quote-note"><strong>なぜ重要か：</strong>日々の訓練がウェルビーイングを高めるという希望を与えるから。幸福を"待つもの"から"作るもの"へと認識を転換させる。</div>
+  </div>
+
+  <!-- SVG 引用の重要度レーダー風バッジ -->
+  <div class="chart-wrap" role="region" aria-label="引用の重要テーマ分布">
+    <h3>🎯 引用が示す重要テーマ</h3>
+    <svg viewBox="0 0 320 160" width="100%" aria-hidden="true">
+      <defs>
+        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#2D6A4F"/>
+          <stop offset="100%" style="stop-color:#52B788"/>
+        </linearGradient>
+        <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#F4A261"/>
+          <stop offset="100%" style="stop-color:#e07b3a"/>
+        </linearGradient>
+      </defs>
+      <!-- 練習可能性 -->
+      <rect x="10" y="10" width="180" height="22" rx="11" fill="url(#g1)"/>
+      <text x="18" y="25" fill="white" font-size="11" font-family="sans-serif">練習可能性（誰でも成長できる）</text>
+      <rect x="10" y="40" width="150" height="22" rx="11" fill="url(#g1)"/>
+      <text x="18" y="55" fill="white" font-size="11" font-family="sans-serif">内的状態とパフォーマンス</text>
+      <rect x="10" y="70" width="200" height="22" rx="11" fill="url(#g2)"/>
+      <text x="18" y="85" fill="white" font-size="11" font-family="sans-serif">刺激と反応の間（SBNRR）</text>
+      <rect x="10" y="100" width="160" height="22" rx="11" fill="url(#g1)"/>
+      <text x="18" y="115" fill="white" font-size="11" font-family="sans-serif">傾聴とリーダーシップ</text>
+      <rect x="10" y="130" width="190" height="22" rx="11" fill="url(#g2)"/>
+      <text x="18" y="145" fill="white" font-size="11" font-family="sans-serif">幸福はスキル（育てられる）</text>
+    </svg>
+  </div>
+
+</div>
+
+<!-- ===== パネル5: 今日のアクション ===== -->
+<div class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+  <div class="stats-row">
+    <div class="stat-badge" style="background:linear-gradient(135deg,var(--accent),#e07b3a);">
+      <span class="num">3</span>
+      <span class="lbl">アクション</span>
+    </div>
+    <div class="stat-badge">
+      <span class="num">15〜30<small style="font-size:12px">分</small></span>
+      <span class="lbl">所要時間</span>
+    </div>
+    <div class="stat-badge">
+      <span class="num">今日</span>
+      <span class="lbl">実行タイミング</span>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">1</div>
+    <div class="action-body">
+      <h3>🧘 呼吸瞑想を15分実践する</h3>
+      <ul class="card" style="box-shadow:none;padding:0;background:none;">
+        <li><span class="dot">▶</span><span>椅子に座り、背筋を伸ばして目を閉じる</span></li>
+        <li><span class="dot">▶</span><span>鼻から吸い、口からゆっくり吐く呼吸に注意を向ける</span></li>
+        <li><span class="dot">▶</span><span>雑念が浮かんだら批判せず、優しく呼吸に戻す</span></li>
+        <li><span class="dot">▶</span><span>タイマーを15分にセットして始める</span></li>
+      </ul>
+      <div class="action-tags">
+        <span class="action-tag">🎯 目的：注意力の安定と回復力を鍛える</span>
+        <span class="action-tag accent-tag">✨ 期待効果：集中力向上・感情の安定・ストレス低減</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">2</div>
+    <div class="action-body">
+      <h3>📓 感情日記を15分書き出す</h3>
+      <ul class="card" style="box-shadow:none;padding:0;background:none;">
+        <li><span class="dot">▶</span><span>今日感じた感情を3つ書き出す（怒り・不安・喜びなど）</span></li>
+        <li><span class="dot">▶</span><span>それぞれ「なぜそう感じたか」を1〜2文で記述</span></li>
+        <li><span class="dot">▶</span><span>身体のどこで感じたかも書き添える（胸・胃・肩など）</span></li>
+        <li><span class="dot">▶</span><span>評価・批判せず、ただ観察者として記録する</span></li>
+      </ul>
+      <div class="action-tags">
+        <span class="action-tag">🎯 目的：自己認識とメタ認知を深める</span>
+        <span class="action-tag accent-tag">✨ 期待効果：感情パターンの把握・衝動的反応の低減</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">3</div>
+    <div class="action-body">
+      <h3>💌 感謝メールを15分で3通送る</h3>
+      <ul class="card" style="box-shadow:none;padding:0;background:none;">
+        <li><span class="dot">▶</span><span>今日感謝したい人を3人思い浮かべる</span></li>
+        <li><span class="dot">▶</span><span>各メール3〜5文で「具体的に何に感謝するか」を書く</span></li>
+        <li><span class="dot">▶</span><span>大げさにならず、素直な言葉で送る</span></li>
+        <li><span class="dot">▶</span><span>送った後、自分の気持ちの変化に気づく</span></li>
+      </ul>
+      <div class="action-tags">
+        <span class="action-tag">🎯 目的：慈悲・感謝の習慣化と関係性強化</span>
+        <span class="action-tag accent-tag">✨ 期待効果：レジリエンス向上・信頼構築・幸福感の増加</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 実践ロードマップ SVG -->
+  <div class="chart-wrap" role="region" aria-label="実践ロードマップ">
+    <h3>🗺️ EQ強化ロードマップ（継続イメージ）</h3>
+    <svg viewBox="0 0 320 100" width="100%" aria-hidden="true">
+      <defs>
+        <linearGradient id="road" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#2D6A4F"/>
+          <stop offset="100%" style="stop-color:#52B788"/>
+        </linearGradient>
+      </defs>
+      <line x1="20" y1="50" x2="300" y2="50" stroke="#C8E6D4" stroke-width="4" stroke-linecap="round"/>
+      <!-- 週1 -->
+      <circle cx="60" cy="50" r="18" fill="url(#road)"/>
+      <text x="60" y="45" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">Week</text>
+      <text x="60" y="57" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">1-2</text>
+      <text x="60" y="78" text-anchor="middle" fill="#2D6A4F" font-size="9" font-family="sans-serif">呼吸瞑想</text>
+      <!-- 週3 -->
+      <circle cx="140" cy="50" r="18" fill="url(#road)"/>
+      <text x="140" y="45" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">Week</text>
+      <text x="140" y="57" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">3-4</text>
+      <text x="140" y="78" text-anchor="middle" fill="#2D6A4F" font-size="9" font-family="sans-serif">感情日記</text>
+      <!-- 週5 -->
+      <circle cx="220" cy="50" r="18" fill="#F4A261"/>
+      <text x="220" y="45" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">Week</text>
+      <text x="220" y="57" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">5-6</text>
+      <text x="220" y="78" text-anchor="middle" fill="#b85c1a" font-size="9" font-family="sans-serif">SBNRR</text>
+      <!-- 継続 -->
+      <circle cx="295" cy="50" r="18" fill="#F4A261"/>
+      <text x="295" y="45" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">継続</text>
+      <text x="295" y="57" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">〜</text>
+      <text x="295" y="78" text-anchor="middle" fill="#b85c1a" font-size="9" font-family="sans-serif">EQ定着</text>
+    </svg>
+  </div>
+
+  <!-- 関連書籍 -->
+  <div class="section-title">📚 関連書籍</div>
+  <div class="book-card">
+    <div class="book-icon">📘</div>
+    <div>
+      <h4>EQ こころの知能指数</h4>
+      <div class="author">ダニエル・ゴールマン</div>
+      <div class="rel">本書のEQ概念の理論的土台を提供する古典。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📗</div>
+    <div>
+      <h4>マインドフルネスストレス低減法</h4>
+      <div class="author">ジョン・カバットジン</div>
+      <div class="rel">マインドフルネスの科学的根拠と実践法を体系化。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📙</div>
+    <div>
+      <h4>JOY ON DEMAND 幸福はスキルである</h4>
+      <div class="author">チャディー・メン・タン</div>
+      <div class="rel">短時間の瞑想で喜びを育む続編的アプローチ。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📕</div>
+    <div>
+      <h4>FOCUS 集中力</h4>
+      <div class="author">ダニエル・ゴールマン</div>
+      <div class="rel">注意の仕組みと鍛え方を掘り下げ、本書の基盤を補完。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📓</div>
+    <div>
+      <h4>難しい会話はどのようにすればうまくいくのか</h4>
+      <div class="author">ダグラス・ストーン 他</div>
+      <div class="rel">EQを対人コミュニケーションに適用する実践ガイド。</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== フッター ===== -->
+<footer>
+  <p>📗 マインドフルネスとEQのインフォグラフィック</p>
+  <p style="margin-top:4px;">カラーパレット ── プライマリー: #2D6A4F ／ セカンダリー: #52B788 ／ アクセント: #F4A261</p>
+</footer>
+
+<script>
+  (function() {
+    'use strict';
+    var tabs = document.querySelectorAll('.tab-btn');
+    var panels = document.querySelectorAll('.tab-panel');
+
+    function activateTab(index) {
+      tabs.forEach(function(btn, i) {
+        var isActive = i === index;
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+      panels.forEach(function(panel, i) {
+        if (i === index) {
+          panel.classList.add('active');
+        } else {
+          panel.classList.remove('active');
+        }
+      });
+    }
+
+    tabs.forEach(function(btn, i) {
+      btn.addEventListener('click', function() {
+        activateTab(i);
+        // スクロールをタブの下に
+        var tabsWrapper = document.querySelector('.tabs-wrapper');
+        if (tabsWrapper) {
+          var offset = tabsWrapper.getBoundingClientRect().bottom + window.scrollY;
+          window.scrollTo({ top: offset - 10, behavior: 'smooth' });
+        }
+      });
+      btn.addEventListener('keydown', function(e) {
+        var newIndex = i;
+        if (e.key === 'ArrowRight') { newIndex = (i + 1) % tabs.length; }
+        else if (e.key === 'ArrowLeft') { newIndex = (i - 1 + tabs.length) % tabs.length; }
+        else if (e.key === 'Home') { newIndex = 0; }
+        else if (e.key === 'End') { newIndex = tabs.length - 1; }
+        else { return; }
+        e.preventDefault();
+        activateTab(newIndex);
+        tabs[newIndex].focus();
+      });
+    });
+
+    // バーアニメーション（IntersectionObserver）
+    var bars = document.querySelectorAll('.bar-fill');
+    var widths = [];
+    bars.forEach(function(bar) {
+      widths.push(bar.style.width);
+      bar.style.width = '0%';
+    });
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            bars.forEach(function(bar, i) {
+              setTimeout(function() {
+                bar.style.width = widths[i];
+              }, i * 100);
+            });
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.3 });
+      var chartWrap = document.querySelector('.chart-wrap');
+      if (chartWrap) { observer.observe(chartWrap); }
+    } else {
+      bars.forEach(function(bar, i) {
+        bar.style.width = widths[i];
+      });
+    }
+  })();
+</script>
+</body>
+</html>
