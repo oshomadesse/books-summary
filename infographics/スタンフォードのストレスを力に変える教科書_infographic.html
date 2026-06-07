@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スタンフォードのストレスを力に変える教科書 インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #2d6a9f
+  セカンダリー:  #1a3a5c
+  アクセント:    #f4a261
+-->
+<style>
+  /* ===== リセット & 基本 ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #2d6a9f;
+    --secondary: #1a3a5c;
+    --accent: #f4a261;
+    --accent2: #e76f51;
+    --bg: #f0f4f8;
+    --card-bg: #ffffff;
+    --text: #1e2a38;
+    --text-light: #5a6a7a;
+    --success: #2a9d8f;
+    --warn: #e9c46a;
+    --radius: 12px;
+    --shadow: 0 4px 16px rgba(0,0,0,0.10);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Meiryo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ===== ヘッダー ===== */
+  .site-header {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 60%, #3a8fd4 100%);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  .site-header .book-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--secondary);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+  }
+  .site-header h1 {
+    font-size: clamp(18px, 4vw, 26px);
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .site-header .subtitle {
+    font-size: 13px;
+    opacity: 0.85;
+  }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: linear-gradient(135deg, #fff8f0 0%, #fff 100%);
+    border-left: 5px solid var(--accent);
+    border-radius: var(--radius);
+    margin: 18px 16px;
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+  }
+  .summary-block .summary-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent2);
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 480px) {
+    .summary-grid { grid-template-columns: 1fr; }
+  }
+  .summary-item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px 12px;
+    border-top: 3px solid var(--primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .summary-item.q { border-top-color: var(--accent2); }
+  .summary-item.a { border-top-color: var(--success); }
+  .summary-item.why { border-top-color: var(--primary); }
+  .summary-item.how { border-top-color: var(--accent); }
+  .summary-item .s-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+  .summary-item.q .s-label { color: var(--accent2); }
+  .summary-item.a .s-label { color: var(--success); }
+  .summary-item.why .s-label { color: var(--primary); }
+  .summary-item.how .s-label { color: var(--accent); }
+  .summary-item p { font-size: 13px; line-height: 1.55; }
+
+  /* ===== タブ ===== */
+  .tab-nav {
+    display: flex;
+    overflow-x: auto;
+    background: var(--secondary);
+    padding: 0 8px;
+    gap: 2px;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.65);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 12px 14px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    font-family: inherit;
+  }
+  .tab-btn:hover { color: #fff; }
+  .tab-btn[aria-selected="true"] {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .tab-panel { display: none; padding: 16px; }
+  .tab-panel.active { display: block; }
+
+  /* ===== カード共通 ===== */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card ul { padding-left: 0; list-style: none; }
+  .card ul li {
+    font-size: 13px;
+    padding: 4px 0 4px 20px;
+    position: relative;
+    line-height: 1.5;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 4px;
+    color: var(--accent);
+    font-size: 11px;
+    top: 6px;
+  }
+  .reason-box {
+    background: linear-gradient(90deg, #e8f4fd, #f0f8ff);
+    border-left: 3px solid var(--primary);
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--primary);
+  }
+  .reason-box strong { font-weight: 700; }
+
+  /* ===== グリッド ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 600px) {
+    .card-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ===== 概念カード ===== */
+  .concept-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--primary);
+    position: relative;
+    overflow: hidden;
+  }
+  .concept-card::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 60px; height: 60px;
+    background: linear-gradient(135deg, transparent 50%, rgba(45,106,159,0.06) 50%);
+  }
+  .concept-card.accent-card { border-top-color: var(--accent); }
+  .concept-card.success-card { border-top-color: var(--success); }
+  .concept-card.warn-card { border-top-color: var(--warn); }
+  .concept-card .c-badge {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .concept-card.accent-card .c-badge { background: var(--accent); color: var(--secondary); }
+  .concept-card.success-card .c-badge { background: var(--success); }
+  .concept-card.warn-card .c-badge { background: var(--warn); color: var(--secondary); }
+  .concept-card h3 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 6px;
+  }
+  .concept-card .one-liner {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .concept-card p { font-size: 13px; line-height: 1.55; color: var(--text); }
+
+  /* ===== 関係図 ===== */
+  .flow-section {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    overflow-x: auto;
+  }
+  .flow-section h3 {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 12px;
+  }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border-left: 5px solid var(--primary);
+  }
+  .chapter-card:nth-child(2) { border-left-color: var(--accent); }
+  .chapter-card:nth-child(3) { border-left-color: var(--success); }
+  .chapter-card:nth-child(4) { border-left-color: var(--accent2); }
+  .chapter-card:nth-child(5) { border-left-color: #9b59b6; }
+  .chapter-card:nth-child(6) { border-left-color: var(--warn); }
+  .chapter-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .chapter-card h3 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 8px;
+  }
+
+  /* ===== 引用カード ===== */
+  .quote-card {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 20px 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 80px;
+    color: rgba(255,255,255,0.12);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .quote-card blockquote {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .quote-card .q-note {
+    font-size: 12px;
+    opacity: 0.85;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    padding-top: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .quote-card .q-note strong { color: var(--accent); }
+
+  /* ===== 具体例カード ===== */
+  .example-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .example-card .ex-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    background: var(--accent);
+    color: var(--secondary);
+    font-weight: 900;
+    font-size: 14px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+  }
+  .example-card h3 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 8px;
+  }
+  .ex-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .ex-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #e8f4fd;
+    color: var(--primary);
+  }
+  .ex-tag.bg { background: #fff3e0; color: #b45309; }
+  .ex-tag.imp { background: #e8fdf5; color: var(--success); }
+  .ex-tag.why { background: #fdf0e8; color: var(--accent2); }
+
+  /* ===== アクションカード ===== */
+  .action-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border-top: 4px solid var(--accent);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-num {
+    flex: 0 0 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-weight: 900;
+    font-size: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .action-body h3 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 6px;
+  }
+  .action-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .action-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .action-tag.time { background: #fff3e0; color: #b45309; }
+  .action-tag.goal { background: #e8f4fd; color: var(--primary); }
+  .action-tag.effect { background: #e8fdf5; color: var(--success); }
+
+  /* ===== 関連書籍 ===== */
+  .book-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 14px;
+    box-shadow: var(--shadow);
+    margin-bottom: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .book-icon {
+    flex: 0 0 40px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  .book-info h4 { font-size: 14px; font-weight: 800; color: var(--secondary); margin-bottom: 2px; }
+  .book-info .author { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+  .book-info p { font-size: 12px; color: var(--text); line-height: 1.45; }
+
+  /* ===== SVG 数値バッジ ===== */
+  .metrics-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .metric-badge {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    color: #fff;
+    border-radius: 10px;
+    padding: 12px 16px;
+    flex: 1 1 120px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .metric-badge .m-val {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--accent);
+    display: block;
+    line-height: 1.1;
+  }
+  .metric-badge .m-label {
+    font-size: 11px;
+    opacity: 0.9;
+    margin-top: 3px;
+    display: block;
+  }
+
+  /* ===== バーチャート ===== */
+  .bar-chart { margin-bottom: 14px; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .bar-label { font-size: 12px; font-weight: 600; width: 120px; flex-shrink: 0; color: var(--text); }
+  .bar-track {
+    flex: 1;
+    background: #e8edf2;
+    border-radius: 20px;
+    height: 18px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    transition: width 1s ease;
+  }
+  .bar-fill.primary { background: linear-gradient(90deg, var(--primary), #3a8fd4); }
+  .bar-fill.accent { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+  .bar-fill.success { background: linear-gradient(90deg, var(--success), #3dbfa8); }
+  .bar-fill.warn { background: linear-gradient(90deg, #e9c46a, #f4a261); }
+
+  /* ===== セクションタイトル ===== */
+  .section-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-light);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 18px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #dde3ea;
+  }
+
+  /* ===== フッター ===== */
+  footer {
+    background: var(--secondary);
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 16px;
+    font-size: 11px;
+    margin-top: 20px;
+  }
+
+  /* ===== アニメーション ===== */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .tab-panel.active { animation: fadeIn 0.3s ease; }
+
+  /* ===== ピル ===== */
+  .pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin: 2px;
+  }
+  .pill-blue { background: #dbeafe; color: #1e40af; }
+  .pill-orange { background: #ffedd5; color: #9a3412; }
+  .pill-green { background: #d1fae5; color: #065f46; }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header class="site-header" role="banner">
+  <div class="book-badge">📖 書籍インフォグラフィック</div>
+  <h1>ストレスを力に変える教科書</h1>
+  <p class="subtitle">スタンフォード大学 心理学講義 ／ ケリー・マクゴニガル</p>
+</header>
+
+<!-- ===== ファーストビュー サマリー ===== -->
+<section class="summary-block" aria-label="エグゼクティブサマリー">
+  <div class="summary-title">⚡ ここだけ読めば全体がわかる — 要約ブロック</div>
+  <div class="summary-grid">
+    <div class="summary-item q">
+      <div class="s-label">❓ 問い</div>
+      <p>ストレスは健康と成果を損なうだけの害か、それとも役立てられるのか？</p>
+    </div>
+    <div class="summary-item a">
+      <div class="s-label">✅ 答え</div>
+      <p>見方と行動次第でストレスは有益になり、集中・学習・つながり・回復力を高める。</p>
+    </div>
+    <div class="summary-item why">
+      <div class="s-label">🔬 Why（なぜ）</div>
+      <p>マインドセットが生理反応（チャレンジ/脅威）を方向づけ、価値や目的に結びつくとオキシトシン・DHEAが強化され、適応と成長が起こる。</p>
+    </div>
+    <div class="summary-item how">
+      <div class="s-label">🛠 How（どうする）</div>
+      <p>①反応の再評価（動悸=準備完了）②価値観アファメーション③助け合いの活用④小さなストレスへの計画的曝露</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== タブナビ ===== -->
+<nav class="tab-nav" role="tablist" aria-label="コンテンツタブ">
+  <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="tab-concepts" id="btn-concepts">🧠 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters" id="btn-chapters">📚 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples" id="btn-examples">💡 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes"   id="btn-quotes">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions"  id="btn-actions">🚀 今日のアクション</button>
+</nav>
+
+<main>
+
+<!-- ===== タブ1: 主要概念 ===== -->
+<section class="tab-panel active" id="tab-concepts" role="tabpanel" aria-labelledby="btn-concepts">
+
+  <div class="section-title">📊 ストレス反応の比較</div>
+  <div class="metrics-row">
+    <div class="metric-badge">
+      <span class="m-val">10</span>
+      <span class="m-label">主要概念の数</span>
+    </div>
+    <div class="metric-badge">
+      <span class="m-val">4</span>
+      <span class="m-label">即効アクション</span>
+    </div>
+    <div class="metric-badge">
+      <span class="m-val">2種</span>
+      <span class="m-label">ストレス反応タイプ</span>
+    </div>
+  </div>
+
+  <!-- バーチャート -->
+  <div class="card">
+    <div class="card-title">📈 チャレンジ反応 vs 脅威反応 — 影響度比較</div>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">集中・実行力</div>
+        <div class="bar-track"><div class="bar-fill primary" style="width:88%">チャレンジ↑</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">パフォーマンス</div>
+        <div class="bar-track"><div class="bar-fill success" style="width:80%">チャレンジ↑</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">回避・反芻</div>
+        <div class="bar-track"><div class="bar-fill accent" style="width:75%">脅威↑</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">健康リスク</div>
+        <div class="bar-track"><div class="bar-fill warn" style="width:65%">脅威↑</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">社会的つながり</div>
+        <div class="bar-track"><div class="bar-fill success" style="width:90%">テンド↑</div></div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--text-light);">※ 概念的な相対比較。数値は書籍内の定性的記述を視覚化したもの。</p>
+  </div>
+
+  <!-- 概念カードグリッド -->
+  <div class="section-title">🔑 10の主要概念</div>
+  <div class="card-grid">
+
+    <div class="concept-card">
+      <div class="c-badge">概念 01</div>
+      <h3>🧠 ストレス・マインドセット</h3>
+      <div class="one-liner">「見方が効き目を決める」</div>
+      <p>ストレスを「有益」または「有害」と捉える信念。捉え方が生理反応・行動・健康指標を左右する。</p>
+      <div class="reason-box"><strong>なぜ重要か：</strong>同じストレスでも解釈次第で身体反応が変わり、成果と健康に直結するため。</div>
+    </div>
+
+    <div class="concept-card accent-card">
+      <div class="c-badge">概念 02</div>
+      <h3>💪 チャレンジ反応</h3>
+      <div class="one-liner">「準備完了の生理」</div>
+      <p>要求と資源が釣り合うときの生理状態。心拍出量↑・血管拡張で集中と実行力が高まる。</p>
+      <div class="reason-box"><strong>なぜ重要か：</strong>この状態を意図的に引き出せれば、プレッシャー下でも最高のパフォーマンスが出せる。</div>
+    </div>
+
+    <div class="concept-card warn-card">
+      <div class="c-badge">概念 03</div>
+      <h3>⚠️ 脅威反応</h3>
+      <div class="one-liner">「身構えの生理」</div>
+      <p>要求が資源を上回るときの生理状態。血管収縮・回避志向でパフォーマンスと健康が損なわれやすい。</p>
+      <div class="reason-box"><strong>なぜ重要か：</strong>この反応を認識し、チャレンジ反応へ切り替える入口になるため。</div>
+    </div>
+
+    <div class="concept-card success-card">
+      <div class="c-badge">概念 04</div>
+      <h3>🤝 テンド・アンド・ビフレンド</h3>
+      <div class="one-liner">「つながりの反応」</div>
+      <p>ストレス時に養育・協力・絆を強める反応。オキシトシンが関与し社会的支援を促す。</p>
+      <div class="reason-box"><strong>なぜ重要か：</strong>孤立ではなくつながりへ向かうことで、ストレスが回復力の源になるから。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="c-badge">概念 05</div>
+      <h3>🌱 学習・成長反応（DHEA）</h3>
+      <div class="one-liner">「逆境が学びに変わる」</div>
+      <p>ストレス下で分泌されるDHEA等が神経可塑性を促進し、経験を学習に変える。</p>
+      <div class="reason-box"><strong>なぜ重要か：</strong>ストレスが脳の成長を促す生物学的根拠となり、逆境を歓迎できる理由になる。</div>
+    </div>
+
+    <div class="concept-card accent-card">
+      <div class="c-badge">概念 06</div>
+      <h3>🔄 再評価（リフレーミング）</h3>
+      <div class="one-liner">「意味の付け替え」</div>
+      <p>緊張や動悸を「危険の兆候」ではなく「備えが整う合図」と意味づけ直す技法。</p>
+      <div class="reason-box"><strong>なぜ重要か：</strong>即座に実践でき、脅威反応をチャレンジ反応へ転換する最短ルートだから。</div>
+    </div>
+
+    <div class="concept-card success-card">
+      <div class="c-badge">概念 07</div>
+      <h3>📝 価値観アファメーション</h3>
+      <div class="one-liner">「軸を思い出す」</div>
+      <p>自分の中核的価値を書き出し想起する介入。ストレス時の自信と一貫性を回復する。</p>
+      <div class="reason-box"><strong>なぜ重要か：</strong>自己一貫性が高まるとチャレンジ反応が促進され、行動の質が上がるから。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="c-badge">概念 08</div>
+      <h3>🎯 意味づけ（Purpose/Meaning）</h3>
+      <div class="one-liner">「懸ける価値の証」</div>
+      <p>ストレスを「大切な目標が懸かる証拠」と解釈し、行動の方向性を与える。</p>
+      <div class="reason-box"><strong>なぜ重要か：</strong>目的意識があるとストレスが回避対象ではなく推進力に変わるから。</div>
+    </div>
+
+    <div class="concept-card accent-card">
+      <div class="c-badge">概念 09</div>
+      <h3>💞 利他行動・支援要請</h3>
+      <div class="one-liner">「助け合いは力」</div>
+      <p>他者を助けたり助けを求めたりする行動。オキシトシンを介し回復力と健康を高める。</p>
+      <div class="reason-box"><strong>なぜ重要か：</strong>利他行動が不安を下げ、社会的絆を強化し、ストレス耐性を高める好循環を生むから。</div>
+    </div>
+
+    <div class="concept-card success-card">
+      <div class="c-badge">概念 10</div>
+      <h3>🛡 ストレス免疫（計画的曝露）</h3>
+      <div class="one-liner">「小さな鍛錬が大きな備え」</div>
+      <p>小さなストレスを繰り返し乗り越えることで、将来の負荷への耐性とスキルを獲得する。</p>
+      <div class="reason-box"><strong>なぜ重要か：</strong>自己効力感が積み上がり、大きな逆境にも動じない基盤が形成されるから。</div>
+    </div>
+
+  </div>
+
+  <!-- 因果関係フロー -->
+  <div class="section-title">🔗 概念間の因果関係</div>
+  <div class="flow-section">
+    <h3>ストレス活用の好循環マップ</h3>
+    <svg viewBox="0 0 340 320" width="100%" style="max-width:400px;display:block;margin:0 auto;" aria-label="概念間の因果関係図">
+      <!-- 背景 -->
+      <rect width="340" height="320" fill="#f8fafc" rx="12"/>
+      <!-- ノード -->
+      <rect x="110" y="10" width="120" height="36" rx="8" fill="#1a3a5c"/>
+      <text x="170" y="33" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">ストレス・マインドセット</text>
+
+      <rect x="10" y="80" width="110" height="36" rx="8" fill="#2d6a9f"/>
+      <text x="65" y="98" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">再評価</text>
+      <text x="65" y="110" text-anchor="middle" fill="#fff" font-size="10">(リフレーミング)</text>
+
+      <rect x="220" y="80" width="110" height="36" rx="8" fill="#2d6a9f"/>
+      <text x="275" y="98" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">価値観</text>
+      <text x="275" y="110" text-anchor="middle" fill="#fff" font-size="10">アファメーション</text>
+
+      <rect x="90" y="155" width="160" height="36" rx="8" fill="#2a9d8f"/>
+      <text x="170" y="173" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">チャレンジ反応</text>
+      <text x="170" y="185" text-anchor="middle" fill="#fff" font-size="10">集中↑ 実行力↑</text>
+
+      <rect x="10" y="230" width="110" height="36" rx="8" fill="#f4a261"/>
+      <text x="65" y="248" text-anchor="middle" fill="#1a3a5c" font-size="10" font-weight="bold">テンド&amp;</text>
+      <text x="65" y="260" text-anchor="middle" fill="#1a3a5c" font-size="10">ビフレンド</text>
+
+      <rect x="220" y="230" width="110" height="36" rx="8" fill="#f4a261"/>
+      <text x="275" y="248" text-anchor="middle" fill="#1a3a5c" font-size="10" font-weight="bold">学習・成長</text>
+      <text x="275" y="260" text-anchor="middle" fill="#1a3a5c" font-size="10">反応(DHEA)</text>
+
+      <rect x="110" y="285" width="120" height="28" rx="8" fill="#e76f51"/>
+      <text x="170" y="304" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">自己効力感↑</text>
+
+      <!-- 矢印 -->
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/>
+        </marker>
+      </defs>
+      <line x1="140" y1="46" x2="90" y2="80" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="200" y1="46" x2="250" y2="80" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="90" y1="116" x2="140" y2="155" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="250" y1="116" x2="200" y2="155" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="120" y1="191" x2="75" y2="230" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="220" y1="191" x2="265" y2="230" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="100" y1="266" x2="145" y2="285" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="240" y1="266" x2="195" y2="285" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arr)"/>
+    </svg>
+  </div>
+
+</section>
+
+<!-- ===== タブ2: 各章の要約 ===== -->
+<section class="tab-panel" id="tab-chapters" role="tabpanel" aria-labelledby="btn-chapters">
+
+  <div class="chapter-card">
+    <div class="chapter-num">第1章（疑似）</div>
+    <h3>🔍 問題提起：「ストレス＝毒」という常識を疑う</h3>
+    <ul class="card ul">
+      <li>「ストレスは体に悪い」という通念を科学的に検証する</li>
+      <li>見方（マインドセット）が結果を変えるという仮説を提示</li>
+      <li>同じストレスでも解釈次第で生理反応が変わることを示す</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>前提を崩さないと「ストレスを活用する」という発想自体が生まれないから。常識の更新が出発点。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">第2章（疑似）</div>
+    <h3>🔬 マインドセットの科学：信念が身体を変える</h3>
+    <ul class="card ul">
+      <li>信念が生理・認知・行動を媒介し成果と健康を左右する実証研究を紹介</li>
+      <li>「有益マインドセット」を持つ人は健康指標が良好という調査結果</li>
+      <li>プラセボ効果と同様に、期待が実際の反応を形成する</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>「気の持ちよう」ではなく科学的根拠があることを示し、実践への信頼を高めるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">第3章（疑似）</div>
+    <h3>⚡ 反応の再定義：ストレスには4つの顔がある</h3>
+    <ul class="card ul">
+      <li>従来の「ファイト/フライト」に加え、チャレンジ反応を解説</li>
+      <li>テンド＆ビフレンド（養育・絆）反応の存在を紹介</li>
+      <li>学習・成長反応（DHEA）が神経可塑性を促進することを説明</li>
+      <li>どの反応が出るかはマインドセットと状況解釈に依存する</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>ストレス反応の多様性を知ることで、「どう使うか」という選択肢が生まれるから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">第4章（疑似）</div>
+    <h3>🛠 技法の提示：反応を望ましい方向へ導く</h3>
+    <ul class="card ul">
+      <li>再評価（動悸→準備完了）でチャレンジ反応を誘発する方法</li>
+      <li>価値観アファメーションで自己一貫性を回復する手順</li>
+      <li>意味づけ（大切なものが懸かっている証拠）で行動を方向づける</li>
+      <li>利他行動・支援要請でオキシトシンを活性化する</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>理論だけでは変わらない。即実践できる具体的ツールを提供することで行動変容を促すため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">第5章（疑似）</div>
+    <h3>🏫 実践とケース：教育・職場・医療・スポーツでの介入</h3>
+    <ul class="card ul">
+      <li>教育現場での価値観アファメーション介入が成績格差を縮小</li>
+      <li>職場でのストレス再評価トレーニングが生産性と健康を改善</li>
+      <li>医療・スポーツ分野での短時間トレーニング手順を紹介</li>
+      <li>数分の介入でも効果が持続することを示す研究を提示</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>実際の場面での効果を示すことで、理論の現実的な有効性を証明するため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">第6章（疑似）</div>
+    <h3>🌐 統合：個人と集団で「ストレス活用文化」を築く</h3>
+    <ul class="card ul">
+      <li>個人レベルの変化を組織・コミュニティへ広げる視点</li>
+      <li>回避から関与（エンゲージメント）への文化的転換を促す</li>
+      <li>ストレス免疫（計画的曝露）で集団の耐性を高める方法</li>
+      <li>「ストレスを活用する」という新しい常識の普及を呼びかける</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>個人の変化だけでなく、社会・組織レベルでの変革を促すことが本書の最終目標だから。</div>
+  </div>
+
+  <!-- 論理展開フロー -->
+  <div class="section-title">📐 議論の流れ</div>
+  <div class="card">
+    <div class="card-title">🗺 本書の論理構造</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="background:var(--accent2);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0;">1</div>
+        <div style="font-size:13px;"><strong>常識の検証</strong> → ストレス＝毒という前提を崩す</div>
+      </div>
+      <div style="width:2px;height:12px;background:#dde3ea;margin-left:13px;"></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="background:var(--primary);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0;">2</div>
+        <div style="font-size:13px;"><strong>科学的根拠</strong> → 信念が生理を変える実証</div>
+      </div>
+      <div style="width:2px;height:12px;background:#dde3ea;margin-left:13px;"></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="background:var(--success);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0;">3</div>
+        <div style="font-size:13px;"><strong>反応の多様性</strong> → 4種類の反応を理解する</div>
+      </div>
+      <div style="width:2px;height:12px;background:#dde3ea;margin-left:13px;"></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="background:var(--accent);color:var(--secondary);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0;">4</div>
+        <div style="font-size:13px;"><strong>実践ツール</strong> → 再評価・アファメーション等</div>
+      </div>
+      <div style="width:2px;height:12px;background:#dde3ea;margin-left:13px;"></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="background:#9b59b6;color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0;">5</div>
+        <div style="font-size:13px;"><strong>実証ケース</strong> → 現場での効果を確認</div>
+      </div>
+      <div style="width:2px;height:12px;background:#dde3ea;margin-left:13px;"></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="background:var(--secondary);color:#fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0;">6</div>
+        <div style="font-size:13px;"><strong>文化的統合</strong> → 個人→組織→社会へ</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== タブ3: 具体例 ===== -->
+<section class="tab-panel" id="tab-examples" role="tabpanel" aria-labelledby="btn-examples">
+
+  <div class="example-card">
+    <div class="ex-num">1</div>
+    <h3>🎓 教育現場での価値観アファメーション介入</h3>
+    <ul class="card ul">
+      <li>マイノリティの学生に「自分の大切にする価値観」を書かせる介入を実施</li>
+      <li>わずか数分の作業で、学期末の成績格差が縮小した</li>
+      <li>自己一貫性の回復がストレス下での認知パフォーマンスを向上させた</li>
+    </ul>
+    <div class="ex-meta">
+      <span class="ex-tag bg">📍 背景：教育格差の問題</span>
+      <span class="ex-tag imp">💡 示唆：短時間介入の有効性</span>
+      <span class="ex-tag why">🔍 理由：価値観想起→自己一貫性↑→チャレンジ反応促進</span>
+    </div>
+    <div class="reason-box"><strong>この例が示すこと：</strong>マインドセット介入は数分で実施でき、長期的な成果に影響する。ストレスの「意味づけ」が認知資源を解放する。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">2</div>
+    <h3>🏃 スポーツ選手の「動悸＝準備完了」再評価</h3>
+    <ul class="card ul">
+      <li>試合前の心拍上昇を「緊張（脅威）」ではなく「準備完了（チャレンジ）」と再解釈</li>
+      <li>同じ生理反応でも解釈次第でパフォーマンスが大きく変わることが実証</li>
+      <li>再評価を習慣化した選手は、プレッシャー下でのエラーが減少</li>
+    </ul>
+    <div class="ex-meta">
+      <span class="ex-tag bg">📍 背景：競技プレッシャー</span>
+      <span class="ex-tag imp">💡 示唆：再評価の即効性</span>
+      <span class="ex-tag why">🔍 理由：脅威反応→チャレンジ反応への転換</span>
+    </div>
+    <div class="reason-box"><strong>この例が示すこと：</strong>身体反応の「ラベル貼り替え」だけで生理的・心理的状態が変わる。再評価は最もシンプルで即効性のある技法。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">3</div>
+    <h3>🏥 医療従事者の利他行動とバーンアウト予防</h3>
+    <ul class="card ul">
+      <li>高ストレス職場の医療従事者が「誰かを助けた体験」を振り返る介入を実施</li>
+      <li>利他行動の想起がオキシトシンを活性化し、不安と孤立感を低下させた</li>
+      <li>バーンアウトリスクが下がり、職場への関与（エンゲージメント）が向上</li>
+    </ul>
+    <div class="ex-meta">
+      <span class="ex-tag bg">📍 背景：医療現場の過重労働</span>
+      <span class="ex-tag imp">💡 示唆：つながりが緩衝材になる</span>
+      <span class="ex-tag why">🔍 理由：利他行動→オキシトシン↑→不安↓・耐性↑</span>
+    </div>
+    <div class="reason-box"><strong>この例が示すこと：</strong>ストレスを「誰かのために」という文脈に置くと、消耗ではなく意味と回復力の源になる。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">4</div>
+    <h3>💼 職場でのストレス免疫トレーニング（計画的曝露）</h3>
+    <ul class="card ul">
+      <li>小さな困難（難しい会話・締め切り）を意図的に設定し繰り返し乗り越える</li>
+      <li>「乗り越えた記録」を蓄積することで自己効力感が段階的に向上</li>
+      <li>大きなプロジェクトや危機への耐性とスキルが形成される</li>
+    </ul>
+    <div class="ex-meta">
+      <span class="ex-tag bg">📍 背景：職場のストレス管理</span>
+      <span class="ex-tag imp">💡 示唆：回避より関与が強さを生む</span>
+      <span class="ex-tag why">🔍 理由：計画的曝露×価値志向→ストレス免疫形成</span>
+    </div>
+    <div class="reason-box"><strong>この例が示すこと：</strong>ストレスを避けるのではなく、小さく経験し続けることが最大の備えになる。</div>
+  </div>
+
+  <!-- メタファー -->
+  <div class="section-title">🎭 核心メッセージのメタファー</div>
+  <div class="card">
+    <div class="card-title">🏋️ ストレスは「筋トレ」と同じ</div>
+    <ul>
+      <li>筋肉は負荷（ストレス）をかけることで成長する</li>
+      <li>適切な負荷なしに強くなることはできない</li>
+      <li>重要なのは「負荷の量と質」と「回復」のバランス</li>
+      <li>ストレスも同様に、意味ある負荷＋適切な回復＝成長</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこのメタファーが有効か：</strong>「ストレス＝悪」という直感に反する考えを、誰もが知る筋トレの原理で直感的に理解させるから。</div>
+  </div>
+
+</section>
+
+<!-- ===== タブ4: 重要な引用 ===== -->
+<section class="tab-panel" id="tab-quotes" role="tabpanel" aria-labelledby="btn-quotes">
+
+  <div class="quote-card">
+    <blockquote>「ストレスは、大切なものが懸かっている合図だ。」</blockquote>
+    <div class="q-note">
+      <strong>補足：</strong>不快の再定義が、回避ではなく価値志向の行動を引き出す。ストレスを感じるということは、それだけ大切なことに向き合っている証拠。
+    </div>
+  </div>
+
+  <div class="quote-card" style="background:linear-gradient(135deg,#1a5c3a,#2a9d8f);">
+    <blockquote>「見方が変われば、身体の反応も変わる。」</blockquote>
+    <div class="q-note">
+      <strong>補足：</strong>マインドセット介入の核心で、即効性のある実践に直結する。信念が生理反応を形成するという科学的事実を端的に表す。
+    </div>
+  </div>
+
+  <div class="quote-card" style="background:linear-gradient(135deg,#7c3a1a,#e76f51);">
+    <blockquote>「助けを求め、助けることでストレスは絆に変わる。」</blockquote>
+    <div class="q-note">
+      <strong>補足：</strong>社会的つながりが最大の緩衝材であることを端的に示す。孤独にストレスを抱えることが最も消耗する。
+    </div>
+  </div>
+
+  <div class="quote-card" style="background:linear-gradient(135deg,#3a1a5c,#6b3fa0);">
+    <blockquote>「不安の鼓動を、準備完了のサインとみなそう。」</blockquote>
+    <div class="q-note">
+      <strong>補足：</strong>再評価でチャレンジ反応を誘発し、パフォーマンスを高められる。同じ心拍数でも「意味」が変わると行動が変わる。
+    </div>
+  </div>
+
+  <!-- 核心メッセージ -->
+  <div class="section-title">🎯 本書の核心メッセージ</div>
+  <div class="card" style="border-top:4px solid var(--accent);background:linear-gradient(135deg,#fff8f0,#fff);">
+    <div class="card-title">💡 一言で言えば</div>
+    <p style="font-size:16px;font-weight:800;color:var(--secondary);line-height:1.5;margin-bottom:10px;">
+      「ストレスは敵ではなく、意味・価値・つながりに向かう力へ変換できる。」
+    </p>
+    <ul>
+      <li>見方（マインドセット）と使い方を学べば心身の反応はパフォーマンスと成長を後押しする</li>
+      <li>ストレスを感じること自体は問題ではなく、どう解釈し行動するかが鍵</li>
+      <li>個人の変化が組織・社会の「ストレス活用文化」へとつながる</li>
+    </ul>
+  </div>
+
+  <!-- 関連書籍 -->
+  <div class="section-title">📚 関連書籍</div>
+  <div class="book-card">
+    <div class="book-icon">📗</div>
+    <div class="book-info">
+      <h4>マインドセット</h4>
+      <div class="author">キャロル・S・ドゥエック</div>
+      <p>信念が成果を左右する枠組みが本書のストレス・マインドセットと直結する。</p>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📘</div>
+    <div class="book-info">
+      <h4>GRIT やり抜く力</h4>
+      <div class="author">アンジェラ・ダックワース</div>
+      <p>逆境下の粘りと目的意識が、ストレスを成長に変える過程を補強する。</p>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📙</div>
+    <div class="book-info">
+      <h4>プレゼンス</h4>
+      <div class="author">エイミー・カディ</div>
+      <p>生理・認知の再評価で自己効力感を高める実践が共通する。</p>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📕</div>
+    <div class="book-info">
+      <h4>テロメア・エフェクト</h4>
+      <div class="author">エリザベス・ブラックバーン／エリッサ・エペル</div>
+      <p>心身の解釈と習慣が健康指標に影響する生物学的証拠を提供する。</p>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📓</div>
+    <div class="book-info">
+      <h4>Burnout</h4>
+      <div class="author">エミリー・ナゴスキ／アメリア・ナゴスキ</div>
+      <p>ストレス循環の完了と社会的つながりの重要性を実践的に掘り下げる。</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== タブ5: 今日のアクション ===== -->
+<section class="tab-panel" id="tab-actions" role="tabpanel" aria-labelledby="btn-actions">
+
+  <div class="card" style="background:linear-gradient(135deg,#fff8f0,#fff);border-top:4px solid var(--accent);margin-bottom:16px;">
+    <div class="card-title">⏱ 今日から15〜30分で始められる</div>
+    <p style="font-size:13px;color:var(--text-light);">理論を知識で終わらせず、今日の行動に変える3つのアクション。小さく始めることがストレス免疫の第一歩。</p>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">1</div>
+    <div class="action-body">
+      <h3>📝 自分の価値観トップ3を書き出す</h3>
+      <ul class="card ul">
+        <li>紙またはメモアプリに「自分が最も大切にしていること」を3つ書く</li>
+        <li>それぞれについて「なぜ大切か」を1〜2文で書き添える</li>
+        <li>書いた後、今抱えているストレスとの関連を考える</li>
+      </ul>
+      <div class="action-meta">
+        <span class="action-tag time">⏱ 15〜20分</span>
+        <span class="action-tag goal">🎯 目的：価値観アファメーション</span>
+        <span class="action-tag effect">✨ 効果：自己一貫性↑・チャレンジ反応促進</span>
+      </div>
+      <div class="reason-box"><strong>期待効果：</strong>ストレス時に「なぜこれをやっているか」が明確になり、脅威反応からチャレンジ反応へのシフトが起きやすくなる。</div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">2</div>
+    <div class="action-body">
+      <h3>✍️ 直近の難題の利点を10個書く</h3>
+      <ul class="card ul">
+        <li>今最もストレスを感じている課題・状況を1つ選ぶ</li>
+        <li>「この状況が自分にもたらしている良いこと」を10個書き出す</li>
+        <li>最初は難しくても、小さなことでも構わない（例：集中力が上がった、等）</li>
+        <li>書き終えたら「この状況は何を大切にしているから辛いのか」を確認する</li>
+      </ul>
+      <div class="action-meta">
+        <span class="action-tag time">⏱ 20〜30分</span>
+        <span class="action-tag goal">🎯 目的：意味づけ・再評価</span>
+        <span class="action-tag effect">✨ 効果：ストレスを成長機会として再解釈</span>
+      </div>
+      <div class="reason-box"><strong>期待効果：</strong>「ストレス＝大切なものが懸かっている証拠」という視点が定着し、回避ではなく関与の姿勢が生まれる。</div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">3</div>
+    <div class="action-body">
+      <h3>💓 心拍上昇を「準備完了」と再解釈する練習</h3>
+      <ul class="card ul">
+        <li>次にドキドキ・緊張を感じた瞬間を意識的に捉える</li>
+        <li>「これは危険のサインではなく、身体が準備を整えているサインだ」と声に出す</li>
+        <li>深呼吸1回＋「準備完了」と心の中で唱えてから行動する</li>
+        <li>1日1回、緊張した場面を振り返りメモする（記録が自己効力感を高める）</li>
+      </ul>
+      <div class="action-meta">
+        <span class="action-tag time">⏱ 1回あたり1〜2分（日中随時）</span>
+        <span class="action-tag goal">🎯 目的：再評価の習慣化</span>
+        <span class="action-tag effect">✨ 効果：脅威→チャレンジ反応への転換</span>
+      </div>
+      <div class="reason-box"><strong>期待効果：</strong>繰り返すことでマインドセットが更新され、次のストレス反応が自動的に好循環へ向かうようになる。</div>
+    </div>
+  </div>
+
+  <!-- 実践ロードマップ -->
+  <div class="section-title">🗓 実践ロードマップ</div>
+  <div class="card">
+    <div class="card-title">📅 1週間の実践プラン</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="background:var(--accent);color:var(--secondary);border-radius:6px;padding:4px 8px;font-size:11px;font-weight:800;flex-shrink:0;white-space:nowrap;">Day 1-2</div>
+        <div style="font-size:13px;">価値観トップ3を書き出し、毎朝見返す習慣をつける</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="background:var(--primary);color:#fff;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:800;flex-shrink:0;white-space:nowrap;">Day 3-4</div>
+        <div style="font-size:13px;">難題の利点10個を書き、意味づけを深める</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="background:var(--success);color:#fff;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:800;flex-shrink:0;white-space:nowrap;">Day 5-6</div>
+        <div style="font-size:13px;">緊張場面で「準備完了」再評価を実践・記録</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="background:var(--secondary);color:#fff;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:800;flex-shrink:0;white-space:nowrap;">Day 7</div>
+        <div style="font-size:13px;">1週間を振り返り、変化した点・気づきをメモ。次週の小さな挑戦を1つ設定する</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 概念まとめ -->
+  <div class="section-title">🔑 アクションと概念の対応</div>
+  <div class="card">
+    <div class="card-title">🗺 どのアクションがどの概念を活性化するか</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:12px;font-weight:700;color:var(--text-light);margin-bottom:6px;">アクション1：価値観書き出し</div>
+        <span class="pill pill-blue">価値観アファメーション</span>
+        <span class="pill pill-green">意味づけ</span>
+        <span class="pill pill-blue">チャレンジ反応</span>
+      </div>
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:12px;font-weight:700;color:var(--text-light);margin-bottom:6px;">アクション2：利点10個</div>
+        <span class="pill pill-orange">再評価</span>
+        <span class="pill pill-green">意味づけ</span>
+        <span class="pill pill-blue">マインドセット更新</span>
+      </div>
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:12px;font-weight:700;color:var(--text-light);margin-bottom:6px;">アクション3：心拍再解釈</div>
+        <span class="pill pill-orange">再評価</span>
+        <span class="pill pill-blue">チャレンジ反応</span>
+        <span class="pill pill-green">ストレス免疫</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <p>📊 インフォグラフィック生成 ／ カラーパレット：プライマリー #2d6a9f ／ セカンダリー #1a3a5c ／ アクセント #f4a261</p>
+  <p style="margin-top:4px;">本コンテンツは書籍リサーチに基づく要約・視覚化です。</p>
+</footer>
+
+<script>
+  // ===== タブ切替 =====
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('aria-controls');
+
+      tabBtns.forEach(b => {
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabPanels.forEach(p => {
+        p.classList.remove('active');
+      });
+
+      btn.setAttribute('aria-selected', 'true');
+      const panel = document.getElementById(target);
+      if (panel) {
+        panel.classList.add('active');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    // キーボード操作
+    btn.addEventListener('keydown', (e) => {
+      const btns = Array.from(tabBtns);
+      const idx = btns.indexOf(btn);
+      if (e.key === 'ArrowRight') {
+        const next = btns[(idx + 1) % btns.length];
+        next.focus();
+        next.click();
+      } else if (e.key === 'ArrowLeft') {
+        const prev = btns[(idx - 1 + btns.length) % btns.length];
+        prev.focus();
+        prev.click();
+      }
+    });
+  });
+
+  // ===== バーアニメーション =====
+  function animateBars() {
+    const fills = document.querySelectorAll('.bar-fill');
+    fills.forEach(fill => {
+      const targetWidth = fill.style.width;
+      fill.style.width = '0%';
+      setTimeout(() => {
+        fill.style.width = targetWidth;
+      }, 100);
+    });
+  }
+
+  // 概念タブが表示されたときにアニメーション
+  const conceptsPanel = document.getElementById('tab-concepts');
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach(m => {
+      if (m.target.classList.contains('active')) {
+        animateBars();
+      }
+    });
+  });
+  if (conceptsPanel) {
+    observer.observe(conceptsPanel, { attributes: true, attributeFilter: ['class'] });
+    // 初期表示時
+    animateBars();
+  }
+</script>
+
+</body>
+</html>
