@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ニーチェ超訳 インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a1a2e
+  セカンダリー:  #e94560
+  アクセント:    #f5a623
+-->
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #1a1a2e;
+    --primary-light: #16213e;
+    --primary-mid: #0f3460;
+    --secondary: #e94560;
+    --secondary-light: #ff6b81;
+    --accent: #f5a623;
+    --accent-light: #ffd166;
+    --text-main: #f0f0f0;
+    --text-sub: #b0b8c8;
+    --card-bg: rgba(255,255,255,0.05);
+    --card-border: rgba(255,255,255,0.1);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, var(--primary-mid) 100%);
+    color: var(--text-main);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ===== HEADER ===== */
+  .site-header {
+    background: linear-gradient(90deg, var(--primary-mid) 0%, var(--secondary) 100%);
+    padding: 20px 16px 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.03) 20px, rgba(255,255,255,0.03) 40px);
+  }
+  .site-header h1 {
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    position: relative;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .site-header .subtitle {
+    font-size: clamp(0.75rem, 2.5vw, 0.95rem);
+    color: var(--accent-light);
+    margin-top: 4px;
+    position: relative;
+  }
+
+  /* ===== HERO SUMMARY BLOCK ===== */
+  .hero-block {
+    margin: 16px;
+    background: linear-gradient(135deg, rgba(233,69,96,0.15) 0%, rgba(245,166,35,0.1) 100%);
+    border: 1px solid var(--secondary);
+    border-radius: var(--radius);
+    padding: 20px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-block::after {
+    content: '⚡';
+    position: absolute;
+    right: 12px; top: 8px;
+    font-size: 2.5rem;
+    opacity: 0.15;
+  }
+  .hero-block .hero-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--secondary);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 480px) {
+    .hero-grid { grid-template-columns: 1fr; }
+  }
+  .hero-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    border-left: 3px solid var(--accent);
+  }
+  .hero-item.full { grid-column: 1 / -1; }
+  .hero-item .label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .hero-item p { font-size: 0.85rem; color: var(--text-main); }
+  .hero-item ul { padding-left: 14px; }
+  .hero-item ul li { font-size: 0.82rem; color: var(--text-sub); margin-bottom: 3px; }
+
+  /* ===== TABS ===== */
+  .tabs-wrapper { margin: 0 16px 16px; }
+  .tab-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-list::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--card-border);
+    color: var(--text-sub);
+    border-radius: 20px;
+    padding: 7px 14px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .tab-btn:hover { background: rgba(233,69,96,0.2); color: var(--text-main); }
+  .tab-btn[aria-selected="true"] {
+    background: linear-gradient(90deg, var(--secondary), var(--accent));
+    color: #fff;
+    border-color: transparent;
+    font-weight: 700;
+    box-shadow: 0 2px 12px rgba(233,69,96,0.4);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 600px) {
+    .card-grid { grid-template-columns: 1fr; }
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--secondary), var(--accent));
+  }
+  .card h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.3;
+  }
+  .card .badge {
+    display: inline-block;
+    background: rgba(245,166,35,0.2);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 20px;
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .card ul { padding-left: 0; list-style: none; }
+  .card ul li {
+    font-size: 0.82rem;
+    color: var(--text-sub);
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    gap: 6px;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li .li-icon { flex-shrink: 0; }
+  .reason-box {
+    margin-top: 10px;
+    background: rgba(233,69,96,0.1);
+    border-left: 3px solid var(--secondary);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+    color: var(--secondary-light);
+  }
+  .reason-box strong { color: var(--secondary); }
+
+  /* ===== CHAPTER CARDS ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .chapter-num {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--secondary), var(--accent));
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+  }
+  .chapter-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-main);
+  }
+  .chapter-card ul { padding-left: 0; list-style: none; }
+  .chapter-card ul li {
+    font-size: 0.82rem;
+    color: var(--text-sub);
+    padding: 3px 0;
+    display: flex; gap: 6px;
+  }
+
+  /* ===== FLOW DIAGRAM ===== */
+  .flow-section {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+  }
+  .flow-section h3 {
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ===== QUOTE CARDS ===== */
+  .quote-card {
+    background: linear-gradient(135deg, rgba(15,52,96,0.6) 0%, rgba(233,69,96,0.1) 100%);
+    border: 1px solid rgba(233,69,96,0.3);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .quote-card::before {
+    content: '❝';
+    position: absolute;
+    top: 8px; left: 12px;
+    font-size: 2rem;
+    color: var(--secondary);
+    opacity: 0.4;
+    line-height: 1;
+  }
+  .quote-card .quote-text {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    padding-left: 28px;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .quote-card .quote-note {
+    font-size: 0.78rem;
+    color: var(--accent-light);
+    padding-left: 28px;
+  }
+  .quote-card .quote-tag {
+    display: inline-block;
+    background: rgba(233,69,96,0.2);
+    color: var(--secondary-light);
+    font-size: 0.62rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 28px;
+    margin-top: 6px;
+    font-weight: 700;
+  }
+
+  /* ===== ACTION CARDS ===== */
+  .action-card {
+    background: linear-gradient(135deg, rgba(245,166,35,0.1) 0%, rgba(233,69,96,0.08) 100%);
+    border: 1px solid rgba(245,166,35,0.3);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    font-weight: 900;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .action-body h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 6px;
+  }
+  .action-body .action-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .action-body .meta-tag {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 700;
+  }
+  .meta-tag.purpose { background: rgba(245,166,35,0.2); color: var(--accent); border: 1px solid var(--accent); }
+  .meta-tag.effect { background: rgba(233,69,96,0.2); color: var(--secondary-light); border: 1px solid var(--secondary); }
+  .action-body p { font-size: 0.82rem; color: var(--text-sub); }
+
+  /* ===== EXAMPLE CARDS ===== */
+  .example-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .example-card .ex-head {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  }
+  .example-card .ex-emoji { font-size: 1.5rem; }
+  .example-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--text-main); }
+  .example-card .ex-section { margin-bottom: 6px; }
+  .example-card .ex-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .example-card .ex-text { font-size: 0.82rem; color: var(--text-sub); }
+
+  /* ===== SVG CHART ===== */
+  .chart-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .chart-wrap h3 {
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .bar-label { font-size: 0.75rem; color: var(--text-sub); width: 90px; flex-shrink: 0; text-align: right; }
+  .bar-track {
+    flex: 1;
+    height: 18px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 9px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 9px;
+    transition: width 1s ease;
+    display: flex; align-items: center; justify-content: flex-end; padding-right: 6px;
+    font-size: 0.65rem; font-weight: 700; color: #fff;
+  }
+
+  /* ===== RELATED BOOKS ===== */
+  .book-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .book-icon {
+    width: 40px; height: 52px;
+    background: linear-gradient(135deg, var(--secondary), var(--primary-mid));
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .book-info h4 { font-size: 0.88rem; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
+  .book-info .book-author { font-size: 0.72rem; color: var(--accent); margin-bottom: 4px; }
+  .book-info p { font-size: 0.78rem; color: var(--text-sub); }
+
+  /* ===== SECTION TITLE ===== */
+  .section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+
+  /* ===== CONCEPT RELATION SVG ===== */
+  .svg-container { width: 100%; overflow-x: auto; }
+
+  /* ===== FOOTER ===== */
+  .site-footer {
+    text-align: center;
+    padding: 20px 16px;
+    font-size: 0.72rem;
+    color: var(--text-sub);
+    border-top: 1px solid var(--card-border);
+    margin-top: 8px;
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--primary); }
+  ::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header" role="banner">
+  <h1>⚡ ニーチェ超訳 インフォグラフィック</h1>
+  <p class="subtitle">借り物の道徳を脱し、自己を超克して生を肯定する思想の全体像</p>
+</header>
+
+<!-- HERO SUMMARY BLOCK -->
+<section class="hero-block" aria-label="要約ブロック">
+  <div class="hero-title">📌 要約 — 問い × 答え × Why × How</div>
+  <div class="hero-grid">
+    <div class="hero-item">
+      <div class="label">❓ 問い</div>
+      <p>どうすれば他人や既成道徳に流されず、充実して強く生きられるか？</p>
+    </div>
+    <div class="hero-item">
+      <div class="label">💡 答え</div>
+      <p>自己超克で価値を創造し、運命愛と永劫回帰の視座で今を選び取り、生を肯定して進む。</p>
+    </div>
+    <div class="hero-item">
+      <div class="label">🔍 Why（なぜそうなのか）</div>
+      <ul>
+        <li>群衆心理とルサンチマンは借り物の善悪を生み、生の力を衰弱させ虚無を招くから。</li>
+        <li>苦痛や偶然を拒むほど主体は分裂し、行動が恐れに支配されるから。</li>
+      </ul>
+    </div>
+    <div class="hero-item">
+      <div class="label">🛠 How（そのためには）</div>
+      <ul>
+        <li>孤独の時間を確保し内省で弱さと欲望を言語化する。</li>
+        <li>小さな規律を設け意志を鍛え、行為で自己像を更新する。</li>
+        <li>永劫回帰の問いで選択を吟味し、今を選び直す習慣をつくる。</li>
+        <li>運命愛で過去と現実を丸ごと引き受け、次の一手に集中する。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- TABS -->
+<div class="tabs-wrapper">
+  <div class="tab-list" role="tablist" aria-label="コンテンツタブ">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧠 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">🔍 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </div>
+
+  <!-- ===== TAB 1: 主要概念 ===== -->
+  <div class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="section-title">概念マップ（因果フロー）</div>
+    <div class="flow-section">
+      <h3>🔗 概念間の因果関係</h3>
+      <div class="svg-container">
+        <svg viewBox="0 0 700 220" width="100%" style="min-width:560px;" aria-label="概念間の因果フロー図">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#e94560"/>
+            </marker>
+            <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#f5a623"/>
+            </marker>
+          </defs>
+          <!-- 負の連鎖 -->
+          <rect x="10" y="20" width="90" height="32" rx="8" fill="#e94560" opacity="0.8"/>
+          <text x="55" y="41" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">群衆心理</text>
+          <line x1="100" y1="36" x2="128" y2="36" stroke="#e94560" stroke-width="2" marker-end="url(#arrow)"/>
+          <rect x="130" y="20" width="90" height="32" rx="8" fill="#e94560" opacity="0.7"/>
+          <text x="175" y="41" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">ルサンチマン</text>
+          <line x1="220" y1="36" x2="248" y2="36" stroke="#e94560" stroke-width="2" marker-end="url(#arrow)"/>
+          <rect x="250" y="20" width="90" height="32" rx="8" fill="#e94560" opacity="0.6"/>
+          <text x="295" y="41" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">奴隷道徳</text>
+          <line x1="340" y1="36" x2="368" y2="36" stroke="#e94560" stroke-width="2" marker-end="url(#arrow)"/>
+          <rect x="370" y="20" width="80" height="32" rx="8" fill="#e94560" opacity="0.5"/>
+          <text x="410" y="41" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">ニヒリズム</text>
+          <text x="350" y="14" fill="#e94560" font-size="10" font-weight="bold">⚠ 負の連鎖</text>
+
+          <!-- 正の連鎖 -->
+          <rect x="10" y="110" width="80" height="32" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="1.5"/>
+          <text x="50" y="131" text-anchor="middle" fill="#f5a623" font-size="11" font-weight="bold">孤独×規律</text>
+          <line x1="90" y1="126" x2="118" y2="126" stroke="#f5a623" stroke-width="2" marker-end="url(#arrow2)"/>
+          <rect x="120" y="110" width="90" height="32" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="1.5"/>
+          <text x="165" y="131" text-anchor="middle" fill="#f5a623" font-size="11" font-weight="bold">力への意志</text>
+          <line x1="210" y1="126" x2="238" y2="126" stroke="#f5a623" stroke-width="2" marker-end="url(#arrow2)"/>
+          <rect x="240" y="110" width="90" height="32" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="1.5"/>
+          <text x="285" y="131" text-anchor="middle" fill="#f5a623" font-size="11" font-weight="bold">自己超克</text>
+          <line x1="330" y1="126" x2="358" y2="126" stroke="#f5a623" stroke-width="2" marker-end="url(#arrow2)"/>
+          <rect x="360" y="110" width="80" height="32" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="1.5"/>
+          <text x="400" y="131" text-anchor="middle" fill="#f5a623" font-size="11" font-weight="bold">超人</text>
+          <line x1="440" y1="126" x2="468" y2="126" stroke="#f5a623" stroke-width="2" marker-end="url(#arrow2)"/>
+          <rect x="470" y="110" width="90" height="32" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="1.5"/>
+          <text x="515" y="131" text-anchor="middle" fill="#f5a623" font-size="11" font-weight="bold">生の肯定</text>
+          <text x="10" y="104" fill="#f5a623" font-size="10" font-weight="bold">✨ 正の連鎖</text>
+
+          <!-- 永劫回帰・運命愛 -->
+          <rect x="560" y="65" width="120" height="32" rx="8" fill="#16213e" stroke="#e94560" stroke-width="1.5"/>
+          <text x="620" y="86" text-anchor="middle" fill="#e94560" font-size="11" font-weight="bold">永劫回帰</text>
+          <line x1="560" y1="81" x2="502" y2="110" stroke="#e94560" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+          <rect x="560" y="110" width="120" height="32" rx="8" fill="#16213e" stroke="#e94560" stroke-width="1.5"/>
+          <text x="620" y="131" text-anchor="middle" fill="#e94560" font-size="11" font-weight="bold">運命愛</text>
+          <line x1="560" y1="126" x2="502" y2="126" stroke="#e94560" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+          <!-- 凡例 -->
+          <line x1="10" y1="185" x2="40" y2="185" stroke="#e94560" stroke-width="2"/>
+          <text x="45" y="189" fill="#e94560" font-size="10">負の連鎖</text>
+          <line x1="110" y1="185" x2="140" y2="185" stroke="#f5a623" stroke-width="2"/>
+          <text x="145" y="189" fill="#f5a623" font-size="10">正の連鎖</text>
+          <line x1="210" y1="185" x2="240" y2="185" stroke="#e94560" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <text x="245" y="189" fill="#e94560" font-size="10">補強関係</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="section-title">概念の重要度</div>
+    <div class="chart-wrap">
+      <h3>📊 概念の実践的重要度（主観スコア）</h3>
+      <div class="bar-row"><span class="bar-label">自己超克</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:linear-gradient(90deg,#e94560,#f5a623)">95</div></div></div>
+      <div class="bar-row"><span class="bar-label">力への意志</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#e94560,#f5a623)">90</div></div></div>
+      <div class="bar-row"><span class="bar-label">永劫回帰</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:linear-gradient(90deg,#0f3460,#e94560)">88</div></div></div>
+      <div class="bar-row"><span class="bar-label">運命愛</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#0f3460,#e94560)">85</div></div></div>
+      <div class="bar-row"><span class="bar-label">ルサンチマン</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#e94560,#ff6b81)">80</div></div></div>
+      <div class="bar-row"><span class="bar-label">生の肯定</span><div class="bar-track"><div class="bar-fill" style="width:92%;background:linear-gradient(90deg,#f5a623,#ffd166)">92</div></div></div>
+      <div class="bar-row"><span class="bar-label">規律と修練</span><div class="bar-track"><div class="bar-fill" style="width:78%;background:linear-gradient(90deg,#0f3460,#f5a623)">78</div></div></div>
+    </div>
+
+    <div class="section-title">全概念カード</div>
+    <div class="card-grid">
+
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🔄</div><h3>自己超克</h3></div>
+        <span class="badge">常に更新</span>
+        <ul>
+          <li><span class="li-icon">📌</span><span>現在の自分を超えるために弱さを直視する</span></li>
+          <li><span class="li-icon">🔨</span><span>行為によって自己像を更新し続ける態度</span></li>
+          <li><span class="li-icon">🚫</span><span>現状維持・安定志向とは真逆の姿勢</span></li>
+          <li><span class="li-icon">♾️</span><span>終わりのないプロセスとして捉える</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>成長は「なりたい自分」を描くだけでなく、今の自分を壊す勇気から始まるから。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-icon">⚡</div><h3>力への意志</h3></div>
+        <span class="badge">伸びる力</span>
+        <ul>
+          <li><span class="li-icon">🌱</span><span>生を拡張し自己実現へ向かう根源的エネルギー</span></li>
+          <li><span class="li-icon">💪</span><span>単なる「権力欲」ではなく創造・成長の衝動</span></li>
+          <li><span class="li-icon">🔥</span><span>抑圧されるとルサンチマンに転化する</span></li>
+          <li><span class="li-icon">🎯</span><span>正しく発揮されると価値創造につながる</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>人間の行動の根底にあるエネルギーを理解することで、自分の動機を正確に把握できるから。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-icon">👑</div><h3>超人</h3></div>
+        <span class="badge">創造者</span>
+        <ul>
+          <li><span class="li-icon">🆕</span><span>既成道徳を超えて自ら価値を創出する理想像</span></li>
+          <li><span class="li-icon">🚀</span><span>到達点ではなく方向性・指針として機能する</span></li>
+          <li><span class="li-icon">🧭</span><span>「神の死」後の新たな価値の担い手</span></li>
+          <li><span class="li-icon">🌟</span><span>誰もが目指せる自己超克の延長線上にある</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>外部の権威に頼らず自分で意味を作る人間像を示すことで、ニヒリズムへの処方箋となるから。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🕳️</div><h3>ニヒリズム</h3></div>
+        <span class="badge">虚無</span>
+        <ul>
+          <li><span class="li-icon">⚠️</span><span>価値の空洞化により世界が無意味化する状態</span></li>
+          <li><span class="li-icon">💀</span><span>「神の死」後に訪れる精神的危機</span></li>
+          <li><span class="li-icon">🔄</span><span>受動的ニヒリズム（諦め）と能動的ニヒリズム（破壊→創造）がある</span></li>
+          <li><span class="li-icon">🛡️</span><span>自己超克と価値創造で乗り越えるべき課題</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>現代の「何のために生きるかわからない」感覚の正体を理解し、対処法を考える出発点になるから。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-icon">♾️</div><h3>永劫回帰</h3></div>
+        <span class="badge">今を選ぶ</span>
+        <ul>
+          <li><span class="li-icon">🔁</span><span>この瞬間が無限に繰り返されると仮定する思考実験</span></li>
+          <li><span class="li-icon">❓</span><span>「それでも肯定できるか？」を問う選択の試金石</span></li>
+          <li><span class="li-icon">⏰</span><span>後悔のない選択を今この瞬間に促す</span></li>
+          <li><span class="li-icon">💎</span><span>生の肯定を最大化する哲学的装置</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>「もし永遠に繰り返すとしたら？」という問いが、日常の選択の質を劇的に高めるから。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🤝</div><h3>運命愛（アモール・ファティ）</h3></div>
+        <span class="badge">受容</span>
+        <ul>
+          <li><span class="li-icon">💚</span><span>与えられた運命を丸ごと受け容れ愛する姿勢</span></li>
+          <li><span class="li-icon">🔓</span><span>受容が恐れを減衰させ行動の自由度を上げる</span></li>
+          <li><span class="li-icon">🌊</span><span>過去の失敗・苦痛も含めて「必要だった」と捉える</span></li>
+          <li><span class="li-icon">🎯</span><span>諦めではなく積極的な肯定・愛着</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>変えられない過去への抵抗をやめることで、今できることへのエネルギーが解放されるから。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-icon">😤</div><h3>ルサンチマン</h3></div>
+        <span class="badge">妬みの道徳</span>
+        <ul>
+          <li><span class="li-icon">🔄</span><span>無力感や怨恨から価値を転倒させる心理機制</span></li>
+          <li><span class="li-icon">😈</span><span>「強者は悪い」と定義することで弱者が道徳的優位に立つ</span></li>
+          <li><span class="li-icon">🪤</span><span>自分の成長を妨げる自己欺瞞の罠</span></li>
+          <li><span class="li-icon">🔍</span><span>自分の中にないか定期的に点検が必要</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>他者への嫉妬や批判が実は自分の無力感の裏返しだと気づくことで、建設的な行動に転換できるから。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-icon">⚖️</div><h3>主人道徳 / 奴隷道徳</h3></div>
+        <span class="badge">価値の系譜</span>
+        <ul>
+          <li><span class="li-icon">👑</span><span>主人道徳：自発的強さに根ざす価値（良い/悪い）</span></li>
+          <li><span class="li-icon">⛓️</span><span>奴隷道徳：怨恨から生じる価値（善/悪）</span></li>
+          <li><span class="li-icon">🔍</span><span>現代の道徳の多くは奴隷道徳の影響下にある</span></li>
+          <li><span class="li-icon">🧭</span><span>自分の価値基準がどちらに由来するか問い直す</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>「常識」や「善悪」の起源を問うことで、借り物の価値観から自分の価値観を取り戻せるから。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🌲</div><h3>孤独</h3></div>
+        <span class="badge">思索の場</span>
+        <ul>
+          <li><span class="li-icon">🤫</span><span>群衆から距離を取り自己と対話する創造の条件</span></li>
+          <li><span class="li-icon">🧠</span><span>内省によって本当の欲望と弱さを言語化できる</span></li>
+          <li><span class="li-icon">🚫</span><span>孤立（孤独感）とは異なる積極的な選択</span></li>
+          <li><span class="li-icon">🌱</span><span>自己超克の起点となる思索空間</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>常に他者の声に囲まれていると、自分の声が聞こえなくなるから。孤独は自己発見の必須条件。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-icon">✅</div><h3>生の肯定</h3></div>
+        <span class="badge">肯定</span>
+        <ul>
+          <li><span class="li-icon">💚</span><span>苦痛や過ちを含めて生に「イエス」と言う態度</span></li>
+          <li><span class="li-icon">🌈</span><span>喜びだけでなく苦しみも生の一部として受け入れる</span></li>
+          <li><span class="li-icon">🎯</span><span>永劫回帰・運命愛と連動して深まる</span></li>
+          <li><span class="li-icon">🔥</span><span>ニヒリズムへの最終的な回答</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>苦しみを「あってはならないもの」と見なすと人生の大半を否定することになるから。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div class="card-icon">🏋️</div><h3>規律と修練</h3></div>
+        <span class="badge">習慣鍛錬</span>
+        <ul>
+          <li><span class="li-icon">📅</span><span>意志を鍛え行為を習慣化して自己像を作り替える技法</span></li>
+          <li><span class="li-icon">🔩</span><span>小さな規律の積み重ねが意志の「筋力」を育てる</span></li>
+          <li><span class="li-icon">🔄</span><span>自己超克の継続性を支えるインフラ</span></li>
+          <li><span class="li-icon">⏱️</span><span>大きな変革より日々の小さな実践が重要</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>意志は使うほど強くなる筋肉のようなもの。規律なき自由は放縦に終わるから。</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== TAB 2: 各章の要約 ===== -->
+  <div class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <div class="section-title">本書の構造と論理展開</div>
+
+    <div class="chapter-card">
+      <span class="chapter-num">序章</span>
+      <h3>📖 導入：生の肯定という視点</h3>
+      <ul>
+        <li><span>🎯</span><span>「生を肯定する」という視点を最初に提示する</span></li>
+        <li><span>🔄</span><span>読者の前提（常識・既成道徳）を揺さぶることが目的</span></li>
+        <li><span>📝</span><span>ニーチェの思想を日常語に再編集した超訳形式</span></li>
+        <li><span>🗂️</span><span>主題別（自己・他者・仕事・苦悩・喜び等）に短章を配置</span></li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>読者が「当たり前」と思っている価値観を問い直す準備をしないと、以降の内容が単なる知識で終わるから。</div>
+    </div>
+
+    <div class="chapter-card">
+      <span class="chapter-num">第1章</span>
+      <h3>🪞 自己章：孤独・恐れ・意志と向き合う</h3>
+      <ul>
+        <li><span>🌲</span><span>孤独を積極的に選び、自己と対話する時間を作る</span></li>
+        <li><span>😨</span><span>恐れの正体を直視し、行動を縛る鎖を認識する</span></li>
+        <li><span>💪</span><span>意志を鍛えることで自己超克の起点を作る</span></li>
+        <li><span>🔍</span><span>自分の弱さと欲望を言語化することが第一歩</span></li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>外の世界を変える前に、自分の内側を知ることが変革の土台になるから。</div>
+    </div>
+
+    <div class="chapter-card">
+      <span class="chapter-num">第2章</span>
+      <h3>👥 他者・社会章：群衆心理と借り物の善悪を批判する</h3>
+      <ul>
+        <li><span>🐑</span><span>群衆心理が個の没却とルサンチマンを生む仕組みを解説</span></li>
+        <li><span>⚖️</span><span>主人道徳と奴隷道徳の違いを明確にする</span></li>
+        <li><span>🚫</span><span>他人の期待に従うことの危険性を指摘</span></li>
+        <li><span>🧭</span><span>独自の価値基準を持つことを求める</span></li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>私たちが「善い」と思っていることの多くが、実は怨恨から生まれた借り物であることを示すため。</div>
+    </div>
+
+    <div class="chapter-card">
+      <span class="chapter-num">第3章</span>
+      <h3>🔨 創造・仕事章：規律・修練・挑戦で価値を具現化する</h3>
+      <ul>
+        <li><span>📅</span><span>小さな規律を設けて意志の筋力を育てる</span></li>
+        <li><span>🎯</span><span>行為によって価値を具現化する方法を示す</span></li>
+        <li><span>🚀</span><span>挑戦と失敗を自己超克の素材として活用する</span></li>
+        <li><span>🌟</span><span>友は慰めではなく成長を促す存在として位置づける</span></li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>思想は行動に落とし込まれて初めて意味を持つ。規律と修練が自己超克を継続させるインフラだから。</div>
+    </div>
+
+    <div class="chapter-card">
+      <span class="chapter-num">第4章</span>
+      <h3>⏳ 運命と時間章：永劫回帰と運命愛で現在の選択を鍛える</h3>
+      <ul>
+        <li><span>♾️</span><span>永劫回帰の問いで選択の質を高める</span></li>
+        <li><span>💚</span><span>運命愛で過去と現実を丸ごと引き受ける</span></li>
+        <li><span>🔓</span><span>受容が恐れを減衰させ行動の自由度を上げる</span></li>
+        <li><span>🎯</span><span>今この瞬間を選び直す習慣を作る</span></li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>過去への後悔と未来への不安が行動を縛る。時間の捉え方を変えることで現在の行動が解放されるから。</div>
+    </div>
+
+    <div class="chapter-card">
+      <span class="chapter-num">結語</span>
+      <h3>🌅 日々の小さな実践へ：生活への接続</h3>
+      <ul>
+        <li><span>📌</span><span>哲学的思想を日常の具体的実践に収斂させる</span></li>
+        <li><span>🔄</span><span>原典の厳密な学説整理より実生活への応用を重視</span></li>
+        <li><span>💡</span><span>読者の生活に直接接続させることが編集方針</span></li>
+        <li><span>🌱</span><span>小さな一歩の積み重ねが自己超克の実体</span></li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>どんな思想も実践されなければ意味がない。読者が「明日から何をするか」を持ち帰れるようにするため。</div>
+    </div>
+
+  </div>
+
+  <!-- ===== TAB 3: 具体例 ===== -->
+  <div class="tab-panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+
+    <div class="section-title">核心メッセージが伝わる具体例・メタファー</div>
+
+    <div class="example-card">
+      <div class="ex-head">
+        <span class="ex-emoji">🏋️</span>
+        <h4>例①：筋トレと自己超克のメタファー</h4>
+      </div>
+      <div class="ex-section">
+        <div class="ex-label">📋 背景</div>
+        <p class="ex-text">筋肉は現在の限界（重量）に挑戦し、一度破壊されることで以前より強く再生する。快適な重量だけを繰り返しても成長はない。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-label">💡 示唆</div>
+        <p class="ex-text">自己超克も同様に、現在の自分の「限界」に意図的に挑み、失敗・苦痛を経て更新される。安全地帯に留まることは停滞を意味する。</p>
+      </div>
+      <div class="reason-box"><strong>この例が示すこと：</strong>「壊れること」が成長の必要条件であり、苦痛を避けることは成長を避けることと同義だということ。規律と修練の重要性を身体感覚で理解できる。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-head">
+        <span class="ex-emoji">🌋</span>
+        <h4>例②：ルサンチマンの典型例——「ブドウは酸っぱい」</h4>
+      </div>
+      <div class="ex-section">
+        <div class="ex-label">📋 背景</div>
+        <p class="ex-text">イソップ寓話のキツネは届かないブドウを「どうせ酸っぱい」と言って去る。これはルサンチマンの古典的な構造——手に入らないものを「価値がない」と再定義することで自尊心を守る。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-label">💡 示唆</div>
+        <p class="ex-text">成功者を「あいつは運が良かっただけ」「金持ちは悪い人間だ」と批判することで、自分の無力感を正当化する心理は現代にも蔓延している。</p>
+      </div>
+      <div class="reason-box"><strong>この例が示すこと：</strong>ルサンチマンは価値の転倒によって自己欺瞞を生む。この罠に気づかない限り、本当の力への意志は発揮されない。自分の批判が嫉妬に由来していないか問い直す必要がある。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-head">
+        <span class="ex-emoji">♾️</span>
+        <h4>例③：永劫回帰の問い——「今日を永遠に繰り返せるか？」</h4>
+      </div>
+      <div class="ex-section">
+        <div class="ex-label">📋 背景</div>
+        <p class="ex-text">「今日という一日が無限に繰り返されるとしたら、あなたはそれを喜んで受け入れられるか？」という思考実験。宇宙論的な真実ではなく、選択の質を問う哲学的装置。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-label">💡 示唆</div>
+        <p class="ex-text">「嫌だ」と感じるなら、今日の選択を変える必要がある。「喜んで」と言えるなら、その選択は生の肯定に値する。後悔のない選択を今この瞬間に促す。</p>
+      </div>
+      <div class="reason-box"><strong>この例が示すこと：</strong>遠い未来の目標より「今日この瞬間」の選択の質が問われる。永劫回帰は日常の意思決定を哲学的に鍛える最も実践的なツールの一つ。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-head">
+        <span class="ex-emoji">🦅</span>
+        <h4>例④：ツァラトゥストラの「三段の変化」メタファー</h4>
+      </div>
+      <div class="ex-section">
+        <div class="ex-label">📋 背景</div>
+        <p class="ex-text">ニーチェは精神の変化を「ラクダ→ライオン→子ども」の三段階で描く。ラクダは重荷を背負い（義務・服従）、ライオンは「否」と言い（既成価値の破壊）、子どもは新たな価値を創造する（無垢な肯定）。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-label">💡 示唆</div>
+        <p class="ex-text">自己超克のプロセスは段階的。まず既存の価値を担い（ラクダ）、それを批判的に問い直し（ライオン）、最終的に自分の価値を創造する（子ども）。</p>
+      </div>
+      <div class="reason-box"><strong>この例が示すこと：</strong>自己超克は一足飛びには起きない。段階的なプロセスであり、「否」と言う勇気（ライオン）なしに創造（子ども）は生まれないことを示す。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-head">
+        <span class="ex-emoji">🌊</span>
+        <h4>例⑤：運命愛の実践——フランクルの強制収容所体験</h4>
+      </div>
+      <div class="ex-section">
+        <div class="ex-label">📋 背景</div>
+        <p class="ex-text">ヴィクトール・フランクルはナチスの強制収容所という極限状況下で、外的状況を変えられなくても「それに対する態度を選ぶ自由」は奪われないことを発見した（関連書籍『夜と霧』）。</p>
+      </div>
+      <div class="ex-section">
+        <div class="ex-label">💡 示唆</div>
+        <p class="ex-text">運命愛は「諦め」ではなく、変えられない現実を受け入れた上で、自分が選べる部分に全力を注ぐ姿勢。最悪の状況でも意味を創造できる。</p>
+      </div>
+      <div class="reason-box"><strong>この例が示すこと：</strong>運命愛は抽象的な哲学ではなく、極限状況でも機能する実践的な生き方の原理であることを示す。受容が行動の自由度を高めるという命題の最も強力な証拠。</div>
+    </div>
+
+  </div>
+
+  <!-- ===== TAB 4: 重要な引用 ===== -->
+  <div class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <div class="section-title">重要な引用（要旨）</div>
+
+    <div class="quote-card">
+      <p class="quote-text">他人の期待に従うな。自分の掟をつくれ。</p>
+      <p class="quote-note">他者基準から自律へ軸足を移す核心命題。「良い人」でいようとする限り、自分の価値は他者に委ねられたまま。</p>
+      <span class="quote-tag">要旨</span>
+    </div>
+
+    <div class="quote-card">
+      <p class="quote-text">きみの運命を愛せ。</p>
+      <p class="quote-note">不可避を受容し行為の自由度を回復する鍵。抵抗をやめた瞬間、エネルギーが創造へ向かう。</p>
+      <span class="quote-tag">要旨</span>
+    </div>
+
+    <div class="quote-card">
+      <p class="quote-text">今日が無限に繰り返されてもよいか自問せよ。</p>
+      <p class="quote-note">選択の質を高め、今を選び直す基準になる。「嫌だ」と感じたなら、今すぐ変える理由がそこにある。</p>
+      <span class="quote-tag">要旨</span>
+    </div>
+
+    <div class="quote-card">
+      <p class="quote-text">友は慰めではなく登攀を促す存在だ。</p>
+      <p class="quote-note">安逸より成長をもたらす関係の指針。本当の友は耳障りの良いことを言わず、より高みへ引き上げようとする。</p>
+      <span class="quote-tag">要旨</span>
+    </div>
+
+    <div class="quote-card">
+      <p class="quote-text">自分を壊し続ける者だけが自分を創る。</p>
+      <p class="quote-note">自己超克の弁証法を端的に示す。現状維持は緩やかな衰退であり、創造は常に破壊を伴う。</p>
+      <span class="quote-tag">要旨</span>
+    </div>
+
+    <!-- SVG: 引用の重要度バブル -->
+    <div class="chart-wrap" style="margin-top:16px;">
+      <h3>💬 引用テーマの分布</h3>
+      <svg viewBox="0 0 340 160" width="100%" aria-label="引用テーマの分布図">
+        <circle cx="60" cy="80" r="45" fill="rgba(233,69,96,0.2)" stroke="#e94560" stroke-width="1.5"/>
+        <text x="60" y="75" text-anchor="middle" fill="#e94560" font-size="10" font-weight="bold">自律</text>
+        <text x="60" y="90" text-anchor="middle" fill="#e94560" font-size="9">他者基準を脱する</text>
+
+        <circle cx="170" cy="80" r="40" fill="rgba(245,166,35,0.2)" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="170" y="75" text-anchor="middle" fill="#f5a623" font-size="10" font-weight="bold">運命愛</text>
+        <text x="170" y="90" text-anchor="middle" fill="#f5a623" font-size="9">受容と自由</text>
+
+        <circle cx="270" cy="80" r="35" fill="rgba(15,52,96,0.6)" stroke="#667eea" stroke-width="1.5"/>
+        <text x="270" y="75" text-anchor="middle" fill="#b0b8c8" font-size="10" font-weight="bold">自己超克</text>
+        <text x="270" y="90" text-anchor="middle" fill="#b0b8c8" font-size="9">壊して創る</text>
+
+        <line x1="105" y1="80" x2="130" y2="80" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="210" y1="80" x2="235" y2="80" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="170" y="145" text-anchor="middle" fill="#b0b8c8" font-size="9">すべての引用は「今この瞬間の選択」に収斂する</text>
+      </svg>
+    </div>
+
+    <div class="section-title" style="margin-top:16px;">関連書籍</div>
+    <div class="book-card">
+      <div class="book-icon">📚</div>
+      <div class="book-info">
+        <h4>ツァラトゥストラはこう語った</h4>
+        <div class="book-author">フリードリヒ・ニーチェ</div>
+        <p>超人・永劫回帰など本書の核心概念の原典。</p>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-icon">📚</div>
+      <div class="book-info">
+        <h4>善悪の彼岸</h4>
+        <div class="book-author">フリードリヒ・ニーチェ</div>
+        <p>既成道徳批判と価値創造の基礎理論を掘り下げる。</p>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-icon">📚</div>
+      <div class="book-info">
+        <h4>道徳の系譜</h4>
+        <div class="book-author">フリードリヒ・ニーチェ</div>
+        <p>ルサンチマンと奴隷道徳の形成過程を分析。</p>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-icon">📚</div>
+      <div class="book-info">
+        <h4>偶像の黄昏</h4>
+        <div class="book-author">フリードリヒ・ニーチェ</div>
+        <p>常識や哲学の偶像破壊を通じ実践的思考を促す。</p>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-icon">📚</div>
+      <div class="book-info">
+        <h4>夜と霧</h4>
+        <div class="book-author">ヴィクトール・E・フランクル</div>
+        <p>過酷な運命下での意味創造が運命愛と響き合う。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== TAB 5: 今日のアクション ===== -->
+  <div class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="section-title">今日から15〜30分でできるアクション</div>
+
+    <!-- SVG: アクションサイクル -->
+    <div class="chart-wrap">
+      <h3>🔄 自己超克サイクル</h3>
+      <svg viewBox="0 0 320 200" width="100%" aria-label="自己超克の実践サイクル図">
+        <defs>
+          <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#f5a623"/>
+          </marker>
+        </defs>
+        <!-- 円形配置 -->
+        <circle cx="160" cy="100" r="55" fill="none" stroke="rgba(245,166,35,0.2)" stroke-width="1" stroke-dasharray="4,4"/>
+        <!-- ノード1: 内省 -->
+        <circle cx="160" cy="45" r="22" fill="rgba(233,69,96,0.3)" stroke="#e94560" stroke-width="1.5"/>
+        <text x="160" y="42" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">内省</text>
+        <text x="160" y="54" text-anchor="middle" fill="#e94560" font-size="8">価値観を書く</text>
+        <!-- ノード2: 行動 -->
+        <circle cx="215" cy="130" r="22" fill="rgba(245,166,35,0.3)" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="215" y="127" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">行動</text>
+        <text x="215" y="139" text-anchor="middle" fill="#f5a623" font-size="8">失敗を言い換え</text>
+        <!-- ノード3: 孤独 -->
+        <circle cx="105" cy="130" r="22" fill="rgba(15,52,96,0.8)" stroke="#667eea" stroke-width="1.5"/>
+        <text x="105" y="127" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">孤独</text>
+        <text x="105" y="139" text-anchor="middle" fill="#b0b8c8" font-size="8">散歩15分</text>
+        <!-- 矢印 -->
+        <path d="M175,62 Q210,80 205,108" fill="none" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <path d="M195,148 Q160,175 125,148" fill="none" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <path d="M115,108 Q110,80 145,62" fill="none" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <!-- 中心 -->
+        <circle cx="160" cy="100" r="18" fill="rgba(233,69,96,0.15)" stroke="#e94560" stroke-width="1"/>
+        <text x="160" y="97" text-anchor="middle" fill="#e94560" font-size="8" font-weight="bold">自己</text>
+        <text x="160" y="108" text-anchor="middle" fill="#e94560" font-size="8" font-weight="bold">超克</text>
+        <text x="160" y="185" text-anchor="middle" fill="#b0b8c8" font-size="9">3つのアクションが循環して自己超克を加速する</text>
+      </svg>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <h4>📝 価値観を3つ書き出す（15〜20分）</h4>
+        <p>紙またはメモアプリに「自分が本当に大切にしていること」を3つ書く。次に「それは自分で選んだか、他人から借りたか」を問い直す。</p>
+        <div class="action-meta">
+          <span class="meta-tag purpose">🎯 目的：自分の価値基準を可視化し、借り物の道徳を識別する</span>
+          <span class="meta-tag effect">✨ 期待効果：ルサンチマンや奴隷道徳に気づき、自律的な価値観の起点を作れる</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <h4>🚶 15分ひとりで散歩する（15分）</h4>
+        <p>スマホをポケットにしまい、音楽もなしで15分歩く。頭に浮かんだことをそのまま観察し、帰宅後に1行だけメモする。</p>
+        <div class="action-meta">
+          <span class="meta-tag purpose">🎯 目的：孤独の時間を意図的に作り、内省の習慣を始める</span>
+          <span class="meta-tag effect">✨ 期待効果：群衆の声から距離を置き、自分の声を聞く感覚を取り戻せる</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <h4>🔄 今日の失敗を利点に言い換える（15分）</h4>
+        <p>今日うまくいかなかったことを1つ選び、「この失敗から得られたもの・気づき」を3つ書く。運命愛の実践として「これがあって良かった」と締める。</p>
+        <div class="action-meta">
+          <span class="meta-tag purpose">🎯 目的：運命愛と生の肯定を日常の小さな出来事で練習する</span>
+          <span class="meta-tag effect">✨ 期待効果：失敗への抵抗が減り、行動の自由度と創造性が上がる</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">4</div>
+      <div class="action-body">
+        <h4>♾️ 永劫回帰チェック（5〜10分）</h4>
+        <p>今日の最も重要な選択を1つ思い出し、「この選択が永遠に繰り返されるとしたら、喜んで受け入れられるか？」と自問する。「嫌だ」なら明日変える。</p>
+        <div class="action-meta">
+          <span class="meta-tag purpose">🎯 目的：日常の選択の質を哲学的に吟味する習慣を作る</span>
+          <span class="meta-tag effect">✨ 期待効果：後悔のない選択が増え、今この瞬間への集中度が高まる</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 実践チェックリスト -->
+    <div class="chart-wrap" style="margin-top:8px;">
+      <h3>📊 アクションの難易度と効果</h3>
+      <div class="bar-row"><span class="bar-label">価値観書き出し</span><div class="bar-track"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,#0f3460,#e94560)">難易度 中</div></div></div>
+      <div class="bar-row"><span class="bar-label">孤独の散歩</span><div class="bar-track"><div class="bar-fill" style="width:40%;background:linear-gradient(90deg,#0f3460,#667eea)">難易度 低</div></div></div>
+      <div class="bar-row"><span class="bar-label">失敗の言い換え</span><div class="bar-track"><div class="bar-fill" style="width:60%;background:linear-gradient(90deg,#0f3460,#e94560)">難易度 中</div></div></div>
+      <div class="bar-row"><span class="bar-label">永劫回帰チェック</span><div class="bar-track"><div class="bar-fill" style="width:55%;background:linear-gradient(90deg,#0f3460,#f5a623)">難易度 中</div></div></div>
+      <div style="margin-top:12px;">
+        <div class="bar-row"><span class="bar-label">価値観書き出し</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#e94560,#f5a623)">効果 高</div></div></div>
+        <div class="bar-row"><span class="bar-label">孤独の散歩</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#e94560,#f5a623)">効果 高</div></div></div>
+        <div class="bar-row"><span class="bar-label">失敗の言い換え</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#e94560,#f5a623)">効果 高</div></div></div>
+        <div class="bar-row"><span class="bar-label">永劫回帰チェック</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:linear-gradient(90deg,#e94560,#f5a623)">効果 高</div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p>📌 本インフォグラフィックはニーチェ超訳の書籍リサーチに基づき作成。原典の厳密な学術解釈ではなく実生活への応用を目的とした要約です。</p>
+  <p style="margin-top:6px;">🎨 カラーパレット — Primary: #1a1a2e ／ Secondary: #e94560 ／ Accent: #f5a623</p>
+</footer>
+
+<script>
+  // ===== TAB SWITCHING =====
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('aria-controls');
+
+      tabBtns.forEach(b => {
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabPanels.forEach(p => {
+        p.classList.remove('active');
+      });
+
+      btn.setAttribute('aria-selected', 'true');
+      const panel = document.getElementById(target);
+      if (panel) panel.classList.add('active');
+
+      // Scroll tab into view
+      btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    });
+
+    // Keyboard navigation
+    btn.addEventListener('keydown', (e) => {
+      const btns = Array.from(tabBtns);
+      const idx = btns.indexOf(btn);
+      if (e.key === 'ArrowRight') {
+        const next = btns[(idx + 1) % btns.length];
+        next.focus(); next.click();
+      } else if (e.key === 'ArrowLeft') {
+        const prev = btns[(idx - 1 + btns.length) % btns.length];
+        prev.focus(); prev.click();
+      }
+    });
+  });
+
+  // ===== ANIMATE BARS ON VISIBILITY =====
+  const bars = document.querySelectorAll('.bar-fill');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const w = el.style.width;
+        el.style.width = '0';
+        requestAnimationFrame(() => {
+          setTimeout(() => { el.style.width = w; }, 50);
+        });
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  bars.forEach(bar => observer.observe(bar));
+</script>
+</body>
+</html>
