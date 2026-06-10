@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NO RULES RULES インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a1a2e
+  セカンダリー:  #16213e
+  アクセント:    #e94560
+  補助1:        #0f3460
+  補助2:        #f5a623
+-->
+<style>
+  :root {
+    --primary: #1a1a2e;
+    --secondary: #16213e;
+    --accent: #e94560;
+    --sub1: #0f3460;
+    --sub2: #f5a623;
+    --text: #e8e8f0;
+    --text-muted: #a0a0b8;
+    --card-bg: rgba(255,255,255,0.05);
+    --card-border: rgba(233,69,96,0.3);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 50%,var(--sub1) 100%);
+    color:var(--text);
+    min-height:100vh;
+    font-size:15px;
+    line-height:1.6;
+  }
+  a{color:var(--sub2);text-decoration:none;}
+
+  /* ===== HEADER ===== */
+  .site-header{
+    background:linear-gradient(90deg,var(--primary),var(--sub1));
+    border-bottom:2px solid var(--accent);
+    padding:20px 16px 16px;
+    text-align:center;
+  }
+  .site-header .book-badge{
+    display:inline-block;
+    background:var(--accent);
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1px;
+    padding:3px 10px;
+    border-radius:20px;
+    margin-bottom:8px;
+    text-transform:uppercase;
+  }
+  .site-header h1{
+    font-size:clamp(20px,5vw,32px);
+    font-weight:900;
+    letter-spacing:2px;
+    background:linear-gradient(90deg,#fff,var(--sub2),var(--accent));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  .site-header .subtitle{
+    font-size:13px;
+    color:var(--text-muted);
+    margin-top:4px;
+  }
+
+  /* ===== HERO SUMMARY ===== */
+  .hero{
+    max-width:900px;
+    margin:24px auto 0;
+    padding:0 16px;
+  }
+  .hero-card{
+    background:linear-gradient(135deg,rgba(233,69,96,0.15),rgba(15,52,96,0.4));
+    border:1.5px solid var(--accent);
+    border-radius:var(--radius);
+    padding:20px;
+  }
+  .hero-card .hero-title{
+    font-size:13px;
+    font-weight:700;
+    color:var(--accent);
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+  }
+  .hero-block{
+    background:rgba(255,255,255,0.05);
+    border-radius:var(--radius-sm);
+    padding:12px;
+    border-left:3px solid var(--sub2);
+  }
+  .hero-block.q{border-left-color:#7c83fd;}
+  .hero-block.a{border-left-color:#e94560;}
+  .hero-block.why{border-left-color:#f5a623;}
+  .hero-block.how{border-left-color:#4ecdc4;}
+  .hero-block .label{
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    margin-bottom:5px;
+    opacity:.8;
+  }
+  .hero-block.q .label{color:#7c83fd;}
+  .hero-block.a .label{color:#e94560;}
+  .hero-block.why .label{color:#f5a623;}
+  .hero-block.how .label{color:#4ecdc4;}
+  .hero-block p{font-size:13px;line-height:1.55;}
+
+  /* ===== CORE MESSAGE ===== */
+  .core-msg{
+    max-width:900px;
+    margin:16px auto 0;
+    padding:0 16px;
+  }
+  .core-msg-inner{
+    background:rgba(245,166,35,0.12);
+    border:1px solid rgba(245,166,35,0.4);
+    border-radius:var(--radius-sm);
+    padding:12px 16px;
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .core-msg-inner .icon{font-size:22px;flex-shrink:0;margin-top:2px;}
+  .core-msg-inner p{font-size:13px;color:var(--sub2);font-weight:600;}
+
+  /* ===== SPIRAL SVG ===== */
+  .spiral-wrap{
+    max-width:900px;
+    margin:20px auto 0;
+    padding:0 16px;
+    text-align:center;
+  }
+  .spiral-wrap h2{
+    font-size:14px;
+    color:var(--text-muted);
+    margin-bottom:10px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+  .spiral-svg-container{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  /* ===== TABS ===== */
+  .tabs-wrap{
+    max-width:900px;
+    margin:24px auto 0;
+    padding:0 16px;
+  }
+  .tab-list{
+    display:flex;
+    gap:4px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:4px;
+    scrollbar-width:none;
+  }
+  .tab-list::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex-shrink:0;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.1);
+    color:var(--text-muted);
+    padding:8px 14px;
+    border-radius:var(--radius-sm) var(--radius-sm) 0 0;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:600;
+    transition:all .2s;
+    white-space:nowrap;
+  }
+  .tab-btn:hover{background:rgba(233,69,96,0.15);color:var(--text);}
+  .tab-btn[aria-selected="true"]{
+    background:linear-gradient(135deg,var(--accent),#c0392b);
+    color:#fff;
+    border-color:var(--accent);
+  }
+  .tab-panel{
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:0 var(--radius) var(--radius) var(--radius);
+    padding:20px;
+    display:none;
+  }
+  .tab-panel.active{display:block;}
+
+  /* ===== CARDS ===== */
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:14px;
+  }
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    border-radius:var(--radius);
+    padding:16px;
+    transition:transform .2s,box-shadow .2s;
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(233,69,96,0.15);}
+  .card .card-head{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .card .card-icon{font-size:22px;}
+  .card .card-title{
+    font-size:14px;
+    font-weight:800;
+    color:#fff;
+    line-height:1.3;
+  }
+  .card .card-tag{
+    display:inline-block;
+    background:rgba(233,69,96,0.2);
+    color:var(--accent);
+    font-size:10px;
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:20px;
+    margin-bottom:8px;
+    letter-spacing:.5px;
+  }
+  .card ul{list-style:none;padding:0;}
+  .card ul li{
+    font-size:12.5px;
+    color:var(--text-muted);
+    padding:3px 0;
+    padding-left:14px;
+    position:relative;
+    line-height:1.5;
+  }
+  .card ul li::before{
+    content:'▸';
+    position:absolute;
+    left:0;
+    color:var(--accent);
+    font-size:10px;
+    top:5px;
+  }
+  .card .why-box{
+    margin-top:10px;
+    background:rgba(245,166,35,0.08);
+    border-left:3px solid var(--sub2);
+    padding:6px 10px;
+    border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+    font-size:12px;
+    color:var(--sub2);
+  }
+  .card .why-box strong{font-size:10px;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;}
+
+  /* ===== CHAPTER CARDS ===== */
+  .chapter-list{display:flex;flex-direction:column;gap:14px;}
+  .chapter-card{
+    background:var(--card-bg);
+    border:1px solid rgba(124,131,253,0.3);
+    border-radius:var(--radius);
+    padding:16px;
+  }
+  .chapter-card .ch-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .chapter-card .ch-num{
+    background:linear-gradient(135deg,#7c83fd,#5a63e8);
+    color:#fff;
+    font-size:11px;
+    font-weight:800;
+    width:32px;height:32px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .chapter-card .ch-title{font-size:14px;font-weight:800;color:#fff;}
+  .chapter-card ul{list-style:none;padding:0;}
+  .chapter-card ul li{
+    font-size:12.5px;
+    color:var(--text-muted);
+    padding:3px 0 3px 16px;
+    position:relative;
+  }
+  .chapter-card ul li::before{content:'✦';position:absolute;left:0;color:#7c83fd;font-size:9px;top:6px;}
+  .chapter-card .ch-reason{
+    margin-top:10px;
+    background:rgba(78,205,196,0.08);
+    border-left:3px solid #4ecdc4;
+    padding:6px 10px;
+    border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+    font-size:12px;
+    color:#4ecdc4;
+  }
+  .chapter-card .ch-reason strong{font-size:10px;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;}
+
+  /* ===== EXAMPLES ===== */
+  .example-list{display:flex;flex-direction:column;gap:16px;}
+  .example-card{
+    background:var(--card-bg);
+    border:1px solid rgba(78,205,196,0.3);
+    border-radius:var(--radius);
+    padding:16px;
+  }
+  .example-card .ex-head{
+    display:flex;align-items:center;gap:10px;margin-bottom:10px;
+  }
+  .example-card .ex-icon{font-size:28px;}
+  .example-card .ex-title{font-size:14px;font-weight:800;color:#fff;}
+  .example-card .ex-body{font-size:12.5px;color:var(--text-muted);margin-bottom:8px;}
+  .example-card .ex-implication{
+    background:rgba(233,69,96,0.08);
+    border-left:3px solid var(--accent);
+    padding:6px 10px;
+    border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+    font-size:12px;
+    color:#ff8fa3;
+    margin-bottom:6px;
+  }
+  .example-card .ex-reason{
+    background:rgba(245,166,35,0.08);
+    border-left:3px solid var(--sub2);
+    padding:6px 10px;
+    border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+    font-size:12px;
+    color:var(--sub2);
+  }
+  .example-card .ex-reason strong,.example-card .ex-implication strong{
+    font-size:10px;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:2px;
+  }
+
+  /* ===== QUOTES ===== */
+  .quote-list{display:flex;flex-direction:column;gap:14px;}
+  .quote-card{
+    background:var(--card-bg);
+    border:1px solid rgba(245,166,35,0.3);
+    border-radius:var(--radius);
+    padding:16px;
+    position:relative;
+  }
+  .quote-card::before{
+    content:'"';
+    position:absolute;
+    top:-8px;left:14px;
+    font-size:48px;
+    color:var(--sub2);
+    opacity:.3;
+    line-height:1;
+    font-family:Georgia,serif;
+  }
+  .quote-card .q-text{
+    font-size:15px;
+    font-weight:700;
+    color:#fff;
+    font-style:italic;
+    margin-bottom:8px;
+    padding-top:8px;
+  }
+  .quote-card .q-badge{
+    display:inline-block;
+    background:rgba(245,166,35,0.15);
+    color:var(--sub2);
+    font-size:10px;
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:20px;
+    margin-bottom:6px;
+    letter-spacing:.5px;
+  }
+  .quote-card .q-note{font-size:12.5px;color:var(--text-muted);}
+
+  /* ===== ACTIONS ===== */
+  .action-list{display:flex;flex-direction:column;gap:14px;}
+  .action-card{
+    background:var(--card-bg);
+    border:1px solid rgba(78,205,196,0.3);
+    border-radius:var(--radius);
+    padding:16px;
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+  }
+  .action-card .ac-num{
+    background:linear-gradient(135deg,#4ecdc4,#2eaf9f);
+    color:#fff;
+    font-size:16px;
+    font-weight:900;
+    width:40px;height:40px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .action-card .ac-body{}
+  .action-card .ac-title{font-size:14px;font-weight:800;color:#fff;margin-bottom:6px;}
+  .action-card .ac-purpose{
+    font-size:12px;
+    color:#4ecdc4;
+    margin-bottom:4px;
+  }
+  .action-card .ac-effect{
+    font-size:12px;
+    color:var(--text-muted);
+  }
+  .action-card .ac-time{
+    display:inline-block;
+    background:rgba(78,205,196,0.15);
+    color:#4ecdc4;
+    font-size:10px;
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:20px;
+    margin-bottom:6px;
+  }
+
+  /* ===== RELATED BOOKS ===== */
+  .books-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+    gap:12px;
+    margin-top:16px;
+  }
+  .book-card{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:var(--radius-sm);
+    padding:12px;
+  }
+  .book-card .bk-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;}
+  .book-card .bk-author{font-size:11px;color:var(--text-muted);margin-bottom:6px;}
+  .book-card .bk-rel{font-size:11.5px;color:var(--text-muted);}
+
+  /* ===== BADGE METRICS ===== */
+  .metrics-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .metric-badge{
+    background:linear-gradient(135deg,rgba(233,69,96,0.2),rgba(15,52,96,0.4));
+    border:1px solid var(--accent);
+    border-radius:var(--radius-sm);
+    padding:10px 14px;
+    text-align:center;
+    flex:1;
+    min-width:100px;
+  }
+  .metric-badge .mb-num{
+    font-size:24px;
+    font-weight:900;
+    color:var(--accent);
+    display:block;
+  }
+  .metric-badge .mb-label{
+    font-size:11px;
+    color:var(--text-muted);
+    display:block;
+    margin-top:2px;
+  }
+
+  /* ===== CAUSAL CHAIN ===== */
+  .causal-chain{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    align-items:center;
+    margin-bottom:10px;
+  }
+  .causal-item{
+    background:rgba(124,131,253,0.15);
+    border:1px solid rgba(124,131,253,0.4);
+    border-radius:20px;
+    padding:4px 12px;
+    font-size:12px;
+    color:#a0a8ff;
+    white-space:nowrap;
+  }
+  .causal-arrow{color:var(--accent);font-size:14px;font-weight:700;}
+
+  /* ===== SECTION TITLE ===== */
+  .section-title{
+    font-size:13px;
+    font-weight:700;
+    color:var(--text-muted);
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .section-title::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:rgba(255,255,255,0.1);
+  }
+
+  /* ===== BAR CHART ===== */
+  .bar-chart{margin-bottom:16px;}
+  .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .bar-label{font-size:12px;color:var(--text-muted);width:120px;flex-shrink:0;text-align:right;}
+  .bar-track{flex:1;background:rgba(255,255,255,0.08);border-radius:20px;height:18px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:20px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff;transition:width 1s ease;}
+  .bar-val{font-size:12px;color:var(--text-muted);width:30px;flex-shrink:0;}
+
+  /* ===== FOOTER ===== */
+  .site-footer{
+    max-width:900px;
+    margin:24px auto 0;
+    padding:16px;
+    text-align:center;
+    font-size:11px;
+    color:var(--text-muted);
+    border-top:1px solid rgba(255,255,255,0.08);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:600px){
+    .hero-grid{grid-template-columns:1fr 1fr;}
+    .card-grid{grid-template-columns:1fr;}
+    .books-grid{grid-template-columns:1fr 1fr;}
+    .bar-label{width:80px;font-size:11px;}
+    .action-card{flex-direction:column;}
+    .action-card .ac-num{width:32px;height:32px;font-size:14px;}
+  }
+  @media(max-width:400px){
+    .hero-grid{grid-template-columns:1fr;}
+    .books-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" role="banner">
+  <div class="book-badge">📖 書籍インフォグラフィック</div>
+  <h1>NO RULES RULES</h1>
+  <p class="subtitle">規則なき組織が最速で革新し続ける理由</p>
+</header>
+
+<!-- ===== HERO SUMMARY ===== -->
+<section class="hero" aria-label="要約ブロック">
+  <div class="hero-card">
+    <div class="hero-title">🎯 ここだけ見れば全体像がわかる</div>
+    <div class="hero-grid">
+      <div class="hero-block q">
+        <div class="label">❓ 問い</div>
+        <p>規則を減らしても、組織はどう強くなるか？</p>
+      </div>
+      <div class="hero-block a">
+        <div class="label">💡 答え</div>
+        <p>タレント密度×率直さ×自由と責任を高め、管理でなく文脈で導けば、意思決定が自律・高速化し、革新が持続する。</p>
+      </div>
+      <div class="hero-block why">
+        <div class="label">🔍 Why（なぜ）</div>
+        <p>一流人材が率直に学び合い、全社情報が透明なら、信頼が規則の代替となりコストと遅延が劇的に減る。</p>
+      </div>
+      <div class="hero-block how">
+        <div class="label">🛠 How（どうやって）</div>
+        <p>キーパーテストで密度を高め、4Aフィードバックを習慣化し、財務・戦略を開示。承認の代わりに目的・指標・リスクを共有し、休暇・経費ルールを段階的に撤廃する。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CORE MESSAGE ===== -->
+<div class="core-msg">
+  <div class="core-msg-inner">
+    <div class="icon">⚡</div>
+    <p>核心: 規則で縛るより、卓越人材×率直なフィードバック×文脈で導く自由と責任が、最速の学習と持続的な革新を生む。</p>
+  </div>
+</div>
+
+<!-- ===== SPIRAL / CAUSAL FLOW SVG ===== -->
+<div class="spiral-wrap">
+  <h2>🔄 スパイラル因果フロー</h2>
+  <div class="spiral-svg-container">
+    <svg width="820" height="110" viewBox="0 0 820 110" role="img" aria-label="タレント密度から自由拡大への因果フロー図" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="flowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#7c83fd;stop-opacity:1"/>
+          <stop offset="50%" style="stop-color:#e94560;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#f5a623;stop-opacity:1"/>
+        </linearGradient>
+        <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#e94560"/>
+        </marker>
+      </defs>
+      <!-- connecting line -->
+      <line x1="80" y1="55" x2="740" y2="55" stroke="url(#flowGrad)" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arrowhead)"/>
+      <!-- nodes -->
+      <g>
+        <circle cx="80" cy="55" r="36" fill="#1a1a2e" stroke="#7c83fd" stroke-width="2"/>
+        <text x="80" y="48" text-anchor="middle" fill="#a0a8ff" font-size="9" font-weight="700">タレント</text>
+        <text x="80" y="60" text-anchor="middle" fill="#a0a8ff" font-size="9" font-weight="700">密度↑</text>
+        <text x="80" y="72" text-anchor="middle" fill="#7c83fd" font-size="14">👥</text>
+      </g>
+      <g>
+        <circle cx="210" cy="55" r="36" fill="#1a1a2e" stroke="#9b59b6" stroke-width="2"/>
+        <text x="210" y="48" text-anchor="middle" fill="#c39bd3" font-size="9" font-weight="700">信頼↑</text>
+        <text x="210" y="60" text-anchor="middle" fill="#c39bd3" font-size="9" font-weight="700">透明性↑</text>
+        <text x="210" y="72" text-anchor="middle" fill="#9b59b6" font-size="14">🔓</text>
+      </g>
+      <g>
+        <circle cx="340" cy="55" r="36" fill="#1a1a2e" stroke="#e94560" stroke-width="2"/>
+        <text x="340" y="48" text-anchor="middle" fill="#ff8fa3" font-size="9" font-weight="700">率直さ↑</text>
+        <text x="340" y="60" text-anchor="middle" fill="#ff8fa3" font-size="9" font-weight="700">4Aフィード</text>
+        <text x="340" y="72" text-anchor="middle" fill="#e94560" font-size="14">💬</text>
+      </g>
+      <g>
+        <circle cx="470" cy="55" r="36" fill="#1a1a2e" stroke="#f5a623" stroke-width="2"/>
+        <text x="470" y="48" text-anchor="middle" fill="#f5c842" font-size="9" font-weight="700">学習速度↑</text>
+        <text x="470" y="60" text-anchor="middle" fill="#f5c842" font-size="9" font-weight="700">失敗共有</text>
+        <text x="470" y="72" text-anchor="middle" fill="#f5a623" font-size="14">🚀</text>
+      </g>
+      <g>
+        <circle cx="600" cy="55" r="36" fill="#1a1a2e" stroke="#4ecdc4" stroke-width="2"/>
+        <text x="600" y="48" text-anchor="middle" fill="#7ee8e4" font-size="9" font-weight="700">ルール依存↓</text>
+        <text x="600" y="60" text-anchor="middle" fill="#7ee8e4" font-size="9" font-weight="700">自律判断↑</text>
+        <text x="600" y="72" text-anchor="middle" fill="#4ecdc4" font-size="14">⚙️</text>
+      </g>
+      <g>
+        <circle cx="730" cy="55" r="36" fill="#1a1a2e" stroke="#f5a623" stroke-width="2.5"/>
+        <text x="730" y="48" text-anchor="middle" fill="#f5c842" font-size="9" font-weight="700">自由拡大</text>
+        <text x="730" y="60" text-anchor="middle" fill="#f5c842" font-size="9" font-weight="700">革新持続</text>
+        <text x="730" y="72" text-anchor="middle" fill="#f5a623" font-size="16">🌟</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<!-- ===== METRICS ===== -->
+<div class="hero" style="margin-top:16px;">
+  <div class="metrics-row">
+    <div class="metric-badge">
+      <span class="mb-num">10</span>
+      <span class="mb-label">主要概念</span>
+    </div>
+    <div class="metric-badge">
+      <span class="mb-num">4A</span>
+      <span class="mb-label">フィードバック型</span>
+    </div>
+    <div class="metric-badge">
+      <span class="mb-num">7</span>
+      <span class="mb-label">章構成</span>
+    </div>
+    <div class="metric-badge">
+      <span class="mb-num">6</span>
+      <span class="mb-label">関連書籍</span>
+    </div>
+    <div class="metric-badge">
+      <span class="mb-num">3</span>
+      <span class="mb-label">今日のアクション</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TABS ===== -->
+<div class="tabs-wrap">
+  <div class="tab-list" role="tablist" aria-label="コンテンツタブ">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧠 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📚 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">💡 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">✍️ 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">⚡ 今日のアクション</button>
+  </div>
+
+  <!-- ===== TAB 1: 主要概念 ===== -->
+  <div class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="section-title">🧠 10の主要概念</div>
+
+    <!-- BAR CHART: 概念の重要度イメージ -->
+    <div class="bar-chart" aria-label="概念の重要度バーチャート">
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">📊 概念の相互依存度（概念間の関係数ベース・相対値）</div>
+      <div class="bar-row">
+        <div class="bar-label">タレント密度</div>
+        <div class="bar-track"><div class="bar-fill" style="width:95%;background:linear-gradient(90deg,#7c83fd,#e94560);">基盤</div></div>
+        <div class="bar-val">95%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">率直さ</div>
+        <div class="bar-track"><div class="bar-fill" style="width:88%;background:linear-gradient(90deg,#e94560,#f5a623);">高</div></div>
+        <div class="bar-val">88%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">コンテキスト型</div>
+        <div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#f5a623,#4ecdc4);">高</div></div>
+        <div class="bar-val">80%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">透明性</div>
+        <div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#4ecdc4,#7c83fd);">中高</div></div>
+        <div class="bar-val">75%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">自由と責任</div>
+        <div class="bar-track"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,#9b59b6,#e94560);">中高</div></div>
+        <div class="bar-val">70%</div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-head"><span class="card-icon">👥</span><span class="card-title">タレント密度</span></div>
+        <div class="card-tag">🏆 基盤概念</div>
+        <ul>
+          <li>最高水準の人材割合を意識的に高める</li>
+          <li>平均的パフォーマーには寛大な退職金で卒業を促す</li>
+          <li>協働の質が上がり、全体の成果が向上する</li>
+          <li>キーパーテストで基準を維持し続ける</li>
+        </ul>
+        <div class="why-box"><strong>なぜ重要か</strong>一流人材が集まると信頼が生まれ、ルールなしでも高い成果が出る土台になる。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-icon">💬</span><span class="card-title">率直さ（4Aフィードバック）</span></div>
+        <div class="card-tag">🔄 行動習慣</div>
+        <ul>
+          <li>与える①: Aim to Assist（助けるために言う）</li>
+          <li>与える②: Actionable（具体的行動を示す）</li>
+          <li>受け取る①: Appreciate（感謝する）</li>
+          <li>受け取る②: Accept or Discard（取捨選択する）</li>
+        </ul>
+        <div class="why-box"><strong>なぜ重要か</strong>恐れずに高頻度で行うことで、組織の学習速度が飛躍的に上がる。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-icon">⚖️</span><span class="card-title">自由と責任</span></div>
+        <div class="card-tag">🎯 設計原則</div>
+        <ul>
+          <li>詳細な規則を外し、判断を個人に委ねる</li>
+          <li>成果と説明責任（Accountability）は厳格に持つ</li>
+          <li>裁量と責任はセットで機能する</li>
+          <li>前提: 高い人材水準と信頼の存在</li>
+        </ul>
+        <div class="why-box"><strong>なぜ重要か</strong>規則は優秀な人の速度を鈍らせる。自由と責任が成果を最大化する。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-icon">🗺️</span><span class="card-title">コンテキストでリード</span></div>
+        <div class="card-tag">🧭 リーダーシップ</div>
+        <ul>
+          <li>承認や命令でなく、目的・優先順位を共有</li>
+          <li>指標・制約を透明にして自律判断を促す</li>
+          <li>上司は答えを出す役でなく情報を示す役</li>
+          <li>意思決定の速度と質が同時に上がる</li>
+        </ul>
+        <div class="why-box"><strong>なぜ重要か</strong>承認中心の管理を捨てることで、自律判断で速度と創造性が高まる。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-icon">🔓</span><span class="card-title">透明性</span></div>
+        <div class="card-tag">📡 情報設計</div>
+        <ul>
+          <li>財務・戦略・失敗を社内で広く共有</li>
+          <li>情報非対称を意識的に減らす</li>
+          <li>フルオープンが信頼の基盤になる</li>
+          <li>失敗の共有（サンシャイン）で学習資産化</li>
+        </ul>
+        <div class="why-box"><strong>なぜ重要か</strong>情報が透明なら、全員が文脈を理解して自律的に動ける。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-icon">🏖️</span><span class="card-title">休暇・経費ノールール</span></div>
+        <div class="card-tag">📋 制度設計</div>
+        <ul>
+          <li>「会社の利益のために最善を尽くす」原則のみ</li>
+          <li>個別ルールを廃止し個人の判断に委ねる</li>
+          <li>前提: 高い人材水準と信頼が必要</li>
+          <li>段階的に撤廃することが重要</li>
+        </ul>
+        <div class="why-box"><strong>なぜ重要か</strong>原則一本化で管理コストが消え、自律的な行動が促進される。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-icon">🔑</span><span class="card-title">キーパーテスト</span></div>
+        <div class="card-tag">📏 評価基準</div>
+        <ul>
+          <li>「この人が辞めると言ったら全力で引き止めるか？」</li>
+          <li>YESなら残留、NOなら寛大な退職金で卒業</li>
+          <li>タレント密度を維持し続けるための仕組み</li>
+          <li>基準は「惜しさ」という感覚</li>
+        </ul>
+        <div class="why-box"><strong>なぜ重要か</strong>継続的な人材水準の維持なしに、自由と責任の文化は機能しない。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-icon">🚫</span><span class="card-title">ブリリアント・ジャーク禁止</span></div>
+        <div class="card-tag">🤝 文化規範</div>
+        <ul>
+          <li>成果が高くても協働を損なう人物は不採用</li>
+          <li>個人技より協働を優先する文化を守る</li>
+          <li>一人のジャークが組織全体を毒す</li>
+          <li>タレント密度の質的側面を守る</li>
+        </ul>
+        <div class="why-box"><strong>なぜ重要か</strong>協働の質が下がると率直さが失われ、スパイラル全体が崩れる。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-icon">📶</span><span class="card-title">段階的撤廃</span></div>
+        <div class="card-tag">⏱️ 実装順序</div>
+        <ul>
+          <li>密度と信頼が育つたびにルールを外す</li>
+          <li>拙速な撤廃は責任希薄化・混乱を招く</li>
+          <li>順序を守ることが成功の鍵</li>
+          <li>土台なき自由は逆効果</li>
+        </ul>
+        <div class="why-box"><strong>なぜ重要か</strong>前提条件なしにルールを外すと成果が低下する。順序が命。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-icon">🌍</span><span class="card-title">カルチャーマップ適用</span></div>
+        <div class="card-tag">🗾 グローバル</div>
+        <ul>
+          <li>国・文化ごとの直接性/階層意識を把握</li>
+          <li>率直さの導入度合いを文化に合わせ調整</li>
+          <li>一律適用でなく土壌への適応が重要</li>
+          <li>エリン・メイヤーのフレームを活用</li>
+        </ul>
+        <div class="why-box"><strong>なぜ重要か</strong>文化適応度が高いほどフィードバック受容が上がり、実装成功確率が高まる。</div>
+      </div>
+    </div>
+
+    <!-- 因果関係 -->
+    <div class="section-title" style="margin-top:20px;">🔗 概念間の因果関係</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="causal-chain">
+        <span class="causal-item">タレント密度↑</span><span class="causal-arrow">→</span>
+        <span class="causal-item">信頼↑</span><span class="causal-arrow">→</span>
+        <span class="causal-item">率直さ↑</span><span class="causal-arrow">→</span>
+        <span class="causal-item">学習速度↑</span><span class="causal-arrow">→</span>
+        <span class="causal-item">ルール依存↓</span><span class="causal-arrow">→</span>
+        <span class="causal-item">自由拡大</span>
+      </div>
+      <div class="causal-chain">
+        <span class="causal-item">透明性↑</span><span class="causal-arrow">+</span>
+        <span class="causal-item">コンテキスト型リード</span><span class="causal-arrow">→</span>
+        <span class="causal-item">自律判断↑</span><span class="causal-arrow">→</span>
+        <span class="causal-item">意思決定速度・質↑</span>
+      </div>
+      <div class="causal-chain">
+        <span class="causal-item">率直さ×自由</span><span class="causal-arrow">→</span>
+        <span class="causal-item">失敗の顕在化（サンシャイン）</span><span class="causal-arrow">→</span>
+        <span class="causal-item">再発防止と革新</span>
+      </div>
+      <div class="causal-chain">
+        <span class="causal-item" style="border-color:rgba(233,69,96,0.5);color:#ff8fa3;">⚠️ 拙速なルール撤廃</span><span class="causal-arrow">→</span>
+        <span class="causal-item" style="border-color:rgba(233,69,96,0.5);color:#ff8fa3;">責任希薄化/混乱</span><span class="causal-arrow">→</span>
+        <span class="causal-item" style="border-color:rgba(233,69,96,0.5);color:#ff8fa3;">成果低下</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 2: 各章の要約 ===== -->
+  <div class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="section-title">📚 7つの章構成</div>
+    <div class="chapter-list">
+      <div class="chapter-card">
+        <div class="ch-head">
+          <div class="ch-num">序</div>
+          <div class="ch-title">変化の激しい産業で規則が足かせになる理由</div>
+        </div>
+        <ul>
+          <li>変化の速い産業では、規則が意思決定を遅らせる</li>
+          <li>文化は意図的に設計できるという前提を提示</li>
+          <li>「なぜ規則を減らすのか」という問いを立てる</li>
+          <li>Netflixの実体験から導かれた問題意識</li>
+        </ul>
+        <div class="ch-reason"><strong>この章が必要な理由</strong>「規則を減らす」という逆説的な主張の根拠を示し、読者の前提を崩すための章。</div>
+      </div>
+
+      <div class="chapter-card">
+        <div class="ch-head">
+          <div class="ch-num">1</div>
+          <div class="ch-title">第1部: タレント密度 — 土台を作る</div>
+        </div>
+        <ul>
+          <li>キーパーテストで人材水準を継続的に維持</li>
+          <li>平均的パフォーマーには寛大な退職金で卒業を促す</li>
+          <li>ブリリアント・ジャークを排除し協働の質を守る</li>
+          <li>高密度な人材集団が信頼の土台になる</li>
+        </ul>
+        <div class="ch-reason"><strong>この章が必要な理由</strong>自由と責任の文化は、高い人材水準なしには機能しない。すべての施策の前提条件を確立する。</div>
+      </div>
+
+      <div class="chapter-card">
+        <div class="ch-head">
+          <div class="ch-num">2</div>
+          <div class="ch-title">第2部: 率直さ — 学習を加速する</div>
+        </div>
+        <ul>
+          <li>4Aの型で安全かつ高頻度のフィードバックを実装</li>
+          <li>「サンシャイン」で失敗を学習資産に変える</li>
+          <li>恐れずに言える文化が組織の学習速度を上げる</li>
+          <li>フィードバックは贈り物という文化観</li>
+        </ul>
+        <div class="ch-reason"><strong>この章が必要な理由</strong>タレント密度があっても率直さがなければ、知識が循環せず学習が止まる。</div>
+      </div>
+
+      <div class="chapter-card">
+        <div class="ch-head">
+          <div class="ch-num">3</div>
+          <div class="ch-title">第3部: ルール撤廃 — 裁量を拡張する</div>
+        </div>
+        <ul>
+          <li>休暇・経費を「原則一本化」で個人判断に委ねる</li>
+          <li>承認プロセスを縮退させ意思決定を高速化</li>
+          <li>段階的撤廃の順序を守ることが重要</li>
+          <li>前提: 密度と信頼が十分に育っていること</li>
+        </ul>
+        <div class="ch-reason"><strong>この章が必要な理由</strong>密度と率直さが整った後に初めてルール撤廃が機能する。順序の重要性を示す。</div>
+      </div>
+
+      <div class="chapter-card">
+        <div class="ch-head">
+          <div class="ch-num">4</div>
+          <div class="ch-title">第4部: コンテキストでリード — 自律を促す</div>
+        </div>
+        <ul>
+          <li>目的・戦略・指標・リスクを全員と共有</li>
+          <li>命令でなく文脈を与えて自律判断を促す</li>
+          <li>上司の役割は「答えを出す」から「情報を示す」へ</li>
+          <li>意思決定の速度と質が同時に向上する</li>
+        </ul>
+        <div class="ch-reason"><strong>この章が必要な理由</strong>自由を与えるだけでは不十分。文脈（コンテキスト）があって初めて自律判断が正しく機能する。</div>
+      </div>
+
+      <div class="chapter-card">
+        <div class="ch-head">
+          <div class="ch-num">5</div>
+          <div class="ch-title">第5部: グローバル展開 — 文化に適応する</div>
+        </div>
+        <ul>
+          <li>カルチャーマップで国・地域ごとの特性を把握</li>
+          <li>直接性・階層意識に合わせ率直さの導入を調整</li>
+          <li>一律適用でなく土壌への適応が成功の鍵</li>
+          <li>文化適応度↑ → フィードバック受容↑</li>
+        </ul>
+        <div class="ch-reason"><strong>この章が必要な理由</strong>グローバル企業では文化的文脈を無視した適用が失敗を招く。実装の現実的な課題を扱う。</div>
+      </div>
+
+      <div class="chapter-card">
+        <div class="ch-head">
+          <div class="ch-num">結</div>
+          <div class="ch-title">結語: スパイラルを回し続ける設計図</div>
+        </div>
+        <ul>
+          <li>密度→率直さ→自由のスパイラルを常態化</li>
+          <li>組織の再発明を継続的に行う設計図を総括</li>
+          <li>一度達成して終わりでなく、継続的な更新が必要</li>
+          <li>変化への適応力そのものが競争優位になる</li>
+        </ul>
+        <div class="ch-reason"><strong>この章が必要な理由</strong>各施策を統合し、「文化の設計」を継続的なプロセスとして位置づける総括。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: 具体例 ===== -->
+  <div class="tab-panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="section-title">💡 核心を伝える具体例・メタファー</div>
+    <div class="example-list">
+      <div class="example-card">
+        <div class="ex-head">
+          <span class="ex-icon">🏀</span>
+          <span class="ex-title">例1: 「スポーツチーム」メタファー — タレント密度の本質</span>
+        </div>
+        <div class="ex-body">
+          <strong>背景:</strong> Netflixは自社を「家族」でなく「プロスポーツチーム」と定義する。家族は無条件に受け入れるが、プロチームは最高のパフォーマンスを求め、ポジションに最適な人材を常に探す。平均的な選手には寛大な退職金（generous severance）を払い、チームの水準を維持し続ける。
+        </div>
+        <div class="ex-implication"><strong>示唆</strong>「家族的な温かさ」と「高い水準の維持」は両立しない。プロとして互いを尊重しながら、基準を妥協しない文化が革新を生む。</div>
+        <div class="ex-reason"><strong>この例が示すこと</strong>タレント密度の維持は冷酷さでなく、プロとしての誠実さ。高い基準が全員の成長を促す環境を作る。</div>
+      </div>
+
+      <div class="example-card">
+        <div class="ex-head">
+          <span class="ex-icon">☀️</span>
+          <span class="ex-title">例2: 「サンシャイン」— 失敗を学習資産に変える</span>
+        </div>
+        <div class="ex-body">
+          <strong>背景:</strong> Netflixでは失敗を隠さず、全社に公開する「サンシャイン（日光消毒）」の文化がある。担当者が自ら失敗を報告し、何が起きたか・なぜ起きたか・次にどうするかを共有する。失敗を隠した場合の方が、失敗そのものより重く扱われる。
+        </div>
+        <div class="ex-implication"><strong>示唆</strong>失敗を隠す文化では同じミスが繰り返される。透明な失敗共有が組織全体の学習速度を上げ、再発防止と革新の両方を実現する。</div>
+        <div class="ex-reason"><strong>この例が示すこと</strong>「Sunshine your mistakes」という原則が、率直さと透明性の文化を具体的な行動として体現している。</div>
+      </div>
+
+      <div class="example-card">
+        <div class="ex-head">
+          <span class="ex-icon">🌴</span>
+          <span class="ex-title">例3: 「休暇ノールール」— 原則一本化の実践</span>
+        </div>
+        <div class="ex-body">
+          <strong>背景:</strong> Netflixは休暇日数のルールを廃止し、「会社の利益のために最善を尽くす」という原則のみを掲げた。経費も同様に「Netflixの利益のために行動する」という一文のみ。管理職が自ら率先して休暇を取ることで、部下も安心して休める文化を作った。
+        </div>
+        <div class="ex-implication"><strong>示唆</strong>ルールを外すだけでは機能しない。リーダーが模範を示し、文化として定着させることが必要。前提となる人材水準と信頼がなければ逆効果になる。</div>
+        <div class="ex-reason"><strong>この例が示すこと</strong>自由と責任は制度設計だけでなく、リーダーの行動によって文化として根付く。段階的撤廃の重要性を示す実例。</div>
+      </div>
+
+      <div class="example-card">
+        <div class="ex-head">
+          <span class="ex-icon">🎬</span>
+          <span class="ex-title">例4: 「ブリリアント・ジャーク」の排除 — 協働の質を守る</span>
+        </div>
+        <div class="ex-body">
+          <strong>背景:</strong> 成果は高いが協働を損なう「ブリリアント・ジャーク」を採用・保持しないという原則。一人のジャークが周囲の率直さを奪い、フィードバック文化を破壊する。どれだけ個人の成果が高くても、組織全体への悪影響がそれを上回る。
+        </div>
+        <div class="ex-implication"><strong>示唆</strong>個人の天才性より、チームの協働の質が長期的な革新を生む。一人の例外が文化全体を毒す可能性がある。</div>
+        <div class="ex-reason"><strong>この例が示すこと</strong>タレント密度は「量」だけでなく「質（協働性）」も含む。ブリリアント・ジャーク禁止がスパイラル全体を守る防衛線になる。</div>
+      </div>
+
+      <div class="example-card">
+        <div class="ex-head">
+          <span class="ex-icon">🌏</span>
+          <span class="ex-title">例5: 日本オフィスでの率直さ導入 — 文化適応の実践</span>
+        </div>
+        <div class="ex-body">
+          <strong>背景:</strong> 階層意識が強く間接的なコミュニケーションが文化的規範である日本では、Netflixの直接的なフィードバック文化をそのまま適用することは困難。カルチャーマップを活用し、率直さの導入度合いと方法を現地文化に合わせて段階的に調整した。
+        </div>
+        <div class="ex-implication"><strong>示唆</strong>グローバル展開では「何を」だけでなく「どのように」が重要。文化的文脈を無視した一律適用は失敗を招く。</div>
+        <div class="ex-reason"><strong>この例が示すこと</strong>文化適応度を高めることでフィードバック受容が上がり、実装成功確率が高まる。普遍的な原則も土壌に合わせた適用が必要。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 4: 重要な引用 ===== -->
+  <div class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="section-title">✍️ 重要な引用・要旨</div>
+    <div class="quote-list">
+      <div class="quote-card">
+        <div class="q-text">"Lead with context, not control."</div>
+        <div class="q-badge">原文引用</div>
+        <div class="q-note">承認中心の管理を捨て、自律判断で速度と創造性を高める原則を端的に示す。本書全体のリーダーシップ哲学を一文で表した核心フレーズ。</div>
+      </div>
+
+      <div class="quote-card">
+        <div class="q-text">"Adequate performance gets a generous severance."</div>
+        <div class="q-badge">原文引用</div>
+        <div class="q-note">タレント密度を高め続ける核心的な人材基準を明確化する。「十分な成果」では不十分という厳しくも誠実な基準を示す。</div>
+      </div>
+
+      <div class="quote-card">
+        <div class="q-text">"Sunshine your mistakes."</div>
+        <div class="q-badge">原文引用</div>
+        <div class="q-note">失敗を隠さず共有し、学習を組織の資産に変える姿勢を表す。透明性と率直さの文化を行動レベルで体現した言葉。</div>
+      </div>
+
+      <div class="quote-card">
+        <div class="q-text">規則は優秀な人の速度を鈍らせる。自由と責任が成果を最大化する。</div>
+        <div class="q-badge">要旨</div>
+        <div class="q-note">本書の因果を一文で要約し、施策の方向性を定める。なぜ規則を減らすのかという問いへの直接的な答え。</div>
+      </div>
+
+      <div class="quote-card">
+        <div class="q-text">上司は答えを出す役でなく、情報と目的を示す役だ。</div>
+        <div class="q-badge">要旨</div>
+        <div class="q-note">コンテキスト型リーダーシップへの転換点を示す。マネジメントの役割定義を根本から変える視点。</div>
+      </div>
+    </div>
+
+    <!-- 関連書籍 -->
+    <div class="section-title" style="margin-top:24px;">📖 関連書籍</div>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="bk-title">カルチャー・マップ</div>
+        <div class="bk-author">エリン・メイヤー</div>
+        <div class="bk-rel">率直さや裁量導入の国際的適用に必須のフレーム。</div>
+      </div>
+      <div class="book-card">
+        <div class="bk-title">クリエイティブ・カンパニー</div>
+        <div class="bk-author">エド・キャットムル</div>
+        <div class="bk-rel">率直な対話と失敗共有で創造性を高める実践が呼応。</div>
+      </div>
+      <div class="book-card">
+        <div class="bk-title">HIGH OUTPUT MANAGEMENT</div>
+        <div class="bk-author">アンドリュー・グローブ</div>
+        <div class="bk-rel">目的・指標・レバレッジ思考がコンテキスト型リードを補強。</div>
+      </div>
+      <div class="book-card">
+        <div class="bk-title">Turn the Ship Around!</div>
+        <div class="bk-author">L・デビッド・マーケイ</div>
+        <div class="bk-rel">指示でなく意図を共有する自律型リーダーシップの具体例。</div>
+      </div>
+      <div class="book-card">
+        <div class="bk-title">ラディカル・キャンダー</div>
+        <div class="bk-author">キム・スコット</div>
+        <div class="bk-rel">思いやりと率直さの両立による健全なフィードバック文化。</div>
+      </div>
+      <div class="book-card">
+        <div class="bk-title">WORK RULES!</div>
+        <div class="bk-author">ラズロ・ボック</div>
+        <div class="bk-rel">自由と責任の設計をデータで裏づける人事の実践知。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 5: 今日のアクション ===== -->
+  <div class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="section-title">⚡ 今日15〜30分で実行できるアクション</div>
+
+    <!-- アクション進捗バー -->
+    <div style="background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:20px;">🎯</span>
+      <div style="flex:1;">
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">3つのアクションを実行すると…</div>
+        <div style="background:rgba(255,255,255,0.08);border-radius:20px;height:10px;overflow:hidden;">
+          <div style="width:0%;height:100%;background:linear-gradient(90deg,#4ecdc4,#f5a623);border-radius:20px;transition:width 1.5s ease;" id="progress-bar"></div>
+        </div>
+      </div>
+      <span style="font-size:13px;font-weight:700;color:#4ecdc4;" id="progress-text">0/3 完了</span>
+    </div>
+
+    <div class="action-list">
+      <div class="action-card">
+        <div class="ac-num">1</div>
+        <div class="ac-body">
+          <div class="ac-time">⏱️ 15〜20分</div>
+          <div class="ac-title">💬 同僚に4Aで1件フィードバックを送る</div>
+          <div class="ac-purpose">🎯 目的: 率直さの文化を自分から始める。4Aの型（Aim to Assist / Actionable / Appreciate / Accept or Discard）を実際に使ってみる。</div>
+          <div class="ac-effect">✨ 期待効果: フィードバックを「贈り物」として捉える習慣が身につき、組織の学習速度が上がる第一歩になる。相手との信頼関係も深まる。</div>
+          <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+            <span style="background:rgba(233,69,96,0.15);color:#ff8fa3;font-size:11px;padding:2px 8px;border-radius:20px;">Aim to Assist</span>
+            <span style="background:rgba(233,69,96,0.15);color:#ff8fa3;font-size:11px;padding:2px 8px;border-radius:20px;">Actionable</span>
+            <span style="background:rgba(233,69,96,0.15);color:#ff8fa3;font-size:11px;padding:2px 8px;border-radius:20px;">Appreciate</span>
+            <span style="background:rgba(233,69,96,0.15);color:#ff8fa3;font-size:11px;padding:2px 8px;border-radius:20px;">Accept or Discard</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="ac-num">2</div>
+        <div class="ac-body">
+          <div class="ac-time">⏱️ 20〜30分</div>
+          <div class="ac-title">🗺️ 次の重要決定の「文脈メモ」を書く</div>
+          <div class="ac-purpose">🎯 目的: コンテキスト型リードを実践する。目的・優先順位・指標・制約・リスクを1枚のメモにまとめ、チームと共有する準備をする。</div>
+          <div class="ac-effect">✨ 期待効果: チームが自律的に判断できる情報が整理され、承認待ちの時間が減る。意思決定の質と速度が同時に向上する。</div>
+          <div style="margin-top:8px;background:rgba(78,205,196,0.08);border-radius:var(--radius-sm);padding:8px 12px;">
+            <div style="font-size:11px;color:#4ecdc4;font-weight:700;margin-bottom:4px;">📝 メモに含める要素</div>
+            <div style="font-size:12px;color:var(--text-muted);">① 目的（なぜこの決定が必要か）　② 優先順位　③ 成功指標　④ 制約条件　⑤ 許容リスク</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="ac-num">3</div>
+        <div class="ac-body">
+          <div class="ac-time">⏱️ 15〜20分</div>
+          <div class="ac-title">📋 小さな承認ルールの廃止案を書く</div>
+          <div class="ac-purpose">🎯 目的: 段階的撤廃を実践する。自分の職場で「なくても機能する」小さな承認プロセスや規則を1つ特定し、廃止の提案書を書く。</div>
+          <div class="ac-effect">✨ 期待効果: 管理コストが減り、チームの自律性が高まる。小さな成功体験が「自由と責任」の文化への第一歩になる。</div>
+          <div style="margin-top:8px;background:rgba(245,166,35,0.08);border-radius:var(--radius-sm);padding:8px 12px;">
+            <div style="font-size:11px;color:var(--sub2);font-weight:700;margin-bottom:4px;">⚠️ 注意点</div>
+            <div style="font-size:12px;color:var(--text-muted);">前提: 人材水準と信頼が十分にある領域から始める。拙速な撤廃は逆効果。「原則一本化」で代替できるか確認する。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- チェックリスト -->
+    <div style="margin-top:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius);padding:16px;">
+      <div class="section-title">✅ 実行チェックリスト</div>
+      <div style="display:flex;flex-direction:column;gap:8px;" id="checklist">
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--text-muted);">
+          <input type="checkbox" data-action="1" style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer;" onchange="updateProgress()">
+          <span>💬 4Aフィードバックを1件送った</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--text-muted);">
+          <input type="checkbox" data-action="2" style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer;" onchange="updateProgress()">
+          <span>🗺️ 文脈メモを書いた</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:13px;color:var(--text-muted);">
+          <input type="checkbox" data-action="3" style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer;" onchange="updateProgress()">
+          <span>📋 承認ルール廃止案を書いた</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer" role="contentinfo">
+  <p>📚 NO RULES RULES インフォグラフィック</p>
+  <p style="margin-top:4px;">カラーパレット — プライマリー: #1a1a2e ／ セカンダリー: #16213e ／ アクセント: #e94560</p>
+</footer>
+
+<script>
+  // ===== TAB SWITCHING =====
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('aria-controls');
+      tabBtns.forEach(b => {
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabPanels.forEach(p => {
+        p.classList.remove('active');
+      });
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(target).classList.add('active');
+    });
+  });
+
+  // ===== PROGRESS BAR =====
+  function updateProgress() {
+    const checkboxes = document.querySelectorAll('#checklist input[type="checkbox"]');
+    let checked = 0;
+    checkboxes.forEach(cb => { if(cb.checked) checked++; });
+    const pct = (checked / 3) * 100;
+    const bar = document.getElementById('progress-bar');
+    const txt = document.getElementById('progress-text');
+    if(bar) bar.style.width = pct + '%';
+    if(txt) {
+      txt.textContent = checked + '/3 完了';
+      if(checked === 3) {
+        txt.textContent = '🎉 全完了！';
+        txt.style.color = '#f5a623';
+      }
+    }
+  }
+
+  // ===== ANIMATE BARS ON LOAD =====
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const fills = document.querySelectorAll('.bar-fill');
+      fills.forEach(f => {
+        const w = f.style.width;
+        f.style.width = '0%';
+        setTimeout(() => { f.style.width = w; }, 100);
+      });
+    }, 300);
+
+    // Animate progress bar init
+    const bar = document.getElementById('progress-bar');
+    if(bar) bar.style.width = '0%';
+  });
+
+  // ===== KEYBOARD NAVIGATION FOR TABS =====
+  document.querySelector('.tab-list').addEventListener('keydown', (e) => {
+    const tabs = Array.from(tabBtns);
+    const current = tabs.findIndex(t => t.getAttribute('aria-selected') === 'true');
+    let next = current;
+    if(e.key === 'ArrowRight') next = (current + 1) % tabs.length;
+    if(e.key === 'ArrowLeft') next = (current - 1 + tabs.length) % tabs.length;
+    if(next !== current) {
+      tabs[next].click();
+      tabs[next].focus();
+    }
+  });
+</script>
+</body>
+</html>
