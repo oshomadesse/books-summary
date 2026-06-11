@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>シングルタスク インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a1a2e
+  セカンダリー:  #16213e
+  アクセント:    #e94560
+  補助1:        #0f3460
+  補助2:        #f5a623
+-->
+<style>
+  :root {
+    --primary: #1a1a2e;
+    --secondary: #16213e;
+    --accent: #e94560;
+    --sub1: #0f3460;
+    --sub2: #f5a623;
+    --text: #e8e8f0;
+    --text-muted: #a0a0b8;
+    --card-bg: rgba(255,255,255,0.05);
+    --card-border: rgba(233,69,96,0.3);
+    --radius: 12px;
+    --shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--sub1) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ===== HEADER ===== */
+  .site-header {
+    background: linear-gradient(90deg, var(--accent) 0%, #c0392b 100%);
+    padding: 20px 16px 16px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(233,69,96,0.5);
+  }
+  .site-header h1 { font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 900; letter-spacing: 0.05em; }
+  .site-header p { font-size: 0.8rem; opacity: 0.85; margin-top: 4px; }
+
+  /* ===== HERO BLOCK ===== */
+  .hero {
+    background: linear-gradient(135deg, rgba(233,69,96,0.15) 0%, rgba(15,52,96,0.4) 100%);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    margin: 16px;
+    padding: 20px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media(min-width:640px){
+    .hero-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media(min-width:960px){
+    .hero-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  }
+  .hero-block {
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 14px;
+    border-left: 4px solid var(--accent);
+  }
+  .hero-block.why { border-left-color: var(--sub2); }
+  .hero-block.how { border-left-color: #4ecdc4; }
+  .hero-block.ans { border-left-color: #a29bfe; }
+  .hero-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 6px;
+  }
+  .hero-block h2 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+  .hero-block p, .hero-block li { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; }
+  .hero-block ul { padding-left: 14px; }
+  .hero-block li { margin-bottom: 4px; }
+
+  /* ===== TABS ===== */
+  .tabs-wrapper { margin: 0 16px 16px; }
+  .tab-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .tab-list::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text-muted);
+    border-radius: 20px;
+    padding: 8px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { background: rgba(233,69,96,0.2); color: var(--text); }
+  .tab-btn[aria-selected="true"] {
+    background: linear-gradient(90deg, var(--accent), #c0392b);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 2px 12px rgba(233,69,96,0.5);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  @media(min-width:540px){ .card-grid { grid-template-columns: 1fr 1fr; } }
+  @media(min-width:900px){ .card-grid { grid-template-columns: 1fr 1fr 1fr; } }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.5); }
+  .card-icon { font-size: 1.8rem; margin-bottom: 8px; }
+  .card h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 4px; color: #fff; }
+  .card .card-sub { font-size: 0.72rem; color: var(--accent); font-weight: 700; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .card ul { padding-left: 0; list-style: none; }
+  .card ul li { font-size: 0.8rem; color: var(--text-muted); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 6px; }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li::before { content: '▸'; color: var(--accent); flex-shrink: 0; }
+  .reason-box {
+    margin-top: 10px;
+    background: rgba(233,69,96,0.1);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 0.75rem;
+    color: #ffb3c1;
+  }
+  .reason-box strong { color: var(--accent); }
+
+  /* ===== CHAPTER CARDS ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(245,166,35,0.3);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .chapter-num {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--sub2), #e67e22);
+    color: #1a1a2e;
+    font-size: 0.65rem;
+    font-weight: 900;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+  }
+  .chapter-card h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 8px; }
+  .chapter-card ul { padding-left: 0; list-style: none; }
+  .chapter-card ul li { font-size: 0.8rem; color: var(--text-muted); padding: 3px 0; display: flex; gap: 6px; }
+  .chapter-card ul li::before { content: '✦'; color: var(--sub2); flex-shrink: 0; font-size: 0.65rem; margin-top: 3px; }
+  .chapter-reason {
+    margin-top: 10px;
+    background: rgba(245,166,35,0.1);
+    border-left: 3px solid var(--sub2);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 0.75rem;
+    color: #ffe0a0;
+  }
+
+  /* ===== FLOW DIAGRAM ===== */
+  .flow-section { margin-top: 14px; }
+  .flow-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 10px; color: var(--text-muted); }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .flow-node {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .flow-node.bad { border-color: rgba(233,69,96,0.5); color: #ff8fa3; }
+  .flow-node.good { border-color: rgba(78,205,196,0.5); color: #4ecdc4; }
+  .flow-arrow { color: var(--text-muted); font-size: 0.9rem; }
+
+  /* ===== EXAMPLES ===== */
+  .example-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(78,205,196,0.3);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .example-badge {
+    display: inline-block;
+    background: linear-gradient(90deg, #4ecdc4, #2ecc71);
+    color: #1a1a2e;
+    font-size: 0.65rem;
+    font-weight: 900;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+  .example-card h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 8px; }
+  .example-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  @media(max-width:480px){ .example-meta { grid-template-columns: 1fr; } }
+  .example-meta-item { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 8px; }
+  .example-meta-label { font-size: 0.65rem; color: #4ecdc4; font-weight: 700; margin-bottom: 3px; }
+  .example-meta-text { font-size: 0.78rem; color: var(--text-muted); }
+  .example-reason {
+    margin-top: 10px;
+    background: rgba(78,205,196,0.1);
+    border-left: 3px solid #4ecdc4;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 0.75rem;
+    color: #a0f0eb;
+  }
+
+  /* ===== QUOTES ===== */
+  .quote-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(162,155,254,0.3);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .quote-mark {
+    font-size: 3rem;
+    color: rgba(162,155,254,0.3);
+    line-height: 1;
+    position: absolute;
+    top: 8px;
+    left: 14px;
+    font-family: Georgia, serif;
+  }
+  .quote-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #d0ccff;
+    padding-left: 28px;
+    padding-top: 10px;
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .quote-note {
+    margin-top: 10px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    padding-left: 28px;
+  }
+  .quote-tag {
+    display: inline-block;
+    background: rgba(162,155,254,0.2);
+    color: #a29bfe;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+
+  /* ===== ACTIONS ===== */
+  .action-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(245,166,35,0.4);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-num {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), #c0392b);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 900;
+    color: #fff;
+  }
+  .action-body h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 6px; }
+  .action-body p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+  .action-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .action-tag {
+    font-size: 0.68rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+  .tag-purpose { background: rgba(233,69,96,0.2); color: #ff8fa3; }
+  .tag-effect { background: rgba(78,205,196,0.2); color: #4ecdc4; }
+
+  /* ===== CHART SECTION ===== */
+  .chart-section { margin-top: 14px; }
+  .chart-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 12px; color: var(--text-muted); }
+  .bar-row { margin-bottom: 12px; }
+  .bar-label { font-size: 0.78rem; margin-bottom: 4px; display: flex; justify-content: space-between; }
+  .bar-track { background: rgba(255,255,255,0.08); border-radius: 20px; height: 14px; overflow: hidden; }
+  .bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    transition: width 1s ease;
+  }
+  .bar-fill.bad { background: linear-gradient(90deg, var(--accent), #c0392b); }
+  .bar-fill.good { background: linear-gradient(90deg, #4ecdc4, #2ecc71); }
+
+  /* ===== RELATED BOOKS ===== */
+  .books-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  @media(min-width:540px){ .books-grid { grid-template-columns: 1fr 1fr; } }
+  .book-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    padding: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .book-icon { font-size: 1.8rem; flex-shrink: 0; }
+  .book-title { font-size: 0.85rem; font-weight: 800; margin-bottom: 3px; }
+  .book-author { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; }
+  .book-rel { font-size: 0.75rem; color: #a29bfe; }
+
+  /* ===== SVG DIAGRAM ===== */
+  .svg-wrap { overflow-x: auto; margin-top: 14px; }
+  svg text { font-family: 'Hiragino Kaku Gothic ProN', sans-serif; }
+
+  /* ===== SECTION TITLE ===== */
+  .section-title {
+    font-size: 1rem;
+    font-weight: 900;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-desc { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 14px; }
+
+  /* ===== BADGE ===== */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--accent), #c0392b);
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 900;
+    border-radius: 12px;
+    padding: 10px 18px;
+    box-shadow: 0 4px 14px rgba(233,69,96,0.4);
+  }
+  .badge-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 14px 0; }
+  .badge-item { text-align: center; }
+  .badge-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 20px 16px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header" role="banner">
+  <h1>🎯 シングルタスク完全ガイド</h1>
+  <p>一点集中で成果・信頼・満足を同時に最大化する</p>
+</header>
+
+<!-- ===== HERO BLOCK ===== -->
+<section class="hero" aria-label="エグゼクティブサマリー">
+  <div class="section-title" style="margin-bottom:12px;">📌 ここだけ見れば全体がわかる</div>
+  <div class="hero-grid">
+    <div class="hero-block">
+      <div class="hero-label">❓ 問い</div>
+      <h2>なぜ忙しいのに成果も満足も伸びないのか？</h2>
+      <p>少ない労力で高品質な結果と良好な関係を両立するには？</p>
+    </div>
+    <div class="hero-block ans">
+      <div class="hero-label">💡 答え</div>
+      <h2>マルチタスクが生産性・創造性・信頼を同時に下げている</h2>
+      <p>シングルタスクに切り替え、注意を一箇所に集約すれば速度・精度・満足度が一気に改善する。</p>
+    </div>
+    <div class="hero-block why">
+      <div class="hero-label">🔍 Why（なぜ）</div>
+      <ul>
+        <li>脳は並列処理できず、切替ごとに時間とエネルギーを失う（切替コスト）</li>
+        <li>未完了タスクの痕跡（注意の残渣）が集中を阻害し、エラー率とストレスが上がる</li>
+      </ul>
+    </div>
+    <div class="hero-block how">
+      <div class="hero-label">🛠 How（どうする）</div>
+      <ul>
+        <li>作業を"今やる一つ"に明確化し、時間・環境・儀式で保護する</li>
+        <li>メール・会議・対話など状況別に単一タスクのルールを運用する</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 数値バッジ -->
+  <div class="badge-row" style="margin-top:16px;">
+    <div class="badge-item">
+      <div class="badge">9つ</div>
+      <div class="badge-label">主要概念</div>
+    </div>
+    <div class="badge-item">
+      <div class="badge" style="background:linear-gradient(135deg,var(--sub2),#e67e22);color:#1a1a2e;">8章</div>
+      <div class="badge-label">論理展開</div>
+    </div>
+    <div class="badge-item">
+      <div class="badge" style="background:linear-gradient(135deg,#4ecdc4,#2ecc71);color:#1a1a2e;">3件</div>
+      <div class="badge-label">具体例</div>
+    </div>
+    <div class="badge-item">
+      <div class="badge" style="background:linear-gradient(135deg,#a29bfe,#6c5ce7);">4冊</div>
+      <div class="badge-label">関連書籍</div>
+    </div>
+  </div>
+
+  <!-- 因果フロー図 -->
+  <div class="flow-section">
+    <div class="flow-title">📊 マルチタスク vs シングルタスク 因果フロー</div>
+    <div class="flow-row">
+      <span class="flow-node bad">マルチタスク</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node bad">切替コスト↑</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node bad">エラー率↑</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node bad">満足度↓</span>
+    </div>
+    <div class="flow-row">
+      <span class="flow-node good">シングルタスク</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node good">没入時間↑</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node good">成果品質↑</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-node good">信頼↑</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TABS ===== -->
+<div class="tabs-wrapper">
+  <div class="tab-list" role="tablist" aria-label="コンテンツタブ">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧠 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">💡 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">⚡ 今日のアクション</button>
+  </div>
+
+  <!-- ===== TAB 1: 主要概念 ===== -->
+  <div class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="section-title">🧠 主要概念の詳細</div>
+    <div class="section-desc">初見でも理解できるよう噛み砕いた9つの核心概念。各概念の「なぜ重要か」を明示。</div>
+
+    <!-- 視覚化：効果比較バーチャート -->
+    <div class="chart-section">
+      <div class="chart-title">📈 マルチタスク vs シングルタスク 効果比較（相対値）</div>
+      <div class="bar-row">
+        <div class="bar-label"><span>⚡ 作業速度</span><span>マルチ:40 / シングル:90</span></div>
+        <div class="bar-track"><div class="bar-fill bad" style="width:40%"></div></div>
+        <div class="bar-track" style="margin-top:4px;"><div class="bar-fill good" style="width:90%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>🎯 精度・品質</span><span>マルチ:35 / シングル:88</span></div>
+        <div class="bar-track"><div class="bar-fill bad" style="width:35%"></div></div>
+        <div class="bar-track" style="margin-top:4px;"><div class="bar-fill good" style="width:88%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>🤝 信頼・関係性</span><span>マルチ:30 / シングル:85</span></div>
+        <div class="bar-track"><div class="bar-fill bad" style="width:30%"></div></div>
+        <div class="bar-track" style="margin-top:4px;"><div class="bar-fill good" style="width:85%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>😌 ストレス低減</span><span>マルチ:20 / シングル:80</span></div>
+        <div class="bar-track"><div class="bar-fill bad" style="width:20%"></div></div>
+        <div class="bar-track" style="margin-top:4px;"><div class="bar-fill good" style="width:80%"></div></div>
+      </div>
+      <div style="font-size:0.68rem;color:var(--text-muted);margin-top:6px;">🔴 マルチタスク　🟢 シングルタスク（概念的相対値）</div>
+    </div>
+
+    <!-- SVG 概念マップ -->
+    <div class="svg-wrap" aria-label="概念関係図">
+      <svg width="600" height="320" viewBox="0 0 600 320" style="max-width:100%;display:block;margin:0 auto;">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#e94560"/>
+          </marker>
+          <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#4ecdc4"/>
+          </marker>
+        </defs>
+        <!-- Center node -->
+        <ellipse cx="300" cy="160" rx="70" ry="36" fill="#e94560" opacity="0.9"/>
+        <text x="300" y="155" text-anchor="middle" fill="white" font-size="13" font-weight="bold">シングル</text>
+        <text x="300" y="172" text-anchor="middle" fill="white" font-size="13" font-weight="bold">タスク</text>
+        <!-- Surrounding nodes -->
+        <rect x="10" y="20" width="110" height="40" rx="10" fill="rgba(233,69,96,0.25)" stroke="#e94560" stroke-width="1"/>
+        <text x="65" y="38" text-anchor="middle" fill="#ff8fa3" font-size="11" font-weight="bold">マルチタスク</text>
+        <text x="65" y="52" text-anchor="middle" fill="#ff8fa3" font-size="10">神話</text>
+        <rect x="10" y="130" width="110" height="40" rx="10" fill="rgba(233,69,96,0.2)" stroke="#e94560" stroke-width="1"/>
+        <text x="65" y="148" text-anchor="middle" fill="#ff8fa3" font-size="11" font-weight="bold">切替コスト</text>
+        <text x="65" y="162" text-anchor="middle" fill="#ff8fa3" font-size="10">再起動のムダ</text>
+        <rect x="10" y="240" width="110" height="40" rx="10" fill="rgba(233,69,96,0.2)" stroke="#e94560" stroke-width="1"/>
+        <text x="65" y="258" text-anchor="middle" fill="#ff8fa3" font-size="11" font-weight="bold">注意の残渣</text>
+        <text x="65" y="272" text-anchor="middle" fill="#ff8fa3" font-size="10">思考の尾</text>
+        <rect x="480" y="20" width="110" height="40" rx="10" fill="rgba(78,205,196,0.2)" stroke="#4ecdc4" stroke-width="1"/>
+        <text x="535" y="38" text-anchor="middle" fill="#4ecdc4" font-size="11" font-weight="bold">境界管理</text>
+        <text x="535" y="52" text-anchor="middle" fill="#4ecdc4" font-size="10">集中の防波堤</text>
+        <rect x="480" y="130" width="110" height="40" rx="10" fill="rgba(78,205,196,0.2)" stroke="#4ecdc4" stroke-width="1"/>
+        <text x="535" y="148" text-anchor="middle" fill="#4ecdc4" font-size="11" font-weight="bold">注意の儀式</text>
+        <text x="535" y="162" text-anchor="middle" fill="#4ecdc4" font-size="10">集中トリガー</text>
+        <rect x="480" y="240" width="110" height="40" rx="10" fill="rgba(78,205,196,0.2)" stroke="#4ecdc4" stroke-width="1"/>
+        <text x="535" y="258" text-anchor="middle" fill="#4ecdc4" font-size="11" font-weight="bold">バッチ処理</text>
+        <text x="535" y="272" text-anchor="middle" fill="#4ecdc4" font-size="10">まとめ撃ち</text>
+        <rect x="220" y="270" width="110" height="40" rx="10" fill="rgba(162,155,254,0.2)" stroke="#a29bfe" stroke-width="1"/>
+        <text x="275" y="288" text-anchor="middle" fill="#a29bfe" font-size="11" font-weight="bold">マイクロ</text>
+        <text x="275" y="302" text-anchor="middle" fill="#a29bfe" font-size="10">ステップ</text>
+        <rect x="220" y="10" width="110" height="40" rx="10" fill="rgba(245,166,35,0.2)" stroke="#f5a623" stroke-width="1"/>
+        <text x="275" y="28" text-anchor="middle" fill="#f5a623" font-size="11" font-weight="bold">対人の</text>
+        <text x="275" y="42" text-anchor="middle" fill="#f5a623" font-size="10">単一タスク</text>
+        <!-- Arrows bad -->
+        <line x1="120" y1="40" x2="228" y2="140" stroke="#e94560" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
+        <line x1="120" y1="150" x2="228" y2="155" stroke="#e94560" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
+        <line x1="120" y1="260" x2="228" y2="175" stroke="#e94560" stroke-width="1.5" marker-end="url(#arrow)" opacity="0.7"/>
+        <!-- Arrows good -->
+        <line x1="480" y1="40" x2="372" y2="140" stroke="#4ecdc4" stroke-width="1.5" marker-end="url(#arrow-green)" opacity="0.7"/>
+        <line x1="480" y1="150" x2="372" y2="155" stroke="#4ecdc4" stroke-width="1.5" marker-end="url(#arrow-green)" opacity="0.7"/>
+        <line x1="480" y1="260" x2="372" y2="175" stroke="#4ecdc4" stroke-width="1.5" marker-end="url(#arrow-green)" opacity="0.7"/>
+        <line x1="275" y1="270" x2="290" y2="196" stroke="#a29bfe" stroke-width="1.5" marker-end="url(#arrow-green)" opacity="0.7"/>
+        <line x1="275" y1="50" x2="290" y2="124" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow-green)" opacity="0.7"/>
+        <!-- Legend -->
+        <rect x="10" y="295" width="12" height="12" fill="#e94560" rx="2"/>
+        <text x="26" y="305" fill="#ff8fa3" font-size="10">阻害要因</text>
+        <rect x="90" y="295" width="12" height="12" fill="#4ecdc4" rx="2"/>
+        <text x="106" y="305" fill="#4ecdc4" font-size="10">促進要因</text>
+      </svg>
+    </div>
+
+    <!-- 概念カード -->
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h3>シングルタスク</h3>
+        <div class="card-sub">一点集中</div>
+        <ul>
+          <li>任意の瞬間に一つの対象に全注意を向ける</li>
+          <li>完了または明確な中間到達点まで没入する</li>
+          <li>生産性と信頼を同時に高める働き方</li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>脳の注意資源は有限で、分散させると全てが中途半端になる。一点集中が最短ルート。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚫</div>
+        <h3>マルチタスク神話</h3>
+        <div class="card-sub">同時進行の罠</div>
+        <ul>
+          <li>同時並行で成果が上がるという誤信</li>
+          <li>実際は高速切替に伴う低効率・高エラー化</li>
+          <li>「こなしている感」と実際の成果は別物</li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>この神話を信じ続ける限り、忙しいのに成果が出ない状態が続く。まず誤信を解体する必要がある。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⏱️</div>
+        <h3>切替コスト</h3>
+        <div class="card-sub">再起動のムダ</div>
+        <ul>
+          <li>タスクを切り替えるたびに再集中の損失が発生</li>
+          <li>短時間の通知でも累積で大きなロスになる</li>
+          <li>時間的・認知的エネルギーを両方消耗する</li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>見えないコストが積み重なり、1日の生産時間を大幅に削る。可視化して初めて対策できる。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">👻</div>
+        <h3>注意の残渣</h3>
+        <div class="card-sub">思考の尾</div>
+        <ul>
+          <li>直前の未完了タスクへの思考の名残り</li>
+          <li>現タスクの集中を侵食する現象</li>
+          <li>質の高い没入を阻む見えない障害</li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>タスクを切り替えても脳は前のタスクを引きずる。これを知ることで「完了してから次へ」の重要性がわかる。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <h3>境界管理</h3>
+        <div class="card-sub">集中の防波堤</div>
+        <ul>
+          <li>時間・場所・ルールで注意の境界を守る</li>
+          <li>物理的・社会的に割り込みを予防する</li>
+          <li>集中を保全するための環境設計</li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>意志力だけで集中を守るのは限界がある。仕組みで守ることで持続可能な集中が実現する。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔔</div>
+        <h3>注意の儀式</h3>
+        <div class="card-sub">集中トリガー</div>
+        <ul>
+          <li>開始・継続・終了の小さな合図を設ける</li>
+          <li>深呼吸・1行メモ・タイマーなどが有効</li>
+          <li>集中状態を誘発・維持する条件付け</li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>儀式は脳に「今から集中モード」と信号を送る。繰り返すことで自動的に没入できるようになる。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <h3>バッチ処理</h3>
+        <div class="card-sub">まとめ撃ち</div>
+        <ul>
+          <li>性質が近い軽量タスクを時刻指定でまとめる</li>
+          <li>メール・チャット等を一括処理する</li>
+          <li>深い仕事を割り込みから守る戦略</li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>都度対応は切替コストの塊。まとめることで連続思考の時間を確保し、深い仕事の質が上がる。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">👁️</div>
+        <h3>対人の単一タスク</h3>
+        <div class="card-sub">相手に全集中</div>
+        <ul>
+          <li>会話・会議で相手に全注意を向ける</li>
+          <li>同時作業をしない姿勢を貫く</li>
+          <li>理解精度と信頼残高を高める</li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>生産性だけでなく人間関係の質もシングルタスクで改善する。相手への全注意が最強の信頼構築法。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🪜</div>
+        <h3>マイクロステップ</h3>
+        <div class="card-sub">小さく始める</div>
+        <ul>
+          <li>タスクを最小単位に分解して今すぐ動く</li>
+          <li>着手障壁を下げて先延ばしを断つ</li>
+          <li>小さな進捗が慣性を生み継続につながる</li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>「始められない」が最大の障壁。最小単位に分解することで脳の抵抗を消し、行動の連鎖を起こす。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 2: 各章の要約 ===== -->
+  <div class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="section-title">📖 各章の要約</div>
+    <div class="section-desc">論理展開の流れを8つのフェーズで整理。各章が「なぜ必要か」を明示。</div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">PHASE 1</div>
+      <h3>🚨 問題提起：マルチタスク礼賛の実態</h3>
+      <ul>
+        <li>「同時にこなせる人が優秀」という文化的誤信が蔓延している</li>
+        <li>個人・組織レベルで生産性・創造性・信頼が損なわれている</li>
+        <li>忙しさと成果の乖離が拡大し続けている現状を可視化</li>
+      </ul>
+      <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>問題を認識しなければ解決策を受け入れられない。まず「自分もやっている」と気づかせることが変化の出発点。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">PHASE 2</div>
+      <h3>🧬 科学的背景：脳の注意資源の限界</h3>
+      <ul>
+        <li>脳は並列処理ではなく高速の逐次切替しかできない</li>
+        <li>切替コストと注意の残渣が効率低下の主因と科学的に説明</li>
+        <li>「マルチタスクできる人」は存在せず、全員が損失を被っている</li>
+      </ul>
+      <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>感覚論ではなく脳科学の根拠を示すことで、シングルタスクへの転換を「選択」ではなく「必然」として位置づける。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">PHASE 3</div>
+      <h3>📐 原則提示：シングルタスクの定義と意図的注意配分</h3>
+      <ul>
+        <li>"今やる一つ"を明確化することが全ての起点</li>
+        <li>意図的に注意を配分するシングルタスク原則を定義</li>
+        <li>完了または明確な中間到達点まで没入することを原則とする</li>
+      </ul>
+      <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>問題と原因を理解した後、具体的な行動原則を示すことで「何をすればいいか」の方向性を与える。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">PHASE 4</div>
+      <h3>🏗️ 環境設計：時間・空間・ツールの整備</h3>
+      <ul>
+        <li>時間のブロック化で深い仕事の枠を確保する</li>
+        <li>空間の視覚ノイズ削減で認知負荷を下げる</li>
+        <li>通知管理ツールの設定で割り込みを物理的に遮断する</li>
+      </ul>
+      <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>意志力だけでは集中を守れない。環境を先に設計することで、シングルタスクが「デフォルト」になる。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">PHASE 5</div>
+      <h3>💼 実践1（個人作業）：深い仕事を守る技術</h3>
+      <ul>
+        <li>バッチ処理でメール・チャットを時刻指定でまとめて処理</li>
+        <li>開始・終了の儀式で集中状態を誘発・維持する</li>
+        <li>マイクロステップで先延ばしを断ち着手の慣性を作る</li>
+      </ul>
+      <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>原則を個人の日常作業に落とし込む具体的な技術を提供し、「明日から使える」実践力を与える。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">PHASE 6</div>
+      <h3>🤝 実践2（コミュニケーション）：会議・対話の単一タスク</h3>
+      <ul>
+        <li>会議・1on1で相手に全注意を向け同時作業をしない</li>
+        <li>端的なアジェンダで会議の焦点を一つに絞る</li>
+        <li>傾聴の技術で理解精度と信頼残高を高める</li>
+      </ul>
+      <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>シングルタスクは個人作業だけでなく対人関係にも適用できる。信頼構築という副次効果を示す。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">PHASE 7</div>
+      <h3>📱 実践3（デジタル）：メール・SNS・チャットのルール化</h3>
+      <ul>
+        <li>メール・SNS・チャットへの対応を窓口化・時間限定化</li>
+        <li>個人ルールをチームに展開し組織全体の割り込みを減らす</li>
+        <li>デジタルツールを「主人」ではなく「道具」として使う</li>
+      </ul>
+      <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>現代の最大の集中阻害要因はデジタル通知。個人だけでなくチームレベルで対策することで効果が倍増する。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">PHASE 8</div>
+      <h3>🌱 習慣化と文化：小さく始め組織へ波及させる</h3>
+      <ul>
+        <li>小さく始め指標化（割り込み回数・連続集中時間）で継続する</li>
+        <li>自己効力感の積み上げがシングルタスクを習慣にする</li>
+        <li>個人の変化が組織文化へ波及し集団的な生産性向上につながる</li>
+      </ul>
+      <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>知識を行動に変え、行動を習慣に変えるための実装論。三日坊主を防ぎ、長期的な変化を実現する締めくくり。</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: 具体例 ===== -->
+  <div class="tab-panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="section-title">💡 具体例・ケース・メタファー</div>
+    <div class="section-desc">核心メッセージが伝わる3つの実例。背景・示唆・「この例が示すこと」を明示。</div>
+
+    <div class="example-card">
+      <div class="example-badge">CASE 01</div>
+      <h3>🖥️ 会議中のノートPC作業：信頼を失う瞬間</h3>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:10px;">会議中にメールを確認しながら「聞いています」と言う場面は多くの職場で日常的に起きている。</p>
+      <div class="example-meta">
+        <div class="example-meta-item">
+          <div class="example-meta-label">📋 背景</div>
+          <div class="example-meta-text">参加者の多くが会議中に別作業をしており、発言者は「聞かれていない」と感じている。</div>
+        </div>
+        <div class="example-meta-item">
+          <div class="example-meta-label">💡 示唆</div>
+          <div class="example-meta-text">PCを閉じ相手に全注意を向けるだけで、発言者の信頼感と会議の質が劇的に変わる。</div>
+        </div>
+      </div>
+      <div class="example-reason"><strong>この例が示すこと：</strong>対人の単一タスクは最もコストゼロで最も即効性のある信頼構築法。「聞く」という行為自体がシングルタスクの実践であり、関係性の資産を積み上げる。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-badge">CASE 02</div>
+      <h3>📧 メール常時監視 vs バッチ処理：1日の生産時間の差</h3>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:10px;">メール通知が来るたびに確認する習慣は、1日に数十回の切替コストを生んでいる。</p>
+      <div class="example-meta">
+        <div class="example-meta-item">
+          <div class="example-meta-label">📋 背景</div>
+          <div class="example-meta-text">通知確認後に元の作業に戻るまで平均23分かかるという研究がある（本書の根拠として言及）。</div>
+        </div>
+        <div class="example-meta-item">
+          <div class="example-meta-label">💡 示唆</div>
+          <div class="example-meta-text">メール確認を朝・昼・夕の3回に限定するだけで、深い仕事の連続時間が大幅に増加する。</div>
+        </div>
+      </div>
+      <div class="example-reason"><strong>この例が示すこと：</strong>バッチ処理は「後回し」ではなく「まとめ撃ち」という戦略。切替コストを意識的に削減することで、同じ時間でも成果の密度が変わることを示す。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-badge">CASE 03</div>
+      <h3>🪟 ブラウザの複数タブ：注意の残渣のメタファー</h3>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:10px;">20個のタブを開いたまま作業する状態は、脳の中で起きていることの視覚的な比喩として機能する。</p>
+      <div class="example-meta">
+        <div class="example-meta-item">
+          <div class="example-meta-label">📋 背景</div>
+          <div class="example-meta-text">多くのタブを開くほどPCが重くなるように、未完了タスクが多いほど脳のパフォーマンスが落ちる。</div>
+        </div>
+        <div class="example-meta-item">
+          <div class="example-meta-label">💡 示唆</div>
+          <div class="example-meta-text">タブを閉じる（＝タスクを完了するか明示的に保留する）ことで、脳のワーキングメモリが解放される。</div>
+        </div>
+      </div>
+      <div class="example-reason"><strong>この例が示すこと：</strong>注意の残渣という抽象概念を「PCのタブ」という誰もが経験する現象に置き換えることで、脳内で起きていることを直感的に理解させる強力なメタファー。</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 4: 重要な引用 ===== -->
+  <div class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="section-title">💬 重要な引用・要旨</div>
+    <div class="section-desc">核心を突く4つのフレーズ。各引用が「なぜ重要か」を一言で補足。</div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-tag">要旨</div>
+      <div class="quote-text">私たちは同時に二つをこなしているのではなく、瞬間ごとに注意を切り替えているだけだ。</div>
+      <div class="quote-note">💡 <strong>なぜ重要か：</strong>マルチタスクの実像を示し、効率低下のメカニズムを理解させる。「できている」という錯覚を解体する一文。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-tag">要旨</div>
+      <div class="quote-text">最も希少な資源は時間ではなく注意である。</div>
+      <div class="quote-note">💡 <strong>なぜ重要か：</strong>投資先（注意）の選択こそ成果と満足を決める指針となる。時間管理から注意管理へのパラダイムシフトを促す。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-tag">要旨</div>
+      <div class="quote-text">相手に全注意を向けることは、最も簡単で強力な信頼構築の方法だ。</div>
+      <div class="quote-note">💡 <strong>なぜ重要か：</strong>生産性だけでなく対人関係の質向上がシングルタスクの利益であると示す。コストゼロで最大の効果を生む行動原則。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-tag">要旨</div>
+      <div class="quote-text">小さく始め、続けるための仕組みを先に作る。</div>
+      <div class="quote-note">💡 <strong>なぜ重要か：</strong>習慣化の実務原則を示し、三日坊主を防ぐ実装論になる。「やる気」ではなく「仕組み」で継続する考え方の核心。</div>
+    </div>
+
+    <!-- 関連書籍 -->
+    <div class="section-title" style="margin-top:20px;">📚 関連書籍</div>
+    <div class="section-desc">シングルタスクの理解を深める4冊。</div>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="book-icon">📗</div>
+        <div>
+          <div class="book-title">エッセンシャル思考</div>
+          <div class="book-author">グレッグ・マキューン</div>
+          <div class="book-rel">重要な少数に集中する意思決定の枠組みがシングルタスクの前提を補強する。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📘</div>
+        <div>
+          <div class="book-title">The ONE Thing</div>
+          <div class="book-author">ゲイリー・ケラー／ジェイ・パパサン</div>
+          <div class="book-rel">"今やる一つ"を特定し集中する実践が強く重なる。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📙</div>
+        <div>
+          <div class="book-title">深い仕事（Deep Work）</div>
+          <div class="book-author">カル・ニューポート</div>
+          <div class="book-rel">没入の価値と割り込み対策を科学的に掘り下げ、運用ルールの参考になる。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📕</div>
+        <div>
+          <div class="book-title">Make Time</div>
+          <div class="book-author">ジェイク・ナップ／ジョン・ゼラツキー</div>
+          <div class="book-rel">日次の焦点設定と通知対策など、単一タスクを支える具体技が豊富。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TAB 5: 今日のアクション ===== -->
+  <div class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="section-title">⚡ 今日のアクション</div>
+    <div class="section-desc">今すぐ15〜30分で実行できる3つの行動。目的と期待効果を明示。</div>
+
+    <!-- アクション進捗バー -->
+    <div class="chart-section" style="margin-bottom:16px;">
+      <div class="chart-title">🕐 所要時間の目安</div>
+      <div class="bar-row">
+        <div class="bar-label"><span>① 30分の単一タスク時間を確保</span><span>5分</span></div>
+        <div class="bar-track"><div class="bar-fill good" style="width:17%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>② 通知を全停止し作業環境を整える</span><span>10分</span></div>
+        <div class="bar-track"><div class="bar-fill good" style="width:33%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>③ 今やる1つを書き出し着手する</span><span>15分</span></div>
+        <div class="bar-track"><div class="bar-fill good" style="width:50%"></div></div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <h3>⏰ 30分の単一タスク時間を確保する</h3>
+        <p>カレンダーに「集中ブロック」として30分を今日中に予約する。会議や通知が入らない時間帯を選ぶ。</p>
+        <div class="action-tags">
+          <span class="action-tag tag-purpose">🎯 目的：深い仕事のための時間を物理的に守る</span>
+          <span class="action-tag tag-effect">✨ 期待効果：割り込みゼロの連続集中時間が生まれ、1時間分の成果を30分で出せる</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <h3>🔕 通知を全停止し作業環境を整える</h3>
+        <p>スマホ・PC・チャットツールの通知を全てオフにする。不要なブラウザタブを閉じ、デスクの視覚ノイズを除去する。</p>
+        <div class="action-tags">
+          <span class="action-tag tag-purpose">🎯 目的：切替コストの発生源を物理的に排除する</span>
+          <span class="action-tag tag-effect">✨ 期待効果：注意の残渣が減り、集中の質と持続時間が向上する</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <h3>✍️ 今やる1つを書き出し着手する</h3>
+        <p>紙またはメモアプリに「今日最も重要な1つのタスク」を書く。マイクロステップに分解し、最初の5分だけ始める。</p>
+        <div class="action-tags">
+          <span class="action-tag tag-purpose">🎯 目的：注意の焦点を明確化し先延ばしを断つ</span>
+          <span class="action-tag tag-effect">✨ 期待効果：着手の慣性が生まれ、自己効力感が高まり継続しやすくなる</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 実践チェックリスト -->
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(78,205,196,0.3);border-radius:var(--radius);padding:16px;margin-top:14px;">
+      <div class="section-title" style="font-size:0.9rem;margin-bottom:10px;">✅ 今週の実践チェックリスト</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="font-size:0.78rem;color:var(--text-muted);padding:6px;background:rgba(255,255,255,0.04);border-radius:8px;">☐ 毎朝「今日の1つ」を書く</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);padding:6px;background:rgba(255,255,255,0.04);border-radius:8px;">☐ メール確認を3回に限定</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);padding:6px;background:rgba(255,255,255,0.04);border-radius:8px;">☐ 会議中PCを閉じる</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);padding:6px;background:rgba(255,255,255,0.04);border-radius:8px;">☐ 集中ブロックを毎日確保</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);padding:6px;background:rgba(255,255,255,0.04);border-radius:8px;">☐ 開始の儀式を1つ決める</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);padding:6px;background:rgba(255,255,255,0.04);border-radius:8px;">☐ 割り込み回数を記録する</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>🎨 カラーパレット：プライマリー #1a1a2e ／ セカンダリー #16213e ／ アクセント #e94560</p>
+  <p style="margin-top:4px;">本インフォグラフィックは提供されたリサーチ内容に基づき生成されました。</p>
+</footer>
+
+<script>
+  (function() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        const target = this.getAttribute('aria-controls');
+        tabs.forEach(function(t) {
+          t.setAttribute('aria-selected', 'false');
+        });
+        panels.forEach(function(p) {
+          p.classList.remove('active');
+        });
+        this.setAttribute('aria-selected', 'true');
+        var panel = document.getElementById(target);
+        if (panel) {
+          panel.classList.add('active');
+          // Animate bars when concepts tab is shown
+          if (target === 'panel-concepts') {
+            animateBars();
+          }
+        }
+      });
+    });
+
+    function animateBars() {
+      var fills = document.querySelectorAll('.bar-fill');
+      fills.forEach(function(fill) {
+        var w = fill.style.width;
+        fill.style.width = '0%';
+        setTimeout(function() {
+          fill.style.width = w;
+        }, 50);
+      });
+    }
+
+    // Initial animation
+    setTimeout(animateBars, 300);
+  })();
+</script>
+</body>
+</html>
