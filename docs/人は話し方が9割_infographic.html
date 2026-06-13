@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>話し方の本質 インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #2D6A9F
+  セカンダリー:  #1A3A5C
+  アクセント:    #F4A623
+-->
+<style>
+  /* ===== リセット & ベース ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #2D6A9F;
+    --secondary: #1A3A5C;
+    --accent: #F4A623;
+    --bg: #F0F4F8;
+    --card-bg: #FFFFFF;
+    --text: #1E2A38;
+    --text-light: #5A6A7A;
+    --radius: 12px;
+    --shadow: 0 4px 16px rgba(45,106,159,0.10);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Meiryo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ===== ヘッダー ===== */
+  header {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  header h1 { font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 900; letter-spacing: 0.04em; }
+  header p { font-size: 0.85rem; opacity: 0.85; margin-top: 6px; }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: linear-gradient(135deg, var(--primary) 0%, #3a82c0 100%);
+    color: #fff;
+    padding: 24px 20px;
+  }
+  .summary-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media(max-width:600px){ .summary-inner { grid-template-columns: 1fr; } }
+  .summary-card {
+    background: rgba(255,255,255,0.13);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    border-left: 4px solid var(--accent);
+  }
+  .summary-card .label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .summary-card p { font-size: 0.88rem; line-height: 1.65; }
+  .summary-card strong { color: var(--accent); }
+
+  /* ===== タブナビ ===== */
+  .tab-nav {
+    background: var(--secondary);
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.65);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 13px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    font-family: inherit;
+  }
+  .tab-btn:hover { color: #fff; }
+  .tab-btn[aria-selected="true"] {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ===== タブコンテンツ ===== */
+  .tab-panel { display: none; padding: 24px 16px 40px; max-width: 900px; margin: 0 auto; }
+  .tab-panel.active { display: block; }
+
+  /* ===== セクションタイトル ===== */
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--secondary);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), transparent);
+    border-radius: 2px;
+  }
+
+  /* ===== カードグリッド ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 16px;
+    border-top: 4px solid var(--primary);
+    transition: transform 0.15s;
+  }
+  .card:hover { transform: translateY(-2px); }
+  .card.accent-top { border-top-color: var(--accent); }
+  .card.green-top { border-top-color: #27AE60; }
+  .card h3 {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    font-size: 0.83rem;
+    color: var(--text);
+    padding: 4px 0;
+    border-bottom: 1px solid #EEF2F7;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li .dot { color: var(--primary); font-weight: 900; flex-shrink: 0; }
+  .card .why-box {
+    margin-top: 10px;
+    background: #EEF6FF;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+    color: var(--primary);
+    border-left: 3px solid var(--primary);
+  }
+  .card .why-box strong { color: var(--secondary); }
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    border-radius: 20px;
+    padding: 2px 8px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  /* ===== 概念カード（主要概念タブ） ===== */
+  .concept-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    border-left: 5px solid var(--primary);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .concept-card .concept-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .concept-card .concept-emoji { font-size: 1.4rem; }
+  .concept-card .concept-name {
+    font-size: 0.98rem;
+    font-weight: 900;
+    color: var(--secondary);
+  }
+  .concept-card .concept-tag {
+    font-size: 0.68rem;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-weight: 700;
+  }
+  .concept-card .concept-def {
+    font-size: 0.82rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .concept-card .concept-why {
+    font-size: 0.78rem;
+    background: #FFF8EC;
+    border-left: 3px solid var(--accent);
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: #7A5000;
+  }
+
+  /* ===== 因果フロー ===== */
+  .flow-section { margin-top: 28px; }
+  .flow-list { display: flex; flex-direction: column; gap: 8px; }
+  .flow-item {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .flow-item .arrow { color: var(--accent); font-weight: 900; }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 16px;
+    border-left: 5px solid var(--primary);
+    margin-bottom: 14px;
+  }
+  .chapter-card .ch-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .chapter-card .ch-num {
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 900;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .chapter-card .ch-title { font-size: 0.95rem; font-weight: 800; color: var(--secondary); }
+  .chapter-card ul { list-style: none; padding: 0; }
+  .chapter-card ul li {
+    font-size: 0.82rem;
+    padding: 3px 0;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    border-bottom: 1px solid #EEF2F7;
+  }
+  .chapter-card ul li:last-child { border-bottom: none; }
+  .chapter-card .ch-why {
+    margin-top: 10px;
+    background: #EEF6FF;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+    color: var(--primary);
+    border-left: 3px solid var(--primary);
+  }
+
+  /* ===== 具体例 ===== */
+  .example-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 16px;
+    margin-bottom: 16px;
+    border-top: 4px solid var(--accent);
+  }
+  .example-card .ex-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .example-card .ex-num {
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 900;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .example-card .ex-title { font-size: 0.95rem; font-weight: 800; color: var(--secondary); }
+  .example-card .ex-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  @media(max-width:560px){ .example-card .ex-row { grid-template-columns: 1fr; } }
+  .example-card .ex-cell {
+    background: #F7FAFF;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.78rem;
+  }
+  .example-card .ex-cell .ex-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  /* ===== 引用 ===== */
+  .quote-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 18px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 6rem;
+    color: var(--primary);
+    opacity: 0.08;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .quote-card .quote-text {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--secondary);
+    line-height: 1.6;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .quote-card .quote-note {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    border-top: 1px solid #EEF2F7;
+    padding-top: 8px;
+  }
+  .quote-card .quote-note strong { color: var(--accent); }
+
+  /* ===== アクション ===== */
+  .action-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 16px;
+    margin-bottom: 14px;
+    border-left: 5px solid #27AE60;
+  }
+  .action-card .ac-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .action-card .ac-num {
+    background: #27AE60;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 900;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .action-card .ac-title { font-size: 0.95rem; font-weight: 800; color: var(--secondary); }
+  .action-card .ac-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  @media(max-width:480px){ .action-card .ac-row { grid-template-columns: 1fr; } }
+  .action-card .ac-cell {
+    background: #F0FBF4;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.78rem;
+  }
+  .action-card .ac-cell .ac-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #27AE60;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .action-card .time-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #E8F8EE;
+    color: #27AE60;
+    font-size: 0.72rem;
+    font-weight: 800;
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-bottom: 8px;
+  }
+
+  /* ===== 関連書籍 ===== */
+  .book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-top: 10px;
+  }
+  .book-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px;
+    border-top: 3px solid var(--secondary);
+  }
+  .book-card .book-title { font-size: 0.88rem; font-weight: 800; color: var(--secondary); margin-bottom: 4px; }
+  .book-card .book-author { font-size: 0.75rem; color: var(--text-light); margin-bottom: 8px; }
+  .book-card .book-rel { font-size: 0.78rem; color: var(--text); line-height: 1.5; }
+
+  /* ===== SVGビジュアル ===== */
+  .visual-section { margin: 24px 0; }
+  .visual-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  svg text { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; }
+
+  /* ===== バーチャート ===== */
+  .bar-chart-wrap {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 16px;
+    margin-bottom: 16px;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .bar-label { font-size: 0.78rem; font-weight: 700; color: var(--secondary); width: 110px; flex-shrink: 0; text-align: right; }
+  .bar-track { flex: 1; background: #EEF2F7; border-radius: 20px; height: 18px; overflow: hidden; }
+  .bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--primary), #3a82c0);
+    transition: width 1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 6px;
+  }
+  .bar-fill.accent { background: linear-gradient(90deg, var(--accent), #f7c05a); }
+  .bar-fill.green { background: linear-gradient(90deg, #27AE60, #52c97a); }
+  .bar-val { font-size: 0.68rem; font-weight: 900; color: #fff; }
+
+  /* ===== ピラミッドSVG ===== */
+  .pyramid-wrap {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 16px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  /* ===== フッター ===== */
+  footer {
+    background: var(--secondary);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    font-size: 0.72rem;
+    padding: 16px;
+  }
+
+  /* ===== ユーティリティ ===== */
+  .mt16 { margin-top: 16px; }
+  .mt24 { margin-top: 24px; }
+  .text-center { text-align: center; }
+  .emoji-lg { font-size: 1.6rem; }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header>
+  <h1>🗣️ 話し方の本質 インフォグラフィック</h1>
+  <p>「何を言ったか」より「どう感じたか」が人を動かす</p>
+</header>
+
+<!-- ===== ファーストビュー：要約ブロック ===== -->
+<section class="summary-block" aria-label="エグゼクティブサマリー">
+  <div class="summary-inner">
+    <div class="summary-card">
+      <div class="label">❓ 問い</div>
+      <p>なぜ同じ内容でも人によって<strong>伝わり方・成果が大きく変わる</strong>のか？</p>
+    </div>
+    <div class="summary-card">
+      <div class="label">💡 答え</div>
+      <p>人は<strong>感情で受け取り</strong>、安心・承認・共感を与える人に心を開き、話の影響を受けやすくなるから。</p>
+    </div>
+    <div class="summary-card">
+      <div class="label">🔍 Why（なぜそうなのか）</div>
+      <p>脳は<strong>安全と快を優先</strong>し、否定・不安・複雑さがあると拒否反応が生じ理解と合意が下がる。受容・明快・具体は認知負荷を下げ、信頼と行動意欲を高める。</p>
+    </div>
+    <div class="summary-card">
+      <div class="label">🛠️ How（そのためには）</div>
+      <p>① 相手目線に切替 ② 聞く比率を増やす ③ PREP法で伝える ④ <strong>非言語を整える</strong> ⑤ 習慣化で定着させる</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== タブナビ ===== -->
+<nav class="tab-nav" role="tablist" aria-label="コンテンツタブ">
+  <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="tab-concepts" id="btn-concepts">🧠 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters" id="btn-chapters">📖 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples" id="btn-examples">💬 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes"   id="btn-quotes">✍️ 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions"  id="btn-actions">⚡ 今日のアクション</button>
+</nav>
+
+<!-- ===== タブ1：主要概念 ===== -->
+<section class="tab-panel active" id="tab-concepts" role="tabpanel" aria-labelledby="btn-concepts">
+
+  <div class="section-title">🧠 主要概念の詳細</div>
+
+  <!-- 概念間の因果フロー（SVG） -->
+  <div class="pyramid-wrap">
+    <div class="visual-title">📐 信頼形成の構造（ピラミッド）</div>
+    <svg viewBox="0 0 360 200" width="100%" aria-label="信頼形成ピラミッド図">
+      <!-- 底辺：非言語 -->
+      <polygon points="10,190 350,190 300,145 60,145" fill="#2D6A9F" opacity="0.18"/>
+      <text x="180" y="172" text-anchor="middle" font-size="12" fill="#1A3A5C" font-weight="bold">🎭 非言語（表情・姿勢・声）</text>
+      <!-- 2段：傾聴・承認 -->
+      <polygon points="60,145 300,145 255,100 105,100" fill="#2D6A9F" opacity="0.32"/>
+      <text x="180" y="127" text-anchor="middle" font-size="12" fill="#1A3A5C" font-weight="bold">👂 傾聴・承認・質問</text>
+      <!-- 3段：伝達スキル -->
+      <polygon points="105,100 255,100 215,58 145,58" fill="#2D6A9F" opacity="0.52"/>
+      <text x="180" y="83" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">📢 PREP・具体化</text>
+      <!-- 頂点：信頼・影響力 -->
+      <polygon points="145,58 215,58 180,18" fill="#F4A623"/>
+      <text x="180" y="46" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">🏆 信頼・影響力</text>
+    </svg>
+  </div>
+
+  <!-- 概念カードグリッド -->
+  <div class="card-grid">
+
+    <div class="concept-card">
+      <div class="concept-head">
+        <span class="concept-emoji">👁️</span>
+        <span class="concept-name">相手目線</span>
+        <span class="concept-tag">相手ファースト</span>
+      </div>
+      <div class="concept-def">会話の主語を常に相手に置き、相手の得・不安・文脈で考える態度。</div>
+      <div class="concept-why">⚡ <strong>なぜ重要：</strong>自分視点の話は「押しつけ」に聞こえ、相手の心が閉じる。相手視点に切り替えると価値提示の精度が上がり満足度が高まる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-head">
+        <span class="concept-emoji">🌟</span>
+        <span class="concept-name">承認</span>
+        <span class="concept-tag">まず認める</span>
+      </div>
+      <div class="concept-def">相手の存在・努力・成果を言葉と態度で具体的に認める行為。</div>
+      <div class="concept-why">⚡ <strong>なぜ重要：</strong>承認は相手のガソリン。信頼の土台となり、その後の提案や依頼が通りやすくなる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-head">
+        <span class="concept-emoji">🤝</span>
+        <span class="concept-name">共感的傾聴</span>
+        <span class="concept-tag">気持ちに寄る</span>
+      </div>
+      <div class="concept-def">遮らず気持ちに寄り添い、要約・感情確認で理解を示す聞き方。</div>
+      <div class="concept-why">⚡ <strong>なぜ重要：</strong>よく話す人ほどよく聴いている。傾聴が信頼と情報収集の両方を同時に実現する。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-head">
+        <span class="concept-emoji">🙆</span>
+        <span class="concept-name">うなずき・あいづち</span>
+        <span class="concept-tag">受け止めのサイン</span>
+      </div>
+      <div class="concept-def">非言語で受容と関心を示し、話しやすさを高める基本動作。</div>
+      <div class="concept-why">⚡ <strong>なぜ重要：</strong>言葉がなくても「聞いている」を伝えられ、相手の自己開示を促す最小コストの技術。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-head">
+        <span class="concept-emoji">❓</span>
+        <span class="concept-name">オープンクエスチョン</span>
+        <span class="concept-tag">引き出す質問</span>
+      </div>
+      <div class="concept-def">はい/いいえで終わらない質問で、情報と感情を引き出す技法。</div>
+      <div class="concept-why">⚡ <strong>なぜ重要：</strong>相手の具体情報が増えるほど提案の適合度が上がり、「わかってもらえた」感が生まれる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-head">
+        <span class="concept-emoji">📋</span>
+        <span class="concept-name">PREP法</span>
+        <span class="concept-tag">迷わせない</span>
+      </div>
+      <div class="concept-def">結論→理由→具体例→結論で構成し、明快に伝える話法。</div>
+      <div class="concept-why">⚡ <strong>なぜ重要：</strong>認知負荷を下げ理解速度を上げる。「で、結局何が言いたいの？」を防ぎ行動喚起につながる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-head">
+        <span class="concept-emoji">✨</span>
+        <span class="concept-name">ポジティブ言い換え</span>
+        <span class="concept-tag">言葉の角を取る</span>
+      </div>
+      <div class="concept-def">否定・難語・抽象を、肯定・易語・具体に置き換える工夫。</div>
+      <div class="concept-why">⚡ <strong>なぜ重要：</strong>抵抗感を下げ合意形成を促す。同じ内容でも言い方ひとつで受け取り方が大きく変わる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-head">
+        <span class="concept-emoji">🪞</span>
+        <span class="concept-name">ミラーリング</span>
+        <span class="concept-tag">安心の鏡</span>
+      </div>
+      <div class="concept-def">相手の言葉・姿勢・話速を自然に合わせ、安心感を生む。</div>
+      <div class="concept-why">⚡ <strong>なぜ重要：</strong>ラポール（信頼関係）を形成し、難題の共有や本音の開示が容易になる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-head">
+        <span class="concept-emoji">🎭</span>
+        <span class="concept-name">第一印象（非言語）</span>
+        <span class="concept-tag">入口を整える</span>
+      </div>
+      <div class="concept-def">見た目・表情・声の質が、内容以上に受容度を左右する要素。</div>
+      <div class="concept-why">⚡ <strong>なぜ重要：</strong>第一印象が安心感を生み、その後の自己開示と情報受容の量を決める入口になる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-head">
+        <span class="concept-emoji">🏷️</span>
+        <span class="concept-name">感情のラベリング</span>
+        <span class="concept-tag">モヤモヤを言語化</span>
+      </div>
+      <div class="concept-def">相手の感情を言葉で名指しし、理解と落ち着きを促す。</div>
+      <div class="concept-why">⚡ <strong>なぜ重要：</strong>情動が鎮静されると合理的対話が可能になり、問題解決の速度が上がる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-head">
+        <span class="concept-emoji">🎯</span>
+        <span class="concept-name">つかみ（オープナー）</span>
+        <span class="concept-tag">最初が肝心</span>
+      </div>
+      <div class="concept-def">冒頭30秒で関心と安心を作る導入の工夫。</div>
+      <div class="concept-why">⚡ <strong>なぜ重要：</strong>最初の印象が会話全体のトーンを決める。つかみが弱いと内容が良くても聞いてもらえない。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="concept-head">
+        <span class="concept-emoji">🤜</span>
+        <span class="concept-name">Yes, and（否定しない）</span>
+        <span class="concept-tag">関係を壊さない</span>
+      </div>
+      <div class="concept-def">まず受容し、その上で提案や補足を重ねる姿勢。</div>
+      <div class="concept-why">⚡ <strong>なぜ重要：</strong>対立を回避し協働的問題解決を促す。「でも」「しかし」は関係を壊すリスクがある。</div>
+    </div>
+
+  </div>
+
+  <!-- 因果フロー -->
+  <div class="flow-section mt24">
+    <div class="section-title">🔗 概念間の因果関係</div>
+    <div class="flow-list">
+      <div class="flow-item">🎭 第一印象（非言語）<span class="arrow">→</span>安心感↑<span class="arrow">→</span>自己開示↑</div>
+      <div class="flow-item">🌟 承認 ＋ 👂 共感的傾聴<span class="arrow">→</span>信頼形成<span class="arrow">→</span>影響力↑</div>
+      <div class="flow-item">❓ オープン質問<span class="arrow">→</span>具体情報↑<span class="arrow">→</span>相手理解↑<span class="arrow">→</span>提案の適合度↑</div>
+      <div class="flow-item">✨ ポジティブ言い換え<span class="arrow">→</span>抵抗感↓<span class="arrow">→</span>合意形成↑</div>
+      <div class="flow-item">📋 PREP法<span class="arrow">→</span>認知負荷↓<span class="arrow">→</span>理解速度↑<span class="arrow">→</span>行動喚起↑</div>
+      <div class="flow-item">🪞 ミラーリング<span class="arrow">→</span>ラポール形成<span class="arrow">→</span>難題共有が容易に</div>
+      <div class="flow-item">🤜 Yes, and<span class="arrow">→</span>対立回避<span class="arrow">→</span>協働的問題解決</div>
+      <div class="flow-item">🏷️ 感情ラベリング<span class="arrow">→</span>情動の鎮静<span class="arrow">→</span>合理的対話が可能に</div>
+      <div class="flow-item">👁️ 相手目線<span class="arrow">→</span>価値提示の精度↑<span class="arrow">→</span>満足度・再会意欲↑</div>
+      <div class="flow-item">🔄 習慣化（振り返り）<span class="arrow">→</span>一貫性↑<span class="arrow">→</span>長期信頼の蓄積</div>
+    </div>
+  </div>
+
+  <!-- 重要度バーチャート -->
+  <div class="bar-chart-wrap mt24">
+    <div class="visual-title">📊 スキル別・信頼形成への貢献イメージ（相対値）</div>
+    <div class="bar-row">
+      <div class="bar-label">共感的傾聴</div>
+      <div class="bar-track"><div class="bar-fill" style="width:92%"><span class="bar-val">92</span></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">承認</div>
+      <div class="bar-track"><div class="bar-fill" style="width:88%"><span class="bar-val">88</span></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">非言語（表情等）</div>
+      <div class="bar-track"><div class="bar-fill accent" style="width:85%"><span class="bar-val">85</span></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">PREP法</div>
+      <div class="bar-track"><div class="bar-fill" style="width:78%"><span class="bar-val">78</span></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">ポジティブ言換</div>
+      <div class="bar-track"><div class="bar-fill green" style="width:72%"><span class="bar-val">72</span></div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">ミラーリング</div>
+      <div class="bar-track"><div class="bar-fill" style="width:68%"><span class="bar-val">68</span></div></div>
+    </div>
+    <p style="font-size:0.7rem;color:var(--text-light);margin-top:8px;">※ 本書の記述をもとにした相対的なイメージ値。実際の数値データは本書に記載なし。</p>
+  </div>
+
+</section>
+
+<!-- ===== タブ2：各章の要約 ===== -->
+<section class="tab-panel" id="tab-chapters" role="tabpanel" aria-labelledby="btn-chapters">
+
+  <div class="section-title">📖 各章の要約</div>
+
+  <div class="chapter-card">
+    <div class="ch-head">
+      <div class="ch-num">1</div>
+      <div class="ch-title">導入：伝わらない本当の原因</div>
+    </div>
+    <ul>
+      <li><span class="dot">▶</span>伝わらない原因は「話術の派手さ」ではなく相手中心の欠如にある</li>
+      <li><span class="dot">▶</span>多くの人が「自分が何を言うか」に集中しすぎている</li>
+      <li><span class="dot">▶</span>相手の感情・文脈・ニーズを無視した話は届かない</li>
+    </ul>
+    <div class="ch-why">📌 <strong>なぜこの章が必要か：</strong>問題の根本を正しく診断しないと、どんなテクニックも的外れになる。出発点として「何が問題か」を明確にする。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-head">
+      <div class="ch-num">2</div>
+      <div class="ch-title">原則編：人は感情で動く</div>
+    </div>
+    <ul>
+      <li><span class="dot">▶</span>安心・承認・共感が人間関係の土台という普遍原理を提示</li>
+      <li><span class="dot">▶</span>脳は安全と快を優先し、否定・不安があると拒否反応が生じる</li>
+      <li><span class="dot">▶</span>「何を言ったか」より「どう感じたか」で相手は判断する</li>
+    </ul>
+    <div class="ch-why">📌 <strong>なぜこの章が必要か：</strong>全技法の目的を統一する根拠を示す。原理を理解すれば応用が利き、場面が変わっても対応できる。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-head">
+      <div class="ch-num">3</div>
+      <div class="ch-title">基礎スキル編：受け皿を作る</div>
+    </div>
+    <ul>
+      <li><span class="dot">▶</span>非言語（表情・姿勢・声）が内容以上に受容度を左右する</li>
+      <li><span class="dot">▶</span>傾聴・承認・質問で相手が話しやすい環境を整える</li>
+      <li><span class="dot">▶</span>うなずき・あいづち・感情ラベリングが自己開示を促す</li>
+      <li><span class="dot">▶</span>オープンクエスチョンで情報と感情を引き出す</li>
+    </ul>
+    <div class="ch-why">📌 <strong>なぜこの章が必要か：</strong>受け皿なき伝達は砂漠に水を撒くようなもの。まず相手が受け取れる状態を作ることが先決。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-head">
+      <div class="ch-num">4</div>
+      <div class="ch-title">伝達スキル編：明快に伝える</div>
+    </div>
+    <ul>
+      <li><span class="dot">▶</span>結論先出しで「で、何が言いたいの？」を防ぐ</li>
+      <li><span class="dot">▶</span>PREP法（結論→理由→具体例→結論）で認知負荷を下げる</li>
+      <li><span class="dot">▶</span>具体化・数値化で抽象的な話を伝わりやすくする</li>
+      <li><span class="dot">▶</span>ポジティブ言い換えで抵抗感を下げ合意を促す</li>
+    </ul>
+    <div class="ch-why">📌 <strong>なぜこの章が必要か：</strong>受け皿ができたら次は「正確に届ける」技術が必要。良い内容も伝え方が悪ければ行動につながらない。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-head">
+      <div class="ch-num">5</div>
+      <div class="ch-title">実践編：場面別の当てはめ方</div>
+    </div>
+    <ul>
+      <li><span class="dot">▶</span>初対面：つかみ30秒で安心と関心を作る</li>
+      <li><span class="dot">▶</span>職場：承認と Yes, and で協働関係を維持する</li>
+      <li><span class="dot">▶</span>営業・プレゼン：相手目線の価値提示とPREP法を組み合わせる</li>
+      <li><span class="dot">▶</span>オンライン：非言語の意識的な補強が必要</li>
+    </ul>
+    <div class="ch-why">📌 <strong>なぜこの章が必要か：</strong>原則とスキルを知っても「どの場面でどう使うか」が分からないと実行できない。具体的な文脈への落とし込みが定着を促す。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-head">
+      <div class="ch-num">6</div>
+      <div class="ch-title">マインドセット編：姿勢と価値観</div>
+    </div>
+    <ul>
+      <li><span class="dot">▶</span>否定しない・相手の物語を尊重する姿勢が土台</li>
+      <li><span class="dot">▶</span>小さく始めて続けることが大きな変化を生む</li>
+      <li><span class="dot">▶</span>話し方は生まれつきではなく仕組みと練習で伸びる</li>
+    </ul>
+    <div class="ch-why">📌 <strong>なぜこの章が必要か：</strong>テクニックだけでは長続きしない。根底にある姿勢と信念が一貫した行動を支え、長期的な信頼蓄積につながる。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-head">
+      <div class="ch-num">7</div>
+      <div class="ch-title">定着編：習慣化と効果の可視化</div>
+    </div>
+    <ul>
+      <li><span class="dot">▶</span>トリガー設計（いつ・どこで実行するかを決める）</li>
+      <li><span class="dot">▶</span>行動記録で実行率と変化を可視化する</li>
+      <li><span class="dot">▶</span>振り返りで改善点を特定し次の行動に活かす</li>
+      <li><span class="dot">▶</span>効果の可視化が継続モチベーションを強化する</li>
+    </ul>
+    <div class="ch-why">📌 <strong>なぜこの章が必要か：</strong>知識は行動にならなければ意味がない。習慣化の仕組みを設計することで、一時的な実践を長期的な成長に変える。</div>
+  </div>
+
+  <!-- 論理展開フロー SVG -->
+  <div class="pyramid-wrap mt24">
+    <div class="visual-title">🔄 本書の論理展開フロー</div>
+    <svg viewBox="0 0 360 80" width="100%" aria-label="論理展開フロー">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#F4A623"/>
+        </marker>
+      </defs>
+      <!-- ボックス -->
+      <rect x="2" y="20" width="52" height="36" rx="6" fill="#1A3A5C"/>
+      <text x="28" y="35" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">問題</text>
+      <text x="28" y="47" text-anchor="middle" font-size="7" fill="#ccc">提起</text>
+      <line x1="54" y1="38" x2="66" y2="38" stroke="#F4A623" stroke-width="2" marker-end="url(#arr)"/>
+
+      <rect x="68" y="20" width="52" height="36" rx="6" fill="#2D6A9F"/>
+      <text x="94" y="35" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">原則</text>
+      <text x="94" y="47" text-anchor="middle" font-size="7" fill="#ccc">感情優位</text>
+      <line x1="120" y1="38" x2="132" y2="38" stroke="#F4A623" stroke-width="2" marker-end="url(#arr)"/>
+
+      <rect x="134" y="20" width="52" height="36" rx="6" fill="#2D6A9F"/>
+      <text x="160" y="35" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">基礎</text>
+      <text x="160" y="47" text-anchor="middle" font-size="7" fill="#ccc">受け皿</text>
+      <line x1="186" y1="38" x2="198" y2="38" stroke="#F4A623" stroke-width="2" marker-end="url(#arr)"/>
+
+      <rect x="200" y="20" width="52" height="36" rx="6" fill="#2D6A9F"/>
+      <text x="226" y="35" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">伝達</text>
+      <text x="226" y="47" text-anchor="middle" font-size="7" fill="#ccc">PREP等</text>
+      <line x1="252" y1="38" x2="264" y2="38" stroke="#F4A623" stroke-width="2" marker-end="url(#arr)"/>
+
+      <rect x="266" y="20" width="52" height="36" rx="6" fill="#F4A623"/>
+      <text x="292" y="35" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">習慣化</text>
+      <text x="292" y="47" text-anchor="middle" font-size="7" fill="#fff">定着</text>
+    </svg>
+  </div>
+
+</section>
+
+<!-- ===== タブ3：具体例 ===== -->
+<section class="tab-panel" id="tab-examples" role="tabpanel" aria-labelledby="btn-examples">
+
+  <div class="section-title">💬 具体例・ケース・メタファー</div>
+
+  <div class="example-card">
+    <div class="ex-head">
+      <div class="ex-num">1</div>
+      <div class="ex-title">🏥 医師と患者のコミュニケーション</div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-cell">
+        <div class="ex-label">📋 背景</div>
+        同じ診断内容でも、患者が「安心した」と感じる医師と「怖かった」と感じる医師がいる。違いは医学知識ではなく、傾聴・承認・言葉の選び方にある。
+      </div>
+      <div class="ex-cell">
+        <div class="ex-label">💡 示唆</div>
+        専門知識より「受け取られ方」が結果を左右する。どんな分野でも、相手の感情状態を整えることが情報伝達の前提条件になる。
+      </div>
+      <div class="ex-cell">
+        <div class="ex-label">🔍 理由（この例が示すこと）</div>
+        「何を言ったか」より「どう感じたか」という核心メッセージを、日常的な場面で具体的に示す。感情優位の原理が普遍的であることを証明する。
+      </div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-head">
+      <div class="ex-num">2</div>
+      <div class="ex-title">🪞 鏡のメタファー（ミラーリング）</div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-cell">
+        <div class="ex-label">📋 背景</div>
+        相手がゆっくり話しているのに自分だけ早口で話すと、相手は「急かされている」「合わない」と感じる。意識的に話速・声量・姿勢を合わせると安心感が生まれる。
+      </div>
+      <div class="ex-cell">
+        <div class="ex-label">💡 示唆</div>
+        ミラーリングは「同調」ではなく「安心の鏡」。相手が自分の姿を見るように感じ、「この人は自分と同じだ」という無意識の親近感が生まれる。
+      </div>
+      <div class="ex-cell">
+        <div class="ex-label">🔍 理由（この例が示すこと）</div>
+        非言語の調整だけでラポールが形成できることを示す。言葉を変えなくても「合わせる」だけで関係の質が変わるという、最小コストの技術の有効性を伝える。
+      </div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-head">
+      <div class="ex-num">3</div>
+      <div class="ex-title">🔥 ガソリンのメタファー（承認）</div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-cell">
+        <div class="ex-label">📋 背景</div>
+        車はガソリンがなければ動かない。同様に、人は承認されないと動く気力が湧かない。「頑張ってるね」「助かった」の一言が相手のエネルギーを補充する。
+      </div>
+      <div class="ex-cell">
+        <div class="ex-label">💡 示唆</div>
+        承認は「褒める」ではなく「存在・努力・成果を具体的に認める」こと。抽象的な「すごいね」より「あの資料の〇〇の部分が特に分かりやすかった」が効く。
+      </div>
+      <div class="ex-cell">
+        <div class="ex-label">🔍 理由（この例が示すこと）</div>
+        承認の優先順位を上げ、会話の順序設計を変える。まず承認してから提案・依頼に入るという順序が、相手の受容度を大きく変えることを直感的に伝える。
+      </div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-head">
+      <div class="ex-num">4</div>
+      <div class="ex-title">🎯 営業場面でのPREP法活用</div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-cell">
+        <div class="ex-label">📋 背景</div>
+        「えーと、まず背景をお話しすると…」と始める営業と「結論から言うと、御社の課題Xを解決できます。理由は…」と始める営業では、相手の集中度が全く異なる。
+      </div>
+      <div class="ex-cell">
+        <div class="ex-label">💡 示唆</div>
+        結論先出しは相手に「聞く理由」を与える。PREP法は相手の認知負荷を下げ、「理解した→信頼できる→行動しよう」という流れを自然に作る。
+      </div>
+      <div class="ex-cell">
+        <div class="ex-label">🔍 理由（この例が示すこと）</div>
+        伝達スキルが実際のビジネス成果に直結することを示す。話し方の改善が抽象的な「人間関係」だけでなく、具体的な数字・成果にも影響することを伝える。
+      </div>
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-head">
+      <div class="ex-num">5</div>
+      <div class="ex-title">🌡️ 感情ラベリングの実例（職場の怒り）</div>
+    </div>
+    <div class="ex-row">
+      <div class="ex-cell">
+        <div class="ex-label">📋 背景</div>
+        部下が明らかに怒っている場面で「何が問題ですか？」と聞くより「今、すごく悔しい思いをしているんですね」と感情を言語化すると、相手の表情が変わる。
+      </div>
+      <div class="ex-cell">
+        <div class="ex-label">💡 示唆</div>
+        感情を名指しされると「わかってもらえた」という安心感が生まれ、情動が鎮静する。その後に合理的な対話が可能になり、問題解決が速くなる。
+      </div>
+      <div class="ex-cell">
+        <div class="ex-label">🔍 理由（この例が示すこと）</div>
+        感情ラベリングが「共感の技術」として機能することを示す。感情を無視して論理だけで進めようとすると対話が成立しないという、多くの人が経験する失敗を防ぐ方法を伝える。
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== タブ4：重要な引用 ===== -->
+<section class="tab-panel" id="tab-quotes" role="tabpanel" aria-labelledby="btn-quotes">
+
+  <div class="section-title">✍️ 重要な引用・要旨</div>
+  <p style="font-size:0.78rem;color:var(--text-light);margin-bottom:16px;">※ 以下はすべて本書の要旨です（原文引用ではありません）。</p>
+
+  <div class="quote-card">
+    <div class="quote-text">「人は『何を言ったか』より『どう感じたか』で決める。」</div>
+    <div class="quote-note">
+      <strong>📌 なぜ重要：</strong>感情優位の原理を一文で示し、全技法の目的を統一する指針になる。この一文を理解するだけで、話し方改善の方向性が根本から変わる。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">「話す力は生まれつきではなく、仕組みと練習で伸びる。」</div>
+    <div class="quote-note">
+      <strong>📌 なぜ重要：</strong>再現可能性を担保し、読者の行動意欲と学習設計を促す。「自分には無理」という思い込みを解除し、具体的な練習への動機づけになる。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">「承認は相手のガソリンであり、信頼の土台になる。」</div>
+    <div class="quote-note">
+      <strong>📌 なぜ重要：</strong>承認の優先順位を上げ、会話の順序設計を変える。「まず認める→その後に提案」という順序が、相手の受容度を大きく変えることを示す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">「よく話す人ほど、まずよく聴いている。」</div>
+    <div class="quote-note">
+      <strong>📌 なぜ重要：</strong>成果を出す話し方の実体が「聴く技術」であると転換させる。「話す＝しゃべる量を増やす」という誤解を解き、傾聴への投資を促す。
+    </div>
+  </div>
+
+  <!-- 引用の視覚化 -->
+  <div class="bar-chart-wrap mt24">
+    <div class="visual-title">💬 4つの要旨が示す「話し方の本質」マップ</div>
+    <svg viewBox="0 0 340 160" width="100%" aria-label="要旨マップ">
+      <!-- 中心 -->
+      <ellipse cx="170" cy="80" rx="50" ry="28" fill="#F4A623" opacity="0.9"/>
+      <text x="170" y="76" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">話し方の</text>
+      <text x="170" y="88" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold">本質</text>
+      <!-- 上 -->
+      <ellipse cx="170" cy="22" rx="60" ry="16" fill="#2D6A9F" opacity="0.85"/>
+      <text x="170" y="26" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">感情で決まる</text>
+      <line x1="170" y1="38" x2="170" y2="52" stroke="#2D6A9F" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <!-- 下 -->
+      <ellipse cx="170" cy="138" rx="60" ry="16" fill="#2D6A9F" opacity="0.85"/>
+      <text x="170" y="142" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">聴くことが先</text>
+      <line x1="170" y1="108" x2="170" y2="122" stroke="#2D6A9F" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <!-- 左 -->
+      <ellipse cx="52" cy="80" rx="46" ry="16" fill="#1A3A5C" opacity="0.85"/>
+      <text x="52" y="84" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">承認が土台</text>
+      <line x1="98" y1="80" x2="120" y2="80" stroke="#1A3A5C" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <!-- 右 -->
+      <ellipse cx="288" cy="80" rx="46" ry="16" fill="#1A3A5C" opacity="0.85"/>
+      <text x="288" y="84" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">練習で伸びる</text>
+      <line x1="220" y1="80" x2="242" y2="80" stroke="#1A3A5C" stroke-width="1.5" stroke-dasharray="3,2"/>
+    </svg>
+  </div>
+
+  <!-- 関連書籍 -->
+  <div class="mt24">
+    <div class="section-title">📚 関連書籍</div>
+    <div class="book-grid">
+      <div class="book-card">
+        <div class="book-title">伝え方が9割</div>
+        <div class="book-author">佐々木圭一</div>
+        <div class="book-rel">言い換え・結論設計など伝達スキルを具体化し、本書のHowを補強。</div>
+      </div>
+      <div class="book-card">
+        <div class="book-title">聞く力 心をひらく35のヒント</div>
+        <div class="book-author">阿川佐和子</div>
+        <div class="book-rel">共感的傾聴と質問の実践例が豊富で、受け皿づくりを深掘り。</div>
+      </div>
+      <div class="book-card">
+        <div class="book-title">人を動かす</div>
+        <div class="book-author">D・カーネギー</div>
+        <div class="book-rel">承認・批判しない・共感など原理が重なり、普遍原則を体系化。</div>
+      </div>
+      <div class="book-card">
+        <div class="book-title">嫌われる勇気</div>
+        <div class="book-author">岸見一郎・古賀史健</div>
+        <div class="book-rel">承認と課題の分離の視点が、相手目線と自己基盤の両立に役立つ。</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== タブ5：今日のアクション ===== -->
+<section class="tab-panel" id="tab-actions" role="tabpanel" aria-labelledby="btn-actions">
+
+  <div class="section-title">⚡ 今日のアクション（15〜30分で実行）</div>
+
+  <div class="action-card">
+    <div class="ac-head">
+      <div class="ac-num">1</div>
+      <div class="ac-title">👂 3人に5分ずつ傾聴し要約する</div>
+    </div>
+    <div class="time-badge">⏱️ 約15分</div>
+    <div class="ac-row">
+      <div class="ac-cell">
+        <div class="ac-label">🎯 目的</div>
+        共感的傾聴と要約のスキルを実際の会話で練習する。「遮らない・気持ちに寄る・要約して確認する」の3ステップを体験する。
+      </div>
+      <div class="ac-cell">
+        <div class="ac-label">✨ 期待効果</div>
+        相手が「わかってもらえた」と感じ、信頼感が高まる。自分の傾聴の癖（遮り・アドバイス先行）に気づき、改善点が明確になる。
+      </div>
+    </div>
+    <div style="margin-top:10px;background:#F0FBF4;border-radius:8px;padding:10px;font-size:0.8rem;">
+      <strong>📝 実行手順：</strong>① 相手の話を最後まで遮らず聞く → ② 「つまり〇〇ということですね」と要約する → ③ 相手の反応を確認する → 3人繰り返す
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="ac-head">
+      <div class="ac-num">2</div>
+      <div class="ac-title">🌟 今日出会う相手を3回承認する</div>
+    </div>
+    <div class="time-badge">⏱️ 約15分（分散）</div>
+    <div class="ac-row">
+      <div class="ac-cell">
+        <div class="ac-label">🎯 目的</div>
+        承認の習慣を意識的に作る。「具体的に認める」練習をすることで、抽象的な「すごいね」から「〇〇の部分が特に良かった」への切り替えを体験する。
+      </div>
+      <div class="ac-cell">
+        <div class="ac-label">✨ 期待効果</div>
+        相手のエネルギーが上がり、その後の会話・依頼・提案が通りやすくなる。自分自身も「承認する視点」が鍛えられ、相手の良い点を見つける習慣が育つ。
+      </div>
+    </div>
+    <div style="margin-top:10px;background:#F0FBF4;border-radius:8px;padding:10px;font-size:0.8rem;">
+      <strong>📝 実行手順：</strong>① 今日会う人を3人リストアップ → ② 各人の「具体的な良い点」を1つ考える → ③ 会話の冒頭で「〇〇さんの△△、助かりました」と伝える
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="ac-head">
+      <div class="ac-num">3</div>
+      <div class="ac-title">📋 会話でPREP法を3回練習する</div>
+    </div>
+    <div class="time-badge">⏱️ 約20分（分散）</div>
+    <div class="ac-row">
+      <div class="ac-cell">
+        <div class="ac-label">🎯 目的</div>
+        「結論→理由→具体例→結論」の構造を体に染み込ませる。日常会話・メール・報告など、あらゆる場面で使える基本フォーマットとして定着させる。
+      </div>
+      <div class="ac-cell">
+        <div class="ac-label">✨ 期待効果</div>
+        「で、結局何が言いたいの？」と言われなくなる。相手の理解速度が上がり、会話・プレゼン・報告の質が一段階上がる。認知負荷が下がり行動喚起につながる。
+      </div>
+    </div>
+    <div style="margin-top:10px;background:#F0FBF4;border-radius:8px;padding:10px;font-size:0.8rem;">
+      <strong>📝 実行手順：</strong>① 今日話す内容を1つ選ぶ → ② 「結論：〇〇です。理由：〜だから。例えば：〜。だから〇〇です」と組み立てる → ③ 3回繰り返す
+    </div>
+  </div>
+
+  <!-- アクション達成チェックリスト（視覚） -->
+  <div class="bar-chart-wrap mt24">
+    <div class="visual-title">📊 3つのアクションの難易度・効果マトリクス</div>
+    <svg viewBox="0 0 340 180" width="100%" aria-label="難易度効果マトリクス">
+      <!-- 軸 -->
+      <line x1="40" y1="20" x2="40" y2="155" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="40" y1="155" x2="320" y2="155" stroke="#ccc" stroke-width="1.5"/>
+      <!-- 軸ラベル -->
+      <text x="180" y="175" text-anchor="middle" font-size="9" fill="#5A6A7A">難易度（低→高）</text>
+      <text x="12" y="90" text-anchor="middle" font-size="9" fill="#5A6A7A" transform="rotate(-90,12,90)">効果（低→高）</text>
+      <!-- グリッド -->
+      <line x1="40" y1="87" x2="320" y2="87" stroke="#eee" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="180" y1="20" x2="180" y2="155" stroke="#eee" stroke-width="1" stroke-dasharray="4,3"/>
+      <!-- プロット -->
+      <circle cx="90" cy="45" r="18" fill="#27AE60" opacity="0.85"/>
+      <text x="90" y="42" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">承認</text>
+      <text x="90" y="53" text-anchor="middle" font-size="7" fill="#fff">3回</text>
+
+      <circle cx="150" cy="60" r="18" fill="#2D6A9F" opacity="0.85"/>
+      <text x="150" y="57" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">傾聴</text>
+      <text x="150" y="68" text-anchor="middle" font-size="7" fill="#fff">要約</text>
+
+      <circle cx="240" cy="38" r="18" fill="#F4A623" opacity="0.9"/>
+      <text x="240" y="35" text-anchor="middle" font-size="8" fill="#fff" font-weight="bold">PREP</text>
+      <text x="240" y="46" text-anchor="middle" font-size="7" fill="#fff">練習</text>
+
+      <!-- 凡例 -->
+      <circle cx="55" cy="168" r="5" fill="#27AE60"/>
+      <text x="63" y="172" font-size="8" fill="#5A6A7A">承認</text>
+      <circle cx="100" cy="168" r="5" fill="#2D6A9F"/>
+      <text x="108" y="172" font-size="8" fill="#5A6A7A">傾聴</text>
+      <circle cx="145" cy="168" r="5" fill="#F4A623"/>
+      <text x="153" y="172" font-size="8" fill="#5A6A7A">PREP</text>
+    </svg>
+  </div>
+
+  <!-- 習慣化ヒント -->
+  <div class="card mt24" style="border-top-color:#27AE60;">
+    <h3>🔄 習慣化のヒント</h3>
+    <ul>
+      <li><span class="dot">▶</span>トリガーを決める：「朝の挨拶のとき必ず承認する」など既存の行動に紐付ける</li>
+      <li><span class="dot">▶</span>記録する：実行した回数・相手の反応をメモし可視化する</li>
+      <li><span class="dot">▶</span>振り返る：1日の終わりに「うまくいった点・改善点」を1つずつ書く</li>
+      <li><span class="dot">▶</span>小さく始める：完璧を目指さず「今日1回だけ」から積み上げる</li>
+    </ul>
+    <div class="why-box"><strong>📌 なぜ習慣化が重要：</strong>知識は行動にならなければ意味がない。トリガー設計と振り返りで一貫性が生まれ、長期的な信頼蓄積につながる。</div>
+  </div>
+
+</section>
+
+<!-- ===== フッター ===== -->
+<footer>
+  <p>📘 話し方の本質 インフォグラフィック｜カラーパレット：プライマリー #2D6A9F ／ セカンダリー #1A3A5C ／ アクセント #F4A623</p>
+</footer>
+
+<script>
+  // ===== タブ切替 =====
+  const buttons = document.querySelectorAll('.tab-btn');
+  const panels  = document.querySelectorAll('.tab-panel');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('aria-controls');
+
+      buttons.forEach(b => {
+        b.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(p => {
+        p.classList.remove('active');
+      });
+
+      btn.setAttribute('aria-selected', 'true');
+      const panel = document.getElementById(target);
+      if (panel) {
+        panel.classList.add('active');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ===== バーアニメーション（IntersectionObserver） =====
+  const bars = document.querySelectorAll('.bar-fill');
+  bars.forEach(bar => {
+    const w = bar.style.width;
+    bar.style.width = '0%';
+    bar.dataset.target = w;
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const bar = entry.target;
+        setTimeout(() => {
+          bar.style.width = bar.dataset.target;
+        }, 100);
+        observer.unobserve(bar);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  bars.forEach(bar => observer.observe(bar));
+</script>
+</body>
+</html>
