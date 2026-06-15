@@ -1,142 +1,1190 @@
-<!doctype html><html lang='ja'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>スマホ脳</title><style>*,*::before,*::after{box-sizing:border-box}body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.6;background:#fff;color:#111;margin:0}main{max-width:1040px;margin:0 auto;padding:20px}.card{border:1px solid #eee;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.06);padding:16px}</style></head><body><main class='card'><h1>スマホ脳</h1><div># スマートフォンが脳に与える影響 📱🧠
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スマホと脳 インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a1a2e
+  セカンダリー:  #16213e
+  アクセント:    #e94560
+  補助1:        #0f3460
+  補助2:        #f5a623
+-->
+<style>
+  :root {
+    --primary: #1a1a2e;
+    --secondary: #16213e;
+    --accent: #e94560;
+    --accent2: #f5a623;
+    --blue: #0f3460;
+    --text: #e8e8f0;
+    --text-muted: #a0a0b8;
+    --card-bg: rgba(255,255,255,0.05);
+    --card-border: rgba(233,69,96,0.3);
+    --green: #2ecc71;
+    --purple: #9b59b6;
+    --teal: #1abc9c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--blue) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); }
 
-## 📊 **基本構造**
+  /* ===== HEADER ===== */
+  .site-header {
+    background: linear-gradient(90deg, var(--accent) 0%, #c0392b 100%);
+    padding: 18px 20px 14px;
+    text-align: center;
+  }
+  .site-header h1 { font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 900; letter-spacing: 0.05em; }
+  .site-header p { font-size: 0.82rem; opacity: 0.9; margin-top: 4px; }
 
-```
-┌─────────────────────────────────────────┐
-│              本書の全体像              │
-├─────────────────────────────────────────┤
-│ 🎯 目的: デジタル社会を健康に生き抜く │
-│ 🔬 視点: 脳科学の観点から解明        │
-│ 📱 対象: スマートフォンの影響         │
-└─────────────────────────────────────────┘
-```
+  /* ===== HERO BLOCK ===== */
+  .hero {
+    background: linear-gradient(135deg, rgba(15,52,96,0.9) 0%, rgba(233,69,96,0.15) 100%);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    margin: 18px 14px;
+    padding: 20px 18px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media(min-width:640px){
+    .hero-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media(min-width:900px){
+    .hero-grid { grid-template-columns: repeat(4,1fr); }
+  }
+  .hero-item {
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 14px;
+    border-left: 3px solid var(--accent);
+  }
+  .hero-item.why { border-left-color: var(--accent2); }
+  .hero-item.how { border-left-color: var(--green); }
+  .hero-item.ans { border-left-color: var(--purple); }
+  .hero-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 6px;
+  }
+  .hero-item h2 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+  .hero-item p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; }
 
----
+  /* ===== TABS ===== */
+  .tab-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 0 14px 10px;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text-muted);
+    border-radius: 20px;
+    padding: 7px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { background: rgba(233,69,96,0.2); color: var(--text); }
+  .tab-btn[aria-selected="true"] {
+    background: linear-gradient(90deg, var(--accent), #c0392b);
+    color: #fff;
+    border-color: transparent;
+  }
+  .tab-panel { display: none; padding: 0 14px 30px; }
+  .tab-panel.active { display: block; }
 
-## 🧬 **人類の脳の進化**
+  /* ===== CARDS ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  @media(min-width:540px){ .card-grid { grid-template-columns: repeat(2,1fr); } }
+  @media(min-width:900px){ .card-grid { grid-template-columns: repeat(3,1fr); } }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(233,69,96,0.15); }
+  .card-icon { font-size: 1.6rem; margin-bottom: 8px; }
+  .card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; color: var(--accent); }
+  .card .badge {
+    display: inline-block;
+    background: rgba(233,69,96,0.2);
+    color: var(--accent);
+    font-size: 0.68rem;
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-bottom: 8px;
+  }
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    gap: 6px;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li .li-icon { flex-shrink: 0; }
+  .reason-box {
+    margin-top: 10px;
+    background: rgba(245,166,35,0.1);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 6px 6px 0;
+    padding: 7px 10px;
+    font-size: 0.78rem;
+    color: var(--accent2);
+  }
+  .reason-box strong { display: block; font-size: 0.7rem; letter-spacing: 0.08em; margin-bottom: 2px; }
 
-| 時代 | 脳の特徴 | 現代への影響 |
-|------|----------|--------------|
-| **狩猟採集時代** | • 危険察知システム<br>• 新情報への渇望<br>• 報酬系の発達 | **現代でも同じ脳構造** |
-| **現代** | • 基本構造は不変<br>• 原始的反応が継続 | スマホに過敏反応 |
+  /* ===== CHAPTER CARDS ===== */
+  .chapter-list { display: flex; flex-direction: column; gap: 14px; }
+  .chapter-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+  .chapter-num {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--accent), #c0392b);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 900;
+    flex-shrink: 0;
+  }
+  .chapter-body h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+  .chapter-body ul { list-style: none; padding: 0; }
+  .chapter-body ul li { font-size: 0.82rem; color: var(--text-muted); padding: 2px 0; }
+  .chapter-body ul li::before { content: "▸ "; color: var(--accent); }
 
----
+  /* ===== FLOW DIAGRAM ===== */
+  .flow-wrap { overflow-x: auto; padding-bottom: 10px; }
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 280px;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    background: rgba(15,52,96,0.8);
+    border: 1px solid rgba(233,69,96,0.4);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .flow-arrow { color: var(--accent); font-size: 1rem; flex-shrink: 0; }
+  .flow-node.bad { border-color: var(--accent); background: rgba(233,69,96,0.15); }
+  .flow-node.good { border-color: var(--green); background: rgba(46,204,113,0.12); color: var(--green); }
 
-## ⚡ **スマホが脳に与える影響メカニズム**
+  /* ===== EXAMPLES ===== */
+  .example-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .example-card .ex-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+  }
+  .ex-num {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent2), #e67e22);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 0.9rem; flex-shrink: 0;
+  }
+  .example-card h3 { font-size: 0.95rem; font-weight: 700; }
+  .example-card .ex-body { font-size: 0.82rem; color: var(--text-muted); }
+  .example-card .ex-body p { margin-bottom: 6px; }
+  .example-card .ex-body strong { color: var(--text); }
+  .insight-box {
+    margin-top: 10px;
+    background: rgba(155,89,182,0.12);
+    border-left: 3px solid var(--purple);
+    border-radius: 0 6px 6px 0;
+    padding: 7px 10px;
+    font-size: 0.78rem;
+    color: #c39bd3;
+  }
+  .insight-box strong { display: block; font-size: 0.7rem; letter-spacing: 0.08em; margin-bottom: 2px; color: var(--purple); }
 
-### 🎯 **刺激のサイクル**
-```
-    📱 スマホ刺激
-         ↓
-    🧠 原始的脳が反応
-         ↓
-    💊 ドーパミン放出
-         ↓
-    🔄 依存状態へ
-```
+  /* ===== QUOTES ===== */
+  .quote-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+    border-left: 4px solid var(--accent);
+    position: relative;
+  }
+  .quote-mark { font-size: 3rem; color: var(--accent); opacity: 0.3; line-height: 1; position: absolute; top: 8px; left: 14px; }
+  .quote-text { font-size: 0.92rem; font-style: italic; padding-left: 28px; margin-bottom: 10px; line-height: 1.65; }
+  .quote-note { font-size: 0.78rem; color: var(--text-muted); padding-left: 28px; }
+  .quote-note strong { color: var(--accent2); }
+  .quote-tag {
+    display: inline-block;
+    background: rgba(233,69,96,0.15);
+    color: var(--accent);
+    font-size: 0.65rem;
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin-bottom: 8px;
+    margin-left: 28px;
+  }
 
-### 📋 **具体的な刺激要因**
-- 🔔 **絶え間ない通知**
-- 📰 **新しい情報の流入**
-- 💬 **SNSの反応**
-- 🎮 **ゲーム要素**
+  /* ===== ACTIONS ===== */
+  .action-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(46,204,113,0.3);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+  .action-icon-wrap {
+    width: 56px; height: 56px;
+    background: linear-gradient(135deg, var(--green), #27ae60);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; flex-shrink: 0;
+  }
+  .action-body h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; color: var(--green); }
+  .action-body .action-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .action-tag {
+    font-size: 0.68rem; font-weight: 700;
+    background: rgba(46,204,113,0.15);
+    color: var(--green);
+    border-radius: 4px;
+    padding: 2px 8px;
+  }
+  .action-body p { font-size: 0.82rem; color: var(--text-muted); }
+  .action-body .effect {
+    margin-top: 8px;
+    background: rgba(46,204,113,0.08);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 0.78rem;
+    color: #82e0aa;
+  }
+  .action-body .effect strong { color: var(--green); }
 
----
+  /* ===== CHARTS ===== */
+  .chart-section { margin: 20px 0; }
+  .chart-section h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 12px; color: var(--accent2); }
+  .bar-item { margin-bottom: 12px; }
+  .bar-label { font-size: 0.78rem; margin-bottom: 4px; display: flex; justify-content: space-between; }
+  .bar-track { background: rgba(255,255,255,0.08); border-radius: 20px; height: 10px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 20px; transition: width 1s ease; }
 
-## ⚠️ **引き起こされる問題**
+  /* ===== RELATED BOOKS ===== */
+  .books-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media(min-width:540px){ .books-grid { grid-template-columns: repeat(2,1fr); } }
+  @media(min-width:900px){ .books-grid { grid-template-columns: repeat(3,1fr); } }
+  .book-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .book-spine {
+    width: 36px; min-width: 36px; height: 52px;
+    background: linear-gradient(180deg, var(--blue), var(--primary));
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+  .book-info h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 2px; }
+  .book-info .author { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 5px; }
+  .book-info p { font-size: 0.75rem; color: var(--text-muted); }
 
-### 🧠 **精神的影響**
-| 症状 | 詳細 | 深刻度 |
-|------|------|--------|
-| **集中力散漫** | 注意力の持続困難 | 🔴 高 |
-| **ストレス増大** | 常時緊張状態 | 🔴 高 |
-| **睡眠障害** | 質の低下・不眠 | 🟡 中 |
-| **うつ症状** | 気分の落ち込み | 🔴 高 |
+  /* ===== SECTION TITLE ===== */
+  .section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+    display: flex; align-items: center; gap: 8px;
+  }
 
-### 📊 **影響の連鎖**
-```
-スマホ依存 → 集中力低下 → 生産性減少
-     ↓           ↓           ↓
-ストレス増 → 睡眠障害 → うつ症状
-```
+  /* ===== SVG DIAGRAM ===== */
+  .svg-wrap { overflow-x: auto; margin: 16px 0; }
+  svg text { font-family: 'Hiragino Kaku Gothic ProN', sans-serif; }
 
----
+  /* ===== BADGE ===== */
+  .num-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--accent), #c0392b);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 1.4rem;
+    font-weight: 900;
+    margin: 4px;
+  }
+  .num-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+  .num-badge-wrap { text-align: center; }
+  .num-badge-wrap p { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; max-width: 80px; }
 
-## 💡 **解決策・処方箋**
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+</style>
+</head>
+<body>
 
-### 🛠️ **デジタルデトックス戦略**
+<header class="site-header" role="banner">
+  <h1>📱 スマホと脳 — 知らないと損する科学的真実</h1>
+  <p>書籍リサーチ完全インフォグラフィック｜本を読まなくても全体像がわかる</p>
+</header>
 
-#### **📱 使用制限**
-- ⏰ 使用時間の設定
-- 🔕 通知のオフ
-- 📵 スマホフリータイム
+<!-- ===== HERO BLOCK ===== -->
+<section class="hero" aria-label="エグゼクティブサマリー">
+  <div class="section-title">🎯 ここだけ見れば全部わかる — 要約ブロック</div>
+  <div class="hero-grid">
+    <div class="hero-item">
+      <div class="hero-label">❓ 問い</div>
+      <h2>スマホは脳と心に何をもたらし、どう対処すべきか？</h2>
+      <p>現代人が毎日触れるスマホが、私たちの思考・感情・睡眠にどんな影響を与えているのかを問う。</p>
+    </div>
+    <div class="hero-item ans">
+      <div class="hero-label">💡 答え</div>
+      <h2>報酬系を過剰活性化し、注意・睡眠・メンタルを蝕む</h2>
+      <p>対処は「意志力」ではなく、通知遮断・物理距離・運動・睡眠衛生という<strong>環境と習慣の設計</strong>。</p>
+    </div>
+    <div class="hero-item why">
+      <div class="hero-label">🔬 Why（なぜ）</div>
+      <h2>旧石器時代仕様の脳が現代の超刺激に負ける</h2>
+      <p>変動報酬・通知・社会的承認への過敏性がタスク切替コスト増・メラトニン抑制・自己評価低下を引き起こす。</p>
+    </div>
+    <div class="hero-item how">
+      <div class="hero-label">🛠 How（どうする）</div>
+      <h2>4つの環境設計で脳を守る</h2>
+      <p>① 通知一括遮断＋チェック時間帯化<br>② 寝室からスマホ排除<br>③ 有酸素運動15〜30分/日<br>④ 机上から端末を物理的に遠ざける</p>
+    </div>
+  </div>
+</section>
 
-#### **🧘 脳の回復**
-- 🌿 瞑想・マインドフルネス
-- 🚶 運動・散歩
-- 📚 読書・創作活動
+<!-- ===== TABS ===== -->
+<nav class="tab-nav" role="tablist" aria-label="コンテンツタブ">
+  <button class="tab-btn" role="tab" aria-selected="true" aria-controls="tab-concepts" id="btn-concepts">🧠 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters" id="btn-chapters">📖 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples" id="btn-examples">💡 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes" id="btn-quotes">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions" id="btn-actions">✅ 今日のアクション</button>
+</nav>
 
-#### **🏠 環境整備**
-- 🛏️ 寝室からスマホ除去
-- 📖 アナログ活動の増加
-- 👥 リアルな人間関係重視
+<!-- ===== TAB: 主要概念 ===== -->
+<section class="tab-panel active" id="tab-concepts" role="tabpanel" aria-labelledby="btn-concepts">
 
----
+  <div class="section-title">🧠 主要概念 — 11の核心キーワード</div>
 
-## 📈 **健康的なデジタルライフ指標**
+  <!-- 数値バッジ -->
+  <div class="num-badges" aria-label="重要指標">
+    <div class="num-badge-wrap">
+      <div class="num-badge">11</div>
+      <p>主要概念</p>
+    </div>
+    <div class="num-badge-wrap">
+      <div class="num-badge" style="background:linear-gradient(135deg,#f5a623,#e67e22)">10</div>
+      <p>因果連鎖の数</p>
+    </div>
+    <div class="num-badge-wrap">
+      <div class="num-badge" style="background:linear-gradient(135deg,#2ecc71,#27ae60)">4</div>
+      <p>今日できる対策</p>
+    </div>
+    <div class="num-badge-wrap">
+      <div class="num-badge" style="background:linear-gradient(135deg,#9b59b6,#8e44ad)">6</div>
+      <p>関連書籍</p>
+    </div>
+  </div>
 
-### ✅ **チェックリスト**
-```
-□ 1日のスマホ使用時間 < 3時間
-□ 就寝1時間前はスマホ使用停止
-□ 集中作業時は通知オフ
-□ 週1回のデジタルデトックス
-□ リアルな趣味・運動の実践
-```
+  <!-- 影響度バーチャート -->
+  <div class="chart-section">
+    <h3>📊 スマホが脳に与える影響度（概念的スコア）</h3>
+    <div class="bar-item">
+      <div class="bar-label"><span>🎰 変動比率スケジュール（依存性）</span><span>95%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:95%;background:linear-gradient(90deg,#e94560,#c0392b)"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-label"><span>🌙 ブルーライト（睡眠破壊）</span><span>88%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:88%;background:linear-gradient(90deg,#9b59b6,#8e44ad)"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-label"><span>🔔 注意の断片化（生産性低下）</span><span>85%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#f5a623,#e67e22)"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-label"><span>📱 スマホの存在効果（認知コスト）</span><span>78%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:78%;background:linear-gradient(90deg,#1abc9c,#16a085)"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-label"><span>😔 社会的比較（メンタル悪化）</span><span>80%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#e94560,#9b59b6)"></div></div>
+    </div>
+    <div class="bar-item">
+      <div class="bar-label"><span>🏃 運動の神経効果（改善力）</span><span>90%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#2ecc71,#27ae60)"></div></div>
+    </div>
+  </div>
 
-### 🎯 **目標設定**
-| 期間 | 目標 | 効果 |
-|------|------|------|
-| **1週間** | 通知制限 | ストレス軽減 |
-| **1ヶ月** | 使用時間半減 | 集中力向上 |
-| **3ヶ月** | 健康習慣確立 | 総合的改善 |
+  <!-- 概念カード -->
+  <div class="card-grid">
 
----
+    <div class="card">
+      <div class="card-icon">🦕</div>
+      <h3>進化のミスマッチ</h3>
+      <div class="badge">脳の時代遅れ問題</div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>旧石器時代に最適化された脳が現代の超刺激環境に対応できない</span></li>
+        <li><span class="li-icon">▸</span><span>希少な情報環境向けの脳が、情報洪水で過負荷になる</span></li>
+        <li><span class="li-icon">▸</span><span>過剰刺激により自己制御が崩れやすくなる</span></li>
+        <li><span class="li-icon">▸</span><span>意志力だけでは抗えない生物学的背景がある</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 なぜ重要か</strong>「自分が弱いのではなく、脳の仕様の問題」と理解することで、環境設計という正しい対策に向かえる。</div>
+    </div>
 
-## 🔬 **科学的根拠**
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <h3>ドーパミン報酬系</h3>
+      <div class="badge">やめられない仕組み</div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>予期せぬ報酬・社会的承認で活性化する神経回路</span></li>
+        <li><span class="li-icon">▸</span><span>探索行動と反復行動を強力に促進する</span></li>
+        <li><span class="li-icon">▸</span><span>スマホのUI設計はこの回路を意図的に狙っている</span></li>
+        <li><span class="li-icon">▸</span><span>「いいね」や通知がドーパミン放出のトリガーになる</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 なぜ重要か</strong>依存の根本メカニズムを知ることで、プラットフォームの設計意図を見抜き、主体的に距離を置けるようになる。</div>
+    </div>
 
-### 🧪 **脳科学的メカニズム**
-```
-報酬系（ドーパミン）の過剰刺激
-        ↓
-神経回路の変化
-        ↓
-依存的行動パターンの形成
-```
+    <div class="card">
+      <div class="card-icon">🎰</div>
+      <h3>変動比率スケジュール</h3>
+      <div class="badge">ギャンブル型報酬</div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>不確実な頻度で報酬が得られる仕組み</span></li>
+        <li><span class="li-icon">▸</span><span>スロットマシンと同じ原理で最も依存性が高い</span></li>
+        <li><span class="li-icon">▸</span><span>SNSの更新・通知・リプライがこの原理を使う</span></li>
+        <li><span class="li-icon">▸</span><span>「次は何かあるかも」という期待が止められなくする</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 なぜ重要か</strong>SNSチェックが「ギャンブル」と同じ脳の動きであると知ることで、衝動的チェックを客観視できる。</div>
+    </div>
 
-### 📊 **研究データ**
-- 🧠 **脳の可塑性**: 使用パターンで神経回路変化
-- ⚡ **反応時間**: 通知への即座反応
-- 🔄 **習慣形成**: 21日で新しいパターン定着
+    <div class="card">
+      <div class="card-icon">🔀</div>
+      <h3>注意の断片化</h3>
+      <div class="badge">集中の分割損失</div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>頻繁なタスク切替で集中が途切れ続ける</span></li>
+        <li><span class="li-icon">▸</span><span>遂行速度と正確性が低下する</span></li>
+        <li><span class="li-icon">▸</span><span>マルチタスクは神話——実際は逐次処理でコストが高い</span></li>
+        <li><span class="li-icon">▸</span><span>一度切れた集中の回復には数分〜十数分かかる</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 なぜ重要か</strong>「ちょっと確認するだけ」が生産性を大きく損なうと理解でき、通知遮断の動機になる。</div>
+    </div>
 
----
+    <div class="card">
+      <div class="card-icon">👁️</div>
+      <h3>スマホの存在効果</h3>
+      <div class="badge">置いてあるだけで邪魔</div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>視界や手の届く範囲にあるだけで認知資源が消費される</span></li>
+        <li><span class="li-icon">▸</span><span>使っていなくても作業成績が落ちる</span></li>
+        <li><span class="li-icon">▸</span><span>「気にしないようにする」こと自体がコストになる</span></li>
+        <li><span class="li-icon">▸</span><span>物理的に別室に置くだけで効果がある</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 なぜ重要か</strong>「使わなければいい」では不十分で、物理的距離が必要という環境設計の根拠になる。</div>
+    </div>
 
-## 🎯 **まとめ**
+    <div class="card">
+      <div class="card-icon">😰</div>
+      <h3>FOMO / ノモフォビア</h3>
+      <div class="badge">不安が依存を招く</div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>FOMO＝見逃し不安（Fear Of Missing Out）</span></li>
+        <li><span class="li-icon">▸</span><span>ノモフォビア＝スマホなし不安（No Mobile Phobia）</span></li>
+        <li><span class="li-icon">▸</span><span>不安がチェック衝動を強化し、依存の負のループを作る</span></li>
+        <li><span class="li-icon">▸</span><span>チェックするほど不安が強まる悪循環</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 なぜ重要か</strong>不安と依存の相互強化を知ることで、「チェックしない練習」が不安軽減にもなると理解できる。</div>
+    </div>
 
-### 🔑 **キーポイント**
-1. **🧬 進化的ミスマッチ**: 古い脳 × 新しい技術
-2. **⚡ 生理的反応**: ドーパミン系の乱用
-3. **🔄 悪循環**: 依存→問題→さらなる依存
-4. **💡 解決可能**: 意識的な対策で改善
+    <div class="card">
+      <div class="card-icon">🌙</div>
+      <h3>ブルーライトとメラトニン抑制</h3>
+      <div class="badge">光で眠りが削れる</div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>短波長の青色光が睡眠ホルモン（メラトニン）分泌を遅らせる</span></li>
+        <li><span class="li-icon">▸</span><span>入眠困難と睡眠時間の短縮を引き起こす</span></li>
+        <li><span class="li-icon">▸</span><span>夜間のスクリーン使用が翌日の自己制御を弱める</span></li>
+        <li><span class="li-icon">▸</span><span>認知的覚醒（内容の刺激）も睡眠を妨げる</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 なぜ重要か</strong>睡眠不足→前頭前野機能低下→衝動制御低下という連鎖を断ち切るために、就寝前のスマホ排除が最優先になる。</div>
+    </div>
 
-### 🌟 **最終目標**
-```
-┌─────────────────────────────┐
-│    健康的なデジタルライフ    │
-├─────────────────────────────┤
-│ ✅ テクノロジーをツールとして活用 │
-│ ✅ 脳の健康を維持           │
-│ ✅ 生産性と幸福感の両立     │
-└─────────────────────────────┘
-```</div></main><script>console.log('inline ok')</script></body></html>
+    <div class="card">
+      <div class="card-icon">🪞</div>
+      <h3>社会的比較</h3>
+      <div class="badge">見比べの毒</div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>他者のハイライト（良い場面だけ）を見続ける</span></li>
+        <li><span class="li-icon">▸</span><span>自分の日常と他者の最良の瞬間を比較してしまう</span></li>
+        <li><span class="li-icon">▸</span><span>自己評価の低下・不安・抑うつ傾向を助長する</span></li>
+        <li><span class="li-icon">▸</span><span>若者・女性に特に強い影響が見られる</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 なぜ重要か</strong>SNS閲覧がメンタルに与える具体的な害を示し、使用量削減の動機を強化する。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🧬</div>
+      <h3>神経可塑性</h3>
+      <div class="badge">使えば強まる</div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>繰り返す行動で脳の神経回路が強化・変化する</span></li>
+        <li><span class="li-icon">▸</span><span>悪い習慣の回路も、良い習慣の回路も同様に強まる</span></li>
+        <li><span class="li-icon">▸</span><span>習慣設計によって回路は作り直せる（希望の根拠）</span></li>
+        <li><span class="li-icon">▸</span><span>変化には反復と時間が必要</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 なぜ重要か</strong>「脳は変えられる」という科学的根拠が、行動変容への希望と継続の動機になる。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <h3>デジタル衛生</h3>
+      <div class="badge">環境で守る</div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>通知・配置・使用時間帯をルール化する行動群</span></li>
+        <li><span class="li-icon">▸</span><span>意志力に頼らず環境で刺激暴露を管理する</span></li>
+        <li><span class="li-icon">▸</span><span>グレイスケール化・アプリ削除・物理距離が主な手段</span></li>
+        <li><span class="li-icon">▸</span><span>事前に決めておくことで迷いと誘惑を減らす</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 なぜ重要か</strong>「決意」ではなく「仕組み」が持続可能な変化をもたらすという本書の核心的処方箋。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🏃</div>
+      <h3>運動の神経効果</h3>
+      <div class="badge">動いて整える脳</div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>有酸素運動がBDNF（脳由来神経栄養因子）を増加させる</span></li>
+        <li><span class="li-icon">▸</span><span>前頭前野機能を高め、注意制御と衝動抑制を改善する</span></li>
+        <li><span class="li-icon">▸</span><span>ストレス耐性とメンタルの安定を同時に底上げする</span></li>
+        <li><span class="li-icon">▸</span><span>15〜30分の有酸素運動でも効果が得られる</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 なぜ重要か</strong>スマホ問題への最も即効性が高く、副作用のない対策として今日から実行できる。</div>
+    </div>
+
+  </div>
+
+  <!-- 因果連鎖フロー -->
+  <div class="section-title" style="margin-top:28px">🔗 因果連鎖マップ — 悪循環と好循環</div>
+
+  <!-- SVG因果図 -->
+  <div class="svg-wrap">
+    <svg width="700" height="320" viewBox="0 0 700 320" aria-label="スマホ依存の因果連鎖図">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#e94560"/>
+        </marker>
+        <marker id="arr-g" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#2ecc71"/>
+        </marker>
+      </defs>
+      <!-- 悪循環ノード -->
+      <rect x="10" y="10" width="130" height="36" rx="8" fill="#1a1a2e" stroke="#e94560" stroke-width="1.5"/>
+      <text x="75" y="33" text-anchor="middle" fill="#e8e8f0" font-size="11" font-weight="bold">🦕 進化のミスマッチ</text>
+
+      <rect x="180" y="10" width="130" height="36" rx="8" fill="#1a1a2e" stroke="#e94560" stroke-width="1.5"/>
+      <text x="245" y="33" text-anchor="middle" fill="#e8e8f0" font-size="11" font-weight="bold">🎰 変動報酬＋通知</text>
+
+      <rect x="350" y="10" width="130" height="36" rx="8" fill="#1a1a2e" stroke="#e94560" stroke-width="1.5"/>
+      <text x="415" y="33" text-anchor="middle" fill="#e8e8f0" font-size="11" font-weight="bold">🎯 ドーパミン予期↑</text>
+
+      <rect x="520" y="10" width="160" height="36" rx="8" fill="#1a1a2e" stroke="#e94560" stroke-width="1.5"/>
+      <text x="600" y="33" text-anchor="middle" fill="#e8e8f0" font-size="11" font-weight="bold">🔄 チェック習慣固定化</text>
+
+      <!-- 矢印 row1 -->
+      <line x1="140" y1="28" x2="178" y2="28" stroke="#e94560" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="310" y1="28" x2="348" y2="28" stroke="#e94560" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="480" y1="28" x2="518" y2="28" stroke="#e94560" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- row2 -->
+      <rect x="10" y="90" width="130" height="36" rx="8" fill="#1a1a2e" stroke="#f5a623" stroke-width="1.5"/>
+      <text x="75" y="113" text-anchor="middle" fill="#e8e8f0" font-size="11" font-weight="bold">🔀 注意の断片化↑</text>
+
+      <rect x="180" y="90" width="130" height="36" rx="8" fill="#1a1a2e" stroke="#f5a623" stroke-width="1.5"/>
+      <text x="245" y="113" text-anchor="middle" fill="#e8e8f0" font-size="11" font-weight="bold">📉 生産性・成績↓</text>
+
+      <rect x="350" y="90" width="130" height="36" rx="8" fill="#1a1a2e" stroke="#9b59b6" stroke-width="1.5"/>
+      <text x="415" y="113" text-anchor="middle" fill="#e8e8f0" font-size="11" font-weight="bold">🌙 睡眠不足</text>
+
+      <rect x="520" y="90" width="160" height="36" rx="8" fill="#1a1a2e" stroke="#9b59b6" stroke-width="1.5"/>
+      <text x="600" y="113" text-anchor="middle" fill="#e8e8f0" font-size="11" font-weight="bold">🧠 前頭前野機能低下</text>
+
+      <!-- 矢印 row2 -->
+      <line x1="600" y1="46" x2="600" y2="88" stroke="#e94560" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="600" y1="46" x2="75" y2="88" stroke="#e94560" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+      <line x1="140" y1="108" x2="178" y2="108" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="415" y1="46" x2="415" y2="88" stroke="#e94560" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="480" y1="108" x2="518" y2="108" stroke="#9b59b6" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- row3 悪化 -->
+      <rect x="10" y="170" width="130" height="36" rx="8" fill="#1a1a2e" stroke="#e94560" stroke-width="1.5"/>
+      <text x="75" y="193" text-anchor="middle" fill="#e8e8f0" font-size="11" font-weight="bold">😔 不安・抑うつ↑</text>
+
+      <rect x="180" y="170" width="130" height="36" rx="8" fill="#1a1a2e" stroke="#e94560" stroke-width="1.5"/>
+      <text x="245" y="193" text-anchor="middle" fill="#e8e8f0" font-size="11" font-weight="bold">🪞 社会的比較</text>
+
+      <rect x="350" y="170" width="130" height="36" rx="8" fill="#1a1a2e" stroke="#e94560" stroke-width="1.5"/>
+      <text x="415" y="193" text-anchor="middle" fill="#e8e8f0" font-size="11" font-weight="bold">⚡ 衝動制御低下</text>
+
+      <rect x="520" y="170" width="160" height="36" rx="8" fill="#1a1a2e" stroke="#e94560" stroke-width="1.5"/>
+      <text x="600" y="193" text-anchor="middle" fill="#e8e8f0" font-size="11" font-weight="bold">🔁 過使用の再強化</text>
+
+      <line x1="600" y1="126" x2="600" y2="168" stroke="#9b59b6" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="600" y1="206" x2="600" y2="240" stroke="#e94560" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="310" y1="188" x2="348" y2="188" stroke="#e94560" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="480" y1="188" x2="518" y2="188" stroke="#e94560" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="140" y1="188" x2="178" y2="188" stroke="#e94560" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- 好循環 -->
+      <rect x="10" y="255" width="130" height="36" rx="8" fill="#0d2b1a" stroke="#2ecc71" stroke-width="1.5"/>
+      <text x="75" y="278" text-anchor="middle" fill="#2ecc71" font-size="11" font-weight="bold">🏃 運動</text>
+
+      <rect x="180" y="255" width="130" height="36" rx="8" fill="#0d2b1a" stroke="#2ecc71" stroke-width="1.5"/>
+      <text x="245" y="278" text-anchor="middle" fill="#2ecc71" font-size="11" font-weight="bold">🛡️ デジタル衛生</text>
+
+      <rect x="350" y="255" width="130" height="36" rx="8" fill="#0d2b1a" stroke="#2ecc71" stroke-width="1.5"/>
+      <text x="415" y="278" text-anchor="middle" fill="#2ecc71" font-size="11" font-weight="bold">🧬 神経可塑性</text>
+
+      <rect x="520" y="255" width="160" height="36" rx="8" fill="#0d2b1a" stroke="#2ecc71" stroke-width="1.5"/>
+      <text x="600" y="278" text-anchor="middle" fill="#2ecc71" font-size="11" font-weight="bold">✅ 集中・安定の回復</text>
+
+      <line x1="140" y1="273" x2="178" y2="273" stroke="#2ecc71" stroke-width="1.5" marker-end="url(#arr-g)"/>
+      <line x1="310" y1="273" x2="348" y2="273" stroke="#2ecc71" stroke-width="1.5" marker-end="url(#arr-g)"/>
+      <line x1="480" y1="273" x2="518" y2="273" stroke="#2ecc71" stroke-width="1.5" marker-end="url(#arr-g)"/>
+
+      <!-- 好循環が悪循環を断ち切る -->
+      <line x1="75" y1="255" x2="75" y2="208" stroke="#2ecc71" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+      <line x1="245" y1="255" x2="245" y2="208" stroke="#2ecc71" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-g)"/>
+
+      <!-- ラベル -->
+      <text x="350" y="250" text-anchor="middle" fill="#2ecc71" font-size="10">↑ 好循環（対策）</text>
+      <text x="350" y="165" text-anchor="middle" fill="#e94560" font-size="10">↑ 悪循環（スマホ過使用）</text>
+    </svg>
+  </div>
+
+</section>
+
+<!-- ===== TAB: 各章の要約 ===== -->
+<section class="tab-panel" id="tab-chapters" role="tabpanel" aria-labelledby="btn-chapters">
+
+  <div class="section-title">📖 各章の要約 — 8つの論点</div>
+
+  <div class="chapter-list">
+
+    <div class="chapter-card">
+      <div class="chapter-num">1</div>
+      <div class="chapter-body">
+        <h3>🌍 導入：超刺激環境と旧式の脳</h3>
+        <ul>
+          <li>現代は旧石器時代の脳が想定しない情報密度に満ちている</li>
+          <li>スマホは「新奇・社会的承認・断続的報酬」への脳の弱点を突く</li>
+          <li>問題は個人の意志の弱さではなく、設計と生物学の衝突</li>
+          <li>本書全体の問いを設定：脳と心への影響と対処法</li>
+        </ul>
+        <div class="reason-box"><strong>💡 この章が必要な理由</strong>「なぜ自分はやめられないのか」という自責を解消し、正しい問題設定（環境設計）へ読者を誘導するための土台。</div>
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">2</div>
+      <div class="chapter-body">
+        <h3>🎯 報酬系の科学：ドーパミンと依存の仕組み</h3>
+        <ul>
+          <li>ドーパミンは「快楽」より「探索・期待」の神経伝達物質</li>
+          <li>変動比率スケジュールがSNSを最も依存性の高い設計にする</li>
+          <li>「いいね」「フォロワー数」が社会的承認の代替報酬として機能</li>
+          <li>プラットフォームは意図的にこの仕組みを最大化している</li>
+        </ul>
+        <div class="reason-box"><strong>💡 この章が必要な理由</strong>依存の神経科学的根拠を示すことで、「意志で解決」という誤解を払拭し、設計レベルの対策の必要性を論証する。</div>
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">3</div>
+      <div class="chapter-body">
+        <h3>🔀 注意と認知：マルチタスクの神話</h3>
+        <ul>
+          <li>マルチタスクは存在しない——脳は逐次処理しかできない</li>
+          <li>タスクスイッチングのたびに「切替コスト」が発生し生産性が落ちる</li>
+          <li>スマホが視界にあるだけで認知資源が消費される（存在効果）</li>
+          <li>集中の回復には数分〜十数分かかる</li>
+        </ul>
+        <div class="reason-box"><strong>💡 この章が必要な理由</strong>「ながらスマホ」の実害を定量的に示し、物理的距離・通知遮断という具体策の根拠を提供する。</div>
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">4</div>
+      <div class="chapter-body">
+        <h3>😰 ストレスとメンタル：不安・抑うつとの関係</h3>
+        <ul>
+          <li>画面時間の増加と不安・抑うつ傾向の相関が示されている</li>
+          <li>社会的比較（他者のハイライト閲覧）が自己評価を継続的に下げる</li>
+          <li>ストレス亢進と睡眠の質低下が相互に悪化し合う</li>
+          <li>感情調整の脆弱化が過使用をさらに促進する悪循環</li>
+        </ul>
+        <div class="reason-box"><strong>💡 この章が必要な理由</strong>スマホ問題を「生産性」だけでなく「メンタルヘルス」の問題として位置づけ、対策の緊急性を高める。</div>
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">5</div>
+      <div class="chapter-body">
+        <h3>🌙 睡眠：ブルーライトと認知的覚醒の破壊力</h3>
+        <ul>
+          <li>ブルーライトがメラトニン分泌を遅らせ入眠を困難にする</li>
+          <li>コンテンツの刺激（認知的覚醒）も睡眠の質を下げる</li>
+          <li>睡眠不足→前頭前野機能低下→衝動制御低下→過使用の連鎖</li>
+          <li>就寝前30分のスマホ排除が最も効果的な単一介入</li>
+        </ul>
+        <div class="reason-box"><strong>💡 この章が必要な理由</strong>睡眠が自己制御の基盤であることを示し、「寝室からスマホを出す」という最優先アクションを正当化する。</div>
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">6</div>
+      <div class="chapter-body">
+        <h3>👦 若者への影響：発達期の脳のリスク</h3>
+        <ul>
+          <li>発達期の脳は可塑性が高く、スマホの影響を受けやすい</li>
+          <li>スマホ普及以降、若者のメンタル・行動に変化が見られる</li>
+          <li>保護要因：親のルール設定・学校の方針・仲間との対面交流</li>
+          <li>早期の習慣形成が長期的な脳の回路に影響する</li>
+        </ul>
+        <div class="reason-box"><strong>💡 この章が必要な理由</strong>子どもや若者を持つ読者に対して、環境設計の重要性を世代を超えた視点で示す。</div>
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">7</div>
+      <div class="chapter-body">
+        <h3>🛠️ 処方箋：デジタル衛生と運動・睡眠の設計</h3>
+        <ul>
+          <li>デジタル衛生：通知遮断・グレイスケール・アプリ削除・物理距離</li>
+          <li>運動：有酸素運動15〜30分でBDNF増加・前頭前野機能改善</li>
+          <li>自然接触：ストレス軽減と注意回復に効果がある</li>
+          <li>睡眠衛生：就寝前の無刺激化・寝室のスマホ排除</li>
+        </ul>
+        <div class="reason-box"><strong>💡 この章が必要な理由</strong>問題提起から解決策へ移行する核心章。科学的根拠に基づく具体的行動を提示し、読者の行動変容を促す。</div>
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">8</div>
+      <div class="chapter-body">
+        <h3>🔄 実装と維持：意志に頼らない仕組み化</h3>
+        <ul>
+          <li>ルールは意志力の代替——事前決定で迷いと誘惑を排除する</li>
+          <li>神経可塑性を活用し、望ましい習慣の回路を反復で強化する</li>
+          <li>環境設計（物理・デジタル）が継続の鍵</li>
+          <li>小さな変化の積み重ねが持続的な効果をもたらす</li>
+        </ul>
+        <div class="reason-box"><strong>💡 この章が必要な理由</strong>「わかっているけどできない」を解決する実装論。習慣化の科学で長期的な変化を可能にする。</div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ===== TAB: 具体例 ===== -->
+<section class="tab-panel" id="tab-examples" role="tabpanel" aria-labelledby="btn-examples">
+
+  <div class="section-title">💡 具体例 — 核心メッセージが伝わる3つのケース</div>
+
+  <div class="example-card">
+    <div class="ex-header">
+      <div class="ex-num">1</div>
+      <h3>🎰 スロットマシンとSNSの「引っ張り更新」</h3>
+    </div>
+    <div class="ex-body">
+      <p><strong>背景：</strong>SNSのタイムラインを下から上に引っ張って更新する動作（プルトゥリフレッシュ）は、スロットマシンのレバーを引く動作と同じ心理的構造を持つ。何が出るかわからない「変動比率スケジュール」が最大の依存性を生む。</p>
+      <p><strong>示唆：</strong>この設計は偶然ではなく、エンゲージメントを最大化するために意図的に採用されている。ユーザーは「次は何かあるかも」という期待でやめられなくなる。</p>
+    </div>
+    <div class="insight-box">
+      <strong>🔍 この例が示すこと</strong>
+      SNSへの依存は「意志の弱さ」ではなく、カジノと同じ心理的設計の産物。設計を知ることで、自分を責めずに対策（通知遮断・使用時間帯化）に向かえる。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-header">
+      <div class="ex-num">2</div>
+      <h3>📱 「机の上に置いただけ」で成績が下がる実験</h3>
+    </div>
+    <div class="ex-body">
+      <p><strong>背景：</strong>ある研究では、スマホを机の上に置いた状態・カバンの中・別室に置いた状態で認知テストを実施した。スマホを使っていなくても、視界にあるだけで成績が有意に低下した。</p>
+      <p><strong>示唆：</strong>「使わなければいい」という考えは不十分。脳は「気にしないようにする」こと自体にリソースを消費する。物理的に別室に置くことが唯一の完全な解決策。</p>
+    </div>
+    <div class="insight-box">
+      <strong>🔍 この例が示すこと</strong>
+      スマホの存在効果は実験で実証されており、「意識的に無視する」では認知コストを払い続ける。物理的距離という環境設計の必要性を直接的に裏づける。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-header">
+      <div class="ex-num">3</div>
+      <h3>🌙 夜のスクロールが翌日の自己制御を壊すメカニズム</h3>
+    </div>
+    <div class="ex-body">
+      <p><strong>背景：</strong>就寝前にSNSをスクロールすると、①ブルーライトがメラトニン分泌を抑制し入眠が遅れる、②コンテンツの刺激（感情的な投稿・比較）が認知的覚醒を高める、という二重の睡眠破壊が起きる。睡眠不足は翌朝の前頭前野機能を低下させ、衝動制御が弱まり、またスマホを手に取りやすくなる。</p>
+      <p><strong>示唆：</strong>夜のスマホ使用は「今夜だけの問題」ではなく、翌日の行動全体に連鎖する。就寝前30分のスマホ排除が最も費用対効果の高い単一介入。</p>
+    </div>
+    <div class="insight-box">
+      <strong>🔍 この例が示すこと</strong>
+      睡眠→自己制御→スマホ使用の連鎖を断ち切ることが、悪循環全体を止める最短ルート。「寝室にスマホを持ち込まない」という単純なルールが複数の問題を同時に解決する。
+    </div>
+  </div>
+
+  <!-- メタファー補足 -->
+  <div class="section-title" style="margin-top:20px">🎭 理解を助けるメタファー</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-icon">🔥</div>
+      <h3>焚き火と蛾のメタファー</h3>
+      <ul>
+        <li><span class="li-icon">▸</span><span>蛾が光に引き寄せられるのは本能——意志では止められない</span></li>
+        <li><span class="li-icon">▸</span><span>スマホの光（通知・新奇情報）も同様に脳を引き寄せる</span></li>
+        <li><span class="li-icon">▸</span><span>解決策は「蛾を強くする」ではなく「光を遠ざける」こと</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 示すこと</strong>環境設計（光を遠ざける）こそが正しいアプローチ。</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏋️</div>
+      <h3>筋肉と意志力のメタファー</h3>
+      <ul>
+        <li><span class="li-icon">▸</span><span>意志力は筋肉のように使うと疲弊する（自我消耗）</span></li>
+        <li><span class="li-icon">▸</span><span>一日中「スマホを見ない」と決意し続けるのは消耗戦</span></li>
+        <li><span class="li-icon">▸</span><span>ルール化（事前決定）は意志力を使わずに済む省エネ戦略</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 示すこと</strong>「決意」より「仕組み」が持続可能な理由。</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌱</div>
+      <h3>土壌と植物のメタファー</h3>
+      <ul>
+        <li><span class="li-icon">▸</span><span>脳（神経可塑性）は土壌——何を植えるかで変わる</span></li>
+        <li><span class="li-icon">▸</span><span>運動・睡眠・集中習慣が「良い植物」の種</span></li>
+        <li><span class="li-icon">▸</span><span>スマホ過使用は雑草——放置すると良い植物を駆逐する</span></li>
+      </ul>
+      <div class="reason-box"><strong>💡 示すこと</strong>習慣設計で脳回路は変えられるという希望の根拠。</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== TAB: 重要な引用 ===== -->
+<section class="tab-panel" id="tab-quotes" role="tabpanel" aria-labelledby="btn-quotes">
+
+  <div class="section-title">💬 重要な引用（要旨）</div>
+  <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:16px">※ 以下はすべて書籍の要旨として抽出したものです（原文引用ではありません）</p>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">私たちの脳は注意を奪う刺激に弱く、スマホはその弱点に最適化されている。</div>
+    <div class="quote-note"><strong>💡 なぜ重要か：</strong>設計と生物学の相互作用を示し、個人の意思だけに頼れない理由を明確化する。「自分が弱い」のではなく「設計が強い」という認識の転換を促す核心的フレーズ。</div>
+  </div>
+
+  <div class="quote-card" style="border-left-color:var(--accent2)">
+    <div class="quote-mark" style="color:var(--accent2)">"</div>
+    <div class="quote-tag" style="background:rgba(245,166,35,0.15);color:var(--accent2)">要旨</div>
+    <div class="quote-text">スマホは使っていない時でさえ認知資源を奪い、思考の帯域を狭める。</div>
+    <div class="quote-note"><strong>💡 なぜ重要か：</strong>"机上に置かない"といった環境介入の必要性を裏づける。「使わなければいい」という誤解を正し、物理的距離という対策の正当性を示す。</div>
+  </div>
+
+  <div class="quote-card" style="border-left-color:var(--green)">
+    <div class="quote-mark" style="color:var(--green)">"</div>
+    <div class="quote-tag" style="background:rgba(46,204,113,0.15);color:var(--green)">要旨</div>
+    <div class="quote-text">運動は脳にとって最良の投資であり、集中とメンタルを同時に底上げする。</div>
+    <div class="quote-note"><strong>💡 なぜ重要か：</strong>即実行できる高効果の対策として読者の行動変容を後押しする。スマホ問題への解決策として「引き算（使用削減）」だけでなく「足し算（運動追加）」の重要性を示す。</div>
+  </div>
+
+  <div class="quote-card" style="border-left-color:var(--purple)">
+    <div class="quote-mark" style="color:var(--purple)">"</div>
+    <div class="quote-tag" style="background:rgba(155,89,182,0.15);color:var(--purple)">要旨</div>
+    <div class="quote-text">ルールは意志力の代替であり、決めておくことで迷いと誘惑を減らせる。</div>
+    <div class="quote-note"><strong>💡 なぜ重要か：</strong>継続可能なデジタル衛生の核が"事前決定"であることを示す。「毎回判断する」コストを排除し、習慣化を加速させる実装論の要。</div>
+  </div>
+
+  <!-- 関連書籍 -->
+  <div class="section-title" style="margin-top:24px">📚 関連書籍</div>
+  <div class="books-grid">
+    <div class="book-card">
+      <div class="book-spine">📗</div>
+      <div class="book-info">
+        <h4>運動脳</h4>
+        <div class="author">アンデシュ・ハンセン</div>
+        <p>運動が注意・ストレス・学習を改善する科学的基盤を補強。対策パートの根拠拡張。</p>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-spine">📘</div>
+      <div class="book-info">
+        <h4>デジタル・ミニマリスト</h4>
+        <div class="author">カル・ニューポート</div>
+        <p>価値基準からの使用設計や"環境で守る"実践手順が豊富。</p>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-spine">📙</div>
+      <div class="book-info">
+        <h4>ディープ・ワーク</h4>
+        <div class="author">カル・ニューポート</div>
+        <p>注意の断片化を避け、モノタスクを最大化する作業環境づくりの具体策。</p>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-spine">📕</div>
+      <div class="book-info">
+        <h4>睡眠こそ最強の解決策である</h4>
+        <div class="author">マシュー・ウォーカー</div>
+        <p>ブルーライトと睡眠の科学的メカニズムを詳細に解説し、夜間対策を強化。</p>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-spine">📓</div>
+      <div class="book-info">
+        <h4>ドーパミン・ネーション</h4>
+        <div class="author">アンナ・レンブケ</div>
+        <p>報酬系と依存の力学を俯瞰し、刺激の"断食"戦略を学べる。</p>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-spine">📔</div>
+      <div class="book-info">
+        <h4>i世代</h4>
+        <div class="author">ジーン・M・トゥウェンジ</div>
+        <p>スマホ普及以降の若者のメンタル・行動変化をデータで検証。</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== TAB: 今日のアクション ===== -->
+<section class="tab-panel" id="tab-actions" role="tabpanel" aria-labelledby="btn-actions">
+
+  <div class="section-title">✅ 今日のアクション — 15〜30分で実行できる3つの行動</div>
+
+  <!-- 進捗バー風 -->
+  <div style="background:rgba(255,255,255,0.05);border-radius:12px;padding:16px;margin-bottom:20px">
+    <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:10px">🎯 3つ全部やれば脳の環境設計が完成する</div>
+    <div style="display:flex;gap:8px">
+      <div style="flex:1;height:8px;background:linear-gradient(90deg,var(--accent),#c0392b);border-radius:4px"></div>
+      <div style="flex:1;height:8px;background:linear-gradient(90deg,var(--accent2),#e67e22);border-radius:4px"></div>
+      <div style="flex:1;height:8px;background:linear-gradient(90deg,var(--green),#27ae60);border-radius:4px"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <div style="flex:1;font-size:0.68rem;color:var(--accent);text-align:center">通知遮断</div>
+      <div style="flex:1;font-size:0.68rem;color:var(--accent2);text-align:center">睡眠衛生</div>
+      <div style="flex:1;font-size:0.68rem;color:var(--green);text-align:center">運動</div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-icon-wrap">🔕</div>
+    <div class="action-body">
+      <h3>① 通知を全停止し15分黙作</h3>
+      <div class="action-meta">
+        <span class="action-tag">⏱ 15分</span>
+        <span class="action-tag">📱 スマホ設定</span>
+        <span class="action-tag">🧠 認知改善</span>
+      </div>
+      <p><strong>目的：</strong>変動比率スケジュールによるチェック衝動を断ち切り、注意の断片化を防ぐ。</p>
+      <p style="margin-top:6px"><strong>やり方：</strong>スマホの設定から全アプリの通知をオフにする（緊急連絡は電話のみ許可）。その後15分間、スマホを別室に置いて一つの作業に集中する。</p>
+      <div class="effect">
+        <strong>📈 期待効果：</strong>タスクスイッチングコストが減り、集中の質と作業速度が向上する。「通知がなくても大丈夫」という体験が不安（FOMO）を軽減し、チェック衝動が弱まる。
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card" style="border-color:rgba(245,166,35,0.3)">
+    <div class="action-icon-wrap" style="background:linear-gradient(135deg,var(--accent2),#e67e22)">🌙</div>
+    <div class="action-body">
+      <h3>② 就寝前30分スマホを離す</h3>
+      <div class="action-meta">
+        <span class="action-tag" style="background:rgba(245,166,35,0.15);color:var(--accent2)">⏱ 30分</span>
+        <span class="action-tag" style="background:rgba(245,166,35,0.15);color:var(--accent2)">🌙 睡眠衛生</span>
+        <span class="action-tag" style="background:rgba(245,166,35,0.15);color:var(--accent2)">🧠 前頭前野保護</span>
+      </div>
+      <p><strong>目的：</strong>ブルーライトによるメラトニン抑制と認知的覚醒を防ぎ、睡眠の質を守る。</p>
+      <p style="margin-top:6px"><strong>やり方：</strong>就寝30分前にスマホを寝室の外（充電器ごと）に置く。代わりに読書・ストレッチ・日記など低刺激の活動を行う。</p>
+      <div class="effect" style="background:rgba(245,166,35,0.08);color:#f9d77e">
+        <strong style="color:var(--accent2)">📈 期待効果：</strong>入眠が早まり睡眠の深さが改善する。翌朝の前頭前野機能が高まり、衝動制御と集中力が向上。睡眠→自己制御の好循環が始まる。
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card" style="border-color:rgba(46,204,113,0.3)">
+    <div class="action-icon-wrap" style="background:linear-gradient(135deg,var(--green),#27ae60)">🏃</div>
+    <div class="action-body">
+      <h3>③ 屋外を15分早歩きする</h3>
+      <div class="action-meta">
+        <span class="action-tag">⏱ 15〜30分</span>
+        <span class="action-tag">🏃 有酸素運動</span>
+        <span class="action-tag">🧬 BDNF増加</span>
+      </div>
+      <p><strong>目的：</strong>有酸素運動でBDNFを増加させ、前頭前野機能・ストレス耐性・注意制御を改善する。</p>
+      <p style="margin-top:6px"><strong>やり方：</strong>スマホをポケットに入れず（または機内モードで）、屋外を15〜30分早歩きする。自然環境があればなお効果的。</p>
+      <div class="effect">
+        <strong>📈 期待効果：</strong>BDNF（脳由来神経栄養因子）が増加し、集中力・記憶力・気分が改善する。ストレス耐性が高まりスマホへの衝動的依存が弱まる。継続で神経可塑性による持続的効果が得られる。
+      </div>
+    </div>
+  </div>
+
+  <!-- 実行チェックリスト -->
+  <div style="background:rgba(255,255,255,0.05);border-radius:12px;padding:18px;margin-top:8px">
+    <div class="section-title" style="border-bottom-color:var(--green);font-size:0.9rem">📋 今日の実行チェックリスト</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.85rem">
+        <input type="checkbox" style="width:18px;height:18px;accent-color:var(--accent)">
+        <span>🔕 全通知をオフにした</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.85rem">
+        <input type="checkbox" style="width:18px;height:18px;accent-color:var(--accent)">
+        <span>📱 スマホを別室に置いて15分作業した</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.85rem">
+        <input type="checkbox" style="width:18px;height:18px;accent-color:var(--accent2)">
+        <span>🌙 就寝前30分のスマホ禁止ルールを決めた</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.85rem">
+        <input type="checkbox" style="width:18px;height:18px;accent-color:var(--accent2)">
+        <span>🛏️ 寝室の充電器を廊下に移動した</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.85rem">
+        <input type="checkbox" style="width:18px;height:18px;accent-color:var(--green)">
+        <span>🏃 15分以上の早歩きをした</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:0.85rem">
+        <input type="checkbox" style="width:18px;height:18px;accent-color:var(--green)">
+        <span>📅 明日も同じ3つを繰り返すと決めた</span>
+      </label>
+    </div>
+    <div style="margin-top:14px;padding:10px;background:rgba(46,204,113,0.08);border-radius:8px;font-size:0.78rem;color:#82e0aa">
+      💡 <strong style="color:var(--green)">神経可塑性の法則：</strong>同じ行動を21〜66日繰り返すことで脳回路が強化され、「やらないと気持ち悪い」状態になる。今日が最初の1日。
+    </div>
+  </div>
+
+</section>
+
+<footer role="contentinfo">
+  <p>📱 スマホと脳 インフォグラフィック｜書籍リサーチに基づく視覚化</p>
+  <p style="margin-top:4px">カラーパレット：プライマリー #1a1a2e ／ セカンダリー #16213e ／ アクセント #e94560</p>
+</footer>
+
+<script>
+  // タブ切替
+  const buttons = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('aria-controls');
+
+      buttons.forEach(b => {
+        b.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(p => {
+        p.classList.remove('active');
+      });
+
+      btn.setAttribute('aria-selected', 'true');
+      const panel = document.getElementById(target);
+      if (panel) panel.classList.add('active');
+
+      // スクロールをタブナビ直下へ
+      panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // バーアニメーション（IntersectionObserver）
+  const bars = document.querySelectorAll('.bar-fill');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const w = el.style.width;
+        el.style.width = '0';
+        setTimeout(() => { el.style.width = w; }, 100);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  bars.forEach(bar => observer.observe(bar));
+</script>
+
+</body>
+</html>
