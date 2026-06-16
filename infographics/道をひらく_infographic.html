@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>道をひらく — 松下幸之助 インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー : #1a3a5c
+  セカンダリー : #2e7d9e
+  アクセント   : #f0a500
+-->
+<style>
+  /* ===== リセット & ベース ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #1a3a5c;
+    --secondary: #2e7d9e;
+    --accent: #f0a500;
+    --bg: #f4f7fb;
+    --card-bg: #ffffff;
+    --text: #1e2a38;
+    --text-light: #5a6a7a;
+    --border: #d0dce8;
+    --radius: 12px;
+    --shadow: 0 2px 12px rgba(26,58,92,0.10);
+  }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Meiryo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  h1,h2,h3,h4 { line-height: 1.3; }
+  ul { list-style: none; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ===== ヘッダー ===== */
+  .site-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  .site-header .book-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .site-header h1 {
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+  }
+  .site-header .subtitle {
+    font-size: 0.88rem;
+    opacity: 0.85;
+    margin-top: 4px;
+  }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: linear-gradient(135deg, #fff8e8 0%, #e8f4fb 100%);
+    border-left: 5px solid var(--accent);
+    border-radius: var(--radius);
+    margin: 20px 16px;
+    padding: 20px 18px;
+    box-shadow: var(--shadow);
+  }
+  .summary-block .summary-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 480px) {
+    .summary-grid { grid-template-columns: 1fr; }
+  }
+  .summary-item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+  }
+  .summary-item .s-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .summary-item .s-text {
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .core-message {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: #fff;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* ===== タブナビ ===== */
+  .tab-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    background: var(--primary);
+    padding: 0 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.65);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 12px 14px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    font-family: inherit;
+  }
+  .tab-btn:hover { color: #fff; }
+  .tab-btn[aria-selected="true"] {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ===== タブコンテンツ ===== */
+  .tab-panel { display: none; padding: 16px; }
+  .tab-panel.active { display: block; }
+
+  /* ===== カード共通 ===== */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .card-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .card-subtitle {
+    font-size: 0.72rem;
+    color: var(--secondary);
+    font-weight: 600;
+    margin-top: 1px;
+  }
+  .card ul li {
+    font-size: 0.86rem;
+    color: var(--text);
+    line-height: 1.6;
+    padding: 3px 0 3px 18px;
+    position: relative;
+  }
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.75rem;
+    top: 5px;
+  }
+  .reason-box {
+    background: #f0f7ff;
+    border-left: 3px solid var(--secondary);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 10px;
+    font-size: 0.82rem;
+    color: var(--secondary);
+    line-height: 1.55;
+  }
+  .reason-box strong { color: var(--primary); }
+
+  /* ===== セクションタイトル ===== */
+  .section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin: 18px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ===== 概念カード グリッド ===== */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .concept-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--secondary);
+    transition: transform 0.15s;
+  }
+  .concept-card:hover { transform: translateY(-2px); }
+  .concept-card .c-icon { font-size: 1.6rem; margin-bottom: 6px; }
+  .concept-card .c-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 2px;
+  }
+  .concept-card .c-oneliner {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .concept-card .c-def {
+    font-size: 0.84rem;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .concept-card .c-reason {
+    font-size: 0.78rem;
+    color: var(--secondary);
+    background: #f0f7ff;
+    border-radius: 6px;
+    padding: 6px 10px;
+    line-height: 1.5;
+  }
+
+  /* ===== 因果関係フロー ===== */
+  .flow-list { display: flex; flex-direction: column; gap: 8px; }
+  .flow-item {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.84rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(26,58,92,0.07);
+    line-height: 1.6;
+  }
+  .flow-item .flow-arrow { color: var(--accent); font-weight: 700; }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--primary);
+  }
+  .chapter-card.alt { border-left-color: var(--secondary); }
+  .chapter-card.alt2 { border-left-color: var(--accent); }
+  .chapter-num {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--secondary);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .chapter-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  /* ===== 引用カード ===== */
+  .quote-card {
+    background: linear-gradient(135deg, #fff8e8, #fffdf5);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border: 1px solid #f0d890;
+    position: relative;
+  }
+  .quote-card::before {
+    content: '❝';
+    font-size: 2.5rem;
+    color: var(--accent);
+    opacity: 0.3;
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    line-height: 1;
+  }
+  .quote-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary);
+    line-height: 1.7;
+    padding-left: 28px;
+    margin-bottom: 10px;
+  }
+  .quote-badge {
+    display: inline-block;
+    background: #fff3cc;
+    color: #7a5a00;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+  }
+  .quote-why {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    line-height: 1.55;
+    border-top: 1px solid #f0d890;
+    padding-top: 8px;
+    margin-top: 4px;
+  }
+
+  /* ===== アクションカード ===== */
+  .action-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-num {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .action-body { flex: 1; }
+  .action-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+  .action-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .action-tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #e8f4fb;
+    color: var(--secondary);
+  }
+  .action-tag.accent { background: #fff3cc; color: #7a5a00; }
+  .action-desc {
+    font-size: 0.84rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .action-effect {
+    font-size: 0.78rem;
+    color: var(--secondary);
+    background: #f0f7ff;
+    border-radius: 6px;
+    padding: 5px 10px;
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  /* ===== 具体例カード ===== */
+  .example-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--accent);
+  }
+  .example-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .example-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+  .example-bg, .example-suggest, .example-reason {
+    font-size: 0.84rem;
+    line-height: 1.6;
+    margin-bottom: 6px;
+  }
+  .example-bg { color: var(--text); }
+  .example-suggest { color: var(--secondary); }
+  .example-reason {
+    background: #fff8e8;
+    border-left: 3px solid var(--accent);
+    padding: 6px 10px;
+    border-radius: 0 6px 6px 0;
+    color: #7a5a00;
+  }
+
+  /* ===== 関連書籍 ===== */
+  .book-list { display: flex; flex-direction: column; gap: 10px; }
+  .book-item {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    box-shadow: 0 1px 4px rgba(26,58,92,0.07);
+  }
+  .book-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .book-name { font-size: 0.9rem; font-weight: 700; color: var(--primary); }
+  .book-author { font-size: 0.75rem; color: var(--text-light); margin-bottom: 3px; }
+  .book-rel { font-size: 0.8rem; color: var(--text); line-height: 1.5; }
+
+  /* ===== SVG 数値バッジ ===== */
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 12px 0;
+    justify-content: center;
+  }
+  .badge-item {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 16px;
+    text-align: center;
+    min-width: 90px;
+  }
+  .badge-num {
+    font-size: 1.6rem;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .badge-label {
+    font-size: 0.7rem;
+    opacity: 0.9;
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  /* ===== SVG フロー図 ===== */
+  .svg-wrap {
+    overflow-x: auto;
+    margin: 12px 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  svg text { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; }
+
+  /* ===== フッター ===== */
+  .site-footer {
+    background: var(--primary);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    font-size: 0.72rem;
+    padding: 16px;
+    margin-top: 20px;
+  }
+
+  /* ===== ユーティリティ ===== */
+  .mt8 { margin-top: 8px; }
+  .mb0 { margin-bottom: 0; }
+  .text-center { text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header class="site-header" role="banner">
+  <div class="book-badge">📖 書籍インフォグラフィック</div>
+  <h1>道をひらく</h1>
+  <p class="subtitle">松下幸之助 ／ 逆境でも道はひらける生き方の哲学</p>
+</header>
+
+<!-- ===== ファーストビュー サマリーブロック ===== -->
+<section class="summary-block" aria-label="エグゼクティブサマリー">
+  <div class="summary-title">📌 そこさえ見れば本を読まずとも理解できる要約</div>
+  <div class="core-message">
+    💡 核心：素直な心で道理に学び、感謝と利他を基点に小さく踏み出せば、逆境でも道はひらける。
+  </div>
+  <div class="summary-grid">
+    <div class="summary-item">
+      <div class="s-label">❓ 問い</div>
+      <div class="s-text">逆境や迷いのなかで、どう生き働けば道はひらけるのか？</div>
+    </div>
+    <div class="summary-item">
+      <div class="s-label">✅ 答え</div>
+      <div class="s-text">心を素直にし、道理に即し、利他の志でいま一歩を起こす。</div>
+    </div>
+    <div class="summary-item">
+      <div class="s-label">🔍 Why（なぜそうなのか）</div>
+      <div class="s-text">素直さは事実受容と学習を促し、利他は信頼と支援を呼び、行動は機会と検証を生むから。</div>
+    </div>
+    <div class="summary-item">
+      <div class="s-label">🛠 How（そのためには）</div>
+      <div class="s-text">反省と感謝で心を整え、現場で観察し、小さく試し、成果と失敗を省みて改め続ける。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 数値バッジ ===== -->
+<div class="badge-row" aria-label="主要数値">
+  <div class="badge-item">
+    <div class="badge-num">8</div>
+    <div class="badge-label">主要概念</div>
+  </div>
+  <div class="badge-item">
+    <div class="badge-num">5</div>
+    <div class="badge-label">重要引用</div>
+  </div>
+  <div class="badge-item">
+    <div class="badge-num">3</div>
+    <div class="badge-label">今日の<br>アクション</div>
+  </div>
+  <div class="badge-item">
+    <div class="badge-num">5</div>
+    <div class="badge-label">関連書籍</div>
+  </div>
+</div>
+
+<!-- ===== タブナビ ===== -->
+<nav class="tab-nav" role="tablist" aria-label="コンテンツタブ">
+  <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="tab-concepts"  id="btn-concepts">🧠 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters"  id="btn-chapters">📚 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples"  id="btn-examples">💡 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes"   id="btn-quotes">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions"  id="btn-actions">🚀 今日のアクション</button>
+</nav>
+
+<main>
+
+<!-- ===== タブ1: 主要概念 ===== -->
+<section class="tab-panel active" id="tab-concepts" role="tabpanel" aria-labelledby="btn-concepts">
+
+  <div class="section-title">8つの主要概念</div>
+  <div class="concept-grid">
+
+    <div class="concept-card">
+      <div class="c-icon">🪟</div>
+      <div class="c-name">素直な心</div>
+      <span class="c-oneliner">心を透明にする</span>
+      <div class="c-def">私心や先入観を離れ、事実と他者の声をそのまま受け止める心の姿勢。誤りを認め、学びに開く。</div>
+      <div class="c-reason">🔍 なぜ重要か：意思決定と学習の出発点。素直さがなければ正しい判断も改善も始まらない。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="c-icon">🧭</div>
+      <div class="c-name">道理（自然の理）</div>
+      <span class="c-oneliner">正しい筋道</span>
+      <div class="c-def">物事がうまく運ぶ筋道。人の都合ではなく、現実と経験に照らして合理にかなう在り方。</div>
+      <div class="c-reason">🔍 なぜ重要か：道理に沿った行動は持続可能で、逸脱は必ず歪みを生む。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="c-icon">🔄</div>
+      <div class="c-name">反省と学び</div>
+      <span class="c-oneliner">日々改善</span>
+      <div class="c-def">日々の行いを省みて小さく改める習慣。誤りを糧に次の打ち手へ結ぶ。</div>
+      <div class="c-reason">🔍 なぜ重要か：小さな改善の連鎖が大きな成果を生む複利効果の源泉。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="c-icon">⛰️</div>
+      <div class="c-name">逆境観</div>
+      <span class="c-oneliner">逆境は師</span>
+      <div class="c-def">困難を天与の鍛錬機会とみなし、耐え抜きつつ工夫の源泉に変える見方。</div>
+      <div class="c-reason">🔍 なぜ重要か：状況を選べなくても解釈は選べる。主体性を保つ鍵。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="c-icon">🙏</div>
+      <div class="c-name">感謝</div>
+      <span class="c-oneliner">縁起を力に</span>
+      <div class="c-def">与えられた縁・機会・支えに目を向け、前向きの力と謙虚さを保つ態度。</div>
+      <div class="c-reason">🔍 なぜ重要か：感謝は心の余裕を生み、逆境耐性と継続力を強化する。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="c-icon">🏭</div>
+      <div class="c-name">現場主義</div>
+      <span class="c-oneliner">現場が先生</span>
+      <div class="c-def">机上で断じず、現物・現場・現実にあたって確かめる姿勢。実際から学ぶ。</div>
+      <div class="c-reason">🔍 なぜ重要か：抽象論に陥らず、再現性のある改善行動へ橋渡しする。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="c-icon">🤝</div>
+      <div class="c-name">お役立ち（利他）</div>
+      <span class="c-oneliner">利他優先</span>
+      <div class="c-def">自他ともに益することを第一に置く志。信頼と長期的繁栄の基盤。</div>
+      <div class="c-reason">🔍 なぜ重要か：短期利益と長期信頼のトレードオフを超える原理。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="c-icon">⚡</div>
+      <div class="c-name">決断と行動</div>
+      <span class="c-oneliner">動いて学ぶ</span>
+      <div class="c-def">考え抜いて腹を決め、まず一歩を起こし、結果から学びを得る循環を回すこと。</div>
+      <div class="c-reason">🔍 なぜ重要か：行動が検証機会を生み、フィードバック学習の循環を駆動する。</div>
+    </div>
+
+  </div>
+
+  <!-- 因果関係フロー -->
+  <div class="section-title">🔗 概念間の因果関係フロー</div>
+
+  <!-- SVG フロー図 -->
+  <div class="svg-wrap" aria-label="概念フロー図">
+    <svg width="680" height="200" viewBox="0 0 680 200" role="img" aria-label="素直な心から道がひらけるまでの因果フロー">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#f0a500"/>
+        </marker>
+      </defs>
+      <!-- ノード -->
+      <rect x="10" y="80" width="90" height="40" rx="8" fill="#1a3a5c"/>
+      <text x="55" y="96" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">素直な心</text>
+      <text x="55" y="110" text-anchor="middle" fill="#f0a500" font-size="9">🪟</text>
+
+      <rect x="130" y="80" width="90" height="40" rx="8" fill="#2e7d9e"/>
+      <text x="175" y="96" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">事実認識</text>
+      <text x="175" y="110" text-anchor="middle" fill="#f0a500" font-size="9">精度向上</text>
+
+      <rect x="250" y="80" width="90" height="40" rx="8" fill="#2e7d9e"/>
+      <text x="295" y="96" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">正しい判断</text>
+      <text x="295" y="110" text-anchor="middle" fill="#f0a500" font-size="9">🧭</text>
+
+      <rect x="370" y="80" width="90" height="40" rx="8" fill="#2e7d9e"/>
+      <text x="415" y="96" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">行動の質</text>
+      <text x="415" y="110" text-anchor="middle" fill="#f0a500" font-size="9">向上</text>
+
+      <rect x="490" y="80" width="90" height="40" rx="8" fill="#1a3a5c"/>
+      <text x="535" y="96" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">道がひらける</text>
+      <text x="535" y="110" text-anchor="middle" fill="#f0a500" font-size="9">✨</text>
+
+      <!-- 矢印 -->
+      <line x1="100" y1="100" x2="128" y2="100" stroke="#f0a500" stroke-width="2" marker-end="url(#arr)"/>
+      <line x1="220" y1="100" x2="248" y2="100" stroke="#f0a500" stroke-width="2" marker-end="url(#arr)"/>
+      <line x1="340" y1="100" x2="368" y2="100" stroke="#f0a500" stroke-width="2" marker-end="url(#arr)"/>
+      <line x1="460" y1="100" x2="488" y2="100" stroke="#f0a500" stroke-width="2" marker-end="url(#arr)"/>
+
+      <!-- 下段 利他フロー -->
+      <rect x="10" y="155" width="80" height="35" rx="8" fill="#1a3a5c"/>
+      <text x="50" y="169" text-anchor="middle" fill="#fff" font-size="9" font-weight="bold">利他</text>
+      <text x="50" y="182" text-anchor="middle" fill="#f0a500" font-size="9">🤝</text>
+
+      <rect x="115" y="155" width="80" height="35" rx="8" fill="#2e7d9e"/>
+      <text x="155" y="169" text-anchor="middle" fill="#fff" font-size="9">信頼蓄積</text>
+      <text x="155" y="182" text-anchor="middle" fill="#f0a500" font-size="9">💎</text>
+
+      <rect x="220" y="155" width="80" height="35" rx="8" fill="#2e7d9e"/>
+      <text x="260" y="169" text-anchor="middle" fill="#fff" font-size="9">支援・機会</text>
+      <text x="260" y="182" text-anchor="middle" fill="#f0a500" font-size="9">増加</text>
+
+      <line x1="90" y1="172" x2="113" y2="172" stroke="#f0a500" stroke-width="2" marker-end="url(#arr)"/>
+      <line x1="195" y1="172" x2="218" y2="172" stroke="#f0a500" stroke-width="2" marker-end="url(#arr)"/>
+      <line x1="300" y1="172" x2="488" y2="110" stroke="#f0a500" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr)"/>
+    </svg>
+  </div>
+
+  <div class="flow-list">
+    <div class="flow-item">🪟 素直な心 <span class="flow-arrow">→</span> 事実認識の精度向上 <span class="flow-arrow">→</span> 正しい判断 <span class="flow-arrow">→</span> 行動の質向上</div>
+    <div class="flow-item">🙏 感謝 <span class="flow-arrow">→</span> 心の余裕 <span class="flow-arrow">→</span> 逆境耐性 <span class="flow-arrow">→</span> 継続力の強化</div>
+    <div class="flow-item">🏭 現場主義 <span class="flow-arrow">→</span> 道理の発見 <span class="flow-arrow">→</span> 具体的な改善策の創出</div>
+    <div class="flow-item">🤝 利他 <span class="flow-arrow">→</span> 信頼の蓄積 <span class="flow-arrow">→</span> 支援・機会の増加 <span class="flow-arrow">→</span> 道がひらける</div>
+    <div class="flow-item">🔄 反省 <span class="flow-arrow">→</span> 学びの定着 <span class="flow-arrow">→</span> 小さな改善の連鎖 <span class="flow-arrow">→</span> 大きな成果</div>
+    <div class="flow-item">⚡ 決断と行動 <span class="flow-arrow">↔</span> フィードバック学習の循環（行動が検証機会を生む）</div>
+  </div>
+
+</section>
+
+<!-- ===== タブ2: 各章の要約 ===== -->
+<section class="tab-panel" id="tab-chapters" role="tabpanel" aria-labelledby="btn-chapters">
+
+  <div class="section-title">📚 論点別 疑似章構成（随想集のため論点ごとに整理）</div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">THEME 01</div>
+    <div class="chapter-title">🪟 素直な心を養う</div>
+    <ul>
+      <li>私心・先入観を手放し、事実をありのままに受け取る</li>
+      <li>他者の意見・批判を学びの材料として歓迎する</li>
+      <li>誤りを認めることが成長の第一歩</li>
+      <li>素直さは才能ではなく、日々の意識で培える</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>全編の基軸テーマ。素直さなしには他のどの概念も機能しない。意思決定と学習の出発点を確立する。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <div class="chapter-num">THEME 02</div>
+    <div class="chapter-title">🧭 道理に学ぶ</div>
+    <ul>
+      <li>人の都合ではなく、物事の自然な筋道に従う</li>
+      <li>経験と現実から道理を帰納的に発見する</li>
+      <li>道理に反した行動は必ず歪みを生む</li>
+      <li>道理は普遍的だが、発見には観察と省察が要る</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>行動の正しさを判断する基準を与える。感情や利害に流されない判断軸を確立するため。</div>
+  </div>
+
+  <div class="chapter-card alt2">
+    <div class="chapter-num">THEME 03</div>
+    <div class="chapter-title">⛰️ 逆境を好機に変える</div>
+    <ul>
+      <li>困難は嘆くより、鍛えられる機会として受け取る</li>
+      <li>逆境の中にこそ工夫と創意の種がある</li>
+      <li>解釈を変えることで主体性を取り戻す</li>
+      <li>耐え抜く力は感謝と目的意識から生まれる</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>誰もが直面する逆境への処方箋。状況を選べなくても解釈は選べるという主体性の回復が核心。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">THEME 04</div>
+    <div class="chapter-title">🙏 感謝と謙虚さ</div>
+    <ul>
+      <li>縁・機会・支えに目を向け、感謝を習慣にする</li>
+      <li>感謝は心の余裕を生み、判断を冷静にする</li>
+      <li>謙虚さが学びへの開口部を広げる</li>
+      <li>感謝は利他の動機にもなる</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>感謝は逆境耐性と継続力の心理的基盤。精神的安定なしに長期の実践は続かない。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <div class="chapter-num">THEME 05</div>
+    <div class="chapter-title">🏭 現場主義と観察</div>
+    <ul>
+      <li>机上の空論を避け、現物・現場・現実に当たる</li>
+      <li>足元を徹底して観ることで解が見えてくる</li>
+      <li>観察の積み重ねが道理の発見につながる</li>
+      <li>現場の声を素直に聞く姿勢が改善を生む</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>抽象的理念を具体の行動に橋渡しする。再現性のある改善は現場観察から始まるから。</div>
+  </div>
+
+  <div class="chapter-card alt2">
+    <div class="chapter-num">THEME 06</div>
+    <div class="chapter-title">🤝 利他と仕事の意味</div>
+    <ul>
+      <li>利益はお役立ちの報いであり、先に役立つことを考える</li>
+      <li>仕事は自らを磨く道場であり、人づくりが要</li>
+      <li>利他の志が信頼を蓄積し、長期的繁栄を生む</li>
+      <li>成果と人格形成を両立させる視座を持つ</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>短期利益と長期信頼のトレードオフを超える原理を示す。仕事の意味を再定義し、持続的動機を与えるから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">THEME 07</div>
+    <div class="chapter-title">⚡ 決断・行動・反省の循環</div>
+    <ul>
+      <li>考え抜いて腹を決め、まず一歩を起こす</li>
+      <li>行動が検証機会を生み、学びを実証する</li>
+      <li>結果を省みて改め、次の行動の質を上げる</li>
+      <li>小さく試す→観察→改善の循環を回し続ける</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>理念を実践に変換する方法論。行動なき思索は道をひらかない。循環を回すことで複利的成長が生まれるから。</div>
+  </div>
+
+  <!-- 構造メモ -->
+  <div class="card mt8">
+    <div class="card-header">
+      <span class="card-icon">📝</span>
+      <div>
+        <div class="card-title">本書の構造的特徴</div>
+        <div class="card-subtitle">読み方のヒント</div>
+      </div>
+    </div>
+    <ul>
+      <li>全編は短章の随想集。任意の順で読める独立構成</li>
+      <li>各章は「身近な気づき→心の置き所→実践要諦→励まし」の流れ</li>
+      <li>同一主題が角度を変えて重層的に強化される反復構造</li>
+      <li>抽象的理念を具体の作法（観察・記録・反省・一歩行動）に結ぶ</li>
+    </ul>
+  </div>
+
+</section>
+
+<!-- ===== タブ3: 具体例 ===== -->
+<section class="tab-panel" id="tab-examples" role="tabpanel" aria-labelledby="btn-examples">
+
+  <div class="section-title">💡 核心メッセージが伝わる具体例・メタファー</div>
+
+  <div class="example-card">
+    <div class="example-label">EXAMPLE 01 ／ 逆境観</div>
+    <div class="example-title">⛰️ 「病弱・貧乏・学歴なし」を武器にした松下幸之助</div>
+    <div class="example-bg">📌 背景：松下幸之助は幼少期から病弱で、家は貧しく、小学校も満足に通えなかった。客観的には「不利な条件」が揃っていた。</div>
+    <div class="example-suggest">💬 示唆：彼はこれらを「だから人に頼み、人から学び、人を育てるしかなかった」と語った。弱さが利他・現場主義・人材育成の動機になった。</div>
+    <div class="example-reason">🔍 この例が示すこと：逆境の解釈を変えることで、制約が強みに転化する。「逆境は師」という概念の最も説得力ある実証。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-label">EXAMPLE 02 ／ 現場主義・素直な心</div>
+    <div class="example-title">🏭 自転車店の丁稚から学んだ「現場の声」</div>
+    <div class="example-bg">📌 背景：松下は9歳で自転車店の丁稚奉公に出た。学問ではなく、現場での観察と実践が彼の経営哲学の原点となった。</div>
+    <div class="example-suggest">💬 示唆：「お客様が何を求めているか」を机上ではなく現場で直接感じ取る習慣が、後の製品開発・経営判断の基盤になった。</div>
+    <div class="example-reason">🔍 この例が示すこと：現場主義は理論より先に来る。素直に現実を観察する姿勢が道理の発見につながることを体現している。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-label">EXAMPLE 03 ／ 利他・感謝</div>
+    <div class="example-title">🤝 「水道哲学」——物を水のように安く豊かに</div>
+    <div class="example-bg">📌 背景：松下は「産業人の使命は貧乏の克服。水道の水のように物資を豊富に安く供給することだ」という経営理念（水道哲学）を掲げた。</div>
+    <div class="example-suggest">💬 示唆：利益を目的にするのではなく、社会への貢献（利他）を目的にした結果、信頼と事業規模が拡大した。</div>
+    <div class="example-reason">🔍 この例が示すこと：「利益はお役立ちの報い」という概念の具体化。利他を先に置くことで長期的繁栄が生まれることを示す。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-label">EXAMPLE 04 ／ 反省と学び</div>
+    <div class="example-title">🔄 失敗を「授業料」と呼ぶ姿勢</div>
+    <div class="example-bg">📌 背景：松下は事業の失敗や判断ミスを「授業料を払った」と表現し、自責より学習に焦点を当てた。</div>
+    <div class="example-suggest">💬 示唆：失敗を恥や終わりとみなさず、改善の材料として扱うことで、組織全体に「試して学ぶ」文化が根付いた。</div>
+    <div class="example-reason">🔍 この例が示すこと：反省と学びの概念が実際の組織文化にどう機能するかを示す。心理的安全性と改善サイクルの両立。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-label">EXAMPLE 05 ／ 決断と行動</div>
+    <div class="example-title">⚡ 二股ソケットの発明——小さな一歩が道をひらく</div>
+    <div class="example-bg">📌 背景：松下は電球のソケットに着目し、二股ソケットを考案。資金も人脈も乏しい中、まず試作品を作って市場に問うた。</div>
+    <div class="example-suggest">💬 示唆：完璧な計画を待たず、小さく試して市場の反応（フィードバック）から学ぶ行動が、松下電器の出発点となった。</div>
+    <div class="example-reason">🔍 この例が示すこと：「決断と行動↔フィードバック学習の循環」の原型。動くことで初めて道が見えることを示す。</div>
+  </div>
+
+</section>
+
+<!-- ===== タブ4: 重要な引用 ===== -->
+<section class="tab-panel" id="tab-quotes" role="tabpanel" aria-labelledby="btn-quotes">
+
+  <div class="section-title">💬 重要な引用・要旨</div>
+
+  <div class="quote-card">
+    <span class="quote-badge">要旨</span>
+    <div class="quote-text">心が素直になれば、物事の道理が見え、進むべき道が現れる。</div>
+    <div class="quote-why">💡 なぜ重要か：意思決定と学習の出発点を一語で示し、全編の基軸となるため。素直さがすべての概念の前提条件。</div>
+  </div>
+
+  <div class="quote-card">
+    <span class="quote-badge">要旨</span>
+    <div class="quote-text">逆境は嘆くよりも、鍛えられる機会として受けとめよ。</div>
+    <div class="quote-why">💡 なぜ重要か：状況を選べなくても解釈は選べるという主体性を与えるから。逆境観の核心を一文で表す。</div>
+  </div>
+
+  <div class="quote-card">
+    <span class="quote-badge">要旨</span>
+    <div class="quote-text">仕事は自らを磨く道場であり、人づくりが要である。</div>
+    <div class="quote-why">💡 なぜ重要か：成果と人格形成を両立させる視座を提示するから。仕事の意味を再定義し、持続的動機を与える。</div>
+  </div>
+
+  <div class="quote-card">
+    <span class="quote-badge">要旨</span>
+    <div class="quote-text">足元を徹底して観よ。現場にこそ解がある。</div>
+    <div class="quote-why">💡 なぜ重要か：抽象論に陥らず、再現性のある改善行動へ橋渡しするから。現場主義の実践指針。</div>
+  </div>
+
+  <div class="quote-card">
+    <span class="quote-badge">要旨</span>
+    <div class="quote-text">利益はお役立ちの報いであり、先に役立つことを考えよ。</div>
+    <div class="quote-why">💡 なぜ重要か：短期利益と長期信頼のトレードオフを超える原理を示すから。利他が経営の根幹であることを明示。</div>
+  </div>
+
+  <!-- 関連書籍 -->
+  <div class="section-title">📖 関連書籍</div>
+  <div class="book-list">
+    <div class="book-item">
+      <div class="book-icon">📗</div>
+      <div>
+        <div class="book-name">経営心得帖</div>
+        <div class="book-author">松下幸之助</div>
+        <div class="book-rel">同じ哲学を仕事術と判断基準に落とし込む実務編。</div>
+      </div>
+    </div>
+    <div class="book-item">
+      <div class="book-icon">📘</div>
+      <div>
+        <div class="book-name">指導者の条件</div>
+        <div class="book-author">松下幸之助</div>
+        <div class="book-rel">人を導く際の素直さ・道理・利他の具体化。</div>
+      </div>
+    </div>
+    <div class="book-item">
+      <div class="book-icon">📙</div>
+      <div>
+        <div class="book-name">論語と算盤</div>
+        <div class="book-author">渋沢栄一</div>
+        <div class="book-rel">道理と経済の両立という倫理観が共鳴する。</div>
+      </div>
+    </div>
+    <div class="book-item">
+      <div class="book-icon">📕</div>
+      <div>
+        <div class="book-name">運命を拓く</div>
+        <div class="book-author">中村天風</div>
+        <div class="book-rel">心の持ち方で逆境を力に変える実践が近接。</div>
+      </div>
+    </div>
+    <div class="book-item">
+      <div class="book-icon">📓</div>
+      <div>
+        <div class="book-name">生き方</div>
+        <div class="book-author">稲盛和夫</div>
+        <div class="book-rel">利他と精進を軸に道を拓く方法論の現代版。</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== タブ5: 今日のアクション ===== -->
+<section class="tab-panel" id="tab-actions" role="tabpanel" aria-labelledby="btn-actions">
+
+  <div class="section-title">🚀 今日15〜30分で実行できるアクション</div>
+
+  <!-- SVG 円グラフ（時間配分イメージ） -->
+  <div class="svg-wrap text-center" aria-label="アクション時間配分">
+    <svg width="260" height="140" viewBox="0 0 260 140" role="img" aria-label="3つのアクションの時間配分">
+      <!-- 円グラフ -->
+      <circle cx="70" cy="70" r="55" fill="none" stroke="#e0e8f0" stroke-width="18"/>
+      <!-- Action1: 10min / 30min = 120deg -->
+      <circle cx="70" cy="70" r="55" fill="none" stroke="#1a3a5c" stroke-width="18"
+        stroke-dasharray="57.6 287.1" stroke-dashoffset="0" transform="rotate(-90 70 70)"/>
+      <!-- Action2: 10min -->
+      <circle cx="70" cy="70" r="55" fill="none" stroke="#2e7d9e" stroke-width="18"
+        stroke-dasharray="57.6 287.1" stroke-dashoffset="-57.6" transform="rotate(-90 70 70)"/>
+      <!-- Action3: 10min -->
+      <circle cx="70" cy="70" r="55" fill="none" stroke="#f0a500" stroke-width="18"
+        stroke-dasharray="57.6 287.1" stroke-dashoffset="-115.2" transform="rotate(-90 70 70)"/>
+      <text x="70" y="66" text-anchor="middle" fill="#1a3a5c" font-size="11" font-weight="bold">合計</text>
+      <text x="70" y="80" text-anchor="middle" fill="#1a3a5c" font-size="14" font-weight="900">30分</text>
+      <!-- 凡例 -->
+      <rect x="140" y="30" width="12" height="12" rx="3" fill="#1a3a5c"/>
+      <text x="158" y="41" fill="#1e2a38" font-size="11">① 不安書き出し</text>
+      <rect x="140" y="55" width="12" height="12" rx="3" fill="#2e7d9e"/>
+      <text x="158" y="66" fill="#1e2a38" font-size="11">② 感謝を記す</text>
+      <rect x="140" y="80" width="12" height="12" rx="3" fill="#f0a500"/>
+      <text x="158" y="91" fill="#1e2a38" font-size="11">③ 一歩を決める</text>
+      <text x="140" y="115" fill="#5a6a7a" font-size="10">各 約10分</text>
+    </svg>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">1</div>
+    <div class="action-body">
+      <div class="action-title">📝 いまの不安を10個書き出す</div>
+      <div class="action-meta">
+        <span class="action-tag">⏱ 約10分</span>
+        <span class="action-tag accent">🎯 素直な心・反省</span>
+      </div>
+      <div class="action-desc">
+        頭の中にある不安・悩み・気になることを紙やメモアプリに10個書き出す。ジャッジせず、思い浮かんだものをそのまま書く。
+      </div>
+      <div class="action-effect">
+        ✨ 期待効果：不安を「見える化」することで、漠然とした恐れが具体的な課題に変わる。素直に現状を認識する第一歩。頭の中が整理され、次の行動が見えやすくなる。
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">2</div>
+    <div class="action-body">
+      <div class="action-title">🙏 今日の感謝を3つ手帳に記す</div>
+      <div class="action-meta">
+        <span class="action-tag">⏱ 約10分</span>
+        <span class="action-tag accent">🎯 感謝・心の余裕</span>
+      </div>
+      <div class="action-desc">
+        今日あった出来事の中から「感謝できること」を3つ選び、具体的に書く。小さなことでよい（例：「電車が時間通りだった」「同僚が声をかけてくれた」）。
+      </div>
+      <div class="action-effect">
+        ✨ 期待効果：感謝の習慣が心の余裕を生み、逆境耐性を高める。ネガティブバイアスを意識的に中和し、翌日の行動エネルギーを補充する。
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">3</div>
+    <div class="action-body">
+      <div class="action-title">⚡ 明日の最初の一歩を決める</div>
+      <div class="action-meta">
+        <span class="action-tag">⏱ 約10分</span>
+        <span class="action-tag accent">🎯 決断と行動</span>
+      </div>
+      <div class="action-desc">
+        ①で書き出した不安の中から1つ選び、「明日の朝一番にできる具体的な小さな行動」を1つだけ決めて書く。「誰かに連絡する」「5分だけ調べる」レベルでよい。
+      </div>
+      <div class="action-effect">
+        ✨ 期待効果：行動を事前に決めることで実行率が大幅に上がる（実施意図の効果）。小さな一歩が検証機会を生み、フィードバック学習の循環が始まる。
+      </div>
+    </div>
+  </div>
+
+  <!-- 実践チェックリスト -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">✅</span>
+      <div>
+        <div class="card-title">実践チェックリスト</div>
+        <div class="card-subtitle">3つのアクションを終えたら確認</div>
+      </div>
+    </div>
+    <ul>
+      <li>不安10個を書き出した（素直に現状を認識した）</li>
+      <li>感謝3つを手帳に記した（心の余裕を作った）</li>
+      <li>明日の一歩を具体的に決めた（行動の準備ができた）</li>
+      <li>3つ全部できたら：明日の朝、決めた一歩を実行する</li>
+    </ul>
+    <div class="reason-box"><strong>継続のコツ：</strong>毎晩5分、感謝3つ＋翌日の一歩を書く習慣にすると、反省→学び→行動の循環が自然に回り始める。</div>
+  </div>
+
+</section>
+
+</main>
+
+<!-- ===== フッター ===== -->
+<footer class="site-footer" role="contentinfo">
+  <p>📖 道をひらく ／ 松下幸之助 — インフォグラフィック</p>
+  <p style="margin-top:4px;">カラーパレット：Primary #1a3a5c ／ Secondary #2e7d9e ／ Accent #f0a500</p>
+</footer>
+
+<script>
+  // ===== タブ切替 =====
+  (function() {
+    var buttons = document.querySelectorAll('.tab-btn');
+    var panels  = document.querySelectorAll('.tab-panel');
+
+    function activateTab(targetId) {
+      buttons.forEach(function(btn) {
+        var isTarget = btn.getAttribute('aria-controls') === targetId;
+        btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+      });
+      panels.forEach(function(panel) {
+        if (panel.id === targetId) {
+          panel.classList.add('active');
+          panel.removeAttribute('hidden');
+        } else {
+          panel.classList.remove('active');
+          panel.setAttribute('hidden', '');
+        }
+      });
+    }
+
+    buttons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        activateTab(btn.getAttribute('aria-controls'));
+      });
+      btn.addEventListener('keydown', function(e) {
+        var idx = Array.prototype.indexOf.call(buttons, btn);
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          buttons[(idx + 1) % buttons.length].focus();
+          activateTab(buttons[(idx + 1) % buttons.length].getAttribute('aria-controls'));
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          buttons[(idx - 1 + buttons.length) % buttons.length].focus();
+          activateTab(buttons[(idx - 1 + buttons.length) % buttons.length].getAttribute('aria-controls'));
+        }
+      });
+    });
+
+    // 初期状態：最初のタブ以外を hidden に
+    panels.forEach(function(panel, i) {
+      if (i !== 0) panel.setAttribute('hidden', '');
+    });
+  })();
+</script>
+
+</body>
+</html>
