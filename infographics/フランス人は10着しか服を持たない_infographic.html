@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>パリ式・少数精鋭ライフスタイル インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #2C3E50
+  セカンダリー:  #F5ECD7
+  アクセント:    #C9A96E
+-->
+<style>
+  /* ===== リセット & ベース ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary:   #2C3E50;
+    --secondary: #F5ECD7;
+    --accent:    #C9A96E;
+    --accent2:   #8B6914;
+    --white:     #FFFFFF;
+    --gray:      #6B7280;
+    --light:     #FAF7F2;
+    --card-bg:   #FFFFFF;
+    --shadow:    0 2px 12px rgba(44,62,80,0.10);
+    --radius:    12px;
+    --font:      'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--light);
+    color: var(--primary);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ===== ヘッダー ===== */
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, #3d5a73 100%);
+    color: var(--white);
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  header .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  header h1 {
+    font-size: clamp(20px, 5vw, 30px);
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  header p.subtitle {
+    font-size: 13px;
+    opacity: 0.8;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: linear-gradient(135deg, var(--secondary) 0%, #ede0c4 100%);
+    border-left: 5px solid var(--accent);
+    border-radius: var(--radius);
+    margin: 20px 16px;
+    padding: 20px 18px;
+    box-shadow: var(--shadow);
+  }
+  .summary-block .summary-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent2);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 480px) {
+    .summary-grid { grid-template-columns: 1fr; }
+  }
+  .summary-item {
+    background: rgba(255,255,255,0.7);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .summary-item .s-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--accent2);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .summary-item .s-text {
+    font-size: 13px;
+    color: var(--primary);
+    font-weight: 500;
+  }
+  .summary-item.full { grid-column: 1 / -1; }
+
+  /* ===== 核心メッセージバナー ===== */
+  .core-message {
+    background: var(--accent);
+    color: var(--primary);
+    text-align: center;
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== タブナビ ===== */
+  .tab-nav {
+    display: flex;
+    overflow-x: auto;
+    background: var(--primary);
+    padding: 0 8px;
+    gap: 2px;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 12px 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .tab-btn:hover { color: var(--white); }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ===== タブコンテンツ ===== */
+  .tab-content { display: none; padding: 16px; }
+  .tab-content.active { display: block; }
+
+  /* ===== カード共通 ===== */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .card-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.3;
+  }
+  .card-tag {
+    display: inline-block;
+    background: var(--secondary);
+    color: var(--accent2);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: auto;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+  }
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .card ul li {
+    font-size: 13px;
+    padding: 4px 0;
+    border-bottom: 1px solid #f0ebe0;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li .li-icon { flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+  .card .reason-box {
+    background: linear-gradient(90deg, #fff8ee, #fff);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--accent2);
+    font-weight: 600;
+  }
+  .card .reason-box::before { content: "💡 なぜ重要か: "; }
+
+  /* ===== グリッドレイアウト ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 600px) {
+    .card-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border-top: 4px solid var(--accent);
+  }
+  .chapter-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .chapter-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: var(--primary);
+  }
+  .chapter-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .chapter-card ul li {
+    font-size: 13px;
+    padding: 4px 0;
+    border-bottom: 1px solid #f0ebe0;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .chapter-card ul li:last-child { border-bottom: none; }
+  .chapter-reason {
+    background: linear-gradient(90deg, #fff8ee, #fff);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--accent2);
+    font-weight: 600;
+  }
+  .chapter-reason::before { content: "📌 この章が必要な理由: "; }
+
+  /* ===== 因果関係フロー ===== */
+  .flow-section {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .flow-title {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: var(--primary);
+  }
+  .flow-item {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+  .flow-node {
+    background: var(--secondary);
+    color: var(--primary);
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .flow-arrow {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .flow-node.positive { background: #d4edda; color: #155724; }
+  .flow-node.negative { background: #f8d7da; color: #721c24; }
+
+  /* ===== 引用カード ===== */
+  .quote-card {
+    background: linear-gradient(135deg, var(--primary) 0%, #3d5a73 100%);
+    color: var(--white);
+    border-radius: var(--radius);
+    padding: 20px 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 80px;
+    color: rgba(201,169,110,0.3);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .quote-text {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 0.5px;
+  }
+  .quote-note {
+    font-size: 12px;
+    opacity: 0.85;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    padding-top: 8px;
+    position: relative;
+    z-index: 1;
+  }
+  .quote-note::before { content: "▶ "; color: var(--accent); }
+  .quote-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  /* ===== 具体例カード ===== */
+  .example-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border-left: 5px solid var(--accent);
+  }
+  .example-num {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 700;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    margin-bottom: 8px;
+  }
+  .example-title {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--primary);
+  }
+  .example-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .example-meta-item {
+    font-size: 11px;
+    background: var(--secondary);
+    color: var(--accent2);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .example-body {
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 8px;
+  }
+  .example-reason {
+    background: linear-gradient(90deg, #fff8ee, #fff);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: var(--accent2);
+    font-weight: 600;
+  }
+  .example-reason::before { content: "🔍 この例が示すこと: "; }
+
+  /* ===== アクションカード ===== */
+  .action-card {
+    background: linear-gradient(135deg, #fff 0%, var(--secondary) 100%);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border: 2px solid var(--accent);
+  }
+  .action-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .action-num {
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 900;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .action-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+  .action-time {
+    margin-left: auto;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+  .action-detail {
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 8px;
+  }
+  .action-effect {
+    background: rgba(44,62,80,0.06);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: var(--primary);
+  }
+  .action-effect::before { content: "✨ 期待効果: "; font-weight: 700; color: var(--accent2); }
+
+  /* ===== 数値バッジ ===== */
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .stat-badge {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    flex: 1 1 100px;
+    min-width: 90px;
+  }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--gray);
+    font-weight: 600;
+  }
+
+  /* ===== SVGビジュアル ===== */
+  .svg-section {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .svg-title {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: var(--primary);
+  }
+  svg text { font-family: var(--font); }
+
+  /* ===== 関連書籍 ===== */
+  .book-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .book-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .book-info .book-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 2px;
+  }
+  .book-info .book-author {
+    font-size: 11px;
+    color: var(--gray);
+    margin-bottom: 4px;
+  }
+  .book-info .book-rel {
+    font-size: 12px;
+    color: #444;
+  }
+
+  /* ===== セクションタイトル ===== */
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--secondary);
+  }
+
+  /* ===== フッター ===== */
+  footer {
+    background: var(--primary);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 16px;
+    font-size: 11px;
+    margin-top: 20px;
+  }
+  footer span { color: var(--accent); }
+
+  /* ===== ユーティリティ ===== */
+  .mb-0 { margin-bottom: 0; }
+  .mt-8 { margin-top: 8px; }
+  .text-center { text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header>
+  <div class="badge">📖 Book Infographic</div>
+  <h1>パリ式・少数精鋭ライフスタイル</h1>
+  <p class="subtitle">持ち物と習慣を絞り、質と所作を磨くことで日常を最上のぜいたくに変える</p>
+</header>
+
+<!-- 核心メッセージ -->
+<div class="core-message">
+  ✨ 核心メッセージ：持ち物と習慣を少数精鋭に絞り、質と所作を磨くことで、日常そのものを最上のぜいたくに変える。
+</div>
+
+<!-- ファーストビュー：サマリーブロック -->
+<div class="summary-block" role="region" aria-label="エグゼクティブサマリー">
+  <div class="summary-title">📋 要約 = 問い × 答え × 根拠</div>
+  <div class="summary-grid">
+    <div class="summary-item full">
+      <div class="s-label">❓ 問い</div>
+      <div class="s-text">どうすればお金や物を増やさずに、毎日をエレガントで満ち足りたものにできるか？</div>
+    </div>
+    <div class="summary-item full">
+      <div class="s-label">💡 答え</div>
+      <div class="s-text">所有と行動を意図的に減らし、選び抜いた少数を徹底的に味わい尽くす「10着ワードローブ」型ライフスタイルに切り替える。</div>
+    </div>
+    <div class="summary-item">
+      <div class="s-label">🔍 Why（なぜ）</div>
+      <div class="s-text">少数精鋭・儀式化・自尊心の三位一体が満足度と自己効力感を高め、浪費と迷いを減らすから。</div>
+    </div>
+    <div class="summary-item">
+      <div class="s-label">🛠 How（どうやって）</div>
+      <div class="s-text">核10着を決める／品質重視の購買／食卓の儀式化／姿勢の習慣化／家でもてなす／教養を日課化する。</div>
+    </div>
+  </div>
+</div>
+
+<!-- タブナビ -->
+<nav class="tab-nav" role="tablist" aria-label="コンテンツタブ">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-concepts" id="btn-concepts">🧠 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters" id="btn-chapters">📚 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples" id="btn-examples">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes" id="btn-quotes">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions" id="btn-actions">⚡ 今日のアクション</button>
+</nav>
+
+<!-- ===== タブ1: 主要概念 ===== -->
+<div class="tab-content active" id="tab-concepts" role="tabpanel" aria-labelledby="btn-concepts">
+
+  <!-- 数値バッジ -->
+  <div class="stats-row">
+    <div class="stat-badge">
+      <div class="stat-num">10</div>
+      <div class="stat-label">核となる着数</div>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-num">3</div>
+      <div class="stat-label">食事の回数</div>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-num">0</div>
+      <div class="stat-label">間食の目標</div>
+    </div>
+    <div class="stat-badge">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">内面の豊かさ</div>
+    </div>
+  </div>
+
+  <!-- SVG：概念の相関図 -->
+  <div class="svg-section">
+    <div class="svg-title">🔗 概念の因果フロー図</div>
+    <svg viewBox="0 0 340 200" width="100%" aria-label="概念の因果フロー図" role="img">
+      <!-- 背景 -->
+      <rect width="340" height="200" fill="#FAF7F2" rx="8"/>
+      <!-- 中央ノード -->
+      <ellipse cx="170" cy="100" rx="52" ry="28" fill="#2C3E50"/>
+      <text x="170" y="96" text-anchor="middle" fill="#C9A96E" font-size="10" font-weight="bold">少数精鋭</text>
+      <text x="170" y="110" text-anchor="middle" fill="#F5ECD7" font-size="9">Less but better</text>
+      <!-- 左上 -->
+      <rect x="8" y="14" width="80" height="30" rx="8" fill="#C9A96E"/>
+      <text x="48" y="27" text-anchor="middle" fill="#2C3E50" font-size="9" font-weight="bold">10着ワードローブ</text>
+      <text x="48" y="39" text-anchor="middle" fill="#2C3E50" font-size="8">朝の迷い↓</text>
+      <line x1="88" y1="29" x2="118" y2="80" stroke="#C9A96E" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <!-- 左下 -->
+      <rect x="8" y="156" width="80" height="30" rx="8" fill="#C9A96E"/>
+      <text x="48" y="169" text-anchor="middle" fill="#2C3E50" font-size="9" font-weight="bold">儀式化</text>
+      <text x="48" y="181" text-anchor="middle" fill="#2C3E50" font-size="8">集中と充足↑</text>
+      <line x1="88" y1="171" x2="118" y2="120" stroke="#C9A96E" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <!-- 右上 -->
+      <rect x="252" y="14" width="80" height="30" rx="8" fill="#C9A96E"/>
+      <text x="292" y="27" text-anchor="middle" fill="#2C3E50" font-size="9" font-weight="bold">姿勢・所作</text>
+      <text x="292" y="39" text-anchor="middle" fill="#2C3E50" font-size="8">自尊↑信頼↑</text>
+      <line x1="252" y1="29" x2="222" y2="80" stroke="#C9A96E" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <!-- 右下 -->
+      <rect x="252" y="156" width="80" height="30" rx="8" fill="#C9A96E"/>
+      <text x="292" y="169" text-anchor="middle" fill="#2C3E50" font-size="9" font-weight="bold">教養の習慣</text>
+      <text x="292" y="181" text-anchor="middle" fill="#2C3E50" font-size="8">審美眼↑</text>
+      <line x1="252" y1="171" x2="222" y2="120" stroke="#C9A96E" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <!-- 上 -->
+      <rect x="130" y="4" width="80" height="26" rx="8" fill="#F5ECD7"/>
+      <text x="170" y="14" text-anchor="middle" fill="#2C3E50" font-size="9" font-weight="bold">片づけ・整頓</text>
+      <text x="170" y="25" text-anchor="middle" fill="#8B6914" font-size="8">余白の設計</text>
+      <line x1="170" y1="30" x2="170" y2="72" stroke="#8B6914" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrow2)"/>
+      <!-- 下 -->
+      <rect x="130" y="170" width="80" height="26" rx="8" fill="#F5ECD7"/>
+      <text x="170" y="180" text-anchor="middle" fill="#2C3E50" font-size="9" font-weight="bold">ホームエンターテイン</text>
+      <text x="170" y="191" text-anchor="middle" fill="#8B6914" font-size="8">家が舞台</text>
+      <line x1="170" y1="170" x2="170" y2="128" stroke="#8B6914" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrow2)"/>
+      <!-- 矢印マーカー -->
+      <defs>
+        <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#C9A96E"/>
+        </marker>
+        <marker id="arrow2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#8B6914"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- 概念カードグリッド -->
+  <div class="section-title">主要概念 詳細</div>
+  <div class="card-grid">
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">👗</span>
+        <span class="card-title">10着ワードローブ</span>
+        <span class="card-tag">核10着主義</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">📌</span>季節ごとに核となる約10着を選ぶ</li>
+        <li><span class="li-icon">🔄</span>仕事・日常の主力として徹底的に着回す</li>
+        <li><span class="li-icon">🚫</span>フォーマル・アウター・運動着は計上外</li>
+        <li><span class="li-icon">✅</span>使用率が上がり、満足度が高まる</li>
+      </ul>
+      <div class="reason-box">朝の選択疲れを減らし、一貫した印象と自己効力感を高めるため。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">💎</span>
+        <span class="card-title">少数精鋭（Less but better）</span>
+        <span class="card-tag">質一点豪華</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">📉</span>量を減らし、最も気分と体に合う上質に集中</li>
+        <li><span class="li-icon">💰</span>予算を質へ再配分できる</li>
+        <li><span class="li-icon">📈</span>満足度と使用率が上がる</li>
+        <li><span class="li-icon">🛑</span>衝動買いが自然と減る</li>
+      </ul>
+      <div class="reason-box">量の追求は満足の閾値を上げるだけ。質への集中が本質的な充足をもたらすから。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🌟</span>
+        <span class="card-title">デイリーシック</span>
+        <span class="card-tag">日常を晴れ舞台に</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">📅</span>特別な日だけでなく、日常こそ整える</li>
+        <li><span class="li-icon">👁</span>常に「見られても良い自分」でいる姿勢</li>
+        <li><span class="li-icon">🔑</span>先送りをやめ、今日を最良にする</li>
+        <li><span class="li-icon">💪</span>自尊心と自己肯定感が高まる</li>
+      </ul>
+      <div class="reason-box">「いつか」を待つ習慣が日常の質を下げる。今日を整えることが最大の投資だから。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🕯</span>
+        <span class="card-title">儀式化（Ritual）</span>
+        <span class="card-tag">丁寧のルーティン化</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">🍽</span>食事・身支度・家事を小さな儀式として行う</li>
+        <li><span class="li-icon">🧘</span>丁寧に行うことで集中と充足が生まれる</li>
+        <li><span class="li-icon">⏱</span>ルーティン化で意思決定コストが下がる</li>
+        <li><span class="li-icon">✨</span>日常の行為が喜びに変わる</li>
+      </ul>
+      <div class="reason-box">雑に行う行為は記憶に残らない。丁寧さが体験の質を高め、満足感を積み上げるから。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🍽</span>
+        <span class="card-title">間食しない</span>
+        <span class="card-tag">食を待つ喜び</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">⏰</span>三食を整え、空腹を楽しんでから食べる</li>
+        <li><span class="li-icon">👅</span>味覚が鋭くなり、食の満足が増す</li>
+        <li><span class="li-icon">💚</span>健康と体重管理にも好影響</li>
+        <li><span class="li-icon">💸</span>食費の無駄が減る</li>
+      </ul>
+      <div class="reason-box">空腹こそが最高の調味料。待つことで食事の儀式が完成し、満足度が最大化されるから。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🌿</span>
+        <span class="card-title">自然体の美</span>
+        <span class="card-tag">引き算の美容</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">🧴</span>清潔な肌・髪・香りと控えめなメイク</li>
+        <li><span class="li-icon">🎨</span>素材を活かし、作り込みより調和を重んじる</li>
+        <li><span class="li-icon">⏳</span>時間とコストを最小化できる</li>
+        <li><span class="li-icon">🌸</span>年齢を問わず持続可能な美しさ</li>
+      </ul>
+      <div class="reason-box">過剰な装飾は個性を隠す。引き算の美容が本来の魅力を際立たせるから。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🚶</span>
+        <span class="card-title">姿勢と所作</span>
+        <span class="card-tag">見えない装い</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">🦴</span>背筋・歩き方・声のトーンを意識する</li>
+        <li><span class="li-icon">🤝</span>非言語の印象管理で信頼を高める</li>
+        <li><span class="li-icon">💼</span>機会の増加につながる自己投資</li>
+        <li><span class="li-icon">🔄</span>自尊と他者評価の好循環が生まれる</li>
+      </ul>
+      <div class="reason-box">服より先に姿勢が目に入る。所作は最もコストゼロで最大効果の「装い」だから。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🏠</span>
+        <span class="card-title">ホームエンターテイン</span>
+        <span class="card-tag">家が舞台</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">🍷</span>家を小さなサロンとして整える</li>
+        <li><span class="li-icon">💬</span>食事や会話を分かち合う場をつくる</li>
+        <li><span class="li-icon">🎭</span>消費型娯楽から創造型へシフト</li>
+        <li><span class="li-icon">❤️</span>人間関係の質と幸福感が高まる</li>
+      </ul>
+      <div class="reason-box">外食・外出より家でのもてなしが深い絆を生む。消費より創造が豊かさの源だから。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🗂</span>
+        <span class="card-title">片づけと整頓</span>
+        <span class="card-tag">余白の設計</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">👁</span>視界と動線から余計を排除する</li>
+        <li><span class="li-icon">⚡</span>使う物だけが即座に手に取れる状態</li>
+        <li><span class="li-icon">🛒</span>重複購入を防ぎ、持ち物の質が改善</li>
+        <li><span class="li-icon">🧠</span>思考の明晰さと集中力が上がる</li>
+      </ul>
+      <div class="reason-box">空間の余白が思考の余白をつくる。整頓された環境が少数精鋭を維持する基盤だから。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">📖</span>
+        <span class="card-title">教養の習慣</span>
+        <span class="card-tag">内面の贅沢</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">📚</span>読書・音楽・美術を日課に組み込む</li>
+        <li><span class="li-icon">🎨</span>内面の豊かさと審美眼を育てる</li>
+        <li><span class="li-icon">🛍</span>購買の目利きが上がり、少数精鋭が洗練</li>
+        <li><span class="li-icon">🌍</span>会話の深みと人間的魅力が増す</li>
+      </ul>
+      <div class="reason-box">外見は老いるが教養は深まる。内面の豊かさが全ての選択の質を底上げするから。</div>
+    </div>
+
+  </div>
+
+  <!-- 因果フロー -->
+  <div class="flow-section">
+    <div class="flow-title">🔄 概念間の因果関係フロー</div>
+    <div class="flow-item">
+      <span class="flow-node">減らす</span><span class="flow-arrow">→</span>
+      <span class="flow-node">選び抜く</span><span class="flow-arrow">→</span>
+      <span class="flow-node positive">使用率↑</span><span class="flow-arrow">→</span>
+      <span class="flow-node positive">満足度↑</span><span class="flow-arrow">→</span>
+      <span class="flow-node negative">衝動買い↓</span><span class="flow-arrow">→</span>
+      <span class="flow-node positive">予算を質へ再配分</span>
+    </div>
+    <div class="flow-item">
+      <span class="flow-node">10着ワードローブ</span><span class="flow-arrow">→</span>
+      <span class="flow-node negative">朝の選択疲れ↓</span><span class="flow-arrow">→</span>
+      <span class="flow-node positive">一貫した印象↑</span><span class="flow-arrow">→</span>
+      <span class="flow-node positive">自己効力感↑</span>
+    </div>
+    <div class="flow-item">
+      <span class="flow-node">儀式化×間食しない</span><span class="flow-arrow">→</span>
+      <span class="flow-node positive">食事満足↑&健康↑</span><span class="flow-arrow">→</span>
+      <span class="flow-node negative">食費の無駄↓</span>
+    </div>
+    <div class="flow-item">
+      <span class="flow-node">教養の習慣</span><span class="flow-arrow">→</span>
+      <span class="flow-node positive">審美眼↑</span><span class="flow-arrow">→</span>
+      <span class="flow-node positive">購買の目利き↑</span><span class="flow-arrow">→</span>
+      <span class="flow-node positive">少数精鋭がさらに洗練</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== タブ2: 各章の要約 ===== -->
+<div class="tab-content" id="tab-chapters" role="tabpanel" aria-labelledby="btn-chapters">
+
+  <!-- SVG：論理展開の流れ -->
+  <div class="svg-section">
+    <div class="svg-title">📐 本書の論理展開</div>
+    <svg viewBox="0 0 320 80" width="100%" aria-label="本書の論理展開フロー" role="img">
+      <rect width="320" height="80" fill="#FAF7F2" rx="8"/>
+      <!-- ノード -->
+      <rect x="4" y="24" width="56" height="32" rx="6" fill="#2C3E50"/>
+      <text x="32" y="37" text-anchor="middle" fill="#C9A96E" font-size="8" font-weight="bold">導入</text>
+      <text x="32" y="49" text-anchor="middle" fill="#F5ECD7" font-size="7">観察記録</text>
+      <polygon points="60,40 68,34 68,46" fill="#C9A96E"/>
+
+      <rect x="68" y="24" width="56" height="32" rx="6" fill="#C9A96E"/>
+      <text x="96" y="37" text-anchor="middle" fill="#2C3E50" font-size="8" font-weight="bold">第I部</text>
+      <text x="96" y="49" text-anchor="middle" fill="#2C3E50" font-size="7">食と暮らし</text>
+      <polygon points="124,40 132,34 132,46" fill="#2C3E50"/>
+
+      <rect x="132" y="24" width="56" height="32" rx="6" fill="#C9A96E"/>
+      <text x="160" y="37" text-anchor="middle" fill="#2C3E50" font-size="8" font-weight="bold">第II部</text>
+      <text x="160" y="49" text-anchor="middle" fill="#2C3E50" font-size="7">美とスタイル</text>
+      <polygon points="188,40 196,34 196,46" fill="#2C3E50"/>
+
+      <rect x="196" y="24" width="56" height="32" rx="6" fill="#C9A96E"/>
+      <text x="224" y="37" text-anchor="middle" fill="#2C3E50" font-size="8" font-weight="bold">第III部</text>
+      <text x="224" y="49" text-anchor="middle" fill="#2C3E50" font-size="7">パリ的生き方</text>
+      <polygon points="252,40 260,34 260,46" fill="#2C3E50"/>
+
+      <rect x="260" y="24" width="56" height="32" rx="6" fill="#2C3E50"/>
+      <text x="288" y="37" text-anchor="middle" fill="#C9A96E" font-size="8" font-weight="bold">結語</text>
+      <text x="288" y="49" text-anchor="middle" fill="#F5ECD7" font-size="7">自分流に翻訳</text>
+    </svg>
+  </div>
+
+  <!-- 章カード -->
+  <div class="chapter-card">
+    <div class="chapter-num">📖 導入</div>
+    <div class="chapter-title">パリの家庭で学んだ"上質な日常"のエッセンス</div>
+    <ul>
+      <li><span>🏡</span>パリの家庭での観察記録が全編の根拠となる</li>
+      <li><span>🔍</span>「なぜパリの人は少ない物で豊かに見えるのか」という問いを立てる</li>
+      <li><span>📝</span>観察から抽出した原則を体系化して提示</li>
+    </ul>
+    <div class="chapter-reason">本書全体の信頼性の根拠を示し、読者に「自分も実践できる」という確信を与えるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">🍽 第I部</div>
+    <div class="chapter-title">食と暮らし：味わう力を回復する</div>
+    <ul>
+      <li><span>🚫</span>間食をやめ、三食を整える習慣を確立する</li>
+      <li><span>🕯</span>食卓を儀式化し、食事を特別な時間にする</li>
+      <li><span>🏠</span>家で楽しむ文化を取り入れ、外食依存を減らす</li>
+      <li><span>📈</span>日常の満足度を底上げする最初のステップ</li>
+    </ul>
+    <div class="chapter-reason">食は最も日常的な行為。ここを整えることで「少数精鋭」の感覚を体で理解できるから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">👗 第II部</div>
+    <div class="chapter-title">美とスタイル：外見の一貫性と自尊を確立する</div>
+    <ul>
+      <li><span>👗</span>10着ワードローブで朝の迷いをゼロにする</li>
+      <li><span>💎</span>品質重視の購買で長期的なコストを下げる</li>
+      <li><span>🌿</span>自然体の美容で素材の魅力を最大化する</li>
+      <li><span>🚶</span>姿勢と所作で「見えない装い」を磨く</li>
+    </ul>
+    <div class="chapter-reason">外見の一貫性が自己効力感を高め、他者評価と機会を増やす好循環を生むから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">🌍 第III部</div>
+    <div class="chapter-title">パリ的生き方：少数精鋭を文化へ接続する</div>
+    <ul>
+      <li><span>🗂</span>片づけと整頓で空間の余白を設計する</li>
+      <li><span>📚</span>教養の習慣で内面の豊かさと審美眼を育てる</li>
+      <li><span>🏠</span>ホームエンターテインで家を小さなサロンにする</li>
+      <li><span>⏰</span>時間の使い方を意図的に設計する</li>
+    </ul>
+    <div class="chapter-reason">物質的な少数精鋭を文化・人間関係・時間にまで拡張し、ライフスタイル全体を変革するから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">🎯 結語</div>
+    <div class="chapter-title">原則を"自分の生活圏"に翻訳し、継続する</div>
+    <ul>
+      <li><span>🔄</span>季節ごとの見直しで運用を継続する</li>
+      <li><span>🌏</span>パリの原則を自分の文化・環境に翻訳する</li>
+      <li><span>📅</span>一度きりでなく、習慣として定着させる</li>
+    </ul>
+    <div class="chapter-reason">知識を行動に変え、一時的な実践を持続可能なライフスタイルに昇華させるための締めくくりだから。</div>
+  </div>
+
+</div>
+
+<!-- ===== タブ3: 具体例 ===== -->
+<div class="tab-content" id="tab-examples" role="tabpanel" aria-labelledby="btn-examples">
+
+  <div class="section-title">💼 核心メッセージが伝わる具体例・メタファー</div>
+
+  <div class="example-card">
+    <div class="example-num">1</div>
+    <div class="example-title">👗 パリジェンヌのクローゼット：10着で365日</div>
+    <div class="example-meta">
+      <span class="example-meta-item">🏷 ケース</span>
+      <span class="example-meta-item">👗 ワードローブ</span>
+    </div>
+    <div class="example-body">
+      パリの女性は季節ごとに核となる約10着（良質なトップス・ボトムス・ワンピース）を選び、それを徹底的に着回す。毎朝「何を着るか」で悩まず、同じ服を自信を持って繰り返し着る。安い服を大量に持つのではなく、少し高くても長く愛用できる1着に投資する。
+    </div>
+    <div class="example-reason">量より質への転換が、時間・お金・精神的エネルギーを同時に節約し、自己イメージを高めることを示す。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-num">2</div>
+    <div class="example-title">🍽 食卓の儀式：間食ゼロで食事が輝く</div>
+    <div class="example-meta">
+      <span class="example-meta-item">🏷 ケース</span>
+      <span class="example-meta-item">🍽 食習慣</span>
+    </div>
+    <div class="example-body">
+      パリの家庭では、間食をほとんどしない。三食の時間になると、テーブルクロスを敷き、食器を整え、食事に集中する。空腹の状態で食べるため、シンプルな料理でも深い満足感が得られる。スナックを常備せず、「食べる時間」を明確に区切ることで、食の喜びが最大化される。
+    </div>
+    <div class="example-reason">「待つ」という行為が欲求を高め、少ない量・シンプルな料理でも最大の満足を得られることを示す。少数精鋭の食版。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-num">3</div>
+    <div class="example-title">🏠 アパルトマンのサロン：家が最高の舞台</div>
+    <div class="example-meta">
+      <span class="example-meta-item">🏷 ケース</span>
+      <span class="example-meta-item">🏠 ホームエンターテイン</span>
+    </div>
+    <div class="example-body">
+      パリの人々は外食より家でのもてなしを好む。小さなアパルトマンでも、花を飾り、ワインを開け、手料理を囲む。高価なレストランに行くより、家に友人を招いて会話を楽しむ。空間は小さくても、もてなしの心と演出で「特別な場」に変わる。
+    </div>
+    <div class="example-reason">消費型娯楽（外食・外出）より創造型（家でのもてなし）が、人間関係の質と幸福感を高めることを示す。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-num">4</div>
+    <div class="example-title">🚶 姿勢というタダの贅沢：背筋一本で変わる印象</div>
+    <div class="example-meta">
+      <span class="example-meta-item">🏷 メタファー</span>
+      <span class="example-meta-item">🚶 所作</span>
+    </div>
+    <div class="example-body">
+      高価な服を着ていても猫背では台無し。逆に、シンプルな服でも背筋を伸ばし、ゆっくり歩き、落ち着いた声で話すだけで、周囲の評価は劇的に変わる。姿勢と所作はコストゼロで実践できる最強の「装い」であり、自尊心そのものの表れでもある。
+    </div>
+    <div class="example-reason">お金をかけずに最大の印象改善ができることを示し、「少数精鋭」の思想が外見以外にも適用できることを証明する。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-num">5</div>
+    <div class="example-title">📚 教養という長期投資：美術館の常連が目利きになる</div>
+    <div class="example-meta">
+      <span class="example-meta-item">🏷 ケース</span>
+      <span class="example-meta-item">📚 教養</span>
+    </div>
+    <div class="example-body">
+      パリの人々は美術館・コンサート・読書を日常的に楽しむ。これが審美眼を育て、「本当に良いもの」を見分ける力を高める。結果として、安易な衝動買いが減り、少数の本当に良い物だけを選ぶ購買行動につながる。教養は消費の質を上げる最良の投資。
+    </div>
+    <div class="example-reason">内面の豊かさが外側の選択の質を高め、少数精鋭のサイクルをさらに洗練させることを示す。</div>
+  </div>
+
+</div>
+
+<!-- ===== タブ4: 重要な引用 ===== -->
+<div class="tab-content" id="tab-quotes" role="tabpanel" aria-labelledby="btn-quotes">
+
+  <div class="section-title">💬 重要な引用・要旨</div>
+
+  <!-- SVG：引用の重要度バー -->
+  <div class="svg-section">
+    <div class="svg-title">📊 引用の重要度（本書の設計原理への貢献度）</div>
+    <svg viewBox="0 0 300 160" width="100%" aria-label="引用の重要度グラフ" role="img">
+      <rect width="300" height="160" fill="#FAF7F2" rx="8"/>
+      <!-- バー1 -->
+      <text x="8" y="24" fill="#2C3E50" font-size="9" font-weight="bold">「少ないほど豊か」</text>
+      <rect x="8" y="28" width="270" height="14" rx="4" fill="#E5E7EB"/>
+      <rect x="8" y="28" width="270" height="14" rx="4" fill="url(#grad1)"/>
+      <text x="282" y="40" fill="#C9A96E" font-size="9" font-weight="bold">100%</text>
+      <!-- バー2 -->
+      <text x="8" y="58" fill="#2C3E50" font-size="9" font-weight="bold">「毎日が特別な日」</text>
+      <rect x="8" y="62" width="243" height="14" rx="4" fill="#E5E7EB"/>
+      <rect x="8" y="62" width="243" height="14" rx="4" fill="url(#grad1)"/>
+      <text x="255" y="74" fill="#C9A96E" font-size="9" font-weight="bold">90%</text>
+      <!-- バー3 -->
+      <text x="8" y="92" fill="#2C3E50" font-size="9" font-weight="bold">「ワードローブは核で回す」</text>
+      <rect x="8" y="96" width="216" height="14" rx="4" fill="#E5E7EB"/>
+      <rect x="8" y="96" width="216" height="14" rx="4" fill="url(#grad1)"/>
+      <text x="228" y="108" fill="#C9A96E" font-size="9" font-weight="bold">80%</text>
+      <!-- バー4 -->
+      <text x="8" y="126" fill="#2C3E50" font-size="9" font-weight="bold">「食事は小さな儀式」</text>
+      <rect x="8" y="130" width="189" height="14" rx="4" fill="#E5E7EB"/>
+      <rect x="8" y="130" width="189" height="14" rx="4" fill="url(#grad1)"/>
+      <text x="201" y="142" fill="#C9A96E" font-size="9" font-weight="bold">70%</text>
+      <!-- グラデーション定義 -->
+      <defs>
+        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#2C3E50;stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:#C9A96E;stop-opacity:1"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">「少ないほど豊か」</div>
+    <div class="quote-note">本書全体の設計原理であり、量より質への転換を端的に示す。すべての実践はここから始まる。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">「毎日が特別な日」</div>
+    <div class="quote-note">日常を整える動機づけとなり、「いつか」という先送りを断つ。今日を最良にする宣言。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">「ワードローブは核で回す」</div>
+    <div class="quote-note">10着ワードローブの運用思想を一文で表す。核を決めれば、あとは自然と整う。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">「食事は小さな儀式」</div>
+    <div class="quote-note">間食をやめ、味わうための構えをつくる核心。食卓を整えることが人生を整えることにつながる。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">「最良を少しだけ」</div>
+    <div class="quote-note">購買と生活の両面で"少数精鋭"を実践する指針。量の誘惑に打ち勝つための一言。</div>
+  </div>
+
+  <!-- 関連書籍 -->
+  <div class="section-title mt-8">📚 関連書籍</div>
+  <div class="book-card">
+    <div class="book-icon">📗</div>
+    <div class="book-info">
+      <div class="book-title">シンプルに生きる</div>
+      <div class="book-author">ドミニック・ローホー</div>
+      <div class="book-rel">少ない物で豊かに暮らす美学を日常実装する思想が合致。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📘</div>
+    <div class="book-info">
+      <div class="book-title">人生がときめく片づけの魔法</div>
+      <div class="book-author">近藤麻理恵</div>
+      <div class="book-rel">余剰を手放し"核"だけを残す手順が10着主義を後押し。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📙</div>
+    <div class="book-info">
+      <div class="book-title">エッセンシャル思考 最少の時間で成果を最大にする</div>
+      <div class="book-author">グレッグ・マキューン</div>
+      <div class="book-rel">少数精鋭の意思決定を仕事と生活に拡張するフレーム。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📕</div>
+    <div class="book-info">
+      <div class="book-title">ぼくたちに、もうモノは必要ない。</div>
+      <div class="book-author">佐々木典士</div>
+      <div class="book-rel">ミニマリズムの実例と効果が、量を減らす動機を強化。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="book-icon">📒</div>
+    <div class="book-info">
+      <div class="book-title">パリジェンヌ スタイル</div>
+      <div class="book-author">イネス・ド・ラ・フレサンジュ</div>
+      <div class="book-rel">少数の良品で"パリ的"装いを作る実用的ヒントが近縁。</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== タブ5: 今日のアクション ===== -->
+<div class="tab-content" id="tab-actions" role="tabpanel" aria-labelledby="btn-actions">
+
+  <div class="section-title">⚡ 今日から15〜30分で実行できるアクション</div>
+
+  <!-- SVG：アクションの効果マップ -->
+  <div class="svg-section">
+    <div class="svg-title">🎯 3つのアクションと期待効果</div>
+    <svg viewBox="0 0 320 120" width="100%" aria-label="アクションと期待効果" role="img">
+      <rect width="320" height="120" fill="#FAF7F2" rx="8"/>
+      <!-- アクション1 -->
+      <circle cx="53" cy="50" r="36" fill="#2C3E50"/>
+      <text x="53" y="42" text-anchor="middle" fill="#C9A96E" font-size="18">👗</text>
+      <text x="53" y="58" text-anchor="middle" fill="#F5ECD7" font-size="8" font-weight="bold">クローゼット</text>
+      <text x="53" y="69" text-anchor="middle" fill="#F5ECD7" font-size="8" font-weight="bold">仕分け</text>
+      <text x="53" y="100" text-anchor="middle" fill="#8B6914" font-size="8">20分</text>
+      <!-- アクション2 -->
+      <circle cx="160" cy="50" r="36" fill="#C9A96E"/>
+      <text x="160" y="42" text-anchor="middle" fill="#2C3E50" font-size="18">📝</text>
+      <text x="160" y="58" text-anchor="middle" fill="#2C3E50" font-size="8" font-weight="bold">核10着</text>
+      <text x="160" y="69" text-anchor="middle" fill="#2C3E50" font-size="8" font-weight="bold">リスト作成</text>
+      <text x="160" y="100" text-anchor="middle" fill="#8B6914" font-size="8">15〜20分</text>
+      <!-- アクション3 -->
+      <circle cx="267" cy="50" r="36" fill="#2C3E50"/>
+      <text x="267" y="42" text-anchor="middle" fill="#C9A96E" font-size="18">🍽</text>
+      <text x="267" y="58" text-anchor="middle" fill="#F5ECD7" font-size="8" font-weight="bold">食卓を整え</text>
+      <text x="267" y="69" text-anchor="middle" fill="#F5ECD7" font-size="8" font-weight="bold">味わう</text>
+      <text x="267" y="100" text-anchor="middle" fill="#8B6914" font-size="8">20分</text>
+      <!-- 矢印 -->
+      <line x1="89" y1="50" x2="124" y2="50" stroke="#C9A96E" stroke-width="2" stroke-dasharray="4,2"/>
+      <line x1="196" y1="50" x2="231" y2="50" stroke="#C9A96E" stroke-width="2" stroke-dasharray="4,2"/>
+    </svg>
+  </div>
+
+  <div class="action-card">
+    <div class="action-header">
+      <div class="action-num">1</div>
+      <div class="action-title">👗 クローゼットを20分間仕分ける</div>
+      <div class="action-time">⏱ 20分</div>
+    </div>
+    <div class="action-detail">
+      クローゼットを全部出し、「今季着るか／着ないか」だけで二分する。迷ったら「着ない」に分類。着ない服は別の袋にまとめ、視界から外す。
+    </div>
+    <ul style="list-style:none;padding:0;margin-bottom:10px;">
+      <li style="font-size:13px;padding:3px 0;display:flex;gap:6px;"><span>🎯</span>目的：持ち物の現状を可視化し、「核」を見つける準備をする</li>
+      <li style="font-size:13px;padding:3px 0;display:flex;gap:6px;"><span>📋</span>手順：全部出す→着る/着ないで分ける→着ない服を袋へ</li>
+      <li style="font-size:13px;padding:3px 0;display:flex;gap:6px;"><span>💡</span>コツ：「いつか着るかも」は着ない服。今の自分に合うかで判断</li>
+    </ul>
+    <div class="action-effect">クローゼットの全体像が見え、重複や不要品が明確になる。次のアクション（核10着リスト）への土台が完成する。</div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-header">
+      <div class="action-num">2</div>
+      <div class="action-title">📝 今季の核10着リストを作る</div>
+      <div class="action-time">⏱ 15〜20分</div>
+    </div>
+    <div class="action-detail">
+      紙またはスマホのメモに「今季の核10着」を書き出す。仕事・日常の主力となる服を10着以内で選ぶ。フォーマル・アウター・運動着は除外してOK。
+    </div>
+    <ul style="list-style:none;padding:0;margin-bottom:10px;">
+      <li style="font-size:13px;padding:3px 0;display:flex;gap:6px;"><span>🎯</span>目的：「何を着るか」の迷いをゼロにし、毎朝の決断コストを下げる</li>
+      <li style="font-size:13px;padding:3px 0;display:flex;gap:6px;"><span>📋</span>手順：着る服を10着選ぶ→リスト化→足りない物・余剰を確認</li>
+      <li style="font-size:13px;padding:3px 0;display:flex;gap:6px;"><span>💡</span>コツ：着回しやすい色（ネイビー・白・グレー等）を軸にする</li>
+    </ul>
+    <div class="action-effect">朝の選択疲れが消え、一貫した印象が生まれる。「次に買うべき1着」も明確になり、衝動買いが減る。</div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-header">
+      <div class="action-num">3</div>
+      <div class="action-title">🍽 食卓を整え20分間よく味わう</div>
+      <div class="action-time">⏱ 20分</div>
+    </div>
+    <div class="action-detail">
+      次の食事で、テーブルを片づけ、食器を整え、スマホを遠ざけて食事だけに集中する。一口ごとに味・香り・食感を意識して食べる。
+    </div>
+    <ul style="list-style:none;padding:0;margin-bottom:10px;">
+      <li style="font-size:13px;padding:3px 0;display:flex;gap:6px;"><span>🎯</span>目的：食事を「儀式」として体験し、日常の満足度を底上げする</li>
+      <li style="font-size:13px;padding:3px 0;display:flex;gap:6px;"><span>📋</span>手順：テーブル整理→スマホOFF→ゆっくり食べる→食後に感想メモ</li>
+      <li style="font-size:13px;padding:3px 0;display:flex;gap:6px;"><span>💡</span>コツ：料理は普段通りでOK。「整える」行為だけで体験が変わる</li>
+    </ul>
+    <div class="action-effect">食事の満足感が高まり、間食欲求が自然と減る。「日常を整える」という感覚が全ての習慣変化の起点になる。</div>
+  </div>
+
+  <!-- 実践チェックリスト -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">✅</span>
+      <span class="card-title">今週の実践チェックリスト</span>
+    </div>
+    <ul>
+      <li><span class="li-icon">☐</span>クローゼットを仕分けた（20分）</li>
+      <li><span class="li-icon">☐</span>核10着リストを作った</li>
+      <li><span class="li-icon">☐</span>食卓を整えて食事した</li>
+      <li><span class="li-icon">☐</span>1日の間食をゼロにした</li>
+      <li><span class="li-icon">☐</span>姿勢を意識して過ごした</li>
+    </ul>
+    <div class="reason-box">小さな実践の積み重ねが、パリ式ライフスタイルへの最短ルート。完璧より継続を優先する。</div>
+  </div>
+
+</div>
+
+<footer>
+  <p>📖 インフォグラフィック | <span>パリ式・少数精鋭ライフスタイル</span></p>
+  <p style="margin-top:4px;">カラーパレット: Primary <span>#2C3E50</span> / Secondary <span>#F5ECD7</span> / Accent <span>#C9A96E</span></p>
+</footer>
+
+<script>
+  // タブ切替
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const targetId = btn.getAttribute('aria-controls');
+
+      tabBtns.forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabContents.forEach(function(c) {
+        c.classList.remove('active');
+      });
+
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.classList.add('active');
+        // スムーズスクロール（タブナビの下へ）
+        const nav = document.querySelector('.tab-nav');
+        if (nav) {
+          const navBottom = nav.getBoundingClientRect().bottom + window.scrollY;
+          window.scrollTo({ top: navBottom - 10, behavior: 'smooth' });
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>
