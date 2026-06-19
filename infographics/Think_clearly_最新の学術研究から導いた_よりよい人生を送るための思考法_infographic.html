@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>思考の衛生学 インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a1a2e
+  セカンダリー:  #16213e
+  アクセント:    #e94560
+  補助1:        #0f3460
+  補助2:        #f5a623
+  補助3:        #4ecdc4
+-->
+<style>
+  :root {
+    --primary: #1a1a2e;
+    --secondary: #16213e;
+    --accent: #e94560;
+    --aux1: #0f3460;
+    --aux2: #f5a623;
+    --aux3: #4ecdc4;
+    --text-light: #e8e8f0;
+    --text-muted: #a0a0b8;
+    --card-bg: rgba(255,255,255,0.05);
+    --card-border: rgba(255,255,255,0.1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', sans-serif;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--aux1) 100%);
+    color: var(--text-light);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ===== HEADER ===== */
+  .site-header {
+    background: linear-gradient(90deg, var(--accent) 0%, #c0392b 100%);
+    padding: 18px 20px 14px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .site-header h1 {
+    font-size: clamp(1.1rem, 4vw, 1.6rem);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    color: #fff;
+  }
+  .site-header p {
+    font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+    color: rgba(255,255,255,0.85);
+    margin-top: 4px;
+  }
+
+  /* ===== HERO BLOCK ===== */
+  .hero {
+    background: linear-gradient(135deg, rgba(233,69,96,0.15) 0%, rgba(15,52,96,0.3) 100%);
+    border: 1px solid rgba(233,69,96,0.3);
+    border-radius: 16px;
+    margin: 20px 16px;
+    padding: 20px;
+  }
+  .hero-title {
+    font-size: clamp(0.85rem, 3vw, 1rem);
+    color: var(--aux2);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  @media(min-width: 600px) {
+    .hero-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media(min-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  }
+  .hero-item {
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 14px;
+    border-left: 3px solid var(--accent);
+  }
+  .hero-item.why { border-left-color: var(--aux2); }
+  .hero-item.how { border-left-color: var(--aux3); }
+  .hero-item.ans { border-left-color: #a29bfe; }
+  .hero-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: var(--accent);
+  }
+  .hero-item.why .hero-label { color: var(--aux2); }
+  .hero-item.how .hero-label { color: var(--aux3); }
+  .hero-item.ans .hero-label { color: #a29bfe; }
+  .hero-item p { font-size: clamp(0.78rem, 2.5vw, 0.88rem); color: var(--text-light); }
+
+  /* ===== TABS ===== */
+  .tabs-wrapper { margin: 0 16px 20px; }
+  .tab-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-list::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    color: var(--text-muted);
+    padding: 8px 14px;
+    font-size: clamp(0.72rem, 2.5vw, 0.82rem);
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { background: rgba(233,69,96,0.2); color: #fff; }
+  .tab-btn[aria-selected="true"] {
+    background: linear-gradient(135deg, var(--accent), #c0392b);
+    color: #fff;
+    border-color: transparent;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(233,69,96,0.4);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  @media(min-width: 500px) { .card-grid { grid-template-columns: 1fr 1fr; } }
+  @media(min-width: 900px) { .card-grid { grid-template-columns: 1fr 1fr 1fr; } }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .card-emoji { font-size: 1.4rem; }
+  .card-title { font-size: clamp(0.85rem, 3vw, 0.95rem); font-weight: 700; color: #fff; }
+  .card-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), #c0392b);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    font-size: clamp(0.75rem, 2.5vw, 0.82rem);
+    color: var(--text-light);
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    gap: 6px;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li .li-icon { flex-shrink: 0; }
+  .reason-box {
+    margin-top: 10px;
+    background: rgba(233,69,96,0.1);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 8px 10px;
+    font-size: clamp(0.72rem, 2.3vw, 0.78rem);
+    color: #ffb3c1;
+  }
+  .reason-box strong { color: var(--accent); }
+
+  /* ===== SECTION TITLE ===== */
+  .section-title {
+    font-size: clamp(0.9rem, 3vw, 1.05rem);
+    font-weight: 800;
+    color: var(--aux2);
+    margin: 20px 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.05em;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--aux2), transparent);
+  }
+
+  /* ===== RELATION DIAGRAM ===== */
+  .relation-box {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 16px;
+  }
+  .relation-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: clamp(0.73rem, 2.5vw, 0.82rem);
+  }
+  .relation-item:last-child { border-bottom: none; }
+  .arrow-badge {
+    background: var(--aux1);
+    color: var(--aux3);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ===== CHAPTER CARDS ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 14px;
+    border-left: 4px solid var(--aux3);
+  }
+  .chapter-card:nth-child(2) { border-left-color: var(--aux2); }
+  .chapter-card:nth-child(3) { border-left-color: #a29bfe; }
+  .chapter-card:nth-child(4) { border-left-color: var(--accent); }
+  .chapter-card:nth-child(5) { border-left-color: #fd79a8; }
+  .chapter-card:nth-child(6) { border-left-color: #55efc4; }
+  .chapter-num {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: var(--aux3);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .chapter-card:nth-child(2) .chapter-num { color: var(--aux2); }
+  .chapter-card:nth-child(3) .chapter-num { color: #a29bfe; }
+  .chapter-card:nth-child(4) .chapter-num { color: var(--accent); }
+  .chapter-card:nth-child(5) .chapter-num { color: #fd79a8; }
+  .chapter-card:nth-child(6) .chapter-num { color: #55efc4; }
+  .chapter-title { font-size: clamp(0.88rem, 3vw, 1rem); font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .chapter-card ul { list-style: none; }
+  .chapter-card ul li {
+    font-size: clamp(0.73rem, 2.5vw, 0.8rem);
+    color: var(--text-light);
+    padding: 3px 0;
+    display: flex;
+    gap: 6px;
+  }
+
+  /* ===== EXAMPLES ===== */
+  .example-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .example-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--accent), #c0392b);
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .example-title { font-size: clamp(0.88rem, 3vw, 1rem); font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .example-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  @media(min-width: 600px) { .example-meta { grid-template-columns: 1fr 1fr 1fr; } }
+  .meta-item {
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .meta-label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .meta-label.bg { color: var(--aux3); }
+  .meta-label.si { color: var(--aux2); }
+  .meta-label.re { color: var(--accent); }
+  .meta-item p { font-size: clamp(0.72rem, 2.3vw, 0.8rem); color: var(--text-light); }
+
+  /* ===== QUOTES ===== */
+  .quote-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 6rem;
+    color: rgba(233,69,96,0.12);
+    font-family: Georgia, serif;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .quote-text {
+    font-size: clamp(0.88rem, 3vw, 1rem);
+    font-weight: 700;
+    color: #fff;
+    font-style: italic;
+    margin-bottom: 10px;
+    padding-left: 8px;
+    border-left: 3px solid var(--accent);
+    line-height: 1.7;
+  }
+  .quote-note {
+    font-size: clamp(0.72rem, 2.3vw, 0.8rem);
+    color: var(--text-muted);
+    padding-left: 8px;
+  }
+  .quote-note strong { color: var(--aux2); }
+
+  /* ===== ACTIONS ===== */
+  .action-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+  .action-body { flex: 1; }
+  .action-title { font-size: clamp(0.88rem, 3vw, 1rem); font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .action-time {
+    display: inline-block;
+    background: rgba(78,205,196,0.2);
+    color: var(--aux3);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .action-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .action-meta-item {
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    padding: 6px 8px;
+  }
+  .action-meta-label {
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--aux2);
+    margin-bottom: 2px;
+  }
+  .action-meta-item p { font-size: clamp(0.7rem, 2.3vw, 0.77rem); color: var(--text-light); }
+
+  /* ===== SVG CHART ===== */
+  .chart-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 16px;
+  }
+  .chart-title {
+    font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+    font-weight: 700;
+    color: var(--aux2);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .bar-label {
+    font-size: clamp(0.68rem, 2.2vw, 0.75rem);
+    color: var(--text-light);
+    width: 110px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .bar-track {
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    height: 18px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 6px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #fff;
+    transition: width 1s ease;
+  }
+
+  /* ===== RELATED BOOKS ===== */
+  .books-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  @media(min-width: 500px) { .books-grid { grid-template-columns: 1fr 1fr; } }
+  @media(min-width: 900px) { .books-grid { grid-template-columns: 1fr 1fr 1fr; } }
+  .book-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .book-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .book-title { font-size: clamp(0.78rem, 2.5vw, 0.85rem); font-weight: 700; color: #fff; }
+  .book-author { font-size: 0.7rem; color: var(--text-muted); margin: 2px 0; }
+  .book-rel { font-size: clamp(0.68rem, 2.2vw, 0.75rem); color: var(--aux3); }
+
+  /* ===== FLOW DIAGRAM SVG ===== */
+  .flow-wrap {
+    overflow-x: auto;
+    margin-top: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 24px 16px;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 20px;
+  }
+
+  /* ===== BADGE ===== */
+  .num-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--aux2), #e67e22);
+    color: #1a1a2e;
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
+    font-weight: 900;
+    padding: 8px 16px;
+    border-radius: 10px;
+    margin: 4px;
+  }
+  .badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    justify-content: center;
+  }
+  .badge-item {
+    text-align: center;
+  }
+  .badge-sub {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <h1>🧠 思考の衛生学 ― 認知バイアスを知り、より良く考える</h1>
+  <p>心のバグを自覚し、環境と習慣を設計して意思決定をシンプルにする</p>
+</header>
+
+<!-- ===== HERO BLOCK ===== -->
+<section class="hero" aria-label="エグゼクティブサマリー">
+  <div class="hero-title">🎯 ここだけ見れば全体像がわかる</div>
+  <div class="hero-grid">
+    <div class="hero-item">
+      <div class="hero-label">❓ 問い</div>
+      <p>なぜ私たちは誤った選択を繰り返し、どうすればより良く考えられるのか？</p>
+    </div>
+    <div class="hero-item ans">
+      <div class="hero-label">💡 答え</div>
+      <p>人間の思考には一貫した偏りがある。それを知り、判断ルールと環境設計で摩擦を減らせば、意思決定の質は大きく向上する。</p>
+    </div>
+    <div class="hero-item why">
+      <div class="hero-label">🔍 Why（なぜ）</div>
+      <p>脳は省エネのためヒューリスティックに依存し、可用性・社会的証明などのバイアスで系統的エラーを生む。直感は有効域が狭く、複雑な領域では誤作動しやすい。</p>
+    </div>
+    <div class="hero-item how">
+      <div class="hero-label">🛠 How（どうする）</div>
+      <p>バイアスを名指しで認識 → ベースレート・機会費用を明示 → チェックリスト・プレモーテム・決断の遅延を使う → 情報摂取を最適化し、反証思考と小さな実験を習慣化する。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TABS ===== -->
+<div class="tabs-wrapper">
+  <div class="tab-list" role="tablist" aria-label="コンテンツタブ">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">💼 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">⚡ 今日のアクション</button>
+  </div>
+
+  <!-- ===== TAB 1: 主要概念 ===== -->
+  <div class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="section-title">📊 バイアスの影響度（概念別）</div>
+    <div class="chart-wrap">
+      <div class="chart-title">主要バイアスの日常への影響度（相対スコア）</div>
+      <div class="bar-row">
+        <div class="bar-label">確証バイアス</div>
+        <div class="bar-track"><div class="bar-fill" style="width:95%;background:linear-gradient(90deg,#e94560,#c0392b)">95</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">サンクコスト錯誤</div>
+        <div class="bar-track"><div class="bar-fill" style="width:88%;background:linear-gradient(90deg,#f5a623,#e67e22)">88</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">可得性ヒューリスティック</div>
+        <div class="bar-track"><div class="bar-fill" style="width:82%;background:linear-gradient(90deg,#4ecdc4,#00b894)">82</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">アンカリング効果</div>
+        <div class="bar-track"><div class="bar-fill" style="width:78%;background:linear-gradient(90deg,#a29bfe,#6c5ce7)">78</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">生存者バイアス</div>
+        <div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#fd79a8,#e84393)">75</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">社会的証明</div>
+        <div class="bar-track"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,#55efc4,#00cec9)">70</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">ナラティブ錯誤</div>
+        <div class="bar-track"><div class="bar-fill" style="width:65%;background:linear-gradient(90deg,#fdcb6e,#e17055)">65</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">ハロー効果</div>
+        <div class="bar-track"><div class="bar-fill" style="width:60%;background:linear-gradient(90deg,#74b9ff,#0984e3)">60</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">結果論の誤り</div>
+        <div class="bar-track"><div class="bar-fill" style="width:55%;background:linear-gradient(90deg,#e94560,#c0392b)">55</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">ベースレート無視</div>
+        <div class="bar-track"><div class="bar-fill" style="width:72%;background:linear-gradient(90deg,#f5a623,#e67e22)">72</div></div>
+      </div>
+    </div>
+
+    <div class="section-title">🧩 主要概念カード</div>
+    <div class="card-grid">
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-emoji">🐛</span>
+          <span class="card-title">認知バイアス</span>
+          <span class="card-badge">心のバグ</span>
+        </div>
+        <ul>
+          <li><span class="li-icon">📌</span><span>判断・意思決定を体系的に歪める心のクセ</span></li>
+          <li><span class="li-icon">🔕</span><span>無意識に作動し、経験だけでは修正されにくい</span></li>
+          <li><span class="li-icon">⚠️</span><span>誰にでも起きる普遍的な現象</span></li>
+          <li><span class="li-icon">🔬</span><span>認知心理学・行動経済学で実証済み</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>自覚なしには対策不可能。名前を知ることが第一歩。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-emoji">📺</span>
+          <span class="card-title">可得性ヒューリスティック</span>
+          <span class="card-badge">思い出しやすさ≠現実</span>
+        </div>
+        <ul>
+          <li><span class="li-icon">🧠</span><span>思い出しやすさを頻度・重要度と誤認する</span></li>
+          <li><span class="li-icon">📰</span><span>センセーショナルな出来事を過大評価する</span></li>
+          <li><span class="li-icon">✈️</span><span>例：飛行機事故を過度に恐れ、車事故を軽視</span></li>
+          <li><span class="li-icon">📊</span><span>メディア露出量が「危険度」に見えてしまう</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>リスク評価が歪み、資源配分の誤りを生む。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-emoji">🔍</span>
+          <span class="card-title">確証バイアス</span>
+          <span class="card-badge">都合の良い証拠集め</span>
+        </div>
+        <ul>
+          <li><span class="li-icon">✅</span><span>自分の信念を支持する情報だけを集める</span></li>
+          <li><span class="li-icon">❌</span><span>反証を無意識に無視・軽視する</span></li>
+          <li><span class="li-icon">🔄</span><span>学習を阻害し、誤信念を強化するループ</span></li>
+          <li><span class="li-icon">💬</span><span>SNSのエコーチェンバーで特に顕著</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>ナラティブ錯誤と組み合わさると誤信念が自己強化される。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-emoji">💸</span>
+          <span class="card-title">サンクコスト錯誤</span>
+          <span class="card-badge">悪あがき投資</span>
+        </div>
+        <ul>
+          <li><span class="li-icon">⏮️</span><span>回収不能な過去コストに縛られる誤り</span></li>
+          <li><span class="li-icon">🎬</span><span>例：つまらない映画を最後まで見続ける</span></li>
+          <li><span class="li-icon">📉</span><span>撤退遅延 → 機会費用の累積増大</span></li>
+          <li><span class="li-icon">🚪</span><span>「今後どうなるか」だけで判断すべき</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>撤退は敗北ではなく資源配分の最適化。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-emoji">⚓</span>
+          <span class="card-title">アンカリング効果</span>
+          <span class="card-badge">最初の数字の呪縛</span>
+        </div>
+        <ul>
+          <li><span class="li-icon">1️⃣</span><span>最初に提示された数値が基準となる</span></li>
+          <li><span class="li-icon">🏷️</span><span>例：値引き前の定価が「お得感」を作る</span></li>
+          <li><span class="li-icon">🔗</span><span>初期情報の固定化 → ベースレート無視を誘発</span></li>
+          <li><span class="li-icon">🤝</span><span>交渉・価格設定で意図的に使われる</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>意識しないと交渉・購買で常に不利になる。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-emoji">👥</span>
+          <span class="card-title">社会的証明</span>
+          <span class="card-badge">みんなが正しい？</span>
+        </div>
+        <ul>
+          <li><span class="li-icon">🐑</span><span>多数派の行動を正しさの根拠とみなす</span></li>
+          <li><span class="li-icon">⭐</span><span>例：レビュー数が多い商品を選ぶ</span></li>
+          <li><span class="li-icon">✔️</span><span>不確実性が高い状況では合理的な面も</span></li>
+          <li><span class="li-icon">⚠️</span><span>バブルや集団パニックの温床にもなる</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>状況により合理だが、誤導も多く批判的評価が必要。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-emoji">✨</span>
+          <span class="card-title">ハロー効果</span>
+          <span class="card-badge">一点豪華の錯覚</span>
+        </div>
+        <ul>
+          <li><span class="li-icon">😍</span><span>一部の顕著な特徴が全体評価に影響する</span></li>
+          <li><span class="li-icon">👔</span><span>例：外見が良い人を有能と判断しがち</span></li>
+          <li><span class="li-icon">🏢</span><span>採用・製品評価・ブランド認知で頻発</span></li>
+          <li><span class="li-icon">🔎</span><span>評価軸を分離して個別に判断することが対策</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>人事・投資判断で大きな誤りを生む代表的バイアス。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-emoji">🏆</span>
+          <span class="card-title">結果論の誤り</span>
+          <span class="card-badge">たまたま勝ちを美化</span>
+        </div>
+        <ul>
+          <li><span class="li-icon">🎲</span><span>プロセスではなく結果だけで質を評価する</span></li>
+          <li><span class="li-icon">🍀</span><span>運による成功を実力と誤認する</span></li>
+          <li><span class="li-icon">📚</span><span>誤った学習フィードバック → 将来の悪化</span></li>
+          <li><span class="li-icon">📋</span><span>対策：意思決定プロセスを記録・評価する</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>誤ったフィードバックが将来の意思決定を悪化させる。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-emoji">👻</span>
+          <span class="card-title">生存者バイアス</span>
+          <span class="card-badge">見えない墓場</span>
+        </div>
+        <ul>
+          <li><span class="li-icon">🏅</span><span>成功事例だけを観察し失敗例を見落とす</span></li>
+          <li><span class="li-icon">📖</span><span>例：成功した起業家の本だけが出版される</span></li>
+          <li><span class="li-icon">🔭</span><span>「見えていないもの」を意識的に探す必要</span></li>
+          <li><span class="li-icon">📊</span><span>ベースレートと組み合わせて判断する</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>成功法則の多くは生存者バイアスに汚染されている。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-emoji">📖</span>
+          <span class="card-title">ナラティブ錯誤</span>
+          <span class="card-badge">物語で誤解</span>
+        </div>
+        <ul>
+          <li><span class="li-icon">🎭</span><span>複雑な現実に単純な因果物語を後付けする</span></li>
+          <li><span class="li-icon">🧩</span><span>物語はしばしば真実を歪める</span></li>
+          <li><span class="li-icon">📰</span><span>メディアの「なぜ〇〇が成功したか」記事に多い</span></li>
+          <li><span class="li-icon">📊</span><span>対策：データと統計で物語を検証する</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>確証バイアスと組み合わさると誤信念の自己強化ループを生む。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-emoji">📐</span>
+          <span class="card-title">ベースレート無視</span>
+          <span class="card-badge">土台の確率忘れ</span>
+        </div>
+        <ul>
+          <li><span class="li-icon">📊</span><span>個別情報を重視し、背景の統計的基準率を軽視</span></li>
+          <li><span class="li-icon">🏥</span><span>例：症状から病気を判断し、罹患率を無視</span></li>
+          <li><span class="li-icon">🔗</span><span>アンカリングがベースレート無視を誘発する</span></li>
+          <li><span class="li-icon">✅</span><span>対策：まず「そもそも何%の確率か」を確認</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>医療・投資・採用など高リスク判断で致命的な誤りを生む。</div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-emoji">💰</span>
+          <span class="card-title">機会費用</span>
+          <span class="card-badge">見えない代償</span>
+        </div>
+        <ul>
+          <li><span class="li-icon">🔄</span><span>ある選択で失われる次善の価値</span></li>
+          <li><span class="li-icon">🕐</span><span>例：残業1時間 = 家族との時間・学習時間の喪失</span></li>
+          <li><span class="li-icon">💡</span><span>意思決定では常に隠れコストとして存在する</span></li>
+          <li><span class="li-icon">📋</span><span>対策：「これをしないと何ができるか」を明示</span></li>
+        </ul>
+        <div class="reason-box"><strong>なぜ重要か：</strong>サンクコスト錯誤と組み合わさると資源の浪費が加速する。</div>
+      </div>
+
+    </div>
+
+    <div class="section-title">🔗 概念間の因果関係</div>
+    <div class="relation-box">
+      <div class="relation-item">
+        <span class="arrow-badge">連鎖①</span>
+        <span>注意資源の希少性 → ヒューリスティック依存↑ → 認知バイアス増幅</span>
+      </div>
+      <div class="relation-item">
+        <span class="arrow-badge">連鎖②</span>
+        <span>不確実性・情報過多 → 可得性/社会的証明に流れる → 判断の短絡化</span>
+      </div>
+      <div class="relation-item">
+        <span class="arrow-badge">連鎖③</span>
+        <span>確証バイアス × ナラティブ錯誤 → 誤信念の自己強化ループ</span>
+      </div>
+      <div class="relation-item">
+        <span class="arrow-badge">連鎖④</span>
+        <span>アンカリング → 初期情報の固定化 → ベースレート無視を誘発</span>
+      </div>
+      <div class="relation-item">
+        <span class="arrow-badge">連鎖⑤</span>
+        <span>サンクコスト錯誤 → 撤退遅延 → 機会費用の累積増大</span>
+      </div>
+      <div class="relation-item">
+        <span class="arrow-badge">連鎖⑥</span>
+        <span>結果論の誤り → 誤った学習フィードバック → 将来の意思決定悪化</span>
+      </div>
+      <div class="relation-item">
+        <span class="arrow-badge">✅ 対策</span>
+        <span>チェックリスト/プレモーテム/反証探索 → 認知バイアスの露出化 → エラー率低下</span>
+      </div>
+    </div>
+
+    <!-- SVG Flow Diagram -->
+    <div class="section-title">🗺️ 思考エラーの構造図</div>
+    <div class="flow-wrap">
+      <svg viewBox="0 0 700 220" width="100%" style="min-width:320px;max-width:700px;display:block;margin:0 auto;" aria-label="思考エラーの構造フロー図" role="img">
+        <defs>
+          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#e94560"/>
+          </marker>
+          <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#4ecdc4"/>
+          </marker>
+        </defs>
+        <!-- Box 1 -->
+        <rect x="10" y="80" width="120" height="50" rx="8" fill="#0f3460" stroke="#e94560" stroke-width="1.5"/>
+        <text x="70" y="101" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">情報過多</text>
+        <text x="70" y="116" text-anchor="middle" fill="#a0a0b8" font-size="9">不確実性</text>
+        <!-- Arrow 1→2 -->
+        <line x1="130" y1="105" x2="158" y2="105" stroke="#e94560" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Box 2 -->
+        <rect x="160" y="80" width="130" height="50" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="225" y="101" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">ヒューリスティック</text>
+        <text x="225" y="116" text-anchor="middle" fill="#a0a0b8" font-size="9">依存（省エネ思考）</text>
+        <!-- Arrow 2→3 -->
+        <line x1="290" y1="105" x2="318" y2="105" stroke="#e94560" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Box 3 -->
+        <rect x="320" y="60" width="130" height="90" rx="8" fill="#1a1a2e" stroke="#e94560" stroke-width="2"/>
+        <text x="385" y="85" text-anchor="middle" fill="#e94560" font-size="10" font-weight="bold">認知バイアス群</text>
+        <text x="385" y="102" text-anchor="middle" fill="#a0a0b8" font-size="8">確証/可得性/アンカリング</text>
+        <text x="385" y="116" text-anchor="middle" fill="#a0a0b8" font-size="8">サンクコスト/ハロー効果</text>
+        <text x="385" y="130" text-anchor="middle" fill="#a0a0b8" font-size="8">生存者/ナラティブ錯誤</text>
+        <!-- Arrow 3→4 -->
+        <line x1="450" y1="105" x2="478" y2="105" stroke="#e94560" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Box 4 -->
+        <rect x="480" y="80" width="120" height="50" rx="8" fill="#0f3460" stroke="#e94560" stroke-width="1.5"/>
+        <text x="540" y="101" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">意思決定エラー</text>
+        <text x="540" y="116" text-anchor="middle" fill="#a0a0b8" font-size="9">損失・機会損失</text>
+        <!-- Counter arrow (solution) -->
+        <path d="M385,150 Q385,190 225,190 Q160,190 160,155" stroke="#4ecdc4" stroke-width="1.5" fill="none" marker-end="url(#arr2)" stroke-dasharray="5,3"/>
+        <text x="290" y="205" text-anchor="middle" fill="#4ecdc4" font-size="9">✅ チェックリスト・反証思考・環境設計で対策</text>
+        <!-- Labels top -->
+        <text x="70" y="70" text-anchor="middle" fill="#f5a623" font-size="8">INPUT</text>
+        <text x="225" y="70" text-anchor="middle" fill="#f5a623" font-size="8">PROCESS</text>
+        <text x="385" y="50" text-anchor="middle" fill="#e94560" font-size="8">⚠️ BIAS</text>
+        <text x="540" y="70" text-anchor="middle" fill="#f5a623" font-size="8">OUTPUT</text>
+      </svg>
+    </div>
+
+  </div>
+
+  <!-- ===== TAB 2: 各章の要約 ===== -->
+  <div class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <div class="section-title">📖 論理展開の全体像</div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">導入</div>
+      <div class="chapter-title">🚨 思考の衛生の必要性 ― 問題提起</div>
+      <ul>
+        <li><span>📌</span><span>日常の意思決定は直感に左右されている</span></li>
+        <li><span>🔄</span><span>体系的な誤りが繰り返されているという事実</span></li>
+        <li><span>🧹</span><span>「思考の衛生」＝バイアスを意識的に管理する習慣の必要性</span></li>
+        <li><span>🎯</span><span>本書の目的：思考の質を高め、人生の質を向上させる</span></li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>問題を認識しなければ解決策を求めない。「自分は合理的」という思い込みを崩すことが出発点。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">本編 I</div>
+      <div class="chapter-title">🧩 代表的な認知バイアスの解説</div>
+      <ul>
+        <li><span>📚</span><span>短章ごとに1つのバイアスを深掘り</span></li>
+        <li><span>🔬</span><span>現象 → 日常例 → 学術的根拠 → 失敗パターンの順で解説</span></li>
+        <li><span>🎭</span><span>12種類以上のバイアスを網羅的に紹介</span></li>
+        <li><span>💡</span><span>「名前を知ること」が認識の第一歩</span></li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>バイアスを名指しできなければ対策できない。カタログ化することで「あ、これだ」と気づける。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">本編 II</div>
+      <div class="chapter-title">📐 誤りを減らすための原則</div>
+      <ul>
+        <li><span>📊</span><span>ベースレート（基準率）を常に確認する</span></li>
+        <li><span>💰</span><span>機会費用を明示して選択肢を比較する</span></li>
+        <li><span>🎲</span><span>期待値思考で確率と結果を掛け合わせる</span></li>
+        <li><span>⏳</span><span>決断の遅延と撤退ルールを事前に設定する</span></li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>バイアスを知るだけでは不十分。具体的な判断原則がなければ行動は変わらない。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">本編 III</div>
+      <div class="chapter-title">🏗️ 環境と習慣の設計</div>
+      <ul>
+        <li><span>✅</span><span>チェックリストで重要判断を手順化・外部化する</span></li>
+        <li><span>📵</span><span>情報摂取を最適化し、ノイズを断つ</span></li>
+        <li><span>🔄</span><span>反証思考：「自分が間違っているとしたら？」を問う</span></li>
+        <li><span>🧪</span><span>小さな実験で仮説を検証する習慣を作る</span></li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>意志力に頼らず、環境と仕組みで自動的にバイアスを回避する設計が持続可能な対策。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">横断テーマ</div>
+      <div class="chapter-title">🎯 直感の有効域と外部化</div>
+      <ul>
+        <li><span>🔭</span><span>直感が有効な領域（反復・フィードバックが速い分野）を見極める</span></li>
+        <li><span>📋</span><span>重要決定はルール化・外部化して感情を排除する</span></li>
+        <li><span>🔇</span><span>雑音と誘惑を環境から取り除く</span></li>
+        <li><span>⚖️</span><span>直感と分析の使い分けが鍵</span></li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>直感を全否定するのではなく、有効域を知ることで適切に活用できる。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">結語</div>
+      <div class="chapter-title">🌟 完璧でなくても、確率は下げられる</div>
+      <ul>
+        <li><span>🎯</span><span>すべてのバイアスを完璧に避けることは不可能</span></li>
+        <li><span>🏷️</span><span>命名し、可視化し、手順化すれば失敗確率は大きく下がる</span></li>
+        <li><span>📈</span><span>思考の質の向上は人生の質の向上に直結する</span></li>
+        <li><span>🔁</span><span>継続的な自己観察と改善のサイクルが重要</span></li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>完璧主義を捨て、「少しずつ良くなる」という現実的な目標設定が継続の鍵。</div>
+    </div>
+
+    <!-- Badges -->
+    <div class="section-title">📊 本書の数値的ポイント</div>
+    <div class="chart-wrap">
+      <div class="chart-title">本書が扱う主要指標</div>
+      <div class="badges-row">
+        <div class="badge-item">
+          <div class="num-badge">12+</div>
+          <div class="badge-sub">主要バイアス数</div>
+        </div>
+        <div class="badge-item">
+          <div class="num-badge">6</div>
+          <div class="badge-sub">論理展開ステップ</div>
+        </div>
+        <div class="badge-item">
+          <div class="num-badge">3</div>
+          <div class="badge-sub">今日できるアクション</div>
+        </div>
+        <div class="badge-item">
+          <div class="num-badge">7</div>
+          <div class="badge-sub">関連書籍数</div>
+        </div>
+        <div class="badge-item">
+          <div class="num-badge">5</div>
+          <div class="badge-sub">重要引用数</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== TAB 3: 具体例 ===== -->
+  <div class="tab-panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+
+    <div class="section-title">💼 核心メッセージが伝わる具体例</div>
+
+    <div class="example-card">
+      <div class="example-num">1</div>
+      <div class="example-title">✈️ 飛行機 vs 車 ― 可得性ヒューリスティックの罠</div>
+      <div class="example-meta">
+        <div class="meta-item">
+          <div class="meta-label bg">📋 背景</div>
+          <p>飛行機事故はニュースで大きく報道される。一方、交通事故は毎日起きているが「日常」として扱われる。多くの人が飛行機を「危険」と感じ、車を「安全」と感じる。</p>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label si">💡 示唆</div>
+          <p>統計的には車の方が圧倒的に危険。しかし「思い出しやすさ」が「危険度」に見えてしまう。メディア露出量がリスク認知を歪める典型例。</p>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label re">🔍 この例が示すこと</div>
+          <p>感情的に印象的な情報ほど過大評価される。リスク判断には必ず統計データを参照する習慣が必要。「怖い＝危険」ではない。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-num">2</div>
+      <div class="example-title">🎬 つまらない映画を最後まで見る ― サンクコスト錯誤</div>
+      <div class="example-meta">
+        <div class="meta-item">
+          <div class="meta-label bg">📋 背景</div>
+          <p>映画館で1800円払って入場。30分後につまらないと気づく。しかし「お金を払ったから」という理由で残り90分を我慢して見続ける。</p>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label si">💡 示唆</div>
+          <p>1800円はすでに回収不能。残り90分を使うかどうかは「今後の価値」だけで判断すべき。退場して別のことに時間を使う方が合理的。</p>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label re">🔍 この例が示すこと</div>
+          <p>「もったいない」感覚は過去への執着。撤退は敗北ではなく資源配分の最適化。ビジネス・投資・人間関係でも同じ原理が働く。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-num">3</div>
+      <div class="example-title">📈 成功した起業家の本 ― 生存者バイアス</div>
+      <div class="example-meta">
+        <div class="meta-item">
+          <div class="meta-label bg">📋 背景</div>
+          <p>書店には成功した起業家の自伝が並ぶ。「早起き」「読書習慣」「失敗を恐れない」などの共通点が語られ、成功法則として広まる。</p>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label si">💡 示唆</div>
+          <p>同じ習慣を持ちながら失敗した起業家の本は出版されない。「見えない墓場」の存在を忘れると、相関を因果と誤認する。</p>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label re">🔍 この例が示すこと</div>
+          <p>成功事例だけを見て法則を導くのは危険。「失敗した人たちはどうだったか」を常に問うことで、より正確な判断ができる。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-num">4</div>
+      <div class="example-title">🏷️ 定価50,000円 → 今だけ30,000円 ― アンカリング効果</div>
+      <div class="example-meta">
+        <div class="meta-item">
+          <div class="meta-label bg">📋 背景</div>
+          <p>商品に「定価50,000円」と表示し、「今だけ30,000円」と値引きする。消費者は50,000円を基準（アンカー）として、20,000円の「お得感」を感じる。</p>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label si">💡 示唆</div>
+          <p>30,000円が適正価格かどうかは別問題。最初に提示された数字が判断の基準を作る。交渉・価格設定で意図的に使われる手法。</p>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label re">🔍 この例が示すこと</div>
+          <p>「最初の数字」を疑う習慣が重要。独立した基準（市場価格・ベースレート）を事前に調べてから判断することで罠を回避できる。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-num">5</div>
+      <div class="example-title">📰 「なぜ〇〇社は成功したか」記事 ― ナラティブ錯誤</div>
+      <div class="example-meta">
+        <div class="meta-item">
+          <div class="meta-label bg">📋 背景</div>
+          <p>企業が成功した後、メディアは「ビジョンある創業者」「タイミングの良さ」「独自の文化」などの物語を後付けで構築する。</p>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label si">💡 示唆</div>
+          <p>実際には複数の偶然・運・市場環境が絡み合っている。単純な因果物語は理解しやすいが、現実を歪める。</p>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label re">🔍 この例が示すこと</div>
+          <p>「わかりやすい物語」ほど疑うべき。データと統計で物語を検証し、複雑さを受け入れる姿勢が正確な判断につながる。</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== TAB 4: 重要な引用 ===== -->
+  <div class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <div class="section-title">💬 重要な引用・要旨</div>
+
+    <div class="quote-card">
+      <div class="quote-text">「思考の質は人生の質を決める。」</div>
+      <div class="quote-note">
+        <strong>なぜ重要か：</strong>本書全体の目的（思考衛生の確立）を一文で示す指針。すべての章はこの命題を支えるために存在する。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">「人は説明可能性を物語で埋めたがるが、物語はしばしば真実を歪める。」</div>
+      <div class="quote-note">
+        <strong>なぜ重要か：</strong>ナラティブ錯誤を自覚し、データ基盤の判断へ切り替える必要を示す。「わかりやすさ」への警戒を促す。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">「成功は技量と運の和であり、結果だけで判断してはならない。」</div>
+      <div class="quote-note">
+        <strong>なぜ重要か：</strong>結果論の罠を避け、プロセス評価と再現性の重視につながる。「たまたまの成功」を実力と誤認しないための指針。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">「撤退は敗北ではなく、資源配分の最適化である。」</div>
+      <div class="quote-note">
+        <strong>なぜ重要か：</strong>サンクコスト錯誤を断ち、機会費用重視の意思決定を促す。「やめること」を肯定的に再定義する重要な視点。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">「チェックリストは凡ミスを防ぐ最も安価な道具だ。」</div>
+      <div class="quote-note">
+        <strong>なぜ重要か：</strong>手順の外部化がバイアス対策として現実的かつ即効性が高いことを示す。航空・医療分野での実績が裏付ける。
+      </div>
+    </div>
+
+    <!-- Visual: Quote importance chart -->
+    <div class="section-title">📊 引用の重要テーマ分布</div>
+    <div class="chart-wrap">
+      <div class="chart-title">各引用が対応するバイアス・テーマ</div>
+      <div class="bar-row">
+        <div class="bar-label">思考の質全般</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#e94560,#c0392b)">全体指針</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">ナラティブ錯誤</div>
+        <div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#f5a623,#e67e22)">物語の罠</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">結果論の誤り</div>
+        <div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#4ecdc4,#00b894)">プロセス重視</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">サンクコスト錯誤</div>
+        <div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#a29bfe,#6c5ce7)">撤退の合理性</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">チェックリスト</div>
+        <div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#55efc4,#00cec9)">即効対策</div></div>
+      </div>
+    </div>
+
+    <!-- Related Books -->
+    <div class="section-title">📚 関連書籍</div>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="book-icon">📘</div>
+        <div>
+          <div class="book-title">ファスト＆スロー</div>
+          <div class="book-author">ダニエル・カーネマン</div>
+          <div class="book-rel">認知バイアスと二重過程理論の基礎を提供する</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📗</div>
+        <div>
+          <div class="book-title">予想どおりに不合理</div>
+          <div class="book-author">ダン・アリエリー</div>
+          <div class="book-rel">日常に潜む非合理の実験的証拠を示す</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📙</div>
+        <div>
+          <div class="book-title">行動経済学の逆襲</div>
+          <div class="book-author">リチャード・セイラー</div>
+          <div class="book-rel">バイアス理解を政策・設計に活かす視点を与える</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📕</div>
+        <div>
+          <div class="book-title">FACTFULNESS</div>
+          <div class="book-author">ハンス・ロスリング</div>
+          <div class="book-rel">可得性やナラティブ錯誤を是正するデータ思考を学べる</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📓</div>
+        <div>
+          <div class="book-title">Superforecasting 予測の達人</div>
+          <div class="book-author">フィリップ・テトロック</div>
+          <div class="book-rel">反証思考とベースレート重視の実践法が近接する</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📒</div>
+        <div>
+          <div class="book-title">The Art of the Good Life</div>
+          <div class="book-author">ロルフ・ドベリ</div>
+          <div class="book-rel">同著者による意思決定の実践原理をさらに掘り下げる</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📔</div>
+        <div>
+          <div class="book-title">Clear Thinking</div>
+          <div class="book-author">シェーン・パリッシュ</div>
+          <div class="book-rel">意思決定を阻む障害と環境設計の具体策が補完関係にある</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== TAB 5: 今日のアクション ===== -->
+  <div class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="section-title">⚡ 今日15〜30分で実行できるアクション</div>
+
+    <div class="action-card">
+      <div class="action-icon">📝</div>
+      <div class="action-body">
+        <div class="action-title">直近の意思決定3件を記録する</div>
+        <div class="action-time">⏱ 15〜20分</div>
+        <ul style="list-style:none;padding:0;">
+          <li style="font-size:0.8rem;color:var(--text-light);padding:3px 0;display:flex;gap:6px;"><span>📌</span><span>直近1週間で行った重要な決断を3つ書き出す</span></li>
+          <li style="font-size:0.8rem;color:var(--text-light);padding:3px 0;display:flex;gap:6px;"><span>🔍</span><span>各決断に「どのバイアスが働いたか」を当てはめる</span></li>
+          <li style="font-size:0.8rem;color:var(--text-light);padding:3px 0;display:flex;gap:6px;"><span>📊</span><span>「その時のベースレートは何%だったか」を調べる</span></li>
+        </ul>
+        <div class="action-meta">
+          <div class="action-meta-item">
+            <div class="action-meta-label">🎯 目的</div>
+            <p>自分の思考パターンを可視化し、どのバイアスに弱いかを把握する</p>
+          </div>
+          <div class="action-meta-item">
+            <div class="action-meta-label">✨ 期待効果</div>
+            <p>「自分はこのバイアスに引っかかりやすい」という自己認識が生まれ、次回の判断精度が上がる</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-icon">✅</div>
+      <div class="action-body">
+        <div class="action-title">重要決定用チェックリストを作る</div>
+        <div class="action-time">⏱ 20〜30分</div>
+        <ul style="list-style:none;padding:0;">
+          <li style="font-size:0.8rem;color:var(--text-light);padding:3px 0;display:flex;gap:6px;"><span>📋</span><span>「ベースレートは確認したか？」を必須項目に入れる</span></li>
+          <li style="font-size:0.8rem;color:var(--text-light);padding:3px 0;display:flex;gap:6px;"><span>💰</span><span>「機会費用は何か？」を問う項目を追加する</span></li>
+          <li style="font-size:0.8rem;color:var(--text-light);padding:3px 0;display:flex;gap:6px;"><span>🔄</span><span>「反証となる情報を探したか？」を確認項目に入れる</span></li>
+          <li style="font-size:0.8rem;color:var(--text-light);padding:3px 0;display:flex;gap:6px;"><span>⏳</span><span>「24時間後でも同じ判断をするか？」を最後に問う</span></li>
+        </ul>
+        <div class="action-meta">
+          <div class="action-meta-item">
+            <div class="action-meta-label">🎯 目的</div>
+            <p>重要な判断を感情・直感だけに任せず、手順化・外部化することでバイアスの影響を減らす</p>
+          </div>
+          <div class="action-meta-item">
+            <div class="action-meta-label">✨ 期待効果</div>
+            <p>チェックリストが「思考の衛生」の習慣として定着し、凡ミスと感情的判断が大幅に減少する</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-icon">🔄</div>
+      <div class="action-body">
+        <div class="action-title">反証仮説を3つ書き出す</div>
+        <div class="action-time">⏱ 15〜25分</div>
+        <ul style="list-style:none;padding:0;">
+          <li style="font-size:0.8rem;color:var(--text-light);padding:3px 0;display:flex;gap:6px;"><span>🎯</span><span>現在強く信じていること（信念・計画・判断）を1つ選ぶ</span></li>
+          <li style="font-size:0.8rem;color:var(--text-light);padding:3px 0;display:flex;gap:6px;"><span>❓</span><span>「もし自分が間違っているとしたら、どんな証拠があるか？」を問う</span></li>
+          <li style="font-size:0.8rem;color:var(--text-light);padding:3px 0;display:flex;gap:6px;"><span>📝</span><span>反証となりうる仮説を最低3つ書き出す</span></li>
+          <li style="font-size:0.8rem;color:var(--text-light);padding:3px 0;display:flex;gap:6px;"><span>🔍</span><span>その反証を実際に調べてみる（検索・データ確認）</span></li>
+        </ul>
+        <div class="action-meta">
+          <div class="action-meta-item">
+            <div class="action-meta-label">🎯 目的</div>
+            <p>確証バイアスを意識的に打ち破り、自分の信念の盲点を発見する</p>
+          </div>
+          <div class="action-meta-item">
+            <div class="action-meta-label">✨ 期待効果</div>
+            <p>「反証を探す」習慣が身につき、誤信念の自己強化ループを断ち切ることができる</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Summary SVG -->
+    <div class="section-title">🗺️ アクションの効果マップ</div>
+    <div class="flow-wrap">
+      <svg viewBox="0 0 680 180" width="100%" style="min-width:320px;max-width:680px;display:block;margin:0 auto;" aria-label="アクション効果マップ" role="img">
+        <defs>
+          <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#4ecdc4"/>
+          </marker>
+        </defs>
+        <!-- Action 1 -->
+        <rect x="10" y="60" width="140" height="60" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="80" y="82" text-anchor="middle" fill="#f5a623" font-size="9" font-weight="bold">📝 意思決定を記録</text>
+        <text x="80" y="97" text-anchor="middle" fill="#a0a0b8" font-size="8">バイアスの自己認識</text>
+        <text x="80" y="110" text-anchor="middle" fill="#a0a0b8" font-size="8">思考パターンの可視化</text>
+        <!-- Arrow -->
+        <line x1="150" y1="90" x2="178" y2="90" stroke="#4ecdc4" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <!-- Action 2 -->
+        <rect x="180" y="60" width="140" height="60" rx="8" fill="#0f3460" stroke="#4ecdc4" stroke-width="1.5"/>
+        <text x="250" y="82" text-anchor="middle" fill="#4ecdc4" font-size="9" font-weight="bold">✅ チェックリスト作成</text>
+        <text x="250" y="97" text-anchor="middle" fill="#a0a0b8" font-size="8">判断の手順化・外部化</text>
+        <text x="250" y="110" text-anchor="middle" fill="#a0a0b8" font-size="8">感情判断の排除</text>
+        <!-- Arrow -->
+        <line x1="320" y1="90" x2="348" y2="90" stroke="#4ecdc4" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <!-- Action 3 -->
+        <rect x="350" y="60" width="140" height="60" rx="8" fill="#0f3460" stroke="#a29bfe" stroke-width="1.5"/>
+        <text x="420" y="82" text-anchor="middle" fill="#a29bfe" font-size="9" font-weight="bold">🔄 反証仮説を書く</text>
+        <text x="420" y="97" text-anchor="middle" fill="#a0a0b8" font-size="8">確証バイアスの打破</text>
+        <text x="420" y="110" text-anchor="middle" fill="#a0a0b8" font-size="8">誤信念ループの断絶</text>
+        <!-- Arrow -->
+        <line x1="490" y1="90" x2="518" y2="90" stroke="#4ecdc4" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <!-- Result -->
+        <rect x="520" y="50" width="145" height="80" rx="8" fill="linear-gradient(135deg,#e94560,#c0392b)" stroke="#e94560" stroke-width="2"/>
+        <rect x="520" y="50" width="145" height="80" rx="8" fill="#1a1a2e" stroke="#e94560" stroke-width="2"/>
+        <text x="592" y="78" text-anchor="middle" fill="#e94560" font-size="10" font-weight="bold">🎯 意思決定の質</text>
+        <text x="592" y="95" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">大幅向上</text>
+        <text x="592" y="112" text-anchor="middle" fill="#4ecdc4" font-size="8">エラー率↓ 機会損失↓</text>
+        <!-- Labels -->
+        <text x="80" y="48" text-anchor="middle" fill="#f5a623" font-size="8">STEP 1</text>
+        <text x="250" y="48" text-anchor="middle" fill="#4ecdc4" font-size="8">STEP 2</text>
+        <text x="420" y="48" text-anchor="middle" fill="#a29bfe" font-size="8">STEP 3</text>
+        <text x="592" y="38" text-anchor="middle" fill="#e94560" font-size="8">RESULT</text>
+      </svg>
+    </div>
+
+    <!-- Core message -->
+    <div class="section-title">🌟 核心メッセージ</div>
+    <div class="chart-wrap" style="text-align:center;padding:24px;">
+      <div style="font-size:clamp(1rem,4vw,1.3rem);font-weight:900;color:#fff;line-height:1.6;margin-bottom:12px;">
+        世界を正しく見るには、<br>
+        <span style="color:var(--accent)">心のバグ（認知バイアス）を自覚し、</span><br>
+        <span style="color:var(--aux2)">環境と習慣を設計して</span><br>
+        <span style="color:var(--aux3)">意思決定をシンプルにすること</span><br>
+        が最短路である。
+      </div>
+      <div style="font-size:clamp(0.75rem,2.5vw,0.85rem);color:var(--text-muted);">
+        完璧に避けることはできない。しかし、命名し・可視化し・手順化すれば、失敗確率は大きく下がる。
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer role="contentinfo">
+  <p>🧠 思考の衛生学インフォグラフィック</p>
+  <p style="margin-top:4px;">カラーパレット: Primary #1a1a2e / Secondary #16213e / Accent #e94560</p>
+  <p style="margin-top:4px;">本インフォグラフィックは書籍リサーチ内容を元に作成されています。</p>
+</footer>
+
+<script>
+  (function() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    function activateTab(targetId) {
+      tabs.forEach(function(btn) {
+        const isSelected = btn.getAttribute('aria-controls') === targetId;
+        btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+      });
+      panels.forEach(function(panel) {
+        if (panel.id === targetId) {
+          panel.classList.add('active');
+        } else {
+          panel.classList.remove('active');
+        }
+      });
+    }
+
+    tabs.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        activateTab(btn.getAttribute('aria-controls'));
+      });
+      btn.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activateTab(btn.getAttribute('aria-controls'));
+        }
+      });
+    });
+
+    // Animate bars on load
+    function animateBars() {
+      const fills = document.querySelectorAll('.bar-fill');
+      fills.forEach(function(fill) {
+        const w = fill.style.width;
+        fill.style.width = '0%';
+        setTimeout(function() {
+          fill.style.width = w;
+        }, 200);
+      });
+    }
+    animateBars();
+
+    // Re-animate when tab changes
+    tabs.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        setTimeout(animateBars, 50);
+      });
+    });
+  })();
+</script>
+</body>
+</html>
