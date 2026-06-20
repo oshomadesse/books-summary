@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自己肯定感インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #4f46e5
+  セカンダリー:  #06b6d4
+  アクセント:    #f59e0b
+-->
+<style>
+  :root {
+    --primary: #4f46e5;
+    --primary-light: #818cf8;
+    --secondary: #06b6d4;
+    --secondary-light: #67e8f9;
+    --accent: #f59e0b;
+    --accent-light: #fcd34d;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --success: #10b981;
+    --danger: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  /* ===== HEADER ===== */
+  .site-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: #fff;
+    padding: 24px 16px 20px;
+    text-align: center;
+  }
+  .site-header h1 { font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 800; letter-spacing: .04em; }
+  .site-header p { font-size: clamp(.75rem, 2.5vw, .95rem); opacity: .9; margin-top: 6px; }
+  /* ===== HERO BLOCK ===== */
+  .hero {
+    background: linear-gradient(135deg, #ede9fe 0%, #e0f2fe 100%);
+    border-bottom: 3px solid var(--primary-light);
+    padding: 20px 16px;
+  }
+  .hero-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media(max-width:600px){ .hero-inner { grid-template-columns: 1fr; } }
+  .hero-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    border-left: 4px solid var(--primary);
+    box-shadow: 0 2px 8px rgba(79,70,229,.1);
+  }
+  .hero-card.why { border-left-color: var(--secondary); }
+  .hero-card.how { border-left-color: var(--accent); grid-column: 1 / -1; }
+  .hero-card .label {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+  .hero-card.why .label { color: var(--secondary); }
+  .hero-card.how .label { color: var(--accent); }
+  .hero-card p { font-size: clamp(.8rem, 2.2vw, .9rem); color: var(--text); }
+  .hero-card .q { font-size: clamp(.85rem, 2.5vw, 1rem); font-weight: 700; color: var(--primary); }
+  .how-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .how-step {
+    background: linear-gradient(135deg, var(--accent) 0%, #f97316 100%);
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: .78rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  /* ===== TABS ===== */
+  .tabs-wrapper { max-width: 900px; margin: 0 auto; padding: 0 8px; }
+  .tab-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 4px;
+    padding: 12px 0 0;
+    scrollbar-width: none;
+  }
+  .tab-list::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    background: #fff;
+    border: 2px solid var(--border);
+    border-bottom: none;
+    border-radius: 10px 10px 0 0;
+    padding: 8px 14px;
+    font-size: clamp(.7rem, 2vw, .82rem);
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .tab-btn[aria-selected="true"] {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .tab-btn:hover:not([aria-selected="true"]) { background: #f1f5f9; color: var(--primary); }
+  .tab-panel {
+    background: #fff;
+    border: 2px solid var(--border);
+    border-radius: 0 12px 12px 12px;
+    padding: 20px 16px;
+    display: none;
+  }
+  .tab-panel.active { display: block; }
+  /* ===== CARDS GRID ===== */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.05);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(79,70,229,.12); }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .card-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .card h3 { font-size: .9rem; font-weight: 700; color: var(--primary); }
+  .card .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent-light), var(--accent));
+    color: #7c2d12;
+    font-size: .68rem;
+    font-weight: 700;
+    border-radius: 20px;
+    padding: 2px 8px;
+    margin-bottom: 6px;
+  }
+  .card ul { padding-left: 0; list-style: none; }
+  .card ul li {
+    font-size: .82rem;
+    color: var(--text);
+    padding: 3px 0;
+    border-bottom: 1px dashed var(--border);
+    display: flex;
+    gap: 6px;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card .reason {
+    margin-top: 8px;
+    background: #f0fdf4;
+    border-left: 3px solid var(--success);
+    padding: 6px 10px;
+    border-radius: 0 6px 6px 0;
+    font-size: .78rem;
+    color: #065f46;
+  }
+  /* ===== CHAPTER CARDS ===== */
+  .chapter-card {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.04);
+  }
+  .chapter-card .ch-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .ch-num {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .8rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .chapter-card h3 { font-size: .92rem; font-weight: 700; color: var(--text); }
+  .chapter-card ul { list-style: none; padding: 0; }
+  .chapter-card ul li {
+    font-size: .82rem;
+    padding: 3px 0;
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .chapter-card ul li:last-child { border-bottom: none; }
+  .chapter-card .ch-reason {
+    margin-top: 8px;
+    background: #eff6ff;
+    border-left: 3px solid var(--secondary);
+    padding: 6px 10px;
+    border-radius: 0 6px 6px 0;
+    font-size: .78rem;
+    color: #1e40af;
+  }
+  /* ===== EXAMPLES ===== */
+  .example-card {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 14px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.04);
+  }
+  .example-card .ex-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .ex-num {
+    background: linear-gradient(135deg, var(--accent), #f97316);
+    color: #fff;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: .78rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .example-card h3 { font-size: .92rem; font-weight: 700; color: var(--text); }
+  .example-card .ex-bg, .example-card .ex-imp, .example-card .ex-reason {
+    font-size: .82rem;
+    padding: 5px 0;
+  }
+  .example-card .ex-label {
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .example-card .ex-reason {
+    background: #fefce8;
+    border-left: 3px solid var(--accent);
+    padding: 6px 10px;
+    border-radius: 0 6px 6px 0;
+    margin-top: 8px;
+    color: #78350f;
+  }
+  /* ===== QUOTES ===== */
+  .quote-card {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 14px;
+    background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%);
+    box-shadow: 0 2px 6px rgba(79,70,229,.08);
+  }
+  .quote-card blockquote {
+    font-size: clamp(.9rem, 2.5vw, 1.05rem);
+    font-weight: 700;
+    color: var(--primary);
+    border-left: 4px solid var(--primary);
+    padding-left: 12px;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+  .quote-card .q-note {
+    font-size: .8rem;
+    color: var(--text-muted);
+    background: #fff;
+    border-radius: 6px;
+    padding: 6px 10px;
+  }
+  /* ===== ACTIONS ===== */
+  .action-card {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 14px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.04);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-num {
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: #fff;
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .9rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .action-card h3 { font-size: .92rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .action-card .a-meta {
+    font-size: .78rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .action-card .a-effect {
+    font-size: .8rem;
+    background: #f0fdf4;
+    border-left: 3px solid var(--success);
+    padding: 5px 10px;
+    border-radius: 0 6px 6px 0;
+    color: #065f46;
+  }
+  /* ===== RELATION FLOW ===== */
+  .flow-section { margin-top: 20px; }
+  .flow-title { font-size: .85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; }
+  .flow-list { display: flex; flex-direction: column; gap: 6px; }
+  .flow-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .8rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+  }
+  .flow-arrow { color: var(--primary); font-weight: 700; flex-shrink: 0; }
+  /* ===== SVG CHART ===== */
+  .chart-section { margin-top: 20px; }
+  .chart-title { font-size: .88rem; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .bar-label { width: 90px; font-size: .75rem; color: var(--text); text-align: right; flex-shrink: 0; }
+  .bar-track {
+    flex: 1;
+    background: var(--border);
+    border-radius: 20px;
+    height: 18px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    font-size: .68rem;
+    font-weight: 700;
+    color: #fff;
+    transition: width 1s ease;
+  }
+  /* ===== SECTION TITLE ===== */
+  .sec-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sec-sub { font-size: .78rem; color: var(--text-muted); margin-bottom: 14px; }
+  /* ===== RELATED BOOKS ===== */
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .book-card {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.04);
+  }
+  .book-card .b-title { font-size: .85rem; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
+  .book-card .b-author { font-size: .72rem; color: var(--text-muted); margin-bottom: 6px; }
+  .book-card .b-rel { font-size: .78rem; color: var(--text); }
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 20px 16px;
+    font-size: .72rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+  }
+  /* ===== UTIL ===== */
+  .mt8 { margin-top: 8px; }
+  .mt12 { margin-top: 12px; }
+  .emoji-big { font-size: 1.3rem; }
+</style>
+</head>
+<body>
+
+<!-- ===== SITE HEADER ===== -->
+<header class="site-header" role="banner">
+  <h1>📘 自己肯定感インフォグラフィック</h1>
+  <p>本を読んでいない人でも全体像が掴める・完全ビジュアル解説</p>
+</header>
+
+<!-- ===== HERO: 要約ブロック ===== -->
+<section class="hero" aria-label="要約ブロック">
+  <div class="hero-inner">
+    <div class="hero-card">
+      <div class="label">❓ 問い</div>
+      <p class="q">どうすれば自己肯定感を安定的に高め、折れにくい心で生きられるか？</p>
+    </div>
+    <div class="hero-card">
+      <div class="label">💡 答え</div>
+      <p>自己肯定感を<strong>6領域</strong>で捉え、毎日のスモールステップと記録により「できた体験」を量産し、言語化と振り返りで定着させる。</p>
+    </div>
+    <div class="hero-card why">
+      <div class="label">🔬 Why（なぜそうなのか）</div>
+      <p>自己肯定感は経験学習により形成され、成功体験・安全感・自己受容が脳内の関連回路を強化する。低下は思考の偏りや過去記憶の影響で生じるが、<strong>介入により書き換え可能</strong>だから。</p>
+    </div>
+    <div class="hero-card how">
+      <div class="label">🛠 How（そのためには）</div>
+      <div class="how-steps">
+        <span class="how-step">①現状を受容し基準を下げる</span>
+        <span class="how-step">②極小の行動目標を設定</span>
+        <span class="how-step">③できたことを記録</span>
+        <span class="how-step">④自己対話を肯定的に言い換え</span>
+        <span class="how-step">⑤週次で振り返り弱点補強</span>
+        <span class="how-step">⑥人・環境を整えトリガーを減らす</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TABS ===== -->
+<div class="tabs-wrapper">
+  <div class="tab-list" role="tablist" aria-label="コンテンツタブ">
+    <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="panel-concepts" id="tab-concepts">🧠 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">💼 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes"   id="tab-quotes">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions"  id="tab-actions">✅ 今日のアクション</button>
+  </div>
+
+  <!-- ===== PANEL 1: 主要概念 ===== -->
+  <div class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="sec-title">🧠 主要概念の詳細</div>
+    <div class="sec-sub">自己肯定感を構成する6領域＋実践ツール。各カードに「なぜ重要か」を明示。</div>
+
+    <!-- 6領域バーチャート -->
+    <div class="chart-section" aria-label="6領域の重要度イメージ">
+      <div class="chart-title">📊 自己肯定感 6領域マップ（重要度イメージ）</div>
+      <div class="bar-row">
+        <div class="bar-label">自己受容感</div>
+        <div class="bar-track"><div class="bar-fill" style="width:95%;background:linear-gradient(90deg,#4f46e5,#818cf8)">出発点</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">自己効力感</div>
+        <div class="bar-track"><div class="bar-fill" style="width:88%;background:linear-gradient(90deg,#06b6d4,#67e8f9)">行動の鍵</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">自己信頼感</div>
+        <div class="bar-track"><div class="bar-fill" style="width:82%;background:linear-gradient(90deg,#f59e0b,#fcd34d)">約束の積み重ね</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">自己決定感</div>
+        <div class="bar-track"><div class="bar-fill" style="width:76%;background:linear-gradient(90deg,#10b981,#6ee7b7)">主体性</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">自己有用感</div>
+        <div class="bar-track"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,#ec4899,#f9a8d4)">貢献実感</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">自己価値感</div>
+        <div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#7c3aed,#a78bfa)">存在の根拠</div></div>
+      </div>
+    </div>
+
+    <!-- 6領域カード -->
+    <div class="cards-grid mt12">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ede9fe">🌱</div>
+          <h3>自己受容感</h3>
+        </div>
+        <div class="badge">あるがままOK</div>
+        <ul>
+          <li>🔹 欠点や未熟さを含めて今の自分を認める力</li>
+          <li>🔹 変化の出発点・土台となる感覚</li>
+          <li>🔹 「完璧でなくていい」という許可を自分に出す</li>
+        </ul>
+        <div class="reason">💡 なぜ重要か：失敗への恐れが低減し、行動を開始しやすくなるから。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#e0f2fe">🤝</div>
+          <h3>自己信頼感</h3>
+        </div>
+        <div class="badge">自分を信じる</div>
+        <ul>
+          <li>🔹 自分との約束を守ることで育つ感覚</li>
+          <li>🔹 選択や判断を自分に委ねられる安心感</li>
+          <li>🔹 小さな約束の遵守が積み重なって形成</li>
+        </ul>
+        <div class="reason">💡 なぜ重要か：信頼感が高まると難度の高い挑戦も選べるようになるから。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fef9c3">⚡</div>
+          <h3>自己効力感</h3>
+        </div>
+        <div class="badge">できる見込み</div>
+        <ul>
+          <li>🔹 「やればできる」と見通せる感覚</li>
+          <li>🔹 成功体験の蓄積が最大の源泉</li>
+          <li>🔹 スモールステップで量産できる</li>
+        </ul>
+        <div class="reason">💡 なぜ重要か：行動の継続率と挑戦意欲に直結するから。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#dcfce7">🎯</div>
+          <h3>自己決定感</h3>
+        </div>
+        <div class="badge">自分で選ぶ</div>
+        <ul>
+          <li>🔹 環境や他者に流されず自分で選ぶ主体感</li>
+          <li>🔹 「やらされ感」の反対にある感覚</li>
+          <li>🔹 小さな選択の積み重ねで育つ</li>
+        </ul>
+        <div class="reason">💡 なぜ重要か：主体感がモチベーションと責任感を高めるから。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fce7f3">🌟</div>
+          <h3>自己有用感</h3>
+        </div>
+        <div class="badge">役に立てる</div>
+        <ul>
+          <li>🔹 誰かや社会の役に立っているという実感</li>
+          <li>🔹 挨拶・手伝いなど小さな貢献で育つ</li>
+          <li>🔹 フィードバックを受けることで強化</li>
+        </ul>
+        <div class="reason">💡 なぜ重要か：社会的安全感が高まり、孤立感が減るから。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#f3e8ff">💎</div>
+          <h3>自己価値感</h3>
+        </div>
+        <div class="badge">いるだけで価値</div>
+        <ul>
+          <li>🔹 結果と無関係に存在自体に価値がある感覚</li>
+          <li>🔹 最も根本的・深層的な自己肯定感</li>
+          <li>🔹 他の5領域の土台にもなる</li>
+        </ul>
+        <div class="reason">💡 なぜ重要か：条件付きでない自己肯定が心の安定を生むから。</div>
+      </div>
+    </div>
+
+    <!-- 実践ツールカード -->
+    <div class="sec-title mt12">🛠 実践ツール</div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#e0f2fe">🪜</div>
+          <h3>スモールステップ</h3>
+        </div>
+        <div class="badge">成果を極小化して達成</div>
+        <ul>
+          <li>🔹 失敗できないほど小さく行動を分解</li>
+          <li>🔹 成功確率を最大化する設計思想</li>
+          <li>🔹 「今日1行書く」レベルまで落とす</li>
+        </ul>
+        <div class="reason">💡 なぜ重要か：達成体験の量が自己効力感の源泉になるから。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fef9c3">📓</div>
+          <h3>できたことログ</h3>
+        </div>
+        <div class="badge">肯定の証拠集め</div>
+        <ul>
+          <li>🔹 事実ベースで「できた」を記録するノート法</li>
+          <li>🔹 自己肯定の根拠を可視化する</li>
+          <li>🔹 否定的自己対話への反証素材になる</li>
+        </ul>
+        <div class="reason">💡 なぜ重要か：気分に流されない安定した自己評価を作るから。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#dcfce7">🤗</div>
+          <h3>セルフ・コンパッション</h3>
+        </div>
+        <div class="badge">自分に優しく</div>
+        <ul>
+          <li>🔹 失敗時に親友に向ける優しさで自分に接する</li>
+          <li>🔹 反芻・回避行動を減らす効果</li>
+          <li>🔹 行動回復のスピードを上げる</li>
+        </ul>
+        <div class="reason">💡 なぜ重要か：学習と再挑戦のサイクルが速くなるから。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#ede9fe">🏠</div>
+          <h3>安全基地</h3>
+        </div>
+        <div class="badge">安心の土台</div>
+        <ul>
+          <li>🔹 安心して試行錯誤できる人間関係・環境</li>
+          <li>🔹 挑戦と回復のサイクルを支える</li>
+          <li>🔹 実験回数が増え成功体験の母集団が拡大</li>
+        </ul>
+        <div class="reason">💡 なぜ重要か：不安・ストレスが低いほど行動の質と量が上がるから。</div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#fce7f3">🔄</div>
+          <h3>言語リフレーミング</h3>
+        </div>
+        <div class="badge">意味の再定義</div>
+        <ul>
+          <li>🔹 出来事の意味づけを建設的に言い換える</li>
+          <li>🔹 認知のゆがみを修正する認知的技法</li>
+          <li>🔹 感情安定→行動の質向上につながる</li>
+        </ul>
+        <div class="reason">💡 なぜ重要か：同じ出来事でも解釈次第で行動が変わるから。</div>
+      </div>
+    </div>
+
+    <!-- 因果関係フロー -->
+    <div class="flow-section">
+      <div class="flow-title">🔗 概念間の因果関係フロー</div>
+      <div class="flow-list">
+        <div class="flow-item">🌱 自己受容感 <span class="flow-arrow">→</span> 失敗への恐れ低減 <span class="flow-arrow">→</span> 行動開始しやすい</div>
+        <div class="flow-item">🪜 スモールステップ <span class="flow-arrow">→</span> 小さな達成の連鎖 <span class="flow-arrow">→</span> 自己効力感↑</div>
+        <div class="flow-item">🤝 自分との約束遵守 <span class="flow-arrow">→</span> 自己信頼感↑ <span class="flow-arrow">→</span> 難度の高い挑戦も選べる（自己決定感↑）</div>
+        <div class="flow-item">🌟 貢献行動（挨拶・手伝い等） <span class="flow-arrow">→</span> フィードバック獲得 <span class="flow-arrow">→</span> 自己有用感↑ <span class="flow-arrow">→</span> 社会的安全感↑</div>
+        <div class="flow-item">📓 できたことログ <span class="flow-arrow">→</span> 事実根拠の蓄積 <span class="flow-arrow">→</span> 否定的自己対話の反証素材に</div>
+        <div class="flow-item">🤗 セルフ・コンパッション <span class="flow-arrow">→</span> 反芻・回避行動↓ <span class="flow-arrow">→</span> 学習と再挑戦の速度↑</div>
+        <div class="flow-item">🏠 安全基地（人・場） <span class="flow-arrow">→</span> 不安・ストレス↓ <span class="flow-arrow">→</span> 実験回数↑ <span class="flow-arrow">→</span> 成功体験の母集団↑</div>
+        <div class="flow-item">🔄 言語リフレーミング <span class="flow-arrow">↔</span> 認知のゆがみ修正 <span class="flow-arrow">→</span> 感情安定 <span class="flow-arrow">→</span> 行動質向上</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PANEL 2: 各章の要約 ===== -->
+  <div class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="sec-title">📖 各章の要約</div>
+    <div class="sec-sub">章ごとのポイントと「なぜその章が必要か」を明示。</div>
+
+    <div class="chapter-card">
+      <div class="ch-head">
+        <div class="ch-num">1</div>
+        <h3>導入：自己肯定感は鍛えられる</h3>
+      </div>
+      <ul>
+        <li>📌 自己肯定感は先天的な性格ではなく後天的に変えられる</li>
+        <li>📌 著者自身の回復経験を共有し、読者に希望を示す</li>
+        <li>📌 「変えられない」という思い込みを解除することが出発点</li>
+      </ul>
+      <div class="ch-reason">🔵 なぜ必要か：読者が「自分には無理」という固定観念を手放し、行動する動機を持てるようにするため。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="ch-head">
+        <div class="ch-num">2</div>
+        <h3>基礎理解：6領域への分解と自己診断</h3>
+      </div>
+      <ul>
+        <li>📌 自己肯定感を6つの領域（受容・信頼・効力・決定・有用・価値）に分解</li>
+        <li>📌 読者が自分の弱点と強みを自己診断できる枠組みを提示</li>
+        <li>📌 「どこが低いか」を特定することで介入ポイントが明確になる</li>
+      </ul>
+      <div class="ch-reason">🔵 なぜ必要か：漠然とした「自己肯定感が低い」を具体的な課題に変換し、的確な対策を打てるようにするため。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="ch-head">
+        <div class="ch-num">3</div>
+        <h3>背景理論：認知・学習・感情の仕組み</h3>
+      </div>
+      <ul>
+        <li>📌 成功体験と記憶が自己肯定感の回路を強化するメカニズムを解説</li>
+        <li>📌 言語化が感情と記憶の定着に与える影響を平易に説明</li>
+        <li>📌 安心感（安全基地）が学習効率を高める理由を示す</li>
+      </ul>
+      <div class="ch-reason">🔵 なぜ必要か：「なぜこの方法が効くのか」の理論的根拠を示し、実践への納得感と継続意欲を高めるため。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="ch-head">
+        <div class="ch-num">4</div>
+        <h3>中核技法：スモールステップ・ログ・リフレーミング</h3>
+      </div>
+      <ul>
+        <li>📌 スモールステップの設計手順（目標を極小化する方法）</li>
+        <li>📌 できたことログの書き方と継続のコツ</li>
+        <li>📌 言語リフレーミングとセルフ・コンパッションの具体手順</li>
+        <li>📌 否定的自己対話を発見し言い換える練習法</li>
+      </ul>
+      <div class="ch-reason">🔵 なぜ必要か：理論を知るだけでは変わらない。今日から使える具体的ツールを提供するため。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="ch-head">
+        <div class="ch-num">5</div>
+        <h3>応用編：仕事・人間関係・家庭への展開</h3>
+      </div>
+      <ul>
+        <li>📌 仕事場面：評価・失敗・競争での6領域の補強法</li>
+        <li>📌 人間関係：境界線の設定と安全基地の作り方</li>
+        <li>📌 家庭・子育て：子どもの自己肯定感を育む関わり方</li>
+        <li>📌 場面別の事例で「どう使うか」を具体化</li>
+      </ul>
+      <div class="ch-reason">🔵 なぜ必要か：抽象的な技法を日常の具体的場面に落とし込み、実際の行動変容につなげるため。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="ch-head">
+        <div class="ch-num">6</div>
+        <h3>習慣化と維持：トリガー設計・環境整備・リカバリー</h3>
+      </div>
+      <ul>
+        <li>📌 行動のトリガー（きっかけ）を設計し習慣化する方法</li>
+        <li>📌 睡眠・姿勢・人間関係など環境整備でトリガーを減らす</li>
+        <li>📌 挫折時のリカバリープロトコル（自己批判せず再起動する手順）</li>
+      </ul>
+      <div class="ch-reason">🔵 なぜ必要か：一時的な変化ではなく長期的な定着を実現するための仕組みを提供するため。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="ch-head">
+        <div class="ch-num">7</div>
+        <h3>まとめ：毎日の実行×記録×振り返りで再現性を確保</h3>
+      </div>
+      <ul>
+        <li>📌 一度に大きく変えようとしないことが最重要</li>
+        <li>📌 実行→記録→振り返りの3ステップサイクルを強調</li>
+        <li>📌 再現性こそが自己肯定感を「スキル」たらしめる本質</li>
+      </ul>
+      <div class="ch-reason">🔵 なぜ必要か：全体を通じた核心メッセージを再確認し、読者が行動を継続するための指針を示すため。</div>
+    </div>
+  </div>
+
+  <!-- ===== PANEL 3: 具体例 ===== -->
+  <div class="tab-panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="sec-title">💼 具体例・ケース・メタファー</div>
+    <div class="sec-sub">核心メッセージが伝わる実際のケースと比喩を3件以上提示。</div>
+
+    <div class="example-card">
+      <div class="ex-head">
+        <div class="ex-num">例 1</div>
+        <h3>🪜 「1行日記」で自己効力感を量産したケース</h3>
+      </div>
+      <div class="ex-label">📋 背景</div>
+      <div class="ex-bg">「毎日日記を書く」という目標を立てたが3日で挫折を繰り返していたAさん。目標を「1行だけ書く」に縮小したところ、30日連続達成に成功した。</div>
+      <div class="ex-label">💡 示唆</div>
+      <div class="ex-imp">目標の難易度を下げることは「手抜き」ではなく、成功体験を設計する戦略的行為。達成の連鎖が自己効力感を積み上げる。</div>
+      <div class="ex-reason">🔑 この例が示すこと：スモールステップは「できた」の量を最大化し、自己効力感の土台を作る最も確実な方法であること。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-head">
+        <div class="ex-num">例 2</div>
+        <h3>🏋️ 「筋肉メタファー」—使うほど強くなる自己肯定感</h3>
+      </div>
+      <div class="ex-label">📋 背景</div>
+      <div class="ex-bg">自己肯定感を「筋肉」に例えるメタファー。筋肉は使わなければ萎縮し、適切な負荷をかけ続けることで強化される。自己肯定感も同様に、日々の小さな実践が「トレーニング」になる。</div>
+      <div class="ex-label">💡 示唆</div>
+      <div class="ex-imp">「生まれつき自己肯定感が高い人がいる」という思い込みを解除し、誰でも鍛えられるという可塑性の理解を促す。</div>
+      <div class="ex-reason">🔑 この例が示すこと：自己肯定感は固定的な特性ではなく、行動介入によって変化する動的なスキルであること。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-head">
+        <div class="ex-num">例 3</div>
+        <h3>📓 「できたことログ」で否定的自己対話を反証したケース</h3>
+      </div>
+      <div class="ex-label">📋 背景</div>
+      <div class="ex-bg">「自分は何もできない」という思い込みが強かったBさん。毎晩「今日できたこと」を3つ書き続けた結果、1ヶ月後には100件以上の「できた」の証拠が蓄積された。</div>
+      <div class="ex-label">💡 示唆</div>
+      <div class="ex-imp">否定的な自己評価は「気分」に基づくことが多い。事実の記録は気分に流されない客観的な根拠となり、自己対話の質を変える。</div>
+      <div class="ex-reason">🔑 この例が示すこと：できたことログは単なる日記ではなく、認知のゆがみを修正するための「証拠データベース」であること。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-head">
+        <div class="ex-num">例 4</div>
+        <h3>🤗 「親友への手紙」でセルフ・コンパッションを実践したケース</h3>
+      </div>
+      <div class="ex-label">📋 背景</div>
+      <div class="ex-bg">失敗後に激しく自己批判していたCさん。「もし親友が同じ失敗をしたら何と声をかけるか」を書き出す練習を行った。自分への言葉の厳しさと親友への言葉の優しさのギャップに気づき、自己対話が変化した。</div>
+      <div class="ex-label">💡 示唆</div>
+      <div class="ex-imp">自己批判は行動回復を遅らせる。親友に向ける優しさを自分にも向けることで、反芻が減り次の行動に移りやすくなる。</div>
+      <div class="ex-reason">🔑 この例が示すこと：セルフ・コンパッションは甘やかしではなく、学習と再挑戦のサイクルを加速させる実践的技法であること。</div>
+    </div>
+
+    <!-- SVG: 成功体験サイクル図 -->
+    <div style="margin-top:20px;">
+      <div class="sec-title">🔄 成功体験サイクル（SVG図）</div>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;display:block;margin:12px auto;" aria-label="成功体験サイクル図" role="img">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#4f46e5"/>
+          </marker>
+        </defs>
+        <!-- 円形背景 -->
+        <circle cx="200" cy="110" r="90" fill="none" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="6,4"/>
+        <!-- ノード -->
+        <ellipse cx="200" cy="30" rx="55" ry="20" fill="#4f46e5"/>
+        <text x="200" y="35" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">スモールステップ</text>
+        <ellipse cx="330" cy="110" rx="55" ry="20" fill="#06b6d4"/>
+        <text x="330" y="115" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">行動・実行</text>
+        <ellipse cx="270" cy="190" rx="55" ry="20" fill="#f59e0b"/>
+        <text x="270" y="195" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">できたことログ</text>
+        <ellipse cx="130" cy="190" rx="55" ry="20" fill="#10b981"/>
+        <text x="130" y="195" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">自己効力感↑</text>
+        <ellipse cx="70" cy="110" rx="55" ry="20" fill="#7c3aed"/>
+        <text x="70" y="115" text-anchor="middle" fill="#fff" font-size="11" font-weight="bold">次の挑戦へ</text>
+        <!-- 矢印 -->
+        <line x1="248" y1="38" x2="295" y2="95" stroke="#4f46e5" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="320" y1="128" x2="295" y2="172" stroke="#06b6d4" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="215" y1="190" x2="185" y2="190" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="105" y1="172" x2="85" y2="128" stroke="#10b981" stroke-width="2" marker-end="url(#arrow)"/>
+        <line x1="100" y1="95" x2="148" y2="42" stroke="#7c3aed" stroke-width="2" marker-end="url(#arrow)"/>
+        <!-- 中央ラベル -->
+        <text x="200" y="105" text-anchor="middle" fill="#64748b" font-size="10">成功体験</text>
+        <text x="200" y="120" text-anchor="middle" fill="#64748b" font-size="10">サイクル</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ===== PANEL 4: 重要な引用 ===== -->
+  <div class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="sec-title">💬 重要な引用（要旨）</div>
+    <div class="sec-sub">※原典の引用が明示されていないため「要旨」として掲載。</div>
+
+    <div class="quote-card">
+      <div style="font-size:.68rem;color:#7c3aed;font-weight:700;letter-spacing:.08em;margin-bottom:6px;">要旨 ①</div>
+      <blockquote>「自己肯定感は筋肉のように使うほど強くなる。」</blockquote>
+      <div class="q-note">💡 なぜ重要か：固定的特性ではなく可塑性があると理解できると、行動介入の動機が高まるから。「自分には無理」という思い込みを解除する最も力強いメッセージ。</div>
+    </div>
+
+    <div class="quote-card">
+      <div style="font-size:.68rem;color:#7c3aed;font-weight:700;letter-spacing:.08em;margin-bottom:6px;">要旨 ②</div>
+      <blockquote>「事実の記録が、気分に流されない自己評価を作る。」</blockquote>
+      <div class="q-note">💡 なぜ重要か：主観の揺れを抑え、学習を安定化させる実践原理を示すから。できたことログの意義を一言で表した核心フレーズ。</div>
+    </div>
+
+    <div class="quote-card">
+      <div style="font-size:.68rem;color:#7c3aed;font-weight:700;letter-spacing:.08em;margin-bottom:6px;">要旨 ③</div>
+      <blockquote>「小さな成功は大きな自己効力感の種である。」</blockquote>
+      <div class="q-note">💡 なぜ重要か：スモールステップの戦略的意義を一言で示し、実行のハードルを下げるから。「小さくていい」という許可を与える重要なメッセージ。</div>
+    </div>
+
+    <!-- 関連書籍 -->
+    <div class="sec-title mt12">📚 関連書籍</div>
+    <div class="sec-sub">本書の理解を深める4冊。</div>
+    <div class="books-grid">
+      <div class="book-card">
+        <div class="b-title">📗 嫌われる勇気</div>
+        <div class="b-author">岸見一郎・古賀史健</div>
+        <div class="b-rel">自己受容と主体性（自己決定感）を哲学的に補強する。</div>
+      </div>
+      <div class="book-card">
+        <div class="b-title">📘 セルフ・コンパッション</div>
+        <div class="b-author">クリスティン・ネフ</div>
+        <div class="b-rel">失敗時の自己受容を高め、反芻を減らす実証的手法が学べる。</div>
+      </div>
+      <div class="book-card">
+        <div class="b-title">📙 スタンフォードの自分を変える教室</div>
+        <div class="b-author">ケリー・マクゴニガル</div>
+        <div class="b-rel">スモールステップと習慣化の科学が、行動継続の裏付けになる。</div>
+      </div>
+      <div class="book-card">
+        <div class="b-title">📕 マインドセット</div>
+        <div class="b-author">キャロル・S・ドゥエック</div>
+        <div class="b-rel">成長思考が自己効力感と挑戦行動を支える理論的基盤になる。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PANEL 5: 今日のアクション ===== -->
+  <div class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="sec-title">✅ 今日のアクション</div>
+    <div class="sec-sub">今日から15〜30分で実行できる具体的な行動。目的と期待効果付き。</div>
+
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <div>
+        <h3>📝 今日の良かった3つを書き出す</h3>
+        <div class="a-meta">⏱ 所要時間：約10〜15分 ／ タイミング：就寝前がおすすめ</div>
+        <ul style="list-style:none;padding:0;font-size:.82rem;margin-bottom:6px;">
+          <li>🔹 今日起きた「できたこと・良かったこと」を3つ具体的に書く</li>
+          <li>🔹 大きな成果でなくてOK（「メールを返信できた」でも可）</li>
+          <li>🔹 事実ベースで書くことが重要（感想ではなく行動を記録）</li>
+        </ul>
+        <div class="a-effect">🌱 期待効果：できたことログの習慣が始まり、自己肯定の証拠が蓄積される。否定的自己対話への反証素材が生まれる。</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <div>
+        <h3>🎯 明日の小目標を1つ決める</h3>
+        <div class="a-meta">⏱ 所要時間：約5〜10分 ／ タイミング：今夜または朝</div>
+        <ul style="list-style:none;padding:0;font-size:.82rem;margin-bottom:6px;">
+          <li>🔹 「絶対に失敗できないほど小さい」目標を1つ設定する</li>
+          <li>🔹 例：「水を1杯飲む」「5分だけ本を開く」「1行だけ書く」</li>
+          <li>🔹 達成基準を明確にし、翌日に確認できるようにする</li>
+        </ul>
+        <div class="a-effect">🌱 期待効果：スモールステップの設計を体験し、自己効力感の種を植える。「できた」の連鎖が始まる。</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <div>
+        <h3>🏆 過去の成功体験を10個列挙する</h3>
+        <div class="a-meta">⏱ 所要時間：約15〜20分 ／ タイミング：静かな時間に</div>
+        <ul style="list-style:none;padding:0;font-size:.82rem;margin-bottom:6px;">
+          <li>🔹 人生のどの時期でもOK。小さな成功も含めて10個書き出す</li>
+          <li>🔹 「試験に合格した」から「友人に感謝された」まで何でも可</li>
+          <li>🔹 書き終えたら「自分はこれだけのことをしてきた」と声に出す</li>
+        </ul>
+        <div class="a-effect">🌱 期待効果：自己価値感と自己効力感の根拠が可視化される。「自分には何もない」という思い込みを事実で反証できる。</div>
+      </div>
+    </div>
+
+    <!-- アクション後のチェックリスト -->
+    <div style="background:linear-gradient(135deg,#ede9fe,#e0f2fe);border-radius:12px;padding:16px;margin-top:16px;">
+      <div class="sec-title" style="font-size:.88rem;">📋 実行チェックリスト</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-top:10px;">
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1.5px solid var(--border);font-size:.8rem;">
+          <span style="font-size:1.1rem;">📝</span> 良かった3つを書いた
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1.5px solid var(--border);font-size:.8rem;">
+          <span style="font-size:1.1rem;">🎯</span> 明日の小目標を決めた
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px 12px;border:1.5px solid var(--border);font-size:.8rem;">
+          <span style="font-size:1.1rem;">🏆</span> 成功体験10個を書いた
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:.78rem;color:var(--text-muted);">💡 3つすべて実行できたら、今日の「できたこと」に追加しよう！</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>📘 自己肯定感インフォグラフィック ／ カラーパレット：プライマリー #4f46e5 ／ セカンダリー #06b6d4 ／ アクセント #f59e0b</p>
+</footer>
+
+<script>
+  (function() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    function activateTab(index) {
+      tabs.forEach(function(t, i) {
+        const isSelected = i === index;
+        t.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+      });
+      panels.forEach(function(p, i) {
+        if (i === index) {
+          p.classList.add('active');
+        } else {
+          p.classList.remove('active');
+        }
+      });
+    }
+
+    tabs.forEach(function(tab, index) {
+      tab.addEventListener('click', function() {
+        activateTab(index);
+        tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      });
+      tab.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowRight') {
+          activateTab((index + 1) % tabs.length);
+          tabs[(index + 1) % tabs.length].focus();
+        } else if (e.key === 'ArrowLeft') {
+          activateTab((index - 1 + tabs.length) % tabs.length);
+          tabs[(index - 1 + tabs.length) % tabs.length].focus();
+        }
+      });
+    });
+
+    // Animate bars on load
+    var bars = document.querySelectorAll('.bar-fill');
+    bars.forEach(function(bar) {
+      var target = bar.style.width;
+      bar.style.width = '0%';
+      setTimeout(function() {
+        bar.style.width = target;
+      }, 300);
+    });
+  })();
+</script>
+</body>
+</html>
