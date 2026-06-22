@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>需要側起点マーケティング戦略 インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a1a2e
+  セカンダリー:  #16213e
+  アクセント:    #e94560
+  補助1:        #0f3460
+  補助2:        #f5a623
+-->
+<style>
+  :root {
+    --primary: #1a1a2e;
+    --secondary: #16213e;
+    --accent: #e94560;
+    --sub1: #0f3460;
+    --sub2: #f5a623;
+    --text-light: #f0f0f0;
+    --text-muted: #a0a8b8;
+    --card-bg: #1e2a45;
+    --card-border: #2a3a5c;
+    --success: #4caf50;
+    --info: #29b6f6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Meiryo', sans-serif;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--sub1) 100%);
+    color: var(--text-light);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ===== HEADER ===== */
+  .site-header {
+    background: linear-gradient(90deg, var(--accent) 0%, #c0392b 100%);
+    padding: 16px 20px 12px;
+    text-align: center;
+  }
+  .site-header h1 {
+    font-size: clamp(16px, 4vw, 24px);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+  }
+  .site-header p {
+    font-size: clamp(11px, 2.5vw, 13px);
+    opacity: 0.9;
+    margin-top: 4px;
+  }
+
+  /* ===== HERO BLOCK ===== */
+  .hero {
+    background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
+    border-bottom: 3px solid var(--accent);
+    padding: 20px 16px;
+  }
+  .hero-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .hero-label {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 600px) {
+    .hero-grid { grid-template-columns: 1fr; }
+  }
+  .hero-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .hero-card .hc-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--sub2);
+    letter-spacing: 0.12em;
+    margin-bottom: 4px;
+  }
+  .hero-card .hc-text {
+    font-size: clamp(12px, 2.5vw, 14px);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .hero-card.full { grid-column: 1 / -1; }
+  .hero-card.accent-border { border-color: var(--accent); }
+
+  /* ===== TABS ===== */
+  .tab-nav {
+    background: var(--secondary);
+    border-bottom: 2px solid var(--card-border);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tab-nav ul {
+    list-style: none;
+    display: inline-flex;
+    padding: 0 8px;
+    min-width: 100%;
+  }
+  .tab-nav li { flex-shrink: 0; }
+  .tab-btn {
+    display: block;
+    padding: 12px 14px;
+    font-size: clamp(11px, 2.5vw, 13px);
+    font-weight: 700;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text-light); }
+  .tab-btn[aria-selected="true"] {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ===== CONTENT ===== */
+  .tab-content { display: none; padding: 16px; max-width: 960px; margin: 0 auto; }
+  .tab-content.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: clamp(13px, 3vw, 15px);
+    font-weight: 800;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-title .badge {
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 20px;
+    font-weight: 700;
+  }
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    padding: 4px 0;
+    font-size: clamp(12px, 2.5vw, 13px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li .li-icon { flex-shrink: 0; }
+  .card-reason {
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: rgba(233,69,96,0.1);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    font-size: 12px;
+    color: #f0a0b0;
+  }
+  .card-reason strong { color: var(--accent); }
+
+  /* ===== GRID LAYOUTS ===== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 700px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+  @media (min-width: 701px) and (max-width: 900px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
+
+  /* ===== SECTION TITLE ===== */
+  .section-title {
+    font-size: clamp(14px, 3vw, 17px);
+    font-weight: 900;
+    margin: 20px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ===== FLOW DIAGRAM ===== */
+  .flow-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 12px 0;
+  }
+  .flow-item {
+    background: var(--sub1);
+    border: 1px solid var(--info);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--info);
+    white-space: nowrap;
+  }
+  .flow-arrow {
+    color: var(--sub2);
+    font-size: 16px;
+    font-weight: 900;
+  }
+
+  /* ===== BAR CHART ===== */
+  .bar-chart { margin: 12px 0; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .bar-label {
+    width: 110px;
+    font-size: 11px;
+    flex-shrink: 0;
+    text-align: right;
+    color: var(--text-muted);
+  }
+  .bar-track {
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    height: 18px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    transition: width 0.8s ease;
+  }
+
+  /* ===== QUOTE CARDS ===== */
+  .quote-card {
+    background: linear-gradient(135deg, #1e2a45 0%, #0f1e35 100%);
+    border: 1px solid var(--sub1);
+    border-left: 4px solid var(--sub2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .quote-text {
+    font-size: clamp(13px, 3vw, 15px);
+    font-weight: 700;
+    font-style: italic;
+    color: var(--sub2);
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+  .quote-note {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .quote-tag {
+    display: inline-block;
+    background: rgba(245,166,35,0.15);
+    color: var(--sub2);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+  }
+
+  /* ===== ACTION CARDS ===== */
+  .action-card {
+    background: linear-gradient(135deg, #1a3a2a 0%, #0f2a1e 100%);
+    border: 1px solid #2a5a3a;
+    border-left: 4px solid var(--success);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .action-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--success);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 900;
+    margin-bottom: 6px;
+  }
+  .action-title {
+    font-size: clamp(13px, 3vw, 15px);
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #7dffb0;
+  }
+  .action-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .action-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 700;
+  }
+  .tag-purpose { background: rgba(41,182,246,0.15); color: var(--info); }
+  .tag-effect { background: rgba(76,175,80,0.15); color: #81c784; }
+
+  /* ===== CHAPTER CARDS ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-top: 3px solid var(--sub1);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .chapter-num {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--info);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .chapter-title {
+    font-size: clamp(13px, 3vw, 15px);
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  /* ===== EXAMPLE CARDS ===== */
+  .example-card {
+    background: linear-gradient(135deg, #1e1a3a 0%, #2a1a3e 100%);
+    border: 1px solid #3a2a5c;
+    border-top: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .example-tag {
+    display: inline-block;
+    background: rgba(233,69,96,0.15);
+    color: var(--accent);
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .example-title {
+    font-size: clamp(13px, 3vw, 15px);
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  /* ===== CONCEPT BADGE ===== */
+  .concept-badge {
+    display: inline-block;
+    background: rgba(15,52,96,0.8);
+    border: 1px solid var(--info);
+    color: var(--info);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin: 2px;
+    font-weight: 700;
+  }
+
+  /* ===== RELATED BOOKS ===== */
+  .book-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .book-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .book-title { font-size: 13px; font-weight: 800; margin-bottom: 2px; }
+  .book-author { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+  .book-rel { font-size: 12px; color: #a0c8e0; }
+
+  /* ===== SVG DIAGRAM ===== */
+  .svg-wrap { overflow-x: auto; margin: 12px 0; }
+  svg text { font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--primary); }
+  ::-webkit-scrollbar-thumb { background: var(--sub1); border-radius: 3px; }
+
+  /* ===== MISC ===== */
+  .highlight { color: var(--sub2); font-weight: 700; }
+  .accent-text { color: var(--accent); font-weight: 700; }
+  .info-text { color: var(--info); font-weight: 700; }
+  .divider { border: none; border-top: 1px solid var(--card-border); margin: 16px 0; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .num-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .kpi-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .kpi-row:last-child { border-bottom: none; }
+  .kpi-label { font-size: 12px; width: 100px; flex-shrink: 0; }
+  .kpi-bar-wrap { flex: 1; background: rgba(255,255,255,0.08); border-radius: 20px; height: 14px; overflow: hidden; }
+  .kpi-bar { height: 100%; border-radius: 20px; }
+</style>
+</head>
+<body>
+
+<!-- ===== SITE HEADER ===== -->
+<header class="site-header" role="banner">
+  <h1>📊 需要側起点マーケティング戦略</h1>
+  <p>USJで実証された「誰に・何を・どう」の一貫設計で事業を再成長させる考え方</p>
+</header>
+
+<!-- ===== HERO BLOCK ===== -->
+<section class="hero" aria-label="エグゼクティブサマリー">
+  <div class="hero-inner">
+    <span class="hero-label">📌 ここだけ見れば全体がわかる</span>
+    <div class="hero-grid">
+      <div class="hero-card accent-border">
+        <div class="hc-label">❓ 問い</div>
+        <div class="hc-text">停滞・赤字事業は何を変えれば復活できるのか？</div>
+      </div>
+      <div class="hero-card accent-border">
+        <div class="hc-label">💡 答え</div>
+        <div class="hc-text">需要側起点で戦略（誰に・何を・どう）を再定義し、勝てる選択に資源を集中する。</div>
+      </div>
+      <div class="hero-card">
+        <div class="hc-label">🔍 Why（なぜそうなのか）</div>
+        <div class="hc-text">市場の勝敗は企業内ではなく消費者の頭の中で決まる。特定ターゲットに他社より強い便益を一貫して届ければ、来訪頻度・客単価・支持の循環が起き、収益が跳ねる（USJで実証）。</div>
+      </div>
+      <div class="hero-card">
+        <div class="hc-label">🛠 How（そのためには）</div>
+        <div class="hc-text">STP→4P→KGI/KPIを因果でつなぐ設計を行い、インサイト発掘→価値提案→施策→小さく試し学習→拡張の循環を高速で回す。価格改定・期間限定イベント・IP活用等を連動させ、選択と集中を徹底する。</div>
+      </div>
+    </div>
+
+    <!-- 因果フロー -->
+    <div style="margin-top:14px;">
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;font-weight:700;">▶ 戦略の因果フロー</div>
+      <div class="flow-wrap">
+        <div class="flow-item">🔍 インサイト</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">🎯 STP</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">📦 4P設計</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">📈 KPI改善</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">💰 KGI達成</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-item">🔄 仮説検証</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TAB NAVIGATION ===== -->
+<nav class="tab-nav" aria-label="コンテンツタブ">
+  <ul role="tablist">
+    <li role="presentation">
+      <button class="tab-btn" role="tab" aria-selected="true" aria-controls="tab-concepts" id="btn-concepts">🧠 主要概念</button>
+    </li>
+    <li role="presentation">
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters" id="btn-chapters">📖 各章の要約</button>
+    </li>
+    <li role="presentation">
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples" id="btn-examples">💡 具体例</button>
+    </li>
+    <li role="presentation">
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes" id="btn-quotes">💬 重要な引用</button>
+    </li>
+    <li role="presentation">
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions" id="btn-actions">✅ 今日のアクション</button>
+    </li>
+  </ul>
+</nav>
+
+<!-- ===== TAB: 主要概念 ===== -->
+<section class="tab-content active" id="tab-concepts" role="tabpanel" aria-labelledby="btn-concepts">
+
+  <div class="section-title">🧠 主要概念の詳細</div>
+
+  <!-- SVG: 概念マップ -->
+  <div class="svg-wrap" aria-label="概念関係図">
+    <svg width="700" height="220" viewBox="0 0 700 220" style="min-width:600px;display:block;">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#f5a623"/>
+        </marker>
+      </defs>
+      <!-- 背景 -->
+      <rect width="700" height="220" rx="12" fill="#1e2a45"/>
+      <!-- ノード -->
+      <rect x="10" y="85" width="100" height="40" rx="8" fill="#0f3460" stroke="#29b6f6" stroke-width="1.5"/>
+      <text x="60" y="100" text-anchor="middle" fill="#29b6f6" font-size="10" font-weight="bold">インサイト</text>
+      <text x="60" y="116" text-anchor="middle" fill="#a0c8e0" font-size="9">心のスイッチ</text>
+
+      <rect x="145" y="55" width="100" height="40" rx="8" fill="#0f3460" stroke="#29b6f6" stroke-width="1.5"/>
+      <text x="195" y="70" text-anchor="middle" fill="#29b6f6" font-size="10" font-weight="bold">セグメント</text>
+      <text x="195" y="86" text-anchor="middle" fill="#a0c8e0" font-size="9">市場を分ける</text>
+
+      <rect x="145" y="115" width="100" height="40" rx="8" fill="#0f3460" stroke="#29b6f6" stroke-width="1.5"/>
+      <text x="195" y="130" text-anchor="middle" fill="#29b6f6" font-size="10" font-weight="bold">ターゲティング</text>
+      <text x="195" y="146" text-anchor="middle" fill="#a0c8e0" font-size="9">誰に絞るか</text>
+
+      <rect x="280" y="85" width="110" height="40" rx="8" fill="#3a1a2e" stroke="#e94560" stroke-width="2"/>
+      <text x="335" y="100" text-anchor="middle" fill="#e94560" font-size="10" font-weight="bold">ポジショニング</text>
+      <text x="335" y="116" text-anchor="middle" fill="#f0a0b0" font-size="9">価値の置き所</text>
+
+      <rect x="425" y="55" width="90" height="40" rx="8" fill="#1a3a1a" stroke="#4caf50" stroke-width="1.5"/>
+      <text x="470" y="70" text-anchor="middle" fill="#81c784" font-size="10" font-weight="bold">4P設計</text>
+      <text x="470" y="86" text-anchor="middle" fill="#a0d0a0" font-size="9">実装レバー</text>
+
+      <rect x="425" y="115" width="90" height="40" rx="8" fill="#1a3a1a" stroke="#4caf50" stroke-width="1.5"/>
+      <text x="470" y="130" text-anchor="middle" fill="#81c784" font-size="10" font-weight="bold">価格戦略</text>
+      <text x="470" y="146" text-anchor="middle" fill="#a0d0a0" font-size="9">価値で値付け</text>
+
+      <rect x="550" y="85" width="110" height="40" rx="8" fill="#2a2a0a" stroke="#f5a623" stroke-width="2"/>
+      <text x="605" y="100" text-anchor="middle" fill="#f5a623" font-size="10" font-weight="bold">KGI/KPI達成</text>
+      <text x="605" y="116" text-anchor="middle" fill="#d0c080" font-size="9">成果の因果分解</text>
+
+      <!-- 仮説検証ループ -->
+      <rect x="280" y="170" width="110" height="35" rx="8" fill="#1a1a3a" stroke="#9c27b0" stroke-width="1.5"/>
+      <text x="335" y="185" text-anchor="middle" fill="#ce93d8" font-size="10" font-weight="bold">仮説検証ループ</text>
+      <text x="335" y="198" text-anchor="middle" fill="#b0a0c0" font-size="9">試して学ぶ</text>
+
+      <!-- 矢印 -->
+      <line x1="110" y1="105" x2="143" y2="80" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="110" y1="105" x2="143" y2="130" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="245" y1="75" x2="278" y2="95" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="245" y1="135" x2="278" y2="115" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="390" y1="95" x2="423" y2="80" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="390" y1="115" x2="423" y2="130" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="515" y1="75" x2="548" y2="95" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="515" y1="135" x2="548" y2="115" stroke="#f5a623" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <path d="M605,125 Q605,160 390,187" stroke="#9c27b0" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+      <text x="350" y="18" text-anchor="middle" fill="#a0a8b8" font-size="11" font-weight="bold">📊 戦略概念の関係マップ</text>
+    </svg>
+  </div>
+
+  <div class="grid-2">
+    <!-- 需要側起点 -->
+    <div class="card">
+      <div class="card-title">🎯 需要側（消費者）起点 <span class="badge">核心</span></div>
+      <ul>
+        <li><span class="li-icon">📌</span><span>企業の都合ではなく、消費者の意思決定から逆算して戦略を設計する</span></li>
+        <li><span class="li-icon">🔄</span><span>供給発想（作ったものを売る）の真逆のアプローチ</span></li>
+        <li><span class="li-icon">🧭</span><span>「顧客の頭の中から出発」が全ての起点</span></li>
+        <li><span class="li-icon">⚡</span><span>USJはこの転換で業績を劇的に回復させた</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>市場の勝敗は消費者の頭の中で決まるため、企業視点で設計した戦略は的外れになりやすい。</div>
+    </div>
+
+    <!-- STP -->
+    <div class="card">
+      <div class="card-title">🗺 STP（セグメント・ターゲット・ポジション）</div>
+      <ul>
+        <li><span class="li-icon">1️⃣</span><span><strong>S：</strong>市場を意味ある軸で分割する</span></li>
+        <li><span class="li-icon">2️⃣</span><span><strong>T：</strong>勝てる相手・タイミングを選ぶ</span></li>
+        <li><span class="li-icon">3️⃣</span><span><strong>P：</strong>他社と異なる価値の置き所を明確化</span></li>
+        <li><span class="li-icon">🎯</span><span>「誰に・どこで勝つか」を決める骨組み</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>ターゲットを絞ることで資源が集中し、差別化が生まれ、実行の一貫性が担保される。</div>
+    </div>
+
+    <!-- 4P -->
+    <div class="card">
+      <div class="card-title">📦 4P（Product/Price/Place/Promotion）</div>
+      <ul>
+        <li><span class="li-icon">🛍</span><span><strong>Product：</strong>提供する商品・サービスの設計</span></li>
+        <li><span class="li-icon">💴</span><span><strong>Price：</strong>価値に基づく価格設定</span></li>
+        <li><span class="li-icon">🏪</span><span><strong>Place：</strong>届ける流通・チャネル</span></li>
+        <li><span class="li-icon">📣</span><span><strong>Promotion：</strong>伝えるコミュニケーション</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>STPで決めた「誰に・何を」を現場で実装する4つのレバー。一貫性がなければ価値が伝わらない。</div>
+    </div>
+
+    <!-- 価値提案 -->
+    <div class="card">
+      <div class="card-title">💎 価値提案（ベネフィット）</div>
+      <ul>
+        <li><span class="li-icon">✨</span><span>機能的便益：使って得られる実用的な価値</span></li>
+        <li><span class="li-icon">❤️</span><span>情緒的便益：感じる喜び・安心・興奮</span></li>
+        <li><span class="li-icon">🌐</span><span>社会的便益：他者から見られる自分のイメージ</span></li>
+        <li><span class="li-icon">⚠️</span><span>「機能」ではなく「便益（得）」で語ることが鍵</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>消費者は機能ではなく「自分にとっての得」で選択する。便益で語らないと刺さらない。</div>
+    </div>
+
+    <!-- インサイト -->
+    <div class="card">
+      <div class="card-title">🔍 インサイト</div>
+      <ul>
+        <li><span class="li-icon">🧠</span><span>選択を左右する深層の動機・未充足ニーズ</span></li>
+        <li><span class="li-icon">📊</span><span>データと観察の往復で掘り当てる</span></li>
+        <li><span class="li-icon">💡</span><span>「心のスイッチ」を見つけることが目的</span></li>
+        <li><span class="li-icon">🚫</span><span>表面的なニーズ（顕在）ではなく潜在動機を探る</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>インサイトなき戦略は的外れになる。深層動機を掴めば、刺さる価値提案が設計できる。</div>
+    </div>
+
+    <!-- 勝てる土俵 -->
+    <div class="card">
+      <div class="card-title">⚔️ 勝てる土俵の選択</div>
+      <ul>
+        <li><span class="li-icon">✅</span><span>競合比較で優位を作れる領域・相手を選ぶ</span></li>
+        <li><span class="li-icon">🗑</span><span>「選ぶ＝捨てる」勇気が必要</span></li>
+        <li><span class="li-icon">📍</span><span>タイミング・地域・顧客層を絞り込む</span></li>
+        <li><span class="li-icon">🏆</span><span>全方位で戦うと誰にも勝てない</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>資源は有限。勝てない土俵で戦い続けることが最大の機会損失になる。</div>
+    </div>
+
+    <!-- KGI/KPI -->
+    <div class="card">
+      <div class="card-title">📈 KGI/KPIツリー</div>
+      <ul>
+        <li><span class="li-icon">🎯</span><span><strong>KGI：</strong>最終成果（売上・利益・来場者数）</span></li>
+        <li><span class="li-icon">📊</span><span><strong>KPI：</strong>KGIに至る中間指標（認知・意向・来場・単価・頻度）</span></li>
+        <li><span class="li-icon">🔗</span><span>因果で分解し、仮説検証の計器として使う</span></li>
+        <li><span class="li-icon">⚠️</span><span>努力目標ではなく「因果仮説の検証器」</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>KPIを因果で設計することで、どこに問題があるかが特定でき、学習速度が上がる。</div>
+    </div>
+
+    <!-- 仮説検証ループ -->
+    <div class="card">
+      <div class="card-title">🔄 仮説検証ループ</div>
+      <ul>
+        <li><span class="li-icon">🧪</span><span>小さく試し、データで学び、素早く修正する</span></li>
+        <li><span class="li-icon">⚡</span><span>スピード重視で不確実性を制御する</span></li>
+        <li><span class="li-icon">📐</span><span>仮説（因果前提）→実験→測定→学習→資源再配分</span></li>
+        <li><span class="li-icon">🚀</span><span>大きな成功は小さな実験の反復から生まれる</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>不確実な市場では完璧な計画より高速な学習が優位を生む。</div>
+    </div>
+
+    <!-- 体験設計×IP活用 -->
+    <div class="card">
+      <div class="card-title">🎢 体験設計 × IP活用</div>
+      <ul>
+        <li><span class="li-icon">🎭</span><span>強い知的財産（IP）を梃子に体験を設計</span></li>
+        <li><span class="li-icon">🔗</span><span>来場前・中・後の一貫した顧客体験を編成</span></li>
+        <li><span class="li-icon">🌟</span><span>文化記号（キャラ・世界観）で体験を束ねる</span></li>
+        <li><span class="li-icon">💰</span><span>IP活用で集客力と客単価を同時に引き上げる</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>体験の一貫性が感動を生み、口コミ・再来場・グッズ購買の好循環を作る。</div>
+    </div>
+
+    <!-- 価格戦略 -->
+    <div class="card">
+      <div class="card-title">💴 価格戦略（バリュー・プライシング）</div>
+      <ul>
+        <li><span class="li-icon">📊</span><span>便益の知覚価値に基づき価格を最適化</span></li>
+        <li><span class="li-icon">🎫</span><span>年間パス・期間限定・プレミアム等でパス設計</span></li>
+        <li><span class="li-icon">📉</span><span>需要曲線を賢く捉え、収益を最大化</span></li>
+        <li><span class="li-icon">⚠️</span><span>コスト積み上げではなく「価値で値付け」</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>価格は価値の信号。適切な価格設定が収益と顧客満足を両立させる。</div>
+    </div>
+  </div>
+
+  <!-- KPIツリー視覚化 -->
+  <div class="section-title">📊 KGI/KPIツリー（視覚化）</div>
+  <div class="card">
+    <div class="card-title">💰 KGI：売上・利益の因果分解</div>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">認知率</div>
+        <div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#29b6f6,#0288d1);">認知</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">来場意向</div>
+        <div class="bar-track"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,#66bb6a,#388e3c);">意向</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">来場者数</div>
+        <div class="bar-track"><div class="bar-fill" style="width:60%;background:linear-gradient(90deg,#ffa726,#f57c00);">来場</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">客単価</div>
+        <div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#e94560,#c0392b);">単価</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">来場頻度</div>
+        <div class="bar-track"><div class="bar-fill" style="width:50%;background:linear-gradient(90deg,#ab47bc,#7b1fa2);">頻度</div></div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">※ 各KPIが改善されることでKGI（売上・利益）が達成される因果構造を示す概念図</div>
+  </div>
+
+  <!-- 関連書籍 -->
+  <div class="section-title">📚 関連書籍</div>
+  <div class="grid-2">
+    <div class="book-card">
+      <div class="book-icon">📗</div>
+      <div>
+        <div class="book-title">USJのジェットコースターはなぜ後ろ向きに走ったのか？</div>
+        <div class="book-author">著：森岡毅</div>
+        <div class="book-rel">USJ再建の初期施策と需要側起点の思考を具体的に解説。</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-icon">📘</div>
+      <div>
+        <div class="book-title">確率思考の戦略論</div>
+        <div class="book-author">著：森岡毅</div>
+        <div class="book-rel">STPと選択の合理性を数量モデルで裏づけ、再現性を高める。</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-icon">📙</div>
+      <div>
+        <div class="book-title">ブランディングの科学</div>
+        <div class="book-author">著：バイロン・シャープ</div>
+        <div class="book-rel">需要側の行動原理をエビデンスで示し、実務への示唆が一致。</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-icon">📕</div>
+      <div>
+        <div class="book-title">マーケティング・マネジメント</div>
+        <div class="book-author">著：フィリップ・コトラー</div>
+        <div class="book-rel">STP→4Pの基礎理論を体系化し、本書の実践を理論面で補完。</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-icon">📓</div>
+      <div>
+        <div class="book-title">ジョブ理論</div>
+        <div class="book-author">著：クレイトン・クリステンセン</div>
+        <div class="book-rel">「消費の目的（ジョブ）」という需要側視点で価値提案を磨ける。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TAB: 各章の要約 ===== -->
+<section class="tab-content" id="tab-chapters" role="tabpanel" aria-labelledby="btn-chapters">
+
+  <div class="section-title">📖 各章の要約（論点別）</div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">CHAPTER 01</div>
+    <div class="chapter-title">🚨 課題提示：供給側発想の限界</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">📉</span><span>USJの業績低迷は「作ったものを売る」供給側発想が原因</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔍</span><span>消費者が何を求めているかを無視した施策の失敗</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">⚠️</span><span>競合との差別化ができず、来場者数・収益が低迷</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">💡</span><span>「何かを変えなければならない」という危機感の共有</span></li>
+    </ul>
+    <div class="card-reason"><strong>なぜこの章が必要か：</strong>問題の根本原因を正確に診断することが、正しい処方箋（需要側起点）への転換を可能にするから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">CHAPTER 02</div>
+    <div class="chapter-title">💡 核心の提案：需要側起点という唯一の考え方</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🎯</span><span>「誰に・何を・どう」を消費者起点で再定義する</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🧠</span><span>市場の勝敗は消費者の頭の中で決まるという視座</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔄</span><span>供給発想から需要発想への根本的な思考転換</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🌟</span><span>この一つの考え方がUSJ再成長の核心</span></li>
+    </ul>
+    <div class="card-reason"><strong>なぜこの章が必要か：</strong>戦略の根本思想を明確にしないと、個別施策がバラバラになり一貫性が失われるから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">CHAPTER 03</div>
+    <div class="chapter-title">🗺 設計論：STP→4P→KGI/KPIの因果接続</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">1️⃣</span><span>STPで「誰に・どこで勝つか」の骨格を設計</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">2️⃣</span><span>4Pで価値を現場に実装する4つのレバーを設定</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">3️⃣</span><span>KGI/KPIツリーで成果への因果を可視化</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔗</span><span>3つを因果でつなぐことで戦略の一貫性を担保</span></li>
+    </ul>
+    <div class="card-reason"><strong>なぜこの章が必要か：</strong>思想だけでは実行できない。設計の枠組みがあって初めて組織が動き、成果が測れるから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">CHAPTER 04</div>
+    <div class="chapter-title">🔬 実装論：インサイト→価値提案→施策→検証</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔍</span><span>インサイト探索：データと観察で深層動機を掘り当てる</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">💎</span><span>価値提案：ターゲットの「得」を機能・情緒・社会で定義</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">📋</span><span>施策ポートフォリオ：複数施策を組み合わせて相乗効果を狙う</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔄</span><span>小さく試し、学習し、拡張する反復プロセス</span></li>
+    </ul>
+    <div class="card-reason"><strong>なぜこの章が必要か：</strong>設計を実際の行動に落とし込む具体的プロセスがなければ、戦略は絵に描いた餅になるから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">CHAPTER 05</div>
+    <div class="chapter-title">💴 価格・商品・コミュニケーションの連動設計</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🎫</span><span>年間パス設計で来場頻度と顧客ロイヤルティを向上</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🎃</span><span>期間限定イベントで需要の山を作り、閑散期を解消</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🎭</span><span>IP活用で集客力・体験価値・グッズ収益を同時に引き上げ</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔗</span><span>3つを連動させることで相乗効果（シナジー）を最大化</span></li>
+    </ul>
+    <div class="card-reason"><strong>なぜこの章が必要か：</strong>個別施策の最適化より、連動設計による相乗効果の方が収益インパクトが大きいから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">CHAPTER 06</div>
+    <div class="chapter-title">🏢 組織・ガバナンス：選択と集中・意思決定の速度</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">⚡</span><span>意思決定の速度が仮説検証ループの回転数を決める</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🎯</span><span>選択と集中：勝てない領域への資源投入を止める</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">📊</span><span>評価指標（KPI）を因果で設計し、組織の行動を揃える</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔄</span><span>学習効率が高い組織が長期的に勝ち続ける</span></li>
+    </ul>
+    <div class="card-reason"><strong>なぜこの章が必要か：</strong>優れた戦略も、組織の実行力と意思決定速度がなければ成果に結びつかないから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">CHAPTER 07</div>
+    <div class="chapter-title">📊 ケース群：季節イベント・コラボ施策の設計と効果</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🎃</span><span>ハロウィン・クリスマス等の季節イベントの狙いと設計</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🤝</span><span>IPコラボ施策の選定基準・実装・数値効果</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">📈</span><span>各施策の来場者数・客単価・認知への影響を検証</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔁</span><span>再現性のある施策パターンを抽出し横展開</span></li>
+    </ul>
+    <div class="card-reason"><strong>なぜこの章が必要か：</strong>具体的なケースで理論の再現性を示すことで、他の事業への応用可能性が見えるから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">CHAPTER 08</div>
+    <div class="chapter-title">🌐 総括：考え方の汎用性と他産業への適用原則</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🌍</span><span>需要側起点の考え方はUSJ以外の産業にも適用可能</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">⚠️</span><span>落とし穴（凡ミス）：ターゲットの曖昧化・KPIの形骸化</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🛡</span><span>回避策：因果の一貫性チェックと定期的な仮説の見直し</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔑</span><span>「誰に・何を・どう」の問いを繰り返すことが本質</span></li>
+    </ul>
+    <div class="card-reason"><strong>なぜこの章が必要か：</strong>USJという特殊事例を普遍的な原則に昇華させることで、読者が自分の事業に応用できるから。</div>
+  </div>
+
+  <!-- 論理展開フロー -->
+  <div class="section-title">🔗 議論の論理展開</div>
+  <div class="card">
+    <div class="card-title">📐 本書の論理構造</div>
+    <div class="flow-wrap">
+      <div class="flow-item">🚨 課題提示</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">💡 核心提案</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">🗺 設計論</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">🔬 実装論</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">💴 連動設計</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">🏢 組織論</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">📊 ケース</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">🌐 汎用化</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TAB: 具体例 ===== -->
+<section class="tab-content" id="tab-examples" role="tabpanel" aria-labelledby="btn-examples">
+
+  <div class="section-title">💡 具体例・ケース・メタファー</div>
+
+  <div class="example-card">
+    <div class="example-tag">ケース 01 ／ USJ再建</div>
+    <div class="example-title">🎢 USJの需要側起点への転換</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">📉</span><span><strong>背景：</strong>業績低迷・来場者数減少。「映画テーマパーク」という供給側の定義に縛られていた。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔄</span><span><strong>転換：</strong>「映画」から「世界最高のエンターテインメント」へターゲット定義を拡張。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🎮</span><span><strong>施策：</strong>ハリーポッター・任天堂等のIPを活用し、幅広い顧客層の「来たい理由」を創出。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">📈</span><span><strong>結果：</strong>来場者数・客単価・収益が劇的に回復（具体数値は不明）。</span></li>
+    </ul>
+    <div class="card-reason"><strong>この例が示すこと：</strong>「誰に・何を」の再定義だけで、同じ施設・同じ資源でも収益構造が根本から変わることを証明している。供給側の思い込みを捨てることが最初の一歩。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-tag">ケース 02 ／ 季節イベント戦略</div>
+    <div class="example-title">🎃 ハロウィン・クリスマスイベントの需要創出</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">📅</span><span><strong>背景：</strong>テーマパークは閑散期と繁忙期の需要格差が大きく、収益が不安定。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🎯</span><span><strong>インサイト：</strong>「非日常体験を友人・家族と共有したい」という情緒的便益を発見。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🎭</span><span><strong>施策：</strong>季節ごとに「来る理由」を新たに創出し、年間を通じた来場動機を設計。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">💰</span><span><strong>効果：</strong>閑散期の需要底上げと、リピーター（年間パス保有者）の来場頻度向上。</span></li>
+    </ul>
+    <div class="card-reason"><strong>この例が示すこと：</strong>「来る理由」を継続的に創出することで需要曲線を操作できる。イベントは単なる集客策ではなく、価値提案の更新手段である。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-tag">ケース 03 ／ ターゲット絞り込みのメタファー</div>
+    <div class="example-title">🎯 「全員に売ろうとすると誰にも刺さらない」</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">💡</span><span><strong>メタファー：</strong>水を全方向に撒くと地面が湿る程度。一点に集中すると穴が開く。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🎯</span><span><strong>示唆：</strong>ターゲットを絞ることで、そのセグメントへの訴求力が飛躍的に高まる。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🚫</span><span><strong>よくある失敗：</strong>「幅広い層に」「老若男女に」という曖昧なターゲット設定。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">✅</span><span><strong>正解：</strong>「30代女性・子連れ・年1〜2回来場」等、具体的に絞り込む。</span></li>
+    </ul>
+    <div class="card-reason"><strong>この例が示すこと：</strong>ターゲットの尖らせ方が差別化の源泉。絞ることへの恐怖を克服することが戦略の第一歩であることを直感的に理解させる。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-tag">ケース 04 ／ KPIの誤用と正用</div>
+    <div class="example-title">📊 KPIを「努力目標」にしてしまう罠</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">❌</span><span><strong>誤用：</strong>「来場者数を前年比110%にする」という目標を設定するだけで終わる。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">✅</span><span><strong>正用：</strong>「認知→意向→来場→単価→頻度」の因果を仮説化し、どこが弱いかを特定する。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔍</span><span><strong>背景：</strong>KPIが因果でつながっていないと、問題の所在が特定できず打ち手が的外れになる。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">⚡</span><span><strong>効果：</strong>因果KPIにより、学習速度と意思決定の精度が劇的に向上する。</span></li>
+    </ul>
+    <div class="card-reason"><strong>この例が示すこと：</strong>指標の設計思想が組織の学習能力を決める。KPIは「計器」であり「目標」ではないという認識転換が重要。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-tag">ケース 05 ／ 価格戦略</div>
+    <div class="example-title">💴 年間パスによるバリュー・プライシング</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🎫</span><span><strong>背景：</strong>1回来場の価格設定では、来場頻度向上と収益最大化が両立しにくい。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">💡</span><span><strong>インサイト：</strong>「何度でも来たい」という熱狂的ファン層の存在と、その支払い意欲。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔗</span><span><strong>設計：</strong>年間パスで来場頻度を上げ、グッズ・飲食での客単価を積み上げる。</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">📈</span><span><strong>効果：</strong>ロイヤル顧客の囲い込みと、安定的な収益基盤の構築。</span></li>
+    </ul>
+    <div class="card-reason"><strong>この例が示すこと：</strong>価格設計は単なる値付けではなく、顧客行動を設計するツール。「価値で値付け」することで顧客満足と収益を同時に最大化できる。</div>
+  </div>
+
+  <!-- 概念間の関係性 -->
+  <div class="section-title">🔗 概念間の因果関係</div>
+  <div class="card">
+    <div class="card-title">📐 戦略の因果チェーン</div>
+    <ul>
+      <li><span class="li-icon">1️⃣</span><span><span class="info-text">インサイト発掘</span> → <span class="highlight">価値提案定義</span> → <span class="accent-text">ポジショニング確立</span></span></li>
+      <li><span class="li-icon">2️⃣</span><span><span class="info-text">セグメンテーション</span> → <span class="highlight">ターゲティング</span> → 「誰に」を固定</span></li>
+      <li><span class="li-icon">3️⃣</span><span><span class="accent-text">ポジショニング</span> → <span class="highlight">4P一貫設計</span> → 体験の統合</span></li>
+      <li><span class="li-icon">4️⃣</span><span><span class="highlight">4P実装</span> → <span class="info-text">KPI改善</span> → <span class="accent-text">KGI達成</span></span></li>
+      <li><span class="li-icon">5️⃣</span><span>価格戦略 × イベント/IP × 広告PR → <span class="highlight">需要創出の相乗効果</span></span></li>
+      <li><span class="li-icon">6️⃣</span><span>仮説 → 実験・測定 → 学習 → <span class="accent-text">資源再配分（選択と集中）</span></span></li>
+      <li><span class="li-icon">7️⃣</span><span>組織設計・意思決定速度 → <span class="info-text">ループ回転数</span> → 学習効率 → 成果</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== TAB: 重要な引用 ===== -->
+<section class="tab-content" id="tab-quotes" role="tabpanel" aria-labelledby="btn-quotes">
+
+  <div class="section-title">💬 重要な引用・要旨</div>
+
+  <div class="quote-card">
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">「戦略とは"選択"であり、捨てる勇気がなければ勝てない。」</div>
+    <div class="quote-note">💡 <strong>なぜ重要か：</strong>資源の集中が優位を生み、実行の一貫性を担保するから。全てを追うことは何も追わないことと同じ。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">「市場は企業内ではなく消費者の頭の中で決着する。」</div>
+    <div class="quote-note">💡 <strong>なぜ重要か：</strong>勝負の土俵を外さない"需要側起点"の視座を示す。企業の論理ではなく消費者の認知が全てを決める。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">「KPIは努力目標ではなく、因果仮説を検証するための計器だ。」</div>
+    <div class="quote-note">💡 <strong>なぜ重要か：</strong>メトリクスの意味付けを変え、学習速度を上げる。KPIを「目標」と捉えると組織の行動が歪む。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">「大きな成功は小さな実験の素早い反復から生まれる。」</div>
+    <div class="quote-note">💡 <strong>なぜ重要か：</strong>不確実性下の実行原理（仮説検証ループ）を要約する。完璧な計画より高速な学習が市場を制する。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">「誰でも顧客にしようとするほど、誰の心にも刺さらない。」</div>
+    <div class="quote-note">💡 <strong>なぜ重要か：</strong>ターゲットの尖らせ方が差別化を決めると示す。絞ることへの恐怖が最大の戦略的失敗を招く。</div>
+  </div>
+
+  <!-- 引用の視覚化 -->
+  <div class="section-title">📊 引用が示す5つの原則</div>
+  <div class="grid-2">
+    <div class="card" style="border-top:3px solid var(--sub2);">
+      <div class="card-title">⚔️ 選択と集中</div>
+      <ul>
+        <li><span class="li-icon">🎯</span><span>捨てる勇気が優位を生む</span></li>
+        <li><span class="li-icon">🔗</span><span>実行の一貫性を担保する</span></li>
+        <li><span class="li-icon">💪</span><span>資源集中が差別化の源泉</span></li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--info);">
+      <div class="card-title">🧠 消費者起点の視座</div>
+      <ul>
+        <li><span class="li-icon">👤</span><span>市場は消費者の頭の中で決まる</span></li>
+        <li><span class="li-icon">🔍</span><span>企業論理より消費者認知が全て</span></li>
+        <li><span class="li-icon">🎯</span><span>需要側から逆算して設計する</span></li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--success);">
+      <div class="card-title">📊 KPIは計器</div>
+      <ul>
+        <li><span class="li-icon">🔬</span><span>因果仮説を検証するツール</span></li>
+        <li><span class="li-icon">⚡</span><span>学習速度を上げる設計が重要</span></li>
+        <li><span class="li-icon">⚠️</span><span>目標化すると組織行動が歪む</span></li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid #ab47bc;">
+      <div class="card-title">🔄 小さな実験の反復</div>
+      <ul>
+        <li><span class="li-icon">🧪</span><span>完璧な計画より高速な学習</span></li>
+        <li><span class="li-icon">📈</span><span>大きな成功は反復から生まれる</span></li>
+        <li><span class="li-icon">🛡</span><span>不確実性を制御する実行原理</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 核心メッセージ -->
+  <div class="section-title">🌟 核心的メッセージ</div>
+  <div class="card" style="border:2px solid var(--accent);background:linear-gradient(135deg,#2a1a2e,#1a1a3a);">
+    <div class="card-title">🎯 本書の核心</div>
+    <ul>
+      <li><span class="li-icon">🌟</span><span>事業は<span class="accent-text">需要側＝消費者起点</span>で勝てる土俵を選び</span></li>
+      <li><span class="li-icon">🎯</span><span><span class="highlight">誰に・何を・どう売るか（STP→4P）</span>を因果で一貫させて実行すれば劇的に変えられる</span></li>
+      <li><span class="li-icon">🏆</span><span>USJはこの<span class="info-text">一つの考え方</span>で再成長した</span></li>
+      <li><span class="li-icon">🌍</span><span>この原則は<span class="highlight">あらゆる産業・事業</span>に適用可能</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== TAB: 今日のアクション ===== -->
+<section class="tab-content" id="tab-actions" role="tabpanel" aria-labelledby="btn-actions">
+
+  <div class="section-title">✅ 今日のアクション（15〜30分で実行）</div>
+
+  <div class="action-card">
+    <div class="action-num">1</div>
+    <div class="action-title">🎯 主要ターゲットを1文で定義する</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">📝</span><span><strong>やること：</strong>「誰が・どんな状況で・何のために使うか」を1文で書く</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">💡</span><span><strong>例：</strong>「30代子連れ女性が、週末の家族サービスとして年2〜3回来場する」</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">⚠️</span><span><strong>NG：</strong>「幅広い層」「老若男女」等の曖昧な定義は禁止</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">⏱</span><span><strong>所要時間：</strong>15〜20分</span></li>
+    </ul>
+    <div class="action-meta">
+      <span class="action-tag tag-purpose">🎯 目的：ターゲットを尖らせ、戦略の起点を固める</span>
+      <span class="action-tag tag-effect">✨ 期待効果：施策の一貫性が生まれ、「誰のため」が明確になる</span>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">2</div>
+    <div class="action-title">💎 便益仮説を3つメモする</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">📝</span><span><strong>やること：</strong>ターゲットが感じる「得」を機能・情緒・社会の3軸で書く</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">💡</span><span><strong>例：</strong>機能「子どもが喜ぶ」情緒「非日常の興奮」社会「SNSで映える」</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">⚠️</span><span><strong>注意：</strong>「機能」ではなく「便益（顧客にとっての得）」で語ること</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">⏱</span><span><strong>所要時間：</strong>15〜20分</span></li>
+    </ul>
+    <div class="action-meta">
+      <span class="action-tag tag-purpose">🎯 目的：価値提案の仮説を言語化し、インサイトを掘り起こす</span>
+      <span class="action-tag tag-effect">✨ 期待効果：「何を売るか」の解像度が上がり、コミュニケーションが変わる</span>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">3</div>
+    <div class="action-title">📊 KPIツリーを手書きで描く</div>
+    <ul class="card" style="background:transparent;border:none;padding:0;">
+      <li style="border:none;padding:4px 0;"><span class="li-icon">📝</span><span><strong>やること：</strong>KGI（最終成果）から逆算してKPIを因果で分解する</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">💡</span><span><strong>例：</strong>売上 ← 来場者数 × 客単価 ← 認知率 × 来場意向 × 来場頻度</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">🔍</span><span><strong>問い：</strong>「今どのKPIが最も弱いか？」を特定する</span></li>
+      <li style="border:none;padding:4px 0;"><span class="li-icon">⏱</span><span><strong>所要時間：</strong>20〜30分</span></li>
+    </ul>
+    <div class="action-meta">
+      <span class="action-tag tag-purpose">🎯 目的：成果への因果を可視化し、打ち手の優先順位を決める</span>
+      <span class="action-tag tag-effect">✨ 期待効果：「どこに手を打つべきか」が明確になり、資源配分の精度が上がる</span>
+    </div>
+  </div>
+
+  <!-- 実行チェックリスト -->
+  <div class="section-title">📋 実行チェックリスト</div>
+  <div class="card">
+    <div class="card-title">✅ 戦略設計の確認ポイント</div>
+    <ul>
+      <li><span class="li-icon">☐</span><span>ターゲットは1文で具体的に定義できているか？</span></li>
+      <li><span class="li-icon">☐</span><span>便益は「機能」ではなく「顧客の得」で語れているか？</span></li>
+      <li><span class="li-icon">☐</span><span>KPIは因果でつながっているか（努力目標になっていないか）？</span></li>
+      <li><span class="li-icon">☐</span><span>STP→4Pの一貫性はあるか？</span></li>
+      <li><span class="li-icon">☐</span><span>捨てる（選択しない）領域を明確にしているか？</span></li>
+      <li><span class="li-icon">☐</span><span>小さく試せる実験を設計しているか？</span></li>
+    </ul>
+  </div>
+
+  <!-- 30日ロードマップ -->
+  <div class="section-title">🗓 30日実践ロードマップ</div>
+  <div class="grid-3">
+    <div class="card" style="border-top:3px solid var(--info);">
+      <div class="card-title">📅 Week 1<br><span style="font-size:11px;color:var(--text-muted);">インサイト発掘</span></div>
+      <ul>
+        <li><span class="li-icon">🎯</span><span>ターゲット1文定義</span></li>
+        <li><span class="li-icon">💎</span><span>便益仮説3つ作成</span></li>
+        <li><span class="li-icon">🔍</span><span>顧客インタビュー実施</span></li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--sub2);">
+      <div class="card-title">📅 Week 2-3<br><span style="font-size:11px;color:var(--text-muted);">設計と実装</span></div>
+      <ul>
+        <li><span class="li-icon">📊</span><span>KPIツリー作成</span></li>
+        <li><span class="li-icon">📦</span><span>4P一貫設計</span></li>
+        <li><span class="li-icon">🧪</span><span>小実験の設計</span></li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--success);">
+      <div class="card-title">📅 Week 4<br><span style="font-size:11px;color:var(--text-muted);">検証と学習</span></div>
+      <ul>
+        <li><span class="li-icon">📈</span><span>KPI測定・分析</span></li>
+        <li><span class="li-icon">🔄</span><span>仮説の修正</span></li>
+        <li><span class="li-icon">🚀</span><span>拡張施策の設計</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 落とし穴 -->
+  <div class="section-title">⚠️ よくある落とし穴と回避策</div>
+  <div class="grid-2">
+    <div class="card" style="border-left:4px solid var(--accent);">
+      <div class="card-title">❌ 落とし穴</div>
+      <ul>
+        <li><span class="li-icon">⚠️</span><span>ターゲットを曖昧にする（全員に売ろうとする）</span></li>
+        <li><span class="li-icon">⚠️</span><span>KPIを努力目標として設定する</span></li>
+        <li><span class="li-icon">⚠️</span><span>STPと4Pが一貫していない</span></li>
+        <li><span class="li-icon">⚠️</span><span>大きく始めて失敗を恐れる</span></li>
+      </ul>
+    </div>
+    <div class="card" style="border-left:4px solid var(--success);">
+      <div class="card-title">✅ 回避策</div>
+      <ul>
+        <li><span class="li-icon">💡</span><span>ターゲットを1文で具体的に定義する</span></li>
+        <li><span class="li-icon">💡</span><span>KPIを因果仮説の計器として設計する</span></li>
+        <li><span class="li-icon">💡</span><span>定期的に因果の一貫性をチェックする</span></li>
+        <li><span class="li-icon">💡</span><span>小さく試して学習を積み重ねる</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer style="background:var(--primary);border-top:1px solid var(--card-border);padding:16px;text-align:center;margin-top:20px;">
+  <div style="font-size:11px;color:var(--text-muted);">
+    📊 需要側起点マーケティング戦略 インフォグラフィック<br>
+    <span style="color:var(--card-border);">Primary: #1a1a2e ／ Secondary: #16213e ／ Accent: #e94560</span>
+  </div>
+</footer>
+
+<script>
+  // タブ切替
+  (function() {
+    var tabs = document.querySelectorAll('.tab-btn');
+    var panels = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = this.getAttribute('aria-controls');
+
+        // 全タブ非アクティブ
+        tabs.forEach(function(t) {
+          t.setAttribute('aria-selected', 'false');
+        });
+        panels.forEach(function(p) {
+          p.classList.remove('active');
+        });
+
+        // 選択タブをアクティブ
+        this.setAttribute('aria-selected', 'true');
+        var panel = document.getElementById(target);
+        if (panel) {
+          panel.classList.add('active');
+          // スクロールをタブナビ直下へ
+          var nav = document.querySelector('.tab-nav');
+          if (nav) {
+            window.scrollTo({ top: nav.offsetTop, behavior: 'smooth' });
+          }
+        }
+      });
+    });
+
+    // バーアニメーション（IntersectionObserver）
+    var bars = document.querySelectorAll('.bar-fill');
+    bars.forEach(function(bar) {
+      var targetWidth = bar.style.width;
+      bar.style.width = '0%';
+      setTimeout(function() {
+        bar.style.width = targetWidth;
+      }, 300);
+    });
+
+    // タブ切替時にバーアニメーション再実行
+    tabs.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        setTimeout(function() {
+          var activeBars = document.querySelectorAll('.tab-content.active .bar-fill');
+          activeBars.forEach(function(bar) {
+            var tw = bar.getAttribute('data-width') || bar.style.width;
+            if (!bar.getAttribute('data-width')) {
+              bar.setAttribute('data-width', bar.style.width);
+            }
+            bar.style.width = '0%';
+            setTimeout(function() {
+              bar.style.width = tw;
+            }, 100);
+          });
+        }, 50);
+      });
+    });
+  })();
+</script>
+</body>
+</html>
