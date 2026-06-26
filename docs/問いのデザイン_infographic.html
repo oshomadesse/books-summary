@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>問いの設計 インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a1a2e
+  セカンダリー:  #16213e
+  アクセント:    #e94560
+  補助1:        #0f3460
+  補助2:        #f5a623
+  補助3:        #4ecdc4
+-->
+<style>
+  :root {
+    --primary: #1a1a2e;
+    --secondary: #16213e;
+    --accent: #e94560;
+    --sub1: #0f3460;
+    --sub2: #f5a623;
+    --sub3: #4ecdc4;
+    --text-light: #f0f0f0;
+    --text-muted: #a0a8b8;
+    --card-bg: rgba(255,255,255,0.05);
+    --card-border: rgba(255,255,255,0.1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--sub1) 100%);
+    color: var(--text-light);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  a { color: var(--sub3); }
+
+  /* ===== HEADER ===== */
+  .site-header {
+    background: linear-gradient(90deg, var(--accent) 0%, #c0392b 100%);
+    padding: 18px 20px 14px;
+    text-align: center;
+  }
+  .site-header h1 {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    font-weight: 900;
+    letter-spacing: 0.05em;
+  }
+  .site-header p {
+    font-size: clamp(0.72rem, 2.5vw, 0.9rem);
+    opacity: 0.9;
+    margin-top: 4px;
+  }
+
+  /* ===== HERO SUMMARY ===== */
+  .hero {
+    background: linear-gradient(135deg, rgba(233,69,96,0.18) 0%, rgba(15,52,96,0.4) 100%);
+    border: 1px solid rgba(233,69,96,0.4);
+    border-radius: 16px;
+    margin: 16px 12px;
+    padding: 18px 16px;
+  }
+  .hero-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--sub2);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media(max-width:480px){ .hero-grid { grid-template-columns: 1fr; } }
+  .hero-block {
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 12px;
+    border-left: 3px solid var(--accent);
+  }
+  .hero-block.why { border-left-color: var(--sub2); }
+  .hero-block.how { border-left-color: var(--sub3); }
+  .hero-block.ans { border-left-color: #a29bfe; grid-column: 1 / -1; }
+  .hero-label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 5px;
+  }
+  .hero-block .hero-label { color: var(--accent); }
+  .hero-block.why .hero-label { color: var(--sub2); }
+  .hero-block.how .hero-label { color: var(--sub3); }
+  .hero-block.ans .hero-label { color: #a29bfe; }
+  .hero-block p { font-size: 0.82rem; line-height: 1.55; }
+
+  /* ===== CORE MESSAGE BADGE ===== */
+  .core-msg {
+    margin: 0 12px 16px;
+    background: linear-gradient(90deg, var(--sub2) 0%, #e67e22 100%);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .core-msg .icon { font-size: 1.6rem; flex-shrink: 0; }
+  .core-msg p { font-size: 0.82rem; font-weight: 700; color: #1a1a2e; line-height: 1.5; }
+
+  /* ===== TABS ===== */
+  .tab-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 4px;
+    padding: 0 12px;
+    margin-bottom: 0;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text-muted);
+    border-radius: 8px 8px 0 0;
+    padding: 8px 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { background: rgba(255,255,255,0.12); color: var(--text-light); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--accent) 0%, #c0392b 100%);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .tab-content {
+    display: none;
+    padding: 14px 12px 24px;
+    animation: fadeIn 0.3s ease;
+  }
+  .tab-content.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ===== CARDS ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 14px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .card-icon { font-size: 1.4rem; }
+  .card-title { font-size: 0.9rem; font-weight: 800; color: var(--sub3); }
+  .card-badge {
+    margin-left: auto;
+    background: rgba(78,205,196,0.2);
+    color: var(--sub3);
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    font-size: 0.78rem;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li .li-icon { flex-shrink: 0; }
+  .card-reason {
+    margin-top: 8px;
+    background: rgba(233,69,96,0.12);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 6px 8px;
+    font-size: 0.72rem;
+    color: #ffb3be;
+  }
+  .card-reason strong { color: var(--accent); }
+
+  /* ===== SECTION TITLE ===== */
+  .sec-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--sub2);
+    font-weight: 800;
+    margin: 18px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sec-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(245,166,35,0.3);
+  }
+
+  /* ===== CHAPTER CARDS ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .chapter-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .chapter-num {
+    background: linear-gradient(135deg, var(--accent), #c0392b);
+    color: #fff;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .chapter-title { font-size: 0.9rem; font-weight: 800; }
+  .chapter-card ul { list-style: none; padding: 0; }
+  .chapter-card ul li {
+    font-size: 0.78rem;
+    padding: 3px 0 3px 14px;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .chapter-card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--sub3);
+    font-size: 0.65rem;
+    top: 4px;
+  }
+  .chapter-card ul li:last-child { border-bottom: none; }
+  .chapter-reason {
+    margin-top: 8px;
+    background: rgba(245,166,35,0.1);
+    border-left: 3px solid var(--sub2);
+    border-radius: 0 6px 6px 0;
+    padding: 6px 8px;
+    font-size: 0.72rem;
+    color: #ffd580;
+  }
+  .chapter-reason strong { color: var(--sub2); }
+
+  /* ===== FLOW DIAGRAM ===== */
+  .flow-wrap {
+    overflow-x: auto;
+    padding: 10px 0;
+    margin-bottom: 14px;
+  }
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: max-content;
+    padding: 0 4px;
+  }
+  .flow-step {
+    background: linear-gradient(135deg, var(--sub1), #0a2744);
+    border: 1px solid rgba(78,205,196,0.4);
+    border-radius: 8px;
+    padding: 8px 12px;
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--sub3);
+    white-space: nowrap;
+  }
+  .flow-arrow { color: var(--sub2); font-size: 1rem; flex-shrink: 0; }
+
+  /* ===== EXAMPLE CARDS ===== */
+  .example-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .example-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .example-num {
+    background: linear-gradient(135deg, var(--sub3), #2ecc71);
+    color: #1a1a2e;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .example-title { font-size: 0.9rem; font-weight: 800; color: var(--sub3); }
+  .example-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  @media(max-width:400px){ .example-row { grid-template-columns: 1fr; } }
+  .example-sub {
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    padding: 8px;
+  }
+  .example-sub-label {
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .example-sub p { font-size: 0.76rem; }
+  .example-reason {
+    background: rgba(78,205,196,0.1);
+    border-left: 3px solid var(--sub3);
+    border-radius: 0 6px 6px 0;
+    padding: 6px 8px;
+    font-size: 0.72rem;
+    color: #a8f0ec;
+  }
+  .example-reason strong { color: var(--sub3); }
+
+  /* ===== QUOTE CARDS ===== */
+  .quote-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .quote-mark {
+    font-size: 3rem;
+    color: rgba(233,69,96,0.25);
+    position: absolute;
+    top: 6px;
+    left: 12px;
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .quote-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.6;
+    padding-left: 28px;
+    color: #fff;
+    font-style: italic;
+  }
+  .quote-note {
+    margin-top: 8px;
+    padding: 6px 8px;
+    background: rgba(233,69,96,0.1);
+    border-radius: 6px;
+    font-size: 0.72rem;
+    color: #ffb3be;
+  }
+  .quote-tag {
+    display: inline-block;
+    background: rgba(233,69,96,0.2);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  /* ===== ACTION CARDS ===== */
+  .action-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--sub2);
+  }
+  .action-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .action-step {
+    background: linear-gradient(135deg, var(--sub2), #e67e22);
+    color: #1a1a2e;
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 0.7rem;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .action-title { font-size: 0.9rem; font-weight: 800; }
+  .action-time {
+    margin-left: auto;
+    background: rgba(245,166,35,0.15);
+    color: var(--sub2);
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  @media(max-width:400px){ .action-row { grid-template-columns: 1fr; } }
+  .action-sub {
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    padding: 8px;
+  }
+  .action-sub-label {
+    font-size: 0.62rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .action-sub p { font-size: 0.76rem; }
+
+  /* ===== RELATION DIAGRAM ===== */
+  .relation-wrap {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+  .relation-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.76rem;
+  }
+  .relation-item:last-child { border-bottom: none; }
+  .relation-arrow { color: var(--sub2); flex-shrink: 0; font-size: 0.8rem; margin-top: 2px; }
+
+  /* ===== SVG CHART ===== */
+  .chart-wrap {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+  .chart-title {
+    font-size: 0.78rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: var(--sub2);
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .bar-label {
+    font-size: 0.7rem;
+    width: 90px;
+    flex-shrink: 0;
+    text-align: right;
+    color: var(--text-muted);
+  }
+  .bar-track {
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    height: 18px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    transition: width 1s ease;
+  }
+
+  /* ===== RELATED BOOKS ===== */
+  .book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .book-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .book-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .book-info {}
+  .book-title { font-size: 0.8rem; font-weight: 800; margin-bottom: 2px; }
+  .book-author { font-size: 0.68rem; color: var(--text-muted); margin-bottom: 4px; }
+  .book-rel { font-size: 0.7rem; color: var(--sub3); }
+
+  /* ===== PROCESS VISUAL ===== */
+  .process-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .process-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+  .process-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .process-step-label { font-size: 0.78rem; font-weight: 700; flex-shrink: 0; width: 60px; }
+  .process-step-desc { font-size: 0.72rem; color: var(--text-muted); }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SITE HEADER ===== -->
+<header class="site-header" role="banner">
+  <h1>🔍 問いの設計 インフォグラフィック</h1>
+  <p>解の質は問いの質を超えない ── 創造的成果を生む「問い」と対話プロセスの全体像</p>
+</header>
+
+<!-- ===== HERO SUMMARY ===== -->
+<section class="hero" aria-label="要約ブロック">
+  <div class="hero-title">📌 要約 ── ここだけ見れば全体像がわかる</div>
+  <div class="hero-grid">
+    <div class="hero-block">
+      <div class="hero-label">❓ 問い</div>
+      <p>複雑な課題で創造的成果を出すには、何を設計すべきか？</p>
+    </div>
+    <div class="hero-block ans">
+      <div class="hero-label">💡 答え</div>
+      <p>解より先に「問い」と「拡散→収束の対話プロセス」を設計し、場の安全性と可視化で学習を促進する。</p>
+    </div>
+    <div class="hero-block why">
+      <div class="hero-label">🔑 Why（なぜ）</div>
+      <p>問いは注意と意味づけを方向づけ、関係性を変え、探索の幅と学習速度を左右するから。</p>
+    </div>
+    <div class="hero-block how">
+      <div class="hero-label">🛠 How（どうやって）</div>
+      <p>問いの類型を使い分け、リフレーミングで前提を更新し、時間配分・参加者構成・可視化を統合した「問いの連鎖」を意図的に配列する。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CORE MESSAGE ===== -->
+<div class="core-msg" role="note" aria-label="核心メッセージ">
+  <span class="icon">⚡</span>
+  <p>核心メッセージ：解の質は問いの質を超えない。創造的な成果は、状況・関係・目的に合わせて設計された「問い」と、それをつなぐ対話プロセスのファシリテーションから生まれる。</p>
+</div>
+
+<!-- ===== TAB NAVIGATION ===== -->
+<nav aria-label="タブナビゲーション">
+  <div class="tab-nav" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-concepts" id="btn-concepts" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters" id="btn-chapters" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples" id="btn-examples" onclick="switchTab('examples')">💼 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes" id="btn-quotes" onclick="switchTab('quotes')">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions" id="btn-actions" onclick="switchTab('actions')">🚀 今日のアクション</button>
+  </div>
+</nav>
+
+<!-- ===== TAB: 主要概念 ===== -->
+<div class="tab-content active" id="tab-concepts" role="tabpanel" aria-labelledby="btn-concepts">
+
+  <div class="sec-title">🔗 概念間の因果フロー</div>
+  <div class="flow-wrap" aria-label="概念フロー図">
+    <div class="flow">
+      <div class="flow-step">フレーミング</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">問いの設計</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">注意の配分</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">探索の幅</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">新しい意味の発見</div>
+    </div>
+  </div>
+
+  <div class="sec-title">📊 概念の重要度イメージ</div>
+  <div class="chart-wrap" aria-label="概念重要度バーチャート">
+    <div class="chart-title">各概念の役割ウェイト（相対イメージ）</div>
+    <div class="bar-row">
+      <div class="bar-label">問いの設計</div>
+      <div class="bar-track"><div class="bar-fill" style="width:95%;background:linear-gradient(90deg,#e94560,#c0392b);">95%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">問いの連鎖</div>
+      <div class="bar-track"><div class="bar-fill" style="width:88%;background:linear-gradient(90deg,#f5a623,#e67e22);">88%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">拡散と収束</div>
+      <div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#4ecdc4,#2ecc71);">85%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">心理的安全性</div>
+      <div class="bar-track"><div class="bar-fill" style="width:82%;background:linear-gradient(90deg,#a29bfe,#6c5ce7);">82%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">フレーミング</div>
+      <div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#fd79a8,#e84393);">80%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">可視化／外化</div>
+      <div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#55efc4,#00b894);">75%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">生成的な問い</div>
+      <div class="bar-track"><div class="bar-fill" style="width:78%;background:linear-gradient(90deg,#fdcb6e,#e17055);">78%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">多様性の活用</div>
+      <div class="bar-track"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,#74b9ff,#0984e3);">70%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">制約の設計</div>
+      <div class="bar-track"><div class="bar-fill" style="width:65%;background:linear-gradient(90deg,#b2bec3,#636e72);">65%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">メタ認知</div>
+      <div class="bar-track"><div class="bar-fill" style="width:72%;background:linear-gradient(90deg,#dfe6e9,#b2bec3);">72%</div></div>
+    </div>
+  </div>
+
+  <div class="sec-title">🧩 主要概念カード</div>
+  <div class="card-grid">
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🎯</span>
+        <span class="card-title">問いの設計</span>
+        <span class="card-badge">舵取り</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">📌</span><span>目的・状況・参加者に合わせて問いを構成する行為</span></li>
+        <li><span class="li-icon">🔀</span><span>種類・順序・粒度を意図的に選ぶ</span></li>
+        <li><span class="li-icon">🧭</span><span>思考と関係性の進行方向を決める「舵」</span></li>
+        <li><span class="li-icon">⚙️</span><span>解を出す前に問いを設計することが先決</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>問いの設計なしに対話を始めると、議論が散漫になり成果が出ない。舵なき船と同じ。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🌱</span>
+        <span class="card-title">生成的な問い</span>
+        <span class="card-badge">可能性創出</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">🔓</span><span>唯一解を求めず、新たな意味や可能性を生む</span></li>
+        <li><span class="li-icon">📖</span><span>「開いた問い」で探索の幅を広げる</span></li>
+        <li><span class="li-icon">💡</span><span>答えより学びを増やすことをねらう</span></li>
+        <li><span class="li-icon">🔄</span><span>探索・生成・統合など複数の類型がある</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>閉じた問いは既知の答えしか引き出せない。生成的な問いが創造の起点になる。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🖼️</span>
+        <span class="card-title">フレーミング／リフレーミング</span>
+        <span class="card-badge">枠を変える</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">🔲</span><span>問題の前提・境界・視点を定義／再定義する</span></li>
+        <li><span class="li-icon">🚪</span><span>問いの前に行う設計介入で突破口を開く</span></li>
+        <li><span class="li-icon">🔄</span><span>行き詰まりの解消に直結する</span></li>
+        <li><span class="li-icon">⚡</span><span>前提を一度疑うことがブレイクスルーの出発点</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>枠組みが変わると見える解が変わる。同じ問題でも視点次第で全く異なる解が生まれる。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">↔️</span>
+        <span class="card-title">拡散と収束</span>
+        <span class="card-badge">往復運動</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">📡</span><span>拡散：多様な観点・情報を広げる段階</span></li>
+        <li><span class="li-icon">🎯</span><span>収束：意味をまとめ選択する段階</span></li>
+        <li><span class="li-icon">🔁</span><span>この往復が対話設計の基本リズム</span></li>
+        <li><span class="li-icon">⚖️</span><span>広げすぎ／絞りすぎの失敗を防ぐ</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>拡散だけでは散漫、収束だけでは視野狭窄。ペアで使うことで創造性と実行性が両立する。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🛡️</span>
+        <span class="card-title">心理的安全性</span>
+        <span class="card-badge">土台</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">🤝</span><span>報復や軽視の不安なく発言・試行できる状態</span></li>
+        <li><span class="li-icon">🏗️</span><span>質の高い問いと学習には不可欠な土台</span></li>
+        <li><span class="li-icon">🌡️</span><span>安全性が低いと本音が出ず対話が形骸化する</span></li>
+        <li><span class="li-icon">🔑</span><span>多様性と組み合わさると学習の深さが増す</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>どんなに優れた問いも、発言できない場では機能しない。安全性は対話の前提条件。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">👁️</span>
+        <span class="card-title">可視化／外化</span>
+        <span class="card-badge">見える化</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">📋</span><span>発話・思考・関係を図や付箋で見える形にする</span></li>
+        <li><span class="li-icon">🤝</span><span>合意形成と再フレーミングを助ける</span></li>
+        <li><span class="li-icon">🔍</span><span>認知の共有で誤解を低減する</span></li>
+        <li><span class="li-icon">⚡</span><span>収束の速度と納得感を高める</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>頭の中だけの議論は認識のズレが生じやすい。外化することで全員が同じ地図を見られる。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🔗</span>
+        <span class="card-title">問いの連鎖</span>
+        <span class="card-badge">配列設計</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">1️⃣</span><span>導入→拡散→意味化→選択→合意→次の実験</span></li>
+        <li><span class="li-icon">🎭</span><span>機能の異なる問いをつなぐ配列設計</span></li>
+        <li><span class="li-icon">📖</span><span>対話に物語構造を与える</span></li>
+        <li><span class="li-icon">🏭</span><span>合意の移植性（現場で使える）を高める</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>単発の問いでは対話が途切れる。連鎖させることでプロセスに一貫性と推進力が生まれる。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🔄</span>
+        <span class="card-title">メタ認知と学習のループ</span>
+        <span class="card-badge">学びを更新</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">🔭</span><span>思考・前提・感情を一段高い視点から点検する</span></li>
+        <li><span class="li-icon">⚙️</span><span>進行中にプロセスを調整する学習</span></li>
+        <li><span class="li-icon">🔁</span><span>ダブルループ学習を促進する</span></li>
+        <li><span class="li-icon">📈</span><span>小さな実験→フィードバック→次の問いの質向上</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>前提を疑わない学習（シングルループ）では根本的な変化が起きない。メタ認知が組織の進化を支える。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🌈</span>
+        <span class="card-title">多様性の活用</span>
+        <span class="card-badge">異質の力</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">👥</span><span>背景・専門・価値観の異なる参加者を意図的に組み合わせる</span></li>
+        <li><span class="li-icon">⚡</span><span>認知的摩擦を生成性に変える設計</span></li>
+        <li><span class="li-icon">🔬</span><span>心理的安全性と組み合わせると効果が最大化</span></li>
+        <li><span class="li-icon">💡</span><span>同質集団では生まれない視点が創造を促す</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>同質な集団は確証バイアスに陥りやすい。異質な摩擦が新しい意味を生む触媒になる。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">⛓️</span>
+        <span class="card-title">制約の設計</span>
+        <span class="card-badge">創造的縛り</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">⏱️</span><span>時間・道具・ルールなどの制約を創造的に設定する</span></li>
+        <li><span class="li-icon">🎯</span><span>集中と具体化を促す</span></li>
+        <li><span class="li-icon">⚖️</span><span>自由度と焦点を両立する</span></li>
+        <li><span class="li-icon">🔬</span><span>小さな実験の実行可能性を高める</span></li>
+      </ul>
+      <div class="card-reason"><strong>なぜ重要か：</strong>制約がないと思考が拡散しすぎて具体化できない。適切な縛りが創造性を引き出す逆説がある。</div>
+    </div>
+
+  </div>
+
+  <div class="sec-title">🔗 概念間の関係性</div>
+  <div class="relation-wrap" aria-label="概念間の関係性">
+    <div class="relation-item">
+      <span class="relation-arrow">▸</span>
+      <span>心理的安全性 × 多様性 → 自由な発話と認知的摩擦 → 生成的な問いの質↑ → 学習の深さ↑</span>
+    </div>
+    <div class="relation-item">
+      <span class="relation-arrow">▸</span>
+      <span>可視化 → 認知の共有 → 誤解の低減 → 収束の速度と納得感↑</span>
+    </div>
+    <div class="relation-item">
+      <span class="relation-arrow">▸</span>
+      <span>問いの連鎖（導入→拡散→意味化→選択→合意）→ プロセスの一貫性 → 合意の移植性（現場で使える）</span>
+    </div>
+    <div class="relation-item">
+      <span class="relation-arrow">▸</span>
+      <span>制約の設計 → 集中と具体化 → 実行可能性↑ → 小さな実験 → メタ認知フィードバック → 次の問いの質↑</span>
+    </div>
+    <div class="relation-item">
+      <span class="relation-arrow">↔</span>
+      <span>リフレーミング ↔ 行き詰まりの解消（前提の更新）→ ブレイクスルー創出</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== TAB: 各章の要約 ===== -->
+<div class="tab-content" id="tab-chapters" role="tabpanel" aria-labelledby="btn-chapters">
+
+  <div class="sec-title">📖 問いの連鎖プロセス</div>
+  <div class="process-visual" aria-label="問いの連鎖プロセス">
+    <div class="process-step">
+      <div class="process-dot" style="background:#e94560;"></div>
+      <div class="process-step-label" style="color:#e94560;">導入</div>
+      <div class="process-step-desc">場の目的と安全性を確立し、参加者の前提を揃える</div>
+    </div>
+    <div class="process-step">
+      <div class="process-dot" style="background:#f5a623;"></div>
+      <div class="process-step-label" style="color:#f5a623;">拡散</div>
+      <div class="process-step-desc">多様な観点・情報を広げ、可能性の空間を最大化する</div>
+    </div>
+    <div class="process-step">
+      <div class="process-dot" style="background:#4ecdc4;"></div>
+      <div class="process-step-label" style="color:#4ecdc4;">意味化</div>
+      <div class="process-step-desc">出てきた情報にパターンや意味を見出す</div>
+    </div>
+    <div class="process-step">
+      <div class="process-dot" style="background:#a29bfe;"></div>
+      <div class="process-step-label" style="color:#a29bfe;">選択</div>
+      <div class="process-step-desc">優先度を判断し、次に進む方向を絞り込む</div>
+    </div>
+    <div class="process-step">
+      <div class="process-dot" style="background:#55efc4;"></div>
+      <div class="process-step-label" style="color:#55efc4;">合意</div>
+      <div class="process-step-desc">全員が納得できる形で決定を共有する</div>
+    </div>
+    <div class="process-step">
+      <div class="process-dot" style="background:#fdcb6e;"></div>
+      <div class="process-step-label" style="color:#fdcb6e;">次の実験</div>
+      <div class="process-step-desc">小さな実験を設計し、メタ認知フィードバックへ</div>
+    </div>
+  </div>
+
+  <div class="sec-title">📚 各章の要約</div>
+
+  <div class="chapter-card">
+    <div class="chapter-head">
+      <div class="chapter-num">1</div>
+      <div class="chapter-title">導入：解より問いへ重心を移す</div>
+    </div>
+    <ul>
+      <li>現代の課題は複雑で唯一解が存在しない</li>
+      <li>従来の「解を探す」アプローチの限界を提示</li>
+      <li>「問いを設計する」という新しい重心への転換を宣言</li>
+      <li>問いが成果の質を規定するという中核命題を導入</li>
+    </ul>
+    <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>読者の前提（解を探すべき）をリフレーミングし、本書全体の視点転換を準備するため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-head">
+      <div class="chapter-num">2</div>
+      <div class="chapter-title">原理：問いが認知・関係・学習に与える影響</div>
+    </div>
+    <ul>
+      <li>問いが注意・意味づけ・関係性を方向づけるメカニズムを解説</li>
+      <li>良い問いの条件（開放性・具体性・タイミング）を整理</li>
+      <li>問いの類型（探索・生成・統合など）を体系化</li>
+      <li>問いの質が学習速度と探索の幅を左右することを示す</li>
+    </ul>
+    <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>「なぜ問いが重要か」の理論的根拠を示し、実践の土台となる原理を提供するため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-head">
+      <div class="chapter-num">3</div>
+      <div class="chapter-title">設計：場づくりの方法論</div>
+    </div>
+    <ul>
+      <li>フレーミング・心理的安全性・可視化の設計方法を提示</li>
+      <li>時間配分・参加者構成・制約の設計を統合的に解説</li>
+      <li>場の安全性が問いの質に直結することを強調</li>
+      <li>多様性を生成性に変えるための参加者設計を示す</li>
+    </ul>
+    <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>問いの設計は問い単体ではなく「場」全体の設計であることを示し、実践の具体性を高めるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-head">
+      <div class="chapter-num">4</div>
+      <div class="chapter-title">プロセス：拡散→意味化→収束のリズム</div>
+    </div>
+    <ul>
+      <li>拡散→意味化→収束のリズムを具体的なステップで解説</li>
+      <li>「問いの連鎖」をサンプル質問付きで具体化</li>
+      <li>各ステップで使うべき問いの類型を明示</li>
+      <li>対話に物語構造を与える配列設計の技法を提示</li>
+    </ul>
+    <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>理論を実際の対話の流れに落とし込み、ファシリテーターが即実践できる手順を提供するため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-head">
+      <div class="chapter-num">5</div>
+      <div class="chapter-title">実践：会議・ワークショップ・事業開発への適用</div>
+    </div>
+    <ul>
+      <li>会議・ワークショップ・事業開発での適用例を共有</li>
+      <li>失敗パターン（拡散しすぎ・収束が早すぎ等）を整理</li>
+      <li>失敗からのリカバリー方法を具体的に提示</li>
+      <li>現場での「問いの連鎖」の使い方を実例で示す</li>
+    </ul>
+    <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>理論と実践のギャップを埋め、読者が自分の現場に応用できるイメージを持てるようにするため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-head">
+      <div class="chapter-num">6</div>
+      <div class="chapter-title">発展：問いの文化を組織能力にする</div>
+    </div>
+    <ul>
+      <li>学習を循環させるメタ認知と小さな実験の回し方を解説</li>
+      <li>個人スキルから組織能力としての「問いの文化」へ</li>
+      <li>ダブルループ学習で前提を更新し続ける仕組みを提示</li>
+      <li>問いの文化の育て方と継続的な発展の方向性で締めくくる</li>
+    </ul>
+    <div class="chapter-reason"><strong>なぜこの章が必要か：</strong>一時的なスキルで終わらせず、組織の持続的な学習能力として定着させる視点を与えるため。</div>
+  </div>
+
+</div>
+
+<!-- ===== TAB: 具体例 ===== -->
+<div class="tab-content" id="tab-examples" role="tabpanel" aria-labelledby="btn-examples">
+
+  <div class="sec-title">💼 核心メッセージが伝わる具体例</div>
+
+  <div class="example-card">
+    <div class="example-head">
+      <div class="example-num">1</div>
+      <div class="example-title">会議の問い設計：「なぜ売上が下がったか」→「どうすれば顧客が戻るか」</div>
+    </div>
+    <div class="example-row">
+      <div class="example-sub">
+        <div class="example-sub-label">📋 背景</div>
+        <p>売上低下の原因追及会議で「誰が悪いか」の議論に終始し、解決策が出ない状態が続いていた。</p>
+      </div>
+      <div class="example-sub">
+        <div class="example-sub-label">💡 示唆</div>
+        <p>問いを「原因追及」から「可能性探索」にリフレーミングすることで、議論の方向が建設的に変わった。</p>
+      </div>
+    </div>
+    <div class="example-reason"><strong>この例が示すこと：</strong>問いの枠組み（フレーミング）を変えるだけで、同じ参加者・同じ情報から全く異なる対話と成果が生まれる。問いは会議の「舵」そのものである。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-head">
+      <div class="example-num">2</div>
+      <div class="example-title">ワークショップの拡散→収束：付箋で可視化し合意を加速</div>
+    </div>
+    <div class="example-row">
+      <div class="example-sub">
+        <div class="example-sub-label">📋 背景</div>
+        <p>新製品開発ワークショップで意見が出ても「で、結局どれ？」となり毎回決定できずに終わっていた。</p>
+      </div>
+      <div class="example-sub">
+        <div class="example-sub-label">💡 示唆</div>
+        <p>拡散フェーズで付箋に全意見を外化し、意味化フェーズでグルーピング、収束フェーズで投票。可視化が合意を加速した。</p>
+      </div>
+    </div>
+    <div class="example-reason"><strong>この例が示すこと：</strong>拡散と収束を分けて設計し、可視化を組み合わせることで、参加者全員が「同じ地図」を見ながら意思決定できる。プロセス設計が成果の質を決める。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-head">
+      <div class="example-num">3</div>
+      <div class="example-title">制約の設計：「5分で3案」ルールが創造性を引き出す</div>
+    </div>
+    <div class="example-row">
+      <div class="example-sub">
+        <div class="example-sub-label">📋 背景</div>
+        <p>事業開発の場で「自由にアイデアを出してください」と言うと沈黙が続き、出ても1〜2案で止まっていた。</p>
+      </div>
+      <div class="example-sub">
+        <div class="example-sub-label">💡 示唆</div>
+        <p>「5分以内に3案以上」という時間と数の制約を設けると、完璧主義が外れ、荒削りでも多様なアイデアが噴出した。</p>
+      </div>
+    </div>
+    <div class="example-reason"><strong>この例が示すこと：</strong>制約は創造性を阻害するのではなく、むしろ促進する。適切な縛りが「考えすぎ」を防ぎ、具体的なアウトプットを引き出す逆説的な力を持つ。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-head">
+      <div class="example-num">4</div>
+      <div class="example-title">メタファー：問いは「地図の縮尺」</div>
+    </div>
+    <div class="example-row">
+      <div class="example-sub">
+        <div class="example-sub-label">📋 背景</div>
+        <p>同じ地形でも縮尺が違えば見える情報が変わる。1/25000の地図と1/200000の地図では使い方が全く異なる。</p>
+      </div>
+      <div class="example-sub">
+        <div class="example-sub-label">💡 示唆</div>
+        <p>問いの粒度（大きな問い vs 細かい問い）を状況に合わせて使い分けることが、問いの設計の核心。</p>
+      </div>
+    </div>
+    <div class="example-reason"><strong>この例が示すこと：</strong>問いの「粒度」と「縮尺」は同じ概念。戦略的な問い（大縮尺）と実行的な問い（小縮尺）を意図的に使い分けることが、問いの設計の本質を表している。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-head">
+      <div class="example-num">5</div>
+      <div class="example-title">心理的安全性の欠如：「正解を言わなければ」の沈黙</div>
+    </div>
+    <div class="example-row">
+      <div class="example-sub">
+        <div class="example-sub-label">📋 背景</div>
+        <p>上司が参加する会議で「何かアイデアはありますか？」と問うと、若手は沈黙。後で1on1では豊富なアイデアを持っていた。</p>
+      </div>
+      <div class="example-sub">
+        <div class="example-sub-label">💡 示唆</div>
+        <p>心理的安全性がない場では、どんなに優れた問いも機能しない。場の設計が問いの設計と同等に重要。</p>
+      </div>
+    </div>
+    <div class="example-reason"><strong>この例が示すこと：</strong>問いの設計は「何を問うか」だけでなく「誰が・どんな場で・どんな関係性の中で問うか」を含む。心理的安全性は問いの効果を決定する土台である。</div>
+  </div>
+
+</div>
+
+<!-- ===== TAB: 重要な引用 ===== -->
+<div class="tab-content" id="tab-quotes" role="tabpanel" aria-labelledby="btn-quotes">
+
+  <div class="sec-title">💬 重要な引用・要旨</div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">解の質は問いの質に規定される。</div>
+    <div class="quote-note">🔑 <strong>なぜ重要か：</strong>成果を変えたければ、まず問う枠組みを変えるべきだと示す中核命題。本書全体の出発点であり、すべての実践の根拠になる。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">問いは注意を集め、参加者の関係性を組み替える装置である。</div>
+    <div class="quote-note">🔑 <strong>なぜ重要か：</strong>個人の思考だけでなく、チームのダイナミクスを設計対象に含める視点を与える。問いはコミュニケーションの構造を変える力を持つ。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">拡散と収束は対立ではなく、創造のためのペアである。</div>
+    <div class="quote-note">🔑 <strong>なぜ重要か：</strong>広げすぎ／絞りすぎの失敗を防ぎ、プロセス設計のバランス感覚を教える。どちらか一方では創造は完結しない。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-tag">要旨</div>
+    <div class="quote-text">前提を一度疑うことが、創造の出発点になる。</div>
+    <div class="quote-note">🔑 <strong>なぜ重要か：</strong>リフレーミングの必然性と、行き詰まりの突破口を具体化する指針になる。「当たり前」を問い直す勇気が革新を生む。</div>
+  </div>
+
+  <div class="sec-title">📊 引用が示す4つの原則</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🎯</span>
+        <span class="card-title">原則1：問いが先</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>解を探す前に問いを設計する</span></li>
+        <li><span class="li-icon">▸</span><span>問いの質が成果の上限を決める</span></li>
+        <li><span class="li-icon">▸</span><span>枠組みを変えれば解が変わる</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🤝</span>
+        <span class="card-title">原則2：関係性を設計する</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>問いはチームの関係性を変える装置</span></li>
+        <li><span class="li-icon">▸</span><span>誰が・どんな場で問うかが重要</span></li>
+        <li><span class="li-icon">▸</span><span>心理的安全性が前提条件</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">↔️</span>
+        <span class="card-title">原則3：往復を設計する</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>拡散と収束はセットで機能する</span></li>
+        <li><span class="li-icon">▸</span><span>どちらかに偏ると創造が止まる</span></li>
+        <li><span class="li-icon">▸</span><span>リズムを意図的に設計する</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-icon">🔄</span>
+        <span class="card-title">原則4：前提を疑う</span>
+      </div>
+      <ul>
+        <li><span class="li-icon">▸</span><span>行き詰まりは前提の問い直しで突破</span></li>
+        <li><span class="li-icon">▸</span><span>リフレーミングが創造の出発点</span></li>
+        <li><span class="li-icon">▸</span><span>「当たり前」を問い直す習慣が革新を生む</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec-title">📚 関連書籍</div>
+  <div class="book-grid">
+    <div class="book-card">
+      <span class="book-icon">📗</span>
+      <div class="book-info">
+        <div class="book-title">イシューからはじめよ</div>
+        <div class="book-author">安宅和人</div>
+        <div class="book-rel">本質的な問い（イシュー）の特定と集中という土台を提供する。</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <span class="book-icon">📘</span>
+      <div class="book-info">
+        <div class="book-title">学習する組織</div>
+        <div class="book-author">ピーター・センゲ</div>
+        <div class="book-rel">メンタル・モデルと対話を通じた学習ループが「問いの文化」の理論背景になる。</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <span class="book-icon">📙</span>
+      <div class="book-info">
+        <div class="book-title">ファシリテーションの教科書</div>
+        <div class="book-author">堀公俊</div>
+        <div class="book-rel">場の設計・可視化・合意形成など実践的スキルを補完する。</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <span class="book-icon">📕</span>
+      <div class="book-info">
+        <div class="book-title">直感と論理をつなぐ思考法 VISION DRIVEN</div>
+        <div class="book-author">佐宗邦威</div>
+        <div class="book-rel">前提の転換とビジョン駆動の発想法がリフレーミングを強化する。</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <span class="book-icon">📓</span>
+      <div class="book-info">
+        <div class="book-title">スプリント</div>
+        <div class="book-author">ジェイク・ナップ</div>
+        <div class="book-rel">時間制約下で問い→仮説→検証を回す具体的プロセス設計が学べる。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== TAB: 今日のアクション ===== -->
+<div class="tab-content" id="tab-actions" role="tabpanel" aria-labelledby="btn-actions">
+
+  <div class="sec-title">🚀 今日から15〜30分で実行できるアクション</div>
+
+  <!-- SVG: アクション全体像 -->
+  <div class="chart-wrap" aria-label="アクション実行フロー図">
+    <div class="chart-title">🔄 3つのアクションの連鎖効果</div>
+    <svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:400px;display:block;margin:0 auto;" aria-label="アクション連鎖SVG">
+      <defs>
+        <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#e94560"/>
+          <stop offset="100%" style="stop-color:#c0392b"/>
+        </linearGradient>
+        <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#f5a623"/>
+          <stop offset="100%" style="stop-color:#e67e22"/>
+        </linearGradient>
+        <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#4ecdc4"/>
+          <stop offset="100%" style="stop-color:#2ecc71"/>
+        </linearGradient>
+      </defs>
+      <rect x="2" y="20" width="80" height="40" rx="8" fill="url(#g1)"/>
+      <text x="42" y="36" text-anchor="middle" fill="white" font-size="7" font-weight="bold">目的を</text>
+      <text x="42" y="47" text-anchor="middle" fill="white" font-size="7" font-weight="bold">1文で書く</text>
+      <text x="42" y="58" text-anchor="middle" fill="white" font-size="6">STEP 1</text>
+      <text x="88" y="43" fill="#f5a623" font-size="14" font-weight="bold">→</text>
+      <rect x="100" y="20" width="80" height="40" rx="8" fill="url(#g2)"/>
+      <text x="140" y="36" text-anchor="middle" fill="#1a1a2e" font-size="7" font-weight="bold">前提を</text>
+      <text x="140" y="47" text-anchor="middle" fill="#1a1a2e" font-size="7" font-weight="bold">3つ列挙</text>
+      <text x="140" y="58" text-anchor="middle" fill="#1a1a2e" font-size="6">STEP 2</text>
+      <text x="186" y="43" fill="#4ecdc4" font-size="14" font-weight="bold">→</text>
+      <rect x="198" y="20" width="120" height="40" rx="8" fill="url(#g3)"/>
+      <text x="258" y="36" text-anchor="middle" fill="#1a1a2e" font-size="7" font-weight="bold">拡散→収束の</text>
+      <text x="258" y="47" text-anchor="middle" fill="#1a1a2e" font-size="7" font-weight="bold">時間割を作る</text>
+      <text x="258" y="58" text-anchor="middle" fill="#1a1a2e" font-size="6">STEP 3</text>
+    </svg>
+  </div>
+
+  <div class="action-card">
+    <div class="action-head">
+      <div class="action-step">STEP 1</div>
+      <div class="action-title">🎯 次会議の目的を1文で書く</div>
+      <div class="action-time">⏱ 15分</div>
+    </div>
+    <p style="font-size:0.78rem;margin-bottom:8px;">「この会議が終わったとき、参加者は何を決定／理解／合意しているか？」を1文で書く。</p>
+    <div class="action-row">
+      <div class="action-sub">
+        <div class="action-sub-label">🎯 目的</div>
+        <p>問いの設計の出発点となる「ゴール」を明確にする。目的なき会議は漂流する。</p>
+      </div>
+      <div class="action-sub">
+        <div class="action-sub-label">✨ 期待効果</div>
+        <p>会議の問いが目的に沿って設計でき、議論の散漫さが解消される。参加者の集中度も上がる。</p>
+      </div>
+    </div>
+    <div style="margin-top:8px;background:rgba(233,69,96,0.1);border-radius:8px;padding:8px;">
+      <p style="font-size:0.72rem;color:#ffb3be;">💡 <strong>やり方：</strong>「この会議の目的は___することである」という文を完成させる。動詞（決定する・合意する・理解する）を明示するのがコツ。</p>
+    </div>
+  </div>
+
+  <div class="action-card" style="border-left-color:var(--sub2);">
+    <div class="action-head">
+      <div class="action-step" style="background:linear-gradient(135deg,var(--sub2),#e67e22);">STEP 2</div>
+      <div class="action-title">🔍 参加者の前提を3つ列挙する</div>
+      <div class="action-time">⏱ 20分</div>
+    </div>
+    <p style="font-size:0.78rem;margin-bottom:8px;">会議の参加者が「当たり前」と思っているであろう前提を3つ書き出し、それぞれを「本当にそうか？」と問い直す。</p>
+    <div class="action-row">
+      <div class="action-sub">
+        <div class="action-sub-label">🎯 目的</div>
+        <p>リフレーミングの準備として、議論の前提を可視化し、行き詰まりの原因を事前に特定する。</p>
+      </div>
+      <div class="action-sub">
+        <div class="action-sub-label">✨ 期待効果</div>
+        <p>前提の違いによるすれ違いが減り、より深い対話が生まれる。ブレイクスルーの種が見つかることも。</p>
+      </div>
+    </div>
+    <div style="margin-top:8px;background:rgba(245,166,35,0.1);border-radius:8px;padding:8px;">
+      <p style="font-size:0.72rem;color:#ffd580;">💡 <strong>やり方：</strong>「参加者は___と思っているはずだ」を3つ書く。次に「もしそれが違ったら？」と問い直す。これがリフレーミングの第一歩。</p>
+    </div>
+  </div>
+
+  <div class="action-card" style="border-left-color:var(--sub3);">
+    <div class="action-head">
+      <div class="action-step" style="background:linear-gradient(135deg,var(--sub3),#2ecc71);color:#1a1a2e;">STEP 3</div>
+      <div class="action-title">⏰ 拡散→収束の時間割を作る</div>
+      <div class="action-time">⏱ 25分</div>
+    </div>
+    <p style="font-size:0.78rem;margin-bottom:8px;">会議の時間を「拡散フェーズ」と「収束フェーズ」に分け、各フェーズで使う問いを1つずつ書く。</p>
+    <div class="action-row">
+      <div class="action-sub">
+        <div class="action-sub-label">🎯 目的</div>
+        <p>拡散と収束を意図的に設計し、「広げすぎ」「絞りすぎ」の失敗を防ぐ。問いの連鎖の最小版を作る。</p>
+      </div>
+      <div class="action-sub">
+        <div class="action-sub-label">✨ 期待効果</div>
+        <p>会議が「発散して終わり」「最初から結論ありき」にならず、創造的な合意が生まれやすくなる。</p>
+      </div>
+    </div>
+    <div style="margin-top:8px;background:rgba(78,205,196,0.1);border-radius:8px;padding:8px;">
+      <p style="font-size:0.72rem;color:#a8f0ec;">💡 <strong>やり方：</strong>60分会議なら「拡散20分（どんな可能性があるか？）→意味化10分（何が重要か？）→収束20分（何を選ぶか？）→合意10分」のように時間と問いをセットで設計する。</p>
+    </div>
+  </div>
+
+  <div class="sec-title">📈 3ステップの累積効果</div>
+  <div class="chart-wrap" aria-label="累積効果チャート">
+    <div class="chart-title">アクション実行による会議の質向上イメージ</div>
+    <div class="bar-row">
+      <div class="bar-label">目的の明確化</div>
+      <div class="bar-track"><div class="bar-fill" style="width:60%;background:linear-gradient(90deg,#e94560,#c0392b);">+60%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">前提の可視化</div>
+      <div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#f5a623,#e67e22);">+75%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">時間割設計</div>
+      <div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#4ecdc4,#2ecc71);">+85%</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">3つ全て実行</div>
+      <div class="bar-track"><div class="bar-fill" style="width:95%;background:linear-gradient(90deg,#a29bfe,#6c5ce7);">+95%</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer" role="contentinfo">
+  <p>📚 インフォグラフィック生成 | カラーパレット：プライマリー #1a1a2e ／ セカンダリー #16213e ／ アクセント #e94560</p>
+  <p style="margin-top:4px;">本インフォグラフィックは書籍リサーチ内容を元に作成されています。</p>
+</footer>
+
+<script>
+  function switchTab(tabId) {
+    // すべてのタブコンテンツを非表示
+    var contents = document.querySelectorAll('.tab-content');
+    contents.forEach(function(c) {
+      c.classList.remove('active');
+    });
+    // すべてのタブボタンを非アクティブ
+    var btns = document.querySelectorAll('.tab-btn');
+    btns.forEach(function(b) {
+      b.classList.remove('active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    // 対象タブを表示
+    var target = document.getElementById('tab-' + tabId);
+    if (target) {
+      target.classList.add('active');
+    }
+    // 対象ボタンをアクティブ
+    var activeBtn = document.getElementById('btn-' + tabId);
+    if (activeBtn) {
+      activeBtn.classList.add('active');
+      activeBtn.setAttribute('aria-selected', 'true');
+    }
+  }
+
+  // バーアニメーション（IntersectionObserver）
+  function animateBars() {
+    var bars = document.querySelectorAll('.bar-fill');
+    bars.forEach(function(bar) {
+      var targetWidth = bar.style.width;
+      bar.style.width = '0%';
+      setTimeout(function() {
+        bar.style.width = targetWidth;
+      }, 100);
+    });
+  }
+
+  // タブ切替時にバーアニメーションを再実行
+  var originalSwitch = window.switchTab;
+  window.switchTab = function(tabId) {
+    originalSwitch(tabId);
+    if (tabId === 'concepts' || tabId === 'actions') {
+      setTimeout(animateBars, 50);
+    }
+  };
+
+  // 初期ロード時にアニメーション
+  window.addEventListener('load', function() {
+    setTimeout(animateBars, 300);
+  });
+</script>
+</body>
+</html>
