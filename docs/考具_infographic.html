@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>考具インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #2D6A4F
+  セカンダリー:  #1B4332
+  アクセント:    #F4A261
+-->
+<style>
+  /* ===== リセット & ベース ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary:   #2D6A4F;
+    --secondary: #1B4332;
+    --accent:    #F4A261;
+    --bg:        #F0F4F1;
+    --card-bg:   #FFFFFF;
+    --text:      #1A1A2E;
+    --muted:     #5A6A5E;
+    --radius:    12px;
+    --shadow:    0 4px 16px rgba(0,0,0,0.10);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ===== ヘッダー ===== */
+  header {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  header .book-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 6px;
+  }
+  header h1 {
+    font-size: clamp(22px, 5vw, 36px);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+  header .subtitle {
+    margin-top: 8px;
+    font-size: 13px;
+    opacity: 0.85;
+  }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: linear-gradient(135deg, var(--primary) 0%, #40916C 100%);
+    color: #fff;
+    padding: 24px 20px;
+  }
+  .summary-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media(max-width:600px){ .summary-inner { grid-template-columns: 1fr; } }
+  .summary-card {
+    background: rgba(255,255,255,0.13);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    border-left: 4px solid var(--accent);
+  }
+  .summary-card .sc-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 4px;
+  }
+  .summary-card .sc-text {
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  .summary-card.full { grid-column: 1 / -1; }
+
+  /* ===== タブ ===== */
+  .tab-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 12px 40px;
+  }
+  .tab-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 16px 0 0;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    background: var(--card-bg);
+    border: 2px solid transparent;
+    border-radius: 30px;
+    padding: 8px 16px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .tab-btn[aria-selected="true"] {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .tab-panel { display: none; padding-top: 20px; }
+  .tab-panel.active { display: block; }
+
+  /* ===== カード共通 ===== */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card ul { padding-left: 0; list-style: none; }
+  .card ul li {
+    padding: 5px 0 5px 22px;
+    position: relative;
+    font-size: 13.5px;
+    border-bottom: 1px solid #F0F4F1;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 4px;
+    color: var(--accent);
+    font-size: 12px;
+    top: 6px;
+  }
+  .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 20px;
+    padding: 2px 8px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .reason-box {
+    background: #FFF8F0;
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: #7A4F1A;
+  }
+  .reason-box strong { color: var(--accent); }
+
+  /* ===== グリッドレイアウト ===== */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media(max-width:600px){ .grid-2 { grid-template-columns: 1fr; } }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media(max-width:700px){ .grid-3 { grid-template-columns: 1fr 1fr; } }
+  @media(max-width:440px){ .grid-3 { grid-template-columns: 1fr; } }
+
+  /* ===== 概念カード ===== */
+  .concept-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    border-top: 4px solid var(--primary);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .concept-card .c-icon { font-size: 26px; }
+  .concept-card .c-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--secondary);
+  }
+  .concept-card .c-short {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-size: 10px;
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-weight: 700;
+  }
+  .concept-card .c-def {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .concept-card .c-why {
+    font-size: 11.5px;
+    background: #F0F4F1;
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: var(--secondary);
+  }
+
+  /* ===== フロー図 ===== */
+  .flow-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    padding: 16px;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+  .flow-step {
+    background: linear-gradient(135deg, var(--primary), #40916C);
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    min-width: 80px;
+  }
+  .flow-arrow {
+    color: var(--accent);
+    font-size: 18px;
+    font-weight: 900;
+  }
+
+  /* ===== 引用カード ===== */
+  .quote-card {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .quote-card::before {
+    content: '❝';
+    font-size: 48px;
+    opacity: 0.2;
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    line-height: 1;
+  }
+  .quote-card .q-text {
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.5;
+    padding-left: 10px;
+    margin-bottom: 10px;
+  }
+  .quote-card .q-note {
+    font-size: 12px;
+    opacity: 0.85;
+    background: rgba(255,255,255,0.12);
+    border-radius: 6px;
+    padding: 6px 10px;
+  }
+  .quote-card .q-badge {
+    font-size: 10px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+
+  /* ===== アクションカード ===== */
+  .action-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    border-left: 5px solid var(--accent);
+    margin-bottom: 14px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-num {
+    background: var(--accent);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 900;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .action-body .a-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 6px;
+  }
+  .action-body .a-meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .action-body .a-effect {
+    font-size: 12.5px;
+    background: #F0F4F1;
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* ===== 数値バッジ ===== */
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .badge {
+    background: linear-gradient(135deg, var(--primary), #40916C);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    text-align: center;
+    flex: 1;
+    min-width: 100px;
+  }
+  .badge .b-num {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .badge .b-label {
+    font-size: 11px;
+    opacity: 0.85;
+    margin-top: 4px;
+  }
+
+  /* ===== 横棒グラフ ===== */
+  .bar-chart { margin-bottom: 16px; }
+  .bar-item { margin-bottom: 10px; }
+  .bar-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 3px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .bar-track {
+    background: #E0EBE4;
+    border-radius: 20px;
+    height: 14px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width 1s ease;
+  }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    margin-bottom: 14px;
+    border-top: 4px solid var(--primary);
+  }
+  .chapter-card .ch-num {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .chapter-card .ch-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 8px;
+  }
+  .chapter-card ul { padding-left: 0; list-style: none; }
+  .chapter-card ul li {
+    font-size: 13px;
+    padding: 4px 0 4px 20px;
+    position: relative;
+    border-bottom: 1px solid #F0F4F1;
+  }
+  .chapter-card ul li:last-child { border-bottom: none; }
+  .chapter-card ul li::before {
+    content: '✦';
+    position: absolute;
+    left: 2px;
+    color: var(--accent);
+    font-size: 10px;
+    top: 6px;
+  }
+
+  /* ===== 具体例カード ===== */
+  .example-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .example-card .ex-icon { font-size: 30px; margin-bottom: 8px; }
+  .example-card .ex-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+  .example-card .ex-bg {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .example-card .ex-suggest {
+    font-size: 12.5px;
+    background: #F0F4F1;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+  }
+  .example-card .ex-reason {
+    font-size: 12px;
+    background: #FFF8F0;
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: #7A4F1A;
+  }
+
+  /* ===== 関連書籍 ===== */
+  .book-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .book-icon { font-size: 28px; flex-shrink: 0; }
+  .book-info .b-title { font-size: 14px; font-weight: 800; color: var(--secondary); }
+  .book-info .b-author { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .book-info .b-rel { font-size: 12px; color: var(--primary); }
+
+  /* ===== SVG フロー ===== */
+  .svg-wrap { overflow-x: auto; margin-bottom: 16px; }
+  svg text { font-family: 'Hiragino Kaku Gothic ProN', sans-serif; }
+
+  /* ===== フッター ===== */
+  footer {
+    background: var(--secondary);
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 16px;
+    font-size: 11px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header>
+  <div class="book-label">📚 書籍インフォグラフィック</div>
+  <h1>💡 考具</h1>
+  <div class="subtitle">発想は才能ではなく、道具と型で誰でも再現できる技術である</div>
+</header>
+
+<!-- ===== ファーストビュー：要約ブロック ===== -->
+<section class="summary-block" aria-label="エグゼクティブサマリー">
+  <div class="summary-inner">
+    <div class="summary-card">
+      <div class="sc-label">❓ 問い</div>
+      <div class="sc-text">どうすれば、誰でも再現性高く有効なアイデアを生み出し、形にして通すことができるか？</div>
+    </div>
+    <div class="summary-card">
+      <div class="sc-label">💡 答え</div>
+      <div class="sc-text">課題を正しく定義し、多視点に発散し、道具で収束・構造化し、1枚で伝えるという"考具"化されたプロセスを習慣として回す。</div>
+    </div>
+    <div class="summary-card">
+      <div class="sc-label">🔍 Why（なぜそうなのか）</div>
+      <div class="sc-text">アイデアは既存要素の新結合であり、視点の数と結合の試行回数が増えるほど量も質も上がる。評価・表現の型が思考の抜け漏れを減らし、失敗コストを下げて反復を促すから。</div>
+    </div>
+    <div class="summary-card">
+      <div class="sc-label">🛠 How（そのためには）</div>
+      <div class="sc-text">発散：SCAMPER・強制連想・マトリクス・ブレーンライティング。収束：KJ法・評価軸。表現：1枚企画書。日常：ネタ帳・観察・問い直しの習慣化。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== タブナビ ===== -->
+<div class="tab-wrapper">
+  <nav aria-label="コンテンツタブ">
+    <div class="tab-nav" role="tablist">
+      <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="panel-concepts" id="tab-concepts">🧠 主要概念</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">🔬 具体例</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes"   id="tab-quotes">💬 重要な引用</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions"  id="tab-actions">⚡ 今日のアクション</button>
+    </div>
+  </nav>
+
+  <!-- ===== タブ1：主要概念 ===== -->
+  <section class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <!-- 数値バッジ -->
+    <div class="badge-row">
+      <div class="badge"><div class="b-num">10</div><div class="b-label">主要な考具の数</div></div>
+      <div class="badge"><div class="b-num">6</div><div class="b-label">思考フェーズ</div></div>
+      <div class="badge"><div class="b-num">∞</div><div class="b-label">再現可能な発想回数</div></div>
+    </div>
+
+    <!-- 思考プロセスフロー（SVG） -->
+    <div class="svg-wrap" aria-label="思考プロセスフロー図">
+      <svg width="760" height="80" viewBox="0 0 760 80" role="img" aria-label="課題設定から循環するプロセス">
+        <defs>
+          <linearGradient id="gFlow" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#1B4332"/>
+            <stop offset="100%" style="stop-color:#40916C"/>
+          </linearGradient>
+        </defs>
+        <!-- ボックス -->
+        <rect x="0"   y="20" width="100" height="40" rx="8" fill="url(#gFlow)"/>
+        <rect x="120" y="20" width="100" height="40" rx="8" fill="url(#gFlow)"/>
+        <rect x="240" y="20" width="100" height="40" rx="8" fill="url(#gFlow)"/>
+        <rect x="360" y="20" width="100" height="40" rx="8" fill="url(#gFlow)"/>
+        <rect x="480" y="20" width="100" height="40" rx="8" fill="url(#gFlow)"/>
+        <rect x="600" y="20" width="100" height="40" rx="8" fill="#F4A261"/>
+        <!-- 矢印 -->
+        <text x="108" y="44" fill="#F4A261" font-size="16" font-weight="900">▶</text>
+        <text x="228" y="44" fill="#F4A261" font-size="16" font-weight="900">▶</text>
+        <text x="348" y="44" fill="#F4A261" font-size="16" font-weight="900">▶</text>
+        <text x="468" y="44" fill="#F4A261" font-size="16" font-weight="900">▶</text>
+        <text x="588" y="44" fill="#F4A261" font-size="16" font-weight="900">▶</text>
+        <!-- ラベル -->
+        <text x="50"  y="44" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">課題設定</text>
+        <text x="170" y="44" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">素材収集</text>
+        <text x="290" y="44" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">発散</text>
+        <text x="410" y="44" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">収束</text>
+        <text x="530" y="44" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">表現</text>
+        <text x="650" y="44" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">実験・学習</text>
+        <!-- 循環矢印ラベル -->
+        <text x="380" y="72" fill="#2D6A4F" font-size="10" text-anchor="middle">↩ 課題再定義（循環）</text>
+      </svg>
+    </div>
+
+    <!-- 概念カードグリッド -->
+    <div class="grid-3">
+
+      <div class="concept-card">
+        <div class="c-icon">🧰</div>
+        <div class="c-name">考具</div>
+        <span class="c-short">思考の道具箱</span>
+        <div class="c-def">考える行為を支える汎用の道具（フレーム・手法・型）。人に依存せず再現性を高め、思考の抜け漏れを減らす。</div>
+        <div class="c-why">💡 なぜ重要：才能ではなくプロセスで発想できるようになるから</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-icon">🎯</div>
+        <div class="c-name">課題設定</div>
+        <span class="c-short">起点の精度</span>
+        <div class="c-def">誰のどんな不（不満・不便・不安等）を、なぜ今、どの水準で解くかを言語化する起点。ここがズレると以後の努力は空回りする。</div>
+        <div class="c-why">💡 なぜ重要：発散・収束の効率と品質を左右する最重要ステップだから</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-icon">👁️</div>
+        <div class="c-name">視点移動</div>
+        <span class="c-short">見る角度を替える</span>
+        <div class="c-def">顧客・競合・異業種・時間軸など視点を変えて対象を眺め、見えない組合せや価値を発見する方法。</div>
+        <div class="c-why">💡 なぜ重要：視点の多様性↑ → 新結合の確率↑ → アイデア量・独創性↑</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-icon">🔧</div>
+        <div class="c-name">SCAMPER</div>
+        <span class="c-short">系統的にいじる</span>
+        <div class="c-def">代用・結合・応用・変更・拡大・縮小・他転用・置換・逆転の観点で対象を系統的にいじる発想法（オズボーンのチェックリスト）。</div>
+        <div class="c-why">💡 なぜ重要：網羅的な変形で見落としを防ぎ、発想の量を担保するから</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-icon">✍️</div>
+        <div class="c-name">ブレーンライティング</div>
+        <span class="c-short">静かな集団発想</span>
+        <div class="c-def">口頭ではなく紙やデジタルで静かに書き回すことで量と多様性を確保する集団発想法（例：6-3-5法）。</div>
+        <div class="c-why">💡 なぜ重要：同調圧力↓・参加平等性↑ → 数と質が安定するから</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-icon">🔗</div>
+        <div class="c-name">強制連想</div>
+        <span class="c-short">無理やり結ぶ</span>
+        <div class="c-def">無関係に見える言葉・画像と強引に結びつけて新結合を生む技法。固定観念を外す効果が高い。</div>
+        <div class="c-why">💡 なぜ重要：既存の思考パターンを破壊し、予想外の組合せを生むから</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-icon">📊</div>
+        <div class="c-name">マトリクス発想</div>
+        <span class="c-short">組合せを可視化</span>
+        <div class="c-def">二つの軸（例：顧客×機能）を交差させ、空白マスを埋めながら網羅的に組み合わせを探索する方法。</div>
+        <div class="c-why">💡 なぜ重要：抜け漏れ↓・比較容易になり、探索空間を構造化できるから</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-icon">🗂️</div>
+        <div class="c-name">KJ法（親和図法）</div>
+        <span class="c-short">意味の塊をつくる</span>
+        <div class="c-def">短文カードを群化・関係付け・命名して構造を発見する方法。発散情報からコンセプトを立ち上げる。</div>
+        <div class="c-why">💡 なぜ重要：パターン発見 → コンセプト言語化 → 合意形成が加速するから</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-icon">📄</div>
+        <div class="c-name">1枚企画書</div>
+        <span class="c-short">要点一枚化</span>
+        <div class="c-def">背景・課題・着想・価値・実現方法・次アクションを1枚で伝える表現の型。意思決定を速める。</div>
+        <div class="c-why">💡 なぜ重要：表現と合意形成まで含めて"仕事のアイデア"が完成するから</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-icon">📓</div>
+        <div class="c-name">ネタ帳</div>
+        <span class="c-short">素材の冷蔵庫</span>
+        <div class="c-def">気づき・事例・問い・フレーズを継続収集する個人データベース。発想時の素材庫となる。</div>
+        <div class="c-why">💡 なぜ重要：発想の素材量が多いほど新結合の確率が上がるから</div>
+      </div>
+
+    </div>
+
+    <!-- 横棒グラフ：各フェーズの重要度イメージ -->
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title">📈 思考フェーズ別・効果の方向性</div>
+      <div class="bar-chart">
+        <div class="bar-item">
+          <div class="bar-label"><span>課題設定の精度</span><span>最重要</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>発散の多様性</span><span>高</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:80%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>収束の構造化</span><span>高</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:75%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>表現・伝達の型</span><span>中〜高</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:65%"></div></div>
+        </div>
+        <div class="bar-item">
+          <div class="bar-label"><span>習慣化・反復</span><span>長期的に最大</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
+        </div>
+      </div>
+      <div class="reason-box"><strong>理由：</strong>どのフェーズも欠かせないが、課題設定のズレは全工程を無駄にし、習慣化は複利的に効果を高める。</div>
+    </div>
+
+  </section>
+
+  <!-- ===== タブ2：各章の要約 ===== -->
+  <section class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <div class="chapter-card">
+      <div class="ch-num">Chapter 01</div>
+      <div class="ch-title">🚀 導入：発想は道具と型で上達する</div>
+      <ul>
+        <li>発想は才能ではなく、学習可能な技術である</li>
+        <li>"考具"という概念を提示：汎用の思考道具を使いこなすことが前提</li>
+        <li>誰でも再現性高くアイデアを生み出せるという前提を確立する</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>「自分にはセンスがない」という思い込みを解除し、以降の道具を学ぶ動機を作るため。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="ch-num">Chapter 02</div>
+      <div class="ch-title">🎯 準備：課題設定とネタ帳の習慣化</div>
+      <ul>
+        <li>「誰のどんな不を解くか」を言語化する課題設定が起点</li>
+        <li>課題がズレると以後の発散・収束の努力が空回りする</li>
+        <li>ネタ帳で気づき・事例・問いを継続収集し素材庫を育てる</li>
+        <li>観察と問い直しを日常に組み込む習慣が発想の土台になる</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>良い発散は良い課題と豊富な素材から始まる。準備なき発散は方向性を失うから。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="ch-num">Chapter 03</div>
+      <div class="ch-title">💥 発散の道具：視点移動・SCAMPER・強制連想・マトリクス・ブレーンライティング</div>
+      <ul>
+        <li>視点移動：顧客・競合・異業種・時間軸など多角的に眺める</li>
+        <li>SCAMPER：9つの観点で対象を系統的に変形し量を確保する</li>
+        <li>強制連想：無関係な要素と強引に結びつけ固定観念を外す</li>
+        <li>マトリクス：2軸の交差で組合せを網羅的に可視化する</li>
+        <li>ブレーンライティング：書き回しで同調圧力を排除し多様性を確保</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>発散の量と多様性がアイデアの質の上限を決める。道具なき発散は偏りと枯渇を招くから。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="ch-num">Chapter 04</div>
+      <div class="ch-title">🗂️ 収束の道具：KJ法・評価軸・コンセプト抽出</div>
+      <ul>
+        <li>KJ法でカードを群化・命名し、散らばった発散情報に構造を与える</li>
+        <li>評価軸（実現可能性・独自性・価値等）でふるいにかける</li>
+        <li>核となるコンセプトを言語化し、次の表現フェーズへ橋渡しする</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>発散だけでは実行に移せない。収束の型がなければアイデアは「思いつき」で終わるから。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="ch-num">Chapter 05</div>
+      <div class="ch-title">📄 表現と通し方：1枚企画書で伝える</div>
+      <ul>
+        <li>背景・課題・着想・価値・実現方法・次アクションを1枚に収める</li>
+        <li>相手視点で価値提案を可視化し、意思決定を速める</li>
+        <li>「伝わってナンボ」：表現と合意形成まで含めて完成とする</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>どれだけ良いアイデアも伝わらなければ実現しない。表現の型が合意形成コストを下げるから。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="ch-num">Chapter 06</div>
+      <div class="ch-title">🔄 実践定着：個人とチームで習慣化する</div>
+      <ul>
+        <li>日常に"考具"を組み込み、個人とチームで反復する</li>
+        <li>発散と収束をセットで回す習慣が成果に直結する</li>
+        <li>失敗コストを下げ、反復を促す環境設計が鍵</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>一度使うだけでは効果は限定的。習慣化による複利的な発想力向上が本書の最終目標だから。</div>
+    </div>
+
+  </section>
+
+  <!-- ===== タブ3：具体例 ===== -->
+  <section class="tab-panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+
+    <div class="example-card">
+      <div class="ex-icon">🍕</div>
+      <div class="ex-title">例1：SCAMPERで「宅配ピザ」を変形する</div>
+      <div class="ex-bg">📌 背景：既存の宅配ピザビジネスに新しい価値を加えたい場面を想定。</div>
+      <div class="ex-suggest">
+        <strong>適用例：</strong><br>
+        ▸ 代用（Substitute）→ 生地をカリフラワーに置き換え<br>
+        ▸ 結合（Combine）→ ピザ×サブスクリプションモデル<br>
+        ▸ 逆転（Reverse）→ 客が店に来て自分で焼く体験型に<br>
+        ▸ 縮小（Minify）→ 一口サイズのピザを多種類提供
+      </div>
+      <div class="ex-reason">🔍 <strong>この例が示すこと：</strong>SCAMPERは「何を変えるか」の観点を9つ与えることで、思考の空白を埋め、短時間で多数の変形案を生む。才能ではなく手順が発想を生む証拠。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-icon">🗂️</div>
+      <div class="ex-title">例2：KJ法で「会議が長い」問題を構造化する</div>
+      <div class="ex-bg">📌 背景：チームで「会議が長い」という課題に対してブレストした後、20枚のメモが散乱している状態。</div>
+      <div class="ex-suggest">
+        <strong>適用例：</strong><br>
+        ▸ カードを並べると「準備不足」「目的不明確」「発言の偏り」の3群が浮かぶ<br>
+        ▸ 各群に名前をつけると「設計の問題」「ファシリテーションの問題」「文化の問題」と構造化<br>
+        ▸ 最も根本的な群＝「設計の問題」をコンセプトとして1枚企画書へ
+      </div>
+      <div class="ex-reason">🔍 <strong>この例が示すこと：</strong>KJ法は散らばった情報に「意味の構造」を与え、解くべき本質を浮かび上がらせる。発散後の混沌を整理する収束の力を示す。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-icon">🔗</div>
+      <div class="ex-title">例3：強制連想で「図書館×スポーツジム」を結ぶ</div>
+      <div class="ex-bg">📌 背景：新しいコミュニティスペースのコンセプトを考える際、ランダムに「スポーツジム」というカードを引いた。</div>
+      <div class="ex-suggest">
+        <strong>適用例：</strong><br>
+        ▸ 図書館＋ジムの共通点を探す→「自己投資の場」「静かな集中」「会員制」<br>
+        ▸ 「知識と身体を同時に鍛える複合施設」というコンセプトが浮上<br>
+        ▸ 「読書しながら有酸素運動できるトレッドミル付き読書ブース」へ展開
+      </div>
+      <div class="ex-reason">🔍 <strong>この例が示すこと：</strong>無関係な要素を強引に結ぶことで、論理的思考だけでは到達できない新結合が生まれる。固定観念の外側にこそ独創的なアイデアがある。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="ex-icon">✍️</div>
+      <div class="ex-title">例4：ブレーンライティング6-3-5法の実践</div>
+      <div class="ex-bg">📌 背景：6人チームで新商品アイデアを出す会議。声の大きい人に意見が偏る問題があった。</div>
+      <div class="ex-suggest">
+        <strong>適用例：</strong><br>
+        ▸ 6人が各自3つのアイデアを5分で紙に書く（計18案）<br>
+        ▸ 紙を隣に回し、他者のアイデアを見て新たに3つ書く<br>
+        ▸ 6回転で最大108案が生成される
+      </div>
+      <div class="ex-reason">🔍 <strong>この例が示すこと：</strong>口頭ブレストの同調圧力を排除し、全員が平等に発言できる環境を作ることで、量と多様性が劇的に向上する。</div>
+    </div>
+
+    <!-- 関連書籍 -->
+    <div class="card" style="margin-top:8px;">
+      <div class="card-title">📚 関連書籍</div>
+      <div class="book-card">
+        <div class="book-icon">📗</div>
+        <div class="book-info">
+          <div class="b-title">アイデアのつくり方</div>
+          <div class="b-author">ジェームズ・W・ヤング</div>
+          <div class="b-rel">新結合の原理とプロセスが"考具"の思想的土台になる。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📘</div>
+        <div class="book-info">
+          <div class="b-title">ラテラル・シンキング</div>
+          <div class="b-author">エドワード・デ・ボノ</div>
+          <div class="b-rel">視点移動・発想の飛躍を体系化し、発散フェーズを強化できる。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📙</div>
+        <div class="book-info">
+          <div class="b-title">発想法</div>
+          <div class="b-author">川喜田二郎</div>
+          <div class="b-rel">KJ法（親和図法）の原典で、収束と構造化の核心を深掘りできる。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📕</div>
+        <div class="book-info">
+          <div class="b-title">知的生産の技術</div>
+          <div class="b-author">梅棹忠夫</div>
+          <div class="b-rel">メモ・カード法など素材収集と整理の習慣化が"考具"の運用を支える。</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== タブ4：重要な引用 ===== -->
+  <section class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <div class="quote-card">
+      <div class="q-badge">要旨</div>
+      <div class="q-text">道具を持てば誰でも考えられる。</div>
+      <div class="q-note">💡 才能依存からプロセス依存へ発想を転換し、学習可能性を明確にするから。発想を「センス」ではなく「スキル」として捉え直す本書の核心。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="q-badge">要旨</div>
+      <div class="q-text">いいアイデアは「いい課題」から始まる。</div>
+      <div class="q-note">💡 出発点の定義が以後の発散・収束の効率と品質を左右するため。課題設定こそが最大のレバレッジポイントであることを示す。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="q-badge">要旨</div>
+      <div class="q-text">発散と収束はセットで回す。</div>
+      <div class="q-note">💡 量と多様性を確保しつつ、実行可能性へ落とし込む往復が成果に直結するから。どちらか一方だけでは不完全であることを強調する。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="q-badge">要旨</div>
+      <div class="q-text">アイデアは使ってナンボ、伝わってナンボ。</div>
+      <div class="q-note">💡 表現と合意形成まで含めて"仕事のアイデア"が完成するという実務的視点を示すため。思いつくだけでは価値を生まないという現実を突く。</div>
+    </div>
+
+    <!-- 概念間の関係性 -->
+    <div class="card">
+      <div class="card-title">🔄 概念間の因果関係</div>
+      <ul>
+        <li>課題設定の明確さ↑ → 発散の方向性が定まり無駄打ち↓</li>
+        <li>視点移動・強制連想の多様性↑ → 新結合の確率↑ → アイデア量・独創性↑</li>
+        <li>マトリクスで探索空間を構造化 → 抜け漏れ↓・比較容易</li>
+        <li>ブレーンライティング → 同調圧力↓・参加平等性↑ → 数と質が安定</li>
+        <li>KJ法でパターン発見 → コンセプト言語化 → 1枚企画書で伝達・合意形成が加速</li>
+      </ul>
+      <div class="reason-box"><strong>理由：</strong>各道具は独立ではなく連鎖している。プロセス全体を回すことで相乗効果が生まれる。</div>
+    </div>
+
+  </section>
+
+  <!-- ===== タブ5：今日のアクション ===== -->
+  <section class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">⏱️ 15〜30分で今日すぐ実行できる3つのアクション</div>
+      <ul>
+        <li>道具を知るだけでなく、手を動かすことで初めて"考具"が身体に入る</li>
+        <li>小さく始めて反復することが習慣化の鍵</li>
+      </ul>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <div class="a-title">🎯 課題を「誰に・何を・なぜ」で1文化する</div>
+        <div class="a-meta">⏱ 目安：15分 ／ 道具：紙とペン or メモアプリ</div>
+        <ul style="list-style:none;padding:0;margin:8px 0;">
+          <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;">
+            <span style="position:absolute;left:2px;color:#F4A261;">▸</span>
+            今抱えている仕事・生活の課題を1つ選ぶ
+          </li>
+          <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;">
+            <span style="position:absolute;left:2px;color:#F4A261;">▸</span>
+            「誰の（対象者）」「どんな不（不満・不便・不安）を」「なぜ今解くか」を埋める
+          </li>
+          <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;">
+            <span style="position:absolute;left:2px;color:#F4A261;">▸</span>
+            1文にまとめて声に出して読む
+          </li>
+        </ul>
+        <div class="a-effect">✅ 期待効果：課題の解像度が上がり、以降の発散・収束の方向性が定まる。「何を解くか」が明確になるだけで思考の無駄打ちが激減する。</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <div class="a-title">🔧 SCAMPERで対象を10変形する</div>
+        <div class="a-meta">⏱ 目安：20〜25分 ／ 道具：紙とペン</div>
+        <ul style="list-style:none;padding:0;margin:8px 0;">
+          <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;">
+            <span style="position:absolute;left:2px;color:#F4A261;">▸</span>
+            変形したい対象（商品・サービス・業務）を1つ決める
+          </li>
+          <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;">
+            <span style="position:absolute;left:2px;color:#F4A261;">▸</span>
+            S（代用）C（結合）A（応用）M（変更）P（拡大/縮小）E（他転用）R（逆転）の順に問いかける
+          </li>
+          <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;">
+            <span style="position:absolute;left:2px;color:#F4A261;">▸</span>
+            各観点から最低1〜2案を書き出し、合計10案以上を目指す
+          </li>
+        </ul>
+        <div class="a-effect">✅ 期待効果：「思いつかない」状態を脱し、系統的に発想の量を確保できる。才能ではなく手順で発想できることを体感できる。</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <div class="a-title">🗂️ KJ法でメモ20枚を3群に束ねる</div>
+        <div class="a-meta">⏱ 目安：25〜30分 ／ 道具：付箋20枚 or カード</div>
+        <ul style="list-style:none;padding:0;margin:8px 0;">
+          <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;">
+            <span style="position:absolute;left:2px;color:#F4A261;">▸</span>
+            テーマに関する気づき・問い・事実を付箋1枚に1つずつ書く（20枚）
+          </li>
+          <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;">
+            <span style="position:absolute;left:2px;color:#F4A261;">▸</span>
+            似たものを近くに集め、3〜5の群に分ける
+          </li>
+          <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;">
+            <span style="position:absolute;left:2px;color:#F4A261;">▸</span>
+            各群に「この群の本質は何か」を表す名前をつける
+          </li>
+        </ul>
+        <div class="a-effect">✅ 期待効果：散らばった情報に構造が生まれ、解くべき本質（コンセプト）が浮かび上がる。発散後の混沌を整理する収束力が身につく。</div>
+      </div>
+    </div>
+
+    <!-- 習慣化のヒント -->
+    <div class="card">
+      <div class="card-title">🔄 習慣化のヒント</div>
+      <ul>
+        <li>📓 ネタ帳を1冊決め、毎日1つ気づきを書く（5分）</li>
+        <li>👁️ 通勤中に「この商品をSCAMPERしたら？」と問いかける</li>
+        <li>📄 週1回、気になる課題を1枚企画書の型で書いてみる</li>
+        <li>🔗 月1回、全く関係ない分野の本・記事を読んで強制連想する</li>
+      </ul>
+      <div class="reason-box"><strong>理由：</strong>考具は使うたびに精度が上がる。小さな反復の積み重ねが複利的な発想力向上をもたらすから。</div>
+    </div>
+
+  </section>
+
+</div><!-- /tab-wrapper -->
+
+<!-- ===== フッター ===== -->
+<footer>
+  <p>📚 考具インフォグラフィック ／ カラーパレット：プライマリー #2D6A4F ／ セカンダリー #1B4332 ／ アクセント #F4A261</p>
+</footer>
+
+<script>
+  // ===== タブ切替 =====
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  tabs.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const target = btn.getAttribute('aria-controls');
+
+      tabs.forEach(function(t) {
+        t.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(function(p) {
+        p.classList.remove('active');
+      });
+
+      btn.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById(target);
+      if (panel) {
+        panel.classList.add('active');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  });
+
+  // ===== 横棒グラフ アニメーション =====
+  function animateBars() {
+    var fills = document.querySelectorAll('.bar-fill');
+    fills.forEach(function(fill) {
+      var w = fill.style.width;
+      fill.style.width = '0%';
+      setTimeout(function() {
+        fill.style.width = w;
+      }, 200);
+    });
+  }
+
+  // 概念タブが表示されたときにアニメーション
+  var conceptsTab = document.getElementById('tab-concepts');
+  if (conceptsTab) {
+    conceptsTab.addEventListener('click', function() {
+      setTimeout(animateBars, 100);
+    });
+  }
+  // 初期表示時もアニメーション
+  window.addEventListener('load', function() {
+    setTimeout(animateBars, 400);
+  });
+</script>
+</body>
+</html>
