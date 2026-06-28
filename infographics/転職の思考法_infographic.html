@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>市場価値インフォグラフィック｜キャリア戦略の全体像</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a1a2e
+  セカンダリー:  #16213e
+  アクセント:    #e94560
+  補助1:        #0f3460
+  補助2:        #f5a623
+  補助3:        #4ecdc4
+-->
+<style>
+  :root {
+    --primary: #1a1a2e;
+    --secondary: #16213e;
+    --accent: #e94560;
+    --sub1: #0f3460;
+    --sub2: #f5a623;
+    --sub3: #4ecdc4;
+    --text-light: #e8e8f0;
+    --text-muted: #a0a0b8;
+    --card-bg: rgba(255,255,255,0.05);
+    --card-border: rgba(255,255,255,0.1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--sub1) 100%);
+    color: var(--text-light);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  /* ===== HEADER ===== */
+  .site-header {
+    background: linear-gradient(90deg, var(--accent) 0%, #c0392b 100%);
+    padding: 16px 20px 12px;
+    text-align: center;
+  }
+  .site-header h1 { font-size: clamp(16px, 4vw, 22px); font-weight: 900; letter-spacing: 0.05em; }
+  .site-header p { font-size: 11px; color: rgba(255,255,255,0.85); margin-top: 4px; }
+
+  /* ===== HERO BLOCK ===== */
+  .hero {
+    background: linear-gradient(135deg, rgba(15,52,96,0.9) 0%, rgba(233,69,96,0.15) 100%);
+    border: 1px solid var(--card-border);
+    margin: 16px 12px;
+    border-radius: 16px;
+    padding: 20px 16px;
+  }
+  .hero-label {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    letter-spacing: 0.1em;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media(max-width:480px){ .hero-grid { grid-template-columns: 1fr; } }
+  .hero-item {
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 12px;
+    border-left: 3px solid var(--sub2);
+  }
+  .hero-item.answer { border-left-color: var(--accent); }
+  .hero-item.why { border-left-color: var(--sub3); }
+  .hero-item.how { border-left-color: var(--sub2); grid-column: 1 / -1; }
+  .hero-item-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+  .hero-item p { font-size: 12px; line-height: 1.7; }
+  .hero-item strong { color: var(--sub2); }
+
+  /* ===== FORMULA VISUAL ===== */
+  .formula-block {
+    margin: 0 12px 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+  }
+  .formula-title { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; letter-spacing: 0.1em; }
+  .formula-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .formula-box {
+    background: linear-gradient(135deg, var(--sub1), var(--secondary));
+    border: 1px solid var(--sub3);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--sub3);
+    min-width: 90px;
+  }
+  .formula-op { font-size: 20px; font-weight: 900; color: var(--accent); }
+  .formula-eq { font-size: 20px; font-weight: 900; color: var(--sub2); }
+  .formula-result {
+    background: linear-gradient(135deg, var(--accent), #c0392b);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 900;
+    color: #fff;
+  }
+
+  /* ===== TABS ===== */
+  .tab-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 0 12px 10px;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--card-border);
+    color: var(--text-muted);
+    border-radius: 20px;
+    padding: 7px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { background: rgba(255,255,255,0.12); color: var(--text-light); }
+  .tab-btn.active {
+    background: linear-gradient(90deg, var(--accent), #c0392b);
+    color: #fff;
+    border-color: transparent;
+  }
+  .tab-panel { display: none; padding: 0 12px 40px; }
+  .tab-panel.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 16px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .card-icon { font-size: 24px; margin-bottom: 8px; }
+  .card-title {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--sub3);
+  }
+  .card-subtitle {
+    font-size: 10px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+  }
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    font-size: 12px;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li .bullet { flex-shrink: 0; color: var(--sub2); font-size: 12px; }
+  .card-why {
+    margin-top: 10px;
+    background: rgba(233,69,96,0.1);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 10px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.8);
+  }
+  .card-why strong { color: var(--accent); }
+
+  /* ===== CHAPTER CARDS ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .chapter-num {
+    display: inline-block;
+    background: linear-gradient(90deg, var(--sub1), var(--accent));
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .chapter-title { font-size: 15px; font-weight: 800; margin-bottom: 8px; color: var(--sub2); }
+  .chapter-card ul { list-style: none; padding: 0; }
+  .chapter-card ul li {
+    font-size: 12px;
+    padding: 4px 0;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .chapter-card ul li:last-child { border-bottom: none; }
+  .chapter-why {
+    margin-top: 10px;
+    background: rgba(78,205,196,0.1);
+    border-left: 3px solid var(--sub3);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 10px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.8);
+  }
+  .chapter-why strong { color: var(--sub3); }
+
+  /* ===== EXAMPLE CARDS ===== */
+  .example-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-top: 3px solid var(--sub2);
+  }
+  .example-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: rgba(245,166,35,0.2);
+    float: right;
+    line-height: 1;
+  }
+  .example-title { font-size: 14px; font-weight: 800; color: var(--sub2); margin-bottom: 8px; }
+  .example-section { margin-bottom: 8px; }
+  .example-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+  }
+  .example-section p { font-size: 12px; line-height: 1.7; }
+  .example-reason {
+    background: rgba(245,166,35,0.1);
+    border-left: 3px solid var(--sub2);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 10px;
+    font-size: 11px;
+    margin-top: 8px;
+  }
+  .example-reason strong { color: var(--sub2); }
+
+  /* ===== QUOTE CARDS ===== */
+  .quote-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 18px 16px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .quote-mark {
+    font-size: 48px;
+    color: var(--accent);
+    opacity: 0.3;
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .quote-text {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.8;
+    padding-left: 28px;
+    color: var(--text-light);
+    font-style: italic;
+  }
+  .quote-badge {
+    display: inline-block;
+    background: rgba(233,69,96,0.2);
+    color: var(--accent);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    letter-spacing: 0.1em;
+  }
+  .quote-note {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding-left: 28px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 8px;
+  }
+
+  /* ===== ACTION CARDS ===== */
+  .action-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-num {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), #c0392b);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 900;
+    color: #fff;
+  }
+  .action-body { flex: 1; }
+  .action-title { font-size: 14px; font-weight: 800; color: var(--sub2); margin-bottom: 6px; }
+  .action-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+  .action-tag {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.08em;
+  }
+  .tag-time { background: rgba(78,205,196,0.2); color: var(--sub3); }
+  .tag-goal { background: rgba(245,166,35,0.2); color: var(--sub2); }
+  .action-steps { list-style: none; padding: 0; }
+  .action-steps li {
+    font-size: 12px;
+    padding: 4px 0;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .action-steps li:last-child { border-bottom: none; }
+  .action-effect {
+    margin-top: 8px;
+    background: rgba(78,205,196,0.1);
+    border-left: 3px solid var(--sub3);
+    border-radius: 0 8px 8px 0;
+    padding: 7px 10px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.8);
+  }
+  .action-effect strong { color: var(--sub3); }
+
+  /* ===== RELATION CHART ===== */
+  .relation-block {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .relation-title { font-size: 13px; font-weight: 800; color: var(--sub3); margin-bottom: 12px; }
+  .relation-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 12px;
+  }
+  .relation-item:last-child { border-bottom: none; }
+  .relation-arrow { color: var(--accent); font-weight: 900; flex-shrink: 0; }
+
+  /* ===== BAR CHART ===== */
+  .bar-chart { margin: 16px 0; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .bar-label { font-size: 11px; width: 110px; flex-shrink: 0; color: var(--text-muted); }
+  .bar-track {
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    border-radius: 6px;
+    height: 20px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    transition: width 1s ease;
+  }
+  .bar-val { font-size: 11px; font-weight: 700; width: 36px; text-align: right; flex-shrink: 0; }
+
+  /* ===== RELATED BOOKS ===== */
+  .book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .book-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .book-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .book-title { font-size: 13px; font-weight: 800; color: var(--sub2); margin-bottom: 3px; }
+  .book-author { font-size: 10px; color: var(--text-muted); margin-bottom: 6px; }
+  .book-rel { font-size: 11px; line-height: 1.6; }
+
+  /* ===== SECTION HEADING ===== */
+  .section-heading {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--sub3);
+    letter-spacing: 0.08em;
+    margin: 20px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--sub3), transparent);
+  }
+
+  /* ===== SVG DIAGRAM ===== */
+  .svg-wrap { overflow-x: auto; margin: 16px 0; }
+  svg text { font-family: 'Hiragino Kaku Gothic ProN', sans-serif; }
+
+  /* ===== SCROLL TOP ===== */
+  .scroll-top {
+    position: fixed;
+    bottom: 20px;
+    right: 16px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    display: none;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SITE HEADER ===== -->
+<header class="site-header" role="banner">
+  <h1>📈 市場価値キャリア戦略｜インフォグラフィック</h1>
+  <p>キャリアは会社ではなく市場が決める ── 全体像を5分で把握する</p>
+</header>
+
+<!-- ===== HERO BLOCK ===== -->
+<section class="hero" aria-label="エグゼクティブサマリー">
+  <span class="hero-label">📌 EXECUTIVE SUMMARY</span>
+  <div class="hero-grid">
+    <div class="hero-item">
+      <div class="hero-item-label">❓ 問い</div>
+      <p>終身雇用が崩れる中で、<strong>後悔しない転職・キャリア選択</strong>はどう設計すべきか？</p>
+    </div>
+    <div class="hero-item answer">
+      <div class="hero-item-label">💡 答え</div>
+      <p><strong>市場価値＝技術資産×人的資産×業界の生産性</strong>を最大化し、成長産業で「転職の軸」を明確化。職能か業界の一方のみをずらす。</p>
+    </div>
+    <div class="hero-item why">
+      <div class="hero-item-label">🔍 Why（なぜ）</div>
+      <p>労働市場は<strong>相対評価</strong>。価値は環境×スキルの掛け算で決まり、弱点が全体を押し下げる。成長産業は機会・学習・報酬の質が高い。</p>
+    </div>
+    <div class="hero-item how">
+      <div class="hero-item-label">🛠 How（どうやって）</div>
+      <p>①棚卸し（スキル・人脈・産業指標）②軸の定義（Will/Can/Must）③情報の非対称性を埋める調査（粗利率・成長率・事業構造・上司の力量）④ネットワークで一次情報収集⑤選考を"相互選抜"の場として活用⑥オファーの見極め（成長/裁量/学習/文化適合）⑦入社後90日学習計画でレバレッジ最大化</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FORMULA VISUAL ===== -->
+<div class="formula-block" aria-label="市場価値の公式">
+  <div class="formula-title">🧮 市場価値の公式（掛け算構造）</div>
+  <div class="formula-row">
+    <div class="formula-box">🧠 技術資産<br><span style="font-size:10px;color:var(--text-muted)">持ち運べる専門性</span></div>
+    <div class="formula-op">×</div>
+    <div class="formula-box">🤝 人的資産<br><span style="font-size:10px;color:var(--text-muted)">関係資本</span></div>
+    <div class="formula-op">×</div>
+    <div class="formula-box">🏭 業界の生産性<br><span style="font-size:10px;color:var(--text-muted)">環境の追い風</span></div>
+    <div class="formula-eq">=</div>
+    <div class="formula-result">📊 市場価値</div>
+  </div>
+</div>
+
+<!-- ===== TAB NAVIGATION ===== -->
+<nav class="tab-nav" role="tablist" aria-label="コンテンツタブ">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab-concepts" id="btn-concepts">🧩 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters" id="btn-chapters">📖 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples" id="btn-examples">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes" id="btn-quotes">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions" id="btn-actions">⚡ 今日のアクション</button>
+</nav>
+
+<!-- ============================= -->
+<!-- TAB 1: 主要概念 -->
+<!-- ============================= -->
+<div class="tab-panel active" id="tab-concepts" role="tabpanel" aria-labelledby="btn-concepts">
+
+  <div class="section-heading">🔑 10の主要概念</div>
+  <div class="card-grid">
+
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">マーケットバリュー（市場価値）</div>
+      <div class="card-subtitle">価値は掛け算で上げる</div>
+      <ul>
+        <li><span class="bullet">▸</span>個人の労働市場における交換価値</li>
+        <li><span class="bullet">▸</span>技術資産×人的資産×業界の生産性の掛け算</li>
+        <li><span class="bullet">▸</span>環境選択と学習速度が大きく左右する</li>
+        <li><span class="bullet">▸</span>足し算ではなく掛け算なので弱点が全体を下げる</li>
+      </ul>
+      <div class="card-why"><strong>なぜ重要か：</strong>自分の価値を正確に把握しないと、適切な環境選択も交渉もできないため。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🧠</div>
+      <div class="card-title">技術資産</div>
+      <div class="card-subtitle">持ち運べる専門性</div>
+      <ul>
+        <li><span class="bullet">▸</span>再現性のあるスキル・知識・実績の総体</li>
+        <li><span class="bullet">▸</span>環境が変わっても成果に転化できる専門性</li>
+        <li><span class="bullet">▸</span>強い上司・良い仕事の型から最速で獲得できる</li>
+        <li><span class="bullet">▸</span>市場価値の根幹となる要素</li>
+      </ul>
+      <div class="card-why"><strong>なぜ重要か：</strong>どの会社に行っても通用する「持ち運べる武器」が長期的な選択肢を広げるため。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🤝</div>
+      <div class="card-title">人的資産</div>
+      <div class="card-subtitle">機会を連れてくる関係資本</div>
+      <ul>
+        <li><span class="bullet">▸</span>信頼に基づくネットワークと推薦資本</li>
+        <li><span class="bullet">▸</span>良い上司・顧客・仲間が機会を連鎖させる</li>
+        <li><span class="bullet">▸</span>一次情報の取得源にもなる</li>
+        <li><span class="bullet">▸</span>転職時の情報の非対称性を縮小する</li>
+      </ul>
+      <div class="card-why"><strong>なぜ重要か：</strong>良い機会は公募より人脈経由で来ることが多く、信頼資本が機会の質を決めるため。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🏭</div>
+      <div class="card-title">業界の生産性</div>
+      <div class="card-subtitle">環境の追い風</div>
+      <ul>
+        <li><span class="bullet">▸</span>産業構造・粗利率・成長率・レバレッジの高さ</li>
+        <li><span class="bullet">▸</span>伸びる産業は同じ努力でも成果が増幅する</li>
+        <li><span class="bullet">▸</span>学習機会の質と量も産業によって大きく異なる</li>
+        <li><span class="bullet">▸</span>報酬水準も産業の生産性に連動する</li>
+      </ul>
+      <div class="card-why"><strong>なぜ重要か：</strong>どれだけ優秀でも衰退産業では成果が出にくく、環境選択が努力の効率を左右するため。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">転職の軸</div>
+      <div class="card-subtitle">自分だけの判断物差し</div>
+      <ul>
+        <li><span class="bullet">▸</span>意思決定の基準を言語化したもの</li>
+        <li><span class="bullet">▸</span>Will（やりたい）×Can（できる）×Market（市場が求める）</li>
+        <li><span class="bullet">▸</span>軸がないとオファー比較が感情的になる</li>
+        <li><span class="bullet">▸</span>何を得て何を捨てるかのトレードオフを設計する</li>
+      </ul>
+      <div class="card-why"><strong>なぜ重要か：</strong>軸がなければ複数オファーを一貫した基準で比較できず、後悔する選択をしやすいため。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">↔️</div>
+      <div class="card-title">ずらし戦略</div>
+      <div class="card-subtitle">一点突破の越境</div>
+      <ul>
+        <li><span class="bullet">▸</span>転職で変える軸を「職能か業界」の一つに限定</li>
+        <li><span class="bullet">▸</span>二軸同時変更はリスク・学習コストが増大する</li>
+        <li><span class="bullet">▸</span>一軸ずらしなら既存スキルが活きる</li>
+        <li><span class="bullet">▸</span>成功確率と可逆性を同時に高められる</li>
+      </ul>
+      <div class="card-why"><strong>なぜ重要か：</strong>未知の環境への適応コストを最小化しながら、新しい価値を獲得できる最も効率的な戦略のため。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">⚖️</div>
+      <div class="card-title">相互選抜</div>
+      <div class="card-subtitle">面接は見極めの場</div>
+      <ul>
+        <li><span class="bullet">▸</span>選考は企業が選ぶ場であり個人が見極める場でもある</li>
+        <li><span class="bullet">▸</span>情報の非対称性を是正する積極的な行為</li>
+        <li><span class="bullet">▸</span>上司・文化・事業構造を面接で確認する</li>
+        <li><span class="bullet">▸</span>受け身の姿勢ではミスマッチが起きやすい</li>
+      </ul>
+      <div class="card-why"><strong>なぜ重要か：</strong>入社後のミスマッチは時間・機会コストが大きく、事前の見極めが長期的な損失を防ぐため。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🔍</div>
+      <div class="card-title">情報の非対称性</div>
+      <div class="card-subtitle">調べ切った者が勝つ</div>
+      <ul>
+        <li><span class="bullet">▸</span>候補者と企業で情報量が偏る状態</li>
+        <li><span class="bullet">▸</span>一次情報（OB訪問・現場社員との対話）で埋める</li>
+        <li><span class="bullet">▸</span>粗利率・成長率・事業構造などの数値指標も活用</li>
+        <li><span class="bullet">▸</span>ギャップを埋めるほどミスマッチが低下する</li>
+      </ul>
+      <div class="card-why"><strong>なぜ重要か：</strong>情報格差がある状態での意思決定は失敗確率が高く、調査が意思決定の質を直接左右するため。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">👨‍💼</div>
+      <div class="card-title">強い上司</div>
+      <div class="card-subtitle">最速の学習装置</div>
+      <ul>
+        <li><span class="bullet">▸</span>高い成果創出と育成能力を持つマネージャ</li>
+        <li><span class="bullet">▸</span>短期成果と長期学習を同時に最大化する存在</li>
+        <li><span class="bullet">▸</span>良質な仕事の型を最速で獲得できる環境を作る</li>
+        <li><span class="bullet">▸</span>転職先選びで最も重視すべき要素の一つ</li>
+      </ul>
+      <div class="card-why"><strong>なぜ重要か：</strong>上司の質が技術資産の獲得速度を決め、3〜5年後の市場価値に大きな差をもたらすため。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🔄</div>
+      <div class="card-title">不可逆／可逆の意思決定</div>
+      <div class="card-subtitle">撤退可能性を残す</div>
+      <ul>
+        <li><span class="bullet">▸</span>取り返しのつかない選択とやり直し可能な選択の区別</li>
+        <li><span class="bullet">▸</span>転職は設計次第で可逆度を高められる</li>
+        <li><span class="bullet">▸</span>ずらし戦略は可逆性を高める設計の一つ</li>
+        <li><span class="bullet">▸</span>不可逆な決定ほど慎重な情報収集が必要</li>
+      </ul>
+      <div class="card-why"><strong>なぜ重要か：</strong>失敗しても戻れる設計をしておくことで、挑戦のハードルを下げ、長期的な成長機会を増やせるため。</div>
+    </div>
+
+  </div>
+
+  <!-- 関係性チャート -->
+  <div class="section-heading">🔗 概念間の因果関係</div>
+  <div class="relation-block">
+    <div class="relation-title">📐 価値が高まるメカニズム</div>
+    <div class="relation-item"><span class="relation-arrow">▶</span>伸びる業界に入る → 学習機会↑・粗利率↑ → 同じ努力でも成果・報酬↑ → 市場価値↑</div>
+    <div class="relation-item"><span class="relation-arrow">▶</span>強い上司/チームの下で働く → 良質な仕事の型獲得 → 技術資産↑ → 次の機会で優位</div>
+    <div class="relation-item"><span class="relation-arrow">▶</span>ネットワーク拡張 → 一次情報取得 → 非対称性縮小 → ミスマッチ低下</div>
+    <div class="relation-item"><span class="relation-arrow">▶</span>転職の軸明確化 → オファー比較基準の一貫性 → 意思決定の質↑</div>
+    <div class="relation-item"><span class="relation-arrow">▶</span>ずらし戦略（職能or業界の一方） → 学習コスト最適化 → 成功確率↑・可逆性↑</div>
+    <div class="relation-item"><span class="relation-arrow">⚠️</span>短期の年収最大化偏重 → 学習/成長の質低下 → 中長期の市場価値停滞（逆効果）</div>
+  </div>
+
+  <!-- バーチャート：各要素の重要度イメージ -->
+  <div class="section-heading">📊 市場価値を構成する要素の影響度（概念的指標）</div>
+  <div class="relation-block">
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">業界の生産性</div>
+        <div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#e94560,#c0392b)">最大の乗数</div></div>
+        <div class="bar-val" style="color:var(--accent)">高</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">技術資産</div>
+        <div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#4ecdc4,#2ecc71)">専門性の深さ</div></div>
+        <div class="bar-val" style="color:var(--sub3)">高</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">人的資産</div>
+        <div class="bar-track"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,#f5a623,#e67e22)">機会の連鎖</div></div>
+        <div class="bar-val" style="color:var(--sub2)">中高</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">転職の軸の明確さ</div>
+        <div class="bar-track"><div class="bar-fill" style="width:75%;background:linear-gradient(90deg,#9b59b6,#8e44ad)">意思決定の質</div></div>
+        <div class="bar-val" style="color:#9b59b6">中高</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">情報収集の深さ</div>
+        <div class="bar-track"><div class="bar-fill" style="width:65%;background:linear-gradient(90deg,#3498db,#2980b9)">ミスマッチ防止</div></div>
+        <div class="bar-val" style="color:#3498db">中</div>
+      </div>
+    </div>
+    <p style="font-size:10px;color:var(--text-muted);margin-top:8px;">※ 概念的な重要度の相対比較。書籍内に具体的な数値指標の記載なし。</p>
+  </div>
+
+</div>
+
+<!-- ============================= -->
+<!-- TAB 2: 各章の要約 -->
+<!-- ============================= -->
+<div class="tab-panel" id="tab-chapters" role="tabpanel" aria-labelledby="btn-chapters">
+
+  <div class="section-heading">📖 7つの論点（章構成）</div>
+
+  <div class="chapter-card">
+    <span class="chapter-num">導入</span>
+    <div class="chapter-title">🚪 終身雇用の終焉とキャリアの主語を取り戻す</div>
+    <ul>
+      <li><span class="bullet">▸</span>終身雇用・年功序列という前提が崩れつつある現実を提示</li>
+      <li><span class="bullet">▸</span>「会社に依存しない」ことを前提としたキャリア設計の必要性</li>
+      <li><span class="bullet">▸</span>キャリアの意思決定の主語を「会社」から「自分」に戻す宣言</li>
+      <li><span class="bullet">▸</span>受け身のキャリアが生む長期的リスクを明示</li>
+    </ul>
+    <div class="chapter-why"><strong>なぜこの章が必要か：</strong>前提を共有しないと、以降の戦略論が「なぜ必要か」の文脈を失う。読者の危機感と能動性を引き出す土台となる。</div>
+  </div>
+
+  <div class="chapter-card">
+    <span class="chapter-num">第1部</span>
+    <div class="chapter-title">📊 価値の定義：市場価値の三要素</div>
+    <ul>
+      <li><span class="bullet">▸</span>市場は相対評価であり、絶対的な価値は存在しない</li>
+      <li><span class="bullet">▸</span>市場価値＝技術資産×人的資産×業界の生産性の枠組みを提示</li>
+      <li><span class="bullet">▸</span>掛け算構造ゆえ、弱点が全体を押し下げることを強調</li>
+      <li><span class="bullet">▸</span>環境選択（業界・会社・上司）が価値の増幅器になる</li>
+    </ul>
+    <div class="chapter-why"><strong>なぜこの章が必要か：</strong>「何を高めるべきか」の共通言語を作ることで、以降の戦略論の土台となる。価値の定義なき行動は方向を失う。</div>
+  </div>
+
+  <div class="chapter-card">
+    <span class="chapter-num">第2部</span>
+    <div class="chapter-title">🎯 軸の設計：Will/Can/Marketで転職の軸を言語化</div>
+    <ul>
+      <li><span class="bullet">▸</span>Will（やりたい）×Can（できる）×Market（市場が求める）の三角形</li>
+      <li><span class="bullet">▸</span>何を得て何を捨てるかのトレードオフを明示的に設計する</li>
+      <li><span class="bullet">▸</span>軸がないとオファー比較が感情・年収だけになりがち</li>
+      <li><span class="bullet">▸</span>軸の言語化が意思決定の一貫性と後悔の少なさを生む</li>
+    </ul>
+    <div class="chapter-why"><strong>なぜこの章が必要か：</strong>行動の前に「何のために動くか」を明確にしないと、良いオファーを見逃したり悪いオファーを選んだりするため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <span class="chapter-num">第3部</span>
+    <div class="chapter-title">↔️ 戦略的越境：ずらしは一つに限定</div>
+    <ul>
+      <li><span class="bullet">▸</span>転職で変える軸を「職能か業界」の一方に限定するずらし戦略</li>
+      <li><span class="bullet">▸</span>伸びる産業の見極め方（粗利率・成長率・事業構造）</li>
+      <li><span class="bullet">▸</span>強い上司の選び方と、上司が学習速度に与える影響</li>
+      <li><span class="bullet">▸</span>二軸同時変更のリスクと学習コスト増大を具体的に説明</li>
+    </ul>
+    <div class="chapter-why"><strong>なぜこの章が必要か：</strong>「どこに行くか」の具体的な選択基準を与え、戦略なき転職が生む失敗パターンを回避させるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <span class="chapter-num">第4部</span>
+    <div class="chapter-title">🔍 情報戦と見極め：定量・定性の調査術</div>
+    <ul>
+      <li><span class="bullet">▸</span>粗利率・成長率・事業構造などの定量指標の読み方</li>
+      <li><span class="bullet">▸</span>カルチャー・上司の力量などの定性的な見立て方</li>
+      <li><span class="bullet">▸</span>一次情報（OB訪問・現場社員との対話）の重要性</li>
+      <li><span class="bullet">▸</span>情報の非対称性を縮小することがミスマッチ防止の核心</li>
+    </ul>
+    <div class="chapter-why"><strong>なぜこの章が必要か：</strong>良い軸があっても情報が不足していれば正しい選択はできない。調査力が意思決定の質を直接決めるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <span class="chapter-num">第5部</span>
+    <div class="chapter-title">⚖️ 実行と交渉：選考を相互選抜の場にする</div>
+    <ul>
+      <li><span class="bullet">▸</span>選考を「企業が選ぶ場」かつ「自分が見極める場」として設計</li>
+      <li><span class="bullet">▸</span>オファーを学習・裁量・報酬・可逆性の4軸で評価する</li>
+      <li><span class="bullet">▸</span>交渉は感情ではなく市場価値の根拠に基づいて行う</li>
+      <li><span class="bullet">▸</span>受け身の選考姿勢がミスマッチを生む構造を解説</li>
+    </ul>
+    <div class="chapter-why"><strong>なぜこの章が必要か：</strong>良い準備をしても選考の場で受け身になれば情報が取れず、ミスマッチが起きる。実行フェーズの具体的な行動指針が必要なため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <span class="chapter-num">終章</span>
+    <div class="chapter-title">🚀 学習の継続：入社後90日でレバレッジをかける</div>
+    <ul>
+      <li><span class="bullet">▸</span>入社後90日の学習計画が長期的な市場価値を決める</li>
+      <li><span class="bullet">▸</span>早期に成果を出すことで信頼と裁量を獲得する</li>
+      <li><span class="bullet">▸</span>市場価値の逓増を仕組み化する継続的学習の設計</li>
+      <li><span class="bullet">▸</span>転職はゴールではなく、次の成長サイクルのスタート</li>
+    </ul>
+    <div class="chapter-why"><strong>なぜこの章が必要か：</strong>転職成功で終わりではなく、入社後の行動が市場価値の実際の増減を決める。実行後の継続設計がなければ成長は止まるため。</div>
+  </div>
+
+  <!-- SVG フロー図 -->
+  <div class="section-heading">🗺 論理展開フロー</div>
+  <div class="svg-wrap">
+    <svg width="680" height="100" viewBox="0 0 680 100" aria-label="論理展開フロー図">
+      <defs>
+        <linearGradient id="flowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#e94560"/>
+          <stop offset="100%" style="stop-color:#4ecdc4"/>
+        </linearGradient>
+      </defs>
+      <!-- boxes -->
+      <rect x="2" y="30" width="80" height="36" rx="8" fill="#0f3460" stroke="#e94560" stroke-width="1.5"/>
+      <text x="42" y="51" text-anchor="middle" fill="#e8e8f0" font-size="9" font-weight="bold">前提の共有</text>
+      <text x="42" y="62" text-anchor="middle" fill="#a0a0b8" font-size="8">終身雇用の終焉</text>
+
+      <polygon points="86,48 96,42 96,54" fill="url(#flowGrad)"/>
+
+      <rect x="100" y="30" width="80" height="36" rx="8" fill="#0f3460" stroke="#4ecdc4" stroke-width="1.5"/>
+      <text x="140" y="51" text-anchor="middle" fill="#e8e8f0" font-size="9" font-weight="bold">価値の定義</text>
+      <text x="140" y="62" text-anchor="middle" fill="#a0a0b8" font-size="8">3要素の枠組み</text>
+
+      <polygon points="184,48 194,42 194,54" fill="url(#flowGrad)"/>
+
+      <rect x="198" y="30" width="80" height="36" rx="8" fill="#0f3460" stroke="#f5a623" stroke-width="1.5"/>
+      <text x="238" y="51" text-anchor="middle" fill="#e8e8f0" font-size="9" font-weight="bold">軸の設計</text>
+      <text x="238" y="62" text-anchor="middle" fill="#a0a0b8" font-size="8">Will/Can/Market</text>
+
+      <polygon points="282,48 292,42 292,54" fill="url(#flowGrad)"/>
+
+      <rect x="296" y="30" width="80" height="36" rx="8" fill="#0f3460" stroke="#9b59b6" stroke-width="1.5"/>
+      <text x="336" y="51" text-anchor="middle" fill="#e8e8f0" font-size="9" font-weight="bold">戦略的越境</text>
+      <text x="336" y="62" text-anchor="middle" fill="#a0a0b8" font-size="8">ずらし戦略</text>
+
+      <polygon points="380,48 390,42 390,54" fill="url(#flowGrad)"/>
+
+      <rect x="394" y="30" width="80" height="36" rx="8" fill="#0f3460" stroke="#3498db" stroke-width="1.5"/>
+      <text x="434" y="51" text-anchor="middle" fill="#e8e8f0" font-size="9" font-weight="bold">情報戦</text>
+      <text x="434" y="62" text-anchor="middle" fill="#a0a0b8" font-size="8">非対称性の解消</text>
+
+      <polygon points="478,48 488,42 488,54" fill="url(#flowGrad)"/>
+
+      <rect x="492" y="30" width="80" height="36" rx="8" fill="#0f3460" stroke="#e94560" stroke-width="1.5"/>
+      <text x="532" y="51" text-anchor="middle" fill="#e8e8f0" font-size="9" font-weight="bold">実行・交渉</text>
+      <text x="532" y="62" text-anchor="middle" fill="#a0a0b8" font-size="8">相互選抜</text>
+
+      <polygon points="576,48 586,42 586,54" fill="url(#flowGrad)"/>
+
+      <rect x="590" y="30" width="88" height="36" rx="8" fill="#0f3460" stroke="#4ecdc4" stroke-width="1.5"/>
+      <text x="634" y="51" text-anchor="middle" fill="#e8e8f0" font-size="9" font-weight="bold">継続学習</text>
+      <text x="634" y="62" text-anchor="middle" fill="#a0a0b8" font-size="8">90日計画</text>
+    </svg>
+  </div>
+
+</div>
+
+<!-- ============================= -->
+<!-- TAB 3: 具体例 -->
+<!-- ============================= -->
+<div class="tab-panel" id="tab-examples" role="tabpanel" aria-labelledby="btn-examples">
+
+  <div class="section-heading">💼 核心メッセージが伝わる具体例・メタファー</div>
+
+  <div class="example-card">
+    <div class="example-num">01</div>
+    <div class="example-title">🌊 メタファー：川の流れと泳ぎ手</div>
+    <div class="example-section">
+      <div class="example-section-label">📋 背景</div>
+      <p>同じ泳力（技術資産）を持つ人でも、急流（成長産業）で泳ぐ人と淀んだ川（衰退産業）で泳ぐ人では、到達距離が全く異なる。</p>
+    </div>
+    <div class="example-section">
+      <div class="example-section-label">💡 示唆</div>
+      <p>個人の努力だけでなく、「どの川を選ぶか」という環境選択が成果を大きく左右する。業界の生産性は個人の努力の増幅器として機能する。</p>
+    </div>
+    <div class="example-reason"><strong>この例が示すこと：</strong>業界選択の重要性を直感的に理解させる。同じ努力でも環境によって成果が何倍も変わるという掛け算構造の本質を伝える。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-num">02</div>
+    <div class="example-title">↔️ ケース：職能ずらし転職の成功パターン</div>
+    <div class="example-section">
+      <div class="example-section-label">📋 背景</div>
+      <p>製造業の営業職（業界A・職能：営業）が、IT業界の営業職（業界B・職能：営業）に転職するケース。業界のみをずらし、職能（営業スキル）は維持する。</p>
+    </div>
+    <div class="example-section">
+      <div class="example-section-label">💡 示唆</div>
+      <p>既存の営業スキルが即戦力として機能しながら、IT業界の高い生産性・成長率の恩恵を受けられる。学習コストが低く、可逆性も高い。</p>
+    </div>
+    <div class="example-reason"><strong>この例が示すこと：</strong>ずらし戦略の「一軸限定」が学習コストを最小化しながら市場価値を高める最も効率的な方法であることを具体的に示す。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-num">03</div>
+    <div class="example-title">⚠️ 反面教師：短期年収最大化の罠</div>
+    <div class="example-section">
+      <div class="example-section-label">📋 背景</div>
+      <p>成長機会より年収を優先し、学習環境の乏しい大企業の安定ポジションを選んだケース。3年後、スキルの陳腐化が進み転職市場での評価が下がる。</p>
+    </div>
+    <div class="example-section">
+      <div class="example-section-label">💡 示唆</div>
+      <p>短期の年収最大化は中長期の市場価値を停滞させる。学習・成長の質が低い環境では、技術資産が積み上がらず、次の転職時の選択肢が狭まる。</p>
+    </div>
+    <div class="example-reason"><strong>この例が示すこと：</strong>「今の年収」と「将来の市場価値」はトレードオフになりうる。オファー評価の軸に「学習・成長の質」を必ず含めるべき理由を示す。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-num">04</div>
+    <div class="example-title">🔍 ケース：情報の非対称性を埋めた転職</div>
+    <div class="example-section">
+      <div class="example-section-label">📋 背景</div>
+      <p>求人票だけでは分からない「上司の育成スタイル」「実際の裁量範囲」「事業の成長フェーズ」を、OB訪問と現場社員との対話で事前に確認したケース。</p>
+    </div>
+    <div class="example-section">
+      <div class="example-section-label">💡 示唆</div>
+      <p>一次情報の収集により、入社後のギャップが大幅に減少。「思っていたのと違う」という最も多い転職失敗パターンを事前に回避できる。</p>
+    </div>
+    <div class="example-reason"><strong>この例が示すこと：</strong>情報収集の深さがミスマッチを防ぐ最大の武器であり、相互選抜の姿勢が転職の成功確率を高めることを示す。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-num">05</div>
+    <div class="example-title">🧮 メタファー：掛け算の弱点補強</div>
+    <div class="example-section">
+      <div class="example-section-label">📋 背景</div>
+      <p>技術資産が10・人的資産が10でも、業界の生産性が1（衰退産業）なら市場価値は100。業界の生産性が10（成長産業）なら市場価値は1000になる。</p>
+    </div>
+    <div class="example-section">
+      <div class="example-section-label">💡 示唆</div>
+      <p>掛け算構造では、最も低い要素が全体を引き下げる。業界の生産性という「環境要因」が最大の乗数になりうるため、環境選択が最優先事項となる。</p>
+    </div>
+    <div class="example-reason"><strong>この例が示すこと：</strong>市場価値の公式が「足し算」ではなく「掛け算」であることの意味を数値で直感的に理解させ、環境選択の優先度を明確にする。</strong></div>
+  </div>
+
+</div>
+
+<!-- ============================= -->
+<!-- TAB 4: 重要な引用 -->
+<!-- ============================= -->
+<div class="tab-panel" id="tab-quotes" role="tabpanel" aria-labelledby="btn-quotes">
+
+  <div class="section-heading">💬 重要な引用（要旨）</div>
+  <p style="font-size:11px;color:var(--text-muted);margin-bottom:16px;">※ 以下はすべて書籍の要旨として記載（原文の逐語引用ではありません）</p>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <span class="quote-badge">要旨 01</span>
+    <div class="quote-text">会社に自分の人生を委ねるな。市場で通用する価値を高めよ。</div>
+    <div class="quote-note">💡 <strong>補足：</strong>意思決定の主語を自分に戻し、能動的学習に舵を切る宣言になる。本書全体のテーゼであり、すべての戦略論の出発点。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <span class="quote-badge">要旨 02</span>
+    <div class="quote-text">市場価値は「技術資産 × 人的資産 × 業界の生産性」で決まる。</div>
+    <div class="quote-note">💡 <strong>補足：</strong>足し算ではなく掛け算という設計思想が、弱点補強と環境選択の必然性を示す。この公式が本書の中核フレームワーク。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <span class="quote-badge">要旨 03</span>
+    <div class="quote-text">転職は"軸"を決め、ずらしは一つに絞れ。</div>
+    <div class="quote-note">💡 <strong>補足：</strong>学習コストとリスクを最小化し、成功確率と可逆性を同時に高められる。シンプルだが実践的な最重要ルール。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <span class="quote-badge">要旨 04</span>
+    <div class="quote-text">伸びる産業で働くこと自体が学習速度を上げる。</div>
+    <div class="quote-note">💡 <strong>補足：</strong>同じ努力でも成果の増幅が起き、成長と報酬の逓増を実現しやすい。環境選択が個人の努力の何倍もの効果をもたらす。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <span class="quote-badge">要旨 05</span>
+    <div class="quote-text">面接は企業が選ぶ場であり、あなたが選ぶ場でもある。</div>
+    <div class="quote-note">💡 <strong>補足：</strong>情報の非対称性を是正し、ミスマッチを避ける前提を与える。受け身の選考姿勢が最大の失敗要因であることを示す。</div>
+  </div>
+
+  <!-- 関連書籍 -->
+  <div class="section-heading">📚 関連書籍</div>
+  <div class="book-grid">
+    <div class="book-card">
+      <div class="book-icon">📗</div>
+      <div>
+        <div class="book-title">LIFE SHIFT</div>
+        <div class="book-author">リンダ・グラットン、アンドリュー・スコット</div>
+        <div class="book-rel">長寿化時代のキャリア設計の前提を与え、市場価値の継続的更新の必要性を補強する。</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-icon">📘</div>
+      <div>
+        <div class="book-title">転職と副業のかけ算</div>
+        <div class="book-author">moto</div>
+        <div class="book-rel">日本の転職実務と市場価値向上の具体戦略が豊富で、ずらし戦略の実例が学べる。</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-icon">📙</div>
+      <div>
+        <div class="book-title">さあ、才能(じぶん)に目覚めよう</div>
+        <div class="book-author">トム・ラス（Gallup）</div>
+        <div class="book-rel">強みの特定により技術資産の磨き方と"軸"の言語化に役立つ。</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-icon">📕</div>
+      <div>
+        <div class="book-title">ビジネスモデルYOU</div>
+        <div class="book-author">ティム・クラークほか</div>
+        <div class="book-rel">個人の価値提案を設計し、オファー見極めとキャリアのポジショニングに有効。</div>
+      </div>
+    </div>
+    <div class="book-card">
+      <div class="book-icon">📓</div>
+      <div>
+        <div class="book-title">未来をはじめる</div>
+        <div class="book-author">斎藤幸平</div>
+        <div class="book-rel">産業構造や社会変容の視点を広げ、業界の生産性を捉える眼を養う。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================= -->
+<!-- TAB 5: 今日のアクション -->
+<!-- ============================= -->
+<div class="tab-panel" id="tab-actions" role="tabpanel" aria-labelledby="btn-actions">
+
+  <div class="section-heading">⚡ 今日から15〜30分で実行できるアクション</div>
+
+  <div class="action-card">
+    <div class="action-num">1</div>
+    <div class="action-body">
+      <div class="action-title">🗂 スキル・人脈・業界を棚卸しする</div>
+      <div class="action-meta">
+        <span class="action-tag tag-time">⏱ 20〜30分</span>
+        <span class="action-tag tag-goal">🎯 現状把握</span>
+      </div>
+      <ul class="action-steps">
+        <li><span class="bullet">①</span>紙またはメモアプリに「技術資産」欄を作り、再現性のあるスキル・実績を5〜10個書き出す</li>
+        <li><span class="bullet">②</span>「人的資産」欄に、信頼できる上司・同僚・顧客の名前を書き出す</li>
+        <li><span class="bullet">③</span>「業界の生産性」欄に、現在の業界の粗利率・成長率を調べてメモする</li>
+        <li><span class="bullet">④</span>3つの欄を見比べ、最も弱い要素（掛け算の最小値）を特定する</li>
+      </ul>
+      <div class="action-effect"><strong>期待効果：</strong>自分の市場価値の現在地が可視化され、何を優先的に強化すべきかが明確になる。</div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">2</div>
+    <div class="action-body">
+      <div class="action-title">🏭 伸びる業界を1つ仮決めする</div>
+      <div class="action-meta">
+        <span class="action-tag tag-time">⏱ 15〜20分</span>
+        <span class="action-tag tag-goal">🎯 環境選択の仮説</span>
+      </div>
+      <ul class="action-steps">
+        <li><span class="bullet">①</span>興味のある業界を3つリストアップする</li>
+        <li><span class="bullet">②</span>各業界の「市場成長率」「主要企業の粗利率」をネット検索で調べる</li>
+        <li><span class="bullet">③</span>自分の現在のスキル（職能）が活かせる業界かどうかを確認する（ずらし戦略の観点）</li>
+        <li><span class="bullet">④</span>最も条件が揃う業界を1つ「仮決め」してメモする</li>
+      </ul>
+      <div class="action-effect"><strong>期待効果：</strong>業界選択の仮説を持つことで、情報収集の方向性が定まり、次のアクションへの具体性が増す。</div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">3</div>
+    <div class="action-body">
+      <div class="action-title">🎯 転職の軸を3条件で書き出す</div>
+      <div class="action-meta">
+        <span class="action-tag tag-time">⏱ 15〜25分</span>
+        <span class="action-tag tag-goal">🎯 意思決定基準の言語化</span>
+      </div>
+      <ul class="action-steps">
+        <li><span class="bullet">①</span>「Will（やりたいこと）」：3年後にどんな仕事をしていたいかを1〜2文で書く</li>
+        <li><span class="bullet">②</span>「Can（できること）」：他者より得意なスキル・経験を3つ書く</li>
+        <li><span class="bullet">③</span>「Market（市場が求めること）」：棚卸しした業界で求められるスキルを調べて書く</li>
+        <li><span class="bullet">④</span>3つの重なりを確認し、「転職で絶対に譲れない条件」を1つ決める</li>
+      </ul>
+      <div class="action-effect"><strong>期待効果：</strong>軸が言語化されることで、オファーを感情ではなく基準で比較できるようになり、後悔しない意思決定の土台ができる。</div>
+    </div>
+  </div>
+
+  <!-- ずらし戦略 SVG 図 -->
+  <div class="section-heading">🗺 ずらし戦略の選択マトリクス</div>
+  <div class="svg-wrap">
+    <svg width="340" height="220" viewBox="0 0 340 220" aria-label="ずらし戦略マトリクス">
+      <defs>
+        <linearGradient id="matGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#4ecdc4;stop-opacity:0.3"/>
+          <stop offset="100%" style="stop-color:#4ecdc4;stop-opacity:0.05"/>
+        </linearGradient>
+        <linearGradient id="matGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#f5a623;stop-opacity:0.3"/>
+          <stop offset="100%" style="stop-color:#f5a623;stop-opacity:0.05"/>
+        </linearGradient>
+        <linearGradient id="matGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#e94560;stop-opacity:0.3"/>
+          <stop offset="100%" style="stop-color:#e94560;stop-opacity:0.05"/>
+        </linearGradient>
+        <linearGradient id="matGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#9b59b6;stop-opacity:0.2"/>
+          <stop offset="100%" style="stop-color:#9b59b6;stop-opacity:0.05"/>
+        </linearGradient>
+      </defs>
+      <!-- 軸ラベル -->
+      <text x="170" y="18" text-anchor="middle" fill="#a0a0b8" font-size="11" font-weight="bold">業界</text>
+      <text x="170" y="30" text-anchor="middle" fill="#a0a0b8" font-size="9">変える　　　　　　変えない</text>
+      <text x="14" y="110" text-anchor="middle" fill="#a0a0b8" font-size="11" font-weight="bold" transform="rotate(-90,14,110)">職能</text>
+      <text x="26" y="80" text-anchor="middle" fill="#a0a0b8" font-size="8" transform="rotate(-90,26,80)">変える</text>
+      <text x="26" y="155" text-anchor="middle" fill="#a0a0b8" font-size="8" transform="rotate(-90,26,155)">変えない</text>
+
+      <!-- 4象限 -->
+      <!-- 左上: 業界変える×職能変える = 高リスク -->
+      <rect x="40" y="38" width="140" height="80" rx="8" fill="url(#matGrad3)" stroke="#e94560" stroke-width="1.5"/>
+      <text x="110" y="68" text-anchor="middle" fill="#e94560" font-size="11" font-weight="bold">⚠️ 高リスク</text>
+      <text x="110" y="82" text-anchor="middle" fill="#e8e8f0" font-size="9">業界も職能も変える</text>
+      <text x="110" y="95" text-anchor="middle" fill="#a0a0b8" font-size="8">学習コスト最大</text>
+      <text x="110" y="108" text-anchor="middle" fill="#a0a0b8" font-size="8">可逆性が低い</text>
+
+      <!-- 右上: 業界変えない×職能変える = 職能ずらし -->
+      <rect x="185" y="38" width="140" height="80" rx="8" fill="url(#matGrad2)" stroke="#f5a623" stroke-width="1.5"/>
+      <text x="255" y="65" text-anchor="middle" fill="#f5a623" font-size="11" font-weight="bold">✅ 職能ずらし</text>
+      <text x="255" y="79" text-anchor="middle" fill="#e8e8f0" font-size="9">職能のみ変える</text>
+      <text x="255" y="93" text-anchor="middle" fill="#a0a0b8" font-size="8">業界知識が活きる</text>
+      <text x="255" y="107" text-anchor="middle" fill="#a0a0b8" font-size="8">推奨パターン①</text>
+
+      <!-- 左下: 業界変える×職能変えない = 業界ずらし -->
+      <rect x="40" y="123" width="140" height="80" rx="8" fill="url(#matGrad1)" stroke="#4ecdc4" stroke-width="1.5"/>
+      <text x="110" y="150" text-anchor="middle" fill="#4ecdc4" font-size="11" font-weight="bold">✅ 業界ずらし</text>
+      <text x="110" y="164" text-anchor="middle" fill="#e8e8f0" font-size="9">業界のみ変える</text>
+      <text x="110" y="178" text-anchor="middle" fill="#a0a0b8" font-size="8">職能スキルが活きる</text>
+      <text x="110" y="192" text-anchor="middle" fill="#a0a0b8" font-size="8">推奨パターン②</text>
+
+      <!-- 右下: 業界変えない×職能変えない = 現状維持 -->
+      <rect x="185" y="123" width="140" height="80" rx="8" fill="url(#matGrad4)" stroke="#9b59b6" stroke-width="1.5"/>
+      <text x="255" y="155" text-anchor="middle" fill="#9b59b6" font-size="11" font-weight="bold">🔄 現状維持</text>
+      <text x="255" y="169" text-anchor="middle" fill="#e8e8f0" font-size="9">どちらも変えない</text>
+      <text x="255" y="183" text-anchor="middle" fill="#a0a0b8" font-size="8">社内異動・昇進</text>
+      <text x="255" y="197" text-anchor="middle" fill="#a0a0b8" font-size="8">転職の必要性低</text>
+
+      <!-- 中央線 -->
+      <line x1="40" y1="120" x2="325" y2="120" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="182" y1="38" x2="182" y2="203" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="4,3"/>
+    </svg>
+  </div>
+
+  <!-- アクション後の期待値チャート -->
+  <div class="section-heading">📈 アクション実行後の期待効果</div>
+  <div class="relation-block">
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">現状把握の精度</div>
+        <div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#4ecdc4,#2ecc71)">棚卸し後</div></div>
+        <div class="bar-val" style="color:var(--sub3)">↑大</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">意思決定の質</div>
+        <div class="bar-track"><div class="bar-fill" style="width:80%;background:linear-gradient(90deg,#f5a623,#e67e22)">軸定義後</div></div>
+        <div class="bar-val" style="color:var(--sub2)">↑大</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">ミスマッチリスク</div>
+        <div class="bar-track"><div class="bar-fill" style="width:70%;background:linear-gradient(90deg,#e94560,#c0392b)">情報収集後</div></div>
+        <div class="bar-val" style="color:var(--accent)">↓減</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">行動への具体性</div>
+        <div class="bar-track"><div class="bar-fill" style="width:90%;background:linear-gradient(90deg,#9b59b6,#8e44ad)">3アクション後</div></div>
+        <div class="bar-val" style="color:#9b59b6">↑大</div>
+      </div>
+    </div>
+    <p style="font-size:10px;color:var(--text-muted);margin-top:8px;">※ 概念的な相対比較。書籍内に具体的な数値指標の記載なし。</p>
+  </div>
+
+</div>
+
+<!-- ===== SCROLL TOP BUTTON ===== -->
+<button class="scroll-top" id="scrollTopBtn" aria-label="ページトップへ戻る" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // ===== TAB SWITCHING =====
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('aria-controls');
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      tabPanels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(target).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // ===== SCROLL TOP BUTTON =====
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('scrollTopBtn');
+    btn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+  });
+
+  // ===== BAR ANIMATION ON SCROLL =====
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const fills = entry.target.querySelectorAll('.bar-fill');
+        fills.forEach(fill => {
+          const w = fill.style.width;
+          fill.style.width = '0%';
+          setTimeout(() => { fill.style.width = w; }, 100);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.bar-chart').forEach(chart => observer.observe(chart));
+</script>
+
+</body>
+</html>
