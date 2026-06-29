@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>怒らない選択 — インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー : #2D6A4F
+  セカンダリー : #52B788
+  アクセント   : #F4A261
+-->
+<style>
+  /* ===== リセット & 基本 ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary:   #2D6A4F;
+    --secondary: #52B788;
+    --accent:    #F4A261;
+    --bg:        #F0F7F4;
+    --surface:   #FFFFFF;
+    --text:      #1A2E25;
+    --muted:     #5A7A6A;
+    --radius:    12px;
+    --shadow:    0 2px 12px rgba(45,106,79,.12);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  h1,h2,h3,h4 { line-height: 1.3; }
+
+  /* ===== ヘッダー ===== */
+  .site-header {
+    background: linear-gradient(135deg, var(--primary) 0%, #1B4332 100%);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  .site-header h1 { font-size: clamp(1.4rem, 4vw, 2rem); letter-spacing: .04em; }
+  .site-header p  { font-size: .85rem; opacity: .8; margin-top: 4px; }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: linear-gradient(135deg, #1B4332 0%, var(--primary) 60%, var(--secondary) 100%);
+    color: #fff;
+    padding: 24px 20px;
+  }
+  .summary-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media(max-width:600px){ .summary-inner { grid-template-columns: 1fr; } }
+  .sq-card {
+    background: rgba(255,255,255,.12);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    border-left: 4px solid var(--accent);
+  }
+  .sq-card .sq-label {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    opacity: .75;
+    margin-bottom: 4px;
+  }
+  .sq-card p { font-size: .88rem; line-height: 1.55; }
+  .sq-card.full { grid-column: 1 / -1; }
+
+  /* ===== タブ ===== */
+  .tabs-wrapper { max-width: 900px; margin: 0 auto; padding: 0 12px 40px; }
+  .tab-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 16px 0 0;
+    list-style: none;
+  }
+  .tab-btn {
+    background: var(--surface);
+    border: 2px solid var(--secondary);
+    color: var(--primary);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: .8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+    white-space: nowrap;
+  }
+  .tab-btn[aria-selected="true"] {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .tab-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  .tab-panel { display: none; padding-top: 20px; }
+  .tab-panel.active { display: block; }
+
+  /* ===== カード共通 ===== */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card ul { padding-left: 0; list-style: none; }
+  .card ul li {
+    padding: 4px 0 4px 20px;
+    position: relative;
+    font-size: .88rem;
+    border-bottom: 1px solid #EAF3EE;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-size: .8rem;
+    top: 5px;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 999px;
+    font-size: .7rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .reason-box {
+    background: #FFF8F0;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 12px;
+    font-size: .82rem;
+    color: #7A4A1A;
+    margin-top: 10px;
+  }
+  .reason-box strong { color: var(--accent); }
+
+  /* ===== グリッド ===== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media(max-width:640px){ .grid-2,.grid-3 { grid-template-columns: 1fr; } }
+  @media(min-width:641px) and (max-width:800px){ .grid-3 { grid-template-columns: 1fr 1fr; } }
+
+  /* ===== 概念カード ===== */
+  .concept-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    border-top: 4px solid var(--secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .concept-card .c-title {
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .concept-card .c-tag {
+    display: inline-block;
+    background: var(--secondary);
+    color: #fff;
+    border-radius: 999px;
+    font-size: .68rem;
+    font-weight: 700;
+    padding: 2px 10px;
+  }
+  .concept-card .c-def { font-size: .84rem; color: var(--muted); }
+  .concept-card .c-reason {
+    font-size: .8rem;
+    background: #EAF7F0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: #1B4332;
+  }
+
+  /* ===== フロー図 ===== */
+  .flow-wrap {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-bottom: 14px;
+    overflow-x: auto;
+  }
+  .flow-title { font-size: .9rem; font-weight: 700; color: var(--primary); margin-bottom: 14px; }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .flow-node {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: .78rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .flow-node.accent { background: var(--accent); }
+  .flow-node.sec { background: var(--secondary); }
+  .flow-arrow { color: var(--muted); font-size: 1rem; }
+  .flow-note {
+    font-size: .75rem;
+    color: var(--muted);
+    margin-top: 4px;
+    padding-left: 4px;
+  }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    border-left: 5px solid var(--secondary);
+  }
+  .chapter-card.alt { border-left-color: var(--accent); }
+  .chapter-num {
+    font-size: .7rem;
+    font-weight: 700;
+    color: var(--secondary);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .chapter-card.alt .chapter-num { color: var(--accent); }
+  .chapter-title { font-size: .95rem; font-weight: 700; color: var(--text); margin: 2px 0 8px; }
+  .chapter-card ul { padding-left: 0; list-style: none; }
+  .chapter-card ul li {
+    font-size: .84rem;
+    padding: 3px 0 3px 18px;
+    position: relative;
+    border-bottom: 1px solid #EAF3EE;
+  }
+  .chapter-card ul li:last-child { border-bottom: none; }
+  .chapter-card ul li::before {
+    content: '●';
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-size: .55rem;
+    top: 7px;
+  }
+  .chapter-card.alt ul li::before { color: var(--accent); }
+
+  /* ===== 引用 ===== */
+  .quote-card {
+    background: linear-gradient(135deg, #EAF7F0 0%, #FFF8F0 100%);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 22px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .quote-mark {
+    font-size: 3rem;
+    color: var(--secondary);
+    opacity: .3;
+    position: absolute;
+    top: 8px;
+    left: 14px;
+    line-height: 1;
+  }
+  .quote-text {
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--primary);
+    padding-left: 28px;
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+  .quote-why {
+    font-size: .82rem;
+    color: var(--muted);
+    padding-left: 28px;
+    border-top: 1px solid #D4EDE0;
+    padding-top: 8px;
+  }
+  .quote-why strong { color: var(--accent); }
+
+  /* ===== アクション ===== */
+  .action-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .action-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .action-body { flex: 1; }
+  .action-title { font-size: .95rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+  .action-meta { font-size: .8rem; color: var(--muted); margin-bottom: 6px; }
+  .action-effect {
+    font-size: .82rem;
+    background: #EAF7F0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: #1B4332;
+  }
+
+  /* ===== 具体例 ===== */
+  .example-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    border-top: 4px solid var(--accent);
+  }
+  .example-title { font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .example-bg, .example-imp, .example-why {
+    font-size: .84rem;
+    margin-bottom: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+  }
+  .example-bg  { background: #F0F7F4; }
+  .example-imp { background: #FFF8F0; }
+  .example-why { background: #EAF7F0; color: #1B4332; }
+  .example-label {
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  /* ===== 関連書籍 ===== */
+  .book-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .book-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+  .book-title { font-size: .9rem; font-weight: 700; color: var(--primary); }
+  .book-author { font-size: .75rem; color: var(--muted); margin-bottom: 4px; }
+  .book-rel { font-size: .8rem; color: var(--text); }
+
+  /* ===== SVGバッジ数値 ===== */
+  .metrics-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .metric-badge {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px 18px;
+    flex: 1;
+    min-width: 130px;
+    text-align: center;
+  }
+  .metric-num {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .metric-label { font-size: .75rem; color: var(--muted); margin-top: 4px; }
+
+  /* ===== フッター ===== */
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: .75rem;
+    color: var(--muted);
+    border-top: 1px solid #D4EDE0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header class="site-header" role="banner">
+  <h1>🧘 怒らない選択</h1>
+  <p>怒りの正体を知り、智慧と慈悲で手放す実践ガイド</p>
+</header>
+
+<!-- ===== ファーストビュー：要約ブロック ===== -->
+<section class="summary-block" aria-label="エグゼクティブサマリー">
+  <div class="summary-inner">
+    <div class="sq-card">
+      <div class="sq-label">❓ 問い</div>
+      <p>人はなぜ怒り、どうすれば怒らないでいられるか？</p>
+    </div>
+    <div class="sq-card">
+      <div class="sq-label">💡 答え</div>
+      <p>怒りは執着と誤った認知が生む自動反応。正念で事実を観て慈悲と智慧を育て、反応を選べば怒りは不要化できる。</p>
+    </div>
+    <div class="sq-card">
+      <div class="sq-label">🔍 Why（なぜそうなのか）</div>
+      <p>怒りは判断を曇らせ問題解決力を下げ、苦を増やすだけ。万物は無常・因縁で生じ、誰かを責めても因果は変わらない。</p>
+    </div>
+    <div class="sq-card">
+      <div class="sq-label">🛠 How（そのためには）</div>
+      <p>刺激と反応の間に一拍置く訓練（呼吸観察・感情ラベリング）、期待を点検し手放す、慈悲のフレーズで心を整える、日々の省察記録で習慣化する。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== タブナビゲーション ===== -->
+<div class="tabs-wrapper">
+  <ul class="tab-list" role="tablist" aria-label="コンテンツタブ">
+    <li role="presentation">
+      <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+    </li>
+    <li role="presentation">
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    </li>
+    <li role="presentation">
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">🔍 具体例</button>
+    </li>
+    <li role="presentation">
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes"   id="tab-quotes">💬 重要な引用</button>
+    </li>
+    <li role="presentation">
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions"  id="tab-actions">⚡ 今日のアクション</button>
+    </li>
+  </ul>
+
+  <!-- ===== パネル1：主要概念 ===== -->
+  <div class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <!-- 数値バッジ -->
+    <div class="metrics-row" aria-label="主要指標">
+      <div class="metric-badge">
+        <div class="metric-num">9</div>
+        <div class="metric-label">主要概念</div>
+      </div>
+      <div class="metric-badge">
+        <div class="metric-num">1拍</div>
+        <div class="metric-label">刺激と反応の間に置く</div>
+      </div>
+      <div class="metric-badge">
+        <div class="metric-num">0</div>
+        <div class="metric-label">怒りが解決する問題</div>
+      </div>
+      <div class="metric-badge">
+        <div class="metric-num">毎日</div>
+        <div class="metric-label">訓練で変わる</div>
+      </div>
+    </div>
+
+    <!-- 因果フロー図 -->
+    <div class="flow-wrap" aria-label="怒りの発生メカニズム図">
+      <div class="flow-title">🔄 怒りの発生メカニズム（介入ポイント付き）</div>
+      <div class="flow-row">
+        <div class="flow-node">外部刺激</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">知覚</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">評価（好き/嫌い）</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node accent">執着 / 拒絶</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node accent">怒り発火</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">衝動・行動</div>
+      </div>
+      <div class="flow-row">
+        <div class="flow-node sec">✅ 正念・観察が「評価」の前後に介入 → 非反応が可能に</div>
+      </div>
+      <div class="flow-note">執着↑ → 期待固定 → 現実不一致 → 怒り。無常の理解↑ → 期待の柔軟化 → 怒りの予防。</div>
+    </div>
+
+    <!-- 概念カードグリッド -->
+    <div class="grid-3" aria-label="主要概念カード一覧">
+
+      <div class="concept-card">
+        <div class="c-title">😤 怒り</div>
+        <span class="c-tag">害しかない反応</span>
+        <div class="c-def">刺激と期待の不一致から立ち上がる心の粗い反応。自他を傷つけ、問題解決力を下げる。</div>
+        <div class="c-reason">🔑 なぜ重要か：怒りの正体を知ることが手放しの第一歩。</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-title">🤜 執着</div>
+        <span class="c-tag">握りしめ</span>
+        <div class="c-def">「こうあるべき」を固く握る心のクセ。崩れると怒りや苦が生じる。</div>
+        <div class="c-reason">🔑 なぜ重要か：怒りの根本原因。手放すことで怒りを予防できる。</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-title">👁 正念</div>
+        <span class="c-tag">気づき</span>
+        <div class="c-def">今ここで起きる身体・感情・思考を評価抜きに観察し続ける注意力。</div>
+        <div class="c-reason">🔑 なぜ重要か：刺激と反応の間に間隔を作り、非反応を可能にする。</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-title">🌊 無常観</div>
+        <span class="c-tag">変化の自覚</span>
+        <div class="c-def">すべては変化し続け固定的な「私」や「所有」はないという洞察。</div>
+        <div class="c-reason">🔑 なぜ重要か：期待を柔軟化し、怒りの予防につながる。</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-title">🔗 因縁（因果）</div>
+        <span class="c-tag">条件の連鎖</span>
+        <div class="c-def">事象は無数の条件の結果として起こるという見方。単独犯をでっち上げない。</div>
+        <div class="c-reason">🔑 なぜ重要か：責め心の対象化により攻撃衝動が減衰する。</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-title">⏸ 非反応</div>
+        <span class="c-tag">ひと呼吸</span>
+        <div class="c-def">刺激に自動で噛みつかず、一拍おいて最善を選ぶ態度。抑圧ではない。</div>
+        <div class="c-reason">🔑 なぜ重要か：反復訓練で自動化され、怒らないことがデフォルトになる。</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-title">💚 慈悲</div>
+        <span class="c-tag">やさしさ</span>
+        <div class="c-def">自他の苦を見て、害を与えず助けたいと願う心の向き。怒りの逆薬。</div>
+        <div class="c-reason">🔑 なぜ重要か：観察と組み合わせると評価・敵意が弱まり建設的対応が増える。</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-title">🔬 観察（ヴィパッサナー）</div>
+        <span class="c-tag">見抜く</span>
+        <div class="c-def">体感・感情・思考を微細に観察し、無常・苦・無我を体験的に理解する瞑想。</div>
+        <div class="c-reason">🔑 なぜ重要か：慈悲と組み合わせることで評価と敵意を根本から弱める。</div>
+      </div>
+
+      <div class="concept-card">
+        <div class="c-title">🏋 訓練（習慣化）</div>
+        <span class="c-tag">毎日の稽古</span>
+        <div class="c-def">日々の実践で神経回路を書き換え、怒らない心を基礎体力として育てる。</div>
+        <div class="c-reason">🔑 なぜ重要か：反復により非反応が自動化され、怒らないことがデフォルトになる。</div>
+      </div>
+
+    </div><!-- /grid-3 -->
+
+    <!-- 関連書籍 -->
+    <div class="card" style="margin-top:20px;">
+      <div class="card-title">📚 関連書籍</div>
+      <div class="book-card">
+        <div class="book-icon">📗</div>
+        <div>
+          <div class="book-title">反応しない練習</div>
+          <div class="book-author">草薙龍瞬</div>
+          <div class="book-rel">上座仏教の枠組みで非反応と正念を鍛える実践が本書と響き合う。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📘</div>
+        <div>
+          <div class="book-title">怒り: 心の炎の鎮め方</div>
+          <div class="book-author">ティク・ナット・ハン</div>
+          <div class="book-rel">怒りの気づきと慈悲の実践を具体化し、補完的視座を与える。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📙</div>
+        <div>
+          <div class="book-title">マインドフルネスストレス低減法</div>
+          <div class="book-author">ジョン・カバットジン</div>
+          <div class="book-rel">正念を日常に根づかせる方法論が豊富で、実践の土台となる。</div>
+        </div>
+      </div>
+      <div class="book-card">
+        <div class="book-icon">📕</div>
+        <div>
+          <div class="book-title">考えない練習</div>
+          <div class="book-author">小池龍之介</div>
+          <div class="book-rel">評価や思考反応を手放す訓練が怒りの予防に直結する。</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /panel-concepts -->
+
+  <!-- ===== パネル2：各章の要約 ===== -->
+  <div class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <!-- SVG 章構成バー -->
+    <div class="flow-wrap" aria-label="章構成の流れ">
+      <div class="flow-title">📐 論理展開の流れ</div>
+      <svg viewBox="0 0 700 60" width="100%" height="60" aria-hidden="true">
+        <defs>
+          <linearGradient id="barGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#2D6A4F"/>
+            <stop offset="50%"  stop-color="#52B788"/>
+            <stop offset="100%" stop-color="#F4A261"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="20" width="700" height="20" rx="10" fill="url(#barGrad)"/>
+        <text x="10"  y="14" font-size="9" fill="#2D6A4F" font-family="sans-serif">序</text>
+        <text x="90"  y="14" font-size="9" fill="#2D6A4F" font-family="sans-serif">正体</text>
+        <text x="180" y="14" font-size="9" fill="#2D6A4F" font-family="sans-serif">反証</text>
+        <text x="270" y="14" font-size="9" fill="#52B788" font-family="sans-serif">現実</text>
+        <text x="360" y="14" font-size="9" fill="#52B788" font-family="sans-serif">方法</text>
+        <text x="450" y="14" font-size="9" fill="#F4A261" font-family="sans-serif">慈悲</text>
+        <text x="530" y="14" font-size="9" fill="#F4A261" font-family="sans-serif">応用</text>
+        <text x="610" y="14" font-size="9" fill="#F4A261" font-family="sans-serif">継続</text>
+      </svg>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">序章</div>
+      <div class="chapter-title">🚨 怒りは害であり役に立たない</div>
+      <ul>
+        <li>怒りは問題を解決しない、という問題提起</li>
+        <li>検証の枠組みを提示し、読者に問いを持たせる</li>
+        <li>「正しい怒り」という思い込みへの疑問を植える</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>怒りを当然視する前提を崩さないと、以降の実践が根付かないから。</div>
+    </div>
+
+    <div class="chapter-card alt">
+      <div class="chapter-num">第1章</div>
+      <div class="chapter-title">🔬 怒りの正体：自動反応のメカニズム</div>
+      <ul>
+        <li>期待と執着が怒りを生む構造を解剖</li>
+        <li>誤認知（事実の歪み）が怒りを増幅させる</li>
+        <li>刺激→評価→感情→行動の連鎖を可視化</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>敵を知らなければ対処できない。メカニズム理解が変容の出発点。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">第2章</div>
+      <div class="chapter-title">🚫 よくある誤解の反証</div>
+      <ul>
+        <li>「正しい怒り」は存在するか？→ 実証的に否定</li>
+        <li>「怒りが原動力になる」神話を解体</li>
+        <li>怒りなしに行動・変革は可能と示す</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>怒りを手放す抵抗感（正当化）を取り除くため。</div>
+    </div>
+
+    <div class="chapter-card alt">
+      <div class="chapter-num">第3章</div>
+      <div class="chapter-title">🌍 現実の見方：無常と因縁</div>
+      <ul>
+        <li>事実をデータとして観る姿勢を養う</li>
+        <li>無常観：すべては変化し固定的な「私」はない</li>
+        <li>因縁：事象は無数の条件の結果であり単独犯はいない</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>世界観を変えることで、怒りの根本原因（執着・責め）を解消するから。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">第4章</div>
+      <div class="chapter-title">🧘 方法論：正念の育て方</div>
+      <ul>
+        <li>呼吸観察で「今ここ」に注意を戻す</li>
+        <li>身体感覚のスキャンで怒りの兆候を早期察知</li>
+        <li>感情のラベリングで客観視を促す</li>
+        <li>刺激と反応の間に「一拍」を作る訓練</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>理解だけでは変わらない。具体的な実践ツールが必要だから。</div>
+    </div>
+
+    <div class="chapter-card alt">
+      <div class="chapter-num">第5章</div>
+      <div class="chapter-title">💚 慈悲の実践</div>
+      <ul>
+        <li>自他の苦を直視し、害を避ける意図を強化</li>
+        <li>慈悲のフレーズで心を整える</li>
+        <li>怒りの逆薬として慈悲を位置づける</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>怒りを手放した後の「代替の心の向き」を与えるから。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">第6章</div>
+      <div class="chapter-title">🏠 応用編：場面別の実装</div>
+      <ul>
+        <li>家庭・職場・SNSでのトリガー別対処</li>
+        <li>間を置く／言語化／撤退の3戦略</li>
+        <li>日常の具体的シーンに落とし込む</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>抽象的な理解を実生活に接続しないと習慣化しないから。</div>
+    </div>
+
+    <div class="chapter-card alt">
+      <div class="chapter-num">第7章</div>
+      <div class="chapter-title">🔄 継続法と落とし穴</div>
+      <ul>
+        <li>抑圧と非反応の違いを明確化</li>
+        <li>失敗時のリカバリ方法</li>
+        <li>記録と環境設計で習慣を支える</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>継続できなければ意味がない。挫折防止の設計が必要だから。</div>
+    </div>
+
+    <div class="chapter-card">
+      <div class="chapter-num">結語</div>
+      <div class="chapter-title">🌟 怒らないことは智慧の表れ</div>
+      <ul>
+        <li>怒らないことは弱さではなく智慧</li>
+        <li>日々の訓練で誰にでも可能</li>
+        <li>怒らない心が人生の質を高める</li>
+      </ul>
+      <div class="reason-box"><strong>なぜこの章が必要か：</strong>実践への動機を最後に強化し、読者を行動へ送り出すから。</div>
+    </div>
+
+  </div><!-- /panel-chapters -->
+
+  <!-- ===== パネル3：具体例 ===== -->
+  <div class="tab-panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+
+    <div class="example-card">
+      <div class="example-title">🚗 例1：渋滞で割り込まれたドライバー</div>
+      <div class="example-label">背景</div>
+      <div class="example-bg">通勤中に車を割り込まれ、クラクションを鳴らし怒鳴り返す。その後も怒りが収まらず、職場でのパフォーマンスが低下した。</div>
+      <div class="example-label">示唆</div>
+      <div class="example-imp">割り込みという「刺激」に自動反応した結果、怒りは解決どころか苦を拡大した。相手の事情（急病・不注意）という因縁を想像すれば反応は変わる。</div>
+      <div class="example-label">理由（この例が示すこと）</div>
+      <div class="example-why">怒りは問題を解決せず苦を増やすだけという核心メッセージを日常の場面で体感させる。因縁理解が攻撃衝動を減衰させることを示す。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-title">💬 例2：SNSで批判コメントを受けた投稿者</div>
+      <div class="example-label">背景</div>
+      <div class="example-bg">SNSに投稿した内容に批判コメントが届き、即座に反論を書き込んだ。炎上が拡大し、精神的消耗が続いた。</div>
+      <div class="example-label">示唆</div>
+      <div class="example-imp">「批判されるべきでない」という期待（執着）が怒りを生んだ。正念で「これは批判コメントという事実だ」とラベリングし、一拍置けば反応を選べた。</div>
+      <div class="example-label">理由（この例が示すこと）</div>
+      <div class="example-why">現代的なトリガー（SNS）での非反応の実践可能性を示し、感情ラベリングと一拍の効果を具体化する。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-title">👨‍👩‍👧 例3：子どもの失敗に怒る親のメタファー</div>
+      <div class="example-label">背景</div>
+      <div class="example-bg">子どもがコップを割った。「何度言えばわかるんだ」と怒鳴る。子どもは萎縮し、親も後悔する。</div>
+      <div class="example-label">示唆</div>
+      <div class="example-imp">「割るべきでない」という執着が怒りを生んだ。無常観（物は壊れる）と因縁（子どもの発達段階・疲れ）を理解すれば、慈悲的な対応が自然に出る。</div>
+      <div class="example-label">理由（この例が示すこと）</div>
+      <div class="example-why">最も身近な家庭場面で、執着→怒り→後悔の連鎖と、無常観・慈悲による代替反応を体感的に示す。</div>
+    </div>
+
+    <div class="example-card">
+      <div class="example-title">🏢 例4：職場での理不尽な指示（応用メタファー）</div>
+      <div class="example-label">背景</div>
+      <div class="example-bg">上司から理不尽な変更指示が来た。「なぜ今さら」と内心で怒りが爆発しそうになる。</div>
+      <div class="example-label">示唆</div>
+      <div class="example-imp">「計画は変わるべきでない」という執着を手放し、「変更は無数の条件の結果」と因縁で観ると、落ち着いた確認と建設的提案が可能になる。</div>
+      <div class="example-label">理由（この例が示すこと）</div>
+      <div class="example-why">職場という応用場面で、間を置く・言語化・撤退の3戦略が実際にどう機能するかを示す。</div>
+    </div>
+
+  </div><!-- /panel-examples -->
+
+  <!-- ===== パネル4：重要な引用 ===== -->
+  <div class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-title">💬 引用について</div>
+      <ul>
+        <li>以下はすべて本書の要旨から抽出した代表的フレーズです <span class="badge">要旨</span></li>
+        <li>原文の逐語引用ではなく、内容の核心を要約したものです</li>
+      </ul>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-text">怒っても物事は良くならない。良くするのは落ち着いた理解と行動だ。</div>
+      <div class="quote-why"><strong>なぜ重要か：</strong>怒りの正当化を崩し、手放す動機と実務的態度を示すから。怒りを「役に立つ」と思っている限り手放せない。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-text">現実は私の期待どおりに動かない。だから怒るより事実を観る。</div>
+      <div class="quote-why"><strong>なぜ重要か：</strong>期待中心から観察中心へのパラダイム転換を促すから。執着の手放しの出発点となる一文。</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-mark">"</div>
+      <div class="quote-text">他人を罰しても自分の心は清らかにならない。慈悲が心を整える。</div>
+      <div class="quote-why"><strong>なぜ重要か：</strong>報復の無益さを示し、建設的な代替（慈悲）を指し示すから。怒りの後に何をすべきかを明確にする。</div>
+    </div>
+
+    <!-- 視覚的補足：3つの要旨の関係 -->
+    <div class="flow-wrap" aria-label="3つの要旨の関係図">
+      <div class="flow-title">🔗 3つの要旨が示す変容の道筋</div>
+      <div class="flow-row">
+        <div class="flow-node">怒りは役に立たない<br><span style="font-size:.7rem;opacity:.8">→ 手放す動機</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node sec">事実を観る<br><span style="font-size:.7rem;opacity:.8">→ 観察中心へ</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node accent">慈悲で整える<br><span style="font-size:.7rem;opacity:.8">→ 建設的行動へ</span></div>
+      </div>
+    </div>
+
+  </div><!-- /panel-quotes -->
+
+  <!-- ===== パネル5：今日のアクション ===== -->
+  <div class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="card" style="margin-bottom:14px;">
+      <div class="card-title">⚡ 今すぐ始める3つのアクション</div>
+      <ul>
+        <li>すべて15〜30分で完結できる実践です</li>
+        <li>順番は問いません。やりやすいものから始めてください</li>
+        <li>毎日続けることで非反応が自動化されます</li>
+      </ul>
+    </div>
+
+    <!-- 進捗バー的SVG -->
+    <div class="flow-wrap" aria-label="アクションの難易度と効果">
+      <div class="flow-title">📊 3アクションの時間・効果イメージ</div>
+      <svg viewBox="0 0 400 110" width="100%" height="110" aria-hidden="true">
+        <!-- 呼吸観察 -->
+        <text x="0" y="18" font-size="11" fill="#2D6A4F" font-family="sans-serif">🫁 呼吸観察瞑想</text>
+        <rect x="0" y="24" width="300" height="16" rx="8" fill="#EAF7F0"/>
+        <rect x="0" y="24" width="225" height="16" rx="8" fill="#2D6A4F"/>
+        <text x="230" y="36" font-size="10" fill="#2D6A4F" font-family="sans-serif">15分</text>
+        <!-- 怒りトリガー -->
+        <text x="0" y="58" font-size="11" fill="#52B788" font-family="sans-serif">📝 怒りトリガー記録</text>
+        <rect x="0" y="64" width="300" height="16" rx="8" fill="#EAF7F0"/>
+        <rect x="0" y="64" width="270" height="16" rx="8" fill="#52B788"/>
+        <text x="275" y="76" font-size="10" fill="#52B788" font-family="sans-serif">20分</text>
+        <!-- 慈悲の言葉 -->
+        <text x="0" y="98" font-size="11" fill="#F4A261" font-family="sans-serif">💚 慈悲の言葉練習</text>
+        <rect x="0" y="104" width="300" height="16" rx="8" fill="#FFF8F0"/>
+        <rect x="0" y="104" width="225" height="16" rx="8" fill="#F4A261"/>
+        <text x="230" y="116" font-size="10" fill="#F4A261" font-family="sans-serif">15分</text>
+      </svg>
+    </div>
+
+    <div class="action-card">
+      <div class="action-icon" aria-hidden="true">🫁</div>
+      <div class="action-body">
+        <div class="action-title">① 呼吸観察瞑想を15分行う</div>
+        <div class="action-meta">⏱ 15分 ／ 場所：静かな場所ならどこでも</div>
+        <ul style="font-size:.84rem;padding-left:16px;margin-bottom:8px;">
+          <li>目的：刺激と反応の間に「一拍」を作る神経回路を育てる</li>
+          <li>方法：背筋を伸ばして座り、鼻の呼吸だけに注意を向ける。雑念が来たら「考えた」とラベリングして呼吸に戻す</li>
+          <li>ポイント：うまくできなくても「気づいた」こと自体が正念の訓練</li>
+        </ul>
+        <div class="action-effect">💡 期待効果：正念が強化され、怒りの兆候を早期に察知できるようになる。</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-icon" aria-hidden="true">📝</div>
+      <div class="action-body">
+        <div class="action-title">② 怒りトリガーを20分書き出す</div>
+        <div class="action-meta">⏱ 20分 ／ 道具：紙とペン or メモアプリ</div>
+        <ul style="font-size:.84rem;padding-left:16px;margin-bottom:8px;">
+          <li>目的：自分の執着パターンと期待を可視化する</li>
+          <li>方法：最近怒った場面を3〜5つ書く。「何を期待していたか」「実際は何が起きたか」を分けて記録する</li>
+          <li>ポイント：「こうあるべき」という言葉が出たら執着のサイン</li>
+        </ul>
+        <div class="action-effect">💡 期待効果：執着の正体が見え、期待を手放す準備ができる。怒りの予防に直結する。</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-icon" aria-hidden="true">💚</div>
+      <div class="action-body">
+        <div class="action-title">③ 慈悲のフレーズを15分練習する</div>
+        <div class="action-meta">⏱ 15分 ／ 場所：どこでも</div>
+        <ul style="font-size:.84rem;padding-left:16px;margin-bottom:8px;">
+          <li>目的：怒りの逆薬である慈悲の心を意図的に育てる</li>
+          <li>方法：「あなたが幸せでありますように」「あなたが苦しみから解放されますように」を心の中で繰り返す。まず自分に、次に中立な人、次に苦手な人へ向ける</li>
+          <li>ポイント：感情が湧かなくても言葉を繰り返すだけで効果がある</li>
+        </ul>
+        <div class="action-effect">💡 期待効果：敵意と評価が弱まり、建設的な対応が自然に増える。心が整う感覚を体験できる。</div>
+      </div>
+    </div>
+
+    <!-- 継続のヒント -->
+    <div class="card">
+      <div class="card-title">🔄 継続のための3つのヒント</div>
+      <ul>
+        <li>📅 毎日同じ時間帯に行う（朝起きた直後 or 就寝前が効果的）</li>
+        <li>📓 実践後に一言だけ記録する（「今日は呼吸観察10分できた」など）</li>
+        <li>⚠️ 怒ってしまっても自分を責めない。「気づいた」ことが訓練の証拠</li>
+        <li>🌱 抑圧と非反応は違う。感情を感じながら行動を選ぶのが目標</li>
+      </ul>
+    </div>
+
+  </div><!-- /panel-actions -->
+
+</div><!-- /tabs-wrapper -->
+
+<footer>
+  <p>インフォグラフィック生成 ／ カラーパレット：プライマリー #2D6A4F ／ セカンダリー #52B788 ／ アクセント #F4A261</p>
+</footer>
+
+<script>
+  (function() {
+    'use strict';
+    var tabs    = document.querySelectorAll('[role="tab"]');
+    var panels  = document.querySelectorAll('[role="tabpanel"]');
+
+    function activateTab(tab) {
+      tabs.forEach(function(t) {
+        t.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(function(p) {
+        p.classList.remove('active');
+      });
+      tab.setAttribute('aria-selected', 'true');
+      var panelId = tab.getAttribute('aria-controls');
+      var panel   = document.getElementById(panelId);
+      if (panel) {
+        panel.classList.add('active');
+        panel.focus && panel.setAttribute('tabindex', '-1');
+      }
+    }
+
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        activateTab(tab);
+      });
+      tab.addEventListener('keydown', function(e) {
+        var idx = Array.prototype.indexOf.call(tabs, tab);
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          var next = tabs[(idx + 1) % tabs.length];
+          next.focus();
+          activateTab(next);
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          var prev = tabs[(idx - 1 + tabs.length) % tabs.length];
+          prev.focus();
+          activateTab(prev);
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          tabs[0].focus();
+          activateTab(tabs[0]);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          tabs[tabs.length - 1].focus();
+          activateTab(tabs[tabs.length - 1]);
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>
