@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心理的安全性 インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a3a5c
+  セカンダリー:  #2e86ab
+  アクセント:    #f4a261
+-->
+<style>
+  /* ===== リセット & ベース ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #1a3a5c;
+    --secondary: #2e86ab;
+    --accent: #f4a261;
+    --bg: #f0f4f8;
+    --card-bg: #ffffff;
+    --text: #1e2a38;
+    --text-light: #5a6a7a;
+    --success: #27ae60;
+    --warn: #e74c3c;
+    --radius: 12px;
+    --shadow: 0 4px 16px rgba(26,58,92,0.10);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Meiryo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ===== ヘッダー ===== */
+  .site-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  .site-header .book-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 6px;
+  }
+  .site-header h1 {
+    font-size: clamp(20px, 5vw, 32px);
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+  }
+  .site-header .subtitle {
+    font-size: 13px;
+    opacity: 0.85;
+    margin-top: 6px;
+  }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: linear-gradient(135deg, #fff8f0 0%, #e8f4fb 100%);
+    border-left: 5px solid var(--accent);
+    border-radius: var(--radius);
+    margin: 20px 16px;
+    padding: 20px 18px;
+    box-shadow: var(--shadow);
+  }
+  .summary-block .summary-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media (max-width: 520px) {
+    .summary-grid { grid-template-columns: 1fr; }
+  }
+  .summary-item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px 14px;
+    border-top: 3px solid var(--secondary);
+  }
+  .summary-item.full { grid-column: 1 / -1; }
+  .summary-item .s-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--secondary);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .summary-item p {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .summary-item.accent-border { border-top-color: var(--accent); }
+  .summary-item.accent-border .s-label { color: var(--accent); }
+
+  /* ===== タブナビ ===== */
+  .tab-nav {
+    display: flex;
+    overflow-x: auto;
+    background: var(--primary);
+    padding: 0 8px;
+    gap: 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.65);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 12px 14px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    font-family: inherit;
+  }
+  .tab-btn:hover { color: #fff; }
+  .tab-btn[aria-selected="true"] {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ===== タブコンテンツ ===== */
+  .tab-panel { display: none; padding: 16px; }
+  .tab-panel.active { display: block; }
+
+  /* ===== セクションタイトル ===== */
+  .section-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--secondary), transparent);
+    border-radius: 2px;
+  }
+
+  /* ===== カードグリッド ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 400px) {
+    .card-grid { grid-template-columns: 1fr; }
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px 16px 14px;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--secondary);
+    transition: transform 0.15s;
+  }
+  .card:hover { transform: translateY(-2px); }
+  .card.accent { border-top-color: var(--accent); }
+  .card.success { border-top-color: var(--success); }
+  .card.warn { border-top-color: var(--warn); }
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .card-emoji { font-size: 22px; line-height: 1; flex-shrink: 0; }
+  .card-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.3;
+  }
+  .card-subtitle {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-top: 2px;
+  }
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    font-size: 12.5px;
+    color: var(--text);
+    padding: 3px 0 3px 16px;
+    position: relative;
+    line-height: 1.5;
+    border-bottom: 1px dashed #eef0f3;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-size: 10px;
+    top: 5px;
+  }
+  .card .reason-box {
+    margin-top: 10px;
+    background: #f0f7ff;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--secondary);
+    border-left: 3px solid var(--secondary);
+  }
+  .card .reason-box strong { color: var(--primary); }
+
+  /* ===== 2×2マトリクス ===== */
+  .matrix-wrap {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+  .matrix-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .matrix-grid {
+    display: grid;
+    grid-template-columns: 40px 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
+    gap: 4px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .matrix-axis-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .matrix-col-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-align: center;
+    padding: 4px;
+  }
+  .matrix-cell {
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+  .matrix-cell .cell-emoji { font-size: 20px; }
+  .matrix-cell .cell-name { font-size: 12px; font-weight: 800; }
+  .matrix-cell .cell-desc { font-size: 10px; line-height: 1.4; }
+  .cell-learn { background: #d4edda; color: #155724; }
+  .cell-comfort { background: #fff3cd; color: #856404; }
+  .cell-anxiety { background: #f8d7da; color: #721c24; }
+  .cell-apathy { background: #e2e3e5; color: #383d41; }
+  .matrix-row-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-align: center;
+  }
+
+  /* ===== 因果フロー ===== */
+  .flow-wrap {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    overflow-x: auto;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .flow-box {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-align: center;
+    min-width: 80px;
+    line-height: 1.35;
+  }
+  .flow-box.accent-box {
+    background: linear-gradient(135deg, var(--accent), #e07b3a);
+  }
+  .flow-box.green-box {
+    background: linear-gradient(135deg, #27ae60, #1e8449);
+  }
+  .flow-arrow {
+    font-size: 18px;
+    color: var(--secondary);
+    flex-shrink: 0;
+  }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+    border-left: 5px solid var(--secondary);
+  }
+  .chapter-card.alt { border-left-color: var(--accent); }
+  .chapter-num {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--secondary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .chapter-card.alt .chapter-num { color: var(--accent); }
+  .chapter-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+  .chapter-card ul { list-style: none; padding: 0; }
+  .chapter-card ul li {
+    font-size: 12.5px;
+    padding: 3px 0 3px 16px;
+    position: relative;
+    border-bottom: 1px dashed #eef0f3;
+    line-height: 1.5;
+  }
+  .chapter-card ul li:last-child { border-bottom: none; }
+  .chapter-card ul li::before {
+    content: '●';
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-size: 8px;
+    top: 7px;
+  }
+  .chapter-card.alt ul li::before { color: var(--accent); }
+  .chapter-reason {
+    margin-top: 10px;
+    background: #fff8f0;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #a0522d;
+    border-left: 3px solid var(--accent);
+  }
+
+  /* ===== 具体例カード ===== */
+  .example-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .example-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--secondary), var(--accent));
+  }
+  .example-num {
+    display: inline-block;
+    background: var(--secondary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-bottom: 6px;
+  }
+  .example-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+  .example-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .meta-tag {
+    font-size: 11px;
+    background: #e8f4fb;
+    color: var(--secondary);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-weight: 600;
+  }
+  .example-body { font-size: 12.5px; line-height: 1.6; color: var(--text); }
+  .example-reason {
+    margin-top: 10px;
+    background: #f0f7ff;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--secondary);
+    border-left: 3px solid var(--secondary);
+  }
+
+  /* ===== 引用カード ===== */
+  .quote-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 18px 16px 14px;
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .quote-mark {
+    font-size: 48px;
+    color: var(--accent);
+    opacity: 0.25;
+    position: absolute;
+    top: 6px;
+    left: 12px;
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .quote-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.6;
+    padding-left: 28px;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .quote-note {
+    font-size: 12px;
+    color: var(--text-light);
+    padding-left: 28px;
+    border-top: 1px dashed #dde3ea;
+    padding-top: 8px;
+  }
+  .quote-note strong { color: var(--accent); }
+
+  /* ===== アクションカード ===== */
+  .action-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+    border-top: 4px solid var(--success);
+  }
+  .action-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .action-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--success);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .action-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+  .action-time {
+    font-size: 11px;
+    background: #d4edda;
+    color: #155724;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-weight: 600;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .action-card ul { list-style: none; padding: 0; }
+  .action-card ul li {
+    font-size: 12.5px;
+    padding: 3px 0 3px 16px;
+    position: relative;
+    line-height: 1.5;
+    border-bottom: 1px dashed #eef0f3;
+  }
+  .action-card ul li:last-child { border-bottom: none; }
+  .action-card ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success);
+    font-size: 11px;
+    top: 4px;
+  }
+  .action-effect {
+    margin-top: 10px;
+    background: #f0fff4;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #155724;
+    border-left: 3px solid var(--success);
+  }
+
+  /* ===== 数値バッジ ===== */
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+    justify-content: center;
+  }
+  .badge {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    border-radius: 10px;
+    padding: 12px 16px;
+    text-align: center;
+    min-width: 100px;
+    box-shadow: var(--shadow);
+  }
+  .badge .badge-num {
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1;
+    display: block;
+  }
+  .badge .badge-label {
+    font-size: 10px;
+    opacity: 0.85;
+    margin-top: 4px;
+    line-height: 1.3;
+  }
+  .badge.accent-badge {
+    background: linear-gradient(135deg, var(--accent), #e07b3a);
+  }
+
+  /* ===== 関連書籍 ===== */
+  .book-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .book-item {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 14px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--accent);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .book-icon { font-size: 24px; flex-shrink: 0; }
+  .book-name { font-size: 13px; font-weight: 700; color: var(--primary); }
+  .book-author { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+  .book-rel { font-size: 11.5px; color: var(--text); margin-top: 5px; line-height: 1.45; }
+
+  /* ===== フッター ===== */
+  .site-footer {
+    background: var(--primary);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    font-size: 11px;
+    padding: 16px;
+    margin-top: 20px;
+  }
+
+  /* ===== SVGバー ===== */
+  .bar-chart-wrap {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+  .bar-chart-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .bar-label {
+    font-size: 11px;
+    color: var(--text);
+    width: 110px;
+    flex-shrink: 0;
+    line-height: 1.3;
+  }
+  .bar-track {
+    flex: 1;
+    background: #e8edf2;
+    border-radius: 6px;
+    height: 18px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    transition: width 0.8s ease;
+  }
+  .bar-fill.primary { background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+  .bar-fill.accent { background: linear-gradient(90deg, var(--accent), #e07b3a); }
+  .bar-fill.success { background: linear-gradient(90deg, #27ae60, #1e8449); }
+  .bar-fill.warn { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+
+  /* ===== ユーティリティ ===== */
+  .mb-12 { margin-bottom: 12px; }
+  .mb-16 { margin-bottom: 16px; }
+  .text-center { text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header class="site-header" role="banner">
+  <p class="book-label">📖 Book Infographic</p>
+  <h1>心理的安全性<br>The Fearless Organization</h1>
+  <p class="subtitle">エイミー・C・エドモンドソン著 ／ 学習・イノベーション・高業績の前提条件</p>
+</header>
+
+<!-- ===== ファーストビュー サマリーブロック ===== -->
+<section aria-label="エグゼクティブサマリー" style="padding: 0 0 4px;">
+  <div class="summary-block">
+    <div class="summary-title">📌 要約：問い × 答え × Why × How</div>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="s-label">❓ 問い</div>
+        <p>優秀な人と資源があっても、なぜ組織は沈黙と見落としで失敗するのか？</p>
+      </div>
+      <div class="summary-item">
+        <div class="s-label">💡 答え</div>
+        <p>発言・試行・助け合いをしても不利益を被らないという「心理的安全性」が欠けているから。</p>
+      </div>
+      <div class="summary-item">
+        <div class="s-label">🔍 Why（なぜそうなのか）</div>
+        <p>心理的安全性が高いチームほどエラー発見・知識共有・革新が進む。低いと人は報復や恥を恐れて沈黙し、小さな問題が大事故に連鎖する。</p>
+      </div>
+      <div class="summary-item accent-border">
+        <div class="s-label">🛠 How（そのためには）</div>
+        <p>①フレーミング（仕事を学習必須と位置づける）②参加の招待（声を引き出す）③生産的な反応（学びを強化）＋高い基準との両立で「学習ゾーン」を設計する。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== タブナビ ===== -->
+<nav aria-label="コンテンツタブ">
+  <div class="tab-nav" role="tablist">
+    <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="tab-concepts" id="btn-concepts">🧠 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters" id="btn-chapters">📚 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples" id="btn-examples">💼 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes"   id="btn-quotes">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions"  id="btn-actions">✅ 今日のアクション</button>
+  </div>
+</nav>
+
+<!-- ===== タブ1：主要概念 ===== -->
+<section id="tab-concepts" class="tab-panel active" role="tabpanel" aria-labelledby="btn-concepts">
+
+  <h2 class="section-title">🧠 主要概念の詳細</h2>
+
+  <!-- 数値バッジ -->
+  <div class="badge-row">
+    <div class="badge"><span class="badge-num">11</span><span class="badge-label">主要概念</span></div>
+    <div class="badge"><span class="badge-num">3</span><span class="badge-label">リーダー行動ステップ</span></div>
+    <div class="badge accent-badge"><span class="badge-num">2×2</span><span class="badge-label">学習ゾーン<br>マトリクス</span></div>
+    <div class="badge"><span class="badge-num">3</span><span class="badge-label">失敗の分類</span></div>
+  </div>
+
+  <!-- 因果フロー -->
+  <div class="flow-wrap mb-16">
+    <div class="bar-chart-title" style="text-align:center; margin-bottom:10px;">🔗 因果フロー：リーダー行動 → 成果</div>
+    <div class="flow-row">
+      <div class="flow-box">🎯 フレーミング<br>（仕事の再定義）</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">🙋 参加の招待<br>（声を引き出す）</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">🤝 生産的な反応<br>（感謝・FB）</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box accent-box">🛡 心理的安全性↑</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box">📣 学習行動↑</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box green-box">🚀 イノベーション<br>品質向上</div>
+    </div>
+  </div>
+
+  <!-- 2×2マトリクス -->
+  <div class="matrix-wrap mb-16">
+    <div class="matrix-title">📊 心理的安全性 × 基準（アカウンタビリティ）の2×2</div>
+    <div class="matrix-grid">
+      <!-- 空白 -->
+      <div></div>
+      <div class="matrix-col-label">基準：低い</div>
+      <div class="matrix-col-label">基準：高い</div>
+      <!-- 行1 -->
+      <div class="matrix-row-label">安全性：高い</div>
+      <div class="matrix-cell cell-comfort">
+        <div class="cell-emoji">😌</div>
+        <div class="cell-name">快適ゾーン</div>
+        <div class="cell-desc">居心地よいが<br>成長しない</div>
+      </div>
+      <div class="matrix-cell cell-learn">
+        <div class="cell-emoji">🌱</div>
+        <div class="cell-name">学習ゾーン ★</div>
+        <div class="cell-desc">最も学習・成果が<br>進む最適領域</div>
+      </div>
+      <!-- 行2 -->
+      <div class="matrix-row-label">安全性：低い</div>
+      <div class="matrix-cell cell-apathy">
+        <div class="cell-emoji">😶</div>
+        <div class="cell-name">無関心ゾーン</div>
+        <div class="cell-desc">無気力・停滞</div>
+      </div>
+      <div class="matrix-cell cell-anxiety">
+        <div class="cell-emoji">😰</div>
+        <div class="cell-name">焦りゾーン</div>
+        <div class="cell-desc">恐れで動く<br>隠蔽リスク大</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 概念カードグリッド -->
+  <div class="card-grid">
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-emoji">🛡</div>
+        <div>
+          <div class="card-title">心理的安全性</div>
+          <div class="card-subtitle">話しても大丈夫。</div>
+        </div>
+      </div>
+      <ul>
+        <li>対人リスクを取っても罰されないという共有信念</li>
+        <li>質問・指摘・失敗の共有が安全にできる状態</li>
+        <li>個人の性格ではなくチームの雰囲気・文化</li>
+        <li>「優しさ」や「甘さ」とは別物</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>これがなければ人は沈黙し、問題は隠れたまま大事故に発展する。</div>
+    </div>
+
+    <div class="card accent">
+      <div class="card-head">
+        <div class="card-emoji">📣</div>
+        <div>
+          <div class="card-title">スピークアップ行動</div>
+          <div class="card-subtitle">声を上げる。</div>
+        </div>
+      </div>
+      <ul>
+        <li>懸念・アイデア・誤りを率直に共有する行為</li>
+        <li>学習の入口であり、改善の起点</li>
+        <li>心理的安全性が高いほど自然に増える</li>
+        <li>沈黙は最悪のエラーと位置づける</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>語られない問題は是正されない。発言こそリスク低減の第一歩。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-emoji">🔄</div>
+        <div>
+          <div class="card-title">学習行動</div>
+          <div class="card-subtitle">学びを回す。</div>
+        </div>
+      </div>
+      <ul>
+        <li>実験・助けを求める・振り返り・情報共有</li>
+        <li>心理的安全性が高いと自発的に増加</li>
+        <li>エラーの早期発見・知識共有・改善速度に直結</li>
+        <li>複雑な知識労働での業績向上の鍵</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>学習行動の積み重ねがイノベーションと品質向上を生む。</div>
+    </div>
+
+    <div class="card success">
+      <div class="card-head">
+        <div class="card-emoji">🌱</div>
+        <div>
+          <div class="card-title">学習ゾーン（2×2）</div>
+          <div class="card-subtitle">厳しさと安心の両立。</div>
+        </div>
+      </div>
+      <ul>
+        <li>高い基準×高い心理的安全性が両立した状態</li>
+        <li>最も学習・成果・イノベーションが進む</li>
+        <li>アカウンタビリティと安全性は対立しない</li>
+        <li>リーダーが意図的に設計できる</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>「安全だけど甘い」でも「厳しいだけで怖い」でもない最適解。</div>
+    </div>
+
+    <div class="card warn">
+      <div class="card-head">
+        <div class="card-emoji">⚠️</div>
+        <div>
+          <div class="card-title">快適/焦り/無関心ゾーン</div>
+          <div class="card-subtitle">偏りの罠。</div>
+        </div>
+      </div>
+      <ul>
+        <li>快適：高安全×低基準 → 成長なし</li>
+        <li>焦り：低安全×高基準 → 隠蔽・恐れ</li>
+        <li>無関心：低低 → 無気力・停滞</li>
+        <li>いずれも学習ゾーンより劣る非最適領域</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>どの偏りも組織の学習と成果を損なう。自チームの位置を把握する必要がある。</div>
+    </div>
+
+    <div class="card accent">
+      <div class="card-head">
+        <div class="card-emoji">💡</div>
+        <div>
+          <div class="card-title">インテリジェントな失敗</div>
+          <div class="card-subtitle">価値ある失敗。</div>
+        </div>
+      </div>
+      <ul>
+        <li>明確な仮説と小さな範囲での探索的実験から生まれる</li>
+        <li>学べる失敗は設計して歓迎する</li>
+        <li>失敗の分類：予防可能／複雑性由来／インテリジェント</li>
+        <li>罰すべき・許容・奨励の線引きを明確化</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>罰一辺倒を改め、実験文化を後押しする基準を与える。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-emoji">🎯</div>
+        <div>
+          <div class="card-title">フレーミング（仕事の再定義）</div>
+          <div class="card-subtitle">学習が本務。</div>
+        </div>
+      </div>
+      <ul>
+        <li>仕事を不確実・相互依存・学習必須と位置づける</li>
+        <li>発言の必要性と意義を示す</li>
+        <li>「なぜ声が必要か」を明確にする</li>
+        <li>リーダーが最初に行う土台づくり</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>フレーミングなしには、招待も反応も効果が薄い。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-emoji">🙋</div>
+        <div>
+          <div class="card-title">参加の招待</div>
+          <div class="card-subtitle">話す機会を開く。</div>
+        </div>
+      </div>
+      <ul>
+        <li>オープン質問・意見募集・ローテーション発言</li>
+        <li>関与を促す具体的な場の設計</li>
+        <li>権力勾配を下げ、発言コストを下げる</li>
+        <li>リーダーが自らの誤りうる可能性を明言する</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>機会がなければ声は出ない。構造的に発言を引き出す設計が必要。</div>
+    </div>
+
+    <div class="card success">
+      <div class="card-head">
+        <div class="card-emoji">🤝</div>
+        <div>
+          <div class="card-title">生産的な反応</div>
+          <div class="card-subtitle">安心の即時信号。</div>
+        </div>
+      </div>
+      <ul>
+        <li>発言や失敗に感謝・具体的フィードバック・次善策で応える</li>
+        <li>「言ってよかった」という体験を即時に作る</li>
+        <li>次の発言を促す正のループを形成</li>
+        <li>批判・無視・沈黙は安全性を即座に破壊する</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>反応の質が心理的安全性の維持・強化を左右する。</div>
+    </div>
+
+    <div class="card accent">
+      <div class="card-head">
+        <div class="card-emoji">🗣</div>
+        <div>
+          <div class="card-title">キャンダー（率直さ）</div>
+          <div class="card-subtitle">厳しく優しい真実。</div>
+        </div>
+      </div>
+      <ul>
+        <li>思いやりと明確さの両立による誠実なやり取り</li>
+        <li>曖昧な「優しさ」ではなく、真実を伝える勇気</li>
+        <li>健全なフィードバック文化の核心</li>
+        <li>偽りの調和（表面的な同意）を避ける</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>率直さなしには問題は隠れ続け、改善が起きない。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-emoji">📏</div>
+        <div>
+          <div class="card-title">アカウンタビリティ（高い基準）</div>
+          <div class="card-subtitle">甘やかさない安心。</div>
+        </div>
+      </div>
+      <ul>
+        <li>成果と行動に対する明確な期待と責任</li>
+        <li>心理的安全性と対立しない、むしろ補完する</li>
+        <li>高い基準があるから発言が意味を持つ</li>
+        <li>「何でもOK」ではなく「挑戦を支える」安全性</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>基準なき安全性は快適ゾーンに堕落する。両立が学習ゾーンを作る。</div>
+    </div>
+
+  </div>
+
+  <!-- 横棒グラフ：心理的安全性の効果 -->
+  <div class="bar-chart-wrap" style="margin-top:16px;">
+    <div class="bar-chart-title">📈 心理的安全性が高いチームの特徴（相対的傾向）</div>
+    <div class="bar-row">
+      <div class="bar-label">エラー早期発見</div>
+      <div class="bar-track"><div class="bar-fill primary" style="width:90%">高い</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">知識共有・学習速度</div>
+      <div class="bar-track"><div class="bar-fill primary" style="width:85%">高い</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">イノベーション創出</div>
+      <div class="bar-track"><div class="bar-fill success" style="width:80%">高い</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">沈黙・隠蔽リスク</div>
+      <div class="bar-track"><div class="bar-fill warn" style="width:20%">低い</div></div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">重大事故への連鎖</div>
+      <div class="bar-track"><div class="bar-fill warn" style="width:15%">低い</div></div>
+    </div>
+    <p style="font-size:10px; color:var(--text-light); margin-top:8px;">※ 本書の研究・事例に基づく定性的傾向の視覚化</p>
+  </div>
+
+</section>
+
+<!-- ===== タブ2：各章の要約 ===== -->
+<section id="tab-chapters" class="tab-panel" role="tabpanel" aria-labelledby="btn-chapters">
+
+  <h2 class="section-title">📚 各章の要約</h2>
+
+  <div class="chapter-card">
+    <div class="chapter-num">論点 1</div>
+    <div class="chapter-title">🚨 問題提起：職場に潜む「恐れ」と沈黙のコスト</div>
+    <ul>
+      <li>現代の職場では、人は発言することで評価を下げることを恐れている</li>
+      <li>沈黙は「何もない」ではなく「問題が隠れている」サイン</li>
+      <li>小さな見落としが累積し、重大事故・不祥事に連鎖する</li>
+      <li>優秀な人材がいても、恐れがあれば能力は発揮されない</li>
+    </ul>
+    <div class="chapter-reason">📌 なぜこの章が必要か：「なぜ今、心理的安全性が問題なのか」を具体的に示し、読者に当事者意識を持たせる出発点。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <div class="chapter-num">論点 2</div>
+    <div class="chapter-title">🔬 定義と誤解の解消：「優しさ」や「甘さ」との違い</div>
+    <ul>
+      <li>心理的安全性の科学的定義を明確化（共有信念・対人リスク）</li>
+      <li>「仲良しチーム」「甘い職場」とは根本的に異なる</li>
+      <li>高い基準（アカウンタビリティ）と両立する概念</li>
+      <li>個人の性格ではなく、チームの雰囲気・文化の問題</li>
+    </ul>
+    <div class="chapter-reason">📌 なぜこの章が必要か：最も多い誤解を先に解消することで、正しい実践への道を開く。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">論点 3</div>
+    <div class="chapter-title">📊 証拠の提示：発言が成果に結びつく因果</div>
+    <ul>
+      <li>医療・航空・テック等の研究とケースを多数提示</li>
+      <li>心理的安全性が高いチームほどエラー発見・知識共有・革新が進む</li>
+      <li>低い安全性が重大事故（医療ミス・航空事故等）に連鎖した事例</li>
+      <li>相関ではなく因果関係として示す</li>
+    </ul>
+    <div class="chapter-reason">📌 なぜこの章が必要か：「感覚論」ではなく「証拠」で語ることで、懐疑的な読者も納得させる。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <div class="chapter-num">論点 4</div>
+    <div class="chapter-title">🗺 枠組みの提示：2×2で最適領域を説明</div>
+    <ul>
+      <li>心理的安全性×基準の2×2マトリクスを提示</li>
+      <li>学習ゾーン（高×高）が最も成果を生む</li>
+      <li>快適・焦り・無関心の各ゾーンの問題点を明示</li>
+      <li>自チームの現在地を診断するツールとして機能</li>
+    </ul>
+    <div class="chapter-reason">📌 なぜこの章が必要か：複雑な概念を2軸で整理し、実践者が自分の状況を把握できる地図を提供する。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">論点 5</div>
+    <div class="chapter-title">🛠 実践ガイド：3ステップの具体化</div>
+    <ul>
+      <li>ステップ①：フレーミング（仕事を不確実・学習必須と位置づける）</li>
+      <li>ステップ②：参加の招待（オープン質問・意見募集・ローテーション）</li>
+      <li>ステップ③：生産的な反応（感謝・具体的FB・次善策）</li>
+      <li>3ステップは順序があり、フレーミングが土台</li>
+    </ul>
+    <div class="chapter-reason">📌 なぜこの章が必要か：「何をすればいいか」を具体的に示し、明日から実践できる行動に落とし込む。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <div class="chapter-num">論点 6</div>
+    <div class="chapter-title">💡 失敗から学ぶ：失敗の分類と設計</div>
+    <ul>
+      <li>失敗を3分類：予防可能／複雑性由来／インテリジェント</li>
+      <li>インテリジェントな失敗は設計して歓迎する</li>
+      <li>罰すべき・許容・奨励の線引きを明確化</li>
+      <li>実験文化を後押しする基準を組織に埋め込む</li>
+    </ul>
+    <div class="chapter-reason">📌 なぜこの章が必要か：「失敗＝悪」という固定観念を解体し、学習する組織の核心を示す。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="chapter-num">論点 7</div>
+    <div class="chapter-title">🏗 スケールと制度：評価・会議・オンボーディングへの埋め込み</div>
+    <ul>
+      <li>評価制度・会議設計・オンボーディング等への組み込み方</li>
+      <li>個人の努力だけでなく、制度・構造で支える</li>
+      <li>組織全体にスケールさせるための仕組みづくり</li>
+      <li>リーダー一人の行動から組織文化へ</li>
+    </ul>
+    <div class="chapter-reason">📌 なぜこの章が必要か：個人の取り組みを組織レベルに拡張する方法を示し、持続可能な変化を促す。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <div class="chapter-num">論点 8</div>
+    <div class="chapter-title">⚠️ 落とし穴と対策：偽りの調和・低基準化を避ける</div>
+    <ul>
+      <li>言いっぱなし文化（発言はあるが改善なし）の罠</li>
+      <li>低基準化（安全性を高めすぎて甘くなる）の危険</li>
+      <li>偽りの調和（表面的な同意・本音の隠蔽）を避ける</li>
+      <li>キャンダー（率直さ）と思いやりの両立が鍵</li>
+    </ul>
+    <div class="chapter-reason">📌 なぜこの章が必要か：実践者が陥りやすい失敗パターンを先に示し、正しい実践を守る。</div>
+  </div>
+
+</section>
+
+<!-- ===== タブ3：具体例 ===== -->
+<section id="tab-examples" class="tab-panel" role="tabpanel" aria-labelledby="btn-examples">
+
+  <h2 class="section-title">💼 具体例・ケース・メタファー</h2>
+
+  <div class="example-card">
+    <div class="example-num">例 1</div>
+    <div class="example-title">🏥 医療チームのエラー報告：安全性が高いチームほどミスが多い？</div>
+    <div class="example-meta">
+      <span class="meta-tag">医療</span>
+      <span class="meta-tag">エラー報告</span>
+      <span class="meta-tag">逆説的発見</span>
+    </div>
+    <div class="example-body">
+      <strong>背景：</strong>エドモンドソンの初期研究で、心理的安全性が高い医療チームほどエラー報告件数が多かった。<br>
+      <strong>示唆：</strong>これは「ミスが多い」のではなく「ミスを報告できる」環境があるということ。安全性が低いチームはミスを隠す。<br>
+      <strong>結果：</strong>報告が多いチームほど早期是正が進み、患者アウトカムが向上した。
+    </div>
+    <div class="example-reason">💡 この例が示すこと：心理的安全性は「問題を増やす」のではなく「問題を見えるようにする」。見えない問題こそが最大のリスク。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-num">例 2</div>
+    <div class="example-title">✈️ 航空業界のCRM（乗務員資源管理）：副操縦士の沈黙が事故を招く</div>
+    <div class="example-meta">
+      <span class="meta-tag">航空</span>
+      <span class="meta-tag">権力勾配</span>
+      <span class="meta-tag">沈黙のコスト</span>
+    </div>
+    <div class="example-body">
+      <strong>背景：</strong>航空事故の分析で、副操縦士が機長の判断ミスに気づいていたにもかかわらず、権力勾配（地位の差）から発言できなかったケースが多数確認された。<br>
+      <strong>示唆：</strong>階層が強い組織では、下位者が上位者に異議を唱えることが心理的に困難になる。<br>
+      <strong>結果：</strong>CRM訓練（発言を促す文化設計）の導入後、事故率が大幅に低下した。
+    </div>
+    <div class="example-reason">💡 この例が示すこと：権力勾配が発言コストを上げる。リーダーが意図的に「発言してよい」と示す行動が命を救う。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-num">例 3</div>
+    <div class="example-title">🚀 テック企業の実験文化：「インテリジェントな失敗」の設計</div>
+    <div class="example-meta">
+      <span class="meta-tag">テック</span>
+      <span class="meta-tag">実験文化</span>
+      <span class="meta-tag">失敗の設計</span>
+    </div>
+    <div class="example-body">
+      <strong>背景：</strong>高成長テック企業では、小さな仮説検証（A/Bテスト等）を大量に行い、失敗から素早く学ぶ文化を意図的に設計している。<br>
+      <strong>示唆：</strong>失敗を「罰する」のではなく「学びの素材」として扱うことで、実験の頻度と質が上がる。<br>
+      <strong>結果：</strong>イノベーション速度が上がり、競合に対する優位性を維持できる。
+    </div>
+    <div class="example-reason">💡 この例が示すこと：インテリジェントな失敗は設計できる。「小さく・明確な仮説で・素早く」が学べる失敗の条件。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-num">例 4（メタファー）</div>
+    <div class="example-title">🌡 「温度計」メタファー：沈黙は組織の発熱を隠す</div>
+    <div class="example-meta">
+      <span class="meta-tag">メタファー</span>
+      <span class="meta-tag">沈黙のコスト</span>
+    </div>
+    <div class="example-body">
+      <strong>背景：</strong>組織の問題を「発熱」に例えると、心理的安全性の低い組織は温度計（発言）が機能しない状態。<br>
+      <strong>示唆：</strong>熱があっても温度計が壊れていれば気づけない。沈黙は「問題がない」ではなく「問題が見えない」状態。<br>
+      <strong>結果：</strong>発言できる環境を作ることは、組織の「診断機能」を回復させることと同義。
+    </div>
+    <div class="example-reason">💡 この例が示すこと：心理的安全性は「快適さ」のためではなく、組織の「早期警戒システム」として機能する。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="example-num">例 5</div>
+    <div class="example-title">🏭 製造業の品質改善：現場の声が不良率を下げた</div>
+    <div class="example-meta">
+      <span class="meta-tag">製造業</span>
+      <span class="meta-tag">品質管理</span>
+      <span class="meta-tag">現場発言</span>
+    </div>
+    <div class="example-body">
+      <strong>背景：</strong>ある製造現場で、作業員が工程の問題に気づいていたが「上司に言っても無駄」という雰囲気から沈黙していた。<br>
+      <strong>示唆：</strong>リーダーが「気づいたことは何でも言ってほしい」と明言し、最初の発言に感謝を示したことで、報告が増加した。<br>
+      <strong>結果：</strong>不良率が数ヶ月で大幅に低下し、改善提案件数も増加した。
+    </div>
+    <div class="example-reason">💡 この例が示すこと：リーダーの一言と反応の変化が、現場の発言行動を変え、品質に直結する。</div>
+  </div>
+
+</section>
+
+<!-- ===== タブ4：重要な引用 ===== -->
+<section id="tab-quotes" class="tab-panel" role="tabpanel" aria-labelledby="btn-quotes">
+
+  <h2 class="section-title">💬 重要な引用・要旨</h2>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">心理的安全性は「優しくすること」ではなく、高い基準を可能にする条件。</div>
+    <div class="quote-note">
+      <strong>📌 なぜ重要か：</strong>甘さとの混同を避け、成果との両立が肝心だと示す。高い基準と安全性は対立しない、むしろ相互に強化し合う関係にある。<br>
+      <span style="font-size:10px; color:#aaa;">※要旨</span>
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">沈黙は最悪のエラーである。問題は語られなければ是正されない。</div>
+    <div class="quote-note">
+      <strong>📌 なぜ重要か：</strong>発言こそリスク低減の起点だと強調する。「何も言わない」ことが最大のリスクであるという認識の転換を促す。<br>
+      <span style="font-size:10px; color:#aaa;">※要旨</span>
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">リーダーは自らの誤りうる可能性を明言し、質問で参加を招くべきだ。</div>
+    <div class="quote-note">
+      <strong>📌 なぜ重要か：</strong>権力勾配を下げ、発言コストを下げる具体策になる。リーダーの「脆弱性の開示」が安全性の土台を作る。<br>
+      <span style="font-size:10px; color:#aaa;">※要旨</span>
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">すべての失敗が同じではない。学べる失敗は設計して歓迎する。</div>
+    <div class="quote-note">
+      <strong>📌 なぜ重要か：</strong>罰一辺倒を改め、実験文化を後押しする基準を与える。失敗の種類を区別することで、組織の学習能力が飛躍的に向上する。<br>
+      <span style="font-size:10px; color:#aaa;">※要旨</span>
+    </div>
+  </div>
+
+  <!-- 関連書籍 -->
+  <h2 class="section-title" style="margin-top:20px;">📖 関連書籍</h2>
+  <div class="book-list">
+    <div class="book-item">
+      <div class="book-icon">📗</div>
+      <div>
+        <div class="book-name">Dare to Lead</div>
+        <div class="book-author">ブレネー・ブラウン</div>
+        <div class="book-rel">勇気と脆弱性のリーダーシップが心理的安全性を補強する。</div>
+      </div>
+    </div>
+    <div class="book-item">
+      <div class="book-icon">📘</div>
+      <div>
+        <div class="book-name">Radical Candor</div>
+        <div class="book-author">キム・スコット</div>
+        <div class="book-rel">思いやり×率直さの実践が健全なフィードバック文化を作る。</div>
+      </div>
+    </div>
+    <div class="book-item">
+      <div class="book-icon">📙</div>
+      <div>
+        <div class="book-name">Turn the Ship Around!</div>
+        <div class="book-author">L・デビッド・マーケット</div>
+        <div class="book-rel">権限移譲と主体性の設計が発言と学習を促進する。</div>
+      </div>
+    </div>
+    <div class="book-item">
+      <div class="book-icon">📕</div>
+      <div>
+        <div class="book-name">Work Rules!</div>
+        <div class="book-author">ラズロ・ボック</div>
+        <div class="book-rel">人材・制度設計で心理的安全性を支える実証的アプローチ。</div>
+      </div>
+    </div>
+    <div class="book-item">
+      <div class="book-icon">📓</div>
+      <div>
+        <div class="book-name">Team of Teams</div>
+        <div class="book-author">スタンリー・マククリスタル</div>
+        <div class="book-rel">相互依存の高い環境での学習・共有が成果に直結する。</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== タブ5：今日のアクション ===== -->
+<section id="tab-actions" class="tab-panel" role="tabpanel" aria-labelledby="btn-actions">
+
+  <h2 class="section-title">✅ 今日のアクション（15〜30分で実行）</h2>
+
+  <!-- SVG：アクションフロー -->
+  <div style="background:var(--card-bg); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); margin-bottom:16px; text-align:center;">
+    <div style="font-size:13px; font-weight:700; color:var(--primary); margin-bottom:12px;">🗺 3ステップ実践ロードマップ</div>
+    <svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:400px; height:auto;" aria-label="アクションフロー図">
+      <!-- Step1 -->
+      <rect x="5" y="20" width="85" height="40" rx="8" fill="#1a3a5c"/>
+      <text x="47" y="37" text-anchor="middle" fill="white" font-size="9" font-weight="bold">STEP 1</text>
+      <text x="47" y="50" text-anchor="middle" fill="white" font-size="8">フレーミング</text>
+      <text x="47" y="62" text-anchor="middle" fill="#f4a261" font-size="7">再定義・共有</text>
+      <!-- Arrow -->
+      <polygon points="95,40 108,35 108,45" fill="#2e86ab"/>
+      <!-- Step2 -->
+      <rect x="112" y="20" width="85" height="40" rx="8" fill="#2e86ab"/>
+      <text x="154" y="37" text-anchor="middle" fill="white" font-size="9" font-weight="bold">STEP 2</text>
+      <text x="154" y="50" text-anchor="middle" fill="white" font-size="8">質問を用意</text>
+      <text x="154" y="62" text-anchor="middle" fill="#fff3cd" font-size="7">10個のオープン質問</text>
+      <!-- Arrow -->
+      <polygon points="202,40 215,35 215,45" fill="#f4a261"/>
+      <!-- Step3 -->
+      <rect x="219" y="20" width="85" height="40" rx="8" fill="#f4a261"/>
+      <text x="261" y="37" text-anchor="middle" fill="white" font-size="9" font-weight="bold">STEP 3</text>
+      <text x="261" y="50" text-anchor="middle" fill="white" font-size="8">失敗を分解</text>
+      <text x="261" y="62" text-anchor="middle" fill="#1a3a5c" font-size="7">学び化・共有</text>
+    </svg>
+  </div>
+
+  <div class="action-card">
+    <div class="action-head">
+      <div class="action-num">1</div>
+      <div class="action-title">目的と不確実性を再フレーミングして共有する</div>
+      <div class="action-time">⏱ 15〜20分</div>
+    </div>
+    <ul>
+      <li>チームの仕事を「不確実・相互依存・学習必須」として言語化する</li>
+      <li>「なぜ全員の声が必要か」を1〜2文で書き出す</li>
+      <li>次の会議やSlack等で「今の仕事の難しさと、だから皆の意見が必要」と伝える</li>
+      <li>自分の誤りうる可能性も一言添える（例：「私も全部は見えていない」）</li>
+    </ul>
+    <div class="action-effect">
+      🎯 <strong>目的：</strong>発言の必要性を示し、フレーミングの土台を作る。<br>
+      ✨ <strong>期待効果：</strong>「言っていい雰囲気」の第一歩が生まれ、次の招待・反応が効きやすくなる。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-head">
+      <div class="action-num">2</div>
+      <div class="action-title">オープン質問を10個用意して実際に試す</div>
+      <div class="action-time">⏱ 20〜30分</div>
+    </div>
+    <ul>
+      <li>「何が一番難しいですか？」「他に方法はありますか？」等のオープン質問を10個書く</li>
+      <li>Yes/Noで答えられない質問（What/How/Why系）を意識する</li>
+      <li>今日の会議や1on1で最低2〜3個を実際に使ってみる</li>
+      <li>相手の答えに「ありがとう、それは気づかなかった」と感謝を返す</li>
+    </ul>
+    <div class="action-effect">
+      🎯 <strong>目的：</strong>参加の招待を実践し、発言を引き出す習慣を作る。<br>
+      ✨ <strong>期待効果：</strong>チームメンバーが「自分の意見が求められている」と感じ、発言頻度が上がる。
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-head">
+      <div class="action-num">3</div>
+      <div class="action-title">最近の小さな失敗を分解して「学び化」する</div>
+      <div class="action-time">⏱ 15〜25分</div>
+    </div>
+    <ul>
+      <li>直近1〜2週間の「うまくいかなかったこと」を1つ選ぶ</li>
+      <li>3分類で分析：予防可能だったか／複雑性由来か／インテリジェントな実験か</li>
+      <li>「何を学んだか」「次にどう活かすか」を箇条書きで3点書く</li>
+      <li>チームに「こんな失敗から学んだ」と短く共有する（モデリング）</li>
+    </ul>
+    <div class="action-effect">
+      🎯 <strong>目的：</strong>失敗を学びに変える習慣を自分から示し、チームの実験文化を育てる。<br>
+      ✨ <strong>期待効果：</strong>リーダーが失敗を公開することで「失敗を隠さなくていい」という安全信号を発信できる。
+    </div>
+  </div>
+
+  <!-- チェックリスト -->
+  <div style="background:var(--card-bg); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); margin-top:4px;">
+    <div style="font-size:13px; font-weight:700; color:var(--primary); margin-bottom:10px;">📋 今週の実践チェックリスト</div>
+    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:8px;">
+      <div style="background:#f0f7ff; border-radius:8px; padding:10px 12px; font-size:12px; border-left:3px solid var(--secondary);">☐ フレーミングを1回共有した</div>
+      <div style="background:#f0f7ff; border-radius:8px; padding:10px 12px; font-size:12px; border-left:3px solid var(--secondary);">☐ オープン質問を3つ使った</div>
+      <div style="background:#f0f7ff; border-radius:8px; padding:10px 12px; font-size:12px; border-left:3px solid var(--secondary);">☐ 発言に「ありがとう」と返した</div>
+      <div style="background:#fff8f0; border-radius:8px; padding:10px 12px; font-size:12px; border-left:3px solid var(--accent);">☐ 失敗を分解して学び化した</div>
+      <div style="background:#fff8f0; border-radius:8px; padding:10px 12px; font-size:12px; border-left:3px solid var(--accent);">☐ 自分の誤りうる可能性を示した</div>
+      <div style="background:#f0fff4; border-radius:8px; padding:10px 12px; font-size:12px; border-left:3px solid var(--success);">☐ チームの現在ゾーンを診断した</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== フッター ===== -->
+<footer class="site-footer" role="contentinfo">
+  <p>📖 心理的安全性インフォグラフィック ／ エイミー・C・エドモンドソン著に基づく</p>
+  <p style="margin-top:4px;">Primary: #1a3a5c ／ Secondary: #2e86ab ／ Accent: #f4a261</p>
+</footer>
+
+<script>
+  // ===== タブ切替 =====
+  (function() {
+    var buttons = document.querySelectorAll('.tab-btn');
+    var panels  = document.querySelectorAll('.tab-panel');
+
+    function activateTab(targetId) {
+      buttons.forEach(function(btn) {
+        var isTarget = btn.getAttribute('aria-controls') === targetId;
+        btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+      });
+      panels.forEach(function(panel) {
+        if (panel.id === targetId) {
+          panel.classList.add('active');
+        } else {
+          panel.classList.remove('active');
+        }
+      });
+    }
+
+    buttons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        activateTab(btn.getAttribute('aria-controls'));
+        // スクロールをタブナビ直下へ
+        var nav = document.querySelector('.tab-nav');
+        if (nav) {
+          window.scrollTo({ top: nav.getBoundingClientRect().top + window.pageYOffset - 8, behavior: 'smooth' });
+        }
+      });
+      btn.addEventListener('keydown', function(e) {
+        var idx = Array.prototype.indexOf.call(buttons, btn);
+        if (e.key === 'ArrowRight') {
+          var next = buttons[(idx + 1) % buttons.length];
+          next.focus();
+          activateTab(next.getAttribute('aria-controls'));
+        } else if (e.key === 'ArrowLeft') {
+          var prev = buttons[(idx - 1 + buttons.length) % buttons.length];
+          prev.focus();
+          activateTab(prev.getAttribute('aria-controls'));
+        }
+      });
+    });
+
+    // バーアニメーション（IntersectionObserver）
+    var bars = document.querySelectorAll('.bar-fill');
+    bars.forEach(function(bar) {
+      var targetWidth = bar.style.width;
+      bar.style.width = '0%';
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            bar.style.width = targetWidth;
+            observer.unobserve(bar);
+          }
+        });
+      }, { threshold: 0.3 });
+      observer.observe(bar);
+    });
+  })();
+</script>
+</body>
+</html>
