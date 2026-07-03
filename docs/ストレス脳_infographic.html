@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ストレス・不安の取扱説明書 インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a2e4a
+  セカンダリー:  #2d7dd2
+  アクセント:    #f4a261
+-->
+<style>
+  /* ===== リセット & 基本 ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary:   #1a2e4a;
+    --secondary: #2d7dd2;
+    --accent:    #f4a261;
+    --bg:        #f0f4f8;
+    --card-bg:   #ffffff;
+    --text:      #1a2e4a;
+    --text-light:#4a6080;
+    --success:   #2ec4b6;
+    --warn:      #e76f51;
+    --grad1: linear-gradient(135deg, #1a2e4a 0%, #2d7dd2 100%);
+    --grad2: linear-gradient(135deg, #2d7dd2 0%, #2ec4b6 100%);
+    --grad3: linear-gradient(135deg, #f4a261 0%, #e76f51 100%);
+    --radius: 14px;
+    --shadow: 0 4px 18px rgba(26,46,74,0.10);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Meiryo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ===== ヘッダー ===== */
+  .site-header {
+    background: var(--grad1);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  .site-header .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .site-header h1 {
+    font-size: clamp(20px, 5vw, 32px);
+    font-weight: 900;
+    letter-spacing: .04em;
+    line-height: 1.3;
+  }
+  .site-header p.subtitle {
+    font-size: 13px;
+    opacity: .85;
+    margin-top: 6px;
+  }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: var(--card-bg);
+    border-left: 5px solid var(--accent);
+    border-radius: var(--radius);
+    margin: 20px 16px;
+    padding: 20px 18px;
+    box-shadow: var(--shadow);
+  }
+  .summary-block .sq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 14px;
+  }
+  @media(max-width:520px){ .summary-block .sq-grid { grid-template-columns: 1fr; } }
+  .sq-item {
+    border-radius: 10px;
+    padding: 14px 14px;
+  }
+  .sq-item.q  { background: #eef4fb; border-left: 4px solid var(--secondary); }
+  .sq-item.a  { background: #fff7ee; border-left: 4px solid var(--accent); }
+  .sq-item.why{ background: #eafaf8; border-left: 4px solid var(--success); }
+  .sq-item.how{ background: #fef3ee; border-left: 4px solid var(--warn); }
+  .sq-item .sq-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    opacity: .7;
+  }
+  .sq-item p { font-size: 13px; line-height: 1.6; }
+
+  /* ===== タブ ===== */
+  .tab-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    background: var(--primary);
+    padding: 0 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,.65);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 12px 14px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+    transition: color .2s, border-color .2s;
+    letter-spacing: .03em;
+  }
+  .tab-btn[aria-selected="true"] {
+    color: #fff;
+    border-bottom-color: var(--accent);
+  }
+  .tab-btn:hover { color: #fff; }
+
+  .tab-panel { display: none; padding: 16px; }
+  .tab-panel.active { display: block; }
+
+  /* ===== カード共通 ===== */
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .card h3 {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .card ul { padding-left: 0; list-style: none; }
+  .card ul li {
+    font-size: 13px;
+    padding: 4px 0 4px 18px;
+    position: relative;
+    line-height: 1.55;
+  }
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-size: 11px;
+    top: 5px;
+  }
+  .card .reason {
+    margin-top: 10px;
+    background: #fff7ee;
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--text-light);
+  }
+  .card .reason strong { color: var(--accent); }
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+  }
+  .tag-blue  { background: #dbeafe; color: #1d4ed8; }
+  .tag-green { background: #d1fae5; color: #065f46; }
+  .tag-orange{ background: #ffedd5; color: #9a3412; }
+  .tag-teal  { background: #ccfbf1; color: #0f766e; }
+  .tag-red   { background: #fee2e2; color: #991b1b; }
+
+  /* ===== グリッドレイアウト ===== */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media(max-width:560px){ .grid-2 { grid-template-columns: 1fr; } }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 14px;
+  }
+  @media(max-width:700px){ .grid-3 { grid-template-columns: 1fr 1fr; } }
+  @media(max-width:440px){ .grid-3 { grid-template-columns: 1fr; } }
+
+  /* ===== セクションタイトル ===== */
+  .sec-title {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    margin: 18px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sec-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #d1dce8;
+  }
+
+  /* ===== 概念カード（主要概念タブ） ===== */
+  .concept-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--secondary);
+    margin-bottom: 14px;
+  }
+  .concept-card.accent-top { border-top-color: var(--accent); }
+  .concept-card.teal-top   { border-top-color: var(--success); }
+  .concept-card.warn-top   { border-top-color: var(--warn); }
+  .concept-card h4 {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .concept-card .one-liner {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--secondary);
+    background: #eef4fb;
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .concept-card p { font-size: 13px; line-height: 1.6; color: var(--text-light); }
+  .concept-card .why-box {
+    margin-top: 9px;
+    background: #f0fdf4;
+    border-left: 3px solid var(--success);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 12px;
+    color: #065f46;
+  }
+
+  /* ===== 因果フロー図 ===== */
+  .flow-wrap {
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    min-width: 320px;
+    flex-wrap: nowrap;
+  }
+  .flow-node {
+    background: var(--grad1);
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+  .flow-node.accent { background: var(--grad3); }
+  .flow-node.teal   { background: var(--grad2); }
+  .flow-arrow {
+    font-size: 16px;
+    color: var(--text-light);
+    padding: 0 4px;
+    flex: 0 0 auto;
+  }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border-left: 5px solid var(--secondary);
+  }
+  .chapter-card:nth-child(2n) { border-left-color: var(--accent); }
+  .chapter-card:nth-child(3n) { border-left-color: var(--success); }
+  .chapter-card .ch-num {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    color: var(--secondary);
+    margin-bottom: 4px;
+  }
+  .chapter-card h3 { font-size: 15px; font-weight: 800; margin-bottom: 8px; }
+  .chapter-card ul { padding-left: 0; list-style: none; }
+  .chapter-card ul li {
+    font-size: 13px;
+    padding: 3px 0 3px 18px;
+    position: relative;
+  }
+  .chapter-card ul li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 9px;
+    top: 6px;
+  }
+  .chapter-card .ch-reason {
+    margin-top: 10px;
+    background: #eef4fb;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--text-light);
+  }
+  .chapter-card .ch-reason strong { color: var(--secondary); }
+
+  /* ===== 具体例カード ===== */
+  .example-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .example-card .ex-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .example-card h4 { font-size: 14px; font-weight: 800; margin-bottom: 6px; }
+  .example-card .ex-bg, .example-card .ex-imp, .example-card .ex-why {
+    font-size: 12px;
+    margin-bottom: 5px;
+    line-height: 1.55;
+  }
+  .example-card .ex-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    opacity: .6;
+    margin-bottom: 2px;
+  }
+  .example-card .ex-why {
+    background: #fff7ee;
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 7px 10px;
+    color: var(--text-light);
+  }
+
+  /* ===== 引用カード ===== */
+  .quote-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 20px 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-card::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 80px;
+    color: var(--secondary);
+    opacity: .08;
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .quote-card blockquote {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.6;
+    color: var(--primary);
+    margin-bottom: 10px;
+    padding-left: 4px;
+  }
+  .quote-card .q-note {
+    font-size: 12px;
+    color: var(--text-light);
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 7px 10px;
+  }
+  .quote-card .q-note strong { color: var(--secondary); }
+  .quote-card .q-badge {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    background: #dbeafe;
+    color: #1d4ed8;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    letter-spacing: .08em;
+  }
+
+  /* ===== アクションカード ===== */
+  .action-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 20px 16px;
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+    border-top: 4px solid var(--accent);
+  }
+  .action-card .ac-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--grad3);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .action-card h4 { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+  .action-card .ac-time {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    background: #ffedd5;
+    color: #9a3412;
+    padding: 2px 9px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .action-card .ac-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .action-card .ac-box {
+    flex: 1;
+    background: #f0f4f8;
+    border-radius: 8px;
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+  .action-card .ac-box .ac-box-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 3px;
+    letter-spacing: .08em;
+  }
+
+  /* ===== 数値バッジ ===== */
+  .num-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 14px 0;
+  }
+  .num-badge {
+    background: var(--grad1);
+    color: #fff;
+    border-radius: 12px;
+    padding: 12px 16px;
+    text-align: center;
+    flex: 1 1 120px;
+  }
+  .num-badge .nb-num {
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1;
+    display: block;
+  }
+  .num-badge .nb-label {
+    font-size: 11px;
+    opacity: .85;
+    margin-top: 4px;
+    display: block;
+  }
+  .num-badge.accent { background: var(--grad3); }
+  .num-badge.teal   { background: var(--grad2); }
+
+  /* ===== 横棒グラフ ===== */
+  .bar-chart { margin: 14px 0; }
+  .bar-row { margin-bottom: 10px; }
+  .bar-label { font-size: 12px; font-weight: 700; margin-bottom: 3px; display: flex; justify-content: space-between; }
+  .bar-track { background: #e2e8f0; border-radius: 20px; height: 12px; overflow: hidden; }
+  .bar-fill  { height: 100%; border-radius: 20px; transition: width 1s ease; }
+  .bar-fill.blue   { background: var(--grad1); }
+  .bar-fill.orange { background: var(--grad3); }
+  .bar-fill.teal   { background: var(--grad2); }
+
+  /* ===== 関連書籍 ===== */
+  .book-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 14px 14px;
+    box-shadow: var(--shadow);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .book-icon {
+    font-size: 28px;
+    flex: 0 0 auto;
+  }
+  .book-card h5 { font-size: 13px; font-weight: 800; margin-bottom: 2px; }
+  .book-card .book-author { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+  .book-card .book-rel { font-size: 12px; color: var(--text-light); }
+
+  /* ===== フッター ===== */
+  footer {
+    text-align: center;
+    padding: 24px 16px;
+    font-size: 11px;
+    color: var(--text-light);
+    border-top: 1px solid #d1dce8;
+    margin-top: 10px;
+  }
+
+  /* ===== SVG 図 ===== */
+  .svg-wrap { overflow-x: auto; }
+  .svg-wrap svg { display: block; margin: 0 auto; }
+
+  /* ===== アニメーション ===== */
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .tab-panel.active { animation: fadeIn .3s ease; }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header class="site-header" role="banner">
+  <div class="badge">📖 書籍インフォグラフィック</div>
+  <h1>ストレス・不安の<br>取扱説明書</h1>
+  <p class="subtitle">不安はバグではなく、進化が与えた生存アラーム。仕組みを知り、使いこなす。</p>
+</header>
+
+<!-- ===== ファーストビュー サマリーブロック ===== -->
+<section aria-label="エグゼクティブサマリー">
+  <div class="summary-block">
+    <div class="sec-title">🔑 ここだけ見れば全体がわかる</div>
+    <div class="sq-grid">
+      <div class="sq-item q">
+        <div class="sq-label">❓ 問い</div>
+        <p>なぜ現代人はストレスや不安に圧倒されやすく、どう扱えばよいのか？</p>
+      </div>
+      <div class="sq-item a">
+        <div class="sq-label">💡 答え</div>
+        <p>脳は原始環境に最適化された"脅威検知マシン"。完全除去ではなく、<strong>意図的に使いこなし、回復できる環境と習慣を設計する</strong>。</p>
+      </div>
+      <div class="sq-item why">
+        <div class="sq-label">🔬 Why（なぜ）</div>
+        <p>進化的不適合で扁桃体・HPA軸が過敏化。座位・睡眠不足・常時接続が交感神経を固定化。身体活動・睡眠・自然接触がアラームを再調整する研究多数。</p>
+      </div>
+      <div class="sq-item how">
+        <div class="sq-label">🛠 How（どうする）</div>
+        <p>①有酸素運動の習慣化 ②睡眠衛生の確保 ③情報断食 ④呼吸・マインドフルネス ⑤認知の再評価 ⑥小さな曝露 ⑦自然・他者との接触</p>
+      </div>
+    </div>
+
+    <!-- 数値バッジ -->
+    <div class="num-badges" style="margin-top:16px;">
+      <div class="num-badge">
+        <span class="nb-num">3</span>
+        <span class="nb-label">介入の軸<br>身体・環境・認知</span>
+      </div>
+      <div class="num-badge accent">
+        <span class="nb-num">7</span>
+        <span class="nb-label">具体的な<br>実践アプローチ</span>
+      </div>
+      <div class="num-badge teal">
+        <span class="nb-num">12</span>
+        <span class="nb-label">主要概念</span>
+      </div>
+    </div>
+
+    <!-- 効果の横棒グラフ -->
+    <div class="bar-chart" style="margin-top:14px;">
+      <div class="sec-title" style="margin-top:0;">📊 各介入の効果イメージ</div>
+      <div class="bar-row">
+        <div class="bar-label"><span>🏃 有酸素運動</span><span>最高</span></div>
+        <div class="bar-track"><div class="bar-fill blue" style="width:95%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>😴 睡眠衛生</span><span>非常に高</span></div>
+        <div class="bar-track"><div class="bar-fill blue" style="width:88%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>🧠 認知の再評価</span><span>高</span></div>
+        <div class="bar-track"><div class="bar-fill orange" style="width:78%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>🌿 自然接触</span><span>中〜高</span></div>
+        <div class="bar-track"><div class="bar-fill teal" style="width:68%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>📵 情報間欠化</span><span>中〜高</span></div>
+        <div class="bar-track"><div class="bar-fill teal" style="width:65%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>🫁 呼吸法</span><span>中</span></div>
+        <div class="bar-track"><div class="bar-fill orange" style="width:58%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>🚶 曝露（小さな挑戦）</span><span>中</span></div>
+        <div class="bar-track"><div class="bar-fill orange" style="width:55%"></div></div>
+      </div>
+      <p style="font-size:10px;color:var(--text-light);margin-top:4px;">※本書の記述に基づく相対的イメージ。個人差あり。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== タブナビゲーション ===== -->
+<nav class="tab-nav" role="tablist" aria-label="コンテンツタブ">
+  <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="tab-concepts" id="btn-concepts">🧩 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-chapters" id="btn-chapters">📚 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-examples" id="btn-examples">💡 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-quotes"   id="btn-quotes">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab-actions"  id="btn-actions">⚡ 今日のアクション</button>
+</nav>
+
+<!-- ===== タブパネル群 ===== -->
+<main>
+
+<!-- ■ タブ1: 主要概念 -->
+<section id="tab-concepts" class="tab-panel active" role="tabpanel" aria-labelledby="btn-concepts">
+
+  <div class="sec-title">🔗 概念の因果フロー</div>
+  <!-- SVG 因果フロー図 -->
+  <div class="svg-wrap" style="margin-bottom:16px;">
+    <svg width="700" height="180" viewBox="0 0 700 180" aria-label="概念の因果フロー図" role="img">
+      <defs>
+        <linearGradient id="gBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#1a2e4a"/>
+          <stop offset="100%" style="stop-color:#2d7dd2"/>
+        </linearGradient>
+        <linearGradient id="gOrange" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#f4a261"/>
+          <stop offset="100%" style="stop-color:#e76f51"/>
+        </linearGradient>
+        <linearGradient id="gTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#2d7dd2"/>
+          <stop offset="100%" style="stop-color:#2ec4b6"/>
+        </linearGradient>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#4a6080"/>
+        </marker>
+      </defs>
+      <!-- ノード -->
+      <rect x="10"  y="70" width="110" height="40" rx="8" fill="url(#gBlue)"/>
+      <text x="65"  y="86" text-anchor="middle" fill="white" font-size="10" font-weight="bold">進化的不適合</text>
+      <text x="65"  y="100" text-anchor="middle" fill="white" font-size="9">(古い脳×新世界)</text>
+
+      <rect x="155" y="70" width="110" height="40" rx="8" fill="url(#gOrange)"/>
+      <text x="210" y="86" text-anchor="middle" fill="white" font-size="10" font-weight="bold">扁桃体・HPA軸</text>
+      <text x="210" y="100" text-anchor="middle" fill="white" font-size="9">過敏化</text>
+
+      <rect x="300" y="20" width="110" height="40" rx="8" fill="url(#gOrange)"/>
+      <text x="355" y="36" text-anchor="middle" fill="white" font-size="10" font-weight="bold">予期不安・回避</text>
+      <text x="355" y="50" text-anchor="middle" fill="white" font-size="9">拡大再生産</text>
+
+      <rect x="300" y="120" width="110" height="40" rx="8" fill="url(#gOrange)"/>
+      <text x="355" y="136" text-anchor="middle" fill="white" font-size="10" font-weight="bold">交感神経固定化</text>
+      <text x="355" y="150" text-anchor="middle" fill="white" font-size="9">回復不全</text>
+
+      <rect x="445" y="70" width="110" height="40" rx="8" fill="url(#gTeal)"/>
+      <text x="500" y="86" text-anchor="middle" fill="white" font-size="10" font-weight="bold">3軸の介入</text>
+      <text x="500" y="100" text-anchor="middle" fill="white" font-size="9">身体・環境・認知</text>
+
+      <rect x="590" y="70" width="100" height="40" rx="8" fill="url(#gTeal)"/>
+      <text x="640" y="86" text-anchor="middle" fill="white" font-size="10" font-weight="bold">ストレス耐性↑</text>
+      <text x="640" y="100" text-anchor="middle" fill="white" font-size="9">回復力の確保</text>
+
+      <!-- 矢印 -->
+      <line x1="120" y1="90" x2="150" y2="90" stroke="#4a6080" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="265" y1="80" x2="295" y2="45" stroke="#4a6080" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="265" y1="100" x2="295" y2="135" stroke="#4a6080" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="410" y1="45" x2="440" y2="80" stroke="#4a6080" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="410" y1="135" x2="440" y2="105" stroke="#4a6080" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <line x1="555" y1="90" x2="585" y2="90" stroke="#4a6080" stroke-width="1.5" marker-end="url(#arrow)"/>
+    </svg>
+  </div>
+
+  <div class="sec-title">🧩 主要概念カード（12概念）</div>
+
+  <div class="grid-2">
+    <div class="concept-card">
+      <span class="tag tag-blue">進化・環境</span>
+      <h4>🌍 進化的不適合（ミスマッチ）</h4>
+      <div class="one-liner">古い脳×新しい世界のすれ違い</div>
+      <p>身体と脳は狩猟採集的環境に最適化されており、現代の常時接続・座位・人工光・加工食品などに過敏反応や慢性化で適応不全を起こす。</p>
+      <div class="why-box">✅ なぜ重要か：現代のストレス問題の根本原因。「自分がおかしい」ではなく「環境とのズレ」と理解することで対処の方向が変わる。</div>
+    </div>
+
+    <div class="concept-card accent-top">
+      <span class="tag tag-orange">神経・ホルモン</span>
+      <h4>⚙️ HPA軸</h4>
+      <div class="one-liner" style="background:#fff7ee;color:#9a3412;">ストレスホルモンの司令塔</div>
+      <p>視床下部-下垂体-副腎のストレス応答回路で、コルチゾール分泌を司る。急性時は有益だが慢性化は害。</p>
+      <div class="why-box">✅ なぜ重要か：慢性的なHPA軸の活性化が免疫・睡眠・認知機能を損なう。介入の生理的根拠を理解できる。</div>
+    </div>
+
+    <div class="concept-card teal-top">
+      <span class="tag tag-teal">自律神経</span>
+      <h4>⚡ 交感神経 / 副交感神経</h4>
+      <div class="one-liner" style="background:#ccfbf1;color:#0f766e;">アクセルとブレーキ</div>
+      <p>闘争・逃走（交感）と休息・消化（副交感）の自律神経ペア。健康は"切替えの可塑性"に依存する。</p>
+      <div class="why-box">✅ なぜ重要か：切替えが固定化すると回復不全に。呼吸・運動・睡眠がブレーキを踏む手段になる。</div>
+    </div>
+
+    <div class="concept-card">
+      <span class="tag tag-blue">脳科学</span>
+      <h4>🧠 扁桃体と前頭前野</h4>
+      <div class="one-liner">警報と司令室のバランス</div>
+      <p>扁桃体は脅威の即時検知、前頭前野は評価と抑制。慢性ストレスは前頭前野機能を下げ、過剰警報に傾く。</p>
+      <div class="why-box">✅ なぜ重要か：運動・睡眠・認知再評価が前頭前野を強化し、過剰警報を抑制できる。</div>
+    </div>
+
+    <div class="concept-card accent-top">
+      <span class="tag tag-orange">ストレス理論</span>
+      <h4>⚖️ ユーストレス / ディストレス</h4>
+      <div class="one-liner" style="background:#fff7ee;color:#9a3412;">適量は薬、過量は毒</div>
+      <p>適度な短期ストレスは集中・学習を促すが、長期・制御不能な負荷は有害に転じる。</p>
+      <div class="why-box">✅ なぜ重要か：「ストレスゼロ」を目指すのは誤り。適切な負荷と回復のリズムが成長を生む。</div>
+    </div>
+
+    <div class="concept-card warn-top">
+      <span class="tag tag-red">不安メカニズム</span>
+      <h4>😰 予期不安</h4>
+      <div class="one-liner" style="background:#fee2e2;color:#991b1b;">未来の借金で今を蝕む</div>
+      <p>起きていない脅威を先回りして警報する機能。回避と結びつくと拡大再生産される。</p>
+      <div class="why-box">✅ なぜ重要か：回避が不安を強化する悪循環を断つには、小さな曝露が必要だと理解できる。</div>
+    </div>
+
+    <div class="concept-card teal-top">
+      <span class="tag tag-teal">回復</span>
+      <h4>🔋 回復（リカバリー）</h4>
+      <div class="one-liner" style="background:#ccfbf1;color:#0f766e;">戻れる力が底力</div>
+      <p>睡眠・休息・自然接触・社会的安全の合図で交感神経優位からの"戻り"を起こす過程。</p>
+      <div class="why-box">✅ なぜ重要か：ストレスの問題は「あること」より「戻れないこと」。回復設計が最重要介入。</div>
+    </div>
+
+    <div class="concept-card">
+      <span class="tag tag-blue">認知</span>
+      <h4>🔄 認知の再評価（リフレーミング）</h4>
+      <div class="one-liner">意味づけが効能を変える</div>
+      <p>ストレス反応を脅威ではなく動員シグナルと解釈し直し、パフォーマンスと健康影響を改善する。</p>
+      <div class="why-box">✅ なぜ重要か：同じ生理反応でも意味づけ次第で資源にも脅威にもなる。今すぐ実践できる介入。</div>
+    </div>
+
+    <div class="concept-card accent-top">
+      <span class="tag tag-orange">行動療法</span>
+      <h4>🚪 曝露（エクスポージャ）</h4>
+      <div class="one-liner" style="background:#fff7ee;color:#9a3412;">小さく向き合い再学習</div>
+      <p>避けている対象に小さく計画的に近づき、学習で恐怖の予測誤差を修正する方法。</p>
+      <div class="why-box">✅ なぜ重要か：回避は不安を維持・強化する。段階的な曝露が前頭前野の制御を回復させる。</div>
+    </div>
+
+    <div class="concept-card teal-top">
+      <span class="tag tag-teal">身体</span>
+      <h4>🏃 身体活動（有酸素運動）</h4>
+      <div class="one-liner" style="background:#ccfbf1;color:#0f766e;">最強の抗ストレス習慣</div>
+      <p>中強度の継続運動が扁桃体反応性を下げ、前頭前野の制御と睡眠の質を底上げする。</p>
+      <div class="why-box">✅ なぜ重要か：最も効果の確かな介入の一つ。今日から始められ、効果が広範。</div>
+    </div>
+
+    <div class="concept-card">
+      <span class="tag tag-blue">環境</span>
+      <h4>🌿 自然接触</h4>
+      <div class="one-liner">緑は神経の整流器</div>
+      <p>緑視や屋外環境が注意の回復と副交感神経の賦活を促す。</p>
+      <div class="why-box">✅ なぜ重要か：コストゼロで実践可能。都市生活の安全シグナル不足を補う手軽な手段。</div>
+    </div>
+
+    <div class="concept-card accent-top">
+      <span class="tag tag-orange">情報管理</span>
+      <h4>📵 情報間欠化</h4>
+      <div class="one-liner" style="background:#fff7ee;color:#9a3412;">アラームの断続化</div>
+      <p>常時の脅威刺激をバッチ処理に変え、扁桃体の連続起動を避ける戦略。</p>
+      <div class="why-box">✅ なぜ重要か：情報は食事と同じく量とタイミングが健康を左右する。通知オフが神経を守る。</div>
+    </div>
+  </div>
+
+  <!-- 関連書籍 -->
+  <div class="sec-title" style="margin-top:20px;">📖 関連書籍</div>
+  <div class="book-card">
+    <span class="book-icon">📱</span>
+    <div>
+      <h5>スマホ脳</h5>
+      <div class="book-author">アンデシュ・ハンセン</div>
+      <div class="book-rel">情報刺激が注意と不安をどう過敏化するかを補完的に解説。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <span class="book-icon">🏃</span>
+    <div>
+      <h5>運動脳</h5>
+      <div class="book-author">アンデシュ・ハンセン</div>
+      <div class="book-rel">身体活動がストレス耐性と認知機能を高めるメカニズムと実践を詳述。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <span class="book-icon">💪</span>
+    <div>
+      <h5>スタンフォードのストレスを力に変える教科書</h5>
+      <div class="book-author">ケリー・マクゴニガル</div>
+      <div class="book-rel">ストレスの再評価と向き合い方を心理学・実験で裏づける。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <span class="book-icon">😴</span>
+    <div>
+      <h5>睡眠こそ最強の解決策である</h5>
+      <div class="book-author">マシュー・ウォーカー</div>
+      <div class="book-rel">回復（睡眠）がストレス応答と健康に与える影響を体系的に示す。</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ■ タブ2: 各章の要約 -->
+<section id="tab-chapters" class="tab-panel" role="tabpanel" aria-labelledby="btn-chapters">
+
+  <div class="sec-title">📚 論点別 疑似章構成</div>
+
+  <div class="chapter-card">
+    <div class="ch-num">CHAPTER 01</div>
+    <h3>🚨 導入：不安は"不具合"ではなく"機能"</h3>
+    <ul>
+      <li>現代における不安・ストレスの増加を提示</li>
+      <li>「壊れた機能」ではなく「進化が与えた生存アラーム」という前提を置く</li>
+      <li>問題は不安の存在ではなく、現代環境との不適合にある</li>
+      <li>本書全体の視点：コントロール可能なものとして扱う</li>
+    </ul>
+    <div class="ch-reason"><strong>📌 この章が必要な理由：</strong>「不安をなくす」という誤った目標を修正し、「使いこなす」という正しい方向性を最初に示すため。認識の転換なしに実践は機能しない。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-num">CHAPTER 02</div>
+    <h3>🔬 基礎：脳と身体のストレスメカニズム</h3>
+    <ul>
+      <li>進化史・扁桃体・HPA軸・自律神経のメカニズムを解説</li>
+      <li>急性ストレス（有益）と慢性ストレス（有害）の違いを明確化</li>
+      <li>交感神経と副交感神経の切替えが健康の鍵</li>
+      <li>前頭前野が扁桃体を制御する仕組み</li>
+    </ul>
+    <div class="ch-reason"><strong>📌 この章が必要な理由：</strong>「なぜ」を理解することで実践の納得感が生まれ、継続につながる。仕組みを知らずに対処法だけ学んでも定着しない。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-num">CHAPTER 03</div>
+    <h3>📱 現代要因：過敏化を加速させるもの</h3>
+    <ul>
+      <li>情報過多（ニュース・SNS）が扁桃体を連続起動させる</li>
+      <li>座りがちな生活が交感神経優位を固定化</li>
+      <li>睡眠不足が回復を妨げ、ストレス耐性を低下させる</li>
+      <li>社会比較（SNS）が予期不安と自己評価の低下を招く</li>
+    </ul>
+    <div class="ch-reason"><strong>📌 この章が必要な理由：</strong>現代特有の過敏化要因を特定することで、「何を変えるべきか」の具体的ターゲットが明確になる。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-num">CHAPTER 04</div>
+    <h3>⚖️ 良いストレスの設計：負荷と回復のリズム</h3>
+    <ul>
+      <li>ユーストレスを活かし、集中・学習・成長に使う</li>
+      <li>ストレス・リカバリー・サイクルの設計が核心</li>
+      <li>「ゼロストレス」幻想を退け、適切な負荷を選ぶ</li>
+      <li>回復の質と量が次のパフォーマンスを決める</li>
+    </ul>
+    <div class="ch-reason"><strong>📌 この章が必要な理由：</strong>ストレスを「避けるもの」から「設計するもの」へと転換させ、主体的な対処を可能にするから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-num">CHAPTER 05</div>
+    <h3>🛠 実践ガイド：7つの介入アプローチ</h3>
+    <ul>
+      <li>🏃 有酸素運動：扁桃体反応性↓・前頭前野↑・睡眠質↑</li>
+      <li>😴 睡眠衛生：回復の確保、HPA軸のリセット</li>
+      <li>🌿 自然接触・社会的つながり：安全シグナルの増加</li>
+      <li>🫁 呼吸・マインドフルネス：副交感神経の即時起動</li>
+      <li>🔄 認知の再評価：意味づけ変更でパフォーマンス改善</li>
+      <li>🚪 曝露：回避を減らし予期不安を縮小</li>
+      <li>📵 情報間欠化：アラームの基線を下げる</li>
+    </ul>
+    <div class="ch-reason"><strong>📌 この章が必要な理由：</strong>理論を行動に変換する具体策を提供する。読者が「今日から何をするか」を決められるようにするため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-num">CHAPTER 06</div>
+    <h3>🔁 統合と結論：継続的な微調整プロセス</h3>
+    <ul>
+      <li>「ゼロストレス」は幻想であり、目標ではない</li>
+      <li>脳を理解し、環境と行動を微調整し続けることが本質</li>
+      <li>完璧な実践より、小さな習慣の積み重ねが有効</li>
+      <li>不安を"使いこなす"ことが現代を生き抜く知恵</li>
+    </ul>
+    <div class="ch-reason"><strong>📌 この章が必要な理由：</strong>一時的な実践で終わらせず、生涯続けられる姿勢を醸成するため。完璧主義による挫折を防ぐ。</div>
+  </div>
+
+</section>
+
+<!-- ■ タブ3: 具体例 -->
+<section id="tab-examples" class="tab-panel" role="tabpanel" aria-labelledby="btn-examples">
+
+  <div class="sec-title">💡 核心メッセージが伝わる具体例・メタファー</div>
+
+  <div class="example-card">
+    <span class="ex-icon">🔥</span>
+    <span class="tag tag-blue">具体例 1</span>
+    <h4>火災報知器のメタファー</h4>
+    <div class="ex-label">📖 背景</div>
+    <div class="ex-bg">火災報知器は「煙が出たら鳴る」ように設計されている。しかし感度が高すぎると、料理の湯気でも鳴ってしまう。これが現代人の扁桃体の状態に相当する。</div>
+    <div class="ex-label">💡 示唆</div>
+    <div class="ex-imp">報知器を「壊れている」と思って取り外すのではなく、感度を適切に調整することが解決策。不安も同様に、なくすのではなく調整する。</div>
+    <div class="ex-why">🔍 この例が示すこと：不安を「除去すべき欠陥」ではなく「調整すべき機能」として捉え直す認識転換の核心を、誰でも直感的に理解できる形で示している。</div>
+  </div>
+
+  <div class="example-card">
+    <span class="ex-icon">🏃</span>
+    <span class="tag tag-teal">具体例 2</span>
+    <h4>有酸素運動と扁桃体反応性の低下</h4>
+    <div class="ex-label">📖 背景</div>
+    <div class="ex-bg">中強度の有酸素運動（速歩・ジョギング等）を継続した群では、扁桃体の脅威反応が低下し、前頭前野の制御機能が向上することが複数の研究で示されている。</div>
+    <div class="ex-label">💡 示唆</div>
+    <div class="ex-imp">薬や高度な技術を必要とせず、「歩く・走る」という原始的な行動が脳の構造的変化をもたらす。最もコストパフォーマンスの高い介入。</div>
+    <div class="ex-why">🔍 この例が示すこと：身体活動が「気分転換」にとどまらず、神経生物学的な変化を引き起こすことを示し、運動習慣化の強力な動機づけになる。</div>
+  </div>
+
+  <div class="example-card">
+    <span class="ex-icon">📰</span>
+    <span class="tag tag-orange">具体例 3</span>
+    <h4>ニュース断ちの実験：情報間欠化の効果</h4>
+    <div class="ex-label">📖 背景</div>
+    <div class="ex-bg">常時ニュースを閲覧するグループと、1日1回まとめて閲覧するグループを比較すると、後者の方が不安レベルが低く、集中力が高い傾向が見られる。</div>
+    <div class="ex-label">💡 示唆</div>
+    <div class="ex-imp">情報の「量」より「タイミングと頻度」が神経系への影響を決める。通知をオフにし、ニュースを「バッチ処理」するだけで扁桃体の連続起動を防げる。</div>
+    <div class="ex-why">🔍 この例が示すこと：情報管理がストレス管理の中核であることを具体的に示し、「スマホを置く」という小さな行動の神経科学的根拠を与える。</div>
+  </div>
+
+  <div class="example-card">
+    <span class="ex-icon">🎤</span>
+    <span class="tag tag-blue">具体例 4</span>
+    <h4>ストレス再評価の実験：心拍数の意味づけ変更</h4>
+    <div class="ex-label">📖 背景</div>
+    <div class="ex-bg">プレゼン前の心拍数上昇を「緊張（脅威）」と解釈したグループと「興奮・準備完了（資源動員）」と解釈したグループでは、後者のパフォーマンスと健康指標が優れていた（ケリー・マクゴニガルらの研究）。</div>
+    <div class="ex-label">💡 示唆</div>
+    <div class="ex-imp">生理反応そのものは変わらなくても、意味づけを変えるだけでパフォーマンスと健康影響が変わる。認知の再評価は「思い込み」ではなく実際に効く介入。</div>
+    <div class="ex-why">🔍 この例が示すこと：「意味づけが効能を変える」という本書の核心メッセージを、実験データで裏づけ、今すぐ実践できる具体的な方法として提示している。</div>
+  </div>
+
+  <div class="example-card">
+    <span class="ex-icon">🕷️</span>
+    <span class="tag tag-orange">具体例 5</span>
+    <h4>曝露療法：蜘蛛恐怖症の段階的克服</h4>
+    <div class="ex-label">📖 背景</div>
+    <div class="ex-bg">蜘蛛への強い恐怖を持つ人が、「蜘蛛の写真を見る→小さな蜘蛛を遠くから見る→近づく→触れる」という段階的曝露を行うと、数セッションで恐怖が大幅に軽減される。</div>
+    <div class="ex-label">💡 示唆</div>
+    <div class="ex-imp">回避し続けると脳は「その対象は本当に危険」と学習し続ける。小さく向き合うことで「実際には大丈夫」という予測誤差の更新が起き、予期不安が縮小する。</div>
+    <div class="ex-why">🔍 この例が示すこと：予期不安と回避の悪循環を断つには「向き合うこと」が必要だという原則を、誰でも理解できる具体的なケースで示している。</div>
+  </div>
+
+</section>
+
+<!-- ■ タブ4: 重要な引用 -->
+<section id="tab-quotes" class="tab-panel" role="tabpanel" aria-labelledby="btn-quotes">
+
+  <div class="sec-title">💬 重要な引用・要旨</div>
+
+  <div class="quote-card">
+    <div class="q-badge">要旨 01</div>
+    <blockquote>「不安はバグではなく、あなたを守るための機能だ。」</blockquote>
+    <div class="q-note"><strong>📌 補足：</strong>不安を"なくす対象"から"使いこなす対象"へと認識を転換させ、対処方針を根本から変えるから。この一文が本書全体の出発点。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="q-badge">要旨 02</div>
+    <blockquote>「ストレスの問題は"あること"より"戻れないこと"にある。」</blockquote>
+    <div class="q-note"><strong>📌 補足：</strong>負荷そのものより回復の設計が鍵だと示し、介入の焦点を明確にする。「ストレスをなくす」ではなく「回復できる仕組みを作る」が正しい目標。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="q-badge">要旨 03</div>
+    <blockquote>「最も効果の確かな介入の一つは、規則的な有酸素運動である。」</blockquote>
+    <div class="q-note"><strong>📌 補足：</strong>実装可能性が高く効果も広範で、読者が今日から始められる具体策を裏づける。薬や専門家なしに自分でできる最強の手段。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="q-badge">要旨 04</div>
+    <blockquote>「意味づけを変えるだけで、同じ生理反応が資源にも脅威にもなる。」</blockquote>
+    <div class="q-note"><strong>📌 補足：</strong>認知の再評価が実際の生理・行動を変えうることを強調する。「気の持ちよう」ではなく、神経科学的に裏づけられた介入。</div>
+  </div>
+
+  <div class="quote-card">
+    <div class="q-badge">要旨 05</div>
+    <blockquote>「情報は食事と同じく"量とタイミング"が健康を左右する。」</blockquote>
+    <div class="q-note"><strong>📌 補足：</strong>ニュースや通知の扱い方がストレス管理の中核であると理解させる。食事管理と同じ感覚で情報摂取を管理することが現代の必須スキル。</div>
+  </div>
+
+  <!-- 引用の視覚的まとめ -->
+  <div class="card" style="margin-top:20px;">
+    <h3>🗝️ 5つの要旨が示す共通テーマ</h3>
+    <ul>
+      <li>🔄 <strong>認識の転換</strong>：不安・ストレスは「敵」ではなく「機能」</li>
+      <li>🔋 <strong>回復の設計</strong>：負荷より「戻れる仕組み」が重要</li>
+      <li>🏃 <strong>身体が最初</strong>：運動は最も確かな介入</li>
+      <li>🧠 <strong>意味づけの力</strong>：解釈が生理反応の効能を変える</li>
+      <li>📵 <strong>情報の管理</strong>：量とタイミングが神経系を守る</li>
+    </ul>
+    <div class="reason"><strong>💡 まとめ：</strong>5つの要旨はすべて「受け身から主体へ」という転換を促している。不安に圧倒されるのではなく、仕組みを理解して設計する側に回ることが本書の核心。</div>
+  </div>
+
+</section>
+
+<!-- ■ タブ5: 今日のアクション -->
+<section id="tab-actions" class="tab-panel" role="tabpanel" aria-labelledby="btn-actions">
+
+  <div class="sec-title">⚡ 今日15〜30分で実行できるアクション</div>
+
+  <!-- アクション概要バッジ -->
+  <div class="num-badges">
+    <div class="num-badge">
+      <span class="nb-num">3</span>
+      <span class="nb-label">今日できる<br>アクション</span>
+    </div>
+    <div class="num-badge accent">
+      <span class="nb-num">20分</span>
+      <span class="nb-label">最短実行<br>時間</span>
+    </div>
+    <div class="num-badge teal">
+      <span class="nb-num">即効</span>
+      <span class="nb-label">道具不要<br>今すぐ開始</span>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="ac-num">1</div>
+    <span class="ac-time">⏱ 20分</span>
+    <h4>🏃 速歩を20分する</h4>
+    <ul style="list-style:none;padding:0;margin-bottom:10px;">
+      <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;"><span style="position:absolute;left:0;color:var(--secondary);">▸</span>近所を少し速めのペースで歩くだけでOK</li>
+      <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;"><span style="position:absolute;left:0;color:var(--secondary);">▸</span>スマホはポケットにしまい、周囲の景色を見ながら歩く</li>
+      <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;"><span style="position:absolute;left:0;color:var(--secondary);">▸</span>緑のある場所を選ぶと自然接触の効果も同時に得られる</li>
+    </ul>
+    <div class="ac-row">
+      <div class="ac-box">
+        <div class="ac-box-label">🎯 目的</div>
+        扁桃体反応性を下げ、前頭前野の制御を強化する。HPA軸をリセットし、睡眠の質を上げる。
+      </div>
+      <div class="ac-box">
+        <div class="ac-box-label">✨ 期待効果</div>
+        当日の気分改善・集中力向上。継続で扁桃体の過敏性が低下し、ストレス耐性が構造的に上がる。
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="ac-num">2</div>
+    <span class="ac-time">⏱ 20分</span>
+    <h4>📵 ニュース断ちを20分実践する</h4>
+    <ul style="list-style:none;padding:0;margin-bottom:10px;">
+      <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;"><span style="position:absolute;left:0;color:var(--secondary);">▸</span>スマホの通知を全てオフにし、ニュースアプリを閉じる</li>
+      <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;"><span style="position:absolute;left:0;color:var(--secondary);">▸</span>20分間、情報を受け取らない時間を意図的に作る</li>
+      <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;"><span style="position:absolute;left:0;color:var(--secondary);">▸</span>「情報は1日1〜2回まとめて確認する」ルールを試す</li>
+    </ul>
+    <div class="ac-row">
+      <div class="ac-box">
+        <div class="ac-box-label">🎯 目的</div>
+        扁桃体の連続起動を止め、アラームの基線を下げる。情報の「量とタイミング」を自分でコントロールする練習。
+      </div>
+      <div class="ac-box">
+        <div class="ac-box-label">✨ 期待効果</div>
+        不安レベルの低下と集中力の回復。継続で「情報断食」が習慣化し、慢性的な過敏化が緩和される。
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="ac-num">3</div>
+    <span class="ac-time">⏱ 15分</span>
+    <h4>🫁 4-7-8呼吸を15分練習する</h4>
+    <ul style="list-style:none;padding:0;margin-bottom:10px;">
+      <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;"><span style="position:absolute;left:0;color:var(--secondary);">▸</span>鼻から4秒吸う → 7秒止める → 口から8秒かけて吐く</li>
+      <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;"><span style="position:absolute;left:0;color:var(--secondary);">▸</span>これを1セットとして、15分間繰り返す</li>
+      <li style="font-size:13px;padding:3px 0 3px 18px;position:relative;"><span style="position:absolute;left:0;color:var(--secondary);">▸</span>静かな場所で目を閉じ、呼吸だけに意識を向ける</li>
+    </ul>
+    <div class="ac-row">
+      <div class="ac-box">
+        <div class="ac-box-label">🎯 目的</div>
+        副交感神経を即時起動し、交感神経優位の状態から「ブレーキ」をかける。マインドフルネスの入口として機能する。
+      </div>
+      <div class="ac-box">
+        <div class="ac-box-label">✨ 期待効果</div>
+        数分で心拍数・血圧が低下し、落ち着きが戻る。継続で自律神経の可塑性が高まり、切替えが素早くなる。
+      </div>
+    </div>
+  </div>
+
+  <!-- 呼吸法ガイド SVG -->
+  <div class="card" style="margin-top:6px;">
+    <h3>🫁 4-7-8呼吸 ビジュアルガイド</h3>
+    <div class="svg-wrap" style="margin-top:12px;">
+      <svg width="340" height="100" viewBox="0 0 340 100" aria-label="4-7-8呼吸法の図" role="img">
+        <defs>
+          <linearGradient id="gBreath1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#2d7dd2"/>
+            <stop offset="100%" style="stop-color:#2ec4b6"/>
+          </linearGradient>
+          <linearGradient id="gBreath2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#1a2e4a"/>
+            <stop offset="100%" style="stop-color:#2d7dd2"/>
+          </linearGradient>
+          <linearGradient id="gBreath3" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#f4a261"/>
+            <stop offset="100%" style="stop-color:#e76f51"/>
+          </linearGradient>
+        </defs>
+        <!-- 吸う -->
+        <rect x="10" y="30" width="80" height="40" rx="8" fill="url(#gBreath1)"/>
+        <text x="50" y="47" text-anchor="middle" fill="white" font-size="11" font-weight="bold">吸う</text>
+        <text x="50" y="62" text-anchor="middle" fill="white" font-size="18" font-weight="900">4秒</text>
+        <text x="50" y="20" text-anchor="middle" fill="#2d7dd2" font-size="10">鼻から</text>
+        <!-- 矢印 -->
+        <text x="100" y="55" fill="#4a6080" font-size="16">→</text>
+        <!-- 止める -->
+        <rect x="115" y="30" width="100" height="40" rx="8" fill="url(#gBreath2)"/>
+        <text x="165" y="47" text-anchor="middle" fill="white" font-size="11" font-weight="bold">止める</text>
+        <text x="165" y="62" text-anchor="middle" fill="white" font-size="18" font-weight="900">7秒</text>
+        <text x="165" y="20" text-anchor="middle" fill="#1a2e4a" font-size="10">息を保持</text>
+        <!-- 矢印 -->
+        <text x="225" y="55" fill="#4a6080" font-size="16">→</text>
+        <!-- 吐く -->
+        <rect x="240" y="30" width="90" height="40" rx="8" fill="url(#gBreath3)"/>
+        <text x="285" y="47" text-anchor="middle" fill="white" font-size="11" font-weight="bold">吐く</text>
+        <text x="285" y="62" text-anchor="middle" fill="white" font-size="18" font-weight="900">8秒</text>
+        <text x="285" y="20" text-anchor="middle" fill="#e76f51" font-size="10">口から</text>
+        <!-- 繰り返し矢印 -->
+        <path d="M330 50 Q340 80 170 90 Q10 80 10 70" stroke="#4a6080" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+        <text x="170" y="100" text-anchor="middle" fill="#4a6080" font-size="9">繰り返す</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 3軸まとめ -->
+  <div class="sec-title" style="margin-top:20px;">🗺 3つのアクションが対応する介入軸</div>
+  <div class="grid-3">
+    <div class="card" style="border-top:4px solid var(--secondary);text-align:center;">
+      <div style="font-size:28px;margin-bottom:6px;">🏃</div>
+      <h3 style="font-size:13px;">身体軸</h3>
+      <p style="font-size:12px;color:var(--text-light);">速歩20分<br>扁桃体・HPA軸を整える</p>
+    </div>
+    <div class="card" style="border-top:4px solid var(--accent);text-align:center;">
+      <div style="font-size:28px;margin-bottom:6px;">📵</div>
+      <h3 style="font-size:13px;">環境軸</h3>
+      <p style="font-size:12px;color:var(--text-light);">ニュース断ち20分<br>情報刺激の総量を減らす</p>
+    </div>
+    <div class="card" style="border-top:4px solid var(--success);text-align:center;">
+      <div style="font-size:28px;margin-bottom:6px;">🫁</div>
+      <h3 style="font-size:13px;">認知軸</h3>
+      <p style="font-size:12px;color:var(--text-light);">4-7-8呼吸15分<br>副交感神経を即時起動</p>
+    </div>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <p>📌 本インフォグラフィックは書籍リサーチ内容に基づき作成。引用は「要旨」として明記。</p>
+  <p style="margin-top:4px;">カラーパレット：Primary <strong>#1a2e4a</strong> / Secondary <strong>#2d7dd2</strong> / Accent <strong>#f4a261</strong></p>
+</footer>
+
+<script>
+  // ===== タブ切替 =====
+  const buttons = document.querySelectorAll('.tab-btn');
+  const panels  = document.querySelectorAll('.tab-panel');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('aria-controls');
+
+      buttons.forEach(b => {
+        b.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(p => {
+        p.classList.remove('active');
+      });
+
+      btn.setAttribute('aria-selected', 'true');
+      const panel = document.getElementById(target);
+      if (panel) panel.classList.add('active');
+
+      // スクロールをタブ上部へ
+      document.querySelector('.tab-nav').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  });
+
+  // ===== バーアニメーション（IntersectionObserver） =====
+  const bars = document.querySelectorAll('.bar-fill');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const w = el.style.width;
+        el.style.width = '0%';
+        requestAnimationFrame(() => {
+          setTimeout(() => { el.style.width = w; }, 50);
+        });
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  bars.forEach(bar => observer.observe(bar));
+</script>
+</body>
+</html>
