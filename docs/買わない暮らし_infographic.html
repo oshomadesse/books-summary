@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>買わない暮らし インフォグラフィック</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #2D6A4F
+  セカンダリー:  #52B788
+  アクセント:    #F4A261
+-->
+<style>
+  /* ===== リセット & ベース ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary:   #2D6A4F;
+    --secondary: #52B788;
+    --accent:    #F4A261;
+    --bg:        #F0F7F4;
+    --surface:   #FFFFFF;
+    --text:      #1A2E25;
+    --muted:     #6B8F7A;
+    --border:    #C8E6D4;
+    --grad: linear-gradient(135deg, #2D6A4F 0%, #52B788 100%);
+    --grad-acc: linear-gradient(135deg, #F4A261 0%, #e07b3a 100%);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ===== ヘッダー ===== */
+  .site-header {
+    background: var(--grad);
+    color: #fff;
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+  .site-header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 3px 14px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  .site-header h1 {
+    font-size: clamp(22px, 5vw, 36px);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+  .site-header .subtitle {
+    margin-top: 8px;
+    font-size: 13px;
+    opacity: 0.88;
+  }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: var(--surface);
+    border-left: 5px solid var(--accent);
+    border-radius: 12px;
+    margin: 20px 16px;
+    padding: 20px 18px;
+    box-shadow: 0 2px 12px rgba(45,106,79,0.10);
+  }
+  .summary-block .sb-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  @media(max-width:520px){ .summary-grid { grid-template-columns: 1fr; } }
+  .sb-card {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 12px 14px;
+    border-top: 3px solid var(--secondary);
+  }
+  .sb-card.full { grid-column: 1 / -1; }
+  .sb-card .sc-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.1em;
+    margin-bottom: 5px;
+  }
+  .sb-card p { font-size: 13px; line-height: 1.55; }
+  .sb-card.accent-card { border-top-color: var(--accent); }
+
+  /* ===== タブナビ ===== */
+  .tab-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    background: var(--primary);
+    padding: 0 8px;
+    scrollbar-width: none;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 13px 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .tab-btn:hover { color: #fff; }
+  .tab-btn[aria-selected="true"] {
+    color: #fff;
+    border-bottom-color: var(--accent);
+  }
+
+  /* ===== タブパネル ===== */
+  .tab-panel { display: none; padding: 16px; }
+  .tab-panel.active { display: block; }
+
+  /* ===== セクションタイトル ===== */
+  .sec-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sec-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+  }
+
+  /* ===== カード共通 ===== */
+  .card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 16px 16px 14px;
+    box-shadow: 0 2px 8px rgba(45,106,79,0.08);
+    margin-bottom: 12px;
+  }
+  .card-head {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-tag {
+    font-size: 10px;
+    background: var(--secondary);
+    color: #fff;
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .card ul { padding-left: 0; list-style: none; }
+  .card ul li {
+    font-size: 13px;
+    padding: 3px 0 3px 18px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .card ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-size: 11px;
+    top: 5px;
+  }
+  .reason-box {
+    margin-top: 10px;
+    background: #FFF8F0;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 7px 10px;
+    font-size: 12px;
+    color: #7a4a1e;
+  }
+  .reason-box strong { color: var(--accent); }
+
+  /* ===== 概念グリッド ===== */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .concept-card {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 14px 12px;
+    box-shadow: 0 2px 8px rgba(45,106,79,0.08);
+    border-top: 3px solid var(--secondary);
+    transition: transform 0.15s;
+  }
+  .concept-card:hover { transform: translateY(-2px); }
+  .concept-card .cc-emoji { font-size: 22px; margin-bottom: 6px; }
+  .concept-card .cc-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+  .concept-card .cc-tag {
+    font-size: 10px;
+    background: var(--bg);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 2px 7px;
+    display: inline-block;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .concept-card .cc-def {
+    font-size: 11.5px;
+    color: #3a5a48;
+    line-height: 1.5;
+  }
+  .concept-card .cc-why {
+    margin-top: 7px;
+    font-size: 11px;
+    color: #b06020;
+    background: #FFF8F0;
+    border-radius: 5px;
+    padding: 4px 7px;
+  }
+
+  /* ===== 因果フロー ===== */
+  .flow-wrap {
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 8px;
+    flex-wrap: nowrap;
+    min-width: max-content;
+  }
+  .flow-node {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .flow-node.bad { border-color: #e07b3a; background: #FFF3E8; color: #7a3a10; }
+  .flow-node.good { border-color: var(--secondary); background: #EAF7F0; color: var(--primary); }
+  .flow-arrow { font-size: 14px; color: var(--muted); flex-shrink: 0; }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(45,106,79,0.08);
+    margin-bottom: 12px;
+    border-left: 4px solid var(--secondary);
+  }
+  .chapter-card.accent { border-left-color: var(--accent); }
+  .ch-num {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .ch-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+  .ch-points { list-style: none; padding: 0; }
+  .ch-points li {
+    font-size: 12.5px;
+    padding: 2px 0 2px 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .ch-points li::before {
+    content: '●';
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-size: 8px;
+    top: 6px;
+  }
+
+  /* ===== 具体例 ===== */
+  .example-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(45,106,79,0.08);
+    margin-bottom: 14px;
+  }
+  .ex-num {
+    display: inline-block;
+    background: var(--grad);
+    color: #fff;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    text-align: center;
+    line-height: 26px;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .ex-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 6px;
+  }
+  .ex-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .ex-meta span {
+    font-size: 11px;
+    border-radius: 8px;
+    padding: 2px 9px;
+    font-weight: 600;
+  }
+  .ex-meta .bg-tag { background: #EAF7F0; color: var(--primary); }
+  .ex-meta .si-tag { background: #FFF3E8; color: #7a3a10; }
+  .ex-body { font-size: 13px; line-height: 1.55; margin-bottom: 8px; }
+  .ex-reason {
+    background: #FFF8F0;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 7px 10px;
+    font-size: 12px;
+    color: #7a4a1e;
+  }
+
+  /* ===== 引用 ===== */
+  .quote-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 18px 16px;
+    box-shadow: 0 2px 8px rgba(45,106,79,0.08);
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-card::before {
+    content: '❝';
+    position: absolute;
+    top: -4px;
+    left: 10px;
+    font-size: 60px;
+    color: var(--border);
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+  .quote-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.6;
+    padding-left: 8px;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .quote-note {
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 6px 10px;
+  }
+
+  /* ===== アクション ===== */
+  .action-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(45,106,79,0.08);
+    margin-bottom: 12px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .action-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--grad);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  .action-body { flex: 1; }
+  .action-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+  .action-time {
+    display: inline-block;
+    font-size: 10px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    padding: 1px 8px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .action-meta { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .action-effect {
+    margin-top: 6px;
+    font-size: 12px;
+    background: #EAF7F0;
+    border-radius: 6px;
+    padding: 5px 9px;
+    color: var(--primary);
+  }
+
+  /* ===== 数値バッジ ===== */
+  .badge-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .num-badge {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 12px 16px;
+    box-shadow: 0 2px 8px rgba(45,106,79,0.08);
+    text-align: center;
+    flex: 1 1 100px;
+  }
+  .num-badge .nb-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .num-badge .nb-unit { font-size: 13px; color: var(--muted); }
+  .num-badge .nb-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  /* ===== 横棒グラフ ===== */
+  .bar-chart { margin-bottom: 16px; }
+  .bar-item { margin-bottom: 10px; }
+  .bar-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .bar-track {
+    background: var(--border);
+    border-radius: 6px;
+    height: 14px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    background: var(--grad);
+    transition: width 1s ease;
+  }
+  .bar-fill.acc { background: var(--grad-acc); }
+
+  /* ===== 関連書籍 ===== */
+  .book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .book-card {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 0 2px 8px rgba(45,106,79,0.08);
+    border-top: 3px solid var(--primary);
+  }
+  .book-title { font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 3px; }
+  .book-author { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .book-rel { font-size: 12px; line-height: 1.5; }
+
+  /* ===== SVG フロー図 ===== */
+  .svg-wrap { overflow-x: auto; margin-bottom: 16px; }
+  svg text { font-family: 'Hiragino Kaku Gothic ProN', sans-serif; }
+
+  /* ===== フッター ===== */
+  footer {
+    text-align: center;
+    padding: 20px 16px;
+    font-size: 11px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+
+  /* ===== ユーティリティ ===== */
+  .mt8 { margin-top: 8px; }
+  .mb12 { margin-bottom: 12px; }
+  .emoji-big { font-size: 20px; }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header class="site-header" role="banner">
+  <div class="badge">📗 書籍インフォグラフィック</div>
+  <h1>🛒 買わない暮らし</h1>
+  <p class="subtitle">選択的消費で、お金・時間・心の余白を同時に増やす</p>
+</header>
+
+<!-- ===== ファーストビュー サマリーブロック ===== -->
+<section class="summary-block" aria-label="エグゼクティブサマリー">
+  <div class="sb-title">⚡ ここだけ読めば全体がわかる — 要約ブロック</div>
+  <div class="summary-grid">
+    <div class="sb-card">
+      <div class="sc-label">❓ 問い</div>
+      <p>私たちはなぜ買いすぎ、どうすれば持続的に「買わない暮らし」に移行できるのか？</p>
+    </div>
+    <div class="sb-card">
+      <div class="sc-label">💡 答え</div>
+      <p>欲求のトリガーと消費の自動化を断ち、価値観に合う少数精鋭を選ぶ仕組みを回すことで、我慢ではなく満足を増やしながら支出と物量を減らせる。</p>
+    </div>
+    <div class="sb-card accent-card">
+      <div class="sc-label">🔍 Why（なぜそうなのか）</div>
+      <p>衝動買いは広告・環境・感情（退屈/不安/承認欲）に反応する習慣で、所有は管理コストと心理的負荷を累積させるから。</p>
+    </div>
+    <div class="sb-card accent-card">
+      <div class="sc-label">🛠 How（そのためには）</div>
+      <p>① 価値観を言語化し「買わないリスト」を作る ② 欲しい→購入の間に冷却期間を挿む ③ 支出・在庫を見える化 ④ 通知・セール源を遮断し記録で習慣化</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 数値バッジ ===== -->
+<section style="padding:0 16px 4px;" aria-label="主要指標">
+  <div class="badge-row">
+    <div class="num-badge">
+      <div class="nb-num">12</div>
+      <div class="nb-unit">概念</div>
+      <div class="nb-label">核心フレームワーク</div>
+    </div>
+    <div class="num-badge">
+      <div class="nb-num">8</div>
+      <div class="nb-unit">章</div>
+      <div class="nb-label">論理構成</div>
+    </div>
+    <div class="num-badge">
+      <div class="nb-num">4</div>
+      <div class="nb-unit">引用</div>
+      <div class="nb-label">核心フレーズ</div>
+    </div>
+    <div class="num-badge">
+      <div class="nb-num">3</div>
+      <div class="nb-unit">アクション</div>
+      <div class="nb-label">今日できること</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== タブナビ ===== -->
+<nav class="tab-nav" role="tablist" aria-label="コンテンツタブ">
+  <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">💡 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes"   id="tab-quotes">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions"  id="tab-actions">✅ 今日のアクション</button>
+</nav>
+
+<!-- ===== タブパネル 1: 主要概念 ===== -->
+<section class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+  <h2 class="sec-title">🧩 主要概念の詳細</h2>
+
+  <!-- 因果フロー SVG -->
+  <div class="card mb12">
+    <div class="card-head">🔄 消費の悪循環 → 好循環への転換</div>
+    <div class="svg-wrap">
+      <svg width="680" height="130" viewBox="0 0 680 130" aria-label="消費の悪循環と好循環の図">
+        <!-- 悪循環 -->
+        <rect x="4" y="10" width="90" height="34" rx="7" fill="#FFF3E8" stroke="#e07b3a" stroke-width="1.5"/>
+        <text x="49" y="32" text-anchor="middle" font-size="11" fill="#7a3a10" font-weight="700">広告・感情</text>
+        <text x="49" y="44" text-anchor="middle" font-size="10" fill="#7a3a10">トリガー</text>
+        <text x="100" y="32" text-anchor="middle" font-size="16" fill="#e07b3a">→</text>
+        <rect x="106" y="10" width="80" height="34" rx="7" fill="#FFF3E8" stroke="#e07b3a" stroke-width="1.5"/>
+        <text x="146" y="32" text-anchor="middle" font-size="11" fill="#7a3a10" font-weight="700">衝動買い</text>
+        <text x="192" y="32" text-anchor="middle" font-size="16" fill="#e07b3a">→</text>
+        <rect x="198" y="10" width="80" height="34" rx="7" fill="#FFF3E8" stroke="#e07b3a" stroke-width="1.5"/>
+        <text x="238" y="27" text-anchor="middle" font-size="11" fill="#7a3a10" font-weight="700">物量増加</text>
+        <text x="238" y="41" text-anchor="middle" font-size="10" fill="#7a3a10">管理コスト↑</text>
+        <text x="284" y="32" text-anchor="middle" font-size="16" fill="#e07b3a">→</text>
+        <rect x="290" y="10" width="80" height="34" rx="7" fill="#FFF3E8" stroke="#e07b3a" stroke-width="1.5"/>
+        <text x="330" y="27" text-anchor="middle" font-size="11" fill="#7a3a10" font-weight="700">ストレス</text>
+        <text x="330" y="41" text-anchor="middle" font-size="10" fill="#7a3a10">心の余白↓</text>
+        <!-- 好循環 -->
+        <rect x="4" y="80" width="100" height="34" rx="7" fill="#EAF7F0" stroke="#52B788" stroke-width="1.5"/>
+        <text x="54" y="97" text-anchor="middle" font-size="11" fill="#2D6A4F" font-weight="700">買わないリスト</text>
+        <text x="54" y="109" text-anchor="middle" font-size="10" fill="#2D6A4F">＋冷却期間</text>
+        <text x="110" y="102" text-anchor="middle" font-size="16" fill="#52B788">→</text>
+        <rect x="116" y="80" width="90" height="34" rx="7" fill="#EAF7F0" stroke="#52B788" stroke-width="1.5"/>
+        <text x="161" y="97" text-anchor="middle" font-size="11" fill="#2D6A4F" font-weight="700">衝動買い減少</text>
+        <text x="161" y="109" text-anchor="middle" font-size="10" fill="#2D6A4F">代替案優先</text>
+        <text x="212" y="102" text-anchor="middle" font-size="16" fill="#52B788">→</text>
+        <rect x="218" y="80" width="90" height="34" rx="7" fill="#EAF7F0" stroke="#52B788" stroke-width="1.5"/>
+        <text x="263" y="97" text-anchor="middle" font-size="11" fill="#2D6A4F" font-weight="700">資金・時間</text>
+        <text x="263" y="109" text-anchor="middle" font-size="10" fill="#2D6A4F">可処分増加</text>
+        <text x="314" y="102" text-anchor="middle" font-size="16" fill="#52B788">→</text>
+        <rect x="320" y="80" width="90" height="34" rx="7" fill="#EAF7F0" stroke="#52B788" stroke-width="1.5"/>
+        <text x="365" y="97" text-anchor="middle" font-size="11" fill="#2D6A4F" font-weight="700">心の余白</text>
+        <text x="365" y="109" text-anchor="middle" font-size="10" fill="#2D6A4F">満足度↑</text>
+        <!-- ラベル -->
+        <text x="4" y="8" font-size="10" fill="#e07b3a" font-weight="700">😰 悪循環</text>
+        <text x="4" y="78" font-size="10" fill="#2D6A4F" font-weight="700">😊 好循環</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 概念グリッド -->
+  <div class="concept-grid">
+
+    <div class="concept-card">
+      <div class="cc-emoji">🌿</div>
+      <div class="cc-name">買わない暮らし</div>
+      <div class="cc-tag">選択的消費</div>
+      <div class="cc-def">不買ではなく、価値に合わない消費を意図的にやめ、少数精鋭に資源を配分する生き方。</div>
+      <div class="cc-why">💡 なぜ重要: 欠乏ではなく「選択」と捉えることで、継続できる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-emoji">📋</div>
+      <div class="cc-name">買わないリスト</div>
+      <div class="cc-tag">消費の憲法</div>
+      <div class="cc-def">当面/恒久的に買わない物・サービスを明示し、例外条件も記す意思決定の基準書。</div>
+      <div class="cc-why">💡 なぜ重要: 判断を事前に済ませ、意志力を節約できる。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-emoji">⏳</div>
+      <div class="cc-name">冷却期間</div>
+      <div class="cc-tag">時間のブレーキ</div>
+      <div class="cc-def">「欲しい」と思ってから購入判断まで一定時間置き、感情の波が引いてから選ぶ技法。</div>
+      <div class="cc-why">💡 なぜ重要: 感情的衝動の多くは時間で消える。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-emoji">🚫</div>
+      <div class="cc-name">トリガー管理</div>
+      <div class="cc-tag">誘因除去</div>
+      <div class="cc-def">広告・通知・店舗導線・感情など購買欲の誘因を特定し、回避/置換する設計。</div>
+      <div class="cc-why">💡 なぜ重要: 誘因を断てば意志力を使わずに済む。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-emoji">🔄</div>
+      <div class="cc-name">代替案思考</div>
+      <div class="cc-tag">代用優先</div>
+      <div class="cc-def">買う前に「手持ちで代用・借りる・修理・共有」で満たす方法を探る。</div>
+      <div class="cc-why">💡 なぜ重要: 支出削減と廃棄減少を同時に実現。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-emoji">📊</div>
+      <div class="cc-name">可視化</div>
+      <div class="cc-tag">現状把握</div>
+      <div class="cc-def">支出・在庫・使用頻度を一覧化し、判断の盲点を減らす。</div>
+      <div class="cc-why">💡 なぜ重要: 見えないものは管理できない。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-emoji">💸</div>
+      <div class="cc-name">所持のコスト</div>
+      <div class="cc-tag">隠れ負担</div>
+      <div class="cc-def">購入価格に加え、保管・維持・時間・注意の負担を含めた総コスト概念。</div>
+      <div class="cc-why">💡 なぜ重要: 「安い」が実は高くつく構造を見抜ける。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-emoji">⚓</div>
+      <div class="cc-name">サンクコスト</div>
+      <div class="cc-tag">埋没費用</div>
+      <div class="cc-def">既に支払った費用に縛られて手放し/修正を遅らせる心理バイアス。</div>
+      <div class="cc-why">💡 なぜ重要: 過去の出費に縛られると損失が拡大する。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-emoji">⚙️</div>
+      <div class="cc-name">意志力の節約</div>
+      <div class="cc-tag">仕組み化</div>
+      <div class="cc-def">ルール化・自動化で意思決定の回数を減らし、衝動に強くする。</div>
+      <div class="cc-why">💡 なぜ重要: 意志力は有限。仕組みで補う必要がある。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-emoji">🧱</div>
+      <div class="cc-name">フリクション設計</div>
+      <div class="cc-tag">抵抗追加</div>
+      <div class="cc-def">購入行為に手間（待機・手書き記録・現金化）を足し、衝動を減速させる。</div>
+      <div class="cc-why">💡 なぜ重要: 摩擦が増えると衝動は自然に消える。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-emoji">🧘</div>
+      <div class="cc-name">マインドフル消費</div>
+      <div class="cc-tag">意識的選択</div>
+      <div class="cc-def">「本当に必要か/長く使うか/誰の価値観か」を自問してから選ぶ姿勢。</div>
+      <div class="cc-why">💡 なぜ重要: 自分の価値観に沿った消費だけが満足を生む。</div>
+    </div>
+
+    <div class="concept-card">
+      <div class="cc-emoji">🌱</div>
+      <div class="cc-name">小さな習慣</div>
+      <div class="cc-tag">継続核</div>
+      <div class="cc-def">15分点検・週1振り返りなど、低負荷の反復で継続性を担保する。</div>
+      <div class="cc-why">💡 なぜ重要: 小さな成功体験が自己効力感を育て再発を防ぐ。</div>
+    </div>
+
+  </div>
+
+  <!-- 横棒グラフ: 所持コストの内訳イメージ -->
+  <div class="card">
+    <div class="card-head">📊 所持コストの内訳イメージ <span class="card-tag">概念の視覚化</span></div>
+    <div class="bar-chart">
+      <div class="bar-item">
+        <div class="bar-label"><span>💰 購入価格</span><span>40%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:40%"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label"><span>🏠 保管・収納スペース</span><span>20%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:20%"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label"><span>🔧 維持・修理コスト</span><span>15%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:15%"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label"><span>🧠 注意・管理の負担</span><span>15%</span></div>
+        <div class="bar-track"><div class="bar-fill acc" style="width:15%"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label"><span>⏰ 時間コスト</span><span>10%</span></div>
+        <div class="bar-track"><div class="bar-fill acc" style="width:10%"></div></div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);">※ 本書の概念に基づくイメージ図。実際の比率は状況により異なる。</p>
+  </div>
+
+</section>
+
+<!-- ===== タブパネル 2: 各章の要約 ===== -->
+<section class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+  <h2 class="sec-title">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <div class="ch-num">序章</div>
+    <div class="ch-title">🏙️ 消費社会の罠と「満たされない買い物」の実態</div>
+    <ul class="ch-points">
+      <li>買い物は一時的な快楽を与えるが、満足は長続きしない</li>
+      <li>物が増えるほど管理コストとストレスが累積する</li>
+      <li>「もっと買えば満たされる」という幻想を可視化する</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>問題の根本を認識しないと解決策が刺さらないから。現状の痛みを直視することが変化の出発点。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-num">第1部</div>
+    <div class="ch-title">🧠 なぜ買いすぎるのか — 心理・広告・環境・習慣のトリガー解剖</div>
+    <ul class="ch-points">
+      <li>退屈・不安・承認欲求が購買衝動の主要トリガー</li>
+      <li>広告は感情に訴え、「必要感」を人工的に作り出す</li>
+      <li>店舗導線・通知・セールは環境的トリガーとして機能する</li>
+      <li>習慣化した購買行動は意識せずに繰り返される</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>「なぜ買うのか」を知らずに「買わない」は続かない。原因の特定が対策の精度を上げる。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-num">第2部</div>
+    <div class="ch-title">🗺️ 準備 — 価値観の言語化・棚卸し・所有コストの把握</div>
+    <ul class="ch-points">
+      <li>自分の価値観を言語化し、消費の判断基準を作る</li>
+      <li>在庫と支出を棚卸しし、現状を数字で把握する</li>
+      <li>所有コスト（購入価格＋維持・時間・注意）を計算する</li>
+      <li>「本当に必要なもの」の定義を自分で決める</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>現状把握なしに仕組みを作っても的外れになる。地図なき旅は迷走する。</div>
+  </div>
+
+  <div class="chapter-card accent">
+    <div class="ch-num">第3部</div>
+    <div class="ch-title">⚙️ 仕組み — 買わないリスト・冷却期間・フリクション・例外ルール</div>
+    <ul class="ch-points">
+      <li>「買わないリスト」で事前に判断を済ませる</li>
+      <li>冷却期間（例：24時間〜1週間）を購入プロセスに組み込む</li>
+      <li>フリクション（手書きメモ・現金払い）で衝動を減速</li>
+      <li>例外ルールを明文化し、柔軟性と一貫性を両立</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>本書の核心。性格より仕組みが人を助ける。意志力に頼らない設計が継続の鍵。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-num">第4部</div>
+    <div class="ch-title">🔄 代替の満足 — 代用・借用・修理・共有・使い切る</div>
+    <ul class="ch-points">
+      <li>手持ちのもので代用できないか先に探す</li>
+      <li>借りる・シェアする選択肢を積極的に活用する</li>
+      <li>壊れたら修理を検討し、廃棄を後回しにする</li>
+      <li>使い切る体験が「所有の満足」を再発見させる</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>「買わない」だけでは欲求不満になる。代替の充足経路を持つことで持続可能になる。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-num">第5部</div>
+    <div class="ch-title">🏠 暮らしの整え — 片づけと動線最適化で欲望トリガーを減らす</div>
+    <ul class="ch-points">
+      <li>物の少ない空間は視覚的トリガーを減らす</li>
+      <li>動線を整えると「足りない」という錯覚が減る</li>
+      <li>片づけは「買わない暮らし」の物理的基盤になる</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>環境が行動を決める。空間を整えることで、仕組みの効果が倍増する。</div>
+  </div>
+
+  <div class="chapter-card">
+    <div class="ch-num">第6部</div>
+    <div class="ch-title">🔁 挫折対策 — 記録・振り返り・トリガー再調整・小さな習慣</div>
+    <ul class="ch-points">
+      <li>衝動買いを記録し、パターンを把握する</li>
+      <li>週1回の振り返りでトリガーを再調整する</li>
+      <li>小さな成功体験を積み重ね、自己効力感を育てる</li>
+      <li>完璧主義を捨て、再発を学習機会として活かす</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>挫折は必ず起きる。対策を事前に設計することで、長期継続が現実的になる。</div>
+  </div>
+
+  <div class="chapter-card accent">
+    <div class="ch-num">終章</div>
+    <div class="ch-title">🌟 節約以上のリターン — 時間・心・環境・人間関係と指標の提示</div>
+    <ul class="ch-points">
+      <li>お金だけでなく、時間・心の余白・環境負荷が改善する</li>
+      <li>人間関係の質が上がる（物より体験・つながりへ）</li>
+      <li>「買わない暮らし」の成果を指標で測り、継続動機にする</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの章が必要か：</strong>節約という狭い動機を超えた大きなリターンを示すことで、長期的な意味づけが生まれる。</div>
+  </div>
+
+</section>
+
+<!-- ===== タブパネル 3: 具体例 ===== -->
+<section class="tab-panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+
+  <h2 class="sec-title">💡 具体例・メタファー</h2>
+
+  <div class="example-card">
+    <div class="ex-num">1</div>
+    <div class="ex-title">🛒 セールの罠 — 「50%オフ」で2倍買う人</div>
+    <div class="ex-meta">
+      <span class="bg-tag">背景: 衝動買いのトリガー</span>
+      <span class="si-tag">示唆: フリクション設計の必要性</span>
+    </div>
+    <div class="ex-body">
+      セールメールが届いた瞬間、「今だけ」という希少性と「お得感」が感情を刺激する。結果、必要でないものを「安いから」という理由で複数購入。支出は増え、使わない物が積み上がる。
+    </div>
+    <div class="ex-reason">
+      <strong>🔍 この例が示すこと：</strong>割引は「節約」ではなく「支出の増加」を招くことが多い。通知を遮断し、セールメールを解除するだけで衝動の入口を閉じられる。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">2</div>
+    <div class="ex-title">⏳ 冷却期間の実験 — 「1週間後も欲しいか？」</div>
+    <div class="ex-meta">
+      <span class="bg-tag">背景: 冷却期間の効果</span>
+      <span class="si-tag">示唆: 感情と真の欲求の分離</span>
+    </div>
+    <div class="ex-body">
+      欲しいと思ったものをリストに書き、1週間後に見返す。多くの場合、「なぜ欲しかったのか思い出せない」「もう気にならない」という状態になる。感情の波は時間で引く。
+    </div>
+    <div class="ex-reason">
+      <strong>🔍 この例が示すこと：</strong>衝動の大半は一時的な感情反応。時間というフリクションを挿むだけで、購入件数を大幅に減らせる。意志力ではなく仕組みの力。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">3</div>
+    <div class="ex-title">🔧 修理という選択 — 壊れたものを直す体験</div>
+    <div class="ex-meta">
+      <span class="bg-tag">背景: 代替案思考・使い切る</span>
+      <span class="si-tag">示唆: 所有の満足の再発見</span>
+    </div>
+    <div class="ex-body">
+      壊れたバッグを捨てて新品を買う代わりに、修理店に持ち込む。修理代は新品の1/5。直ったバッグへの愛着が増し、「物を大切にする」感覚が戻る。次の衝動買いへの抵抗感も高まる。
+    </div>
+    <div class="ex-reason">
+      <strong>🔍 この例が示すこと：</strong>修理・代用は節約だけでなく、物との関係性を豊かにする。「使い切る・直す・分かち合う」は買う以上に生活を豊かにする。
+    </div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">4</div>
+    <div class="ex-title">📋 買わないリストの作成 — 「キッチン用品は当面買わない」</div>
+    <div class="ex-meta">
+      <span class="bg-tag">背景: 買わないリストの実践</span>
+      <span class="si-tag">示唆: 事前決定による意志力節約</span>
+    </div>
+    <div class="ex-body">
+      「キッチン用品は今あるもので1年間代用する」とリストに明記。新しい調理器具を見ても「リストにある」という事実が判断を代行し、迷う時間がゼロになる。
+    </div>
+    <div class="ex-reason">
+      <strong>🔍 この例が示すこと：</strong>事前に決めることで、その場の感情に左右されなくなる。「消費の憲法」は意志力を温存し、より重要な判断にエネルギーを使えるようにする。
+    </div>
+  </div>
+
+  <!-- 視覚: 代替案の選択肢チャート -->
+  <div class="card">
+    <div class="card-head">🔄 「買う前に試す」代替案フローチャート</div>
+    <div class="svg-wrap">
+      <svg width="500" height="200" viewBox="0 0 500 200" aria-label="代替案フローチャート">
+        <!-- 開始 -->
+        <rect x="180" y="8" width="140" height="32" rx="16" fill="#2D6A4F"/>
+        <text x="250" y="29" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">欲しいものがある</text>
+        <!-- 矢印 -->
+        <line x1="250" y1="40" x2="250" y2="58" stroke="#52B788" stroke-width="2"/>
+        <polygon points="250,62 245,54 255,54" fill="#52B788"/>
+        <!-- 判断 -->
+        <rect x="160" y="62" width="180" height="30" rx="8" fill="#EAF7F0" stroke="#52B788" stroke-width="1.5"/>
+        <text x="250" y="82" text-anchor="middle" font-size="11" fill="#2D6A4F" font-weight="700">手持ちで代用できる？</text>
+        <!-- YES -->
+        <line x1="160" y1="77" x2="80" y2="77" stroke="#52B788" stroke-width="2"/>
+        <text x="120" y="70" text-anchor="middle" font-size="10" fill="#52B788" font-weight="700">YES</text>
+        <rect x="10" y="62" width="70" height="30" rx="8" fill="#EAF7F0" stroke="#52B788" stroke-width="1.5"/>
+        <text x="45" y="82" text-anchor="middle" font-size="11" fill="#2D6A4F" font-weight="700">代用する✓</text>
+        <!-- NO -->
+        <line x1="250" y1="92" x2="250" y2="110" stroke="#e07b3a" stroke-width="2"/>
+        <text x="260" y="105" font-size="10" fill="#e07b3a" font-weight="700">NO</text>
+        <rect x="160" y="110" width="180" height="30" rx="8" fill="#FFF3E8" stroke="#e07b3a" stroke-width="1.5"/>
+        <text x="250" y="130" text-anchor="middle" font-size="11" fill="#7a3a10" font-weight="700">借りる・シェアできる？</text>
+        <!-- YES2 -->
+        <line x1="160" y1="125" x2="80" y2="125" stroke="#52B788" stroke-width="2"/>
+        <text x="120" y="118" text-anchor="middle" font-size="10" fill="#52B788" font-weight="700">YES</text>
+        <rect x="10" y="110" width="70" height="30" rx="8" fill="#EAF7F0" stroke="#52B788" stroke-width="1.5"/>
+        <text x="45" y="130" text-anchor="middle" font-size="11" fill="#2D6A4F" font-weight="700">借りる✓</text>
+        <!-- NO2 -->
+        <line x1="250" y1="140" x2="250" y2="158" stroke="#e07b3a" stroke-width="2"/>
+        <text x="260" y="153" font-size="10" fill="#e07b3a" font-weight="700">NO</text>
+        <rect x="160" y="158" width="180" height="30" rx="8" fill="#FFF3E8" stroke="#e07b3a" stroke-width="1.5"/>
+        <text x="250" y="178" text-anchor="middle" font-size="11" fill="#7a3a10" font-weight="700">冷却期間後に再検討</text>
+        <!-- 右矢印 -->
+        <line x1="340" y1="173" x2="400" y2="173" stroke="#52B788" stroke-width="2"/>
+        <polygon points="404,173 396,168 396,178" fill="#52B788"/>
+        <rect x="404" y="158" width="80" height="30" rx="8" fill="#EAF7F0" stroke="#52B788" stroke-width="1.5"/>
+        <text x="444" y="178" text-anchor="middle" font-size="10" fill="#2D6A4F" font-weight="700">必要なら購入✓</text>
+      </svg>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== タブパネル 4: 重要な引用 ===== -->
+<section class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+  <h2 class="sec-title">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <div class="quote-text">「買わないことは我慢ではなく、より良い選択である。」</div>
+    <div class="quote-note">
+      <strong>📌 重要性：</strong>欠乏の物語から選択の物語へ認知を転換する軸。「我慢している」という自己イメージを持つと継続できない。「選んでいる」と捉えることで主体性が生まれる。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">「買い物で埋めたつもりの心の穴は、多くの場合、管理の負担で深くなる。」</div>
+    <div class="quote-note">
+      <strong>📌 重要性：</strong>短期快楽と長期負担の非対称性を示す。購入の瞬間の満足は一時的だが、管理コストは永続する。この非対称性を認識することが先延ばしを断つ根拠になる。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">「使い切る・直す・分かち合うは、買う以上に生活を豊かにする。」</div>
+    <div class="quote-note">
+      <strong>📌 重要性：</strong>消費以外の充足経路を示す。「買わない」が欠乏ではなく、別の豊かさへの入口であることを伝え、代替案思考を後押しする。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">「性格より仕組みが人を助ける。」</div>
+    <div class="quote-note">
+      <strong>📌 重要性：</strong>本書の設計思想の核心。「意志が弱いから買いすぎる」という自己批判から解放し、「仕組みを変えれば誰でも変われる」という希望を与える。
+    </div>
+  </div>
+
+  <!-- 引用の視覚的まとめ -->
+  <div class="card mt8">
+    <div class="card-head">🎯 4つの引用が示す認知転換</div>
+    <div class="svg-wrap">
+      <svg width="500" height="120" viewBox="0 0 500 120" aria-label="4つの引用の認知転換図">
+        <!-- 矢印の軸 -->
+        <line x1="10" y1="60" x2="490" y2="60" stroke="#C8E6D4" stroke-width="2"/>
+        <!-- ポイント1 -->
+        <circle cx="60" cy="60" r="18" fill="#2D6A4F"/>
+        <text x="60" y="65" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">①</text>
+        <text x="60" y="90" text-anchor="middle" font-size="10" fill="#2D6A4F" font-weight="700">我慢→選択</text>
+        <!-- ポイント2 -->
+        <circle cx="185" cy="60" r="18" fill="#52B788"/>
+        <text x="185" y="65" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">②</text>
+        <text x="185" y="90" text-anchor="middle" font-size="10" fill="#2D6A4F" font-weight="700">快楽→負担認識</text>
+        <!-- ポイント3 -->
+        <circle cx="315" cy="60" r="18" fill="#F4A261"/>
+        <text x="315" y="65" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">③</text>
+        <text x="315" y="90" text-anchor="middle" font-size="10" fill="#2D6A4F" font-weight="700">消費→代替充足</text>
+        <!-- ポイント4 -->
+        <circle cx="440" cy="60" r="18" fill="#2D6A4F"/>
+        <text x="440" y="65" text-anchor="middle" font-size="11" fill="#fff" font-weight="700">④</text>
+        <text x="440" y="90" text-anchor="middle" font-size="10" fill="#2D6A4F" font-weight="700">意志→仕組み</text>
+        <!-- ラベル上 -->
+        <text x="60" y="34" text-anchor="middle" font-size="9" fill="#6B8F7A">認知転換</text>
+        <text x="185" y="34" text-anchor="middle" font-size="9" fill="#6B8F7A">動機強化</text>
+        <text x="315" y="34" text-anchor="middle" font-size="9" fill="#6B8F7A">行動拡張</text>
+        <text x="440" y="34" text-anchor="middle" font-size="9" fill="#6B8F7A">設計変更</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 関連書籍 -->
+  <h2 class="sec-title mt8">📚 関連書籍</h2>
+  <div class="book-grid">
+    <div class="book-card">
+      <div class="book-title">ぼくたちに、もうモノは必要ない。</div>
+      <div class="book-author">佐々木典士</div>
+      <div class="book-rel">少数精鋭の所有と買わない判断基準を深める実践書。</div>
+    </div>
+    <div class="book-card">
+      <div class="book-title">買わない練習</div>
+      <div class="book-author">小池龍之介</div>
+      <div class="book-rel">欲望の正体を見抜き、衝動の鎮め方を内面から解説。</div>
+    </div>
+    <div class="book-card">
+      <div class="book-title">ゼロ・ウェイスト・ホーム</div>
+      <div class="book-author">ベア・ジョンソン</div>
+      <div class="book-rel">使い切る・代用・不買を通じた環境面の効果を体系化。</div>
+    </div>
+    <div class="book-card">
+      <div class="book-title">人生がときめく片づけの魔法</div>
+      <div class="book-author">近藤麻理恵</div>
+      <div class="book-rel">所有基準と手放し方が買わない暮らしの基盤になる。</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== タブパネル 5: 今日のアクション ===== -->
+<section class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+  <h2 class="sec-title">✅ 今日のアクション</h2>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">⏱ すべて15〜30分以内で実行できます</p>
+
+  <div class="action-card">
+    <div class="action-icon">✍️</div>
+    <div class="action-body">
+      <div class="action-title">支出トリガーを10個書き出す</div>
+      <div class="action-time">⏱ 約15分</div>
+      <div class="action-meta">
+        <strong>目的：</strong>自分の衝動買いのパターンを可視化し、対策の的を絞る。<br>
+        「どんな状況・感情・場所で買いたくなるか」を具体的に10個列挙する。
+      </div>
+      <div class="action-effect">
+        <strong>期待効果：</strong>トリガーを知ることで、次回同じ状況になったとき「これはトリガーだ」と気づける。気づきが衝動を弱める。
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-icon">📋</div>
+    <div class="action-body">
+      <div class="action-title">買わないリストと代替案を作成する</div>
+      <div class="action-time">⏱ 約30分</div>
+      <div class="action-meta">
+        <strong>目的：</strong>消費の判断基準を事前に作り、その場の感情に左右されないようにする。<br>
+        「当面買わないカテゴリ」と「代わりに使えるもの」をセットで書く。
+      </div>
+      <div class="action-effect">
+        <strong>期待効果：</strong>判断を事前に済ませることで意志力を節約。「リストにある」という事実が衝動を自動的にブロックする。
+      </div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-icon">📧</div>
+    <div class="action-body">
+      <div class="action-title">セール配信メールを3件解除する</div>
+      <div class="action-time">⏱ 約10分</div>
+      <div class="action-meta">
+        <strong>目的：</strong>衝動買いの入口となる通知・広告を物理的に遮断する。<br>
+        受信トレイを開き、セール・クーポン系メールの配信停止を3件実行する。
+      </div>
+      <div class="action-effect">
+        <strong>期待効果：</strong>トリガーの数が減るだけで衝動買いの頻度が下がる。環境を変えることは意志力より確実で持続的。
+      </div>
+    </div>
+  </div>
+
+  <!-- アクション後の継続ステップ -->
+  <div class="card mt8">
+    <div class="card-head">🔁 継続のための週次ルーティン</div>
+    <ul>
+      <li>📅 <strong>毎週1回（15分）：</strong>欲しいものリストを見返し、まだ欲しいか確認する（冷却期間の実践）</li>
+      <li>📊 <strong>月1回（30分）：</strong>支出を振り返り、衝動買いのパターンを更新する</li>
+      <li>🏠 <strong>季節ごと：</strong>在庫を棚卸しし、使っていないものを手放す</li>
+      <li>📝 <strong>随時：</strong>買わないリストを更新し、例外ルールを見直す</li>
+    </ul>
+    <div class="reason-box"><strong>なぜ継続が重要か：</strong>小さな習慣の成功体験が自己効力感を育て、長期的な再発防止につながるから。</div>
+  </div>
+
+  <!-- 成果の視覚化 -->
+  <div class="card mt8">
+    <div class="card-head">🌟 「買わない暮らし」がもたらすリターン</div>
+    <div class="bar-chart">
+      <div class="bar-item">
+        <div class="bar-label"><span>💰 可処分資金の増加</span><span>高</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label"><span>⏰ 自由時間の増加</span><span>高</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:75%"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label"><span>🧘 心の余白・ストレス軽減</span><span>高</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:80%"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label"><span>🏠 空間の余裕</span><span>中〜高</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:70%"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label"><span>🌍 環境負荷の低下</span><span>中</span></div>
+        <div class="bar-track"><div class="bar-fill acc" style="width:60%"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-label"><span>👥 人間関係の質向上</span><span>中</span></div>
+        <div class="bar-track"><div class="bar-fill acc" style="width:55%"></div></div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);">※ 本書の概念に基づくイメージ。個人差あり。</p>
+  </div>
+
+</section>
+
+<!-- ===== フッター ===== -->
+<footer>
+  <p>📗 書籍インフォグラフィック「買わない暮らし」</p>
+  <p style="margin-top:4px;">カラーパレット — プライマリー: #2D6A4F ／ セカンダリー: #52B788 ／ アクセント: #F4A261</p>
+</footer>
+
+<script>
+  // ===== タブ切替 =====
+  (function() {
+    var tabs = document.querySelectorAll('.tab-btn');
+    var panels = document.querySelectorAll('.tab-panel');
+
+    function activateTab(targetId) {
+      tabs.forEach(function(btn) {
+        var isTarget = btn.getAttribute('aria-controls') === targetId;
+        btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+      });
+      panels.forEach(function(panel) {
+        if (panel.id === targetId) {
+          panel.classList.add('active');
+        } else {
+          panel.classList.remove('active');
+        }
+      });
+    }
+
+    tabs.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        activateTab(btn.getAttribute('aria-controls'));
+        // スクロールをタブナビの直下へ
+        var nav = document.querySelector('.tab-nav');
+        if (nav) {
+          window.scrollTo({ top: nav.offsetTop, behavior: 'smooth' });
+        }
+      });
+      // キーボード操作
+      btn.addEventListener('keydown', function(e) {
+        var idx = Array.prototype.indexOf.call(tabs, btn);
+        if (e.key === 'ArrowRight') {
+          var next = tabs[(idx + 1) % tabs.length];
+          next.focus();
+          activateTab(next.getAttribute('aria-controls'));
+        } else if (e.key === 'ArrowLeft') {
+          var prev = tabs[(idx - 1 + tabs.length) % tabs.length];
+          prev.focus();
+          activateTab(prev.getAttribute('aria-controls'));
+        }
+      });
+    });
+
+    // バーアニメーション（IntersectionObserver）
+    var bars = document.querySelectorAll('.bar-fill');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var w = el.style.width;
+          el.style.width = '0%';
+          setTimeout(function() { el.style.width = w; }, 100);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.3 });
+    bars.forEach(function(bar) { observer.observe(bar); });
+  })();
+</script>
+</body>
+</html>
