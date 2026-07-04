@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マネジメントの本質 — ジェニーン流 実行の哲学</title>
+<!--
+  カラーパレット（メタデータ）
+  プライマリー:  #1a2744
+  セカンダリー:  #2e5fa3
+  アクセント:    #f5a623
+-->
+<style>
+  /* ===== リセット & 基本 ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary:   #1a2744;
+    --secondary: #2e5fa3;
+    --accent:    #f5a623;
+    --bg:        #f0f4fb;
+    --card-bg:   #ffffff;
+    --text:      #1e2a3a;
+    --muted:     #5a6a82;
+    --border:    #d0daea;
+    --grad1:     linear-gradient(135deg, #1a2744 0%, #2e5fa3 100%);
+    --grad2:     linear-gradient(135deg, #2e5fa3 0%, #3a7bd5 100%);
+    --grad-acc:  linear-gradient(135deg, #f5a623 0%, #f7c06a 100%);
+  }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ===== ヘッダー ===== */
+  .site-header {
+    background: var(--grad1);
+    color: #fff;
+    padding: 1.5rem 1rem 1rem;
+    text-align: center;
+  }
+  .site-header .book-label {
+    font-size: .75rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .75;
+    margin-bottom: .4rem;
+  }
+  .site-header h1 {
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: .35rem;
+  }
+  .site-header .subtitle {
+    font-size: .85rem;
+    opacity: .8;
+  }
+
+  /* ===== ファーストビュー サマリーブロック ===== */
+  .summary-block {
+    background: var(--grad-acc);
+    border-radius: 1rem;
+    margin: 1rem;
+    padding: 1.25rem 1.25rem 1rem;
+    box-shadow: 0 4px 18px rgba(245,166,35,.25);
+  }
+  .summary-block .sb-title {
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--primary);
+    margin-bottom: .6rem;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .6rem;
+  }
+  @media(max-width:480px){ .summary-grid { grid-template-columns: 1fr; } }
+  .sb-item {
+    background: rgba(255,255,255,.55);
+    border-radius: .6rem;
+    padding: .7rem .85rem;
+  }
+  .sb-item .sb-label {
+    font-size: .65rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    color: var(--primary);
+    margin-bottom: .25rem;
+  }
+  .sb-item p {
+    font-size: .82rem;
+    color: var(--primary);
+    line-height: 1.5;
+  }
+
+  /* ===== タブナビ ===== */
+  .tab-nav {
+    display: flex;
+    overflow-x: auto;
+    background: var(--primary);
+    gap: 0;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    padding: .75rem 1rem;
+    font-size: .78rem;
+    font-weight: 700;
+    color: rgba(255,255,255,.6);
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color .2s, border-color .2s;
+    letter-spacing: .04em;
+  }
+  .tab-btn[aria-selected="true"] {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .tab-btn:hover { color: #fff; }
+
+  /* ===== タブパネル ===== */
+  .tab-panel { display: none; padding: 1rem; }
+  .tab-panel.active { display: block; }
+
+  /* ===== カード共通 ===== */
+  .card {
+    background: var(--card-bg);
+    border-radius: .85rem;
+    padding: 1.1rem 1.15rem;
+    box-shadow: 0 2px 10px rgba(30,42,58,.08);
+    margin-bottom: .9rem;
+    border-left: 4px solid var(--secondary);
+  }
+  .card.accent-border { border-left-color: var(--accent); }
+  .card.primary-border { border-left-color: var(--primary); }
+  .card h3 {
+    font-size: .95rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: .5rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .card ul li {
+    font-size: .82rem;
+    color: var(--text);
+    padding: .22rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: .4rem;
+    align-items: flex-start;
+  }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li .li-icon { flex-shrink: 0; }
+  .card .tag {
+    display: inline-block;
+    font-size: .65rem;
+    font-weight: 700;
+    background: var(--secondary);
+    color: #fff;
+    border-radius: 2rem;
+    padding: .1rem .55rem;
+    margin-bottom: .4rem;
+    letter-spacing: .05em;
+  }
+  .card .tag.acc { background: var(--accent); color: var(--primary); }
+  .card .reason-box {
+    margin-top: .6rem;
+    background: #eef3fb;
+    border-radius: .5rem;
+    padding: .5rem .7rem;
+    font-size: .78rem;
+    color: var(--secondary);
+    border-left: 3px solid var(--secondary);
+  }
+  .card .reason-box strong { color: var(--primary); }
+
+  /* ===== グリッドレイアウト ===== */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: .9rem;
+  }
+  .card-grid .card { margin-bottom: 0; }
+
+  /* ===== 概念カード ===== */
+  .concept-badge {
+    display: inline-block;
+    font-size: .68rem;
+    font-weight: 700;
+    background: var(--grad-acc);
+    color: var(--primary);
+    border-radius: 2rem;
+    padding: .1rem .6rem;
+    margin-bottom: .35rem;
+  }
+
+  /* ===== 因果フロー図 ===== */
+  .flow-section {
+    background: var(--card-bg);
+    border-radius: .85rem;
+    padding: 1.1rem;
+    box-shadow: 0 2px 10px rgba(30,42,58,.08);
+    margin-bottom: .9rem;
+  }
+  .flow-section h3 {
+    font-size: .9rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: .8rem;
+  }
+  .flow-list {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+  }
+  .flow-item {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    background: var(--grad2);
+    color: #fff;
+    border-radius: .4rem;
+    padding: .25rem .6rem;
+    font-size: .72rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .flow-arrow {
+    color: var(--accent);
+    font-size: 1rem;
+    font-weight: 900;
+  }
+
+  /* ===== 数値バッジ ===== */
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin-bottom: .9rem;
+  }
+  .num-badge {
+    background: var(--grad1);
+    color: #fff;
+    border-radius: .7rem;
+    padding: .7rem 1rem;
+    text-align: center;
+    min-width: 90px;
+    flex: 1 1 90px;
+  }
+  .num-badge .nb-num {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .num-badge .nb-label {
+    font-size: .65rem;
+    opacity: .85;
+    margin-top: .2rem;
+    line-height: 1.3;
+  }
+
+  /* ===== 章カード ===== */
+  .chapter-card {
+    background: var(--card-bg);
+    border-radius: .85rem;
+    padding: 1rem 1.1rem;
+    box-shadow: 0 2px 10px rgba(30,42,58,.08);
+    margin-bottom: .8rem;
+    border-top: 4px solid var(--secondary);
+  }
+  .chapter-card.alt { border-top-color: var(--accent); }
+  .chapter-card .ch-num {
+    font-size: .65rem;
+    font-weight: 800;
+    color: var(--secondary);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: .2rem;
+  }
+  .chapter-card h3 {
+    font-size: .92rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: .5rem;
+  }
+  .chapter-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: .5rem;
+  }
+  .chapter-card ul li {
+    font-size: .8rem;
+    padding: .18rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: .35rem;
+  }
+  .chapter-card ul li:last-child { border-bottom: none; }
+  .chapter-card .ch-reason {
+    background: #fff8e8;
+    border-left: 3px solid var(--accent);
+    border-radius: .4rem;
+    padding: .45rem .65rem;
+    font-size: .76rem;
+    color: #7a5a00;
+  }
+  .chapter-card .ch-reason strong { color: var(--primary); }
+
+  /* ===== 引用カード ===== */
+  .quote-card {
+    background: var(--grad1);
+    color: #fff;
+    border-radius: .85rem;
+    padding: 1.1rem 1.2rem;
+    margin-bottom: .8rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .quote-card::before {
+    content: '"';
+    position: absolute;
+    top: -.3rem;
+    left: .5rem;
+    font-size: 5rem;
+    color: rgba(245,166,35,.2);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .quote-card .q-type {
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    color: var(--accent);
+    margin-bottom: .4rem;
+    text-transform: uppercase;
+  }
+  .quote-card blockquote {
+    font-size: .9rem;
+    font-style: italic;
+    line-height: 1.55;
+    margin-bottom: .5rem;
+    position: relative;
+    z-index: 1;
+  }
+  .quote-card .q-note {
+    font-size: .76rem;
+    color: rgba(255,255,255,.75);
+    border-top: 1px solid rgba(255,255,255,.2);
+    padding-top: .45rem;
+  }
+
+  /* ===== 具体例カード ===== */
+  .example-card {
+    background: var(--card-bg);
+    border-radius: .85rem;
+    padding: 1.1rem 1.15rem;
+    box-shadow: 0 2px 10px rgba(30,42,58,.08);
+    margin-bottom: .9rem;
+    border-left: 4px solid var(--accent);
+  }
+  .example-card .ex-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    background: var(--accent);
+    color: var(--primary);
+    border-radius: 50%;
+    font-size: .75rem;
+    font-weight: 900;
+    margin-bottom: .4rem;
+  }
+  .example-card h3 {
+    font-size: .92rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: .5rem;
+  }
+  .example-card .ex-section {
+    margin-bottom: .4rem;
+  }
+  .example-card .ex-section .ex-label {
+    font-size: .65rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    color: var(--secondary);
+    text-transform: uppercase;
+    margin-bottom: .15rem;
+  }
+  .example-card .ex-section p {
+    font-size: .8rem;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .example-card .ex-reason {
+    background: #eef3fb;
+    border-radius: .5rem;
+    padding: .5rem .7rem;
+    font-size: .78rem;
+    color: var(--secondary);
+    border-left: 3px solid var(--secondary);
+    margin-top: .5rem;
+  }
+
+  /* ===== アクションカード ===== */
+  .action-card {
+    background: var(--card-bg);
+    border-radius: .85rem;
+    padding: 1.1rem 1.15rem;
+    box-shadow: 0 2px 10px rgba(30,42,58,.08);
+    margin-bottom: .9rem;
+    border-left: 4px solid var(--accent);
+    display: flex;
+    gap: .9rem;
+    align-items: flex-start;
+  }
+  .action-card .ac-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .action-card .ac-body {}
+  .action-card h3 {
+    font-size: .92rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: .3rem;
+  }
+  .action-card .ac-time {
+    display: inline-block;
+    font-size: .62rem;
+    font-weight: 700;
+    background: var(--accent);
+    color: var(--primary);
+    border-radius: 2rem;
+    padding: .05rem .5rem;
+    margin-bottom: .35rem;
+  }
+  .action-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .action-card ul li {
+    font-size: .8rem;
+    padding: .18rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: .35rem;
+  }
+  .action-card ul li:last-child { border-bottom: none; }
+
+  /* ===== 関連書籍 ===== */
+  .book-card {
+    background: var(--card-bg);
+    border-radius: .75rem;
+    padding: .85rem 1rem;
+    box-shadow: 0 2px 8px rgba(30,42,58,.07);
+    margin-bottom: .7rem;
+    display: flex;
+    gap: .75rem;
+    align-items: flex-start;
+    border-left: 3px solid var(--secondary);
+  }
+  .book-card .bk-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .book-card .bk-title { font-size: .85rem; font-weight: 800; color: var(--primary); }
+  .book-card .bk-author { font-size: .72rem; color: var(--muted); margin-bottom: .2rem; }
+  .book-card .bk-rel { font-size: .76rem; color: var(--text); }
+
+  /* ===== SVG 横棒グラフ ===== */
+  .chart-wrap {
+    background: var(--card-bg);
+    border-radius: .85rem;
+    padding: 1.1rem;
+    box-shadow: 0 2px 10px rgba(30,42,58,.08);
+    margin-bottom: .9rem;
+  }
+  .chart-wrap h3 {
+    font-size: .9rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin-bottom: .8rem;
+  }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: .55rem;
+  }
+  .bar-label {
+    font-size: .72rem;
+    color: var(--text);
+    width: 110px;
+    flex-shrink: 0;
+    line-height: 1.3;
+  }
+  .bar-track {
+    flex: 1;
+    background: #e4eaf5;
+    border-radius: 2rem;
+    height: 14px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 2rem;
+    background: var(--grad2);
+    transition: width .6s ease;
+  }
+  .bar-fill.acc { background: var(--grad-acc); }
+  .bar-val {
+    font-size: .72rem;
+    font-weight: 700;
+    color: var(--secondary);
+    width: 32px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* ===== SVG 円グラフ ===== */
+  .donut-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: .9rem;
+  }
+  .donut-wrap svg { flex-shrink: 0; }
+  .donut-legend { flex: 1; min-width: 140px; }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .76rem;
+    margin-bottom: .3rem;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ===== セクションタイトル ===== */
+  .section-title {
+    font-size: .8rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    margin: 1rem 0 .6rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ===== フッター ===== */
+  .site-footer {
+    background: var(--primary);
+    color: rgba(255,255,255,.55);
+    text-align: center;
+    font-size: .7rem;
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+
+  /* ===== ユーティリティ ===== */
+  .mt-sm { margin-top: .5rem; }
+  .emoji { font-style: normal; }
+</style>
+</head>
+<body>
+
+<!-- ===== ヘッダー ===== -->
+<header class="site-header" role="banner">
+  <p class="book-label">📘 書籍インフォグラフィック</p>
+  <h1>マネジメントの本質<br><span style="font-size:.65em;opacity:.85;">— ジェニーン流 実行の哲学 —</span></h1>
+  <p class="subtitle">事実・数字・フォロー・スルーで業績を出し続ける</p>
+</header>
+
+<!-- ===== ファーストビュー サマリーブロック ===== -->
+<section class="summary-block" aria-label="エグゼクティブサマリー">
+  <p class="sb-title">⚡ ここだけ見れば全体像がわかる</p>
+  <div class="summary-grid">
+    <div class="sb-item">
+      <p class="sb-label">❓ 問い</p>
+      <p>経営者・マネジャーはいかにして確実に業績を出し続けるか？</p>
+    </div>
+    <div class="sb-item">
+      <p class="sb-label">💡 答え</p>
+      <p>事実・数字を唯一の拠り所に、分権と集中統制を設計し、月次レビューと例外管理で徹底的にフォローする。</p>
+    </div>
+    <div class="sb-item">
+      <p class="sb-label">🔍 Why（なぜ）</p>
+      <p>曖昧さや美辞麗句ではなく"パフォーマンス＝現実"のみが価値を生む。数字の透明性が分権と統制を橋渡しする。</p>
+    </div>
+    <div class="sb-item">
+      <p class="sb-label">🛠 How（どうやって）</p>
+      <p>① 重要指標を最小限に特定・可視化 ② MORで差異・是正策を詰める ③ 例外管理で資源集中 ④ 責任の所在を明確化 ⑤ 詳細へのこだわりとフォロー・スルーで実行を締め切る</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== タブナビ ===== -->
+<nav class="tab-nav" role="tablist" aria-label="コンテンツタブ">
+  <button class="tab-btn" role="tab" aria-selected="true"  aria-controls="panel-concepts" id="tab-concepts">🧠 主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">💼 具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes"   id="tab-quotes">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions"  id="tab-actions">✅ 今日のアクション</button>
+</nav>
+
+<!-- ============================= -->
+<!-- タブ1: 主要概念               -->
+<!-- ============================= -->
+<section class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+  <!-- 数値バッジ -->
+  <div class="badge-row" style="margin-top:.9rem;">
+    <div class="num-badge">
+      <div class="nb-num">10</div>
+      <div class="nb-label">主要概念</div>
+    </div>
+    <div class="num-badge">
+      <div class="nb-num">1</div>
+      <div class="nb-label">唯一の評価軸<br>＝実績</div>
+    </div>
+    <div class="num-badge">
+      <div class="nb-num">月次</div>
+      <div class="nb-label">MORで<br>進捗を詰める</div>
+    </div>
+    <div class="num-badge">
+      <div class="nb-num">∞</div>
+      <div class="nb-label">フォロー・<br>スルーの徹底</div>
+    </div>
+  </div>
+
+  <!-- 横棒グラフ：概念の重要度イメージ -->
+  <div class="chart-wrap">
+    <h3>📊 概念の重要度（本書での言及・強調度イメージ）</h3>
+    <div class="bar-row">
+      <div class="bar-label">フォロー・スルー</div>
+      <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+      <div class="bar-val">95%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">事実・数字主義</div>
+      <div class="bar-track"><div class="bar-fill" style="width:92%"></div></div>
+      <div class="bar-val">92%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">アカウンタビリティ</div>
+      <div class="bar-track"><div class="bar-fill" style="width:88%"></div></div>
+      <div class="bar-val">88%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">MOR（月次レビュー）</div>
+      <div class="bar-track"><div class="bar-fill acc" style="width:85%"></div></div>
+      <div class="bar-val">85%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">分権×集中統制</div>
+      <div class="bar-track"><div class="bar-fill acc" style="width:82%"></div></div>
+      <div class="bar-val">82%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">例外管理</div>
+      <div class="bar-track"><div class="bar-fill" style="width:78%"></div></div>
+      <div class="bar-val">78%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">詳細への拘り</div>
+      <div class="bar-track"><div class="bar-fill" style="width:75%"></div></div>
+      <div class="bar-val">75%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">情報の透明性</div>
+      <div class="bar-track"><div class="bar-fill" style="width:70%"></div></div>
+      <div class="bar-val">70%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">人材の登用・更迭</div>
+      <div class="bar-track"><div class="bar-fill acc" style="width:65%"></div></div>
+      <div class="bar-val">65%</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">買収・ポートフォリオ</div>
+      <div class="bar-track"><div class="bar-fill acc" style="width:60%"></div></div>
+      <div class="bar-val">60%</div>
+    </div>
+  </div>
+
+  <!-- 概念カードグリッド -->
+  <p class="section-title">🔑 各概念の詳細</p>
+  <div class="card-grid">
+
+    <div class="card">
+      <span class="concept-badge">概念 01</span>
+      <h3>📊 事実・数字主義</h3>
+      <span class="tag">言葉ではなく数で語れ</span>
+      <ul>
+        <li><span class="li-icon">✔</span>判断の根拠は検証可能な事実と定量指標のみ</li>
+        <li><span class="li-icon">✔</span>感情・レトリック・印象論は排除する</li>
+        <li><span class="li-icon">✔</span>全員の共通言語は数字であり、解釈の余地を最小化</li>
+        <li><span class="li-icon">✔</span>数字が揃えば階層を超えた対話が可能になる</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>曖昧な言葉は責任の所在を曖昧にする。数字だけが"現実"を共有させる唯一の手段。</div>
+    </div>
+
+    <div class="card accent-border">
+      <span class="concept-badge">概念 02</span>
+      <h3>⚖️ 分権と集中統制の両立</h3>
+      <span class="tag acc">権限委譲×数字統治</span>
+      <ul>
+        <li><span class="li-icon">✔</span>現場の意思決定は迅速に分権（権限委譲）</li>
+        <li><span class="li-icon">✔</span>成果は共通KPIで本社が厳格に統制</li>
+        <li><span class="li-icon">✔</span>分権だけ→統制崩壊、統制だけ→現場硬直</li>
+        <li><span class="li-icon">✔</span>数字の透明性が両者を橋渡しする</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>迅速性と一貫性を同時に実現する唯一の設計思想。どちらか一方では組織は機能不全に陥る。</div>
+    </div>
+
+    <div class="card">
+      <span class="concept-badge">概念 03</span>
+      <h3>🎯 アカウンタビリティ</h3>
+      <span class="tag">約束の主語を立てる</span>
+      <ul>
+        <li><span class="li-icon">✔</span>誰が・何を・いつまでに達成するかを明確化</li>
+        <li><span class="li-icon">✔</span>結果に対する説明責任を個人に紐づける</li>
+        <li><span class="li-icon">✔</span>約束を記録し、逃げ道をなくす</li>
+        <li><span class="li-icon">✔</span>責任の所在が曖昧だと誰も動かない</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>組織の失敗の多くは「誰の責任か不明」から生まれる。主語を立てることで実行が動き出す。</div>
+    </div>
+
+    <div class="card accent-border">
+      <span class="concept-badge">概念 04</span>
+      <h3>📅 月次オペレーティング・レビュー（MOR）</h3>
+      <span class="tag acc">毎月の"詰め"</span>
+      <ul>
+        <li><span class="li-icon">✔</span>事業ごとの実績・差異・是正策を詰問型で確認</li>
+        <li><span class="li-icon">✔</span>即時の打ち手を会議内で確定する</li>
+        <li><span class="li-icon">✔</span>月次サイクルで問題を早期発見・早期対処</li>
+        <li><span class="li-icon">✔</span>形式的な報告会ではなく"実行の場"</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>問題の発見から是正策の合意までを1サイクルで完結させる仕組みが、実行速度を決定的に高める。</div>
+    </div>
+
+    <div class="card">
+      <span class="concept-badge">概念 05</span>
+      <h3>🏃 フォロー・スルー</h3>
+      <span class="tag">決めたらやり切る</span>
+      <ul>
+        <li><span class="li-icon">✔</span>決定事項を最後の一歩まで追い切る遂行の規律</li>
+        <li><span class="li-icon">✔</span>決めただけでは成果にならない</li>
+        <li><span class="li-icon">✔</span>進捗を追跡し、完了を確認するまで終わらない</li>
+        <li><span class="li-icon">✔</span>本書の最重要テーマの一つ</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>優れた戦略も実行されなければ空論。フォロー・スルーこそが戦略と成果を繋ぐ唯一の橋。</div>
+    </div>
+
+    <div class="card accent-border">
+      <span class="concept-badge">概念 06</span>
+      <h3>🔍 例外管理（Management by Exception）</h3>
+      <span class="tag acc">異常値に全集中</span>
+      <ul>
+        <li><span class="li-icon">✔</span>計画との差異・重大リスクなど逸脱点に集中</li>
+        <li><span class="li-icon">✔</span>正常範囲は現場に任せ、経営は例外に注力</li>
+        <li><span class="li-icon">✔</span>経営資源（時間・注意力）を最大効率で配分</li>
+        <li><span class="li-icon">✔</span>早期警戒システムとして機能する</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>経営者の時間は有限。全てに目を向けようとすると何も見えなくなる。例外への集中が実行速度を最大化する。</div>
+    </div>
+
+    <div class="card">
+      <span class="concept-badge">概念 07</span>
+      <h3>🔭 情報の透明性</h3>
+      <span class="tag">同じ物差しで測る</span>
+      <ul>
+        <li><span class="li-icon">✔</span>同一の定義・粒度・締めで作られたデータを共有</li>
+        <li><span class="li-icon">✔</span>階層や事業を越えて即時にアクセス可能</li>
+        <li><span class="li-icon">✔</span>解釈の違いによる議論の無駄を排除</li>
+        <li><span class="li-icon">✔</span>分権と統制の両立を支えるインフラ</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>同じ数字を見ていなければ、同じ現実を共有できない。透明性は信頼と迅速な意思決定の前提条件。</div>
+    </div>
+
+    <div class="card accent-border">
+      <span class="concept-badge">概念 08</span>
+      <h3>🔬 詳細への拘り</h3>
+      <span class="tag acc">ディテールは武器</span>
+      <ul>
+        <li><span class="li-icon">✔</span>意思決定の前提・計算・前後関係を自ら確認</li>
+        <li><span class="li-icon">✔</span>表層の要約で終わらせず、数字の細部を掘る</li>
+        <li><span class="li-icon">✔</span>前提の妥当性検証が決定の質を左右する</li>
+        <li><span class="li-icon">✔</span>「要約だけで納得するな」が本書の警告</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>誤った前提に基づく意思決定は、精緻な実行をしても誤った方向に進む。ディテールが正しい方向を保証する。</div>
+    </div>
+
+    <div class="card">
+      <span class="concept-badge">概念 09</span>
+      <h3>👥 人材の登用と更迭</h3>
+      <span class="tag">役割適合で回す</span>
+      <ul>
+        <li><span class="li-icon">✔</span>成果と素質に基づいて任免を行う</li>
+        <li><span class="li-icon">✔</span>役割に合わなければ速やかに配置転換</li>
+        <li><span class="li-icon">✔</span>情実や年功ではなくパフォーマンスが基準</li>
+        <li><span class="li-icon">✔</span>適材適所が組織全体の実行力を決める</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>どんな仕組みも、それを動かす人が適切でなければ機能しない。人材の適合性が実行の質の上限を決める。</div>
+    </div>
+
+    <div class="card accent-border">
+      <span class="concept-badge">概念 10</span>
+      <h3>🏢 買収・ポートフォリオ運営の規律</h3>
+      <span class="tag acc">買って終わりにしない</span>
+      <ul>
+        <li><span class="li-icon">✔</span>デューデリジェンスを数字基盤で徹底実施</li>
+        <li><span class="li-icon">✔</span>統合後の統制設計を買収前から計画する</li>
+        <li><span class="li-icon">✔</span>事業群の整合性を共通KPIで保つ</li>
+        <li><span class="li-icon">✔</span>買収後100日計画で統制システムへ編入</li>
+      </ul>
+      <div class="reason-box"><strong>なぜ重要か：</strong>買収は手段であり目的ではない。統合後の数字統制なしにシナジーは実現せず、買収は価値破壊になりうる。</div>
+    </div>
+
+  </div>
+
+  <!-- 因果フロー図 -->
+  <p class="section-title">🔗 概念間の因果関係</p>
+  <div class="flow-section">
+    <h3>概念がどう繋がって業績を生むか</h3>
+    <div class="flow-list">
+      <div class="flow-item">
+        <div class="flow-node">情報の透明性</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">正確な数字共有</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">迅速な意思決定</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">業績向上</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-node">分権（現場裁量）</div>
+        <div class="flow-arrow">＋</div>
+        <div class="flow-node">集中統制（共通KPI）</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">迅速性×一貫性</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-node">MOR</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">差異の特定</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">是正策の合意</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">フォロー・スルー</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">再発防止</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-node">詳細への拘り</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">前提の妥当性検証</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">決定の質向上</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-node">例外管理</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">経営資源の集中</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">実行速度・効果の最大化</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-node">アカウンタビリティ明確化</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">約束の可視化</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">責任逃れの抑止</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-node">買収の規律（DD・統合計画）</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">統合後の数字統制</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">シナジー実現</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================= -->
+<!-- タブ2: 各章の要約             -->
+<!-- ============================= -->
+<section class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+  <!-- ドーナツグラフ（章構成イメージ） -->
+  <div class="chart-wrap" style="margin-top:.9rem;">
+    <h3>📖 本書の論理構造（章の重心分布イメージ）</h3>
+    <div class="donut-wrap">
+      <svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true">
+        <!-- 実行・フォロー -->
+        <circle cx="60" cy="60" r="45" fill="none" stroke="#2e5fa3" stroke-width="22"
+          stroke-dasharray="113 170" stroke-dashoffset="0"/>
+        <!-- 設計思想 -->
+        <circle cx="60" cy="60" r="45" fill="none" stroke="#f5a623" stroke-width="22"
+          stroke-dasharray="57 226" stroke-dashoffset="-113"/>
+        <!-- 人と組織 -->
+        <circle cx="60" cy="60" r="45" fill="none" stroke="#3a7bd5" stroke-width="22"
+          stroke-dasharray="42 241" stroke-dashoffset="-170"/>
+        <!-- 買収・統合 -->
+        <circle cx="60" cy="60" r="45" fill="none" stroke="#1a2744" stroke-width="22"
+          stroke-dasharray="28 255" stroke-dashoffset="-212"/>
+        <text x="60" y="65" text-anchor="middle" font-size="10" font-weight="800" fill="#1a2744">9章構成</text>
+      </svg>
+      <div class="donut-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#2e5fa3"></div>実行・フォロー・スルー（40%）</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f5a623"></div>設計思想・数字経営（20%）</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3a7bd5"></div>人と組織・コミュニケーション（15%）</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#1a2744"></div>買収・統合・失敗学習（10%）</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e4eaf5"></div>序章・結語（15%）</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="section-title">📚 章ごとの要点</p>
+
+  <div class="chapter-card">
+    <p class="ch-num">序章</p>
+    <h3>🚀 ITT再編の出発点と"パフォーマンスこそ現実"</h3>
+    <ul>
+      <li><span>📌</span>ITTを世界的コングロマリットに拡大した実践知が本書の源泉</li>
+      <li><span>📌</span>"パフォーマンス＝現実"という立場を冒頭で明確に提示</li>
+      <li><span>📌</span>言葉・説明・約束ではなく、実績のみが評価軸</li>
+    </ul>
+    <div class="ch-reason"><strong>なぜこの章が必要か：</strong>著者の実績と立場を示すことで、以降の主張に実証的な重みを与える。理論ではなく実践知であることを宣言する。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <p class="ch-num">設計思想</p>
+    <h3>⚖️ 分権と集中統制を支える指標設計・報告体系・権限線</h3>
+    <ul>
+      <li><span>📌</span>分権と集中統制の両立を支える指標設計の方法論</li>
+      <li><span>📌</span>報告体系と権限線の描き方を具体的に示す</li>
+      <li><span>📌</span>共通KPIが組織の"共通言語"として機能する仕組み</li>
+    </ul>
+    <div class="ch-reason"><strong>なぜこの章が必要か：</strong>実行の前に設計が必要。どんな優れた実行規律も、誤った設計の上では機能しない。</div>
+  </div>
+
+  <div class="chapter-card">
+    <p class="ch-num">数字での経営</p>
+    <h3>📊 共通KPI・差異分析・キャッシュ重視・例外管理の運用</h3>
+    <ul>
+      <li><span>📌</span>共通KPIの設計と全社での可視化手順</li>
+      <li><span>📌</span>差異分析：計画vs実績の乖離を構造的に把握</li>
+      <li><span>📌</span>キャッシュを最重要指標として位置づける</li>
+      <li><span>📌</span>例外管理で経営資源を逸脱点に集中させる</li>
+    </ul>
+    <div class="ch-reason"><strong>なぜこの章が必要か：</strong>「数字で経営する」の具体的な手順を示す。抽象論ではなく運用レベルの実践知が組織を動かす。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <p class="ch-num">実行の技術</p>
+    <h3>🏃 MORの進め方とフォロー・スルーの規律</h3>
+    <ul>
+      <li><span>📌</span>月次オペレーティング・レビュー（MOR）の具体的な進め方</li>
+      <li><span>📌</span>詰問型で差異・是正策・責任者を確定する手順</li>
+      <li><span>📌</span>フォロー・スルー：決定を最後の一歩まで追い切る規律</li>
+      <li><span>📌</span>会議は決定の場であり、実行の起点である</li>
+    </ul>
+    <div class="ch-reason"><strong>なぜこの章が必要か：</strong>本書の核心。設計と数字があっても実行されなければ意味がない。MORとフォロー・スルーが成果を生む最終工程。</div>
+  </div>
+
+  <div class="chapter-card">
+    <p class="ch-num">コミュニケーション</p>
+    <h3>💬 事実ベースの対話・曖昧さの排除・文書化と即応</h3>
+    <ul>
+      <li><span>📌</span>事実と数字に基づく対話を組織文化として定着させる</li>
+      <li><span>📌</span>曖昧な言葉・印象論・言い訳を排除する</li>
+      <li><span>📌</span>決定事項の文書化と即時共有で認識齟齬を防ぐ</li>
+    </ul>
+    <div class="ch-reason"><strong>なぜこの章が必要か：</strong>コミュニケーションの質が実行の質を決める。曖昧さは責任の拡散を生み、組織の実行力を蝕む。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <p class="ch-num">人と組織</p>
+    <h3>👥 登用・評価・更迭の基準とチーム編成</h3>
+    <ul>
+      <li><span>📌</span>成果と素質に基づく任免の基準を明確化</li>
+      <li><span>📌</span>役割に合わなければ速やかに配置転換する</li>
+      <li><span>📌</span>責任の所在を個人レベルまで明確化する</li>
+      <li><span>📌</span>チーム編成は実行力の最大化を基準に行う</li>
+    </ul>
+    <div class="ch-reason"><strong>なぜこの章が必要か：</strong>仕組みを動かすのは人。適切な人材配置なしに、どんな優れた管理システムも機能しない。</div>
+  </div>
+
+  <div class="chapter-card">
+    <p class="ch-num">買収と統合</p>
+    <h3>🏢 デューデリジェンス・買収後100日計画・統制システムへの編入</h3>
+    <ul>
+      <li><span>📌</span>デューデリジェンスを数字基盤で徹底実施</li>
+      <li><span>📌</span>買収後100日計画で統制システムへ速やかに編入</li>
+      <li><span>📌</span>統合後の数字統制でシナジーを実現する</li>
+    </ul>
+    <div class="ch-reason"><strong>なぜこの章が必要か：</strong>買収は手段。統合後の管理なしに価値は生まれない。ITTの成長を支えた実践知を体系化する。</div>
+  </div>
+
+  <div class="chapter-card alt">
+    <p class="ch-num">失敗からの学習</p>
+    <h3>⚠️ 誤った前提・過信のコストと再発防止の仕組み化</h3>
+    <ul>
+      <li><span>📌</span>誤った前提に基づく意思決定のコストを直視する</li>
+      <li><span>📌</span>過信・楽観バイアスが組織を蝕む仕組みを解説</li>
+      <li><span>📌</span>失敗を再発防止の仕組みに転換する方法論</li>
+    </ul>
+    <div class="ch-reason"><strong>なぜこの章が必要か：</strong>成功事例だけでは学習は不完全。失敗のパターンを知ることで、同じ罠を避ける組織的免疫を獲得できる。</div>
+  </div>
+
+  <div class="chapter-card">
+    <p class="ch-num">結語</p>
+    <h3>🎖️ マネジャーの職業倫理—約束と結果への個人的責任</h3>
+    <ul>
+      <li><span>📌</span>マネジャーの本質は肩書きではなく遂行にある</li>
+      <li><span>📌</span>約束と結果への個人的責任が職業倫理の核心</li>
+      <li><span>📌</span>"Management must manage."—管理職は管理せよ</li>
+    </ul>
+    <div class="ch-reason"><strong>なぜこの章が必要か：</strong>全ての手法論の根底にある倫理観を示す。技術ではなく姿勢こそが持続的な業績の源泉であることを締めくくる。</div>
+  </div>
+
+</section>
+
+<!-- ============================= -->
+<!-- タブ3: 具体例                 -->
+<!-- ============================= -->
+<section class="tab-panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+
+  <p class="section-title" style="margin-top:.9rem;">💼 核心メッセージが伝わる具体例・メタファー</p>
+
+  <div class="example-card">
+    <div class="ex-num">1</div>
+    <h3>🏭 ITTのコングロマリット経営：分権×数字統制の実証</h3>
+    <div class="ex-section">
+      <p class="ex-label">背景</p>
+      <p>著者ハロルド・ジェニーンはITTを製造・ホテル・保険・通信など多様な事業を持つ世界的コングロマリットに拡大した。異なる業種の事業を同時に管理するという、当時としては極めて困難な経営課題に直面した。</p>
+    </div>
+    <div class="ex-section">
+      <p class="ex-label">示唆</p>
+      <p>各事業部に大幅な権限を委譲しながら、共通の財務指標と月次レビュー（MOR）で本社が厳格に統制することで、多様な事業群を一つの方向に動かすことに成功した。分権と統制は矛盾しない。</p>
+    </div>
+    <div class="ex-reason"><strong>理由（この例が示すこと）：</strong>「分権か統制か」という二項対立は誤りであることを実証する。数字という共通言語があれば、どんな規模・多様性の組織でも両立できる。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">2</div>
+    <h3>📅 月次オペレーティング・レビュー（MOR）の詰問型会議</h3>
+    <div class="ex-section">
+      <p class="ex-label">背景</p>
+      <p>ジェニーンは毎月、各事業部長を集めた会議を開催した。単なる報告会ではなく、計画との差異について「なぜか」「いつ是正するか」「誰が責任を持つか」を徹底的に詰問する場として設計された。</p>
+    </div>
+    <div class="ex-section">
+      <p class="ex-label">示唆</p>
+      <p>会議の場で是正策と責任者を確定し、次回MORまでのフォロー・スルーを約束させる。これにより「報告して終わり」という組織の慣性を打ち破り、実行のサイクルを回し続けた。</p>
+    </div>
+    <div class="ex-reason"><strong>理由（この例が示すこと）：</strong>会議の設計が組織の実行力を決定する。詰問型・即決型の会議設計が、戦略と実行の間のギャップを埋める最も効果的な仕組みであることを示す。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">3</div>
+    <h3>🔬 「要約だけで納得するな」—詳細への拘りのメタファー</h3>
+    <div class="ex-section">
+      <p class="ex-label">背景</p>
+      <p>ジェニーンは部下から報告を受ける際、要約や結論だけでなく、その前提となる数字・計算・仮定を自ら確認することを習慣とした。「なぜその数字になるのか」を自分で検証するまで納得しなかった。</p>
+    </div>
+    <div class="ex-section">
+      <p class="ex-label">示唆</p>
+      <p>表層の要約に依存すると、誤った前提に基づく意思決定を見逃す。ディテールへの拘りが、組織全体の意思決定の質を底上げし、誤った方向への実行を防ぐ。</p>
+    </div>
+    <div class="ex-reason"><strong>理由（この例が示すこと）：</strong>リーダーの「詳細を確認する姿勢」が組織文化を形成する。トップが要約で満足すれば、組織全体が表層的な報告に慣れ、問題の本質を見逃すようになる。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">4</div>
+    <h3>⚠️ 誤った前提による買収失敗のコスト</h3>
+    <div class="ex-section">
+      <p class="ex-label">背景</p>
+      <p>本書では、デューデリジェンスが不十分なまま楽観的な前提で行われた買収が、統合後に想定外のコストや問題を生み出した事例が示唆されている。</p>
+    </div>
+    <div class="ex-section">
+      <p class="ex-label">示唆</p>
+      <p>買収前の数字の精査と、統合後の統制設計を怠ると、シナジーどころか価値破壊になりうる。「買って終わり」ではなく、統合後の管理こそが買収の成否を決める。</p>
+    </div>
+    <div class="ex-reason"><strong>理由（この例が示すこと）：</strong>失敗事例は成功事例と同等の学習価値を持つ。誤った前提と過信のコストを直視することで、同じ罠を避ける組織的免疫が形成される。</div>
+  </div>
+
+  <div class="example-card">
+    <div class="ex-num">5</div>
+    <h3>🎯 「Management must manage.」—肩書きではなく遂行</h3>
+    <div class="ex-section">
+      <p class="ex-label">背景</p>
+      <p>ジェニーンは、マネジャーという肩書きを持ちながら実際には管理していない人物を厳しく批判した。会議に出席し、報告を聞き、承認のハンコを押すだけでは「管理」ではないという立場を貫いた。</p>
+    </div>
+    <div class="ex-section">
+      <p class="ex-label">示唆</p>
+      <p>マネジャーの本質は、結果に責任を持ち、実行を最後まで追い切ることにある。肩書きや権限ではなく、遂行の姿勢こそが職能の本質。</p>
+    </div>
+    <div class="ex-reason"><strong>理由（この例が示すこと）：</strong>組織の実行力は、マネジャー個人の遂行姿勢の総和である。「管理職は管理せよ」という単純な命題が、組織全体の実行文化を規定する。</div>
+  </div>
+
+</section>
+
+<!-- ============================= -->
+<!-- タブ4: 重要な引用             -->
+<!-- ============================= -->
+<section class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+  <p class="section-title" style="margin-top:.9rem;">💬 本書の核心を示す重要フレーズ</p>
+
+  <div class="quote-card">
+    <p class="q-type">📜 原文</p>
+    <blockquote>"Words are words, explanations are explanations, promises are promises—but only performance is reality."</blockquote>
+    <p class="q-note">💡 言辞ではなく実績のみを評価軸にせよという本書の核を端的に示す。どんな美しい言葉も、達成されなければ現実ではない。</p>
+  </div>
+
+  <div class="quote-card" style="background: linear-gradient(135deg, #2e5fa3 0%, #3a7bd5 100%);">
+    <p class="q-type">📜 原文</p>
+    <blockquote>"Management must manage."</blockquote>
+    <p class="q-note">💡 肩書きではなく、結果に責任を持ち遂行する姿勢が職能の本質だと釘を刺す。管理職は管理することが仕事である。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="q-type">📝 要旨</p>
+    <blockquote>「分権は統制の不在を意味しない。統制は分権の敵ではなく条件である。」</blockquote>
+    <p class="q-note">💡 自由度と再現性を両立させる設計発想を明確にする。分権と統制は対立概念ではなく、補完関係にある。</p>
+  </div>
+
+  <div class="quote-card" style="background: linear-gradient(135deg, #2e5fa3 0%, #3a7bd5 100%);">
+    <p class="q-type">📝 要旨</p>
+    <blockquote>「要約だけで納得するな。前提と数字の細部を自分で確かめよ。」</blockquote>
+    <p class="q-note">💡 ディテール重視が意思決定の質を左右することを強調する。表層の報告に満足するリーダーは、組織全体を表層的にする。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="q-type">📝 要旨</p>
+    <blockquote>「決定は会議で終わらない。フォロー・スルーで初めて成果になる。」</blockquote>
+    <p class="q-note">💡 実行の規律がなければ戦略は空論であることを示す。会議での決定は出発点に過ぎず、フォロー・スルーが成果を生む。</p>
+  </div>
+
+  <!-- 引用の視覚的まとめ -->
+  <div class="chart-wrap">
+    <h3>📊 引用が示す3つの核心軸</h3>
+    <div class="bar-row">
+      <div class="bar-label">実績＝唯一の現実</div>
+      <div class="bar-track"><div class="bar-fill" style="width:100%"></div></div>
+      <div class="bar-val">核心</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">遂行の姿勢</div>
+      <div class="bar-track"><div class="bar-fill acc" style="width:90%"></div></div>
+      <div class="bar-val">重要</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">分権×統制の設計</div>
+      <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+      <div class="bar-val">重要</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">詳細への拘り</div>
+      <div class="bar-track"><div class="bar-fill acc" style="width:80%"></div></div>
+      <div class="bar-val">重要</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">フォロー・スルー</div>
+      <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+      <div class="bar-val">核心</div>
+    </div>
+  </div>
+
+  <!-- 関連書籍 -->
+  <p class="section-title">📚 関連書籍</p>
+  <div class="book-card">
+    <div class="bk-icon">📗</div>
+    <div>
+      <div class="bk-title">ハイアウトプット・マネジメント</div>
+      <div class="bk-author">アンドリュー・S・グローブ</div>
+      <div class="bk-rel">KPI設計・レビュー運営・例外管理など実行重視の手法が共鳴する。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="bk-icon">📘</div>
+    <div>
+      <div class="bk-title">マネジメント［エッセンシャル版］—基本と原則</div>
+      <div class="bk-author">P.F.ドラッカー</div>
+      <div class="bk-rel">成果中心主義と責任の概念を理論面から補完する。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="bk-icon">📙</div>
+    <div>
+      <div class="bk-title">実行力—結果を出す経営</div>
+      <div class="bk-author">ラリー・ボシディ／ラム・チャラン</div>
+      <div class="bk-rel">戦略と人・業務・数字を結びつける"実行"の規律が近接する。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="bk-icon">📕</div>
+    <div>
+      <div class="bk-title">OKR シリコンバレー式で大胆な目標を達成する</div>
+      <div class="bk-author">ジョン・ドーア</div>
+      <div class="bk-rel">少数重要目標と透明性の高い進捗管理がジェニーン流の指標主義と親和。</div>
+    </div>
+  </div>
+  <div class="book-card">
+    <div class="bk-icon">📒</div>
+    <div>
+      <div class="bk-title">トヨタ生産方式</div>
+      <div class="bk-author">大野耐一</div>
+      <div class="bk-rel">現場の詳細重視と例外検知・是正の仕組み化という実行哲学が通底する。</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============================= -->
+<!-- タブ5: 今日のアクション       -->
+<!-- ============================= -->
+<section class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+  <p class="section-title" style="margin-top:.9rem;">✅ 今日から15〜30分で実行できるアクション</p>
+
+  <!-- アクション概要バッジ -->
+  <div class="badge-row">
+    <div class="num-badge">
+      <div class="nb-num">3</div>
+      <div class="nb-label">アクション数</div>
+    </div>
+    <div class="num-badge">
+      <div class="nb-num">15〜</div>
+      <div class="nb-label">所要時間（分）</div>
+    </div>
+    <div class="num-badge">
+      <div class="nb-num">今日</div>
+      <div class="nb-label">実行タイミング</div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="ac-icon">📊</div>
+    <div class="ac-body">
+      <div class="ac-time">⏱ 15〜20分</div>
+      <h3>アクション①：今週のKPIを3つ書き出し数値確認</h3>
+      <ul>
+        <li><span>🎯</span><strong>目的：</strong>自分の仕事の"現実"を数字で把握し、感覚論から脱却する</li>
+        <li><span>📋</span><strong>手順：</strong>① 今週最重要な指標を3つ選ぶ ② 計画値と実績値を並べる ③ 差異の原因を1行で書く</li>
+        <li><span>✨</span><strong>期待効果：</strong>「なんとなく順調」から「数字で把握」へ。問題の早期発見と優先順位の明確化</li>
+        <li><span>💡</span><strong>ポイント：</strong>3つに絞ることが重要。多すぎると全てが曖昧になる</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="ac-icon">📋</div>
+    <div class="ac-body">
+      <div class="ac-time">⏱ 20〜30分</div>
+      <h3>アクション②：主要案件の差異と是正策を1枚化</h3>
+      <ul>
+        <li><span>🎯</span><strong>目的：</strong>計画と現実のギャップを可視化し、是正策と責任者を明確にする</li>
+        <li><span>📋</span><strong>手順：</strong>① 最重要案件を1つ選ぶ ② 計画vs実績の差異を数字で書く ③ 是正策・責任者・期限を1枚の紙にまとめる</li>
+        <li><span>✨</span><strong>期待効果：</strong>「なんとなく遅れている」から「誰が・何を・いつまでに」へ。アカウンタビリティの明確化</li>
+        <li><span>💡</span><strong>ポイント：</strong>1枚に収めることで、曖昧さを排除し共有しやすくなる</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="ac-icon">📅</div>
+    <div class="ac-body">
+      <div class="ac-time">⏱ 15〜20分</div>
+      <h3>アクション③：来月のMOR議題と責任者を確定</h3>
+      <ul>
+        <li><span>🎯</span><strong>目的：</strong>月次レビューの仕組みを自分のチームに導入し、実行サイクルを回し始める</li>
+        <li><span>📋</span><strong>手順：</strong>① 来月のレビュー日程を決める ② 確認する指標・案件を3〜5つリストアップ ③ 各議題の責任者を名指しで確定する</li>
+        <li><span>✨</span><strong>期待効果：</strong>「報告会」から「実行の場」へ。フォロー・スルーのサイクルが組織に定着し始める</li>
+        <li><span>💡</span><strong>ポイント：</strong>責任者を名指しすることが最重要。曖昧な「チームで」は責任の拡散を生む</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 実行チェックリスト -->
+  <div class="card" style="margin-top:.5rem;">
+    <h3>☑️ 実行チェックリスト</h3>
+    <ul>
+      <li><span class="li-icon">□</span>今週のKPI3つを数字で書き出した</li>
+      <li><span class="li-icon">□</span>計画値と実績値を並べて差異を確認した</li>
+      <li><span class="li-icon">□</span>主要案件の是正策と責任者を1枚にまとめた</li>
+      <li><span class="li-icon">□</span>来月のMOR日程を決めた</li>
+      <li><span class="li-icon">□</span>MOR議題の責任者を名指しで確定した</li>
+    </ul>
+    <div class="reason-box"><strong>なぜこの3つか：</strong>「数字の把握→差異の是正→月次サイクルの確立」という順序が、ジェニーン流実行哲学の最小単位。今日始めることで、フォロー・スルーの習慣が生まれる。</div>
+  </div>
+
+  <!-- 実行の心得 -->
+  <div class="card accent-border" style="margin-top:.5rem;">
+    <h3>🔑 実行の心得（本書より）</h3>
+    <ul>
+      <li><span class="li-icon">💬</span>言葉・説明・約束ではなく、<strong>実績のみが現実</strong></li>
+      <li><span class="li-icon">💬</span>決定は会議で終わらない。<strong>フォロー・スルーで初めて成果になる</strong></li>
+      <li><span class="li-icon">💬</span>要約だけで納得するな。<strong>前提と数字の細部を自分で確かめよ</strong></li>
+      <li><span class="li-icon">💬</span><strong>Management must manage.</strong>—管理職は管理することが仕事</li>
+    </ul>
+  </div>
+
+</section>
+
+<!-- ===== フッター ===== -->
+<footer class="site-footer" role="contentinfo">
+  <p>📘 マネジメントの本質 — ジェニーン流 実行の哲学 | インフォグラフィック</p>
+  <p style="margin-top:.3rem;">カラーパレット: Primary #1a2744 / Secondary #2e5fa3 / Accent #f5a623</p>
+</footer>
+
+<script>
+  // ===== タブ切替 =====
+  (function() {
+    var tabs = document.querySelectorAll('.tab-btn');
+    var panels = document.querySelectorAll('.tab-panel');
+
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        var targetId = this.getAttribute('aria-controls');
+
+        // 全タブを非アクティブ
+        tabs.forEach(function(t) {
+          t.setAttribute('aria-selected', 'false');
+        });
+        // 全パネルを非表示
+        panels.forEach(function(p) {
+          p.classList.remove('active');
+        });
+
+        // クリックされたタブをアクティブ
+        this.setAttribute('aria-selected', 'true');
+        var target = document.getElementById(targetId);
+        if (target) {
+          target.classList.add('active');
+          // スムーズスクロール
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+
+      // キーボード操作
+      tab.addEventListener('keydown', function(e) {
+        var idx = Array.prototype.indexOf.call(tabs, this);
+        if (e.key === 'ArrowRight') {
+          var next = tabs[(idx + 1) % tabs.length];
+          next.focus();
+          next.click();
+        } else if (e.key === 'ArrowLeft') {
+          var prev = tabs[(idx - 1 + tabs.length) % tabs.length];
+          prev.focus();
+          prev.click();
+        }
+      });
+    });
+
+    // バーアニメーション（IntersectionObserver）
+    var bars = document.querySelectorAll('.bar-fill');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var w = el.style.width;
+          el.style.width = '0';
+          setTimeout(function() { el.style.width = w; }, 100);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    bars.forEach(function(bar) {
+      observer.observe(bar);
+    });
+  })();
+</script>
+</body>
+</html>
