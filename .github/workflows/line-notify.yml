@@ -1,0 +1,91 @@
+name: LINE Notify
+
+# Routine (クラウドClaude) が data/latest.json を更新して push すると発火し、
+# GitHub Pages の反映を待ってから LINE Flex Message を送信する。
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/latest.json'
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            data/latest.json
+          sparse-checkout-cone-mode: false
+
+      - name: Read latest.json
+        id: latest
+        run: |
+          {
+            echo "title=$(jq -r '.title' data/latest.json)"
+            echo "author=$(jq -r '.author' data/latest.json)"
+            echo "core_message=$(jq -r '.core_message' data/latest.json)"
+            echo "url=$(jq -r '.infographic_url' data/latest.json)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Wait for GitHub Pages (max 300s)
+        run: |
+          URL="${{ steps.latest.outputs.url }}"
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -I "$URL" || true)
+            echo "attempt $i: HTTP $code"
+            if [ "$code" = "200" ]; then
+              echo "Pages ready."
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::warning::Pages 反映待ちタイムアウト（通知は送信します）"
+
+      - name: Send LINE Flex Message
+        env:
+          LINE_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_TO: ${{ secrets.LINE_USER_ID }}
+        run: |
+          jq -n \
+            --arg to "$LINE_TO" \
+            --arg title "${{ steps.latest.outputs.title }}" \
+            --arg author "${{ steps.latest.outputs.author }}" \
+            --arg core "${{ steps.latest.outputs.core_message }}" \
+            --arg url "${{ steps.latest.outputs.url }}" \
+            '{
+              to: $to,
+              messages: [{
+                type: "flex",
+                altText: ("📚 本日の読書本はこちら！: " + $title),
+                contents: {
+                  type: "bubble",
+                  header: { type: "box", layout: "vertical", contents: [
+                    { type: "text", text: "📚 本日の読書本はこちら！", weight: "bold", color: "#000000", size: "sm" }
+                  ]},
+                  body: { type: "box", layout: "vertical", contents: [
+                    { type: "text", text: $title, weight: "bold", size: "xl", wrap: true },
+                    { type: "text", text: $author, size: "sm", color: "#666666", wrap: true, margin: "sm" },
+                    { type: "text", text: $core, size: "sm", color: "#666666", wrap: true, margin: "md" }
+                  ]},
+                  footer: { type: "box", layout: "vertical", spacing: "sm", flex: 0, contents: [
+                    { type: "button", style: "primary", height: "sm",
+                      action: { type: "uri", label: "図解を見る", uri: $url } }
+                  ]}
+                }
+              }]
+            }' > payload.json
+
+          status=$(curl -s -o response.txt -w '%{http_code}' \
+            -X POST https://api.line.me/v2/bot/message/push \
+            -H "Authorization: Bearer $LINE_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d @payload.json)
+          cat response.txt
+          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+            echo "::error::LINE 送信失敗 (HTTP $status)"
+            exit 1
+          fi
+          echo "LINE 送信 OK (HTTP $status)"
