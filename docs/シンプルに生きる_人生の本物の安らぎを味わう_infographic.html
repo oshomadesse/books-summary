@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<!--
+  Palette:
+    Primary:   #7C9885 (静けさを湛えたセージグリーン)
+    Secondary: #2B2B24 (ダークオリーブブラウン)
+    Accent:    #D4A373 (テラコッタ・ベージュゴールド)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>シンプルに生きる | 書籍インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#7C9885;
+    --primary-dark:#5F7A68;
+    --secondary:#2B2B24;
+    --secondary-light:#3B3B30;
+    --accent:#D4A373;
+    --bg:#161613;
+    --card-bg:#211F1B;
+    --text:#F3EFE7;
+    --text-muted:#B9B3A5;
+    --border:#3A382F;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{width:100%;overflow-x:hidden;}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+    background:linear-gradient(180deg,var(--bg) 0%,var(--secondary) 100%);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  .container{max-width:720px;margin:0 auto;padding:0 16px;}
+
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 60%,var(--secondary) 100%);
+    padding:32px 16px 28px;
+    text-align:center;
+    position:relative;
+  }
+  header.hero .kicker{
+    display:inline-block;
+    font-size:.75rem;
+    letter-spacing:.15em;
+    background:rgba(0,0,0,.25);
+    padding:4px 12px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  header.hero h1{
+    font-size:1.9rem;
+    font-weight:800;
+    line-height:1.3;
+    text-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+  header.hero .author{
+    margin-top:8px;
+    font-size:.95rem;
+    color:rgba(255,255,255,.9);
+  }
+  header.hero .tags{margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+  header.hero .tag{
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);
+    font-size:.78rem;
+    padding:4px 10px;
+    border-radius:999px;
+  }
+
+  .why-how{
+    margin:-18px 16px 24px;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    position:relative;
+    z-index:2;
+  }
+  .why-how h2{
+    font-size:1rem;
+    color:var(--accent);
+    margin-bottom:12px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .qa-row{margin-bottom:14px;}
+  .qa-row:last-child{margin-bottom:0;}
+  .qa-row .q{font-weight:700;font-size:.92rem;color:var(--primary);margin-bottom:4px;}
+  .qa-row .a{font-size:.9rem;color:var(--text);}
+  .qa-row .why{font-size:.8rem;color:var(--text-muted);margin-top:4px;}
+
+  .stat-badges{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+  .stat-badge{
+    flex:1;min-width:100px;
+    background:var(--secondary-light);
+    border-radius:12px;
+    padding:10px 8px;
+    text-align:center;
+  }
+  .stat-badge .num{font-size:1.3rem;font-weight:800;color:var(--accent);}
+  .stat-badge .label{font-size:.68rem;color:var(--text-muted);margin-top:2px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:0 16px 8px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    color:var(--text-muted);
+    font-size:.82rem;
+    padding:10px 14px;
+    border-radius:999px;
+    white-space:nowrap;
+    cursor:pointer;
+    transition:.2s;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+    font-weight:700;
+  }
+
+  main{padding:0 16px;}
+  section[role="tabpanel"]{display:none;}
+  section[role="tabpanel"].active{display:block;animation:fadeIn .25s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .section-title{
+    font-size:1.05rem;
+    font-weight:800;
+    margin:18px 0 12px;
+    color:var(--accent);
+    display:flex;align-items:center;gap:8px;
+  }
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .card h3{font-size:.98rem;color:var(--primary);margin-bottom:8px;display:flex;gap:8px;align-items:flex-start;}
+  .card ul{padding-left:1.1em;font-size:.88rem;color:var(--text);}
+  .card ul li{margin-bottom:5px;}
+  .card .why-box{
+    margin-top:10px;
+    background:rgba(212,163,115,.1);
+    border-left:3px solid var(--accent);
+    padding:8px 10px;
+    font-size:.8rem;
+    color:var(--text-muted);
+    border-radius:0 8px 8px 0;
+  }
+  .card .why-box b{color:var(--accent);}
+
+  .bar-row{margin:10px 0;}
+  .bar-row .bar-label{font-size:.78rem;color:var(--text-muted);margin-bottom:4px;display:flex;justify-content:space-between;}
+  .bar-track{background:var(--secondary-light);border-radius:999px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+
+  blockquote.quote{
+    background:var(--card-bg);
+    border-left:4px solid var(--primary);
+    border-radius:0 14px 14px 0;
+    padding:16px;
+    margin-bottom:14px;
+    font-size:.92rem;
+  }
+  blockquote.quote .note{
+    display:block;
+    margin-top:8px;
+    font-size:.75rem;
+    color:var(--text-muted);
+  }
+  .gist-flag{
+    display:inline-block;
+    font-size:.68rem;
+    background:var(--accent);
+    color:#2B2B24;
+    font-weight:700;
+    padding:1px 8px;
+    border-radius:999px;
+    margin-left:6px;
+  }
+
+  .action-card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    display:flex;
+    gap:12px;
+  }
+  .action-num{
+    flex:0 0 auto;
+    width:34px;height:34px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;
+  }
+  .action-card .body h3{font-size:.95rem;color:var(--text);margin-bottom:4px;}
+  .action-card .body .meta{font-size:.8rem;color:var(--text-muted);}
+  .action-card .body .meta b{color:var(--accent);}
+
+  footer{
+    text-align:center;
+    padding:28px 16px 8px;
+    font-size:.75rem;
+    color:var(--text-muted);
+  }
+  .emoji-lg{font-size:1.2em;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="kicker">📚 今日の一冊 · ライフスタイル</span>
+  <h1>🍃 シンプルに生きる</h1>
+  <div class="author">👤 ドミニック・ローホー</div>
+  <div class="tags">
+    <span class="tag">🕊️ 本物しか残さない</span>
+    <span class="tag">💰 お金を甘やかさない</span>
+    <span class="tag">🌿 十分は十分</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="why-how">
+    <h2>💡 要約 = 問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="q">Q. なぜモノや予定を増やすほど、かえって不安になるのか？</div>
+      <div class="a">A. 「念のため」で残したモノや予定が、判断・掃除・管理という見えないコストを積み重ね、心の余白を奪っているから。</div>
+      <div class="why">Why: 量が増えるほど1つ1つへの注意力は薄まり、本当に大切なものへの集中力とエネルギーが分散してしまう。</div>
+    </div>
+    <div class="qa-row">
+      <div class="q">Q. ではどうすれば「本物の安らぎ」が手に入るのか？</div>
+      <div class="a">A. モノ・お金・時間・人間関係のすべてで「本物だけ」を厳選し、「足りている」という感覚（十分は十分）を自分で決める。</div>
+      <div class="why">Why: 質を極限まで高めた少数の本物に囲まれると、選ぶ・維持する労力が減り、余った時間とエネルギーが安らぎに変わるから。</div>
+    </div>
+    <div class="stat-badges">
+      <div class="stat-badge"><div class="num">16章</div><div class="label">構成（+はじめに/おしまいに）</div></div>
+      <div class="stat-badge"><div class="num">150万部</div><div class="label">世界累計セールス</div></div>
+      <div class="stat-badge"><div class="num">30年</div><div class="label">著者の日本在住歴</div></div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🔑 主要概念</button>
+    <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📖 各章の要約</button>
+    <button role="tab" id="tab-examples" aria-controls="panel-examples" aria-selected="false">🌰 具体例</button>
+    <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 重要な引用</button>
+    <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+    <!-- 主要概念の詳細 -->
+    <section id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts" class="active">
+      <div class="section-title">🔑 主要概念の詳細</div>
+
+      <div class="card">
+        <h3>💎 本物主義（量より質）</h3>
+        <ul>
+          <li>「シンプル」とは質を落とすことではなく、より厳選して上質を極めること</li>
+          <li>安価な代用品を複数持つより、心から気に入った本物を一つ持つ</li>
+          <li>良いものをより良いものと交換することに躊躇しない</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 本物に囲まれると「これでいいのか」という迷いが消え、判断のたびに消耗していたエネルギーが節約されるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>➖ 引き算の豊かさ</h3>
+        <ul>
+          <li>「なければないですませられるものは、それだけ人間を豊かにする」という考え方</li>
+          <li>持ち物・予定・人間関係を足すのではなく、引くことで質を上げる</li>
+          <li>手放すことに罪悪感を抱かない</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 何かを持つ・続けることには必ず維持コスト（時間・空間・気力）がかかり、引くことでそのコストがまるごと解放されるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>🌾 十分は十分（Enough is enough）</h3>
+        <div class="bar-row">
+          <div class="bar-label"><span>「もっと欲しい」への衝動</span><span>低</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:25%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>「足りている」という自覚</span><span>高</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
+        </div>
+        <ul>
+          <li>「十分」の基準は他人ではなく自分で決める</li>
+          <li>足りないものを数えるのをやめ、既にあるものに目を向ける</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 「もっと」を追いかけ続ける限り満足は訪れず、自分で「十分」の線を引いた瞬間にはじめて安らぎが生まれるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>🧭 欲求と必要を区別する</h3>
+        <ul>
+          <li>買う前に「これは欲求か、必要か」を自問する習慣</li>
+          <li>お金を甘やかさず、価値のあるものにだけ使う</li>
+          <li>浮いたお金・時間を本当に大切なものに再投資する</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 欲求のままに使うお金は満足を長続きさせないが、必要を見極めた支出は満足度が高く後悔が残らないから。</div>
+      </div>
+
+      <div class="card">
+        <h3>🏡 幸せを呼び込む住まい</h3>
+        <ul>
+          <li>家は「モノの倉庫」ではなく「心を整える場所」として設計する</li>
+          <li>使っていないモノが多い空間は、視覚的なノイズとして心をすり減らす</li>
+          <li>余白のある空間が、余白のある思考を生む</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 住環境は毎日無意識に脳へ入力される情報量を左右し、ノイズが少ないほど心のエネルギー消費が減るから。</div>
+      </div>
+
+      <div class="card">
+        <h3>🧘 ストレスからの解放とメンタルコントロール</h3>
+        <ul>
+          <li>感情に振り回されず、反応を選び直す習慣を持つ</li>
+          <li>禅の精神に学び、「今ここ」に集中する時間を作る</li>
+          <li>ストレスの原因を減らすだけでなく、受け止め方そのものを整える</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> モノを減らしても、心の中の雑念が多いままでは安らぎに届かないため、内面の整理も同時に行う必要があるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>🤝 人間関係とエネルギーのシンプル化</h3>
+        <ul>
+          <li>付き合いも「本物」を基準に厳選し、消耗する関係と距離を置く</li>
+          <li>自分のエネルギーを奪うものより満たすものを優先する</li>
+          <li>好き嫌いをはっきりさせ、自分軸で人間関係を選ぶ</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 人間関係はモノ以上に日々のエネルギーを左右するため、ここを整理しないと他のシンプル化も効果が半減してしまうから。</div>
+      </div>
+    </section>
+
+    <!-- 各章の要約 -->
+    <section id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+      <div class="section-title">📖 各章の要約</div>
+
+      <div class="card">
+        <h3>第1-2章 本物しか残さない／シンプルがあなたのスタイルを磨く</h3>
+        <ul>
+          <li>量より質を選ぶ姿勢が、暮らし全体の「格」を上げていく</li>
+          <li>安易な妥協で選んだモノは、結局長く愛せない</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 本書全体の土台となる「本物主義」を最初に提示し、以降の各テーマの前提を作っている。</div>
+      </div>
+
+      <div class="card">
+        <h3>第3-4章 幸せを呼び込む家／ものが減ると幸せが増す</h3>
+        <ul>
+          <li>住空間からモノを引き算すると、視界も思考もクリアになる</li>
+          <li>「なければ済ませられるものは、それだけ人を豊かにする」という考え方の実践</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 最も身近な「家」というフィールドで引き算の効果を実感させ、思想を体感に変えるため。</div>
+      </div>
+
+      <div class="card">
+        <h3>第5-6章 お金を甘やかさない使い方／かけがえのない時間のすごし方</h3>
+        <ul>
+          <li>欲求と必要を区別し、価値あるものにだけお金を使う</li>
+          <li>時間もモノと同じく「量」ではなく「質」で捉え直す</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> モノの整理を、有限な資源であるお金と時間の使い方にまで広げて応用するため。</div>
+      </div>
+
+      <div class="card">
+        <h3>第7-9章 美しいからだをつくる／根本からボディケア／身もこころもダイエット</h3>
+        <ul>
+          <li>心の安らぎは、整った身体という土台があってこそ長続きする</li>
+          <li>食事・運動・休息のシンプル化も、モノや時間の引き算と同じ原理で行う</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 内面や持ち物だけでなく、身体という一番身近な資本を整えることが安らぎの前提になるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第10-11章 私の夢をイメージする／シンプルな自分になる</h3>
+        <ul>
+          <li>何を大切にしたいかという自分軸を明確にする</li>
+          <li>「なりたい自分」を先に描くことで、日々の取捨選択の基準が定まる</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 引き算の基準は「自分にとって何が本物か」を知らなければ定められないため、ここで自己理解を深める。</div>
+      </div>
+
+      <div class="card">
+        <h3>第12-13章 ストレスからの解放／メンタルコントロールの実践</h3>
+        <ul>
+          <li>ストレスの原因を減らすだけでなく、受け止め方を整える技術を学ぶ</li>
+          <li>禅的な「今ここ」への集中を、日常の中に取り入れる</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 外側（モノ・お金・時間）を整えても、内側の心が乱れたままでは安らぎに届かないため。</div>
+      </div>
+
+      <div class="card">
+        <h3>第14-15章 人間関係でいちばん大事なこと／エネルギーを満たす</h3>
+        <ul>
+          <li>消耗する人間関係を見直し、自分を満たす関係を優先する</li>
+          <li>エネルギーの出入りを意識し、満たす習慣を日常に組み込む</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 人との関わりは日々のエネルギー収支に最も影響するため、最後に扱うことで実践の総仕上げとしている。</div>
+      </div>
+
+      <div class="card">
+        <h3>第16章 十分は十分</h3>
+        <ul>
+          <li>「もっと」を求め続ける限り満足は訪れないという結論</li>
+          <li>自分で「足りている」と決めた瞬間から、本物の安らぎが始まる</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 全16章の実践を「足るを知る」という一言に集約し、本書全体を締めくくるメッセージとして配置されている。</div>
+      </div>
+    </section>
+
+    <!-- 具体例 -->
+    <section id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+      <div class="section-title">🌰 具体例・ケーススタディ</div>
+
+      <div class="card">
+        <h3>🔥 「火事になったら何を買い直すか」リスト</h3>
+        <ul>
+          <li>自分の家が火事になったと想定し、まず何を買うべきかリストを作ってみる</li>
+          <li>リストに挙がらないモノは、実は「なくても困らないもの」だと気づく</li>
+          <li>本当に必要なモノの輪郭が、想像上の喪失を通して初めて見えてくる</li>
+        </ul>
+        <div class="why-box"><b>理由（この例が示すこと）:</b> 頭で考えるだけでは見えない「本当に大切なもの」を、極端な状況設定によって浮かび上がらせる思考実験になっている。</div>
+      </div>
+
+      <div class="card">
+        <h3>🖌️ 著者自身の30年にわたる日本での実践</h3>
+        <ul>
+          <li>フランス・ソルボンヌ大学で学んだ後、日本に30年在住</li>
+          <li>禅寺での修行や10年にわたる墨絵の習得を通じ、日本の精神文化を体得</li>
+          <li>「本物しか残さない」思想を借り物の理論ではなく、自らの生き方として実践してきた</li>
+        </ul>
+        <div class="why-box"><b>理由（この例が示すこと）:</b> シンプルライフの思想が、著者自身の長年の実体験に裏打ちされていることを示している。</div>
+      </div>
+
+      <div class="card">
+        <h3>🔄 良いものを、より良いものと交換する</h3>
+        <ul>
+          <li>今持っているモノがまだ使えても、より本物・より上質なものが見つかれば入れ替える</li>
+          <li>「もったいない」という執着より、暮らしの質を優先する</li>
+          <li>手放すモノは他人に譲ることで、罪悪感なく循環させる</li>
+        </ul>
+        <div class="why-box"><b>理由（この例が示すこと）:</b> 「量を減らす」だけでなく「質を上げ続ける」という、シンプルライフの動的な一面を表している。</div>
+      </div>
+
+      <div class="card">
+        <h3>💸 「欲求」か「必要」かを見極めるお金の使い方</h3>
+        <ul>
+          <li>買い物の前に「これは欲求で欲しいのか、必要だから欲しいのか」を自問する</li>
+          <li>欲求由来の衝動買いを減らし、浮いたお金を本物のモノやかけがえのない時間に使う</li>
+          <li>お金を「甘やかさない」ことが、結果的に満足度の高い暮らしにつながる</li>
+        </ul>
+        <div class="why-box"><b>理由（この例が示すこと）:</b> 抽象的な「本物主義」を、日々の買い物という具体的な行動に落とし込む実践方法を示している。</div>
+      </div>
+    </section>
+
+    <!-- 重要な引用 -->
+    <section id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+      <div class="section-title">💬 重要な引用</div>
+
+      <blockquote class="quote">
+        「なければないですませられるものは、それだけ人間を豊かにする」
+        <span class="gist-flag">要旨</span>
+        <span class="note">第4章「ものが減ると幸せが増す」に関連して、複数の読者レビューサイトで頻繁に引用されている一節。原文の一字一句は未確認のため要旨として掲載。</span>
+      </blockquote>
+
+      <blockquote class="quote">
+        「何もなきこそ、何もあれ」
+        <span class="gist-flag">要旨</span>
+        <span class="note">本書の思想全体を集約する言葉として複数の紹介記事で言及されている。逆説的に「何も持たないことこそ、すべてを持つことに通じる」という趣旨。</span>
+      </blockquote>
+
+      <blockquote class="quote">
+        十分は十分（Enough is enough）
+        <span class="gist-flag">要旨</span>
+        <span class="note">第16章のタイトルであり、本書全体の結論的メッセージ。「足るを知る」ことが最大の豊かさであるという主張。</span>
+      </blockquote>
+
+      <blockquote class="quote">
+        シンプルとは質を落とすことではなく、むしろより厳選して上質を極めること
+        <span class="gist-flag">要旨</span>
+        <span class="note">本書を紹介する複数の書評記事で繰り返し語られる、本書のシンプル観を表す趣旨。</span>
+      </blockquote>
+    </section>
+
+    <!-- 今日のアクション -->
+    <section id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+      <div class="section-title">✅ 今日できるアクション</div>
+
+      <div class="action-card">
+        <div class="action-num">1</div>
+        <div class="body">
+          <h3>「火事になったら何を買い直すか」リストを作る</h3>
+          <div class="meta"><b>やること:</b> 15分で、家が火事になったと想定し、本当に買い直したいものだけを紙に書き出す</div>
+          <div class="meta"><b>目的:</b> 本当に必要なモノを可視化する</div>
+          <div class="meta"><b>期待効果:</b> 不要な持ち物への執着が減り、これからの買い物基準が明確になる</div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-num">2</div>
+        <div class="body">
+          <h3>引き出しかカバンをひとつだけ「本物か」判定する</h3>
+          <div class="meta"><b>やること:</b> 25分で、身近な引き出しかカバンの中身を全部出し、1つずつ「これは本物か・気に入っているか」を判定する</div>
+          <div class="meta"><b>目的:</b> 量より質の基準を体感する</div>
+          <div class="meta"><b>期待効果:</b> 1つの小さな領域から、シンプルな暮らしが始まる実感を得られる</div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-num">3</div>
+        <div class="body">
+          <h3>「欲求」か「必要」かを1行メモで問い直す</h3>
+          <div class="meta"><b>やること:</b> 15分で、今日買おうか迷っているものを1つ選び、「欲求」か「必要」かを1行メモに書き出す</div>
+          <div class="meta"><b>目的:</b> お金の使い方を甘やかさない訓練をする</div>
+          <div class="meta"><b>期待効果:</b> 衝動買いを抑え、支出への満足度が上がる</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    📖 本インフォグラフィックは書籍『シンプルに生きる 人生の本物の安らぎを味わう』（ドミニック・ローホー著）のリサーチ内容をもとに自動生成されています。
+  </footer>
+</div>
+
+<script>
+  (function(){
+    var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+    var panels = document.querySelectorAll('section[role="tabpanel"]');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click', function(){
+        tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+        panels.forEach(function(p){ p.classList.remove('active'); });
+        tab.setAttribute('aria-selected','true');
+        var panel = document.getElementById(tab.getAttribute('aria-controls'));
+        if(panel){ panel.classList.add('active'); }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
