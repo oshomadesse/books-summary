@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<!--
+  Palette:
+    Primary:   #FF6B35 (エネルギッシュなオレンジ)
+    Secondary: #1A1A2E (ダークネイビー)
+    Accent:    #FFD23F (アクセントイエロー)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>多動力 | 書籍インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#FF6B35;
+    --primary-dark:#E8501C;
+    --secondary:#1A1A2E;
+    --secondary-light:#2A2A45;
+    --accent:#FFD23F;
+    --bg:#0F0F1A;
+    --card-bg:#1E1E32;
+    --text:#F2F2F7;
+    --text-muted:#B8B8CC;
+    --border:#33334D;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{width:100%;overflow-x:hidden;}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+    background:linear-gradient(180deg,var(--bg) 0%,var(--secondary) 100%);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  .container{max-width:720px;margin:0 auto;padding:0 16px;}
+
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 60%,var(--secondary) 100%);
+    padding:32px 16px 28px;
+    text-align:center;
+    position:relative;
+  }
+  header.hero .kicker{
+    display:inline-block;
+    font-size:.75rem;
+    letter-spacing:.15em;
+    background:rgba(0,0,0,.25);
+    padding:4px 12px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  header.hero h1{
+    font-size:1.9rem;
+    font-weight:800;
+    line-height:1.3;
+    text-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+  header.hero .author{
+    margin-top:8px;
+    font-size:.95rem;
+    color:rgba(255,255,255,.9);
+  }
+  header.hero .tags{margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+  header.hero .tag{
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);
+    font-size:.78rem;
+    padding:4px 10px;
+    border-radius:999px;
+  }
+
+  .why-how{
+    margin:-18px 16px 24px;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    position:relative;
+    z-index:2;
+  }
+  .why-how h2{
+    font-size:1rem;
+    color:var(--accent);
+    margin-bottom:12px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .qa-row{margin-bottom:14px;}
+  .qa-row:last-child{margin-bottom:0;}
+  .qa-row .q{font-weight:700;font-size:.92rem;color:var(--primary);margin-bottom:4px;}
+  .qa-row .a{font-size:.9rem;color:var(--text);}
+  .qa-row .why{font-size:.8rem;color:var(--text-muted);margin-top:4px;}
+
+  .stat-badges{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+  .stat-badge{
+    flex:1;min-width:100px;
+    background:var(--secondary-light);
+    border-radius:12px;
+    padding:10px 8px;
+    text-align:center;
+  }
+  .stat-badge .num{font-size:1.3rem;font-weight:800;color:var(--accent);}
+  .stat-badge .label{font-size:.68rem;color:var(--text-muted);margin-top:2px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:0 16px 8px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    color:var(--text-muted);
+    font-size:.82rem;
+    padding:10px 14px;
+    border-radius:999px;
+    white-space:nowrap;
+    cursor:pointer;
+    transition:.2s;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+    font-weight:700;
+  }
+
+  main{padding:0 16px;}
+  section[role="tabpanel"]{display:none;}
+  section[role="tabpanel"].active{display:block;animation:fadeIn .25s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .section-title{
+    font-size:1.05rem;
+    font-weight:800;
+    margin:18px 0 12px;
+    color:var(--accent);
+    display:flex;align-items:center;gap:8px;
+  }
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .card h3{font-size:.98rem;color:var(--primary);margin-bottom:8px;display:flex;gap:8px;align-items:flex-start;}
+  .card ul{padding-left:1.1em;font-size:.88rem;color:var(--text);}
+  .card ul li{margin-bottom:5px;}
+  .card .why-box{
+    margin-top:10px;
+    background:rgba(255,210,63,.08);
+    border-left:3px solid var(--accent);
+    padding:8px 10px;
+    font-size:.8rem;
+    color:var(--text-muted);
+    border-radius:0 8px 8px 0;
+  }
+  .card .why-box b{color:var(--accent);}
+
+  .bar-row{margin:10px 0;}
+  .bar-row .bar-label{font-size:.78rem;color:var(--text-muted);margin-bottom:4px;display:flex;justify-content:space-between;}
+  .bar-track{background:var(--secondary-light);border-radius:999px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+
+  blockquote.quote{
+    background:var(--card-bg);
+    border-left:4px solid var(--primary);
+    border-radius:0 14px 14px 0;
+    padding:16px;
+    margin-bottom:14px;
+    font-size:.92rem;
+  }
+  blockquote.quote .note{
+    display:block;
+    margin-top:8px;
+    font-size:.75rem;
+    color:var(--text-muted);
+  }
+  .gist-flag{
+    display:inline-block;
+    font-size:.68rem;
+    background:var(--accent);
+    color:#1a1a2e;
+    font-weight:700;
+    padding:1px 8px;
+    border-radius:999px;
+    margin-left:6px;
+  }
+
+  .action-card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    display:flex;
+    gap:12px;
+  }
+  .action-num{
+    flex:0 0 auto;
+    width:34px;height:34px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;
+  }
+  .action-card .body h3{font-size:.95rem;color:var(--text);margin-bottom:4px;}
+  .action-card .body .meta{font-size:.8rem;color:var(--text-muted);}
+  .action-card .body .meta b{color:var(--accent);}
+
+  footer{
+    text-align:center;
+    padding:28px 16px 8px;
+    font-size:.75rem;
+    color:var(--text-muted);
+  }
+  .emoji-lg{font-size:1.2em;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="kicker">📚 今日の一冊 · 自己啓発</span>
+  <h1>🧠 多動力</h1>
+  <div class="author">👤 堀江貴文</div>
+  <div class="tags">
+    <span class="tag">🐒 サルのようにハマる</span>
+    <span class="tag">🕊️ 鳩のように飽きる</span>
+    <span class="tag">⚡ 世界最速仕事術</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="why-how">
+    <h2>💡 要約 = 問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="q">Q. なぜ「一つのことをコツコツ」ではもう勝てないのか？</div>
+      <div class="a">A. インターネットが全産業の「タテの壁」を溶かし、複数分野を軽やかに横断できる人だけが唯一無二の価値を生めるから。</div>
+      <div class="why">Why: 専門特化した人材はネットの検索・比較で代替されやすくなり、逆に「掛け合わせ」でしか作れない希少性が武器になる。</div>
+    </div>
+    <div class="qa-row">
+      <div class="q">Q. ではどう生きればいいのか？</div>
+      <div class="a">A. 興味を持ったことに「サルのように」深くハマり、飽きたら「鳩のように」あっさり次へ移る＝多動力を武器にする。</div>
+      <div class="why">Why: 短期集中→離脱のサイクルを繰り返すほど経験値が複利で積み上がり、3つの肩書きの掛け算で「100万人に1人」の存在になれる。</div>
+    </div>
+    <div class="stat-badges">
+      <div class="stat-badge"><div class="num">3つ</div><div class="label">肩書きの掛け算</div></div>
+      <div class="stat-badge"><div class="num">100万人に1人</div><div class="label">到達する希少性</div></div>
+      <div class="stat-badge"><div class="num">8章</div><div class="label">構成</div></div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🔑 主要概念</button>
+    <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📖 各章の要約</button>
+    <button role="tab" id="tab-examples" aria-controls="panel-examples" aria-selected="false">🌰 具体例</button>
+    <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 重要な引用</button>
+    <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+    <!-- 主要概念の詳細 -->
+    <section id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts" class="active">
+      <div class="section-title">🔑 主要概念の詳細</div>
+
+      <div class="card">
+        <h3>🐒🕊️ サルのようにハマり、鳩のように飽きよ</h3>
+        <ul>
+          <li>一つのことに深く没頭する「集中力」と、飽きたらすぐ離れる「離脱力」は矛盾しない</li>
+          <li>飽きっぽさは弱点ではなく、短期間で成果を出し次に移る「成長速度」の証</li>
+          <li>興味の移り変わりを恥じず、むしろ資産として活用する</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 一つの分野を極めるスピードで複数分野を渡り歩けば、誰にも真似できない経験の掛け算が生まれるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>✖️ 三つの肩書き（掛け算の法則）</h3>
+        <div class="bar-row">
+          <div class="bar-label"><span>肩書き1つ（100人に1人）</span><span>1%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:20%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>肩書き2つ掛け算（1万人に1人）</span><span>0.01%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:55%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>肩書き3つ掛け算（100万人に1人）</span><span>0.0001%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:95%"></div></div>
+        </div>
+        <div class="why-box"><b>理由:</b> 1つの分野で1位になるのは困難でも、複数分野の掛け算なら「唯一無二」の希少性に到達しやすいから。</div>
+      </div>
+
+      <div class="card">
+        <h3>🧪 自分の分身に働かせる（原液発想）</h3>
+        <ul>
+          <li>自分の本質的な思考・アウトプットを「原液」として濃縮して発信する</li>
+          <li>メルマガやSNSで出した原液を、TVやメディアが「希釈」して二次利用してくれる</li>
+          <li>本人が直接動かなくても、思考の分身があちこちで働いてくれる状態を作る</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 体は一つでも、濃縮したアウトプットさえあれば影響力は無限にコピー・拡散できるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>😤 バカ真面目の洗脳を解け</h3>
+        <ul>
+          <li>「石の上にも三年」という我慢至上主義はもう機能しない</li>
+          <li>就活・終身雇用的な価値観を疑い、好きなことへの没頭を優先する</li>
+          <li>「見切り発車」を恐れず、動きながら考える</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 変化の速い時代に「石の上」でじっと我慢する時間は、機会損失そのものになるから。</div>
+      </div>
+    </section>
+
+    <!-- 各章の要約 -->
+    <section id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+      <div class="section-title">📖 各章の要約</div>
+
+      <div class="card">
+        <h3>第1章 一つの仕事をコツコツとやる時代は終わった</h3>
+        <ul>
+          <li>ネットが全産業の壁を溶かし、専業モデルの価値が下がった</li>
+          <li>複数分野を横断する人材こそがこれからの必須スキルを持つ</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 前提となる時代認識を最初に共有することで、以降の主張の土台を作っている。</div>
+      </div>
+
+      <div class="card">
+        <h3>第2章 バカ真面目の洗脳を解け</h3>
+        <ul>
+          <li>「石の上にも三年」的な我慢の美学を否定</li>
+          <li>周囲の目や常識より、自分の好奇心を優先する姿勢を提案</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 多動力を発揮する前に、まず心理的なブレーキ（洗脳）を外す必要があるため。</div>
+      </div>
+
+      <div class="card">
+        <h3>第3章 サルのようにハマり、鳩のように飽きよ</h3>
+        <ul>
+          <li>深い没頭と素早い離脱を繰り返すサイクルの重要性</li>
+          <li>飽きっぽさを「成長速度」として肯定的に捉え直す</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 本書のタイトルでもある核心コンセプトを、具体的な行動様式として提示するため。</div>
+      </div>
+
+      <div class="card">
+        <h3>第4章 「自分の時間」を取り戻そう</h3>
+        <ul>
+          <li>ワクワクしないタスクを洗い出し、外注・自動化・廃止を検討する</li>
+          <li>時間の使い方こそが多動力の源泉になる</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 多動するための物理的な余白（時間）を確保する方法論が必要だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第5章 自分の分身に働かせる裏技</h3>
+        <ul>
+          <li>「原液」となる本質的な発信を作り、他者・メディアに希釈・拡散してもらう</li>
+          <li>家事や身の回りのことも人に任せ、意思決定コストを下げる</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 体は一つでも影響力を複製する仕組みを持てば、多動できる領域が飛躍的に広がるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第6章 世界最速仕事術</h3>
+        <ul>
+          <li>睡眠を削らず、効率化を徹底することが多動力の土台になる</li>
+          <li>即断即決でスピードを最大化する</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 健康と速度が伴わなければ、多動を維持するエネルギーが枯渇してしまうから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第7章 最強メンタルの育て方</h3>
+        <ul>
+          <li>感情に振り回されず、失敗や批判を恐れないメンタルを鍛える</li>
+          <li>「見切り発車」を可能にする心理的土台を作る</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 多動力を実践する上で最大の障害は技術ではなくメンタルの弱さだから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第8章 人生に目的なんていらない</h3>
+        <ul>
+          <li>壮大な目的設定より「今」への没頭を優先する生き方を提案</li>
+          <li>好きなことに次々ハマる過程そのものが人生の意味になる</li>
+        </ul>
+        <div class="why-box"><b>理由:</b> 目的を先に決めると身動きが取れなくなるため、行動を先に置く思想で本書を締めくくっている。</div>
+      </div>
+    </section>
+
+    <!-- 具体例 -->
+    <section id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+      <div class="section-title">🌰 具体例・ケーススタディ</div>
+
+      <div class="card">
+        <h3>📡 メルマガ・SNSが「原液」になる</h3>
+        <ul>
+          <li>堀江氏はメルマガやSNSで本音の思考を濃縮して発信</li>
+          <li>その「原液」をTVやニュースメディアが取り上げ、二次利用して拡散</li>
+          <li>本人が出演していない場でも、思考だけが独り歩きして影響力を持つ</li>
+        </ul>
+        <div class="why-box"><b>理由（この例が示すこと）:</b> アウトプットの質を高めておけば、体一つでも影響力を無限に複製できることを示している。</div>
+      </div>
+
+      <div class="card">
+        <h3>🏨 ホテル暮らしで家事をゼロにする</h3>
+        <ul>
+          <li>自宅を持たずホテルを拠点にし、家事全般を自分でやらない</li>
+          <li>服選びなど日常の意思決定も信頼できる他者に任せる</li>
+          <li>「ワクワクしない時間」を徹底的に削ぎ落とす暮らし方</li>
+        </ul>
+        <div class="why-box"><b>理由（この例が示すこと）:</b> 時間とエネルギーの使い道を、好きなことへの没頭に一極集中させる実践例になっている。</div>
+      </div>
+
+      <div class="card">
+        <h3>🎭 十を超える肩書きの掛け算</h3>
+        <ul>
+          <li>実業家×コンサルタント×プログラマー×作家×コメンテーター×ロケット開発者×飲食店プロデューサーなど</li>
+          <li>畑違いの領域を次々に横断し、それぞれで成果を出してきた</li>
+          <li>単独では希少でない肩書きも、掛け合わせることで唯一無二の存在になる</li>
+        </ul>
+        <div class="why-box"><b>理由（この例が示すこと）:</b> 「三つの肩書きの掛け算」という理論を、著者自身の実践で裏付けている。</div>
+      </div>
+
+      <div class="card">
+        <h3>🚀 ロケット開発への飛び込み</h3>
+        <ul>
+          <li>宇宙事業とは無縁のキャリアからロケット開発事業に参入</li>
+          <li>専門知識がない分野でも「サルのようにハマる」姿勢で飛び込む</li>
+          <li>飽きずに継続し、新たな肩書き・専門性を獲得していく</li>
+        </ul>
+        <div class="why-box"><b>理由（この例が示すこと）:</b> 「見切り発車」しても後から専門性を積み上げられることを実例として示している。</div>
+      </div>
+    </section>
+
+    <!-- 重要な引用 -->
+    <section id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+      <div class="section-title">💬 重要な引用</div>
+
+      <blockquote class="quote">
+        「三つの肩書きをもてば、あなたの価値は掛け算で100万人に1人の存在になる」
+        <span class="gist-flag">要旨</span>
+        <span class="note">複数分野を掛け合わせることで唯一無二の希少性に到達するという核心の主張。</span>
+      </blockquote>
+
+      <blockquote class="quote">
+        「まずは、一つのことにサルのようにハマれ。ハマったら鳩のようにあっさり飽きて次へ行け」
+        <span class="gist-flag">要旨</span>
+        <span class="note">集中と離脱を繰り返す多動力の行動原則を端的に表す一節。</span>
+      </blockquote>
+
+      <blockquote class="quote">
+        「見切り発車は成功のもと」
+        <span class="gist-flag">要旨</span>
+        <span class="note">準備が整うのを待つより、動きながら学ぶことを推奨する著者の行動哲学。</span>
+      </blockquote>
+
+      <blockquote class="quote">
+        「石の上にも三年、という価値観はもう通用しない」
+        <span class="gist-flag">要旨</span>
+        <span class="note">我慢至上主義からの脱却を促す、本書全体を貫くメッセージ。</span>
+      </blockquote>
+    </section>
+
+    <!-- 今日のアクション -->
+    <section id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+      <div class="section-title">✅ 今日できるアクション</div>
+
+      <div class="action-card">
+        <div class="action-num">1</div>
+        <div class="body">
+          <h3>自分の「原液」を1つ書き出す</h3>
+          <div class="meta"><b>やること:</b> 15分で、今日考えたことの本音をSNSかメモに書き出す</div>
+          <div class="meta"><b>目的:</b> アウトプットを濃縮する練習をする</div>
+          <div class="meta"><b>期待効果:</b> 「自分の分身」として発信が独り歩きする第一歩を作れる</div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-num">2</div>
+        <div class="body">
+          <h3>ワクワクしない時間を1つ削る</h3>
+          <div class="meta"><b>やること:</b> 30分で、今日のスケジュールから「イヤイヤやっていること」を1つ見つけ、外注・自動化・廃止できないか検討する</div>
+          <div class="meta"><b>目的:</b> 「自分の時間」を取り戻す練習をする</div>
+          <div class="meta"><b>期待効果:</b> 好きなことに没頭する時間の余白が生まれる</div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-num">3</div>
+        <div class="body">
+          <h3>止まっていることに20分だけ着手する</h3>
+          <div class="meta"><b>やること:</b> 20分で、準備だけして手をつけていない小さな物事を1つ選び、見切り発車で着手する</div>
+          <div class="meta"><b>目的:</b> 完璧主義を手放す練習をする</div>
+          <div class="meta"><b>期待効果:</b> 行動しながら学ぶサイクルに入り、次の一歩が軽くなる</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    📖 本インフォグラフィックは書籍『多動力』（堀江貴文著）のリサーチ内容をもとに自動生成されています。
+  </footer>
+</div>
+
+<script>
+  (function(){
+    var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+    var panels = document.querySelectorAll('section[role="tabpanel"]');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click', function(){
+        tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+        panels.forEach(function(p){ p.classList.remove('active'); });
+        tab.setAttribute('aria-selected','true');
+        var panel = document.getElementById(tab.getAttribute('aria-controls'));
+        if(panel){ panel.classList.add('active'); }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
