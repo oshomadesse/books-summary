@@ -10,171 +10,102 @@ summary: 毎朝AIが本を選定しインフォグラフィック付きサマリ
 ## 目的
 毎朝7:00に「今日読むべき本」をAIが自動選定・リサーチし、インフォグラフィック付きのサマリーを生成してLINEに通知することで、読書習慣の定着と知識のインプットを効率化する。
 
-## システム概要
-**ローカル Mac の LaunchAgent** が毎朝 7:00 JST に `run_local.sh` を起動し、
-Python スクリプトで複数のAIモデル（Gemini, GPT-5, Claude）を組み合わせて
-高品質な読書ノートを生成、そのまま `main` ブランチに push する。
+## システム概要（2026-07-07 全面刷新: Claude Routine 版）
+**クラウドの Claude Routine** が毎朝 7:00 JST に起動し、選書からリサーチ、
+インフォグラフィック生成、ノート作成、`main` への push までを **Claude 1本**で完結させる。
+LINE 通知は push を受けた GitHub Actions が行い、ローカル Mac は `git pull` するだけ。
+**外部 AI API（Gemini / GPT-5 / Anthropic API）は不使用**。Claude サブスクリプション内で動く。
 
 ### アーキテクチャ
-- **実行環境**: ローカル Mac (LaunchAgent)
-- **言語**: Python 3.11+
-- **AIモデル**:
-    - 推薦: Gemini 3.5 Flash
-    - リサーチ: GPT-5
-    - 図解生成: Claude 4.6 Sonnet
-- **データソース**: Google Custom Search API (補助), Google Sheets (除外リスト)
-- **通知**: LINE Messaging API (Flex Message)
+```
+┌──────────────────────────────────────────────────────────┐
+│ ① Claude Routine "daily-reading-summary"                 │
+│    (trig_01UUowz2BR5ao6tvqc8URNbD / cron 0 22 * * * UTC  │
+│     = 毎朝 07:00 JST / model: claude-sonnet-5)           │
+│    リポジトリ直下の ROUTINE.md の手順を実行:              │
+│      選書(data/books_read.json 参照)                      │
+│      → Web Deep Research                                  │
+│      → infographics/ + docs/ に HTML 生成                 │
+│      → 100_Inbox/Books-YYYY-MM-DD.md 生成                 │
+│      → data/books_read.json 追記 + data/latest.json 更新  │
+│      → main へ commit & push（[skip ci] 禁止）            │
+└──────────────────────────┬───────────────────────────────┘
+                           │ push (data/latest.json 変更)
+                           ▼
+┌──────────────────────────────────────────────────────────┐
+│ ② GitHub Actions .github/workflows/line-notify.yml       │
+│    GitHub Pages の 200 応答を待機 (max 300s)              │
+│    → LINE Flex Message 送信                               │
+│    (secrets: LINE_CHANNEL_ACCESS_TOKEN / LINE_USER_ID)    │
+└──────────────────────────────────────────────────────────┘
 
-## 機能仕様
+┌──────────────────────────────────────────────────────────┐
+│ ③ ローカル Mac: LaunchAgent                               │
+│    com.oshomadesse.bookssummary.pull (毎朝 07:20 JST)     │
+│    ~/.local/bin/books-summary-pull.sh が git pull のみ実行│
+│    → Obsidian Vault にノートが同期される                  │
+└──────────────────────────────────────────────────────────┘
+```
 
-### 1. 除外リスト取得 (Step 1)
-- **担当**: `sheets_connector.py`
-- **内容**: Google Sheetsから過去に読んだ本や除外したい本のリストを取得する。
-
-### 2. 書籍推薦 (Step 2)
-- **担当**: `gemini_recommend.py`
-- **モデル**: Gemini 3.5 Flash
-- **内容**: 除外リストを考慮し、指定カテゴリ（ビジネス、自己啓発、心理学など）から今日読むべき本を5冊推薦する。
-- **フィルタ**: 日本語タイトル以外の除外、禁止ワード（小説など）の除外。
-
-### 3. 選書 (Step 3)
-- **内容**: 推薦された5冊の中からランダムに1冊を選択する。
-
-### 4. Deep Research (Step 4)
-- **担当**: `chatgpt_research.py`
-- **モデル**: GPT-5
-- **内容**: 選択された本について詳細なリサーチを行い、核心的メッセージ、エグゼクティブサマリー、アクションプラン等をJSON形式で抽出する。
-
-### 5. インフォグラフィック生成 (Step 5)
-- **担当**: `claude_infographic.py`
-- **モデル**: Claude 4.6 Sonnet
-- **内容**: リサーチ結果を元に、概念図解を含む単一のHTMLファイルを生成する。
-- **出力**: `infographics/[書籍名]_infographic.html` + `docs/[書籍名]_infographic.html`
-- **公開**: GitHub Pages (`docs/`) で公開。URL: `https://oshomadesse.github.io/books-summary/`
-
-### 6. ノート生成 (Step 6-7)
-- **内容**: リサーチ結果とインフォグラフィックへのリンクを含むMarkdownノートを作成する。
-- **出力**: リポジトリ内の `100_Inbox/Books-YYYY-MM-DD.md` に直接書き込む。
-- **Git管理**: `100_Inbox/` は `.gitignore` 対象外だが未追跡のまま運用しており、`main` には push しない（ローカルの Obsidian Vault からの参照専用）。
-
-### 7. 事後処理・通知 (Step 8-10)
-- **関連書籍リンク**: `link_books.py` で既存ノート間のリンクを整形する。
-- **除外リスト更新**: 選ばれた本をGoogle Sheetsに追記する。
-- **通知**: LINE Messaging API (Flex Message) で、生成されたノートへのリンクとサマリーをユーザーに通知する。
+### 管理ポイント
+| 対象 | 場所 |
+|---|---|
+| Routine の指示書 | `ROUTINE.md`（リポジトリ直下。編集すれば翌朝から反映） |
+| Routine の管理画面 | https://claude.ai/code/routines |
+| 読了リスト（唯一の正） | `data/books_read.json`（旧 Google Sheets は 2026-07-07 で凍結） |
+| LINE 通知 | `.github/workflows/line-notify.yml` + リポジトリ secrets |
+| ローカル同期 | `~/Library/LaunchAgents/com.oshomadesse.bookssummary.pull.plist`（原本は `src/` に保管） |
 
 ## ディレクトリ構成
 ```
 📖 books-summary/
-├── .env                                # ローカル実行用の環境変数 (.gitignore済み)
-├── src/
-│   ├── integrated_reading_workflow.py  # 統合ワークフロー本体
-│   ├── chatgpt_research.py             # リサーチ (GPT-5)
-│   ├── claude_infographic.py           # インフォグラフィック生成 (Claude 4.6)
-│   ├── gemini_recommend.py             # 推薦 (Gemini Flash)
-│   ├── line_messaging.py               # LINE通知
-│   ├── sheets_connector.py             # Google Sheets連携
-│   ├── link_books.py                   # 関連書籍リンク整形
-│   ├── run_local.sh                    # ★ ローカル日次実行スクリプト (LaunchAgent から起動)
-│   ├── com.oshomadesse.bookssummary.run.plist  # LaunchAgent 定義 (07:00 JST)
-│   └── requirements.txt                # 依存ライブラリ
+├── ROUTINE.md                # ★ クラウド Routine の実行指示書（システムの心臓部）
+├── .github/workflows/
+│   └── line-notify.yml       # LINE Flex 通知（data/latest.json の push で発火）
 ├── data/
-│   ├── integrated/                     # 統合ログ・run_local ログ (.gitignore)
-│   └── modules/                        # モジュール別デバッグログ
-├── 100_Inbox/                          # 生成された Books-YYYY-MM-DD.md (git 未追跡、Obsidian から閲覧)
-├── infographics/                       # 生成された HTML 図解 (マスター)
-└── docs/                               # GitHub Pages 公開用 (index.html + HTML 図解)
+│   ├── books_read.json       # 読了リスト（選書の除外に使用、Routine が毎日追記）
+│   └── latest.json           # 当日分メタ情報（LINE 通知 Action が読む）
+├── 100_Inbox/                # Books-YYYY-MM-DD.md（Routine が生成、git 管理、Obsidian から閲覧）
+├── infographics/             # 生成 HTML 図解（マスター）
+├── docs/                     # GitHub Pages 公開用（https://oshomadesse.github.io/books-summary/）
+└── src/                      # 旧ローカル実行システム（→「旧システム」参照）
+    └── com.oshomadesse.bookssummary.pull.plist  # pull 専用 LaunchAgent 定義（現役）
 ```
-
-### ファイル関係図
-```
-                 ┌──────────────────────────────────────┐
-                 │ LaunchAgent (07:00 JST 毎日)         │
-                 │ com.oshomadesse.bookssummary.run     │
-                 └──────────────────┬───────────────────┘
-                                    │ exec
-                                    ▼
-   ┌─────────────────────────────────────────────────────────────┐
-   │ src/run_local.sh                                            │
-   │   1. mkdir で多重起動防止                                   │
-   │   2. ネット疎通確認 (スリープ復帰後対策)                    │
-   │   3. git fetch / pull --ff-only                             │
-   │   4. python integrated_reading_workflow.py  (下記)          │
-   │   5. git add infographics/ docs/ → commit                   │
-   │   6. git push (失敗時 2/4/8/16s バックオフ)                 │
-   └──────────────────────┬──────────────────────────────────────┘
-                          │
-                          ▼
-   ┌─────────────────────────────────────────────────────────────┐
-   │ src/integrated_reading_workflow.py                          │
-   │   step1 → sheets_connector.py    (除外リスト)               │
-   │   step2 → gemini_recommend.py    (5冊推薦)                  │
-   │   step3   選書                                              │
-   │   step4 → chatgpt_research.py    (Deep Research)            │
-   │   step5 → claude_infographic.py  (HTML 図解生成)            │
-   │             └─ docs/ にコピー → _git_auto_push (内部push)   │
-   │   step6   中間サマリ                                        │
-   │   step7   100_Inbox/Books-YYYY-MM-DD.md を直接生成          │
-   │   step8 → link_books.py / 除外リスト追記                    │
-   │   step9 → line_messaging.py      (LINE Flex 通知)           │
-   └─────────────────────────────────────────────────────────────┘
-
-   生成物:
-     infographics/*.html              ─┐
-     docs/*.html                      ─┼── git で main に push (run_local.sh 側)
-     docs/index.html                  ─┘
-     100_Inbox/Books-YYYY-MM-DD.md     : リポジトリ内 (未追跡、git 管理対象外。Obsidian Vault からはディレクトリ参照で読む)
-```
-
-## 環境変数 (.env)
-
-| 変数名 | 説明 |
-|---|---|
-| `GEMINI_API_KEY` | Google AI Studio API Key (Gemini用) |
-| `OPENAI_API_KEY` | OpenAI API Key (GPT-5用) |
-| `ANTHROPIC_API_KEY` | Anthropic API Key (Claude用) |
-| `LINE_ENABLED` | LINE通知の有効/無効 (`1` で有効) |
-| `LINE_CHANNEL_ACCESS_TOKEN` | LINE Messaging API Token |
-| `LINE_TO` | LINE User ID (通知送信先) |
-| `GOOGLE_SERVICE_ACCOUNT_JSON_PATH` | Google SA JSONファイルパス (`~/.config/google/reading-workflow-sa.json`) |
-| `EXCLUDED_SHEET_ID` | 除外リスト用スプレッドシートID |
 
 ## 運用
 
-### 通常運用: ローカル Mac (LaunchAgent)
-毎日 7:00 JST に `~/Library/LaunchAgents/com.oshomadesse.bookssummary.run.plist`
-が `src/run_local.sh` を起動する。生成物は 100_Inbox に直接書き込まれ、
-`infographics/` と `docs/` は commit して `main` に push される。
+### 通常運用
+何もしなくてよい。毎朝 7:00 JST に Routine が走り、7:20 に Mac が pull する。
+Mac がスリープ中でも**生成は止まらない**（クラウド実行）。pull は次回起動時に追いつく。
 
-**インストール手順 (初回のみ):**
+### 手動で今すぐ実行したいとき
+このリポジトリで Claude Code から `RemoteTrigger` の `run`（trigger_id: `trig_01UUowz2BR5ao6tvqc8URNbD`）を叩く。
+または https://claude.ai/code/routines から手動実行。
+
+### ローカルに反映されないとき
 ```bash
-cp src/com.oshomadesse.bookssummary.run.plist \
-   ~/Library/LaunchAgents/com.oshomadesse.bookssummary.run.plist
-launchctl load ~/Library/LaunchAgents/com.oshomadesse.bookssummary.run.plist
-# スリープ中に発火しないための wake 予約
-sudo pmset repeat wakeorpoweron MTWRFSU 06:55:00
+bash ~/.local/bin/books-summary-pull.sh   # ログ: ~/Library/Logs/BooksSummary/pull.log
 ```
 
-**ログ:**
-- `data/integrated/run_local.log` (Python stdout/stderr + bash ログ)
-- `data/integrated/integrated_run_YYYYMMDD.log` (Python 内部ログ)
-- `~/Library/Logs/BooksSummary/run-stdout.log` / `run-stderr.log` (LaunchAgent 側)
+### 出力フォーマットを変えたいとき
+`ROUTINE.md` を編集して push するだけ（選書条件・リサーチ項目・インフォグラフィックの
+デザイン指示・ノートテンプレートが全部そこにある）。
 
-### ⚠️ ローカル運用の注意点
-1. **スリープ中は LaunchAgent が発火しない**。`pmset repeat wakeorpoweron` で
-   06:55 に wake 予約すること。蓋閉じ・バッテリー駆動だと wake しないケースあり。
-2. **スリープ復帰直後は Wi-Fi 未接続**の瞬間がある。`run_local.sh` は
-   `curl https://github.com` で最大 60 秒待つ。
-3. **LaunchAgent は login shell ではない** ため `.zshrc` の PATH が読まれない。
-   plist の `EnvironmentVariables` と `run_local.sh` 冒頭で `PATH` を明示している。
-   Python が pyenv 管理なら `PYTHON_BIN` を `$HOME/.pyenv/shims/python3` に書き換える。
-4. **git push 認証**: osxkeychain または ssh-agent が前提。一度ログインシェルから
-   `git push` を成功させておけば keychain に乗り LaunchAgent からも使える。
-5. **多重起動防止**: `/tmp/books-summary-run.lock` を `mkdir` で atomic ロック。
-6. **失敗時の通知**: Python 例外は既存ロジックで LINE に流れる。bash 段階の失敗は
-   `run_local.sh` の `notify_line_failure` が `.env` からトークンを拾って送る。
+## ⚠️ 過去の障害から学んだ制約（重要）
+1. **このリポジトリは iCloud「デスクトップと書類」同期の配下にある。**
+   iCloud の「ストレージ最適化」がファイル実体を夜間にクラウド退避させ、
+   launchd 起動のプロセスは退避ファイルを読めず `EDEADLK (Resource deadlock avoided)`
+   で死ぬ（2026-07-04〜07 の 4 日連続障害の根因）。
+2. その対策として **`.git` の実体は `~/.gitdirs/books-summary` に移設済み**
+   （ワークツリー直下の `.git` は `gitdir:` 参照ファイル）。iCloud の外なので退避されない。
+   リポジトリを clone し直す場合はこの構成を再現すること。
+3. ワークツリー側のファイルも退避され得る。launchd から中身を読む処理は追加しないこと
+   （pull で新規ファイルを書くのは安全）。
 
-### 機密ファイルの配置
-| ファイル | パス |
-|---|---|
-| Google SA JSON | `~/.config/google/reading-workflow-sa.json` (chmod 600) |
-| GitHub 2FA リカバリーコード | `~/.config/github/recovery-codes.txt` (chmod 600) |
+## 旧システム（src/ 以下、2026-07-07 停止）
+Gemini(推薦) + GPT-5(リサーチ) + Claude API(図解) をローカル Mac の LaunchAgent で
+毎朝実行していた構成。iCloud 退避問題で恒常的に不安定だったため Routine 版へ全面移行した。
+- `src/*.py` は参照用に残置（フォーマットの出典。実行はされない）
+- LaunchAgent `com.oshomadesse.bookssummary.run` は削除済み
+- `.github/workflows/daily_workflow.yml`（API 依存の CI フォールバック）は削除済み
+- Google Sheets の読了リストは `data/books_read.json` へ移行済み（シートは凍結）
