@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自分の中に毒を持て インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #C81D25 / セカンダリー #1A1A2E / アクセント #F5A623 -->
+<style>
+:root {
+  --primary: #C81D25;
+  --secondary: #1A1A2E;
+  --accent: #F5A623;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff5f0, #ffe9e0);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #fff0f0, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "”";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff9e6, #fffbf0);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🔥 自分の中に毒を持て</h1>
+  <p>岡本太郎が説く「危険な道を選び、無条件に爆発して生きる」生き方の哲学</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>安全・常識・体裁に縛られて燃え尽きたように生きる私たちは、どうすれば本当に自分らしく、情熱に満ちた人生を取り戻せるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>安全な道ではなく「危険だ」と感じる道を選び、自分の弱さやコンプレックスを隠さずさらけ出し、条件をつけずに全存在で「爆発」するように生きる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>無難な道は、心のどこかで「本当は行きたくない」とわかっている道である。危険を感じる道こそ、自分が本当に望んでいる道の目印であり、そこに賭けることでしか本来の可能性は開かれない、というのが岡本太郎の一貫した思想。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>二択で迷ったら危険な方を選ぶ／自分の弱さを個性として言い換える／摩擦や衝突を恐れず本音でぶつかる、という3つの日常的な実践を通じて、常識人間から少しずつ抜け出していく。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🚧 危険な道を選ぶ</h3>
+    <ul>
+      <li>二つの道で迷ったら、安全で見通しのついた道ではなく、不安や危険を感じる道を選ぶ</li>
+      <li>「危険だ」と感じる道は、無意識のうちに自分が本当に行きたい道である</li>
+      <li>安全な道を選ぶことは、自分の可能性に自らフタをする行為</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>リスクを引き受けることでしか、自分本来の生きる力や可能性は開かれないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💥 爆発</h3>
+    <ul>
+      <li>まったく無目的・無償で、生命力と情熱のありったけを全存在で出し切ること</li>
+      <li>見返りや評価を期待せず、瞬間瞬間に全力を注ぐ生き方</li>
+      <li>「芸術は爆発だ」に通じる、岡本太郎の生き方そのものの中核イメージ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>条件や打算にとらわれた生き方は、生命本来のエネルギーを萎縮させてしまうため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ 個性は薬にも毒にもなる</h3>
+    <ul>
+      <li>自分の弱さやコンプレックスを隠すか、さらけ出すかで結果が正反対になる</li>
+      <li>隠せば自己嫌悪を生み、さらけ出せば個性という「薬」に変わる</li>
+      <li>他人と同じように振る舞うことは、かえって自分を苦しめる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>弱さを認めて表に出すことこそが、本当の強さへの入口になるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🕊️ 常識人間からの脱却</h3>
+    <ul>
+      <li>社会的な「良識」「無難さ」に縛られた生き方をやめる</li>
+      <li>体裁や世間体を気にする限り、興奮や喜びに満ちた瞬間は訪れない</li>
+      <li>常識を捨てることは、非常識になることではなく自分の感覚に忠実になること</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>常識にとらわれた生き方は、自分で自分の可能性を閉じてしまう最大の要因だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎁 無条件に生きる</h3>
+    <ul>
+      <li>安全を確保してから、条件が整ってから動くのではなく、情熱を感じたら即座に行動する</li>
+      <li>「だめならだめでいい」という覚悟が、かえって自由な行動力を生む</li>
+      <li>結果を計算する前に、まず飛び込んでみることを重視する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>条件付きの行動は常に安全網の中に留まり、本当の情熱の発見を妨げるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗿 縄文的な生命力</h3>
+    <ul>
+      <li>洗練される以前の、荒々しく力強い生命のエネルギーを自分の中に取り戻すという発想</li>
+      <li>整った美しさよりも、危険で衝動的なエネルギーにこそ本物の価値がある</li>
+      <li>岡本太郎自身が縄文土器との出会いから得た根本的な世界観</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>洗練・調和ばかりを追う現代人が失った、根源的な生命力を思い出させてくれるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>❤️ 相手の中から自分を引き出すのが愛</h3>
+    <ul>
+      <li>愛とは一方的に与えるものではなく、ぶつかり合いの中で相手の本当の姿を引き出すこと</li>
+      <li>摩擦や衝突を恐れる関係は、表面的なものにとどまる</li>
+      <li>本音でぶつかることで初めて、互いの本質に触れられる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>摩擦を避ける優しさは、相手にも自分にも本当の姿を見せない偽りの関係を作ってしまうため。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>危険な道を選ぶ</span>
+      <span class="flow-arrow">→</span>
+      <span>未知への挑戦</span>
+      <span class="flow-arrow">→</span>
+      <span>本来の情熱の発見</span>
+    </div>
+    <div class="flow-item">
+      <span>弱さをさらけ出す</span>
+      <span class="flow-arrow">→</span>
+      <span>個性という「薬」化</span>
+      <span class="flow-arrow">→</span>
+      <span>自己嫌悪からの解放</span>
+    </div>
+    <div class="flow-item">
+      <span>常識人間からの脱却</span>
+      <span class="flow-arrow">→</span>
+      <span>体裁からの自由</span>
+      <span class="flow-arrow">→</span>
+      <span>興奮と喜びに満ちた日常</span>
+    </div>
+    <div class="flow-item">
+      <span>無条件に生きる</span>
+      <span class="flow-arrow">→</span>
+      <span>即座の行動</span>
+      <span class="flow-arrow">→</span>
+      <span>「爆発」する生き方</span>
+    </div>
+    <div class="flow-item">
+      <span>縄文的な生命力</span>
+      <span class="flow-arrow">→</span>
+      <span>荒々しいエネルギーの肯定</span>
+      <span class="flow-arrow">→</span>
+      <span>洗練よりも本物の力</span>
+    </div>
+    <div class="flow-item">
+      <span>摩擦を恐れない関係</span>
+      <span class="flow-arrow">→</span>
+      <span>相手の本質を引き出す</span>
+      <span class="flow-arrow">→</span>
+      <span>本当の愛の実現</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>第1章：意外な発想を持たないとあなたの価値は出ない ―迷ったら、危険な道に賭けるんだ</h3>
+    <ul>
+      <li>二択で迷ったら、安全な道ではなくあえて危険な道を選ぶべきだと説く</li>
+      <li>安全な道は、心のどこかで「行きたくない」とすでにわかっている道</li>
+      <li>危険を感じる道こそ、自分が本当に望んでいる道の目印である</li>
+      <li>「意外な発想」を持てるかどうかが、その人の価値を決める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（なぜこの章が必要か）：</strong>無難さに逃げる習慣を断ち切らない限り、自分本来の可能性には一生気づけないため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章：個性は出し方 薬になるか毒になるか ―他人と同じに生きてると自己嫌悪に陥るだけ</h3>
+    <ul>
+      <li>自分のコンプレックスや弱さを隠すのではなく、堂々とさらけ出すことを勧める</li>
+      <li>さらけ出された弱さは「個性」という薬に変わり、隠された弱さは自己嫌悪という毒になる</li>
+      <li>他人と同調して無難に生きることは、結局のところ自分を苦しめるだけ</li>
+      <li>「変わっている」ことを恐れず、自分の凸凹をそのまま出す勇気を説く</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）：</strong>弱さを認めることこそが、本当の強さへの入口になるという逆説を体現しているため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章：相手の中から引き出す自分 それが愛 ―ほんとうの相手をつかむ愛しかた愛されかた</h3>
+    <ul>
+      <li>本当の愛とは、ぶつかり合いの中で相手の中に眠る本当の自分を引き出すことだと定義する</li>
+      <li>摩擦や衝突を恐れずに本音でぶつかることが、真実の関係を築く前提になる</li>
+      <li>優しさだけで摩擦を避ける関係は、表面的なものにとどまってしまう</li>
+      <li>愛されることより先に、まず自分から本気でぶつかることの大切さを説く</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）：</strong>摩擦を避ける関係は互いの本質に触れられず、いずれ形骸化してしまうため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章：あなたは常識人間を捨てられるか ―いつも興奮と喜びに満ちた自分になる</h3>
+    <ul>
+      <li>世間の常識や体裁を脱ぎ捨て、瞬間瞬間を全力で生きることを勧める</li>
+      <li>常識にとらわれた生き方は、自分の可能性を自ら閉じてしまう</li>
+      <li>「無条件に生きろ」という言葉で、条件付きの安全な生き方からの脱却を呼びかける</li>
+      <li>常識を捨てた先にこそ、いつも興奮と喜びに満ちた自分がいると結論づける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）：</strong>本書全体の思想を集約し、読者に具体的な生き方の転換を迫る締めくくりの章であるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例</h2>
+
+  <div class="card">
+    <h3>🗿 例1：縄文土器との出会い（1951年）</h3>
+    <ul>
+      <li><strong>背景：</strong>岡本太郎は1951年、国立博物館で縄文土器を目にし、思わず声をあげるほどの衝撃を受けた</li>
+      <li><strong>行動：</strong>翌1952年に「縄文土器論」を発表し、洗練された弥生的な美とは対極にある、荒々しく爆発的な生命力を論じた</li>
+      <li><strong>結果：</strong>それまで無名の古器物とみなされていた縄文土器の評価を根本から変える契機となった</li>
+      <li><strong>示唆：</strong>美しく整えられたものより、危険で荒々しいものの中にこそ本物のエネルギーがある</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「自分の中の毒」という思想が、岡本自身の実体験に裏打ちされていることを示す原点のエピソード。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>☀️ 例2：太陽の塔（1970年大阪万博）</h3>
+    <ul>
+      <li><strong>背景：</strong>「進歩と調和」を掲げ、科学技術の万能性を謳う大阪万博の会場計画</li>
+      <li><strong>行動：</strong>あえて非合理・非常識な縄文的造形の「太陽の塔」（通称「縄文の怪物」）を会場の中央にそびえ立たせた</li>
+      <li><strong>結果：</strong>万博のテーマと真っ向から対立するように見えながら、万博を象徴するモニュメントとして今なお語り継がれている</li>
+      <li><strong>示唆：</strong>周囲の空気や体裁に逆らってでも、自分の内なる衝動を貫くことの重要性</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「常識人間を捨てる」という思想を、国家的プロジェクトの中で実際に体現した最大級の実例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🙏 例3：禅僧への講演エピソード</h3>
+    <ul>
+      <li><strong>背景：</strong>臨済禅師の「道で仏に逢えば、仏を殺せ」という有名な言葉をめぐる講演の場</li>
+      <li><strong>行動：</strong>岡本太郎はこの伝統的な言葉をそのまま受け入れず、自分自身の実感の言葉に語り直して伝えた</li>
+      <li><strong>結果：</strong>権威ある言葉を鵜呑みにしない姿勢が、聴衆に強い印象を残した</li>
+      <li><strong>示唆：</strong>権威や伝統をそのまま受け入れず、自分の実感を通して語り直すことの大切さ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「常識」には宗教的権威も含まれ、それすら鵜呑みにしないという徹底した姿勢を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⛰️ 例4：八ヶ岳山麓の縄文遺跡巡り</h3>
+    <ul>
+      <li><strong>背景：</strong>本書の中で紹介される、縄文のビーナスや阿久遺跡のストーンサークルを巡るフィールドワーク</li>
+      <li><strong>行動：</strong>机上の理屈で語るのではなく、実際に現地に足を運び自分の目で遺跡や土偶を確かめた</li>
+      <li><strong>結果：</strong>古代人の生命力への実感を伴った理解を得て、自らの生き方の哲学に反映させた</li>
+      <li><strong>示唆：</strong>頭で考えるだけでなく、実際に体を動かし現場で確かめることで初めて本質が見えてくる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>岡本太郎の思想が抽象論ではなく、実地での体験に根ざしていることを裏付ける。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「危険な道をとる。危険だという道は、必ず自分の行きたい道なのだ。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>本書の中核思想である「危険な道を選ぶ」を最も端的に表す一文。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「まったく無目的で、無償で、生命力と情熱のありったけ、全存在で爆発する。それがすべてだ。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>「爆発」という岡本太郎の生き方そのものを象徴する核心的な言葉。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「才能なんて勝手にしやがれだ。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>才能の有無を言い訳にせず、まず行動することを促す言葉。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「だめ人間なら、そのマイナスに賭けてみろ。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>弱さを隠さずさらけ出すことが個性という「薬」になる、という第2章の思想を凝縮している。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      （要旨）自分の弱さやコンプレックスを隠すのではなく、堂々とさらけ出すことで、それは個性という「薬」に変わる。他人と同調して生きることは自己嫌悪を生むだけである。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>原典の逐語引用が確認できなかったため要旨で代替。第2章全体の主張を要約したもの。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">📚 関連書籍</h3>
+
+  <div class="card">
+    <h3>📖 今日の芸術</h3>
+    <p><strong>著者：</strong>岡本太郎</p>
+    <p><strong>関連性：</strong>「うまくあってはならない、きれいであってはならない、ここちよくあってはならない」という芸術哲学を展開し、本書の生き方論の土台となる思想を扱う。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 壁を破る言葉</h3>
+    <p><strong>著者：</strong>岡本太郎</p>
+    <p><strong>関連性：</strong>岡本太郎の名言・箴言集。「自分の中に毒を持て」と同じテイストの短い言葉で構成され、日々読み返す入門として関連性が高い。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 ツァラトゥストラはこう言った</h3>
+    <p><strong>著者：</strong>フリードリヒ・ニーチェ</p>
+    <p><strong>関連性：</strong>常識・大衆道徳を超えて自己の意志で生きることを説く点で、「常識人間を捨てろ」という本書の思想と通じる。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 日本の伝統</h3>
+    <p><strong>著者：</strong>岡本太郎</p>
+    <p><strong>関連性：</strong>縄文土器論を含む評論集で、本書に登場する縄文土器エピソードの背景にある美意識・生命力観を深く理解できる。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 明日の神話</h3>
+    <p><strong>著者：</strong>岡本太郎（作品・関連解説）</p>
+    <p><strong>関連性：</strong>太陽の塔と同時期に制作された壁画作品を通じて、「爆発」の思想を絵画表現の面から理解できる。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🚀 今日のアクション</h2>
+  <p style="margin-bottom: 1.5rem; color: var(--text-light);">読後すぐに15〜30分で実行できる具体的な行動</p>
+
+  <div class="action-card">
+    <h4>🚧 迷っている二択で、あえて怖い方を選んでみる</h4>
+    <p><strong>目的：</strong>「危険な道を選ぶ」思想を実践し、無難さに逃げる癖を断ち切る</p>
+    <p><strong>手順：</strong></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>📝 今、迷っている二択（誘いを受けるか断るか、挑戦するか見送るかなど）を1つ書き出す</li>
+      <li>📝 それぞれの選択肢について「怖さ・不安の度合い」を10点満点で採点する</li>
+      <li>📝 点数が高い（怖いと感じる）方を、今日中に一歩だけ実行してみる</li>
+    </ul>
+    <p><strong>期待効果：</strong>本当にやりたかったことへの気づきと、行動の推進力が得られる</p>
+  </div>
+
+  <div class="action-card">
+    <h4>✍️ コンプレックスを1つ「個性」に言い換える</h4>
+    <p><strong>目的：</strong>弱さを隠す習慣から、弱さを活かす発想への転換を体験する</p>
+    <p><strong>手順：</strong></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>📝 自分が普段隠しがちなコンプレックスや弱点を1つ紙に書き出す</li>
+      <li>📝 それを「個性」として言い換えた一文を作る（例：「優柔不断」→「あらゆる可能性を検討できる慎重さ」）</li>
+      <li>📝 その言い換えた一文を、信頼できる誰かに実際に話してみる</li>
+    </ul>
+    <p><strong>期待効果：</strong>自己嫌悪の軽減と、弱さを個性として受け入れる自己受容の第一歩が得られる</p>
+  </div>
+
+  <div class="action-card">
+    <h4>💬 遠慮していた本音を一つだけぶつけてみる</h4>
+    <p><strong>目的：</strong>「摩擦から愛を築く」という第3章の思想を、身近な関係で実践する</p>
+    <p><strong>手順：</strong></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>📝 家族・友人・同僚との会話で、いつも遠慮して飲み込んでいる本音を1つ思い出す</li>
+      <li>📝 相手を否定せず、自分の気持ちとして伝える言い方を1分で考える</li>
+      <li>📝 今日中にその本音を、実際に相手に一言だけ伝えてみる</li>
+    </ul>
+    <p><strong>期待効果：</strong>表面的でない、より深い人間関係の構築につながる第一歩が得られる</p>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">📊 アクション実行の優先順位</h3>
+  <div class="metric">
+    <span class="metric-label">危険な方の選択肢を選ぶ</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 90%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--primary);">最優先</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">コンプレックスの言い換え</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 75%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">中</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">本音を一つぶつける</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 70%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">中</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
