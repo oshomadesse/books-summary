@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>愛するということ インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #8E3B46 / セカンダリー #2F4550 / アクセント #F2C14E -->
+<style>
+:root {
+  --primary: #8E3B46;
+  --secondary: #2F4550;
+  --accent: #F2C14E;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fdf3ea, #fbe8d8);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #fdf0f0, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "”";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fdf3ea, #fffdf5);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>💗 愛するということ</h1>
+  <p>エーリッヒ・フロムが説く「愛は技術である」という思想と、その習得法</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>孤独を感じ、良い相手が見つからないと嘆く私たちは、どうすれば本当に「愛する」ことができるようになるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>愛は自然に「落ちる」感情ではなく、知識と努力によって習得すべき「技術」である。ケア・責任・尊重・知識の4要素を能動的に実践し、まず自分自身が愛する能力を育てることが出発点になる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>人間は生まれながらに自然や他者から切り離された「孤立」した存在であり、その孤立感を乗り越える最善の答えが愛である。しかし多くの人は「誰を愛するか」という対象探しに終始し、「いかに愛するか」という能力の鍛錬を怠っているため、愛せない・愛されないという悩みが生まれる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>相手を評価せずに聞く「傾聴」を実践する／一人でいられる力を鍛える／見返りを求めず「与える」を実行する、という3つの日常的な習練を通じて、技術としての愛を少しずつ体得していく。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🛠️ 愛は技術（art）である</h3>
+    <ul>
+      <li>愛は偶然「落ちる」受動的な感情ではなく、他の技術と同様に理論の理解と実践の鍛錬が必要</li>
+      <li>多くの人は「愛される」技術ばかりを磨こうとし、「愛する」技術の習得を後回しにしている</li>
+      <li>技術である以上、誰でも習練によって上達できる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>愛を才能や運の問題にしてしまうと、誰も努力によって愛する力を育てられなくなるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌑 実存的孤立</h3>
+    <ul>
+      <li>人間は生まれながらに自然・母胎・他者から切り離された孤独な存在である</li>
+      <li>この孤立感こそが人間存在の根本問題であり、誰もがそこから逃れようとする</li>
+      <li>孤立を癒す手段には、依存・同調・熱狂などさまざまあるが、フロムは「愛」こそ唯一の成熟した答えだとする</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>愛がなぜ人間にとって必要不可欠なのかという、本書全体の出発点となる前提のため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧩 愛の4要素：ケア・責任・尊重・知識</h3>
+    <ul>
+      <li>ケア＝相手の生に対する能動的な関心を持つこと</li>
+      <li>責任＝相手のニーズに応答する態勢を常に持つこと</li>
+      <li>尊重＝相手を自分の都合で歪めず、ありのままに見ること</li>
+      <li>知識＝相手を深く理解しようと努め続けること</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>この4つが揃って初めて「与える」という能動的な行為としての愛が成立するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎁 与えることの豊かさ</h3>
+    <ul>
+      <li>「たくさん持っている人」ではなく「たくさん与える人」が豊かであるとフロムは説く</li>
+      <li>与えることは自己犠牲や喪失ではなく、自分の生命力の表現である</li>
+      <li>見返りを求めて与える行為は、真の愛ではなく取引に近い</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>愛を「もらうもの」だと考える限り、能動的に愛する力は育たないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧘 一人でいられる能力</h3>
+    <ul>
+      <li>孤独に耐えられない人ほど、相手にしがみつく依存的な愛に陥りやすい</li>
+      <li>健全な愛は「二人で一つになる」のではなく「自立した二人が結びつく」こと</li>
+      <li>一人の時間に自分自身と向き合える力が、愛する力の土台になる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>孤独に耐える力がなければ、愛は依存や共依存にすり替わってしまうため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👨‍👩‍👧 母性愛と父性愛</h3>
+    <ul>
+      <li>母性愛は子どもの存在そのものを無条件に肯定する愛</li>
+      <li>父性愛は「期待に応える」ことを条件とすることが多い、後天的に発達する愛</li>
+      <li>成熟した人間は、内面に両方の要素を統合する必要がある</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>愛には無条件の受容と、成長を促す側面の両方が必要であることを示すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏪 現代社会における愛の商品化</h3>
+    <ul>
+      <li>資本主義的な市場原理が人間関係にも浸透し、恋愛や結婚が等価交換のように扱われがち</li>
+      <li>自分の「市場価値」に見合う相手を選ぶという発想が、愛を歪めている</li>
+      <li>孤独を紛らわす消費行動（娯楽・SNS・快楽の消費化）は本質的な孤立を癒さない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>現代人が「なぜ愛せないのか」という悩みの社会的背景を明らかにするため。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>実存的孤立</span>
+      <span class="flow-arrow">→</span>
+      <span>愛による克服の試み</span>
+      <span class="flow-arrow">→</span>
+      <span>愛は技術という再定義</span>
+    </div>
+    <div class="flow-item">
+      <span>一人でいられる能力</span>
+      <span class="flow-arrow">→</span>
+      <span>自立した人格</span>
+      <span class="flow-arrow">→</span>
+      <span>依存でない健全な愛</span>
+    </div>
+    <div class="flow-item">
+      <span>ケア・責任・尊重・知識</span>
+      <span class="flow-arrow">→</span>
+      <span>能動的に与える行為</span>
+      <span class="flow-arrow">→</span>
+      <span>与えることの豊かさ</span>
+    </div>
+    <div class="flow-item">
+      <span>現代社会の市場原理</span>
+      <span class="flow-arrow">→</span>
+      <span>愛の商品化</span>
+      <span class="flow-arrow">→</span>
+      <span>愛する能力の衰退</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>第1章：愛は技術か</h3>
+    <ul>
+      <li>多くの人は愛を「対象を見つける問題」だと誤解し、愛される技術ばかり磨こうとする</li>
+      <li>フロムは愛を、他の技術と同様に理論と実践の鍛錬によって習得できる「技術」として再定義する</li>
+      <li>愛が技術であるという前提こそ、本書全体の議論の土台となる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（なぜこの章が必要か）：</strong>「愛は運命的に降ってくるもの」という誤解を解かない限り、以降の議論が成立しないため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章：愛の理論</h3>
+    <ul>
+      <li>人間の実存的問題＝孤立からの脱出手段として愛を位置づける</li>
+      <li>母性愛（無条件）と父性愛（条件付き）の違いと、それぞれが子どもの発達に与える影響を論じる</li>
+      <li>愛の対象別分類：兄弟愛・母性愛・エロス的愛（恋愛）・自己愛・神への愛を提示する</li>
+      <li>愛の実践の4要素（ケア・責任・尊重・知識）を提示する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）：</strong>愛が単一の感情ではなく、対象や関係性によって異なる性質を持つことを理解する必要があるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章：愛と現代西洋社会におけるその崩壊</h3>
+    <ul>
+      <li>資本主義社会での人間関係の「市場化」を批判的に論じる</li>
+      <li>恋愛・結婚が自分の市場価値に見合う相手選びに矮小化される現象を指摘する</li>
+      <li>孤独を紛らわす代替行為（消費・快楽・同調）は根本的な孤立を癒さないと警鐘を鳴らす</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）：</strong>現代人が「なぜ愛せないのか」に悩む社会的背景を示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章：愛の習練</h3>
+    <ul>
+      <li>技術習得の一般原則（規律・集中・忍耐・習熟への情熱）を愛にも適用する</li>
+      <li>ナルシシズム（自己中心性）の克服、理性・謙虚さ・信念・勇気の必要性を説く</li>
+      <li>一人でいられる能力の涵養が、愛を育てる土台になるとまとめる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（章のメッセージの根拠）：</strong>読者が実生活で「愛する力」を鍛えるための実践指針を示す締めくくりの章であるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例</h2>
+
+  <div class="card">
+    <h3>👶 例1：母性愛と父性愛の違い</h3>
+    <ul>
+      <li><strong>背景：</strong>母親の愛は子どもの存在そのものを無条件に肯定するのに対し、父親の愛は「期待に応える」ことを条件とすることが多い</li>
+      <li><strong>行動：</strong>子どもは成長の過程で、無条件の母性的受容と、努力を促す父性的期待の両方を内面化していく</li>
+      <li><strong>結果：</strong>健全な成人は、自分の中に「無条件に自分を肯定する母性」と「成長を促す父性」の両方を統合する</li>
+      <li><strong>示唆：</strong>愛には無条件の受容と、成長を促す側面の両方が必要である</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>愛が単一の感情ではなく、複数の質を統合したものであることを具体的に示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📱 例2：現代のマッチングアプリ的恋愛（本書の思想からの応用）</h3>
+    <ul>
+      <li><strong>背景：</strong>現代の出会いは条件検索的になりがちで、相手を「市場価値」で評価し合う傾向がある</li>
+      <li><strong>行動：</strong>多くの人は出会いの母数を増やすことに注力し、自分自身が愛する能力を磨くことは後回しにする</li>
+      <li><strong>結果：</strong>条件に合う相手を見つけても、愛する技術が育っていなければ関係は長続きしにくい</li>
+      <li><strong>示唆：</strong>出会いの数を増やすより先に、ケア・責任・尊重・知識を実践できる人格を育てることが本質的な解決策になる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「良い出会いがない」という現代的な悩みの構造的な原因を、フロムの理論を通じて明らかにする。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔗 例3：孤独に耐えられないことによる依存的な愛</h3>
+    <ul>
+      <li><strong>背景：</strong>孤独に耐えられない人ほど、相手にしがみつくような愛（共依存）に陥りやすいとフロムは警告する</li>
+      <li><strong>行動：</strong>相手に常に一緒にいることや連絡を求め、自分の不安を相手に埋めてもらおうとする</li>
+      <li><strong>結果：</strong>関係は自立した結びつきではなく、互いを縛り合う不健全な依存関係になりやすい</li>
+      <li><strong>示唆：</strong>健全な愛は「二人で一つになる」ことではなく「自立した二人が結びつく」ことである</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>愛と依存の違いを明確にする典型的な例である。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💰 例4：与えることが豊かさである例</h3>
+    <ul>
+      <li><strong>背景：</strong>経済的に貧しくても、笑顔や気遣い、時間を惜しみなく他者に与えられる人がいる</li>
+      <li><strong>行動：</strong>そうした人は、見返りを求めずに自分の持つものを与え続ける</li>
+      <li><strong>結果：</strong>どれだけ財産があっても与えられない人より、そうした人の方が「豊か」であるとフロムは述べる</li>
+      <li><strong>示唆：</strong>「持つこと」ではなく「与える能力」こそが、人間の豊かさの本当の指標である</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「与えることの豊かさ」という概念を、日常的な行動レベルで具体的に示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「愛は技術だろうか。技術だとしたら、知識と努力が必要だ。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>本書の中核思想である「愛は技術である」を最も端的に表す一文。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「一人でいられる能力こそ、愛する能力の前提条件である。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>依存ではなく自立した結びつきとしての愛を説く、第4章の思想を凝縮している。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「たくさん持っている人が豊かなのではなく、たくさん与える人が豊かなのだ。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>「与えることの豊かさ」という概念を象徴する一文。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      「愛はたんなる激しい感情ではない。それは決意であり、決断であり、約束である。」
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>愛を偶然の感情ではなく能動的な意志の行為として捉え直す、本書の核心的な視点を示す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      （要旨）愛こそが、人間が自らの実存的な孤立という問題に対して見出しうる、唯一の正気で満足のいく答えである。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>原著英語版の該当箇所の逐語的な日本語訳が確認できなかったため要旨で代替。本書全体の出発点となる主張。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">📚 関連書籍</h3>
+
+  <div class="card">
+    <h3>📖 自由からの逃走</h3>
+    <p><strong>著者：</strong>エーリッヒ・フロム</p>
+    <p><strong>関連性：</strong>同著者の代表作。近代人が自由の重荷から逃れ権威に依存する心理を分析し、本書の「孤立」概念の土台となる。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 生きるということ</h3>
+    <p><strong>著者：</strong>エーリッヒ・フロム</p>
+    <p><strong>関連性：</strong>「持つ様式」と「ある様式」という2つの生き方を対比し、本書の「与えること」の思想をさらに掘り下げる。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 嫌われる勇気</h3>
+    <p><strong>著者：</strong>岸見一郎、古賀史健</p>
+    <p><strong>関連性：</strong>アドラー心理学から対人関係の悩みを解く一冊。他者との健全な関係構築というテーマで本書と響き合う。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 幸福論</h3>
+    <p><strong>著者：</strong>アラン</p>
+    <p><strong>関連性：</strong>幸福は能動的な意志と行動によって獲得されるという思想が、「愛は技術」という本書の能動性の哲学と共通する。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 非暴力コミュニケーション</h3>
+    <p><strong>著者：</strong>マーシャル・B・ローゼンバーグ</p>
+    <p><strong>関連性：</strong>相手への共感的理解を軸としたコミュニケーション技法で、本書の「知識」「尊重」の要素を実践的に補完する。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🚀 今日のアクション</h2>
+  <p style="margin-bottom: 1.5rem; color: var(--text-light);">読後すぐに15〜30分で実行できる具体的な行動</p>
+
+  <div class="action-card">
+    <h4>👂 評価せずに15分聞く「傾聴の時間」</h4>
+    <p><strong>目的：</strong>愛の要素「知識」＝相手を深く理解する力を鍛える</p>
+    <p><strong>手順：</strong></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>📝 今日話す機会がある家族・友人・同僚を1人選ぶ</li>
+      <li>📝 相手の話を、評価やアドバイスを挟まず15分間だけ聞くと決めて実行する</li>
+      <li>📝 聞き終えたら、相手の気持ちを自分の言葉で一文にまとめてみる</li>
+    </ul>
+    <p><strong>期待効果：</strong>相手を深く理解する「知識」の要素を実践し、関係の質を高める第一歩になる</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🧘 スマホなしで過ごす「一人時間」20分</h4>
+    <p><strong>目的：</strong>孤独に耐える力＝「一人でいられる能力」を鍛える</p>
+    <p><strong>手順：</strong></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>📝 スマホを別室に置くか電源を切る</li>
+      <li>📝 20分間、何もせず自分の考えや感情とただ向き合う</li>
+      <li>📝 終えたら、浮かんだ考えや気づきを1〜2行だけメモする</li>
+    </ul>
+    <p><strong>期待効果：</strong>依存的でない、自立した愛を育む土台をつくる</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🎁 見返りを求めず「与える」を1つ実行する</h4>
+    <p><strong>目的：</strong>「与えることは喪失でなく豊かさの表現」という考えを体感する</p>
+    <p><strong>手順：</strong></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>📝 感謝の言葉・短い手紙・小さな手助けなど、30分以内でできる「与える」行為を1つ決める</li>
+      <li>📝 見返りを期待せず、今日中に実行する</li>
+      <li>📝 実行後の自分の気持ちの変化を一言でメモする</li>
+    </ul>
+    <p><strong>期待効果：</strong>見返りを求めない能動的な愛の感覚を体験し、自己効力感を高める</p>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">📊 愛の4要素・実践しやすさ</h3>
+  <div class="metric">
+    <span class="metric-label">ケア（能動的な関心）</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 80%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--primary);">高</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">知識（深く理解する）</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 85%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--primary);">高</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">尊重（ありのままに見る）</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 65%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">中</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">責任（応答する態勢）</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 60%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">中</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
