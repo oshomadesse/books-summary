@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ja">
+<!--
+  カラーパレット（プライマリー / セカンダリー / アクセント）
+  primary:   #4A5D45 (深緑・味噌汁の器を思わせる落ち着いた緑)
+  secondary: #B85C38 (陶器の朱・土鍋のテラコッタ)
+  accent:    #E8B94A (柚子・出汁の黄金色)
+  背景:      #F7F3E9 (和紙のようなクリーム色)
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一汁一菜でよいという提案 - インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#4A5D45;
+    --primary-light:#6B8063;
+    --secondary:#B85C38;
+    --secondary-light:#D98860;
+    --accent:#E8B94A;
+    --bg:#F7F3E9;
+    --card:#FFFFFF;
+    --text:#2E2A24;
+    --text-sub:#6B6459;
+    --border:#E4DCC8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);
+    color:#fff;
+    padding:28px 20px 24px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+  }
+  header .eyebrow{
+    font-size:.75rem;
+    letter-spacing:.15em;
+    opacity:.85;
+    margin-bottom:8px;
+  }
+  header h1{
+    font-size:1.5rem;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  header .author{
+    font-size:.95rem;
+    opacity:.9;
+  }
+  .badges{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-top:14px;
+  }
+  .badge{
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.4);
+    border-radius:999px;
+    padding:5px 12px;
+    font-size:.75rem;
+  }
+
+  .why-how{
+    margin:16px;
+    background:var(--card);
+    border-radius:16px;
+    padding:18px 16px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+    border:1px solid var(--border);
+  }
+  .why-how h2{
+    font-size:1rem;
+    color:var(--secondary);
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+    align-items:flex-start;
+  }
+  .qa-row .qtag{
+    flex:0 0 auto;
+    background:var(--primary);
+    color:#fff;
+    font-size:.72rem;
+    font-weight:700;
+    padding:4px 8px;
+    border-radius:8px;
+    white-space:nowrap;
+  }
+  .qa-row.answer .qtag{background:var(--secondary);}
+  .qa-row.reason .qtag{background:var(--accent);color:#3a2e0f;}
+  .qa-row p{font-size:.9rem;}
+
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:14px;
+  }
+  .stat{
+    background:var(--bg);
+    border-radius:12px;
+    padding:10px 6px;
+    text-align:center;
+    border:1px solid var(--border);
+  }
+  .stat .num{
+    font-size:1.3rem;
+    font-weight:800;
+    color:var(--secondary);
+  }
+  .stat .label{
+    font-size:.68rem;
+    color:var(--text-sub);
+    margin-top:2px;
+  }
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:0 16px;
+    margin-top:20px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+    padding:10px 14px;
+    border-radius:999px;
+    font-size:.82rem;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+
+  main{padding:16px;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 1px 6px rgba(0,0,0,.05);
+  }
+  .card h3{
+    font-size:1rem;
+    color:var(--primary);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{padding-left:1.1em;}
+  .card li{font-size:.87rem;margin-bottom:4px;}
+  .why-badge{
+    display:inline-block;
+    margin-top:8px;
+    background:#FBF1DC;
+    color:#8a6a1c;
+    border:1px solid var(--accent);
+    border-radius:8px;
+    padding:6px 10px;
+    font-size:.8rem;
+  }
+
+  .chapter-num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:26px;height:26px;
+    background:var(--secondary);
+    color:#fff;
+    border-radius:50%;
+    font-size:.78rem;
+    font-weight:700;
+    margin-right:6px;
+  }
+
+  .case-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .case-tag{
+    font-size:.7rem;
+    background:var(--primary);
+    color:#fff;
+    padding:2px 8px;
+    border-radius:999px;
+  }
+
+  blockquote{
+    border-left:4px solid var(--accent);
+    background:#FBF6E9;
+    padding:10px 14px;
+    font-size:.9rem;
+    font-style:italic;
+    border-radius:0 8px 8px 0;
+    margin-bottom:8px;
+  }
+  blockquote .note{
+    display:block;
+    font-style:normal;
+    font-size:.72rem;
+    color:var(--text-sub);
+    margin-top:4px;
+  }
+
+  .action-item{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 auto;
+    background:var(--accent);
+    color:#3a2e0f;
+    font-weight:800;
+    width:28px;height:28px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:.85rem;
+  }
+  .action-meta{
+    font-size:.78rem;
+    color:var(--text-sub);
+    margin-top:4px;
+  }
+
+  .related-book{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+    font-size:.87rem;
+    margin-bottom:8px;
+  }
+  .related-book .icon{flex:0 0 auto;}
+
+  footer{
+    text-align:center;
+    font-size:.72rem;
+    color:var(--text-sub);
+    margin-top:24px;
+    padding:0 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">📖 今日読むべき本</div>
+  <h1>🧠 一汁一菜でよいという提案</h1>
+  <div class="author">著者：土井善晴 ／ カテゴリ：ライフスタイル</div>
+  <div class="badges">
+    <span class="badge">📅 2016年刊行</span>
+    <span class="badge">📚 20万部突破</span>
+    <span class="badge">🍚 新潮文庫</span>
+  </div>
+</header>
+
+<div class="why-how">
+  <h2>💡 要約：問い × 答え × 根拠</h2>
+  <div class="qa-row">
+    <span class="qtag">Q</span>
+    <p>頑張っても終わらない毎日の献立づくり、どうすれば楽になる？</p>
+  </div>
+  <div class="qa-row answer">
+    <span class="qtag">A</span>
+    <p>「ご飯と具だくさんの味噌汁、それでいい」——一汁一菜という"型"に立ち返ればいい。</p>
+  </div>
+  <div class="qa-row reason">
+    <span class="qtag">Why</span>
+    <p>現代人は日常（ケ）の食事にも特別な日（ハレ）の基準を無意識に求めてしまい、それが疲弊の正体だから。型があれば毎日でも飽きず、判断コストもゼロになる。</p>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="num">7</div><div class="label">章構成</div></div>
+    <div class="stat"><div class="num">10分</div><div class="label">味噌汁が完成</div></div>
+    <div class="stat"><div class="num">1汁1菜</div><div class="label">シンプルな型</div></div>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">🔎 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🍚 一汁一菜</h3>
+      <ul>
+        <li>ご飯＋具だくさんの味噌汁（＋あれば漬物）という食の基本形</li>
+        <li>だしを取らなくても具材から旨味が出る</li>
+        <li>季節の野菜が変わるので毎日でも飽きない</li>
+        <li>料理の上手下手や男女の違いに関係なく誰でも作れる</li>
+      </ul>
+      <div class="why-badge">🔑 理由：判断コストをゼロにし、続けられる仕組みだから</div>
+    </div>
+
+    <div class="card">
+      <h3>⛩️ ハレとケ</h3>
+      <ul>
+        <li>ハレ＝特別な日のごちそう、ケ＝日常のありふれた食事</li>
+        <li>民俗学由来の日本人の生活リズムの区分</li>
+        <li>現代人はケの食事にハレの基準（品数・栄養・見栄え）を求めがち</li>
+      </ul>
+      <div class="why-badge">🔑 理由：この混同こそが「毎日頑張らなきゃ」という疲弊の正体だから</div>
+    </div>
+
+    <div class="card">
+      <h3>🏺 家庭料理は民藝</h3>
+      <ul>
+        <li>柳宗悦の民藝運動から着想を得た土井の発見</li>
+        <li>名もなき日常の営みの中にこそ美が宿るという思想</li>
+        <li>家庭料理をプロの仕事と切り離して捉え直す</li>
+      </ul>
+      <div class="why-badge">🔑 理由：家庭料理に「完璧さ」を求める呪縛を外すため</div>
+    </div>
+
+    <div class="card">
+      <h3>🔄 和食を初期化する</h3>
+      <ul>
+        <li>基本の型（一汁一菜）に一度立ち返る</li>
+        <li>型があるからこそ自由な応用ができるという逆説</li>
+        <li>洋食・中華でも「一汁一菜」の考え方は転用可能</li>
+      </ul>
+      <div class="why-badge">🔑 理由：制約に見える型が、実は創造性と柔軟性の土台になるから</div>
+    </div>
+
+    <div class="card">
+      <h3>🤝 作る人と食べる人の関係</h3>
+      <ul>
+        <li>食事は栄養補給ではなく人と人の関係性の場</li>
+        <li>作る側の負担だけでなく、食べる側の感謝や理解も問い直す</li>
+      </ul>
+      <div class="why-badge">🔑 理由：料理を「作業」から「関係」に捉え直すと意味が変わるから</div>
+    </div>
+
+    <div class="card">
+      <h3>📏 暮らしの寸法</h3>
+      <ul>
+        <li>他人の基準ではなく、自分の暮らしに合った適量・適度を見つける</li>
+        <li>時間・気力・予算の「実寸」を知ることが持続可能性の鍵</li>
+      </ul>
+      <div class="why-badge">🔑 理由：一般論ではなく自分サイズの基準こそ長続きするから</div>
+    </div>
+
+    <div class="card">
+      <h3>🌱 利他としての料理</h3>
+      <ul>
+        <li>中島岳志との対談『料理と利他』へ発展したテーマ</li>
+        <li>自然を尊重し、他者のために作ることの中に利他が宿る</li>
+      </ul>
+      <div class="why-badge">🔑 理由：一汁一菜がコロナ禍のステイホーム期に多くの人の支えになったから</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+    <div class="card">
+      <h3><span class="chapter-num">一</span>今、なぜ一汁一菜か</h3>
+      <ul><li>現代の家庭料理が疲弊している現状を指摘</li><li>「頑張らなくていい」という視点を提示</li></ul>
+      <div class="why-badge">🔑 理由：本書全体の入口となる問題提起だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">二</span>暮らしの寸法</h3>
+      <ul><li>自分の暮らしに合った適量・リズムを見つける</li><li>他人基準からの脱却</li></ul>
+      <div class="why-badge">🔑 理由：持続可能な食生活の土台になる考え方だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">三</span>毎日の食事の意味</h3>
+      <ul><li>ハレとケの違いを整理</li><li>日常の食事に特別さを求める矛盾を指摘</li></ul>
+      <div class="why-badge">🔑 理由：疲弊の根本原因への気づきを与えるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">四</span>作る人と食べる人の関係</h3>
+      <ul><li>食卓を家族・自分自身との関係性として捉える</li></ul>
+      <div class="why-badge">🔑 理由：料理を作業でなく関係の営みへと転換するから</div>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">五</span>おいしさの原点</h3>
+      <ul><li>素材そのものの味を活かすシンプルな調理法</li><li>手をかけることが必ずしも美味しさに直結しない</li></ul>
+      <div class="why-badge">🔑 理由：「手抜き＝悪」という思い込みを崩すから</div>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">六</span>和食を初期化する</h3>
+      <ul><li>基本の型に立ち返ることで応用力が生まれる</li></ul>
+      <div class="why-badge">🔑 理由：制約と自由が両立する逆説を示すから</div>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">七</span>一汁一菜からはじまる楽しみ</h3>
+      <ul><li>実践の先にある暮らしの豊かさ・楽しみ</li></ul>
+      <div class="why-badge">🔑 理由：制約に見える提案が実は楽しみの入口だと締めくくるから</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+    <div class="card">
+      <div class="case-header"><h3>⏱️ 一人分の味噌汁を10分で</h3><span class="case-tag">実践例</span></div>
+      <p style="font-size:.87rem;margin-top:6px;">具材と水を鍋に入れて中火にかけ、煮立ったら味噌を溶くだけ。忙しい一人暮らしでも即座に完成する。</p>
+      <div class="why-badge">🔑 この例が示すこと：「時間がない」が言い訳にならない手軽さこそ継続の鍵</div>
+    </div>
+    <div class="card">
+      <div class="case-header"><h3>📺 テレビ番組で紹介された具だくさん味噌汁</h3><span class="case-tag">メディア事例</span></div>
+      <p style="font-size:.87rem;margin-top:6px;">バラエティ番組でも「土井善晴流 具だくさん味噌汁」として取り上げられ、一般家庭で再現された。</p>
+      <div class="why-badge">🔑 この例が示すこと：専門知識不要のシンプルな型は伝播力が高い</div>
+    </div>
+    <div class="card">
+      <div class="case-header"><h3>🏠 コロナ禍ステイホーム期の反響</h3><span class="case-tag">社会的背景</span></div>
+      <p style="font-size:.87rem;margin-top:6px;">中島岳志との対談「一汁一菜と利他」が自粛生活中に大きな反響を呼び、後に『料理と利他』として書籍化。</p>
+      <div class="why-badge">🔑 この例が示すこと：家庭料理の負担が急増する危機の時こそ、シンプルな型が人を救う</div>
+    </div>
+    <div class="card">
+      <div class="case-header"><h3>🥬 実践者の声（買い物・体調の変化）</h3><span class="case-tag">読者体験</span></div>
+      <p style="font-size:.87rem;margin-top:6px;">献立を考えるストレスが減り、買い物量が減少。ご飯をしっかり食べても体重増加を感じにくいという声も。</p>
+      <div class="why-badge">🔑 この例が示すこと：効果の本質は「心理的負担の軽減」にある</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+    <div class="card">
+      <blockquote>「ご飯と具だくさんの味噌汁。それでいい。」<span class="note">本書全体を貫く核心メッセージ</span></blockquote>
+      <blockquote>「一汁一菜とは、ただの和食献立のすすめではありません。一汁一菜というシステムであり、思想であり、美学であり、生き方だと思うのです。」<span class="note">一汁一菜を単なるレシピでなく思想として位置づける一文</span></blockquote>
+      <blockquote>「一汁一菜は決して手抜きではありません。素材の持ち味を引き出すにはシンプルな料理がいちばんです。」<span class="note">「手抜き＝悪」という誤解への反論</span></blockquote>
+      <blockquote>「家庭料理は民藝だ」<span class="note">要旨：柳宗悦の民藝思想を援用した土井の中心的発見</span></blockquote>
+      <blockquote>「顔を洗ったり部屋を掃除したりするのと同じ、毎日繰り返す日常の仕事の1つとして受け入れてもらえるんじゃないでしょうか。」<span class="note">家庭料理を特別視せず日常の営みとして位置づける一言</span></blockquote>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+    <div class="card">
+      <div class="action-item">
+        <span class="action-num">1</span>
+        <div>
+          <strong>今夜、具だくさん味噌汁を作ってみる（15〜20分）</strong>
+          <p style="font-size:.85rem;margin-top:4px;">冷蔵庫にある野菜を3〜4種類切って鍋に入れ、水を加えて煮立て、味噌を溶くだけ。</p>
+          <div class="action-meta">🎯 目的：だし不要・型のシンプルさを体感する<br>📈 期待効果：「献立を考える」ストレスが1食分減り、手軽さを実感できる</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="action-item">
+        <span class="action-num">2</span>
+        <div>
+          <strong>自分の「暮らしの寸法」を書き出す（15分）</strong>
+          <p style="font-size:.85rem;margin-top:4px;">平日の夕食にかけられる時間・気力・予算を紙に書き出し、無理のない基準を可視化する。</p>
+          <div class="action-meta">🎯 目的：他人基準ではなく自分の実寸を知る<br>📈 期待効果：「頑張りすぎる料理」への罪悪感を手放すきっかけになる</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="action-item">
+        <span class="action-num">3</span>
+        <div>
+          <strong>冷蔵庫の野菜を「味噌汁行き」に仕分ける（10分）</strong>
+          <p style="font-size:.85rem;margin-top:4px;">使いきれていない半端な野菜を細かく刻んでストック・冷凍しておく習慣を作る。</p>
+          <div class="action-meta">🎯 目的：一汁一菜の実践ハードルをさらに下げる<br>📈 期待効果：食材ロス削減と、次回すぐ味噌汁が作れる状態をキープできる</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="why-how" style="margin-top:4px;">
+  <h2>📚 関連書籍</h2>
+  <div class="related-book"><span class="icon">🍽️</span><span><strong>料理と利他</strong>（土井善晴・中島岳志）：一汁一菜の思想を「利他」という哲学的視点からさらに掘り下げた対談集</span></div>
+  <div class="related-book"><span class="icon">🍽️</span><span><strong>くらしのための料理学</strong>（土井善晴）：一汁一菜の思想を暮らし全体に広げた発展編</span></div>
+  <div class="related-book"><span class="icon">🍽️</span><span><strong>お味噌知る。</strong>（土井善晴・土井光）：一汁一菜の核となる味噌汁の技術を深める実用編</span></div>
+  <div class="related-book"><span class="icon">🏺</span><span><strong>民藝の教科書シリーズ</strong>（柳宗悦関連）：「家庭料理は民藝だ」という発見の思想的源流</span></div>
+  <div class="related-book"><span class="icon">🌿</span><span><strong>シンプルに生きる 人生の本物の安らぎを味わう</strong>（ドミニック・ローホー）：「頑張らない」暮らしという価値観で響き合う一冊</span></div>
+</div>
+
+<footer>
+  📖 読書サマリー自動生成システム ／ Web調査に基づく要約（本文の直接引用が取れない箇所は要旨として記載）
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = document.querySelectorAll('section.panel');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      panels.forEach(function(p){ p.classList.remove('active'); p.setAttribute('hidden',''); });
+      tab.setAttribute('aria-selected','true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      panel.classList.add('active');
+      panel.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
