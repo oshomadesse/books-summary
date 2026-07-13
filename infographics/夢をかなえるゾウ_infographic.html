@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ja">
+<!--
+  カラーパレット（プライマリー / セカンダリー / アクセント）
+  primary:   #C2410C (テラコッタ・インドの土の色)
+  secondary: #0F766E (孔雀の羽を思わせるティール)
+  accent:    #F4B400 (ガネーシャ像の金色)
+  背景:      #FFF8EE (生成りの紙色)
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>夢をかなえるゾウ - インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#C2410C;
+    --primary-light:#E06A34;
+    --secondary:#0F766E;
+    --secondary-light:#3B9A91;
+    --accent:#F4B400;
+    --bg:#FFF8EE;
+    --card:#FFFFFF;
+    --text:#2E241C;
+    --text-sub:#7A6E60;
+    --border:#EFE0C8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);
+    color:#fff;
+    padding:28px 20px 24px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+  }
+  header .eyebrow{
+    font-size:.75rem;
+    letter-spacing:.15em;
+    opacity:.85;
+    margin-bottom:8px;
+  }
+  header h1{
+    font-size:1.5rem;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  header .author{
+    font-size:.95rem;
+    opacity:.9;
+  }
+  .badges{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-top:14px;
+  }
+  .badge{
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.4);
+    border-radius:999px;
+    padding:5px 12px;
+    font-size:.75rem;
+  }
+
+  .why-how{
+    margin:16px;
+    background:var(--card);
+    border-radius:16px;
+    padding:18px 16px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+    border:1px solid var(--border);
+  }
+  .why-how h2{
+    font-size:1rem;
+    color:var(--secondary);
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+    align-items:flex-start;
+  }
+  .qa-row .qtag{
+    flex:0 0 auto;
+    background:var(--primary);
+    color:#fff;
+    font-size:.72rem;
+    font-weight:700;
+    padding:4px 8px;
+    border-radius:8px;
+    white-space:nowrap;
+  }
+  .qa-row.answer .qtag{background:var(--secondary);}
+  .qa-row.reason .qtag{background:var(--accent);color:#3a2e0f;}
+  .qa-row p{font-size:.9rem;}
+
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:14px;
+  }
+  .stat{
+    background:var(--bg);
+    border-radius:12px;
+    padding:10px 6px;
+    text-align:center;
+    border:1px solid var(--border);
+  }
+  .stat .num{
+    font-size:1.3rem;
+    font-weight:800;
+    color:var(--secondary);
+  }
+  .stat .label{
+    font-size:.68rem;
+    color:var(--text-sub);
+    margin-top:2px;
+  }
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:0 16px;
+    margin-top:20px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+    padding:10px 14px;
+    border-radius:999px;
+    font-size:.82rem;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+
+  main{padding:16px;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 1px 6px rgba(0,0,0,.05);
+  }
+  .card h3{
+    font-size:1rem;
+    color:var(--primary);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{padding-left:1.1em;}
+  .card li{font-size:.87rem;margin-bottom:4px;}
+  .why-badge{
+    display:inline-block;
+    margin-top:8px;
+    background:#FDEFD8;
+    color:#8a5a1c;
+    border:1px solid var(--accent);
+    border-radius:8px;
+    padding:6px 10px;
+    font-size:.8rem;
+  }
+
+  .chapter-num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:26px;height:26px;
+    background:var(--secondary);
+    color:#fff;
+    border-radius:50%;
+    font-size:.78rem;
+    font-weight:700;
+    margin-right:6px;
+  }
+
+  .case-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .case-tag{
+    font-size:.7rem;
+    background:var(--primary);
+    color:#fff;
+    padding:2px 8px;
+    border-radius:999px;
+  }
+
+  blockquote{
+    border-left:4px solid var(--accent);
+    background:#FBF1DC;
+    padding:10px 14px;
+    font-size:.9rem;
+    font-style:italic;
+    border-radius:0 8px 8px 0;
+    margin-bottom:8px;
+  }
+  blockquote .note{
+    display:block;
+    font-style:normal;
+    font-size:.72rem;
+    color:var(--text-sub);
+    margin-top:4px;
+  }
+
+  .action-item{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 auto;
+    background:var(--accent);
+    color:#3a2e0f;
+    font-weight:800;
+    width:28px;height:28px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:.85rem;
+  }
+  .action-meta{
+    font-size:.78rem;
+    color:var(--text-sub);
+    margin-top:4px;
+  }
+
+  .related-book{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+    font-size:.87rem;
+    margin-bottom:8px;
+  }
+  .related-book .icon{flex:0 0 auto;}
+
+  footer{
+    text-align:center;
+    font-size:.72rem;
+    color:var(--text-sub);
+    margin-top:24px;
+    padding:0 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">📖 今日読むべき本</div>
+  <h1>🧠 夢をかなえるゾウ</h1>
+  <div class="author">著者：水野敬也 ／ カテゴリ：自己啓発</div>
+  <div class="badges">
+    <span class="badge">📅 2007年刊行</span>
+    <span class="badge">📚 シリーズ累計430万部超</span>
+    <span class="badge">📺 2009年TBSアニメ化</span>
+  </div>
+</header>
+
+<div class="why-how">
+  <h2>💡 要約：問い × 答え × 根拠</h2>
+  <div class="qa-row">
+    <span class="qtag">Q</span>
+    <p>自己啓発本を何冊読んでも三日坊主で終わってしまうのはなぜ？</p>
+  </div>
+  <div class="qa-row answer">
+    <span class="qtag">A</span>
+    <p>「意識を変えよう」とするのをやめ、関西弁のゾウの神様ガネーシャが出す靴磨きやトイレ掃除のような地味な29の課題を、一つずつ「行動」に移すこと。</p>
+  </div>
+  <div class="qa-row reason">
+    <span class="qtag">Why</span>
+    <p>人間の意志は弱く、「今日から変わろう」と決意するだけなら実際には何も頑張らずに済む——それは変化からの「逃げ」に過ぎない。だからこそ、考え方でなく具体的な行動を一つずつ積み重ねるしかないから。</p>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><div class="num">29</div><div class="label">ガネーシャの課題数</div></div>
+    <div class="stat"><div class="num">430万部</div><div class="label">シリーズ累計発行</div></div>
+    <div class="stat"><div class="num">2007</div><div class="label">刊行年</div></div>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">🔎 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🐘 29の地味な課題</h3>
+      <ul>
+        <li>靴をみがく、コンビニでお釣りを募金する、トイレ掃除など、誰でもできる小さな行動ばかり</li>
+        <li>ガネーシャが毎晩ひとつずつ主人公に課題を出す構成</li>
+        <li>派手な閃きや才能ではなく、地道な反復こそが土台</li>
+      </ul>
+      <div class="why-badge">🔑 理由：偉大な成果は特別な才能ではなく、誰でもできる小さな習慣の積み重ねから生まれるから</div>
+    </div>
+
+    <div class="card">
+      <h3>🔒 「自分の考え方にしがみつく」正体</h3>
+      <ul>
+        <li>「変わりたい」と思いながら変われないのは、実は今の考え方に固執しているから</li>
+        <li>「才能がない」「環境が悪い」という言い訳が行動しない理由になっている</li>
+      </ul>
+      <div class="why-badge">🔑 理由：原因を外部や才能のせいにすると、行動しないことを正当化できてしまうから</div>
+    </div>
+
+    <div class="card">
+      <h3>🏃 意識ではなく行動を変える</h3>
+      <ul>
+        <li>「今日から変わろう」と決意することは、実は具体的な行動を先延ばしにする「逃げ」</li>
+        <li>意識を変えようとする努力より、目の前の一つの行動を変える方が確実</li>
+      </ul>
+      <div class="why-badge">🔑 理由：決意するだけなら実際には何も頑張らずに済んでしまうから</div>
+    </div>
+
+    <div class="card">
+      <h3>🌟 偉人たちも最初は普通だった</h3>
+      <ul>
+        <li>ガネーシャは、ニュートン・孔子・ナポレオン・ビル・ゲイツなど歴史上の偉人を「自分が育ててきた」と語る（物語上の設定）</li>
+        <li>特別な血筋や才能ではなく、地道な課題の継続が偉業の土台という示唆</li>
+      </ul>
+      <div class="why-badge">🔑 理由：誰にでも実践可能な行動の先に大きな変化があると読者に示すため</div>
+    </div>
+
+    <div class="card">
+      <h3>🙏 謙虚さと感謝の習慣</h3>
+      <ul>
+        <li>コンビニでお釣りを募金する、毎日感謝するなどの課題が繰り返し登場</li>
+        <li>大きな欲を持つ人ほど「今すでに満たされている」ことへの気づきが必要</li>
+      </ul>
+      <div class="why-badge">🔑 理由：不足を埋めようとする焦りより、満たされている実感の方が心を安定させ行動を続けさせるから</div>
+    </div>
+
+    <div class="card">
+      <h3>🎁 人が欲しがるものを先取りするサービス精神</h3>
+      <ul>
+        <li>会った人を笑わせる、人の長所を見つけて褒める、人の長所を盗む</li>
+        <li>与える・楽しませる姿勢が人間関係の質を変える</li>
+      </ul>
+      <div class="why-badge">🔑 理由：与える人こそ信頼と協力を得て、夢の実現に必要な人脈を築けるから</div>
+    </div>
+
+    <div class="card">
+      <h3>⚙️ 継続のための環境設計</h3>
+      <ul>
+        <li>「決めたことを続けるための環境を作る」「毎朝、全身鏡を見て身なりを整える」</li>
+        <li>意志力ではなく仕組みで習慣を支える発想</li>
+      </ul>
+      <div class="why-badge">🔑 理由：意志力に頼る計画は必ず崩れるが、環境の工夫は続けやすいから</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+    <div class="card">
+      <h3><span class="chapter-num">1</span>基本の習慣をつくる（課題1〜9）</h3>
+      <ul><li>靴をみがく／コンビニで募金する／食事を腹八分におさえる</li><li>人が欲しがるものを先取りする／会った人を笑わせる／トイレ掃除</li><li>まっすぐ帰宅する／その日頑張れた自分をホメる／一日何かをやめてみる</li></ul>
+      <div class="why-badge">🔑 理由：最初に「地味な行動でも人生は動く」という体感を作る導入部だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">2</span>自分を知り、環境を整える（課題10〜14）</h3>
+      <ul><li>決めたことを続けるための環境を作る／毎朝、全身鏡で身なりを整える</li><li>自分が一番得意なことを人に聞く／自分の苦手なことを人に聞く</li><li>夢を楽しく想像する</li></ul>
+      <div class="why-badge">🔑 理由：行動を続けるための仕組みと自己認識を先に固める段階だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">3</span>運と感謝を引き寄せる（課題15〜19）</h3>
+      <ul><li>運が良いと口に出して言う／ただでもらう／明日の準備をする</li><li>身近な一番大事な人を喜ばせる／誰か一人のいいところを見つけてホメる</li></ul>
+      <div class="why-badge">🔑 理由：謙虚さと感謝の姿勢が運や人間関係を引き寄せるという教え</div>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">4</span>人から学び、機会をつかむ（課題20〜23）</h3>
+      <ul><li>人の長所を盗む／求人情報を見る</li><li>お参りに行く／人気店に入り、人気の理由を観察する</li></ul>
+      <div class="why-badge">🔑 理由：他者や市場から学び、行動範囲を広げていく段階だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">5</span>夢へ踏み出す最終課題（課題24〜29）</h3>
+      <ul><li>24番目の課題の詳細：不明（Web上で確認できず）</li><li>やらずに後悔していることを今日から始める／サービスとして夢を語る</li><li>人の成功をサポートする／応募する／毎日、感謝する</li></ul>
+      <div class="why-badge">🔑 理由：これまでの小さな習慣の総仕上げとして、実際に夢へ向けた具体的な一歩を踏み出させる締めくくりだから</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+    <div class="card">
+      <div class="case-header"><h3>👑 ガネーシャが語る偉人育成伝説</h3><span class="case-tag">物語上の設定</span></div>
+      <p style="font-size:.87rem;margin-top:6px;">ガネーシャは、ニュートン・孔子・ナポレオン・ビル・ゲイツなど歴史上の偉人たちを「自分が育ててきた」と語る。史実ではなく物語上の演出だが、偉業の裏には地味な習慣があったという本書のメッセージを象徴する挿話。</p>
+      <div class="why-badge">🔑 この例が示すこと：特別な血筋や才能ではなく、地道な行動の継続こそが偉業の土台だという示唆</div>
+    </div>
+    <div class="card">
+      <div class="case-header"><h3>👞 「靴磨き」の課題に込められた教え</h3><span class="case-tag">本文エピソード</span></div>
+      <p style="font-size:.87rem;margin-top:6px;">ガネーシャは「靴はずっと気張って自分を支えてくれとんのや。そういう自分を支えてくれてるもんを大事にできんやつが成功するか」と語り、身近なものへの感謝から課題を始めさせる。</p>
+      <div class="why-badge">🔑 この例が示すこと：大きな目標の前に、今すでに自分を支えているものへの感謝が土台になる</div>
+    </div>
+    <div class="card">
+      <div class="case-header"><h3>🚽 「トイレ掃除」の課題に込められた教え</h3><span class="case-tag">本文エピソード</span></div>
+      <p style="font-size:.87rem;margin-top:6px;">「一番汚いところを掃除する、ちゅうことは、人がやりたがらんことやるからこそ、一番喜ばれるんや」というガネーシャの言葉が、誰もやりたがらない仕事にこそ価値が生まれる理由を示す。</p>
+      <div class="why-badge">🔑 この例が示すこと：人が避けることを引き受ける姿勢が、信頼と機会を引き寄せる</div>
+    </div>
+    <div class="card">
+      <div class="case-header"><h3>🏢 主人公の成長物語</h3><span class="case-tag">本文のあらすじ</span></div>
+      <p style="font-size:.87rem;margin-top:6px;">建築家を志望しながらモヤモヤと過ごしていた主人公の会社員が、ガネーシャの29の課題を一つずつクリアしていく過程で行動を変え、物語の終盤には建築業界で話題の人物と呼ばれるまでに成長する。</p>
+      <div class="why-badge">🔑 この例が示すこと：地味な課題の積み重ねが、キャリアという大きな変化にもつながる</div>
+    </div>
+    <div class="card">
+      <div class="case-header"><h3>📈 読者・社会への広がり</h3><span class="case-tag">社会的インパクト</span></div>
+      <p style="font-size:.87rem;margin-top:6px;">シリーズ累計430万部を超えるベストセラーとなり、2009年にはTBSでアニメ化。読書レビューサイトでは「行動が変わった」「今まで読んだ自己啓発本と違い、明確に生活の変化を感じた」という声が多く見られる。</p>
+      <div class="why-badge">🔑 この例が示すこと：小さな行動の提案という形式が、幅広い読者に実践のハードルを下げて届いた</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+    <div class="card">
+      <blockquote>「自分が会社行く時も、営業で外回りする時も、カラオケ行ってバカ騒ぎしてる時も、靴はずっと気張って支えてくれとんのや。そういう自分支えてくれてるもん大事にできんやつが成功するか、アホー！」<span class="note">「靴をみがく」課題に添えられたガネーシャの言葉</span></blockquote>
+      <blockquote>「トイレを掃除する、ちゅうことはやな、一番汚いところを掃除するちゅうことや。そんなもん誰かて、やりたないやろ。けどな、人がやりたがらんことやるからこそ、一番喜ばれるんや」<span class="note">「トイレ掃除」課題に添えられたガネーシャの言葉</span></blockquote>
+      <blockquote>「成功するような自分に変わりたいと思って、でも今までずっと変われへんかったっちゅうことは、それはつまり、『自分の考え方にしがみついとる』ちゅうことやんか」<span class="note">「変われない」ことの正体を突く一言</span></blockquote>
+      <blockquote>「人間は意識を変えることはできない……その場で『今日から変わるんだ』て決めて、頑張ってる未来の自分を想像するの楽やろ。つまりな、意識を変えようとする、いうんは、言い方変えたら『逃げ』やねん」<span class="note">行動ではなく意識だけを変えようとすることへの警告</span></blockquote>
+      <blockquote>「毎日、感謝する」<span class="note">要旨：大きな欲を持つ人ほど実践すべき最終課題の一つ。不足を埋めるのでなく、すでに周りに満たされているものに気づき感謝することで満たされるという教え</span></blockquote>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+    <div class="card">
+      <div class="action-item">
+        <span class="action-num">1</span>
+        <div>
+          <strong>靴を磨き、「なぜ今日まで放っておいたか」を1行メモする（15分）</strong>
+          <p style="font-size:.85rem;margin-top:4px;">手持ちの靴を1足取り出し、布やブラシで磨きながら、日頃自分を支えてくれているものに意識を向ける。</p>
+          <div class="action-meta">🎯 目的：身近なものへの感謝を体感覚として持つ<br>📈 期待効果：小さな達成感が次の行動への足がかりになる</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="action-item">
+        <span class="action-num">2</span>
+        <div>
+          <strong>コンビニなどでお釣りを募金し、「ただでもらう」ものにも意識的に感謝する（15分）</strong>
+          <p style="font-size:.85rem;margin-top:4px;">買い物のついでに募金箱へお釣りを入れ、帰り道で今日すでに与えられているものを3つ書き出す。</p>
+          <div class="action-meta">🎯 目的：見返りを求めない小さな「与える」習慣を作る<br>📈 期待効果：不足感が薄れ、謙虚さと満たされている感覚が芽生える</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="action-item">
+        <span class="action-num">3</span>
+        <div>
+          <strong>家族や同僚など3人に「自分の得意なこと・苦手なこと」を聞く（20〜30分）</strong>
+          <p style="font-size:.85rem;margin-top:4px;">LINEや対面で「私の得意なところと苦手なところ、正直にどう思う？」と尋ね、回答をメモにまとめる。</p>
+          <div class="action-meta">🎯 目的：自分では気づけない強み・弱みという盲点を埋める<br>📈 期待効果：今後どこに力を注ぐべきかの方向性が見えてくる</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="why-how" style="margin-top:4px;">
+  <h2>📚 関連書籍</h2>
+  <div class="related-book"><span class="icon">🐘</span><span><strong>夢をかなえるゾウ2 ガネーシャと貧乏神</strong>（水野敬也）：シリーズ続編。お金にまつわる新たな課題群を通じて教えを深める</span></div>
+  <div class="related-book"><span class="icon">🧀</span><span><strong>チーズはどこへ消えた？</strong>（スペンサー・ジョンソン）：変化を恐れず行動することの大切さを寓話形式で説く自己啓発の古典</span></div>
+  <div class="related-book"><span class="icon">🧠</span><span><strong>マインドセット「やればできる！」の研究</strong>（キャロル・S・ドゥエック）：「人は変われる」という前提を心理学的に裏づける理論編</span></div>
+  <div class="related-book"><span class="icon">💰</span><span><strong>バビロンの大富豪</strong>（ジョージ・S・クレイソン）：寓話の形で普遍的な行動原則を説く構成が共通する一冊</span></div>
+  <div class="related-book"><span class="icon">🛣️</span><span><strong>道は開ける</strong>（デール・カーネギー）：不安を行動によって乗り越えるという実践重視の姿勢が共通する</span></div>
+</div>
+
+<footer>
+  📖 読書サマリー自動生成システム ／ Web調査に基づく要約（本文の直接引用が取れない箇所は要旨として記載）
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = document.querySelectorAll('section.panel');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      panels.forEach(function(p){ p.classList.remove('active'); p.setAttribute('hidden',''); });
+      tab.setAttribute('aria-selected','true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      panel.classList.add('active');
+      panel.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
