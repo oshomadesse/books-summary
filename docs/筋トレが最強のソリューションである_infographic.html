@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>筋トレが最強のソリューションである | 読書インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー: #E63946 (情熱の赤 / エネルギー)
+  セカンダリー: #1D3557 (深紺 / 信頼・安定)
+  アクセント:   #F4A300 (ゴールド / 達成・モチベーション)
+  背景グラデーション: linear-gradient(135deg, #1D3557, #457B9D)
+-->
+<style>
+  :root{
+    --primary:#E63946;
+    --primary-dark:#B71E2B;
+    --secondary:#1D3557;
+    --secondary-light:#457B9D;
+    --accent:#F4A300;
+    --bg:#F5F5F0;
+    --card-bg:#FFFFFF;
+    --text:#1D1D1D;
+    --text-sub:#5A5A5A;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Yu Gothic","Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--secondary),var(--secondary-light));
+    color:#fff;
+    padding:28px 20px 32px;
+    text-align:center;
+    border-bottom:6px solid var(--accent);
+  }
+  header .badge{
+    display:inline-block;
+    background:var(--accent);
+    color:#1D1D1D;
+    font-weight:700;
+    font-size:13px;
+    padding:4px 14px;
+    border-radius:999px;
+    margin-bottom:12px;
+  }
+  header h1{
+    font-size:22px;
+    line-height:1.4;
+    margin-bottom:8px;
+  }
+  header p.author{
+    font-size:14px;
+    opacity:0.9;
+  }
+  main{
+    max-width:640px;
+    margin:0 auto;
+    padding:20px 16px;
+  }
+  /* ファーストビュー: Why & How */
+  .hero-card{
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    padding:20px;
+    box-shadow:0 4px 16px rgba(0,0,0,0.08);
+    margin-bottom:24px;
+    border-top:6px solid var(--primary);
+  }
+  .hero-card h2{
+    font-size:16px;
+    color:var(--primary);
+    margin-bottom:10px;
+  }
+  .qa-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:12px;
+    align-items:flex-start;
+  }
+  .qa-label{
+    flex:0 0 auto;
+    background:var(--secondary);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:8px;
+    white-space:nowrap;
+  }
+  .qa-label.why{background:var(--primary);}
+  .qa-label.how{background:var(--accent);color:#1D1D1D;}
+  .qa-text{font-size:14px;color:var(--text);}
+
+  /* 数値バッジ・グラフ */
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin:16px 0;
+  }
+  .stat-box{
+    background:#FDF6EC;
+    border-radius:12px;
+    padding:12px 10px;
+    text-align:center;
+    border:1px solid #F0E0C0;
+  }
+  .stat-num{
+    font-size:22px;
+    font-weight:800;
+    color:var(--primary-dark);
+    display:block;
+  }
+  .stat-label{
+    font-size:11px;
+    color:var(--text-sub);
+  }
+  .bar-wrap{margin:14px 0;}
+  .bar-title{font-size:12px;color:var(--text-sub);margin-bottom:4px;}
+  .bar-track{
+    background:#EEE;
+    border-radius:999px;
+    height:14px;
+    overflow:hidden;
+  }
+  .bar-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--primary),var(--accent));
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    color:#fff;
+    font-size:10px;
+    padding-right:6px;
+  }
+
+  /* タブ */
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin-bottom:16px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    background:#fff;
+    border:2px solid var(--secondary);
+    color:var(--secondary);
+    font-size:13px;
+    font-weight:700;
+    padding:8px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .2s;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--secondary);
+    color:#fff;
+  }
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.06);
+    border-left:5px solid var(--primary);
+  }
+  .card h3{
+    font-size:15px;
+    color:var(--secondary);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{
+    list-style:none;
+    font-size:13.5px;
+  }
+  .card ul li{
+    margin-bottom:6px;
+    padding-left:16px;
+    position:relative;
+  }
+  .card ul li::before{
+    content:"▸";
+    position:absolute;
+    left:0;
+    color:var(--primary);
+  }
+  .why-box{
+    margin-top:10px;
+    background:#FFF5F5;
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:var(--primary-dark);
+  }
+  .why-box b{color:var(--primary-dark);}
+
+  .quote-card{
+    background:linear-gradient(135deg,#1D3557,#457B9D);
+    color:#fff;
+    border-radius:var(--radius);
+    padding:18px;
+    margin-bottom:14px;
+    position:relative;
+  }
+  .quote-card::before{
+    content:"“";
+    font-size:40px;
+    color:var(--accent);
+    position:absolute;
+    top:0;
+    left:10px;
+    opacity:0.5;
+  }
+  .quote-text{
+    font-size:14px;
+    font-weight:600;
+    padding-left:20px;
+    margin-bottom:6px;
+  }
+  .quote-note{
+    font-size:11px;
+    opacity:0.85;
+    padding-left:20px;
+  }
+
+  .action-card{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background:#fff;
+    border-radius:var(--radius);
+    padding:14px;
+    margin-bottom:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.06);
+  }
+  .action-num{
+    flex:0 0 32px;
+    height:32px;
+    background:var(--accent);
+    color:#1D1D1D;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:14px;
+  }
+  .action-body h4{font-size:14px;color:var(--secondary);margin-bottom:4px;}
+  .action-body p{font-size:12.5px;color:var(--text-sub);margin-bottom:2px;}
+  .action-body .tag{
+    display:inline-block;
+    font-size:10.5px;
+    background:#FDF6EC;
+    color:var(--primary-dark);
+    padding:2px 8px;
+    border-radius:999px;
+    margin-top:4px;
+  }
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--text-sub);
+    margin-top:30px;
+    padding:0 20px;
+  }
+  .related-list{font-size:13px;}
+  .related-list li{margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="badge">🏷️ 自己啓発</span>
+  <h1>🧠 筋トレが最強のソリューションである<br>マッチョ社長が教える究極の悩み解決法</h1>
+  <p class="author">👤 著者: Testosterone（テストステロン）／自由国民社・2016年刊</p>
+</header>
+
+<main>
+
+  <!-- ファーストビュー: Why & How -->
+  <section class="hero-card">
+    <h2>⚡ 30秒でわかる要約（Why × How）</h2>
+    <div class="qa-row">
+      <span class="qa-label why">Q</span>
+      <span class="qa-text">なぜメンタル・仕事・恋愛の悩みが解決しないのか？</span>
+    </div>
+    <div class="qa-row">
+      <span class="qa-label how">A</span>
+      <span class="qa-text">悩みの多くは「自信のなさ」と「体調不良」が根っこにあり、頭で考えるだけでは解決しないから。</span>
+    </div>
+    <div class="qa-row">
+      <span class="qa-label why">根拠</span>
+      <span class="qa-text">著者自身が15歳で110kgの肥満児から筋トレで約40kg減量し人生を好転させた実体験。筋トレは自尊心を高め、ストレスホルモンを下げ、達成感という即効性のフィードバックを与える数少ない習慣だから。</span>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-box"><span class="stat-num">▲40kg</span><span class="stat-label">著者の減量実績</span></div>
+      <div class="stat-box"><span class="stat-num">6章</span><span class="stat-label">悩み別の章構成</span></div>
+      <div class="stat-box"><span class="stat-num">177</span><span class="stat-label">収録された格言数</span></div>
+      <div class="stat-box"><span class="stat-num">10万部+</span><span class="stat-label">シリーズ累計発行部数</span></div>
+    </div>
+
+    <div class="bar-wrap">
+      <div class="bar-title">📊 筋力レベルと死亡率の関係（続編『超 筋トレが最強のソリューションである』で紹介の研究より／Ruiz et al., 対象8,000人）</div>
+      <div class="bar-track"><div class="bar-fill" style="width:75%">筋力高い群 death risk -20〜30%</div></div>
+    </div>
+  </section>
+
+  <!-- タブ -->
+  <div class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">💡 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases" onclick="switchTab('cases')">🔍 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </div>
+
+  <!-- 主要概念 -->
+  <section id="panel-concepts" class="tab-panel active" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🏋️ 筋トレ=最強のソリューション</h3>
+      <ul>
+        <li>人生の悩みの大半（メンタル・体型・仕事・恋愛）は筋トレで解決するという本書の核心テーゼ</li>
+        <li>「筋トレしろ」という一貫したメッセージをあらゆる悩みに当てはめて反復する構成</li>
+        <li>難しい理論より「まず体を動かせ」という行動優先の思想</li>
+      </ul>
+      <div class="why-box"><b>理由（なぜ重要か）</b>：考えすぎて動けなくなっている人に、最初の一歩のハードルを極限まで下げて提示しているから。</div>
+    </div>
+    <div class="card">
+      <h3>🔥 著者の原体験という説得力</h3>
+      <ul>
+        <li>15歳で110kgの肥満児だった著者が、渡米中に筋トレと出会い約40kg減量</li>
+        <li>自身の劇的な変化を土台に「筋トレは裏切らない」と説く</li>
+        <li>抽象論ではなく一人称の成功体験がメッセージの重みを支える</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：理屈より実体験の方が読者の行動を後押しする力が強いため、自己啓発書として異例のバズを生んだ。</div>
+    </div>
+    <div class="card">
+      <h3>📱 SNS発の短文格言スタイル</h3>
+      <ul>
+        <li>Twitter（現X）で発信していた断言的な短文を177個収録</li>
+        <li>長い説明を避け、繰り返しでメッセージを脳に刷り込む文体</li>
+        <li>スキマ時間に数ページだけ読んでも成立する構成</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：情報過多で長文を読む余裕がない読者層に届く「読まれる工夫」がされているため。</div>
+    </div>
+    <div class="card">
+      <h3>💪 自己効力感（セルフエフィカシー）の獲得装置としての筋トレ</h3>
+      <ul>
+        <li>筋トレは「やった分だけ確実に結果が出る」数少ない習慣</li>
+        <li>小さな達成の積み重ねが「自分はできる」という感覚を育てる</li>
+        <li>この自己効力感が仕事・対人関係にも波及すると主張</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：自己肯定感の低さが多くの悩みの根本原因であり、その改善ルートとして最も再現性が高いから。</div>
+    </div>
+    <div class="card">
+      <h3>🍗 ダイエットの本質＝筋トレ＋食事管理</h3>
+      <ul>
+        <li>有酸素運動だけに頼るダイエットを否定し、筋トレと食事の両輪を強調</li>
+        <li>タンパク質摂取や適切なカロリー管理の重要性に繰り返し言及</li>
+        <li>リバウンドしない体づくりには筋量維持が不可欠と説く</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：短期的な体重減少ではなく、リバウンドしにくい体質と自己管理力を同時に手に入れる方法だから。</div>
+    </div>
+    <div class="card">
+      <h3>🧬 運動とメンタルヘルスの科学的つながり</h3>
+      <ul>
+        <li>筋トレなどのリズム運動でセロトニン（幸せホルモン）の分泌が促されるとされる</li>
+        <li>続編『超 筋トレが最強のソリューションである』では早稲田大学大学院の研究者と共著し、113本の論文でエビデンスを補強</li>
+        <li>高齢者でも筋トレにより筋力・認知機能・心肺機能が向上したという研究（シドニー大学 Yorgi らの研究）が紹介されている</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：格言集としての説得力だけでなく、後に科学的根拠でも裏付けられたため長く読み継がれている。</div>
+    </div>
+  </section>
+
+  <!-- 各章の要約 -->
+  <section id="panel-chapters" class="tab-panel" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>第1章 メンタルがボロボロになったあなたへ</h3>
+      <ul>
+        <li>不安・自信喪失・ストレス過多への処方箋として筋トレを提示</li>
+        <li>「考える前に体を動かせ」という即効的な対処法を繰り返す</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：メンタルの落ち込みは思考のループで悪化しやすく、身体を使うことで強制的にループを断ち切れるため。</div>
+    </div>
+    <div class="card">
+      <h3>第2章 何度ダイエットしても痩せないあなたへ</h3>
+      <ul>
+        <li>有酸素運動偏重のダイエットの限界を指摘</li>
+        <li>筋トレ＋タンパク質重視の食事管理がリバウンド防止の鍵と説く</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：筋肉量を保てないダイエットは基礎代謝を落としリバウンドを招くため、多くの人がつまずくポイントだから。</div>
+    </div>
+    <div class="card">
+      <h3>第3章 いつも自分に負けてしまうあなたへ</h3>
+      <ul>
+        <li>三日坊主・先延ばし癖への対処として筋トレの習慣化を提案</li>
+        <li>「ハードルを下げてまず始める」ことの重要性を説く</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：意志力に頼る自己管理は失敗しやすく、行動の仕組み化こそが継続の鍵であるため。</div>
+    </div>
+    <div class="card">
+      <h3>第4章 どうしても仕事で成功したいあなたへ</h3>
+      <ul>
+        <li>筋トレで培った規律・自己管理力がビジネスの成果にもつながると主張</li>
+        <li>体調管理は仕事のパフォーマンスの土台であると強調</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：体力・集中力が落ちた状態では判断力や交渉力も落ちるため、体調管理を仕事術の一部と捉え直させる。</div>
+    </div>
+    <div class="card">
+      <h3>第5章 異性との接し方が分からないあなたへ</h3>
+      <ul>
+        <li>見た目の変化と自信の向上が対人関係にも良い影響を与えると主張</li>
+        <li>清潔感・体型管理を自己投資の一環として位置づける</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：第一印象や自信のある振る舞いは対人関係の入り口として実際に影響力を持つため。</div>
+    </div>
+    <div class="card">
+      <h3>第6章 そろそろ筋トレしたくなってきたあなたへ</h3>
+      <ul>
+        <li>初心者向けの筋トレメニューやジムの使い方など実践的な後押し</li>
+        <li>「今日から始めよう」という行動喚起で締めくくる</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：ここまで読んで納得した読者を、実際の行動（初回のジム訪問など）へ橋渡しする章のため。</div>
+    </div>
+  </section>
+
+  <!-- 具体例 -->
+  <section id="panel-cases" class="tab-panel" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3>🎓 著者自身の劇的な減量ストーリー</h3>
+      <ul>
+        <li>背景：15歳時点で110kgの肥満体型に悩んでいた</li>
+        <li>渡米しての大学生活中に筋トレと出会い、約40kgの減量に成功</li>
+        <li>この経験が「筋トレは人生を変える」という本書全体の主張の出発点になっている</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）</b>：極端な体型コンプレックスからでも、筋トレという再現性の高い行動によって人生を好転できることを体現している。</div>
+    </div>
+    <div class="card">
+      <h3>📈 SNSから書籍化までのバズの軌跡</h3>
+      <ul>
+        <li>背景：2014年に暇つぶしで始めたTwitterアカウントが、筋トレ愛の発信で急速にフォロワーを拡大</li>
+        <li>フォロワー数万人規模となり出版オファーにつながり書籍化、後にシリーズ累計10万部超のヒットに</li>
+        <li>「マッチョ社長」という愛称でテレビ番組にも取り上げられる存在に</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：断定的で分かりやすいメッセージがSNS時代の情報消費スタイルと噛み合い、口コミで広がった好例。</div>
+    </div>
+    <div class="card">
+      <h3>🔬 続編で示された科学的裏付け</h3>
+      <ul>
+        <li>背景：格言集だった前作に対し「科学的根拠は？」という声に応える形で続編を企画</li>
+        <li>早稲田大学大学院スポーツ科学研究科の研究者と共著し、スポーツ科学・心理学の論文113本を検証</li>
+        <li>Ruizらの約8,000人対象の研究で「筋力レベルが高い人は低い人より死亡率が20〜30%低い」ことが紹介されている</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：感覚的な格言だけでなく、後から学術的エビデンスでも裏付けられたことで主張の信頼性が補強された事例。</div>
+    </div>
+    <div class="card">
+      <h3>👴 高齢者を対象にした運動研究</h3>
+      <ul>
+        <li>背景：筋トレの恩恵は若者だけのものと思われがちだった</li>
+        <li>シドニー大学のYorgiらのプロジェクトで、高齢者が筋トレを行うことで筋力・認知機能・心肺機能が向上したことが報告されている</li>
+      </ul>
+      <div class="why-box"><b>理由</b>：筋トレの効果が年齢を問わず「体を動かせる限りいつでも人生を変えられる」ことを示す根拠となっている。</div>
+    </div>
+  </section>
+
+  <!-- 重要な引用 -->
+  <section id="panel-quotes" class="tab-panel" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote-card">
+      <p class="quote-text">早寝早起き、健康な食事、運動。この３つの習慣は単純だがこれ以上に心と身体に効く治療も薬も存在しない。筋トレすればこの３つの習慣が骨の髄まで沁みこむ。</p>
+      <p class="quote-note">— 生活習慣の土台としての筋トレの位置づけを説く一節</p>
+    </div>
+    <div class="quote-card">
+      <p class="quote-text">筋トレで増すのは「希望」と「筋肉」、減るのは「ネガティブ思考」と「贅肉」。</p>
+      <p class="quote-note">— 本書を象徴する対句形式の格言</p>
+    </div>
+    <div class="quote-card">
+      <p class="quote-text">自信がない→筋トレ　体力がない→筋トレ　太ってる→筋トレ　痩せてる→筋トレ　肌荒れ→筋トレ。</p>
+      <p class="quote-note">— あらゆる悩みへの回答を「筋トレ」に収斂させる本書の文体を象徴する一節</p>
+    </div>
+    <div class="quote-card">
+      <p class="quote-text">不安や心配で心が押し潰されそうになっているそこの君！ベンチプレスだ！ベンチプレスをしろ！</p>
+      <p class="quote-note">— 悩んだら考える前に体を動かせという本書の行動優先思想</p>
+    </div>
+    <div class="quote-card">
+      <p class="quote-text">身体が強すぎて脳が弱くても大丈夫だが、逆はダメ。健全な身体にしか健全な精神と思考は宿らない。</p>
+      <p class="quote-note">— 心身の関係についての著者の考えを端的に表す一節</p>
+    </div>
+  </section>
+
+  <!-- 今日のアクション -->
+  <section id="panel-actions" class="tab-panel" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <h4>自重スクワット10回×3セット（約15分）</h4>
+        <p>目的：筋トレのハードルを最小限まで下げ、今日という日に「体を動かす」の第一歩を刻む。</p>
+        <p>期待効果：達成感とセロトニン分泌による気分の改善、次の一歩への自己効力感アップ。</p>
+        <span class="tag">⏱ 15分</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <h4>「不安だ」「自信がない」と感じた瞬間に腕立て伏せ10回（都度1〜2分×数回）</h4>
+        <p>目的：ネガティブな思考が浮かんだ瞬間に、頭ではなく体を動かす回路を作る。</p>
+        <p>期待効果：反芻思考を止めて即座に気分転換でき、本書の「考える前に動け」を体感できる。</p>
+        <span class="tag">⏱ 1〜2分×数回</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <h4>今日の食事にたんぱく質源を1品追加＆記録する（約20分）</h4>
+        <p>目的：筋トレの効果を最大化する食事管理の第一歩を実践する。</p>
+        <p>期待効果：筋肉量の維持・回復力の向上、リバウンドしにくい体づくりの土台ができる。</p>
+        <span class="tag">⏱ 20分</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="card" style="border-left-color:var(--secondary);">
+    <h3>📚 関連書籍</h3>
+    <ul class="related-list">
+      <li>超 筋トレが最強のソリューションである 筋肉が人生を変える超・科学的な理由（Testosterone, 久保孝史）: 前作の格言を早大院の研究者と共に科学的根拠で裏付けた続編</li>
+      <li>筋トレは必ず人生を成功に導く（Testosterone）: 同著者による筋トレ×成功哲学をさらに掘り下げたシリーズ本</li>
+      <li>脳を鍛えるには運動しかない！（ジョン・J・レイティ）: 運動が脳とメンタルに与える効果を科学的に解説し、本書の主張を裏付ける知見が多い</li>
+      <li>小さな習慣（スティーヴン・ガイズ）: 「ハードルを極限まで下げて始める」という本書の行動論と親和性の高い習慣化の指南書</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  📖 読書サマリー自動生成システム ｜ 本ページは公開されている情報を基にした要約・解説です
+</footer>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('.tab-panel');
+    var tabs = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){ p.classList.remove('active'); });
+    tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+    document.getElementById('panel-' + name).classList.add('active');
+    document.getElementById('tab-' + name).setAttribute('aria-selected','true');
+  }
+</script>
+
+</body>
+</html>
