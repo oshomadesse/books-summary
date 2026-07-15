@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット:
+  --primary:   #123C34  (深緑 / 京セラの陶土をイメージした落ち着いた基調色)
+  --secondary: #C9A227  (金 / 誠実さと実績を表すアクセントゴールド)
+  --accent:    #E8542A  (朱赤 / 警告・重要指標のハイライト)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>稲盛和夫の実学 経営と会計 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#123C34;
+    --primary-light:#1E5C4F;
+    --secondary:#C9A227;
+    --secondary-light:#E6C65C;
+    --accent:#E8542A;
+    --bg:#F7F5EF;
+    --card:#FFFFFF;
+    --text:#1E2422;
+    --text-sub:#5A6560;
+    --border:#E4DFD0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);
+    color:#fff;
+    padding:28px 18px 24px;
+    text-align:center;
+  }
+  header .kicker{
+    font-size:12px;
+    letter-spacing:.15em;
+    color:var(--secondary-light);
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  header h1{
+    font-size:22px;
+    line-height:1.4;
+    margin-bottom:6px;
+  }
+  header .author{
+    font-size:13px;
+    color:#D8E4DF;
+  }
+  .badge-row{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .badge{
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.3);
+    border-radius:999px;
+    padding:4px 12px;
+    font-size:11px;
+  }
+
+  .why-how{
+    max-width:720px;
+    margin:-18px auto 0;
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:0 8px 24px rgba(18,60,52,.12);
+    padding:20px;
+    position:relative;
+    z-index:2;
+  }
+  .why-how h2{
+    font-size:14px;
+    color:var(--primary);
+    letter-spacing:.05em;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .why-how .row{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+    align-items:flex-start;
+  }
+  .why-how .tag{
+    flex:0 0 auto;
+    background:var(--primary);
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:6px;
+    white-space:nowrap;
+  }
+  .why-how .tag.q{background:var(--accent);}
+  .why-how .tag.a{background:var(--secondary);color:var(--primary);}
+  .why-how .tag.w{background:var(--primary-light);}
+  .why-how p{font-size:13.5px;color:var(--text);}
+
+  .stats{
+    max-width:720px;
+    margin:16px auto 0;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    padding:0 12px;
+  }
+  .stat{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px 8px;
+    text-align:center;
+  }
+  .stat .num{
+    font-size:20px;
+    font-weight:800;
+    color:var(--primary);
+  }
+  .stat .num span{
+    font-size:11px;
+    font-weight:600;
+    color:var(--text-sub);
+  }
+  .stat .label{
+    font-size:10.5px;
+    color:var(--text-sub);
+    margin-top:2px;
+  }
+
+  nav.tabs{
+    max-width:720px;
+    margin:22px auto 0;
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:0 12px 4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+    font-size:12.5px;
+    font-weight:700;
+    padding:9px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:.15s;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+
+  main{
+    max-width:720px;
+    margin:14px auto 0;
+    padding:0 12px;
+  }
+  section[role="tabpanel"]{display:none;}
+  section[role="tabpanel"].active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    font-size:15px;
+    color:var(--primary);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card h3 .num-badge{
+    background:var(--secondary);
+    color:var(--primary);
+    font-size:11px;
+    font-weight:800;
+    width:22px;height:22px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;
+  }
+  .card ul{
+    list-style:none;
+    margin-bottom:10px;
+  }
+  .card ul li{
+    font-size:13px;
+    padding-left:16px;
+    position:relative;
+    margin-bottom:5px;
+    color:var(--text);
+  }
+  .card ul li::before{
+    content:"▸";
+    position:absolute;
+    left:0;
+    color:var(--secondary);
+    font-weight:700;
+  }
+  .why-box{
+    background:#F1EEE2;
+    border-left:3px solid var(--secondary);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:12px;
+    color:var(--text-sub);
+  }
+  .why-box b{color:var(--primary);}
+
+  .case-card{
+    border-left:4px solid var(--accent);
+  }
+  .case-card .meta{
+    font-size:11px;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:4px;
+  }
+
+  .quote-card{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);
+    color:#fff;
+  }
+  .quote-card blockquote{
+    font-size:16px;
+    font-weight:700;
+    line-height:1.6;
+    margin-bottom:8px;
+  }
+  .quote-card .note{
+    font-size:12px;
+    color:#D8E4DF;
+  }
+
+  .action-card{
+    border-left:4px solid var(--secondary);
+  }
+  .action-card .step{
+    display:inline-block;
+    background:var(--primary);
+    color:#fff;
+    font-size:11px;
+    font-weight:800;
+    padding:2px 10px;
+    border-radius:999px;
+    margin-bottom:8px;
+  }
+  .action-card .meta-row{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+    flex-wrap:wrap;
+  }
+  .action-card .meta-pill{
+    font-size:11px;
+    background:#F1EEE2;
+    color:var(--primary);
+    padding:3px 9px;
+    border-radius:999px;
+  }
+
+  .related-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .related-item{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px 12px;
+    font-size:13px;
+  }
+  .related-item .title{
+    font-weight:700;
+    color:var(--primary);
+  }
+  .related-item .why{
+    color:var(--text-sub);
+    font-size:12px;
+    margin-top:2px;
+  }
+
+  footer{
+    max-width:720px;
+    margin:24px auto 0;
+    text-align:center;
+    font-size:11px;
+    color:var(--text-sub);
+    padding:0 12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">📖 今日読むべき本</div>
+  <h1>稲盛和夫の実学<br>経営と会計</h1>
+  <div class="author">著者：稲盛和夫 ／ カテゴリー：ビジネス</div>
+  <div class="badge-row">
+    <span class="badge">🏭 京セラ創業者</span>
+    <span class="badge">📘 日経ビジネス人文庫</span>
+    <span class="badge">🔥 25年超のロングセラー</span>
+  </div>
+</header>
+
+<div class="why-how">
+  <h2>🎯 要約：問い × 答え × 根拠</h2>
+  <div class="row">
+    <span class="tag q">Q</span>
+    <p>経営者はなぜ会計を理解しなければならないのか？</p>
+  </div>
+  <div class="row">
+    <span class="tag a">A</span>
+    <p>会計は経営の実態をリアルタイムで映し出す「操縦席の計器」であり、これを読めなければ的確な経営判断ができないから。</p>
+  </div>
+  <div class="row">
+    <span class="tag w">根拠</span>
+    <p>著者は経営知識ゼロで京セラを創業し、実務の中で「人間として何が正しいか」を判断基準に据え、キャッシュベースや一対一対応など7つの独自会計原則を編み出して倒産の危機を回避し、京セラを大企業へ育てた実体験に基づく。</p>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="num">7<span>原則</span></div><div class="label">経営のための会計原則</div></div>
+  <div class="stat"><div class="num">27<span>歳</span></div><div class="label">京セラ創業時の年齢</div></div>
+  <div class="stat"><div class="num">1963<span>年〜</span></div><div class="label">アメーバ経営の起点</div></div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">💡 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">🗣️ 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <!-- 主要概念 -->
+  <section role="tabpanel" id="panel-concepts" aria-labelledby="tab-concepts" class="active">
+
+    <div class="card">
+      <h3><span class="num-badge">1</span>キャッシュベース経営の原則</h3>
+      <ul>
+        <li>利益ではなく実際の現金の動きで経営実態を把握する</li>
+        <li>帳簿上は黒字でも現金が尽きれば倒産する「黒字倒産」を防ぐ</li>
+        <li>設備投資や在庫の増加が現金を圧迫していないか常に確認する</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>会計上の利益は操作・解釈の余地があるが、現金の増減は嘘をつかない。経営の健全性を最も正直に映す指標だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-badge">2</span>一対一対応の原則</h3>
+      <ul>
+        <li>「モノ」の動きと「お金」の動き、「取引」と「伝票」を必ず1対1で対応させる</li>
+        <li>担当者任せにせず、動きがあれば必ず証憑を残すルールを徹底する</li>
+        <li>在庫のズレや使途不明金など不正・ミスの温床を断つ</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>会計の基本中の基本でありながら軽視されがち。ここが崩れると、以降のすべての数字の信頼性が失われるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-badge">3</span>筋肉質経営の原則</h3>
+      <ul>
+        <li>贅肉となる不要な資産・在庫を持たず、身軽な経営体質をつくる</li>
+        <li>中古品で間に合うものは中古品で我慢し、固定費の増加を警戒する</li>
+        <li>本業と関係のない投機的な運用には手を出さない</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>好況期に積んだ贅肉（過剰資産・固定費）は不況期に会社を圧迫する。筋肉質な体質だけが環境変化を生き抜けるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-badge">4</span>完璧主義の原則</h3>
+      <ul>
+        <li>経営数値はマクロ（全体像）とミクロ（細部）の両方から捉える</li>
+        <li>「だいたい合っている」ではなく100%の精度をめざす</li>
+        <li>小さなミスや誤差を放置しないチェック体質を組織に根づかせる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>ものづくりの現場でわずかな狂いが不良品を生むのと同じで、会計の小さなズレが後に大きな経営判断ミスへつながるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-badge">5</span>ダブルチェックの原則</h3>
+      <ul>
+        <li>現金・印鑑・金庫・購買・売掛買掛管理などを必ず複数人で確認する仕組みをつくる</li>
+        <li>「人を疑う」のではなく「人の心の弱さから守る」ための仕組みと位置づける</li>
+        <li>属人化した業務は不正の温床になりやすいと心得る</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>誰でも魔が差す瞬間はある。仕組みでチェックし合うことが、社員個人と会社の両方を不正から守るから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-badge">6</span>採算向上の原則</h3>
+      <ul>
+        <li>「売上を最大に、経費を最小に」という単純な原則を組織の隅々まで徹底する</li>
+        <li>部門・工程ごとの採算（時間当り採算）を可視化し、全員が経営者意識を持つ</li>
+        <li>値決めは経営そのものであり、価格決定に経営者の責任が集約される</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>採算意識が現場末端まで浸透して初めて、組織全体の生産性と利益体質が向上するから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-badge">7</span>ガラス張り経営の原則</h3>
+      <ul>
+        <li>経理も含めた経営情報を社員に対してオープンにする</li>
+        <li>経営者自身が誰よりも公明正大にふるまい、率先垂範する</li>
+        <li>信頼関係を土台にした組織文化を会計制度を通じてつくる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>情報を隠す経営は社員の当事者意識を奪う。透明性こそが全員参加の経営と持続的な信頼を生むから。</div>
+    </div>
+
+  </section>
+
+  <!-- 各章の要約 -->
+  <section role="tabpanel" id="panel-chapters" aria-labelledby="tab-chapters" hidden>
+
+    <div class="card">
+      <h3>序章：私の会計学の思想</h3>
+      <ul>
+        <li>会計知識ゼロで京セラを創業した稲盛が、実務の中で会計の本質を独学で掴んでいく原点</li>
+        <li>判断基準は終始一貫「人間として何が正しいか」</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>専門知識ではなく倫理観を出発点に置くことで、以降の7原則すべてに一貫した哲学的な軸が通る。</div>
+    </div>
+
+    <div class="card">
+      <h3>第一章：キャッシュベースで経営する</h3>
+      <ul>
+        <li>会計は「経営状態をシンプルかつリアルタイムに伝えるもの」でなければ意味がない</li>
+        <li>複雑な会計処理よりも、まず現金の実態を見よという姿勢</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>会計を難解な専門技術ではなく、誰もが直感的に理解できる経営の道具として取り戻す章だから。</div>
+    </div>
+
+    <div class="card">
+      <h3>第二〜五章：実践的基本原則（一対一対応／筋肉質／完璧主義／ダブルチェック）</h3>
+      <ul>
+        <li>京セラの現場で実際に採用されたルールを、失敗談も交えて具体的に解説</li>
+        <li>いずれも「特別な知識」ではなく「当たり前を当たり前にやり切る」姿勢が核</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>原理原則は平易でも徹底するのが難しいことを、実例を通して読者に体感させる構成になっている。</div>
+    </div>
+
+    <div class="card">
+      <h3>第六章：採算の向上を支える</h3>
+      <ul>
+        <li>アメーバ経営・時間当り採算制度の考え方の会計的な裏づけを説明</li>
+        <li>「値決めは経営の死命を決する」という有名な考え方が展開される</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>会計原則を「守りの管理」で終わらせず、「攻めの採算改善」につなげる実践編にあたる章だから。</div>
+    </div>
+
+    <div class="card">
+      <h3>第七章：透明な経営を行う</h3>
+      <ul>
+        <li>ガラス張り経営を支える経理部門の役割と、経営者の自律の重要性を説く</li>
+        <li>信頼をベースにした組織運営が最終的な結論として提示される</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>7つの原則の総仕上げとして、数字の正しさだけでなく「開示する勇気」が経営の質を決めることを示すから。</div>
+    </div>
+
+    <div class="card">
+      <h3>第二部：盛和塾での経営問答から</h3>
+      <ul>
+        <li>実際の経営者からの質問に稲盛が答える形式で、原則が現実の経営課題にどう応用されるかを示す</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>抽象的な原則を、読者自身の経営・仕事の悩みに引き寄せて理解させるための実践パートだから。</div>
+    </div>
+
+  </section>
+
+  <!-- 具体例 -->
+  <section role="tabpanel" id="panel-cases" aria-labelledby="tab-cases" hidden>
+
+    <div class="card case-card">
+      <div class="meta">CASE 1 ｜ 1959年・京セラ創業期</div>
+      <h3>経営知識ゼロからの創業</h3>
+      <ul>
+        <li>27歳の稲盛は経営・会計の専門教育を受けずに京セラを創業</li>
+        <li>判断に迷うたびに「人間として何が正しいか」を自らに問い続けた</li>
+        <li>その問いの積み重ねが後の7原則の土台になった</li>
+      </ul>
+      <div class="why-box"><b>この例が示すこと：</b>会計は後から学べる技術だが、判断の軸となる倫理観は経営者自身が最初に持たねばならないということ。</div>
+    </div>
+
+    <div class="card case-card">
+      <div class="meta">CASE 2 ｜ 1963年〜・時間当り採算制度</div>
+      <h3>組織を小さく分割する「アメーバ経営」</h3>
+      <ul>
+        <li>拡大する組織を小さな独立採算単位（アメーバ）に分割</li>
+        <li>各アメーバの採算を時間当りで可視化し、全社員に公開</li>
+        <li>末端の社員一人ひとりが経営者意識を持つようになった</li>
+      </ul>
+      <div class="why-box"><b>この例が示すこと：</b>採算向上とガラス張り経営の原則は、組織構造そのものを変えることで初めて機能するということ。</div>
+    </div>
+
+    <div class="card case-card">
+      <div class="meta">CASE 3 ｜ 現場実務・一対一対応の徹底</div>
+      <h3>伝票とモノの動きを必ず一致させる</h3>
+      <ul>
+        <li>購買や在庫の動きがあれば必ず伝票を発行し、担当者任せにしない</li>
+        <li>この徹底により在庫のズレや使途不明金を未然に防いだ</li>
+        <li>「小さな不徹底」が積み重なると大きな不正・損失につながると指摘</li>
+      </ul>
+      <div class="why-box"><b>この例が示すこと：</b>地味で単純なルールほど、例外を許さず徹底することが不正防止と経営の信頼性に直結するということ。</div>
+    </div>
+
+  </section>
+
+  <!-- 重要な引用 -->
+  <section role="tabpanel" id="panel-quotes" aria-labelledby="tab-quotes" hidden>
+
+    <div class="card quote-card">
+      <blockquote>「売上を最大に、経費を最小に」</blockquote>
+      <div class="note">経営の本質を極限までシンプルに凝縮した、稲盛経営学の出発点となる原則。</div>
+    </div>
+
+    <div class="card quote-card">
+      <blockquote>「値決めは経営」</blockquote>
+      <div class="note">価格決定は経営の死命を決する問題であり、経営者自身が担うべき最重要判断だという意味。</div>
+    </div>
+
+    <div class="card quote-card">
+      <blockquote>「会計がわからなければ真の経営者になれない」</blockquote>
+      <div class="note">会計を経理担当者任せにする経営者への警鐘として本書全体を貫くメッセージ。</div>
+    </div>
+
+    <div class="card quote-card">
+      <blockquote>「物事の判断に当たっては、常にその本質に遡ること、そして人間としての基本的なモラル、良心に基づいて判断することが最も重要である」</blockquote>
+      <div class="note">7つの会計原則すべての土台にある、稲盛経営哲学の核心的な一文。</div>
+    </div>
+
+  </section>
+
+  <!-- 今日のアクション -->
+  <section role="tabpanel" id="panel-actions" aria-labelledby="tab-actions" hidden>
+
+    <div class="card action-card">
+      <span class="step">STEP 1</span>
+      <h3>自分の「キャッシュベース収支」を15分でチェックする</h3>
+      <ul>
+        <li>家計簿アプリや通帳を開き、今月の実際の入出金だけを現金主義で確認する</li>
+        <li>「使った気になっているだけ」の支出がないか洗い出す</li>
+      </ul>
+      <div class="meta-row">
+        <span class="meta-pill">🎯 目的：数字を実態ベースで見る習慣づけ</span>
+        <span class="meta-pill">📈 効果：家計・業務の黒字倒産リスクの早期発見</span>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <span class="step">STEP 2</span>
+      <h3>「一対一対応」できていない支出・タスクを1つ見つける</h3>
+      <ul>
+        <li>領収書やレシートが残っていない支出、記録のない作業を1つ探す</li>
+        <li>それを記録・証跡化する簡単な仕組み（メモ・アプリ）を今日中に作る</li>
+      </ul>
+      <div class="meta-row">
+        <span class="meta-pill">🎯 目的：記録の抜け漏れによるミス・不正の芽を摘む</span>
+        <span class="meta-pill">📈 効果：後から状況を正確に振り返れる状態をつくる</span>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <span class="step">STEP 3</span>
+      <h3>今日のタスクを「売上最大・経費最小」の視点で見直す</h3>
+      <ul>
+        <li>今日やる仕事を1つ選び、成果（売上）を上げる工夫と、無駄な時間・労力（経費）を削る工夫をそれぞれ1つ書き出す</li>
+        <li>実行できそうなものから着手する</li>
+      </ul>
+      <div class="meta-row">
+        <span class="meta-pill">🎯 目的：採算向上の原則を個人の仕事に落とし込む</span>
+        <span class="meta-pill">📈 効果：限られた時間で生産性を底上げする体感を得る</span>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  🧠 読書サマリー自動生成システム ｜ 本ページはリサーチ内容をもとに自動生成されています
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = document.querySelectorAll('section[role="tabpanel"]');
+
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      panels.forEach(function(p){ p.hidden = true; p.classList.remove('active'); });
+
+      tab.setAttribute('aria-selected','true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      panel.hidden = false;
+      panel.classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
