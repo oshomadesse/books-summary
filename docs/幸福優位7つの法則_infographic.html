@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット（幸福優位7つの法則 インフォグラフィック）
+  - プライマリー:   #FF6B35 (エネルギッシュなオレンジ / ポジティブ・情熱)
+  - セカンダリー:   #2E5A88 (信頼感のあるディープブルー / 知性・研究)
+  - アクセント:     #FFC857 (明るいイエロー / 幸福・気づき)
+  - グラデーション: linear-gradient(135deg, #FF6B35 0%, #FFC857 100%)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>幸福優位7つの法則 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#FF6B35;
+    --secondary:#2E5A88;
+    --accent:#FFC857;
+    --bg:#FFF9F2;
+    --card:#FFFFFF;
+    --text:#2B2318;
+    --text-sub:#6B5F4F;
+    --line:#F0E4D2;
+    --shadow: 0 4px 16px rgba(46,90,136,0.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 0 48px;}
+
+  /* ===== Header / Hero ===== */
+  header.hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color:#fff;
+    padding:32px 20px 28px;
+    border-radius:0 0 28px 28px;
+    box-shadow:var(--shadow);
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.12em;
+    opacity:.9;
+    font-weight:700;
+    display:flex;align-items:center;gap:6px;
+  }
+  h1.title{
+    font-size:26px;
+    margin:8px 0 4px;
+    font-weight:800;
+    line-height:1.35;
+  }
+  .subtitle{font-size:13px;opacity:.92;margin:0 0 4px;}
+  .byline{font-size:13px;opacity:.9;margin-top:2px;}
+
+  .why-how-box{
+    margin:20px 0 0;
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:16px;
+    padding:16px 16px 14px;
+    backdrop-filter:blur(2px);
+  }
+  .why-how-box .qa-label{
+    font-size:11px;font-weight:800;letter-spacing:.08em;
+    opacity:.95;margin-bottom:6px;
+  }
+  .why-how-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start;}
+  .why-how-row .tag{
+    flex:0 0 auto;
+    background:#fff;color:var(--primary);
+    font-size:11px;font-weight:800;
+    padding:3px 8px;border-radius:999px;
+    margin-top:1px;
+  }
+  .why-how-row .body{font-size:13.5px;font-weight:600;}
+  .why-how-row.evidence .tag{color:var(--secondary);}
+
+  /* ===== Stat badges on hero ===== */
+  .stat-strip{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+    margin-top:16px;
+  }
+  .stat-chip{
+    background:#fff;border-radius:12px;padding:10px 6px;text-align:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  }
+  .stat-chip .num{font-size:18px;font-weight:800;color:var(--primary);display:block;}
+  .stat-chip .label{font-size:10px;color:var(--text-sub);margin-top:2px;display:block;}
+
+  /* ===== Tabs ===== */
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:16px 16px 0;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:10;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card);
+    color:var(--text-sub);
+    font-size:12.5px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    border:1px solid var(--line);
+    transition:all .15s ease;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--secondary);
+    color:#fff;
+    border-color:var(--secondary);
+  }
+
+  main{padding:16px 16px 0;}
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  h2.panel-title{
+    font-size:17px;font-weight:800;margin:4px 0 14px;
+    display:flex;align-items:center;gap:6px;
+    color:var(--secondary);
+  }
+
+  /* ===== Cards ===== */
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  .card h3{
+    font-size:15px;margin:0 0 8px;font-weight:800;
+    display:flex;align-items:center;gap:6px;
+  }
+  .card h3 .num-badge{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    background:var(--primary);color:#fff;font-size:11px;
+    display:flex;align-items:center;justify-content:center;font-weight:800;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;}
+  .card ul li{margin-bottom:5px;}
+  .why-tag{
+    margin-top:10px;
+    background:#FFF3E9;
+    border-left:3px solid var(--primary);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:var(--text-sub);
+  }
+  .why-tag b{color:var(--primary);}
+
+  /* mini bar viz */
+  .bar-viz{margin-top:10px;}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .bar-row .bar-label{font-size:11px;color:var(--text-sub);flex:0 0 92px;}
+  .bar-track{flex:1;background:#F0E4D2;border-radius:6px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:6px;}
+  .bar-row .bar-val{flex:0 0 40px;font-size:11px;font-weight:800;color:var(--primary);text-align:right;}
+
+  /* quote card */
+  .quote-card{
+    background:linear-gradient(135deg, rgba(255,107,53,0.06), rgba(255,200,87,0.10));
+    border:1px dashed var(--primary);
+  }
+  .quote-card blockquote{
+    margin:0 0 8px;font-size:14.5px;font-weight:700;color:var(--text);
+    border-left:3px solid var(--primary);padding-left:10px;
+  }
+  .quote-card .quote-note{font-size:12px;color:var(--text-sub);}
+  .quote-tag-badge{
+    display:inline-block;font-size:10px;font-weight:800;color:#fff;
+    background:var(--secondary);border-radius:6px;padding:2px 6px;margin-bottom:6px;
+  }
+
+  /* action card */
+  .action-card{border-left:4px solid var(--accent);}
+  .action-meta{
+    display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;
+  }
+  .action-meta span{
+    font-size:11px;font-weight:700;background:#FFF3E9;color:var(--primary);
+    padding:3px 8px;border-radius:999px;
+  }
+
+  /* related books */
+  .related-item{
+    display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);
+    font-size:13px;
+  }
+  .related-item:last-child{border-bottom:none;}
+  .related-item .icon{flex:0 0 auto;font-size:18px;}
+
+  footer{
+    text-align:center;font-size:11px;color:var(--text-sub);padding:24px 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">🧠 今日の一冊 ・ 心理学</div>
+    <h1 class="title">幸福優位7つの法則</h1>
+    <p class="subtitle">仕事も人生も充実させるハーバード式最新成功理論</p>
+    <p class="byline">著者: ショーン・エイカー（訳: 高橋由紀子）</p>
+
+    <div class="why-how-box">
+      <div class="qa-label">📣 要約 = 問い × 答え × 根拠</div>
+      <div class="why-how-row">
+        <span class="tag">問い</span>
+        <span class="body">成功すれば幸せになれる——それは本当か？</span>
+      </div>
+      <div class="why-how-row">
+        <span class="tag">答え</span>
+        <span class="body">逆である。幸せな脳が先にあるから、成功しやすくなる。</span>
+      </div>
+      <div class="why-how-row evidence">
+        <span class="tag">根拠</span>
+        <span class="body">ポジティブな医師は診断が19%速く、楽観的な営業は成績が37%高い——複数の実証研究が裏付ける。</span>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-chip"><span class="num">19%</span><span class="label">診断が速い<br>(医師実験)</span></div>
+      <div class="stat-chip"><span class="num">37%</span><span class="label">保険成約増<br>(楽観 vs 悲観)</span></div>
+      <div class="stat-chip"><span class="num">×3</span><span class="label">創造性・知性<br>(ポジティブ脳)</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィック タブ">
+    <button class="tab-btn" role="tab" id="tab-btn-concepts" aria-controls="tab-concepts" aria-selected="true" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-btn-chapters" aria-controls="tab-chapters" aria-selected="false" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-btn-examples" aria-controls="tab-examples" aria-selected="false" onclick="switchTab('examples')">🔍 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-btn-quotes" aria-controls="tab-quotes" aria-selected="false" onclick="switchTab('quotes')">💬 引用</button>
+    <button class="tab-btn" role="tab" id="tab-btn-actions" aria-controls="tab-actions" aria-selected="false" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+    <!-- ============ 主要概念 ============ -->
+    <section class="panel active" id="tab-concepts" role="tabpanel" aria-labelledby="tab-btn-concepts">
+      <h2 class="panel-title">🧩 主要概念の詳細</h2>
+
+      <div class="card">
+        <h3><span class="num-badge">1</span>ハピネス・アドバンテージ（幸福優位性）</h3>
+        <ul>
+          <li>ポジティブな脳はネガティブ・中立な脳より生産性・創造性・知能で優位に立つ</li>
+          <li>「成功→幸福」ではなく「幸福→成功」が正しい因果の向き</li>
+          <li>幸福はゴールではなく、成果を出すための"先行条件"</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 気分は「おまけ」ではなく、認知パフォーマンスを左右する変数だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">2</span>心のレバレッジ化</h3>
+        <ul>
+          <li>マインドセット（支点）を変えると、同じ能力でも成果への影響力（テコ）が変わる</li>
+          <li>「困難」を「成長の機会」と再定義するだけでストレス反応が変化する</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 支点を変えるコストは低いのに、得られるレバレッジ効果は非常に大きいから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">3</span>テトリス効果</h3>
+        <ul>
+          <li>脳はパターン認識を繰り返すと、そのパターンを無意識に探し続けるようになる</li>
+          <li>「今日あった3つの良いこと」を書き出す習慣で、ポジティブ探知が強化される</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 脳の注意リソースは有限で、意識的に方向づけないとネガティブ・バイアスに支配されるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">4</span>再起力（Falling Up）</h3>
+        <ul>
+          <li>逆境からの「回復」ではなく、逆境を踏み台に通常より高い地点へ這い上がる力</li>
+          <li>出来事の解釈スタイル（永続的か一時的か／全人格的か局所的か）が次の行動を決める</li>
+        </ul>
+        <div class="bar-viz">
+          <div class="bar-row"><span class="bar-label">悲観的営業</span><div class="bar-track"><div class="bar-fill" style="width:63%"></div></div><span class="bar-val">基準</span></div>
+          <div class="bar-row"><span class="bar-label">楽観的営業</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">+37%</span></div>
+        </div>
+        <div class="why-tag"><b>理由:</b> 能力より「逆境への解釈スタイル」の方が長期的な成果を左右し得るから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">5</span>ゾロ・サークル</h3>
+        <ul>
+          <li>コントロール可能な小さな範囲に的を絞り、成功体験を積んでから徐々に範囲を広げる</li>
+          <li>統制感（コントロール感）自体がストレスホルモンを下げ、モチベーションを高める</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 大目標にいきなり挑むと無力感で行動が止まるが、小さな勝利は次の活性化エネルギーになるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">6</span>20秒ルール</h3>
+        <ul>
+          <li>よい習慣は着手の手間を20秒減らし、悪い習慣は20秒増やして自動化する</li>
+          <li>意志力ではなく環境設計で行動を変える技術</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 人は活性化エネルギーがわずかに高いだけで行動を先延ばしにする傾向があるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">7</span>ソーシャルへの投資</h3>
+        <ul>
+          <li>友人・同僚・家族との関係は「余裕があるときの贅沢」ではなく最重要インフラ</li>
+          <li>逆境の時ほど人は孤立しがちだが、成功者ほど周囲への投資を増やす</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 人間関係の質は、長期的な幸福・健康・成功を予測する最強の因子だから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 各章の要約 ============ -->
+    <section class="panel" id="tab-chapters" role="tabpanel" aria-labelledby="tab-btn-chapters">
+      <h2 class="panel-title">📖 各章の要約（7つの法則）</h2>
+
+      <div class="card">
+        <h3>第1法則: ハピネス・アドバンテージ — 幸福が先、成功は後</h3>
+        <ul>
+          <li>ポジティブ心理学の基本主張:「成功→幸福」ではなく「幸福→成功」</li>
+          <li>医師の実験: ポジティブな気分の医師は正診がおよそ19%速く、創造性・知性も約3倍</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> ポジティブな脳はドーパミン・セロトニン分泌が増え、注意・学習・記憶に関わる脳領域が活性化するため。</div>
+      </div>
+
+      <div class="card">
+        <h3>第2法則: 心のレバレッジ化 — マインドセットという支点</h3>
+        <ul>
+          <li>同じ出来事でも解釈（支点の位置）次第で結果への影響力（テコの効き）が変わる</li>
+          <li>「困難」を「成長の機会」と再定義するだけでストレス反応が変化</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 支点を変えるコストは低いのに、得られる成果への影響は非常に大きいから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第3法則: テトリス効果 — ポジティブなパターンを探す脳を作る</h3>
+        <ul>
+          <li>テトリスをやり込んだ被験者が日常でも無意識にブロックの隙間を探した実験が由来</li>
+          <li>「3つの良いこと日記」で脳をポジティブなパターン検出に最適化</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 脳の注意システムは有限であり、方向づけないとネガティブ・バイアスに支配されるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第4法則: 再起力 — 逆境を成長エネルギーに変える</h3>
+        <ul>
+          <li>「回復」ではなく逆境を踏み台に通常より高い地点へ這い上がる考え方</li>
+          <li>メットライフの楽観的営業は悲観的営業より37%多く成約、採用時に楽観性を重視した組は2年目57%増</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 逆境の解釈スタイルが次の行動の質を決めるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第5法則: ゾロ・サークル — 小さな成功で統制感を取り戻す</h3>
+        <ul>
+          <li>まずコントロールできる最小範囲に的を絞り、成功体験から徐々に範囲を広げる</li>
+          <li>統制感そのものがストレスホルモンを下げる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 大目標に一気に挑むと無力感で止まるが、小さな輪の中の勝利が次の活性化エネルギーになるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第6法則: 20秒ルール — 意志力より環境設計</h3>
+        <ul>
+          <li>よい習慣の着手コストを20秒下げ、悪い習慣の着手コストを20秒上げる</li>
+          <li>意志力は有限資源のため、環境を変える方が持続的</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> わずかな活性化エネルギーの差だけで人は行動を先延ばしにするから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第7法則: ソーシャルへの投資 — 人間関係という最大の資産</h3>
+        <ul>
+          <li>逆境時ほど引きこもりがちだが、成功し続ける人ほど周囲への投資を増やす</li>
+          <li>幸福・健康・長期的成功の最大の予測因子は「人間関係の質」</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 人は社会的な生き物であり、支援ネットワークがストレス耐性そのものを底上げするから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 具体例 ============ -->
+    <section class="panel" id="tab-examples" role="tabpanel" aria-labelledby="tab-btn-examples">
+      <h2 class="panel-title">🔍 具体例・ケーススタディ</h2>
+
+      <div class="card">
+        <h3>① 医師のポジティブ・プライミング実験</h3>
+        <ul>
+          <li><b>背景:</b> 診断業務に取り組む医師を、事前にちょっとした嬉しい出来事でポジティブな気分にした群と、中立群に分けて比較</li>
+          <li><b>示唆:</b> ポジティブな気分の医師群は約3倍の知性・創造性を発揮し、正確な診断をおよそ19%速く下した</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 業績を上げたいなら、まず「機嫌の良い状態」を意図的に作ることが合理的な戦略になる。</div>
+      </div>
+
+      <div class="card">
+        <h3>② メットライフの保険営業チーム</h3>
+        <ul>
+          <li><b>背景:</b> 大手保険会社メットライフが、逆境への説明スタイル（楽観 or 悲観）と営業成績の関係を検証</li>
+          <li><b>示唆:</b> 楽観的な担当者は悲観的な担当者より37%多く契約を獲得。採用テストの点が低くても楽観性重視で採用した組は初年度19%、2年目57%も他チームを上回った</li>
+        </ul>
+        <div class="bar-viz">
+          <div class="bar-row"><span class="bar-label">初年度</span><div class="bar-track"><div class="bar-fill" style="width:33%"></div></div><span class="bar-val">+19%</span></div>
+          <div class="bar-row"><span class="bar-label">2年目</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">+57%</span></div>
+        </div>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 能力（適性テストの点数）よりも解釈スタイル（マインドセット）が長期的な成果を左右し得ることを示す実例。</div>
+      </div>
+
+      <div class="card">
+        <h3>③ テトリスをやり込んだ被験者の「パターン探索脳」</h3>
+        <ul>
+          <li><b>背景:</b> テトリスを長時間プレイした被験者が、プレイ後も日常の風景の中に無意識にブロックの隙間を探してしまう現象が観測された</li>
+          <li><b>示唆:</b> 脳は訓練したパターン検出の癖を文脈を超えて適用し続ける</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 「物の見方」は生まれつきの性格ではなく、日々のトレーニングで書き換え可能なスキルであることを示す。</div>
+      </div>
+
+      <div class="card">
+        <h3>④ ゾロの物語（ゾロ・サークル）</h3>
+        <ul>
+          <li><b>背景:</b> 架空の剣豪ゾロは訓練初期、狭い円の中でしか剣を振ることを許されず、その円の中で完璧を目指した</li>
+          <li><b>示唆:</b> 統制可能な小さな範囲での成功体験が自己効力感を高め、次第に挑戦の範囲を広げられた</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 圧倒的な目標には、いきなり全体を変えようとせず「今日確実にコントロールできる小さな一歩」から始めるのが有効。</div>
+      </div>
+    </section>
+
+    <!-- ============ 引用 ============ -->
+    <section class="panel" id="tab-quotes" role="tabpanel" aria-labelledby="tab-btn-quotes">
+      <h2 class="panel-title">💬 重要な引用</h2>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">原典引用（英語原書）</span>
+        <blockquote>"Happiness is not the other side of success. Success does not create happiness. Happiness creates Success."</blockquote>
+        <div class="quote-note">和訳: 「幸福は成功の反対側にあるものではない。成功が幸福を生むのではなく、幸福が成功を生む。」— 本書全体を貫く中心思想。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">原典引用（英語原書）</span>
+        <blockquote>"For me, happiness is the joy we feel striving after our potential."</blockquote>
+        <div class="quote-note">和訳: 「私にとって幸福とは、自らの可能性に向かって努力する中で感じる喜びのことだ。」— 幸福を"到達点"ではなく"過程"として定義する一文。</div>
+      </div>
+    </section>
+
+    <!-- ============ 今日のアクション ============ -->
+    <section class="panel" id="tab-actions" role="tabpanel" aria-labelledby="tab-btn-actions">
+      <h2 class="panel-title">✅ 今日できるアクション</h2>
+
+      <div class="card action-card">
+        <h3>① 「3つの良いこと」日記を書く</h3>
+        <ul>
+          <li>寝る前にノートやメモアプリに、今日あった良かったことを3つ書き出す</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要5分</span>
+          <span>🎯 目的: ポジティブ探知の訓練（テトリス効果）</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 数週間続けることでネガティブ・バイアスが弱まり、日常の中でポジティブな出来事に自然と気づけるようになる。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>② よい習慣の「20秒」を削り、悪い習慣の「20秒」を増やす</h3>
+        <ul>
+          <li>例: 運動着を前夜のうちにベッド脇に出す／誘惑アプリをホーム画面から1階層奥にしまう</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要15分</span>
+          <span>🎯 目的: 環境設計による行動の自動化（20秒ルール）</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 着手のハードルが下がり、続けたい習慣（運動・読書など）の実行率が上がる。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>③ 感謝や称賛のメッセージを1人に送る</h3>
+        <ul>
+          <li>同僚・家族・友人の1人に、日頃感謝していることを具体的にメッセージで伝える</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要10分</span>
+          <span>🎯 目的: 人間関係への投資（ソーシャルへの投資）</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 送った側・受け取った側双方の幸福感が高まり、逆境時に頼れる関係性の土台になる。</div>
+      </div>
+
+      <h2 class="panel-title" style="margin-top:24px;">📚 関連書籍</h2>
+      <div class="card">
+        <div class="related-item"><span class="icon">📘</span><span><b>幸福論</b>（アラン）: 幸福を"意志"や"習慣"の産物と捉える視点が、本書の「幸福は選び取れる」という主張と響き合う。</span></div>
+        <div class="related-item"><span class="icon">📗</span><span><b>GRIT やり抜く力</b>（アンジェラ・ダックワース）: 逆境での粘り強さと「再起力」は、失敗への解釈スタイルが成果を左右する点で通じる。</span></div>
+        <div class="related-item"><span class="icon">📙</span><span><b>マインドセット「やればできる！」の研究</b>（キャロル・S・ドゥエック）: 「心のレバレッジ化」の解釈変更は、成長マインドセット理論と強く重なる。</span></div>
+        <div class="related-item"><span class="icon">📕</span><span><b>ジェームズ・クリアー式複利で伸びる1つの習慣</b>（ジェームズ・クリアー）: 「20秒ルール」の環境設計の発想は、習慣形成メソッドの先駆けと言える。</span></div>
+        <div class="related-item"><span class="icon">📔</span><span><b>EQ こころの知能指数</b>（ダニエル・ゴールマン）: 感情と成果の関係を扱う点で共通し、「ソーシャルへの投資」の重要性を補強する。</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>📖 books-summary daily reading digest ・ 幸福優位7つの法則</footer>
+</div>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('section.panel');
+    var btns = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){
+      var active = (p.id === 'tab-' + name);
+      p.classList.toggle('active', active);
+    });
+    btns.forEach(function(b){
+      var active = (b.id === 'tab-btn-' + name);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+</script>
+</body>
+</html>
