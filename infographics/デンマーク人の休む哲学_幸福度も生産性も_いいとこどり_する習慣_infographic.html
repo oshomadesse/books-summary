@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット（デンマーク人の休む哲学 インフォグラフィック）
+  - プライマリー:   #3B6E8F (北欧の海を思わせるノルディックブルー / 落ち着き・信頼)
+  - セカンダリー:   #1F3A4D (ディープネイビー / 知性・堅実さ)
+  - アクセント:     #E0A458 (キャンドルライトのアンバー / ヒュッゲ・温もり)
+  - グラデーション: linear-gradient(135deg, #3B6E8F 0%, #E0A458 100%)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>デンマーク人の休む哲学 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#3B6E8F;
+    --secondary:#1F3A4D;
+    --accent:#E0A458;
+    --bg:#F5F7F8;
+    --card:#FFFFFF;
+    --text:#20303A;
+    --text-sub:#5C707A;
+    --line:#E2E9EC;
+    --shadow: 0 4px 16px rgba(31,58,77,0.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 0 48px;}
+
+  /* ===== Header / Hero ===== */
+  header.hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color:#fff;
+    padding:32px 20px 28px;
+    border-radius:0 0 28px 28px;
+    box-shadow:var(--shadow);
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.12em;
+    opacity:.9;
+    font-weight:700;
+    display:flex;align-items:center;gap:6px;
+  }
+  h1.title{
+    font-size:26px;
+    margin:8px 0 4px;
+    font-weight:800;
+    line-height:1.35;
+  }
+  .subtitle{font-size:13px;opacity:.92;margin:0 0 4px;}
+  .byline{font-size:13px;opacity:.9;margin-top:2px;}
+
+  .why-how-box{
+    margin:20px 0 0;
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:16px;
+    padding:16px 16px 14px;
+    backdrop-filter:blur(2px);
+  }
+  .why-how-box .qa-label{
+    font-size:11px;font-weight:800;letter-spacing:.08em;
+    opacity:.95;margin-bottom:6px;
+  }
+  .why-how-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start;}
+  .why-how-row .tag{
+    flex:0 0 auto;
+    background:#fff;color:var(--primary);
+    font-size:11px;font-weight:800;
+    padding:3px 8px;border-radius:999px;
+    margin-top:1px;
+  }
+  .why-how-row .body{font-size:13.5px;font-weight:600;}
+  .why-how-row.evidence .tag{color:var(--secondary);}
+
+  /* ===== Stat badges on hero ===== */
+  .stat-strip{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+    margin-top:16px;
+  }
+  .stat-chip{
+    background:#fff;border-radius:12px;padding:10px 6px;text-align:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  }
+  .stat-chip .num{font-size:18px;font-weight:800;color:var(--primary);display:block;}
+  .stat-chip .label{font-size:10px;color:var(--text-sub);margin-top:2px;display:block;}
+
+  /* ===== Tabs ===== */
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:16px 16px 0;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:10;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card);
+    color:var(--text-sub);
+    font-size:12.5px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    border:1px solid var(--line);
+    transition:all .15s ease;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--secondary);
+    color:#fff;
+    border-color:var(--secondary);
+  }
+
+  main{padding:16px 16px 0;}
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  h2.panel-title{
+    font-size:17px;font-weight:800;margin:4px 0 14px;
+    display:flex;align-items:center;gap:6px;
+    color:var(--secondary);
+  }
+
+  /* ===== Cards ===== */
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  .card h3{
+    font-size:15px;margin:0 0 8px;font-weight:800;
+    display:flex;align-items:center;gap:6px;
+  }
+  .card h3 .num-badge{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    background:var(--primary);color:#fff;font-size:11px;
+    display:flex;align-items:center;justify-content:center;font-weight:800;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;}
+  .card ul li{margin-bottom:5px;}
+  .why-tag{
+    margin-top:10px;
+    background:#EEF4F7;
+    border-left:3px solid var(--primary);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:var(--text-sub);
+  }
+  .why-tag b{color:var(--primary);}
+
+  /* mini bar viz */
+  .bar-viz{margin-top:10px;}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .bar-row .bar-label{font-size:11px;color:var(--text-sub);flex:0 0 92px;}
+  .bar-track{flex:1;background:#E2E9EC;border-radius:6px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:6px;}
+  .bar-row .bar-val{flex:0 0 56px;font-size:11px;font-weight:800;color:var(--primary);text-align:right;}
+
+  /* quote card */
+  .quote-card{
+    background:linear-gradient(135deg, rgba(59,110,143,0.06), rgba(224,164,88,0.12));
+    border:1px dashed var(--primary);
+  }
+  .quote-card blockquote{
+    margin:0 0 8px;font-size:14.5px;font-weight:700;color:var(--text);
+    border-left:3px solid var(--primary);padding-left:10px;
+  }
+  .quote-card .quote-note{font-size:12px;color:var(--text-sub);}
+  .quote-tag-badge{
+    display:inline-block;font-size:10px;font-weight:800;color:#fff;
+    background:var(--secondary);border-radius:6px;padding:2px 6px;margin-bottom:6px;
+  }
+
+  /* action card */
+  .action-card{border-left:4px solid var(--accent);}
+  .action-meta{
+    display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;
+  }
+  .action-meta span{
+    font-size:11px;font-weight:700;background:#FBF0E1;color:#9A6A24;
+    padding:3px 8px;border-radius:999px;
+  }
+
+  /* related books */
+  .related-item{
+    display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);
+    font-size:13px;
+  }
+  .related-item:last-child{border-bottom:none;}
+  .related-item .icon{flex:0 0 auto;font-size:18px;}
+
+  footer{
+    text-align:center;font-size:11px;color:var(--text-sub);padding:24px 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">🕯️ 今日の一冊 ・ ライフスタイル</div>
+    <h1 class="title">デンマーク人の休む哲学</h1>
+    <p class="subtitle">幸福度も生産性も「いいとこどり」する習慣</p>
+    <p class="byline">著者: 針貝有佳</p>
+
+    <div class="why-how-box">
+      <div class="qa-label">📣 要約 = 問い × 答え × 根拠</div>
+      <div class="why-how-row">
+        <span class="tag">問い</span>
+        <span class="body">平日16時に退社し、夏は3週間も休むのに、なぜデンマークは幸福度・生産性ともに世界トップクラスなのか？</span>
+      </div>
+      <div class="why-how-row">
+        <span class="tag">答え</span>
+        <span class="body">「休みたいから、効率的に働く」という逆転の発想で休息を"権利"として制度化し、信頼ベースの働き方で生産性を確保しているから。</span>
+      </div>
+      <div class="why-how-row evidence">
+        <span class="tag">根拠</span>
+        <span class="body">年間労働時間は日本より約220時間短いにもかかわらず、「ビジネス効率性」ランキング6年連続世界1位、幸福度ランキングは世界2位。</span>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-chip"><span class="num">6年連続</span><span class="label">ビジネス効率性<br>世界1位(IMD)</span></div>
+      <div class="stat-chip"><span class="num">世界2位</span><span class="label">世界幸福度<br>ランキング</span></div>
+      <div class="stat-chip"><span class="num">約1,380h</span><span class="label">年間労働時間<br>(日本比 約▲220h)</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィック タブ">
+    <button class="tab-btn" role="tab" id="tab-btn-concepts" aria-controls="tab-concepts" aria-selected="true" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-btn-chapters" aria-controls="tab-chapters" aria-selected="false" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-btn-examples" aria-controls="tab-examples" aria-selected="false" onclick="switchTab('examples')">🔍 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-btn-quotes" aria-controls="tab-quotes" aria-selected="false" onclick="switchTab('quotes')">💬 引用</button>
+    <button class="tab-btn" role="tab" id="tab-btn-actions" aria-controls="tab-actions" aria-selected="false" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+    <!-- ============ 主要概念 ============ -->
+    <section class="panel active" id="tab-concepts" role="tabpanel" aria-labelledby="tab-btn-concepts">
+      <h2 class="panel-title">🧩 主要概念の詳細</h2>
+
+      <div class="card">
+        <h3><span class="num-badge">1</span>ヒュッゲ（Hygge）</h3>
+        <ul>
+          <li>「安らぎを感じられる心地良いひととき」を意味するデンマーク語。家族や友人との時間、自然との触れ合いなど形はさまざま</li>
+          <li>デンマーク人は一日のうちに何度も「ヒュッゲ」という言葉を口にするほど、生活の中心にある価値観</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 心地よさを意図的に確保する習慣が、休息の"質"を高め、結果として仕事への集中力を回復させるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">2</span>「休みたいから、効率的に働く」逆算思考</h3>
+        <ul>
+          <li>フリータイムをしっかり確保するために、仕事はできるだけ短時間で効率よく終わらせるという発想</li>
+          <li>日本のように「頑張って働いた"ご褒美"として休む」のとは優先順位が逆</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 締め切り（休みの時間）が先に固定されることで、仕事の取捨選択と集中が自然と起こるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">3</span>休暇は「贅沢」ではなく「権利」</h3>
+        <ul>
+          <li>夏季に3週間の連続休暇を取る権利が法律で保障されている</li>
+          <li>権利として保障されているため、罪悪感なく長期休暇を取得できる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 休暇取得が個人の裁量や職場の空気に左右されないため、組織全体で休息の文化が定着するから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">4</span>フェリペンゲ（休暇積立金）制度</h3>
+        <ul>
+          <li>給与の12.5%が休暇のための積立金として支給される仕組み</li>
+          <li>「休まないでどうやって働くの？」という感覚が前提にある社会制度</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 経済的な裏付けがあることで、長期休暇が絵に描いた餅ではなく実行可能な選択肢になるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">5</span>信頼ベースのマクロマネジメント</h3>
+        <ul>
+          <li>組織運営は上司が細部を管理しない「信頼」に基づくマネジメントが特徴</li>
+          <li>社員に仕事を任せ、失敗を恐れず挑戦させ、問題が起きれば皆で解決する姿勢</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 管理コストを減らし、各自が短時間で成果を出す裁量と責任を持てるようにするため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">6</span>生産性を高める休み方ベスト3</h3>
+        <ul>
+          <li>幸福度・生産性を高める休日の過ごし方の上位は「運動」「趣味」「社交」</li>
+          <li>受け身の休養（寝る・スマホを見るだけ）より能動的な休み方が回復効果を高める</li>
+        </ul>
+        <div class="bar-viz">
+          <div class="bar-row"><span class="bar-label">運動</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">効果:高</span></div>
+          <div class="bar-row"><span class="bar-label">趣味</span><div class="bar-track"><div class="bar-fill" style="width:85%"></div></div><span class="bar-val">効果:高</span></div>
+          <div class="bar-row"><span class="bar-label">社交</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div><span class="bar-val">効果:中〜高</span></div>
+        </div>
+        <div class="why-tag"><b>理由:</b> 能動的な活動は脳の別領域を使うため「切り替え」が起こり、単なる受動的休息よりも回復とエネルギー補充につながるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">7</span>人生の幸福は「体験の共有」にある</h3>
+        <ul>
+          <li>モノの所有より、人と過ごした時間・体験が幸福感を長く支える</li>
+          <li>ヒュッゲの多くは「誰かと一緒に過ごす時間」を伴う</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 体験の記憶は反復想起されるたびに幸福感を再生産するが、モノの快楽は慣れによって急速に減衰するから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">8</span>デジタルの境界線（通知オフの習慣）</h3>
+        <ul>
+          <li>効率的な国であるほど、休むときはスマホの通知をオフにするのが常識になっている</li>
+          <li>朝一番のスマホ確認を「ムダ」と捉える発想が浸透している</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 常時接続状態では脳が休まらず、質の高い回復も創造的な発想も生まれにくいから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 各章の要約 ============ -->
+    <section class="panel" id="tab-chapters" role="tabpanel" aria-labelledby="tab-btn-chapters">
+      <h2 class="panel-title">📖 各章の要約</h2>
+
+      <div class="card">
+        <h3>第1章: 休みベタな日本人、休みの達人デンマーク人</h3>
+        <ul>
+          <li>日本とデンマークの休み方・働き方の違いを対比しながら提示</li>
+          <li>「休む」ことへの罪悪感の有無が、両国の働き方の分かれ目になっている</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> まず自分たちの「休みベタ」な前提に気づかないと、デンマーク流の発想は輸入できないから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第2章: デンマーク流「休む哲学」</h3>
+        <ul>
+          <li>「休みたいから、効率的に働く」という優先順位の逆転を解説</li>
+          <li>仕事は幸せな人生を送るための手段であり、目的化しない</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 目的（幸せな人生）と手段（仕事）を混同すると、際限なく働き続けてしまうから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第3章: アタマとココロを休める北欧の知恵</h3>
+        <ul>
+          <li>脳や心を休めるための具体的な習慣・考え方を紹介</li>
+          <li>受動的な休息と能動的な休息の違いに触れる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> ただ「何もしない」だけでは疲労回復にも創造性の回復にもつながりにくいため、休み方にも技術が要るから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第4章: 人生の幸福は「体験の共有」にある</h3>
+        <ul>
+          <li>モノより体験、体験も一人より誰かと共有することが幸福度を高める</li>
+          <li>ヒュッゲの本質が「人とのつながり」にあることを掘り下げる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 幸福研究において、社会的なつながりは所得や消費以上に幸福度への影響が大きいとされているから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第5章: 休養が社会を変える</h3>
+        <ul>
+          <li>個人の休み方が組織・社会全体の生産性や創造性にどう波及するかを論じる</li>
+          <li>休暇制度（フェリペンゲなど）が社会インフラとして機能している</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 個人の頑張りだけでなく、社会制度として休息を支えることで持続可能な高パフォーマンスが実現するから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第6章: 人生の質を高める休みのデザイン</h3>
+        <ul>
+          <li>読者が自分自身の「休みのデザイン」を実践するための指針を提示</li>
+          <li>運動・趣味・社交を軸にした具体的な休み方の設計を促す</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 知識として理解するだけでなく、自分の生活に落とし込む具体策がなければ行動変容につながらないから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 具体例 ============ -->
+    <section class="panel" id="tab-examples" role="tabpanel" aria-labelledby="tab-btn-examples">
+      <h2 class="panel-title">🔍 具体例・ケーススタディ</h2>
+
+      <div class="card">
+        <h3>① 平日16時退社・金曜14〜15時退社の日常</h3>
+        <ul>
+          <li><b>背景:</b> デンマークでは役職に関わらず、多くの職場で平日は午後4時、金曜は午後2〜3時に仕事を切り上げて帰宅するのが一般的</li>
+          <li><b>示唆:</b> 退社時刻という「締め切り」が先にあることで、勤務時間中の集中力と優先順位づけが研ぎ澄まされる</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 労働時間の短さは怠慢ではなく、時間制約を逆手に取った効率化の結果であることを示す。</div>
+      </div>
+
+      <div class="card">
+        <h3>② 法定3週間の夏季連続休暇 + フェリペンゲ制度</h3>
+        <ul>
+          <li><b>背景:</b> デンマークでは7月を中心に3週間の連続休暇を取る権利が法律で保障されており、給与の12.5%が休暇積立金として支給される</li>
+          <li><b>示唆:</b> 「休まないでどうやって働くの？」という価値観が、経済的な裏付けとともに社会に定着している</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 長期休暇は個人の努力ではなく制度で支えるべきだという発想が、罪悪感のない休み方を可能にしている。</div>
+      </div>
+
+      <div class="card">
+        <h3>③ 休暇中は通知オフが常識という文化</h3>
+        <ul>
+          <li><b>背景:</b> 世界屈指の効率的な国であるにもかかわらず、デンマーク人は休むときにスマホの通知を意図的にオフにする</li>
+          <li><b>示唆:</b> 「常に反応できる状態」でいることが、生産性ではなくむしろ休息と集中の質を下げると考えられている</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> デジタルとの距離の取り方そのものが、休息の質・仕事の質の両方に直結するスキルであることを示す。</div>
+      </div>
+
+      <div class="card">
+        <h3>④ IMD世界競争力ランキング「ビジネス効率性」6年連続1位</h3>
+        <ul>
+          <li><b>背景:</b> デンマークの年間労働時間は約1,380時間で、日本(約1,600時間)やアメリカ(約1,750時間)より大幅に短い</li>
+          <li><b>示唆:</b> それでも国際競争力調査の「ビジネス効率性」部門で6年連続世界1位を記録している</li>
+        </ul>
+        <div class="bar-viz">
+          <div class="bar-row"><span class="bar-label">デンマーク</span><div class="bar-track"><div class="bar-fill" style="width:79%"></div></div><span class="bar-val">約1,380h</span></div>
+          <div class="bar-row"><span class="bar-label">日本</span><div class="bar-track"><div class="bar-fill" style="width:91%"></div></div><span class="bar-val">約1,600h</span></div>
+          <div class="bar-row"><span class="bar-label">米国</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">約1,750h</span></div>
+        </div>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 労働時間の長さと生産性・競争力は必ずしも比例せず、むしろ休息の質が競争力の源泉になり得ることを裏づける。</div>
+      </div>
+    </section>
+
+    <!-- ============ 引用 ============ -->
+    <section class="panel" id="tab-quotes" role="tabpanel" aria-labelledby="tab-btn-quotes">
+      <h2 class="panel-title">💬 重要な引用</h2>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>どんな形であっても心地良いひとときこそがヒュッゲであり、それこそがデンマーク人が大切にしているものだ。</blockquote>
+        <div class="quote-note">原典の逐語引用は確認できなかったため、書評記事に基づく要旨として掲載。デンマーク人がヒュッゲを日常会話で頻繁に口にするという趣旨の一節。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>デンマーク人は、ゆったり休みを満喫する「ために」限られた時間で効率的に働く。休みたいから、効率的に働くのだ。</blockquote>
+        <div class="quote-note">原典の逐語引用は確認できなかったため、書評記事に基づく要旨として掲載。本書の中心テーゼにあたる一節。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>デンマーク人にとって仕事はあくまで幸せな人生を送るための手段であり、仕事のために人生の喜びを手放すことはない。</blockquote>
+        <div class="quote-note">原典の逐語引用は確認できなかったため、書評記事に基づく要旨として掲載。仕事と人生の主従関係を表す一節。</div>
+      </div>
+    </section>
+
+    <!-- ============ 今日のアクション ============ -->
+    <section class="panel" id="tab-actions" role="tabpanel" aria-labelledby="tab-btn-actions">
+      <h2 class="panel-title">✅ 今日できるアクション</h2>
+
+      <div class="card action-card">
+        <h3>① 今日の作業終了時刻を15分早めてみる</h3>
+        <ul>
+          <li>今日のタスクリストを見直し、終業時刻を15分前倒しに設定して、その時間内で終わらせる工夫をする</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要15分</span>
+          <span>🎯 目的: 「休みたいから効率化する」逆算思考を体感する</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 締め切りが先に固定されることで、優先順位づけと集中力が自然と高まる感覚を体験できる。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>② 通知オフの「ヒュッゲタイム」を30分つくる</h3>
+        <ul>
+          <li>今夜、スマホの通知をすべてオフにし、家族や自分自身のために心地よい30分を過ごす</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要30分</span>
+          <span>🎯 目的: デジタルとの境界線を引く練習</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 常時接続から離れることで、脳が本当に休まる感覚をつかみ、休息の質を意識的に高められる。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>③ 今週末の「運動・趣味・社交」を1つ予定に入れる</h3>
+        <ul>
+          <li>手帳やカレンダーに、運動・趣味・社交のいずれか1つを具体的な日時とセットで書き込む</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要5分</span>
+          <span>🎯 目的: 生産性を高める休み方ベスト3を実践する</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 能動的な休み方を先に予定に組み込むことで、実行率が上がり、来週のパフォーマンス向上につながる。</div>
+      </div>
+
+      <h2 class="panel-title" style="margin-top:24px;">📚 関連書籍</h2>
+      <div class="card">
+        <div class="related-item"><span class="icon">📘</span><span><b>デンマーク人はなぜ4時に帰っても成果を出せるのか</b>（針貝有佳）: 同著者による姉妹編。本書の休み方の背景にあるデンマーク流の働き方・効率化を深掘りする。</span></div>
+        <div class="related-item"><span class="icon">📗</span><span><b>幸せってなんだっけ？ 世界一幸福な国での「ヒュッゲ」な1年</b>（ヘレン・ラッセル）: ヒュッゲ文化を1年間の体験記として描いた定番入門書。</span></div>
+        <div class="related-item"><span class="icon">📙</span><span><b>世界一幸せな国、北欧デンマークのシンプルで豊かな暮らし</b>（芳子ビューエル）: 暮らしの視点からヒュッゲの実践法を紹介する一冊。</span></div>
+        <div class="related-item"><span class="icon">📕</span><span><b>はじめてのヒュッゲ〜北欧の幸せな毎日のつくり方〜</b>（ルイーザ・トムセン・ブリッツ）: 日常に取り入れやすいヒュッゲの実践ガイド。</span></div>
+        <div class="related-item"><span class="icon">📔</span><span><b>LAGOM 人生を豊かにするスウェーデンの"ちょうどいい"の見つけ方</b>（リンネア・ダンストルプ）: 隣国スウェーデンの類似概念との比較で、北欧的なバランス感覚への理解を補強する。</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>📖 books-summary daily reading digest ・ デンマーク人の休む哲学</footer>
+</div>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('section.panel');
+    var btns = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){
+      var active = (p.id === 'tab-' + name);
+      p.classList.toggle('active', active);
+    });
+    btns.forEach(function(b){
+      var active = (b.id === 'tab-btn-' + name);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+</script>
+</body>
+</html>
