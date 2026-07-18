@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット（起業の科学 インフォグラフィック）
+  - プライマリー:   #2B6CB0 (スタートアップブルー / 論理・信頼)
+  - セカンダリー:   #1A365D (ディープネイビー / 実践知・堅実さ)
+  - アクセント:     #ED8936 (グロースオレンジ / 挑戦・成長)
+  - グラデーション: linear-gradient(135deg, #2B6CB0 0%, #ED8936 100%)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>起業の科学 スタートアップサイエンス | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#2B6CB0;
+    --secondary:#1A365D;
+    --accent:#ED8936;
+    --bg:#F5F7F8;
+    --card:#FFFFFF;
+    --text:#1E2933;
+    --text-sub:#5C707A;
+    --line:#E2E9EC;
+    --shadow: 0 4px 16px rgba(26,54,93,0.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 0 48px;}
+
+  /* ===== Header / Hero ===== */
+  header.hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color:#fff;
+    padding:32px 20px 28px;
+    border-radius:0 0 28px 28px;
+    box-shadow:var(--shadow);
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.12em;
+    opacity:.9;
+    font-weight:700;
+    display:flex;align-items:center;gap:6px;
+  }
+  h1.title{
+    font-size:24px;
+    margin:8px 0 4px;
+    font-weight:800;
+    line-height:1.35;
+  }
+  .subtitle{font-size:13px;opacity:.92;margin:0 0 4px;}
+  .byline{font-size:13px;opacity:.9;margin-top:2px;}
+
+  .why-how-box{
+    margin:20px 0 0;
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:16px;
+    padding:16px 16px 14px;
+    backdrop-filter:blur(2px);
+  }
+  .why-how-box .qa-label{
+    font-size:11px;font-weight:800;letter-spacing:.08em;
+    opacity:.95;margin-bottom:6px;
+  }
+  .why-how-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start;}
+  .why-how-row .tag{
+    flex:0 0 auto;
+    background:#fff;color:var(--primary);
+    font-size:11px;font-weight:800;
+    padding:3px 8px;border-radius:999px;
+    margin-top:1px;
+  }
+  .why-how-row .body{font-size:13.5px;font-weight:600;}
+  .why-how-row.evidence .tag{color:var(--secondary);}
+
+  /* ===== Stat badges on hero ===== */
+  .stat-strip{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+    margin-top:16px;
+  }
+  .stat-chip{
+    background:#fff;border-radius:12px;padding:10px 6px;text-align:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  }
+  .stat-chip .num{font-size:18px;font-weight:800;color:var(--primary);display:block;}
+  .stat-chip .label{font-size:10px;color:var(--text-sub);margin-top:2px;display:block;}
+
+  /* ===== Tabs ===== */
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:16px 16px 0;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:10;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card);
+    color:var(--text-sub);
+    font-size:12.5px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    border:1px solid var(--line);
+    transition:all .15s ease;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--secondary);
+    color:#fff;
+    border-color:var(--secondary);
+  }
+
+  main{padding:16px 16px 0;}
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  h2.panel-title{
+    font-size:17px;font-weight:800;margin:4px 0 14px;
+    display:flex;align-items:center;gap:6px;
+    color:var(--secondary);
+  }
+
+  /* ===== Cards ===== */
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  .card h3{
+    font-size:15px;margin:0 0 8px;font-weight:800;
+    display:flex;align-items:center;gap:6px;
+  }
+  .card h3 .num-badge{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    background:var(--primary);color:#fff;font-size:11px;
+    display:flex;align-items:center;justify-content:center;font-weight:800;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;}
+  .card ul li{margin-bottom:5px;}
+  .why-tag{
+    margin-top:10px;
+    background:#EAF1F8;
+    border-left:3px solid var(--primary);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:var(--text-sub);
+  }
+  .why-tag b{color:var(--primary);}
+
+  /* mini bar viz */
+  .bar-viz{margin-top:10px;}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .bar-row .bar-label{font-size:11px;color:var(--text-sub);flex:0 0 92px;}
+  .bar-track{flex:1;background:#E2E9EC;border-radius:6px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:6px;}
+  .bar-row .bar-val{flex:0 0 64px;font-size:11px;font-weight:800;color:var(--primary);text-align:right;}
+
+  /* quote card */
+  .quote-card{
+    background:linear-gradient(135deg, rgba(43,108,176,0.06), rgba(237,137,54,0.12));
+    border:1px dashed var(--primary);
+  }
+  .quote-card blockquote{
+    margin:0 0 8px;font-size:14.5px;font-weight:700;color:var(--text);
+    border-left:3px solid var(--primary);padding-left:10px;
+  }
+  .quote-card .quote-note{font-size:12px;color:var(--text-sub);}
+  .quote-tag-badge{
+    display:inline-block;font-size:10px;font-weight:800;color:#fff;
+    background:var(--secondary);border-radius:6px;padding:2px 6px;margin-bottom:6px;
+  }
+
+  /* action card */
+  .action-card{border-left:4px solid var(--accent);}
+  .action-meta{
+    display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;
+  }
+  .action-meta span{
+    font-size:11px;font-weight:700;background:#FCEBD9;color:#9A5B0F;
+    padding:3px 8px;border-radius:999px;
+  }
+
+  /* related books */
+  .related-item{
+    display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);
+    font-size:13px;
+  }
+  .related-item:last-child{border-bottom:none;}
+  .related-item .icon{flex:0 0 auto;font-size:18px;}
+
+  footer{
+    text-align:center;font-size:11px;color:var(--text-sub);padding:24px 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">🚀 今日の一冊 ・ ビジネス</div>
+    <h1 class="title">起業の科学</h1>
+    <p class="subtitle">スタートアップサイエンス</p>
+    <p class="byline">著者: 田所雅之</p>
+
+    <div class="why-how-box">
+      <div class="qa-label">📣 要約 = 問い × 答え × 根拠</div>
+      <div class="why-how-row">
+        <span class="tag">問い</span>
+        <span class="body">なぜ多くのスタートアップは、良いアイデアと十分な資金があっても市場から消えていくのか？</span>
+      </div>
+      <div class="why-how-row">
+        <span class="tag">答え</span>
+        <span class="body">課題検証を飛ばしたまま「時期尚早な拡大（プレマチュアスケーリング）」に走ってしまうから。起業は才能ではなく、CPF→PSF→PMFという再現可能な「科学」的プロセスとして体系化できる。</span>
+      </div>
+      <div class="why-how-row evidence">
+        <span class="tag">根拠</span>
+        <span class="body">失敗したスタートアップの74%が、課題の検証を十分に行わないまま「プロダクト（解決策）の検証」に時間を割いていたという著者の分析。</span>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-chip"><span class="num">74%</span><span class="label">プレマチュア<br>スケーリングで失敗</span></div>
+      <div class="stat-chip"><span class="num">5段階</span><span class="label">CPF→PSF→PMF<br>のフレームワーク</span></div>
+      <div class="stat-chip"><span class="num">115週</span><span class="label">連続Amazon<br>経営書1位</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィック タブ">
+    <button class="tab-btn" role="tab" id="tab-btn-concepts" aria-controls="tab-concepts" aria-selected="true" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-btn-chapters" aria-controls="tab-chapters" aria-selected="false" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-btn-examples" aria-controls="tab-examples" aria-selected="false" onclick="switchTab('examples')">🔍 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-btn-quotes" aria-controls="tab-quotes" aria-selected="false" onclick="switchTab('quotes')">💬 引用</button>
+    <button class="tab-btn" role="tab" id="tab-btn-actions" aria-controls="tab-actions" aria-selected="false" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+    <!-- ============ 主要概念 ============ -->
+    <section class="panel active" id="tab-concepts" role="tabpanel" aria-labelledby="tab-btn-concepts">
+      <h2 class="panel-title">🧩 主要概念の詳細</h2>
+
+      <div class="card">
+        <h3><span class="num-badge">1</span>PMF（プロダクト・マーケット・フィット）</h3>
+        <ul>
+          <li>市場（顧客）に熱狂的に受け入れられる製品・サービスを作れている状態</li>
+          <li>スタートアップが成功できるか、失敗して消えてしまうかを最終的に決定づける指標</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> これを達成しない限り、どれだけ営業やマーケティングに力を注いでも事業はスケールしないから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">2</span>プレマチュアスケーリング（時期尚早な拡大）</h3>
+        <ul>
+          <li>顧客課題の検証が不十分なまま、ヒト・モノ・カネを投入して規模を拡大してしまうこと</li>
+          <li>失敗したスタートアップの多くに共通する、最も典型的な死因とされる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 検証していない前提の上に組織や投資を積み上げると、方向転換のコストが雪だるま式に膨らむから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">3</span>CPF（カスタマー・プロブレム・フィット）</h3>
+        <ul>
+          <li>顧客が抱える課題が、本当に「痛み」を伴う重要な課題かどうかを検証するステップ</li>
+          <li>PMFを達成した企業の多くが、このステージに最も時間を投資している</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 間違った課題を出発点にすると、その先どんなに優れたプロダクトを作っても誰にも使われないから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">4</span>PSF（プロブレム・ソリューション・フィット）</h3>
+        <ul>
+          <li>見つけた課題に対して、そのソリューション（解決策）が適切かをプロトタイプで検証するステップ</li>
+          <li>本格的な開発・最適化に入る「前」に、安価に仮説を検証することが目的</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 作り込んでから間違いに気づくと、投じた時間とコストの回収が難しくなるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">5</span>MVP（Minimum Viable Product）</h3>
+        <ul>
+          <li>顧客の反応を学習するために必要最小限の機能だけを備えた「実用最小限の製品」</li>
+          <li>完成度よりも、仮説検証のスピードと学習効率を優先して作られる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 最小のコストと時間で顧客の本音を引き出し、無駄な開発投資を避けるため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">6</span>プロブレムインタビュー</h3>
+        <ul>
+          <li>顧客に「ソリューション」を提案するのではなく、「課題」そのものを深掘りして聞き出すインタビュー手法</li>
+          <li>「このサービスがあったら使いますか？」のような誘導質問は避けるべきとされる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 誘導質問には顧客が社交辞令で答えてしまい、実際の行動には結びつかない本音とかけ離れた回答が返ってくるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">7</span>ユニットエコノミクス</h3>
+        <ul>
+          <li>顧客一人あたりの採算性を、LTV（顧客生涯価値）とCPA（顧客獲得コスト）の関係で可視化する指標</li>
+          <li>PMF達成後、事業をスケールする段階で特に重要になる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> どれだけ顧客が増えても、一人あたりの採算が合っていなければ事業拡大は赤字を拡大させるだけだから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">8</span>コールドスタート問題</h3>
+        <ul>
+          <li>マッチング型・プラットフォーム型ビジネスで、供給側と需要側のどちらか一方がいないと他方も集まらない、という初期普及の壁</li>
+          <li>多くのプラットフォームサービスが軌道に乗る前に頓挫する典型パターン</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 両側面を同時に成立させる初期戦略を持たないと、いくら良いアイデアでもサービスとして機能しないから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 各章の要約 ============ -->
+    <section class="panel" id="tab-chapters" role="tabpanel" aria-labelledby="tab-btn-chapters">
+      <h2 class="panel-title">📖 各章の要約</h2>
+
+      <div class="card">
+        <h3>第1章: IDEA VERIFICATION（アイデアの検証）</h3>
+        <ul>
+          <li>スタートアップにとっての「良いアイデア」とは何かを定義する</li>
+          <li>思いつきをそのまま検証するのではなく、検証可能な「最善の仮説（Plan A）」に落とし込む</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 検証されないアイデアは単なる妄想にすぎず、最初に筋の良さを見極めることが後工程の無駄を防ぐから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第2章: CUSTOMER PROBLEM FIT（課題の質を上げる）</h3>
+        <ul>
+          <li>顧客の課題仮説を構築し、プロブレムインタビューで検証する</li>
+          <li>集めた情報を構造化し、課題の解像度と質を高めていく</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> ここでの課題設定を誤ると、後続のPSF・PMFの検証すべてが的外れになってしまうから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第3章: PROBLEM SOLUTION FIT（ソリューションの検証）</h3>
+        <ul>
+          <li>ソリューションの本質を理解し、最適化する「前」に入念な検証を行う</li>
+          <li>プロトタイプを用いて仮説を磨き込んでいく</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 早すぎる最適化は、間違った方向に開発リソースを固定してしまう最大のリスクだから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第4章: PRODUCT MARKET FIT（人が欲しがるものを作る）</h3>
+        <ul>
+          <li>ユーザー実験の準備をし、MVPを構築して顧客に届ける</li>
+          <li>MVPの評価を計測しながらスプリントを回し、PMFの達成可否を判断、必要ならピボットを検討する</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 「作った」ことと「本当に欲しがられている」ことは別物であり、定量的な計測でしか判断できないから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第5章: TRANSITION TO SCALE（スケールするための変革）</h3>
+        <ul>
+          <li>ユニットエコノミクスを計測し、コールドスタート問題やCPA（顧客獲得コスト）を制御する</li>
+          <li>コンテンツマーケティングや組織文化など、持続的に成長できる仕組みへと変革する</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> PMFを達成しても「稼げる構造」に転換できなければ、成長は長続きしないから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 具体例 ============ -->
+    <section class="panel" id="tab-examples" role="tabpanel" aria-labelledby="tab-btn-examples">
+      <h2 class="panel-title">🔍 具体例・ケーススタディ</h2>
+
+      <div class="card">
+        <h3>① Airbnb：小さな痛みから始まった破壊的イノベーション</h3>
+        <ul>
+          <li><b>背景:</b> リーマンショック後、家賃やローンを払えなくなった人々が自宅の空き部屋を貸し出す形で利用が広がり、Facebookを信用インフラとして活用することで「知らない人の家に泊まる」心理的ハードルを下げた</li>
+          <li><b>示唆:</b> ホテル業と違って誰でもすぐに供給側になれる構造だったため、需給がかみ合い一気にスケールした</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 初期は「切実な痛みを抱えたニッチな顧客層」から広げていくことが、PMF達成への王道であることを示す。</div>
+      </div>
+
+      <div class="card">
+        <h3>② プレマチュアスケーリングで失速した企業群</h3>
+        <ul>
+          <li><b>背景:</b> 課題検証を飛ばして早い段階からプロダクト開発や組織拡大に走ったスタートアップの74%が、著者の分析では失敗に至っている</li>
+          <li><b>示唆:</b> 「早く大きくする」ことより「正しい課題・正しいものを見つける」ことが先である</li>
+        </ul>
+        <div class="bar-viz">
+          <div class="bar-row"><span class="bar-label">課題検証不足で失敗</span><div class="bar-track"><div class="bar-fill" style="width:74%"></div></div><span class="bar-val">約74%</span></div>
+        </div>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 資金力やチームの優秀さよりも、検証プロセスの順序を守れるかどうかが生存率を左右することを裏づける。</div>
+      </div>
+
+      <div class="card">
+        <h3>③ 誘導質問で失敗するプロブレムインタビュー</h3>
+        <ul>
+          <li><b>背景:</b> 「このサービスがあったら使いますか？」という未来の意思を問う質問をすると、大半の顧客が社交辞令で「使うと思う」と答えてしまう</li>
+          <li><b>示唆:</b> こうした回答は実際の購買・利用行動には結びつかないことが多い</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 未来の意思ではなく、過去に実際にとった行動や支払った対価を聞くことでしか、本当のニーズは見えてこない。</div>
+      </div>
+
+      <div class="card">
+        <h3>④ 「Startup Science」スライドから書籍への発展</h3>
+        <ul>
+          <li><b>背景:</b> 著者が公開した1750枚のスライド「Startup Science」が世界で5万回以上シェアされ、大きな反響を呼んだことが本書執筆のきっかけとなった</li>
+          <li><b>示唆:</b> 発売後115週連続でAmazon経営書売上1位を記録するロングセラーとなった</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 属人的な経験談ではなく、誰でも参照・実践できる「型」として体系化したことが広く支持された理由であることを示す。</div>
+      </div>
+    </section>
+
+    <!-- ============ 引用 ============ -->
+    <section class="panel" id="tab-quotes" role="tabpanel" aria-labelledby="tab-btn-quotes">
+      <h2 class="panel-title">💬 重要な引用</h2>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>スタートアップの死因の多くは、資金不足でも人材不足でもなく、市場がまだ欲しがっていないものを作ってしまうことにある。</blockquote>
+        <div class="quote-note">原典の逐語引用はWeb上で確認できなかったため、書評・要約記事に基づく要旨として掲載。本書全体を貫く中心テーゼにあたる一節。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>早すぎる最適化はスタートアップの敵である。顧客の課題を検証する前に、ソリューションを磨き込んではならない。</blockquote>
+        <div class="quote-note">原典の逐語引用は確認できなかったため要旨として掲載。PSF（課題とソリューションの適合）の章の核心的な主張。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>PMFを達成できたスタートアップの多くは、CPF（顧客課題の検証）の段階に最も時間と労力を投資している。</blockquote>
+        <div class="quote-note">原典の逐語引用は確認できなかったため要旨として掲載。課題検証の重要性を統計的に裏づける一節。</div>
+      </div>
+    </section>
+
+    <!-- ============ 今日のアクション ============ -->
+    <section class="panel" id="tab-actions" role="tabpanel" aria-labelledby="tab-btn-actions">
+      <h2 class="panel-title">✅ 今日できるアクション</h2>
+
+      <div class="card action-card">
+        <h3>① 自分のアイデア・プロジェクトの「課題」を1行で書き出す</h3>
+        <ul>
+          <li>今取り組んでいる、あるいは検討している新規事業・企画について、「誰の・どんな痛みを解決するのか」を1行で言語化し、それが本当に切実な課題かを自問する</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要15分</span>
+          <span>🎯 目的: プレマチュアスケーリングを防ぎ、CPFの入り口に立つ</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> アイデアの筋の良し悪しを早期に見極められ、無駄な開発投資を未然に防げる。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>② 誘導質問なしのプロブレムインタビューを1回試す</h3>
+        <ul>
+          <li>身近な同僚や友人1人に「最近、仕事（または生活）で困ったことは？」と、答えを誘導しない聞き方でインタビューしてみる</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要20分</span>
+          <span>🎯 目的: 顧客インタビューの型を体で覚える</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 自分の思い込みと相手の本当のニーズとのギャップに気づき、課題設定の解像度が上がる。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>③ 今の仕事・プロジェクトの「MVP」を紙に書き出す</h3>
+        <ul>
+          <li>完璧な完成形を目指すのではなく、「最小限どこまで作れば反応を確かめられるか」を紙やメモに書き出す</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要15分</span>
+          <span>🎯 目的: 完璧主義を避け、最小単位で検証するマインドセットを持つ</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 着手までのハードルが下がり、実際に行動・検証を始めるスピードが早まる。</div>
+      </div>
+
+      <h2 class="panel-title" style="margin-top:24px;">📚 関連書籍</h2>
+      <div class="card">
+        <div class="related-item"><span class="icon">📘</span><span><b>リーン・スタートアップ</b>（エリック・リース）: 本書のベースとなった思想書。仮説検証と「構築・計測・学習」のループを提唱した原典にあたる。</span></div>
+        <div class="related-item"><span class="icon">📗</span><span><b>起業大全</b>（田所雅之）: 同著者による実践編。9つのフレームワークでスタートアップの意思決定をより体系的に整理する。</span></div>
+        <div class="related-item"><span class="icon">📙</span><span><b>THE MOM TEST</b>（ロブ・フィッツパトリック）: プロブレムインタビューの具体的な会話術を深掘りした一冊。誘導質問を避ける技術が学べる。</span></div>
+        <div class="related-item"><span class="icon">📕</span><span><b>ゼロ・トゥ・ワン 君だけの未来を創造する</b>（ピーター・ティール）: 「独占」を狙う起業哲学を説く一冊。本書の課題検証重視とは異なる視点から起業を語る。</span></div>
+        <div class="related-item"><span class="icon">📔</span><span><b>HARD THINGS 答えがない難問と困難にきみはどう立ち向かうか</b>（ベン・ホロウィッツ）: PMF達成後、スケール局面で直面する組織・経営の困難を描いた実践書。</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>📖 books-summary daily reading digest ・ 起業の科学</footer>
+</div>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('section.panel');
+    var btns = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){
+      var active = (p.id === 'tab-' + name);
+      p.classList.toggle('active', active);
+    });
+    btns.forEach(function(b){
+      var active = (b.id === 'tab-btn-' + name);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+</script>
+</body>
+</html>
