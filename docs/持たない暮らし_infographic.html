@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット（持たない暮らし インフォグラフィック）
+  - プライマリー:   #6B7A5E (侘び寂びグリーン / 静けさ・自然)
+  - セカンダリー:   #4A4238 (焦げ茶 / 質素・落ち着き)
+  - アクセント:     #C08552 (テラコッタ / 温もり・本当の贅沢)
+  - グラデーション: linear-gradient(135deg, #6B7A5E 0%, #C08552 100%)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>持たない暮らし | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#6B7A5E;
+    --secondary:#4A4238;
+    --accent:#C08552;
+    --bg:#F7F5F0;
+    --card:#FFFFFF;
+    --text:#2E2A24;
+    --text-sub:#6B6459;
+    --line:#E5E0D5;
+    --shadow: 0 4px 16px rgba(74,66,56,0.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 0 48px;}
+
+  /* ===== Header / Hero ===== */
+  header.hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color:#fff;
+    padding:32px 20px 28px;
+    border-radius:0 0 28px 28px;
+    box-shadow:var(--shadow);
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.12em;
+    opacity:.9;
+    font-weight:700;
+    display:flex;align-items:center;gap:6px;
+  }
+  h1.title{
+    font-size:24px;
+    margin:8px 0 4px;
+    font-weight:800;
+    line-height:1.35;
+  }
+  .subtitle{font-size:13px;opacity:.92;margin:0 0 4px;}
+  .byline{font-size:13px;opacity:.9;margin-top:2px;}
+
+  .why-how-box{
+    margin:20px 0 0;
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:16px;
+    padding:16px 16px 14px;
+    backdrop-filter:blur(2px);
+  }
+  .why-how-box .qa-label{
+    font-size:11px;font-weight:800;letter-spacing:.08em;
+    opacity:.95;margin-bottom:6px;
+  }
+  .why-how-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start;}
+  .why-how-row .tag{
+    flex:0 0 auto;
+    background:#fff;color:var(--primary);
+    font-size:11px;font-weight:800;
+    padding:3px 8px;border-radius:999px;
+    margin-top:1px;
+  }
+  .why-how-row .body{font-size:13.5px;font-weight:600;}
+  .why-how-row.evidence .tag{color:var(--secondary);}
+
+  /* ===== Stat badges on hero ===== */
+  .stat-strip{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+    margin-top:16px;
+  }
+  .stat-chip{
+    background:#fff;border-radius:12px;padding:10px 6px;text-align:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  }
+  .stat-chip .num{font-size:18px;font-weight:800;color:var(--primary);display:block;}
+  .stat-chip .label{font-size:10px;color:var(--text-sub);margin-top:2px;display:block;}
+
+  /* ===== Tabs ===== */
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:16px 16px 0;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:10;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card);
+    color:var(--text-sub);
+    font-size:12.5px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    border:1px solid var(--line);
+    transition:all .15s ease;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--secondary);
+    color:#fff;
+    border-color:var(--secondary);
+  }
+
+  main{padding:16px 16px 0;}
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  h2.panel-title{
+    font-size:17px;font-weight:800;margin:4px 0 14px;
+    display:flex;align-items:center;gap:6px;
+    color:var(--secondary);
+  }
+
+  /* ===== Cards ===== */
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  .card h3{
+    font-size:15px;margin:0 0 8px;font-weight:800;
+    display:flex;align-items:center;gap:6px;
+  }
+  .card h3 .num-badge{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    background:var(--primary);color:#fff;font-size:11px;
+    display:flex;align-items:center;justify-content:center;font-weight:800;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;}
+  .card ul li{margin-bottom:5px;}
+  .why-tag{
+    margin-top:10px;
+    background:#EEF1E9;
+    border-left:3px solid var(--primary);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:var(--text-sub);
+  }
+  .why-tag b{color:var(--primary);}
+
+  /* mini bar viz */
+  .bar-viz{margin-top:10px;}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .bar-row .bar-label{font-size:11px;color:var(--text-sub);flex:0 0 92px;}
+  .bar-track{flex:1;background:#E5E0D5;border-radius:6px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:6px;}
+  .bar-row .bar-val{flex:0 0 64px;font-size:11px;font-weight:800;color:var(--primary);text-align:right;}
+
+  /* quote card */
+  .quote-card{
+    background:linear-gradient(135deg, rgba(107,122,94,0.08), rgba(192,133,82,0.12));
+    border:1px dashed var(--primary);
+  }
+  .quote-card blockquote{
+    margin:0 0 8px;font-size:14.5px;font-weight:700;color:var(--text);
+    border-left:3px solid var(--primary);padding-left:10px;
+  }
+  .quote-card .quote-note{font-size:12px;color:var(--text-sub);}
+  .quote-tag-badge{
+    display:inline-block;font-size:10px;font-weight:800;color:#fff;
+    background:var(--secondary);border-radius:6px;padding:2px 6px;margin-bottom:6px;
+  }
+
+  /* action card */
+  .action-card{border-left:4px solid var(--accent);}
+  .action-meta{
+    display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;
+  }
+  .action-meta span{
+    font-size:11px;font-weight:700;background:#F3E4D3;color:#8A5322;
+    padding:3px 8px;border-radius:999px;
+  }
+
+  /* related books */
+  .related-item{
+    display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);
+    font-size:13px;
+  }
+  .related-item:last-child{border-bottom:none;}
+  .related-item .icon{flex:0 0 auto;font-size:18px;}
+
+  footer{
+    text-align:center;font-size:11px;color:var(--text-sub);padding:24px 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">🍃 今日の一冊 ・ ライフスタイル</div>
+    <h1 class="title">持たない暮らし</h1>
+    <p class="subtitle">物と人から自由になる、本当の贅沢の見つけ方</p>
+    <p class="byline">著者: 下重暁子</p>
+
+    <div class="why-how-box">
+      <div class="qa-label">📣 要約 = 問い × 答え × 根拠</div>
+      <div class="why-how-row">
+        <span class="tag">問い</span>
+        <span class="body">物が溢れているのに、なぜ私たちの暮らしはちっとも豊かに感じられないのか？</span>
+      </div>
+      <div class="why-how-row">
+        <span class="tag">答え</span>
+        <span class="body">「ちょっといいもの」を次々買い足し、「そろえる」ことに追われているから。本当の贅沢とは、心底好きな一つを最後まで使い切ることであり、それは物だけでなく人間関係や情報との付き合い方にも通じる生き方の思想である。</span>
+      </div>
+      <div class="why-how-row evidence">
+        <span class="tag">根拠</span>
+        <span class="body">越後の五合庵で黒染めの衣と托鉢の器だけを持ち、栄達を望まず暮らした良寛の生き方を象徴例に、著者は「何も持たないことが心の自由につながる」という逆説を説く。</span>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-chip"><span class="num">1点</span><span class="label">「ちょっといい」より<br>「本当にいい」一つ</span></div>
+      <div class="stat-chip"><span class="num">6章</span><span class="label">モノ→美意識→<br>死生観への構成</span></div>
+      <div class="stat-chip"><span class="num">2000年</span><span class="label">原著『シンプルの<br>すすめ』刊行</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィック タブ">
+    <button class="tab-btn" role="tab" id="tab-btn-concepts" aria-controls="tab-concepts" aria-selected="true" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-btn-chapters" aria-controls="tab-chapters" aria-selected="false" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-btn-examples" aria-controls="tab-examples" aria-selected="false" onclick="switchTab('examples')">🔍 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-btn-quotes" aria-controls="tab-quotes" aria-selected="false" onclick="switchTab('quotes')">💬 引用</button>
+    <button class="tab-btn" role="tab" id="tab-btn-actions" aria-controls="tab-actions" aria-selected="false" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+    <!-- ============ 主要概念 ============ -->
+    <section class="panel active" id="tab-concepts" role="tabpanel" aria-labelledby="tab-btn-concepts">
+      <h2 class="panel-title">🧩 主要概念の詳細</h2>
+
+      <div class="card">
+        <h3><span class="num-badge">1</span>本当の贅沢（物の命を使い切る）</h3>
+        <ul>
+          <li>物をたくさん所有することではなく、一つの物を最後まで使い尽くすことこそが真の豊かさだとする考え方</li>
+          <li>著者いわく「本当の贅沢とは物の命を使い切ること、それが私の流儀」</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 量で満たそうとする消費はすぐに慣れて虚しくなるが、一つを大切に使い切る過程には愛着と満足が積み重なるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">2</span>「そろえる」をやめる</h3>
+        <ul>
+          <li>食器や文房具などをセットでそろえるという発想そのものを手放す提案</li>
+          <li>そろえることは見た目の統一感を優先し、本当に必要かどうかの判断を鈍らせる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> セット買いは物の絶対量を増やし、一つひとつへの愛着を薄めてしまうから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">3</span>「ちょっといいもの」と「本当にいいもの」</h3>
+        <ul>
+          <li>妥協で選んだ「ちょっといいもの」を買うのをやめ、心底惚れ込んだ「本当にいいもの」を一つ選ぶ</li>
+          <li>選び抜く過程そのものが暮らしを丁寧にする</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 妥協で選んだ物は結局大切にされず収納の隅で眠りがちだが、選び抜いた物は使うたびに満足感を与えるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">4</span>良寛の無所有</h3>
+        <ul>
+          <li>越後の五合庵で黒染めの衣と托鉢の器だけを持ち、生涯栄達を望まなかった禅僧・良寛の生き方</li>
+          <li>「持たない」ことの象徴として本書全体を貫く逸話</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 何も持たないことが、かえって心の自由につながるという逆説を体現しているから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">5</span>孤独を許容する人間関係</h3>
+        <ul>
+          <li>ベッタリとした付き合いを避け、互いの「個」を認め合った上で孤独であることを許容する関係</li>
+          <li>「持たない」思想を物だけでなく人付き合いにも広げた考え方</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 依存し合う関係は互いの個を消してしまい、本当の信頼は生まれにくいから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">6</span>情報に惑わされない「個」</h3>
+        <ul>
+          <li>情報が溢れる時代にあっても、他人の評価や流行に流されず自分の基準で選び取る姿勢</li>
+          <li>物の取捨選択と同じ思考法を、情報との付き合い方にも適用する</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 情報過多の時代こそ、自分なりの「個」の基準を持たなければ判断の主導権を失ってしまうから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">7</span>日本人の美意識（引き算の美）</h3>
+        <ul>
+          <li>足すのではなく引くことで見えてくる豊かさという、日本的な簡素美の系譜</li>
+          <li>良寛の暮らしなどを通じて、日本人が本来持っていた感性を再発見する</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 持たない暮らしは目新しい流行ではなく、日本文化に根づいた美意識の再生であることを示すから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">8</span>すっきり死ぬための身辺整理</h3>
+        <ul>
+          <li>持たない暮らしの実践を、老いと死への向き合い方にまで広げる視点</li>
+          <li>物を減らすことは、人生の終い方を考えることと地続きだとする</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 身辺整理は単なる片づけ術ではなく、限りある人生をどう締めくくるかという問いに直結するから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 各章の要約 ============ -->
+    <section class="panel" id="tab-chapters" role="tabpanel" aria-labelledby="tab-btn-chapters">
+      <h2 class="panel-title">📖 各章の要約</h2>
+
+      <div class="card">
+        <h3>序章: 3・11に思いをはせて</h3>
+        <ul>
+          <li>東日本大震災を経て、モノへの執着を根本から見直す転機が語られる</li>
+          <li>命の前では物の所有は無力であるという痛感が本書全体の出発点になっている</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 危機的な出来事が価値観を問い直すきっかけになることを、本書の導入として示しているから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第1章: 生活の贅肉を落とす</h3>
+        <ul>
+          <li>「ちょっといいもの」を買い足すのをやめ、本当にいいものを一つ選ぶことを提案</li>
+          <li>暮らしにたまった不要な「贅肉」を落とすことから始める</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 妥協で集めた物は結局使われず、暮らしを圧迫するだけだから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第2章: 流儀をもって生きる</h3>
+        <ul>
+          <li>他人の基準ではなく、自分なりの「流儀」を持って物や生き方を選ぶ姿勢を説く</li>
+          <li>流儀とは一貫した価値観に基づく選択の積み重ね</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 他人基準で選ぶと、物にも人にも常に振り回されてしまうから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第3章: 豊かな生活を手に入れるためのいくつかの知恵</h3>
+        <ul>
+          <li>「そろえる」をやめる、物を使い切るなど、実践的な知恵を紹介する</li>
+          <li>具体的な習慣として日常に落とし込む方法が語られる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 抽象的な思想だけでなく具体的な習慣に落とし込むことで、持たない暮らしが継続できるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第4章: 日本人の美意識を取り戻す</h3>
+        <ul>
+          <li>良寛の暮らしなど、日本的な簡素の系譜をたどりながら「引き算の美」を語る</li>
+          <li>持たない暮らしを日本文化の再発見として位置づける</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 持たない暮らしが目新しい流行ではなく、日本人が本来持っていた感性の再発見であることを示すから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第5章: なぜシンプルに生きられないのか</h3>
+        <ul>
+          <li>人がなかなか物を手放せない心理的な背景を掘り下げる</li>
+          <li>執着の正体を見つめることで、実践への障害を取り除こうとする</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 障害の正体を知ることで初めて、持たない暮らしが実践可能になるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第6章: シンプルを貫き、すっきり死にたい</h3>
+        <ul>
+          <li>持たない暮らしを死生観にまで広げ、本書を締めくくる</li>
+          <li>身辺整理を「人生の終い方」として捉え直す</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 持たない暮らしが単なる収納術ではなく、老いと死を見据えた人生哲学であることを最後に強調するから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 具体例 ============ -->
+    <section class="panel" id="tab-examples" role="tabpanel" aria-labelledby="tab-btn-examples">
+      <h2 class="panel-title">🔍 具体例・ケーススタディ</h2>
+
+      <div class="card">
+        <h3>① 良寛和尚の五合庵暮らし</h3>
+        <ul>
+          <li><b>背景:</b> 越後の質素な五合庵で、黒染めの衣と托鉢の器だけを持ち、一切の栄達を望まず生涯を過ごした禅僧・良寛の生き方</li>
+          <li><b>示唆:</b> 何も持たない生活が、かえって最大の心の自由を生むという逆説を体現している</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 物の少なさと心の豊かさは反比例しない、むしろ持たないことが自由の条件になり得ることを教えてくれる。</div>
+      </div>
+
+      <div class="card">
+        <h3>② 著者自身の消費習慣</h3>
+        <ul>
+          <li><b>背景:</b> 「ちょっといいもの」を買い足すのをやめ、本当に気に入った一点を長く使い続けるという著者自身の生活実践</li>
+          <li><b>示唆:</b> 妥協せず選び抜いた一つが、結果的に一番の贅沢になる</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 量ではなく質と愛着こそが豊かさの正体であることを、著者自身の実生活で裏づけている。</div>
+      </div>
+
+      <div class="card">
+        <h3>③ 東日本大震災（3・11）での気づき</h3>
+        <ul>
+          <li><b>背景:</b> 震災により多くの人が一瞬にして家財を失う様子を目の当たりにし、著者自身もモノへの執着を見直すきっかけを得た</li>
+          <li><b>示唆:</b> 命あってこその所有であり、モノは所詮借り物にすぎないという気づき</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 危機的な状況が、人間の価値観を根本から問い直させる契機になることを示す好例である。</div>
+      </div>
+
+      <div class="card">
+        <h3>④ 人間関係における「個」の尊重</h3>
+        <ul>
+          <li><b>背景:</b> ベッタリとした付き合いを避け、互いの孤独を認め合う友人関係を大切にする著者の姿勢</li>
+          <li><b>示唆:</b> 適度な距離を保つことが、かえって信頼を深める</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 「持たない」思想が物だけでなく、人間関係の築き方にも応用できることを示している。</div>
+      </div>
+    </section>
+
+    <!-- ============ 引用 ============ -->
+    <section class="panel" id="tab-quotes" role="tabpanel" aria-labelledby="tab-btn-quotes">
+      <h2 class="panel-title">💬 重要な引用</h2>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">引用</span>
+        <blockquote>歳をとるということは、少しずつ余分な衣を脱ぎ、心を解放することだ。欲望と葛藤することで、自由を勝ち得ていくことだと思う。</blockquote>
+        <div class="quote-note">加齢を喪失ではなく解放として捉え直す、著者の死生観が凝縮された一節。書評・紹介記事で名言として繰り返し引かれている。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>本当の贅沢とは物の命を使い切ること、それが私の流儀である。</blockquote>
+        <div class="quote-note">原典ページの逐語確認はWeb上でできなかったため、複数の書評・紹介記事で共通して引用されている表現に基づく要旨として掲載。本書全体を貫く中心思想。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>「ちょっといいもの」は買わない。本当に良いもの、心底惚れ込んだものだけを一つ買う。</blockquote>
+        <div class="quote-note">原典の逐語引用は確認できなかったため要旨として掲載。「そろえる」という発想をやめる、という本書の実践的な提案の核心にあたる。</div>
+      </div>
+    </section>
+
+    <!-- ============ 今日のアクション ============ -->
+    <section class="panel" id="tab-actions" role="tabpanel" aria-labelledby="tab-btn-actions">
+      <h2 class="panel-title">✅ 今日できるアクション</h2>
+
+      <div class="card action-card">
+        <h3>① 引き出しやクローゼットを1か所選び、「ちょっといいもの」を見直す</h3>
+        <ul>
+          <li>妥協で買った「ちょっといいもの」がどれくらいあるかを可視化し、本当に好きで使っている物とそうでない物を仕分けてみる</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要15分</span>
+          <span>🎯 目的: 妥協で買った物を可視化する</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 「本当にいいもの」との違いが明確になり、次に物を選ぶときの自分なりの基準ができる。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>② 「そろえる」をやめてみる</h3>
+        <ul>
+          <li>食器棚や文房具立ての中から、セットで買った物のうち実際に使っている物だけを選び出し、残りは手放す候補として脇に置く</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要20分</span>
+          <span>🎯 目的: 「そろえる」発想を手放す練習をする</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 物の絶対量が減り、管理や収納の負担が下がる。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>③ 今日使う持ち物を一つ選び、「最後まで使い切る」意識で記録する</h3>
+        <ul>
+          <li>使いかけの文房具やコスメなど身近な一つを選び、「これを最後まで使い切る」と決めてメモや日記に書き留める</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要15分</span>
+          <span>🎯 目的: 物の命を使い切る感覚を体で覚える</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 消費との向き合い方が変わり、衝動的な「次の一手」を減らすきっかけになる。</div>
+      </div>
+
+      <h2 class="panel-title" style="margin-top:24px;">📚 関連書籍</h2>
+      <div class="card">
+        <div class="related-item"><span class="icon">📘</span><span><b>シンプルに生きる</b>（ドミニック・ローホー）: 日本的な簡素美をフランス人の視点から描いた一冊。「持たない」思想の国際的な広がりを示す。</span></div>
+        <div class="related-item"><span class="icon">📗</span><span><b>人生がときめく片づけの魔法</b>（近藤麻理恵）: 「ときめくもの」だけを残す片づけ論。「本当にいいもの」だけを選ぶ本書の哲学と響き合う。</span></div>
+        <div class="related-item"><span class="icon">📙</span><span><b>極上の孤独</b>（下重暁子）: 同著者による孤独論。本書で語られる「孤独を許容する人間関係」をさらに深掘りする一冊。</span></div>
+        <div class="related-item"><span class="icon">📕</span><span><b>わたしのウチには、なんにもない。</b>（ゆるりまい）: 「持たない暮らし」をコミックエッセイとして実践的に描いた作品。</span></div>
+        <div class="related-item"><span class="icon">📔</span><span><b>思考の整理学</b>（外山滋比古）: 情報に埋もれず自分の頭で考える姿勢を説く一冊。本書の「情報に惑わされない個を持つ」という主張と重なる。</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>📖 books-summary daily reading digest ・ 持たない暮らし</footer>
+</div>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('section.panel');
+    var btns = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){
+      var active = (p.id === 'tab-' + name);
+      p.classList.toggle('active', active);
+    });
+    btns.forEach(function(b){
+      var active = (b.id === 'tab-btn-' + name);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+</script>
+</body>
+</html>
