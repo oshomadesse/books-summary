@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット（小さな習慣 インフォグラフィック）
+  - プライマリー:   #2E6F6B (ディープティール / 落ち着いた継続力)
+  - セカンダリー:   #1F3A3D (ダークネイビーティール / 意志・土台)
+  - アクセント:     #F2A541 (アンバー / 小さな火花・最初の一歩)
+  - グラデーション: linear-gradient(135deg, #2E6F6B 0%, #F2A541 100%)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>小さな習慣 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#2E6F6B;
+    --secondary:#1F3A3D;
+    --accent:#F2A541;
+    --bg:#F7F4EC;
+    --card:#FFFFFF;
+    --text:#22302F;
+    --text-sub:#5C6B69;
+    --line:#E3DFD2;
+    --shadow: 0 4px 16px rgba(31,58,61,0.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 0 48px;}
+
+  /* ===== Header / Hero ===== */
+  header.hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color:#fff;
+    padding:32px 20px 28px;
+    border-radius:0 0 28px 28px;
+    box-shadow:var(--shadow);
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.12em;
+    opacity:.9;
+    font-weight:700;
+    display:flex;align-items:center;gap:6px;
+  }
+  h1.title{
+    font-size:24px;
+    margin:8px 0 4px;
+    font-weight:800;
+    line-height:1.35;
+  }
+  .subtitle{font-size:13px;opacity:.92;margin:0 0 4px;}
+  .byline{font-size:13px;opacity:.9;margin-top:2px;}
+
+  .why-how-box{
+    margin:20px 0 0;
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:16px;
+    padding:16px 16px 14px;
+    backdrop-filter:blur(2px);
+  }
+  .why-how-box .qa-label{
+    font-size:11px;font-weight:800;letter-spacing:.08em;
+    opacity:.95;margin-bottom:6px;
+  }
+  .why-how-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start;}
+  .why-how-row .tag{
+    flex:0 0 auto;
+    background:#fff;color:var(--primary);
+    font-size:11px;font-weight:800;
+    padding:3px 8px;border-radius:999px;
+    margin-top:1px;
+  }
+  .why-how-row .body{font-size:13.5px;font-weight:600;}
+  .why-how-row.evidence .tag{color:var(--secondary);}
+
+  /* ===== Stat badges on hero ===== */
+  .stat-strip{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+    margin-top:16px;
+  }
+  .stat-chip{
+    background:#fff;border-radius:12px;padding:10px 6px;text-align:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  }
+  .stat-chip .num{font-size:18px;font-weight:800;color:var(--primary);display:block;}
+  .stat-chip .label{font-size:10px;color:var(--text-sub);margin-top:2px;display:block;}
+
+  /* ===== Tabs ===== */
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:16px 16px 0;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:10;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card);
+    color:var(--text-sub);
+    font-size:12.5px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    border:1px solid var(--line);
+    transition:all .15s ease;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--secondary);
+    color:#fff;
+    border-color:var(--secondary);
+  }
+
+  main{padding:16px 16px 0;}
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  h2.panel-title{
+    font-size:17px;font-weight:800;margin:4px 0 14px;
+    display:flex;align-items:center;gap:6px;
+    color:var(--secondary);
+  }
+
+  /* ===== Cards ===== */
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  .card h3{
+    font-size:15px;margin:0 0 8px;font-weight:800;
+    display:flex;align-items:center;gap:6px;
+  }
+  .card h3 .num-badge{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    background:var(--primary);color:#fff;font-size:11px;
+    display:flex;align-items:center;justify-content:center;font-weight:800;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;}
+  .card ul li{margin-bottom:5px;}
+  .why-tag{
+    margin-top:10px;
+    background:#EAF1F0;
+    border-left:3px solid var(--primary);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:var(--text-sub);
+  }
+  .why-tag b{color:var(--primary);}
+
+  /* mini bar viz */
+  .bar-viz{margin-top:10px;}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .bar-row .bar-label{font-size:11px;color:var(--text-sub);flex:0 0 92px;}
+  .bar-track{flex:1;background:#E3DFD2;border-radius:6px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:6px;}
+  .bar-row .bar-val{flex:0 0 64px;font-size:11px;font-weight:800;color:var(--primary);text-align:right;}
+
+  /* quote card */
+  .quote-card{
+    background:linear-gradient(135deg, rgba(46,111,107,0.08), rgba(242,165,65,0.14));
+    border:1px dashed var(--primary);
+  }
+  .quote-card blockquote{
+    margin:0 0 8px;font-size:14.5px;font-weight:700;color:var(--text);
+    border-left:3px solid var(--primary);padding-left:10px;
+  }
+  .quote-card .quote-note{font-size:12px;color:var(--text-sub);}
+  .quote-tag-badge{
+    display:inline-block;font-size:10px;font-weight:800;color:#fff;
+    background:var(--secondary);border-radius:6px;padding:2px 6px;margin-bottom:6px;
+  }
+
+  /* action card */
+  .action-card{border-left:4px solid var(--accent);}
+  .action-meta{
+    display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;
+  }
+  .action-meta span{
+    font-size:11px;font-weight:700;background:#FCEACB;color:#8A5A0A;
+    padding:3px 8px;border-radius:999px;
+  }
+
+  /* related books */
+  .related-item{
+    display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);
+    font-size:13px;
+  }
+  .related-item:last-child{border-bottom:none;}
+  .related-item .icon{flex:0 0 auto;font-size:18px;}
+
+  footer{
+    text-align:center;font-size:11px;color:var(--text-sub);padding:24px 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">🌱 今日の一冊 ・ 自己啓発</div>
+    <h1 class="title">小さな習慣</h1>
+    <p class="subtitle">「ばかばかしいほど小さな」一歩が、大きな変化を生み出す科学的な習慣術</p>
+    <p class="byline">著者: スティーヴン・ガイズ（訳: 田口未和）</p>
+
+    <div class="why-how-box">
+      <div class="qa-label">📣 要約 = 問い × 答え × 根拠</div>
+      <div class="why-how-row">
+        <span class="tag">問い</span>
+        <span class="body">「毎日30分運動する」「本を1冊読む」といった大きな目標は、なぜいつも三日坊主で終わってしまうのか？</span>
+      </div>
+      <div class="why-how-row">
+        <span class="tag">答え</span>
+        <span class="body">目標を「腕立て伏せ1回」のように、意志力をほとんど消費しない"ばかばかしいほど小さい"行動に切り詰め、それを毎日確実に実行することで、脳の抵抗を回避しながら習慣を定着させ、結果的に当初の目標を上回る行動を引き出せるから。</span>
+      </div>
+      <div class="why-how-row evidence">
+        <span class="tag">根拠</span>
+        <span class="body">著者自身、何年も「30分の運動」という目標に挫折し続けていたが、「今日は腕立て伏せ1回だけでいい」と目標を切り下げた瞬間に抵抗感が消え、気づけば毎日運動する身体へと変わっていった、という実体験がある。</span>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-chip"><span class="num">7章</span><span class="label">脳科学から<br>実践ルールまで</span></div>
+      <div class="stat-chip"><span class="num">8ステップ</span><span class="label">大きな変化を<br>もたらす手順</span></div>
+      <div class="stat-chip"><span class="num">8ルール</span><span class="label">失敗しないための<br>決まり</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィック タブ">
+    <button class="tab-btn" role="tab" id="tab-btn-concepts" aria-controls="tab-concepts" aria-selected="true" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-btn-chapters" aria-controls="tab-chapters" aria-selected="false" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-btn-examples" aria-controls="tab-examples" aria-selected="false" onclick="switchTab('examples')">🔍 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-btn-quotes" aria-controls="tab-quotes" aria-selected="false" onclick="switchTab('quotes')">💬 引用</button>
+    <button class="tab-btn" role="tab" id="tab-btn-actions" aria-controls="tab-actions" aria-selected="false" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+    <!-- ============ 主要概念 ============ -->
+    <section class="panel active" id="tab-concepts" role="tabpanel" aria-labelledby="tab-btn-concepts">
+      <h2 class="panel-title">🧩 主要概念の詳細</h2>
+
+      <div class="card">
+        <h3><span class="num-badge">1</span>小さな習慣（ミニハビット）とは何か</h3>
+        <ul>
+          <li>毎日「これだけは必ずやる」と決めた、小さすぎて失敗しようがないポジティブな行動</li>
+          <li>例: 腕立て伏せ1回、1日1段落だけ読む、1日50語だけ書く</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 目標のハードルを極限まで下げることで、行動を先延ばしにする最大の壁である「始めること」への抵抗そのものをなくせるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">2</span>大脳基底核と前頭前皮質の綱引き</h3>
+        <ul>
+          <li>すでに習慣化された行動は「大脳基底核」が自動運転のように処理する</li>
+          <li>新しい行動を始めるときは意識的な「前頭前皮質」が働くが、疲れやすく長続きしにくい</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 「なぜ大きな目標ほど三日坊主になりやすいか」を脳科学的に説明する土台になる概念だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">3</span>モチベーションより意志力を信頼する</h3>
+        <ul>
+          <li>モチベーション（やる気）は気分に左右され当てにならない</li>
+          <li>意志力は使うたびに消耗するが、筋肉のように訓練で強化できる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> やる気頼みの目標設定が長続きしない根本原因を突き、意志力ベースの設計へ転換させる考え方だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">4</span>「小さすぎて失敗しようがない」という自己効力感</h3>
+        <ul>
+          <li>疲れていても機嫌が悪くても達成できる目標にすることで、毎日「達成できた」という成功体験を積める</li>
+          <li>ミニハビットは自分を信じるためのトレーニングでもある</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 挫折体験の蓄積が自己不信を生むのに対し、小さな成功の蓄積は逆に自己効力感を高めていくから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">5</span>ボーナス効果（想定以上の行動が生まれる現象）</h3>
+        <ul>
+          <li>腕立て伏せ1回のつもりが、気づけば10回、20分の運動になっていることが多い</li>
+          <li>ただしこの「おまけ」を目標そのものに設定してはならない</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 行動を始めること自体が最大の障壁であり、一度動き出せば継続は難しくないという人間心理を示しているから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">6</span>大きな変化をもたらす8つのステップ</h3>
+        <ul>
+          <li>目標を選ぶ→理由を掘り下げる→ばかばかしいほど小さくする→予定に組み込む→障害を取り除く→報酬を与える→記録する→慎重にスケールアップする</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 思想を「今日から使える具体的な手順」に落とし込み、実行可能性を高めているから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">7</span>失敗しないための8つのルール</h3>
+        <ul>
+          <li>「絶対にごまかさない」「どんな進歩も喜ぶ」「頻繁に自分に報酬を与える」「期待値を上げすぎない」など</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> せっかく始めたミニハビットを「もっとできるはず」という誘惑で壊さないための、実践上の防波堤になるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">8</span>習慣と意志力は同時に鍛えられる</h3>
+        <ul>
+          <li>習慣化の過程そのものが、日々小さな意志力を使う訓練になる</li>
+          <li>一つの成功体験が、他の領域への挑戦意欲にも波及する</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> ミニハビットが単一の習慣づくりにとどまらず、人生全体の行動力を底上げする複利的な効果を持つことを示すから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 各章の要約 ============ -->
+    <section class="panel" id="tab-chapters" role="tabpanel" aria-labelledby="tab-btn-chapters">
+      <h2 class="panel-title">📖 各章の要約</h2>
+
+      <div class="card">
+        <h3>第1章: 小さな習慣とは何か？</h3>
+        <ul>
+          <li>「小さすぎて失敗しようがない」ポジティブな行動という定義を提示</li>
+          <li>30分の運動に挫折し続けた著者が「腕立て伏せ1回」に切り下げた経緯を紹介</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 著者自身の等身大の失敗談から入ることで、読者に「自分にもできそう」という感覚を与えているから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第2章: 脳を味方にする効果的な方法</h3>
+        <ul>
+          <li>大脳基底核と前頭前皮質という脳の二つの領域の役割の違いを解説</li>
+          <li>新しい習慣づくりでなぜ抵抗が生まれるのかを神経科学の視点から説明</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 「意志が弱いから続かない」という自己責任論ではなく、脳の構造上の必然として挫折を説明し直すから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第3章: モチベーションとわずかな意志の力</h3>
+        <ul>
+          <li>やる気に頼る戦略の不安定さを指摘し、意志力を鍛える戦略の優位性を論じる</li>
+          <li>意志力は消耗品だが筋肉のように鍛えられる、という二重の性質を説明</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 「やる気が出たらやる」という多くの人が採用する戦略が、なぜ機能しないのかを明快に示すから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第4章: 小さな習慣を成功させるための心構え</h3>
+        <ul>
+          <li>完璧主義を手放す、どんな進歩も喜ぶなど、取り組む際のマインドセットを整理</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> テクニックだけでなく心構えを整えることで、挫折の芽を早い段階で摘み取れるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第5章: 小さな習慣はなぜ優れているのか</h3>
+        <ul>
+          <li>プレッシャーがない、気分に左右されず実行できる、自己効力感を高めるなど優位性を多角的に整理</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 他の習慣術と比較したミニハビット特有の強みを言語化し、読者を実践に踏み切らせるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第6章: 大きな変化をもたらす「小さな習慣」8つのステップ</h3>
+        <ul>
+          <li>目標選定から報酬設計、記録、慎重なスケールアップまでの具体的な実行手順を提示</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 思想を実際の行動計画に変換する、本書で最も実務的な章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第7章: 「小さな習慣」を失敗させない8つのルール</h3>
+        <ul>
+          <li>ごまかさない、期待値を上げすぎないなど、継続を阻む落とし穴を避けるルールを列挙</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 好調な時期に目標を勝手に引き上げてしまうといった、ありがちな失敗パターンを防ぐ最終防波堤だから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 具体例 ============ -->
+    <section class="panel" id="tab-examples" role="tabpanel" aria-labelledby="tab-btn-examples">
+      <h2 class="panel-title">🔍 具体例・ケーススタディ</h2>
+
+      <div class="card">
+        <h3>① 著者自身の「腕立て伏せ1回」エピソード</h3>
+        <ul>
+          <li><b>背景:</b> 何年も「30分の運動」という目標を立てては挫折を繰り返していた著者が、ある日「今日は腕立て伏せ1回だけでいい」と自分に言い聞かせた</li>
+          <li><b>示唆:</b> やってみると1回で終わらず、気づけば数十回や20〜30分のトレーニングをこなす日も出てきて、運動習慣そのものが定着した</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> この経験こそが「ミニハビット」という発想の出発点であり、目標を極小化することの効果を最も端的に示す実例だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>② 読書習慣化のための「1日1パラグラフ」</h3>
+        <ul>
+          <li><b>背景:</b> まとまった時間が取れず読書が続かない人に向けて、「1日1冊」ではなく「1日1段落だけ読む」目標を提案</li>
+          <li><b>示唆:</b> ハードルの低さゆえに毎日必ず本を開くことになり、結果的に1段落で終わらず数ページ〜1章を読み進める日が増えていく</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 「まとめて読む」ことへのプレッシャーが読書離れの一因であることを示し、ミニハビットの汎用性を裏づけているから。</div>
+      </div>
+
+      <div class="card">
+        <h3>③ 執筆習慣化のための「1日50語」</h3>
+        <ul>
+          <li><b>背景:</b> 文章を書く習慣をつけたい人に向けて、1日の執筆目標をわずか50語程度に設定する例</li>
+          <li><b>示唆:</b> 「50語だけ」であれば書き始めるまでのハードルが極めて低く、書き始めれば筆が乗って想定より多く書き進められることが多い</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 創作や執筆のような気分に左右されやすい活動こそ、ミニハビットの効果が発揮されやすいことを示しているから。</div>
+      </div>
+
+      <div class="card">
+        <h3>④ 意志力の「筋トレ」としてのミニハビット継続</h3>
+        <ul>
+          <li><b>背景:</b> 意志力は使うたびに消耗するが、日々ミニハビットを完遂する小さな成功体験を積み重ねることで、意志力そのものの総量が徐々に高まっていく</li>
+          <li><b>示唆:</b> 一つの領域（運動など）で身につけた成功体験が、別の領域（仕事や勉強）での粘り強さにも波及する</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> ミニハビットが単発の行動改善にとどまらず、自己効力感と意志力を底上げする複利的な仕組みであることを示すから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 引用 ============ -->
+    <section class="panel" id="tab-quotes" role="tabpanel" aria-labelledby="tab-btn-quotes">
+      <h2 class="panel-title">💬 重要な引用</h2>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>小さな習慣とは、毎日これだけはやると決めて必ず実行する、ごく小さなポジティブな行動である。小さすぎるからこそ失敗のしようがない。</blockquote>
+        <div class="quote-note">原典の逐語引用はWeb上で確認できなかったため、複数の書評・紹介記事で共通して引かれている表現に基づく要旨として掲載。本書の核となる定義。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>小さな習慣に取り組むことは、行動そのものの成果以上に、自分自身を信じるためのトレーニングになる。</blockquote>
+        <div class="quote-note">同様に要旨として掲載。ミニハビットの効果を「自己効力感の獲得」という側面から捉えた一節。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>何かを始めるとき、最初の一歩がいちばん難しい。ミニハビットは、その最初の一歩を限りなく小さくする方法である。</blockquote>
+        <div class="quote-note">要旨として掲載。行動開始のハードルを下げることの重要性を端的に示す表現。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>モチベーションに頼ることを行動戦略にしている限り、習慣を築くことはできない。やる気は気分に左右され、当てにならないからだ。</blockquote>
+        <div class="quote-note">英語原著の要旨を日本語で紹介する書評記事に基づく要旨。モチベーションではなく意志力に頼るべきという本書の主張を凝縮した一節。</div>
+      </div>
+    </section>
+
+    <!-- ============ 今日のアクション ============ -->
+    <section class="panel" id="tab-actions" role="tabpanel" aria-labelledby="tab-btn-actions">
+      <h2 class="panel-title">✅ 今日できるアクション</h2>
+
+      <div class="card action-card">
+        <h3>① 「ばかばかしいほど小さい」ミニハビットを1つ決めて、今すぐ実行する</h3>
+        <ul>
+          <li>「腕立て伏せ1回」「1段落だけ読む」など身につけたい習慣を選び、絶対に失敗しないレベルまで小さくして今すぐ1回実行してみる</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要5分</span>
+          <span>🎯 目的: 意志力をほとんど使わずに成功体験を1つ作る</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 開始のハードルが下がったことを体感し、明日以降も同じミニハビットに取り組みやすくなる。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>② 身につけたい習慣を「8つのステップ」の最初の4つに沿って書き出す</h3>
+        <ul>
+          <li>目標を選ぶ→理由を書く→ばかばかしいほど小さくする→いつ行うか決める、という順で紙やメモアプリに書き出す</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要15分</span>
+          <span>🎯 目的: 漠然とした「習慣にしたいこと」を実行可能な行動計画に変換する</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 目標が具体的になり、意志力に頼らず「決めた通りにやるだけ」の状態に近づく。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>③ 今日達成したミニハビットに、その場で小さな報酬を与える</h3>
+        <ul>
+          <li>好きな飲み物を飲む、達成をメモに一言書くなど、「頻繁に自分に報酬を与える」ルールを実践する</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要10分</span>
+          <span>🎯 目的: 行動の直後にポジティブな感情を結びつけ、継続意欲を強化する</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 「習慣化のサイン」に気づきやすくなり、ミニハビットが本物の習慣へと移行しやすくなる。</div>
+      </div>
+
+      <h2 class="panel-title" style="margin-top:24px;">📚 関連書籍</h2>
+      <div class="card">
+        <div class="related-item"><span class="icon">📘</span><span><b>複利で伸びる1つの習慣</b>（ジェームズ・クリアー）: 「1%の改善」という視点から習慣形成を体系化した世界的ベストセラー。「小さく始める」思想を仕組み化の観点から補完する。</span></div>
+        <div class="related-item"><span class="icon">📗</span><span><b>習慣の力</b>（チャールズ・デュヒッグ）: 「きっかけ・ルーティン・報酬」というhabit loopの枠組みを提示し、本書の脳科学的な説明をさらに深める一冊。</span></div>
+        <div class="related-item"><span class="icon">📙</span><span><b>脳が教える! 1つの習慣</b>（ロバート・マウラー）: カイゼンの発想を人の行動変容に応用し、「小さな一歩」の心理的効果を論じる姉妹書。</span></div>
+        <div class="related-item"><span class="icon">📕</span><span><b>7つの習慣</b>（スティーブン・R・コヴィー）: 習慣を人格形成の土台と位置づける古典。日々の小さな行動を、より長期的な原則の話に接続する視点を与える。</span></div>
+        <div class="related-item"><span class="icon">📔</span><span><b>マインドセット「やればできる！」の研究</b>（キャロル・S・ドゥエック）: 成長マインドセットの考え方は、小さな成功体験を積み重ねて自己効力感を育てる本書のアプローチと響き合う。</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>📖 books-summary daily reading digest ・ 小さな習慣</footer>
+</div>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('section.panel');
+    var btns = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){
+      var active = (p.id === 'tab-' + name);
+      p.classList.toggle('active', active);
+    });
+    btns.forEach(function(b){
+      var active = (b.id === 'tab-btn-' + name);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+</script>
+</body>
+</html>
