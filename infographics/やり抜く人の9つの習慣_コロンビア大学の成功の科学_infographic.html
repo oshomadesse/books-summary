@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット（やり抜く人の9つの習慣 インフォグラフィック）
+  - プライマリー:   #1B4F72 (ディープブルー / 目標達成・知性)
+  - セカンダリー:   #14304A (ネイビー / 実行力・規律)
+  - アクセント:     #E8743B (バーントオレンジ / 前進・エネルギー)
+  - グラデーション: linear-gradient(135deg, #1B4F72 0%, #E8743B 100%)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>やり抜く人の9つの習慣 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#1B4F72;
+    --secondary:#14304A;
+    --accent:#E8743B;
+    --bg:#F5F6F4;
+    --card:#FFFFFF;
+    --text:#20282E;
+    --text-sub:#5B6570;
+    --line:#DFE3E0;
+    --shadow: 0 4px 16px rgba(20,48,74,0.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 0 48px;}
+
+  /* ===== Header / Hero ===== */
+  header.hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color:#fff;
+    padding:32px 20px 28px;
+    border-radius:0 0 28px 28px;
+    box-shadow:var(--shadow);
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.12em;
+    opacity:.9;
+    font-weight:700;
+    display:flex;align-items:center;gap:6px;
+  }
+  h1.title{
+    font-size:23px;
+    margin:8px 0 4px;
+    font-weight:800;
+    line-height:1.35;
+  }
+  .subtitle{font-size:13px;opacity:.92;margin:0 0 4px;}
+  .byline{font-size:13px;opacity:.9;margin-top:2px;}
+
+  .why-how-box{
+    margin:20px 0 0;
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:16px;
+    padding:16px 16px 14px;
+    backdrop-filter:blur(2px);
+  }
+  .why-how-box .qa-label{
+    font-size:11px;font-weight:800;letter-spacing:.08em;
+    opacity:.95;margin-bottom:6px;
+  }
+  .why-how-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start;}
+  .why-how-row .tag{
+    flex:0 0 auto;
+    background:#fff;color:var(--primary);
+    font-size:11px;font-weight:800;
+    padding:3px 8px;border-radius:999px;
+    margin-top:1px;
+  }
+  .why-how-row .body{font-size:13.5px;font-weight:600;}
+  .why-how-row.evidence .tag{color:var(--secondary);}
+
+  /* ===== Stat badges on hero ===== */
+  .stat-strip{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+    margin-top:16px;
+  }
+  .stat-chip{
+    background:#fff;border-radius:12px;padding:10px 6px;text-align:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  }
+  .stat-chip .num{font-size:18px;font-weight:800;color:var(--primary);display:block;}
+  .stat-chip .label{font-size:10px;color:var(--text-sub);margin-top:2px;display:block;}
+
+  /* ===== Tabs ===== */
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:16px 16px 0;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:10;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card);
+    color:var(--text-sub);
+    font-size:12.5px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    border:1px solid var(--line);
+    transition:all .15s ease;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--secondary);
+    color:#fff;
+    border-color:var(--secondary);
+  }
+
+  main{padding:16px 16px 0;}
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  h2.panel-title{
+    font-size:17px;font-weight:800;margin:4px 0 14px;
+    display:flex;align-items:center;gap:6px;
+    color:var(--secondary);
+  }
+
+  /* ===== Cards ===== */
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  .card h3{
+    font-size:15px;margin:0 0 8px;font-weight:800;
+    display:flex;align-items:center;gap:6px;
+  }
+  .card h3 .num-badge{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    background:var(--primary);color:#fff;font-size:11px;
+    display:flex;align-items:center;justify-content:center;font-weight:800;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;}
+  .card ul li{margin-bottom:5px;}
+  .why-tag{
+    margin-top:10px;
+    background:#EAF0F5;
+    border-left:3px solid var(--primary);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:var(--text-sub);
+  }
+  .why-tag b{color:var(--primary);}
+
+  /* mini bar viz */
+  .bar-viz{margin-top:10px;}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .bar-row .bar-label{font-size:11px;color:var(--text-sub);flex:0 0 92px;}
+  .bar-track{flex:1;background:#DFE3E0;border-radius:6px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:6px;}
+  .bar-row .bar-val{flex:0 0 64px;font-size:11px;font-weight:800;color:var(--primary);text-align:right;}
+
+  /* quote card */
+  .quote-card{
+    background:linear-gradient(135deg, rgba(27,79,114,0.08), rgba(232,116,59,0.14));
+    border:1px dashed var(--primary);
+  }
+  .quote-card blockquote{
+    margin:0 0 8px;font-size:14.5px;font-weight:700;color:var(--text);
+    border-left:3px solid var(--primary);padding-left:10px;
+  }
+  .quote-card .quote-note{font-size:12px;color:var(--text-sub);}
+  .quote-tag-badge{
+    display:inline-block;font-size:10px;font-weight:800;color:#fff;
+    background:var(--secondary);border-radius:6px;padding:2px 6px;margin-bottom:6px;
+  }
+
+  /* action card */
+  .action-card{border-left:4px solid var(--accent);}
+  .action-meta{
+    display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;
+  }
+  .action-meta span{
+    font-size:11px;font-weight:700;background:#FBE3D3;color:#8A3D0F;
+    padding:3px 8px;border-radius:999px;
+  }
+
+  /* related books */
+  .related-item{
+    display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);
+    font-size:13px;
+  }
+  .related-item:last-child{border-bottom:none;}
+  .related-item .icon{flex:0 0 auto;font-size:18px;}
+
+  footer{
+    text-align:center;font-size:11px;color:var(--text-sub);padding:24px 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">🎯 今日の一冊 ・ 自己啓発</div>
+    <h1 class="title">やり抜く人の9つの習慣</h1>
+    <p class="subtitle">コロンビア大学の成功の科学 — 目標を達成できる人には、才能ではなく「9つの習慣」がある</p>
+    <p class="byline">著者: ハイディ・グラント・ハルバーソン（訳: 林田レジリ浩文）</p>
+
+    <div class="why-how-box">
+      <div class="qa-label">📣 要約 = 問い × 答え × 根拠</div>
+      <div class="why-how-row">
+        <span class="tag">問い</span>
+        <span class="body">同じ才能・同じ環境の人でも、目標を達成できる人とできない人がいるのはなぜか？</span>
+      </div>
+      <div class="why-how-row">
+        <span class="tag">答え</span>
+        <span class="body">成功は生まれつきのDNAではなく、「目標を具体化する」「if-thenで行動計画を立てる」「進捗をモニタリングする」「現実的楽観主義を持つ」「成長に目を向ける」「意志力を鍛える」といった、誰でも身につけられる9つの習慣によって手に入る。</span>
+      </div>
+      <div class="why-how-row evidence">
+        <span class="tag">根拠</span>
+        <span class="body">著者はコロンビア大学でモチベーション心理学を教える社会心理学者で、本書は数十年にわたる目標達成研究・実験データに基づいている。中でもif-thenプランニング（実行意図）を用いると目標達成率が2〜3倍に高まるという研究結果が示されている。</span>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-chip"><span class="num">9つ</span><span class="label">目標達成者に<br>共通する習慣</span></div>
+      <div class="stat-chip"><span class="num">2〜3倍</span><span class="label">if-thenで高まる<br>達成確率</span></div>
+      <div class="stat-chip"><span class="num">120p</span><span class="label">要点を凝縮した<br>コンパクト構成</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィック タブ">
+    <button class="tab-btn" role="tab" id="tab-btn-concepts" aria-controls="tab-concepts" aria-selected="true" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-btn-chapters" aria-controls="tab-chapters" aria-selected="false" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-btn-examples" aria-controls="tab-examples" aria-selected="false" onclick="switchTab('examples')">🔍 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-btn-quotes" aria-controls="tab-quotes" aria-selected="false" onclick="switchTab('quotes')">💬 引用</button>
+    <button class="tab-btn" role="tab" id="tab-btn-actions" aria-controls="tab-actions" aria-selected="false" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+    <!-- ============ 主要概念 ============ -->
+    <section class="panel active" id="tab-concepts" role="tabpanel" aria-labelledby="tab-btn-concepts">
+      <h2 class="panel-title">🧩 主要概念の詳細</h2>
+
+      <div class="card">
+        <h3><span class="num-badge">1</span>目標の具体性</h3>
+        <ul>
+          <li>「頑張って痩せる」ではなく「3か月で10kg痩せる」のように、何を・いつまでに・どれくらい達成するかを数値と期限で明確化する</li>
+          <li>「メンタルコントラスト」＝成功した自分の姿と現状のギャップを思い描き、足りないものを洗い出す手法も紹介される</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 曖昧な目標は「今日はやらなくていい理由」を無限に作り出してしまうため、脳が言い訳できないレベルまで具体化することが最初の分岐点になるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">2</span>if-thenプランニング（実行意図）</h3>
+        <ul>
+          <li>「もし◯◯という状況になったら、△△をする」と事前に条件と行動をセットで決めておく手法</li>
+          <li>「月・水は仕事終わりに1時間ジムに行く」「カフェに入ったら執筆する」のように、状況をトリガーに行動を自動化する</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 意志力や判断力を使わずに行動できる仕組みを先に作っておくことで、疲れていたり迷っている瞬間でも行動が止まらなくなるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">3</span>目標までの距離をモニタリングする</h3>
+        <ul>
+          <li>定期的にフィードバックを得て、今の自分と目標との距離を「見える化」する</li>
+          <li>「これまでどれだけやったか」ではなく「これからどれだけやるべきか」という"これから思考"に切り替える</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 進捗確認をしない人は自分が停滞していることに気づけず、モチベーションが静かに失われていくため、定点観測そのものが推進力になるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">4</span>現実的楽観主義</h3>
+        <ul>
+          <li>「必ず成功する」と信じつつも、そこに至るまでの障害を直視し、乗り越える計画を立てる姿勢</li>
+          <li>根拠のない楽観（何もしなくてもうまくいく）とは明確に区別される</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 楽観だけでは行動が伴わず、悲観だけでは挑戦が始まらないため、両者を組み合わせた「現実的楽観主義」だけが持続的な行動を生むから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">5</span>「成長すること」に集中する（成長マインドセット）</h3>
+        <ul>
+          <li>能力は固定ではなく努力によって伸ばせるという前提に立ち、「できる・できない」より「どれだけ成長したか」を評価基準にする</li>
+          <li>失敗を「自分の無能の証拠」ではなく「成長のための情報」として捉え直す</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 「証明すること」に集中する人は失敗を恐れて挑戦を避けるが、「成長すること」に集中する人は失敗しても学び続けられるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">6</span>やり抜く力（グリット）</h3>
+        <ul>
+          <li>困難や停滞に直面しても、長期的な目標に向かって粘り強く努力を続ける力</li>
+          <li>最初から完璧な道筋を求めず、うまくいかない時期があることを前提に取り組む</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 才能や環境が同程度の人の間で最終的な達成度を分けるのは、瞬発力ではなく長期にわたる粘り強さだから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">7</span>意志力は筋肉のように鍛えられる</h3>
+        <ul>
+          <li>意志力は使うたびに消耗する有限の資源だが、日々のトレーニングで総量そのものを増やせる</li>
+          <li>「10分だけ読書する」「毎日5分トイレ掃除をする」といった小さな鍛錬を積み重ねる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 「意志が強い人・弱い人」という固定的な見方ではなく、意志力を鍛錬可能なスキルとして捉え直すことで、誰でも改善の余地があると示せるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">8</span>自分を追い込まない（意志力の節約）</h3>
+        <ul>
+          <li>複数の難しい目標に同時に取り組まない、誘惑をできるだけ視界や手の届く範囲から遠ざける</li>
+          <li>意志力を消耗する場面をあらかじめ減らし、限られた資源を本当に必要な場面のために温存する</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 意志力は有限であるため、根性で乗り切ろうとするより、そもそも意志力を使わずに済む環境を設計する方が成功率が高いから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">9</span>「やめること」より「やること」に焦点を当てる</h3>
+        <ul>
+          <li>「〜しない」という否定形の目標は、かえってその行動を意識させ実行してしまいやすいという研究結果がある</li>
+          <li>「間食をやめる」ではなく「小腹が空いたらナッツを食べる」のように、代替行動を明確にする</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 脳は否定形の指示を処理しにくく、「やらないこと」に意識が向くほど皮肉にもその行動が誘発されてしまうため、置き換える行動を用意する方が効果的だから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 各章の要約 ============ -->
+    <section class="panel" id="tab-chapters" role="tabpanel" aria-labelledby="tab-btn-chapters">
+      <h2 class="panel-title">📖 各章の要約</h2>
+
+      <div class="card">
+        <h3>第1章: 目標に具体性を与える</h3>
+        <ul>
+          <li>「頑張る」という曖昧な決意を、数値と期限を伴う具体的な目標に変換する方法を解説</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> すべての習慣の土台となる「何を目指すのか」を最初にはっきりさせる章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第2章: 目標達成への行動計画をつくる</h3>
+        <ul>
+          <li>if-thenプランニング（実行意図）を使い、「いつ・どこで・何をするか」を事前に決めておく手法を紹介</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 意志力に頼らず行動を自動化する、本書の中でも実践効果が最も高い技術だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第3章: 目標までの距離を意識する</h3>
+        <ul>
+          <li>定期的なフィードバックによって現状と目標の差を把握し、モチベーションを維持する方法を解説</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 進捗が見えないまま努力を続けることの危険性と、可視化の効果を示す章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第4章: 現実的楽観主義者になる</h3>
+        <ul>
+          <li>「成功を信じる」ことと「道のりの困難さを直視する」ことを両立させる考え方を提示</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 過度な楽観・過度な悲観のどちらも行動を止めてしまうことを示す、バランス感覚を養う章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第5章: 「成長すること」に集中する</h3>
+        <ul>
+          <li>「証明する」より「成長する」ことに目標の焦点を置くと、困難な課題にも挑戦し続けられることを説明</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 失敗への恐れが挑戦を妨げるメカニズムと、その克服法を扱う章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第6章: 「やり抜く力」を持つ</h3>
+        <ul>
+          <li>長期目標に対して粘り強く取り組み続けるためのグリット（やり抜く力）の育て方を解説</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 短期的なやる気ではなく、停滞期にも耐えられる持続力の重要性を扱う章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第7章: 筋肉を鍛えるように意志力を鍛える</h3>
+        <ul>
+          <li>意志力は消耗する資源であると同時に、鍛錬によって強化できる能力でもあることを解説</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 「意志が弱い」という自己評価を、鍛えれば変えられるスキルの話に転換する章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第8章: 自分を追い込まない</h3>
+        <ul>
+          <li>複数の目標を同時に抱えすぎない、誘惑を遠ざけるなど、意志力を節約する環境設計の方法を紹介</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 根性論に頼らず、そもそも意志力を消耗しない仕組みづくりの重要性を示す章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第9章: 「やめるべきこと」より「やるべきこと」に集中する</h3>
+        <ul>
+          <li>否定形の目標がかえって逆効果になる理由と、代替行動を明確にする置き換えの技術を解説</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 禁止・我慢ベースの目標設定がなぜ失敗しやすいかを心理学的に説明し、本全体の実践知を締めくくる章だから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 具体例 ============ -->
+    <section class="panel" id="tab-examples" role="tabpanel" aria-labelledby="tab-btn-examples">
+      <h2 class="panel-title">🔍 具体例・ケーススタディ</h2>
+
+      <div class="card">
+        <h3>① 報告書の書きかけを「午後一番」に固定する</h3>
+        <ul>
+          <li><b>背景:</b> 「午前中に報告書を書き終えられなかったら、午後最初の仕事はその報告書を書き上げることにする」というif-thenプランを設定する例</li>
+          <li><b>示唆:</b> 「時間ができたらやる」という曖昧な先延ばしをなくし、特定の状況が「必ずこの行動をする」というスイッチになる</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> if-thenプランニングが、意志力ではなく「状況トリガー」によって行動を引き起こす仕組みであることを具体的に示しているから。</div>
+      </div>
+
+      <div class="card">
+        <h3>② 「月・水は仕事終わりにジムで1時間」の自動化</h3>
+        <ul>
+          <li><b>背景:</b> 運動習慣を続けたい人が、曜日と時間帯を固定した実行意図をあらかじめ設定しておく例</li>
+          <li><b>示唆:</b> 「今日は行くべきか」を毎回判断する必要がなくなり、判断疲れによる先延ばしを防げる</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> if-thenプランニングを用いると、目標達成率が2〜3倍高まるという研究結果を日常的な行動に落とし込んだ好例だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>③ 「間食をやめる」ではなく「小腹が空いたらナッツを食べる」</h3>
+        <ul>
+          <li><b>背景:</b> 「〜しない」という禁止型の目標を掲げた人ほど、かえってその行動をしてしまいやすいという研究を紹介</li>
+          <li><b>示唆:</b> 禁止したい行動そのものを目標にするのではなく、望ましい代替行動を具体的に用意しておく</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 「やめるべきこと」より「やるべきこと」に焦点を当てるという第9章の主張を、身近な食習慣の例で裏づけているから。</div>
+      </div>
+
+      <div class="card">
+        <h3>④ 「証明する」目標と「成長する」目標を掲げた学生の違い</h3>
+        <ul>
+          <li><b>背景:</b> 難易度の高い課題に取り組む際、「自分が有能であることを証明する」ことを目標にした学生は、失敗しそうになると挑戦を避けたり途中で投げ出しやすい</li>
+          <li><b>示唆:</b> 一方「新しいスキルを身につけ成長する」ことを目標にした学生は、困難な課題でもねばり強く取り組み続けられる</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 目標の"立て方"そのものが、失敗への耐性と粘り強さを左右することを示す、成長マインドセットの核心的なケースだから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 引用 ============ -->
+    <section class="panel" id="tab-quotes" role="tabpanel" aria-labelledby="tab-btn-quotes">
+      <h2 class="panel-title">💬 重要な引用</h2>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>成功とは「正しい選択」「正しい戦略」「正しい行動」によってつかむものです。決して生まれつきのDNAで決まるものではありません。</blockquote>
+        <div class="quote-note">複数の書評・紹介記事で共通して引用されている、本書の核となる主張。原典の逐語訳の確認はWeb上ではできなかったため要旨として掲載。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>if-thenプランニングを用いると、目標を実行できる確率は2倍から3倍にも高まる。</blockquote>
+        <div class="quote-note">著者の研究知見として複数の要約記事で紹介されている一節の要旨。本書における実行意図の効果を示す代表的な数値。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>目標までの距離を把握するには、フィードバックが欠かせない。自分が前に進んでいるのか、足踏みしているのかが分からなければ、努力を正しい方向に修正することもできない。</blockquote>
+        <div class="quote-note">第3章「目標までの距離を意識する」の主旨を要約した一節。原典の逐語引用は確認できなかったため要旨として掲載。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>「やめよう」と意識すればするほど、その行動が頭から離れなくなる。だからこそ、何をやめるかではなく、代わりに何をするかを決めておく必要がある。</blockquote>
+        <div class="quote-note">第9章の主張を要約した一節。否定形の目標が逆効果になりやすいという研究結果に基づく要旨。</div>
+      </div>
+    </section>
+
+    <!-- ============ 今日のアクション ============ -->
+    <section class="panel" id="tab-actions" role="tabpanel" aria-labelledby="tab-btn-actions">
+      <h2 class="panel-title">✅ 今日できるアクション</h2>
+
+      <div class="card action-card">
+        <h3>① 今取り組んでいる目標を「数値×期限」で書き直す</h3>
+        <ul>
+          <li>「頑張る」「そのうちやる」といった曖昧な目標を1つ選び、「いつまでに」「どれくらい」を数字で書き加える</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要10分</span>
+          <span>🎯 目的: 目標をやらない言い訳ができないレベルまで具体化する</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 「今日やるべきかどうか」を毎回判断する必要がなくなり、実行のハードルが下がる。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>② その目標に対して「if-thenプラン」を1つ作る</h3>
+        <ul>
+          <li>「もし〇〇（状況）になったら、△△（行動）をする」という文をメモに書き出し、目につく場所に貼る</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要15分</span>
+          <span>🎯 目的: 状況をトリガーにして意志力に頼らず行動を自動化する</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 迷いや疲れがある瞬間でも、決めておいた行動が自然に発動しやすくなる。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>③ 「やめたいこと」を1つ、「代わりにやること」に書き換える</h3>
+        <ul>
+          <li>「スマホを見ない」のような否定形の目標を、「デスクに戻ったら1行だけタスクリストを書く」のような肯定形の代替行動に変換する</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要10分</span>
+          <span>🎯 目的: 禁止による意識の集中を避け、望ましい行動に注意を向け直す</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 「我慢」に頼らずに済み、行動そのものが変わることでストレスなく習慣を修正できる。</div>
+      </div>
+
+      <h2 class="panel-title" style="margin-top:24px;">📚 関連書籍</h2>
+      <div class="card">
+        <div class="related-item"><span class="icon">📘</span><span><b>GRIT やり抜く力</b>（アンジェラ・ダックワース）: 長期目標への情熱と粘り強さ（グリット）を、大規模な追跡研究から論じた一冊。第6章の「やり抜く力」をさらに深く掘り下げる。</span></div>
+        <div class="related-item"><span class="icon">📗</span><span><b>マインドセット「やればできる！」の研究</b>（キャロル・S・ドゥエック）: 「証明する」目標と「成長する」目標の違いという本書第5章のテーマを、成長マインドセットの体系として詳述する原典的な一冊。</span></div>
+        <div class="related-item"><span class="icon">📙</span><span><b>実践版 スタンフォードの自分を変える教室</b>（ケリー・マクゴニガル）: 意志力を有限の資源として捉え、鍛え方・節約の仕方を心理学的に解説しており、第7・8章と直接響き合う。</span></div>
+        <div class="related-item"><span class="icon">📕</span><span><b>小さな習慣</b>（スティーヴン・ガイズ）: 「行動を極小化して意志力の消耗を避ける」という発想は、本書の「自分を追い込まない」習慣と補完関係にある。</span></div>
+        <div class="related-item"><span class="icon">📔</span><span><b>スイッチ! ──「変われない」を変える方法</b>（チップ・ハース、ダン・ハース）: 理性と感情の綱引きという観点から行動変容を論じ、本書のif-thenプランニングを組織・チームの文脈に応用する視点を与える。</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>📖 books-summary daily reading digest ・ やり抜く人の9つの習慣</footer>
+</div>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('section.panel');
+    var btns = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){
+      var active = (p.id === 'tab-' + name);
+      p.classList.toggle('active', active);
+    });
+    btns.forEach(function(b){
+      var active = (b.id === 'tab-btn-' + name);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+</script>
+</body>
+</html>
