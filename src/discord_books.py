@@ -147,12 +147,12 @@ def build_search_prompt(query: str) -> str:
 
 def menu_payload() -> dict:
     return {
-        "content": "📚 本を探す・リクエストはここから",
+        "content": "ーーーーーーー",
         "components": [{
             "type": 1,
             "components": [{
                 "type": 2,
-                "style": 1,
+                "style": 2,
                 "label": "🔎 検索",
                 "custom_id": "booksearch",
             }],
