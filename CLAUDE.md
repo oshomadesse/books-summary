@@ -26,7 +26,7 @@ summary: 毎朝AIが本を選定しインフォグラフィック付きサマリ
       ↓ push (state/latest.json 変更で発火)
 ② GitHub Actions .github/workflows/daily-notify.yml
    job deploy: infographics/ を GitHub Pages へ Actions 配信（URL は従来互換）
-   job notify: Pages 200 待ち → Discord Embed ＋ [✅確認(図解URL)] [🔍詳細(bookdetail:date)]
+   job notify: Pages 200 待ち → Discord Embed ＋ [✅確認(bookconfirm:date)] [🔍詳細(bookdetail:date)]（両方紫）
                → LINE Flex（continue-on-error・並走中、安定したら廃止）
    (secrets: DISCORD_BOT_TOKEN / LINE_CHANNEL_ACCESS_TOKEN / LINE_USER_ID)
       ↓
@@ -37,8 +37,13 @@ summary: 毎朝AIが本を選定しインフォグラフィック付きサマリ
    → backlink_books.py が related_dates の各ノートに逆リンク追記（brctl 前置き）
       ↓
 ④ Discord interaction（随時）: .nexus-discord デーモンが .nexus.json の名札で
-   src/discord_books.py へ委譲。🔍詳細 → モーダル質問 → headless NEXUS が
-   当日ノートを読んで深掘り回答。通常発言は普通の NEXUS 対話
+   src/discord_books.py へ委譲。
+   - ✅確認 → 図解URLを ephemeral で返す（URLボタンは灰色固定のため紫化はこの方式）
+   - 🔍詳細 → モーダル質問 → headless NEXUS が当日ノートを読んで深掘り回答
+   - 常設メニュー「🔎 検索」→ モーダル「特定の本やテーマを伝える」→ NEXUS が
+     既読ノート照合 or Web提案で該当本を提出（menu_keeper が60秒ごと最下部を維持、
+     message_id は state/discord_menu.json）
+   - 通常発言は普通の NEXUS 対話
 ```
 
 ### 管理ポイント

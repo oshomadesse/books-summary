@@ -71,7 +71,11 @@ flowchart TD
     P -->|reject時 rebaseして最大3回| P
     P --> W[Tool: GitHub Actions daily-notify.yml]:::tool
     W --> PG[(State: GitHub Pages infographics配信)]:::state
-    W --> DN[Human: Discord #books 通知 Embed+確認/詳細ボタン]:::human
+    W --> DN[Human: Discord #books 通知 Embed+確認/詳細ボタン 両方紫]:::human
+    DN -->|✅確認| CF[Tool: discord_books.py 図解URLをephemeral返信]:::tool
+    MK[Tool: menu_keeper 60秒番人 常設🔎検索メニュー最下部維持]:::tool --> SM[Human: 検索モーダル 本やテーマを伝える]:::human
+    SM --> DB2[Tool: discord_books.py → headless NEXUS注入]:::tool
+    DB2 --> SA[Agent: 既読照合orWeb提案で該当本を提出]:::agent
     W -.->|並走・近日廃止| LN[Human: LINE Flex通知]:::human
     W -->|Discord送信失敗| ErrW([End: workflow失敗 → GitHub通知メール]):::startend
     Start2([Start: 毎朝7:20 launchd pull]):::startend --> PU[Tool: books-summary-pull.sh fetch→brctl→merge]:::tool
@@ -105,7 +109,8 @@ flowchart TD
 | books-summary-pull.sh | fetch/merge失敗 | 5 | `~/Library/Logs/BooksSummary/pull.log`（翌回実行で自己回復） |
 | ノート移送コミットのpush | reject | 3 | pull.log（次回実行の未pushコミット回収で自己回復） |
 | backlink_books.py | ノート不在・退避タイムアウト | 各1 | pull.log（部分失敗でも pull は成功扱い） |
-| discord_books.py | 台帳未検出 | 1 | Discord上でエラー返答（ephemeral） |
+| discord_books.py | 台帳未検出・図解URL不明 | 1 | Discord上でエラー返答（ephemeral） |
+| menu_keeper | メニュー貼り直し失敗 | 60秒ごと再試行 | daemon.log（次周期で自己回復） |
 
 ## むずかしい言葉なし版
 
