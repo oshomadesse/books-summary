@@ -1,26 +1,26 @@
 # books-summary
 
-> 目的: （このプロジェクトが実現することを一文で記入）
+> 目的: 毎朝7:00に「今日読むべき本」をAIが選定・リサーチし、図解付きサマリーをDiscordへ届けて読書習慣と知識インプットを自動化する。
 > 完成条件: 成果と評価は最低1つの Reality Anchor（外部事実）に接続する。
 
-**第N弾まで実装済み**（実装内容を記入）。変更履歴は [docs/更新記録.md](docs/更新記録.md)
+**第3弾まで実装済み**（第1弾: ローカルAPI版 → 第2弾: クラウドRoutine+LINE版 → 第3弾: 06_Books移設・Discord通知・LLM関連リンク版）。変更履歴は [docs/更新記録.md](docs/更新記録.md)
 
 ## フォルダとライフサイクル10要素（State / Node の置き場）
 
 | 原則 | フォルダ | ライフサイクル要素 | 役割 |
 |---|---|---|---|
-| 読む | `.claude/` | Node定義 | AIが読む指示書 |
+| 読む | `.claude/` + `ROUTINE.md` | Node定義 | AIが読む指示書（ROUTINE.md はクラウドRoutineが読む本体） |
 | 行う | `src/` | Node実装 | 機械が実行する処理系 |
 | 書く | `state/` | State | 機械が書き残す記憶 |
-| 見る | `docs/` | State | 人が読む記録 |
+| 見る | `docs/` | State | 人が読む記録（公開HTMLは `infographics/` から Pages Actions 配信） |
 
 上記4フォルダはライフサイクル10要素のうち State / Node の置き場。Edgeは専用フォルダを持たない。`CLAUDE.md`の規則とスクリプト内の分岐が実体。
 
 Judgementも専用フォルダを持たない。Edge上の条件分岐として実装内に存在する。
 
-Humanノードも専用フォルダを持たない。人間本人と通知チャネルが実体。
+Humanノードも専用フォルダを持たない。人間本人と通知チャネル（Discord `#📚06_books`）が実体。
 
-正本（append-only）: （上書きせず追記するStateのパスを記入）
+正本（append-only）: `state/books_read.json`（既読リスト。Routineが毎日1件追記、削除しない）
 
 ## ライフサイクル10要素
 
@@ -60,23 +60,29 @@ Judgementは Edge上の条件分岐であり Node ではない。
 ## 依存グラフ
 
 ```mermaid
-flowchart LR
-    %% プロジェクトごとにサンプルノードを実際のNode・Edge・Stateへ置き換える。
+flowchart TD
     %% この図はHumanがグラフを監視する唯一の場所。Node・Edge・Loop・State変更時は同じpushで必ず更新する（.claude/rules/docs-sync.md）。
-    Start([Start: 起動]):::startend --> H[Human: 入力]:::human
-    H --> A[Agent: 処理]:::agent
-    A -->|loop6・node再試行・最大N回| A
-    A --> T[Tool: 実行]:::tool
-    T --> S[(State: 保存)]:::state
-    S --> J{Judgement: 条件分岐}:::judgement
-    J -->|条件A| E{{"Evaluator: Verification(3rd party)"}}:::evaluator
-    J -->|条件B・差し戻し| A
-    E -->|OK| End([End: 正常終了]):::startend
-    E -->|NG・loop7最大2回まで再試行| A
-    E -->|上限到達・エラー出口| ErrEnd([End: エラー終了]):::startend
-    ErrEnd --> N[Human: エラー通知]:::human
-    End --> D[Human: 完了通知]:::human
-    D -.->|loop9・別run・非同期| Start
+    Start([Start: 毎朝7:00 JST クラウドRoutine起動]):::startend --> G{Judgement: books_read.jsonに今日のdateあり?}:::judgement
+    G -->|あり・生成済み| EndSkip([End: 何もせず終了]):::startend
+    G -->|なし| A[Agent: 選書→Deep Research→図解HTML→ノート生成 ROUTINE.md]:::agent
+    A --> L[Agent: 関連書籍を既読リストとLLM意味照合し wikiリンク Step4.5]:::agent
+    L --> SR[(State: books_read.json / latest.json / infographics/ / 100_Inbox ノート)]:::state
+    SR --> P[Tool: git push origin main]:::tool
+    P -->|reject時 rebaseして最大3回| P
+    P --> W[Tool: GitHub Actions daily-notify.yml]:::tool
+    W --> PG[(State: GitHub Pages infographics配信)]:::state
+    W --> DN[Human: Discord #books 通知 Embed+確認/詳細ボタン]:::human
+    W -.->|並走・近日廃止| LN[Human: LINE Flex通知]:::human
+    W -->|Discord送信失敗| ErrW([End: workflow失敗 → GitHub通知メール]):::startend
+    Start2([Start: 毎朝7:20 launchd pull]):::startend --> PU[Tool: books-summary-pull.sh fetch→brctl→merge]:::tool
+    PU -->|失敗5回| ErrP([End: pull失敗ログ 翌回自己回復]):::startend
+    PU --> MV[Tool: ノートをvault 100_Inboxへ移送 + skip-ci commit push]:::tool
+    MV --> BL[Tool: backlink_books.py 逆リンク追記 brctl前置き]:::tool
+    BL --> OB[(State: Obsidianグラフ 書籍ノート相互リンク)]:::state
+    DN -->|🔍詳細→モーダル質問| HD[Human: しょーまの質問]:::human
+    HD --> DB[Tool: discord_books.py → headless NEXUS注入]:::tool
+    DB --> DA[Agent: ノートを読んで深掘り回答]:::agent
+    DA -.->|loop9・翌日の選書や指示に反映| Start
 
     classDef agent fill:#e4d4ff,stroke:#6f42c1,color:#222
     classDef tool fill:#d7f5df,stroke:#2e8b57,color:#222
@@ -93,8 +99,14 @@ flowchart LR
 
 | ノード | 失敗条件 | 最大試行 | 出口の届き先 |
 |---|---|---:|---|
-| （記入） | （記入） | （回数） | （Humanノード・通知チャネル） |
+| Routine（クラウド） | push reject | 3 | Routine実行履歴（claude.ai/code/routines）＋翌朝Discord通知が来ないことで発覚 |
+| daily-notify.yml Discord送信 | HTTP 2xx以外 | 1 | workflow失敗 → GitHubの失敗通知メール |
+| daily-notify.yml LINE送信 | HTTP 2xx以外 | 1 | continue-on-error（並走扱い、workflowは失敗しない） |
+| books-summary-pull.sh | fetch/merge失敗 | 5 | `~/Library/Logs/BooksSummary/pull.log`（翌回実行で自己回復） |
+| ノート移送コミットのpush | reject | 3 | pull.log（次回実行の未pushコミット回収で自己回復） |
+| backlink_books.py | ノート不在・退避タイムアウト | 各1 | pull.log（部分失敗でも pull は成功扱い） |
+| discord_books.py | 台帳未検出 | 1 | Discord上でエラー返答（ephemeral） |
 
 ## むずかしい言葉なし版
 
-（専門用語を使わず、何を入力すると何が起き、困ったとき誰に届くかを記入）
+朝7時にクラウドのAIが本を1冊選んで調べ、図解ページと読書ノートを作って保存する。7時すぎにスマホのDiscordへ「今日の一冊」が届き、✅確認を押すと図解が開き、🔍詳細を押すと質問箱が出てAIと深掘りできる。7時20分にMacが自動で最新を取り込み、ノートはObsidianの受信箱に移って、関連する過去の本と線で繋がる。壊れたときはDiscordに通知が来ないことで気づけて、ログは `~/Library/Logs/BooksSummary/` にある。

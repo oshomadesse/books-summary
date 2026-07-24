@@ -3,93 +3,108 @@ tags:
   - engineering
   - books-summary
 project_name: 📖 書籍要約くん
-summary: 毎朝AIが本を選定しインフォグラフィック付きサマリーをLINE通知
+summary: 毎朝AIが本を選定しインフォグラフィック付きサマリーをDiscord通知、書籍ノートをLLMリンクでグラフ化
 ---
-# 読書サマリー自動生成システム
+# 読書サマリー自動生成システム（books-summary）
 
 ## 目的
-毎朝7:00に「今日読むべき本」をAIが自動選定・リサーチし、インフォグラフィック付きのサマリーを生成してLINEに通知することで、読書習慣の定着と知識のインプットを効率化する。
+毎朝7:00に「今日読むべき本」をAIが自動選定・リサーチし、インフォグラフィック付きのサマリーを生成して Discord `#📚06_books` に通知する。書籍ノートは Obsidian に蓄積され、関連書籍どうしが wikiリンクでグラフとして繋がる。
 
-## システム概要（2026-07-07 全面刷新: Claude Routine 版）
-**クラウドの Claude Routine** が毎朝 7:00 JST に起動し、選書からリサーチ、
-インフォグラフィック生成、ノート作成、`main` への push までを **Claude 1本**で完結させる。
-LINE 通知は push を受けた GitHub Actions が行い、ローカル Mac は `git pull` するだけ。
-**外部 AI API（Gemini / GPT-5 / Anthropic API）は不使用**。Claude サブスクリプション内で動く。
+## システム概要（2026-07-24 第3弾: 06_Books 移設・Discord 版）
+**クラウドの Claude Routine** が毎朝 7:00 JST に起動し、選書→リサーチ→図解生成→ノート作成→既読本との LLM リンク→`main` push までを Claude 1本で完結。push を受けた **GitHub Actions が Pages 配信と Discord/LINE 通知**を行い、ローカル Mac は 7:20 に pull してノートを vault へ移送・逆リンクするだけ。**外部 AI API 不使用**（Claude サブスク内）。
 
 ### アーキテクチャ
 ```
-┌──────────────────────────────────────────────────────────┐
-│ ① Claude Routine "daily-reading-summary"                 │
-│    (trig_01UUowz2BR5ao6tvqc8URNbD / cron 0 22 * * * UTC  │
-│     = 毎朝 07:00 JST / model: claude-sonnet-5)           │
-│    リポジトリ直下の ROUTINE.md の手順を実行:              │
-│      選書(data/books_read.json 参照)                      │
-│      → Web Deep Research                                  │
-│      → infographics/ + docs/ に HTML 生成                 │
-│      → 100_Inbox/Books-YYYY-MM-DD.md 生成                 │
-│      → data/books_read.json 追記 + data/latest.json 更新  │
-│      → main へ commit & push（[skip ci] 禁止）            │
-└──────────────────────────┬───────────────────────────────┘
-                           │ push (data/latest.json 変更)
-                           ▼
-┌──────────────────────────────────────────────────────────┐
-│ ② GitHub Actions .github/workflows/line-notify.yml       │
-│    GitHub Pages の 200 応答を待機 (max 300s)              │
-│    → LINE Flex Message 送信                               │
-│    (secrets: LINE_CHANNEL_ACCESS_TOKEN / LINE_USER_ID)    │
-└──────────────────────────────────────────────────────────┘
-
-┌──────────────────────────────────────────────────────────┐
-│ ③ ローカル Mac: LaunchAgent                               │
-│    com.oshomadesse.bookssummary.pull (毎朝 07:20 JST)     │
-│    ~/.local/bin/books-summary-pull.sh が git pull のみ実行│
-│    → Obsidian Vault にノートが同期される                  │
-└──────────────────────────────────────────────────────────┘
+① Claude Routine "daily-reading-summary"
+   (trig_01UUowz2BR5ao6tvqc8URNbD / cron 0 22 * * * UTC = 毎朝7:00 JST / claude-sonnet-5)
+   ROUTINE.md の手順: 選書(state/books_read.json 参照)
+   → Web Deep Research → infographics/ に HTML 生成
+   → 100_Inbox/Books-YYYY-MM-DD.md 生成
+   → Step4.5: 関連書籍を既読リストと意味照合し [[Books-YYYY-MM-DD|書名]] リンク
+   → state/books_read.json 追記 + state/latest.json 更新（related_dates 含む）
+   → main へ commit & push（[skip ci] 禁止）
+      ↓ push (state/latest.json 変更で発火)
+② GitHub Actions .github/workflows/daily-notify.yml
+   job deploy: infographics/ を GitHub Pages へ Actions 配信（URL は従来互換）
+   job notify: Pages 200 待ち → Discord Embed ＋ [✅確認(図解URL)] [🔍詳細(bookdetail:date)]
+               → LINE Flex（continue-on-error・並走中、安定したら廃止）
+   (secrets: DISCORD_BOT_TOKEN / LINE_CHANNEL_ACCESS_TOKEN / LINE_USER_ID)
+      ↓
+③ ローカル Mac: LaunchAgent com.oshomadesse.bookssummary.pull (毎朝7:20 JST)
+   ~/.local/bin/books-summary-pull.sh:
+   fetch → brctl ハイドレート → merge（未push有なら rebase 回収）
+   → post_pull: ノートを vault 100_Inbox へ移送＋[skip ci]コミット
+   → backlink_books.py が related_dates の各ノートに逆リンク追記（brctl 前置き）
+      ↓
+④ Discord interaction（随時）: .nexus-discord デーモンが .nexus.json の名札で
+   src/discord_books.py へ委譲。🔍詳細 → モーダル質問 → headless NEXUS が
+   当日ノートを読んで深掘り回答。通常発言は普通の NEXUS 対話
 ```
 
 ### 管理ポイント
 | 対象 | 場所 |
 |---|---|
-| Routine の指示書 | `ROUTINE.md`（リポジトリ直下。編集すれば翌朝から反映） |
+| Routine の指示書 | `ROUTINE.md`（リポ直下。編集して push すれば翌朝から反映） |
 | Routine の管理画面 | https://claude.ai/code/routines |
-| 読了リスト（唯一の正） | `data/books_read.json`（旧 Google Sheets は 2026-07-07 で凍結） |
-| LINE 通知 | `.github/workflows/line-notify.yml` + リポジトリ secrets |
-| ローカル同期 | `~/Library/LaunchAgents/com.oshomadesse.bookssummary.pull.plist`（原本は `src/` に保管） |
+| 読了リスト（唯一の正・append-only） | `state/books_read.json` |
+| 当日メタ（通知・逆リンクが読む） | `state/latest.json` |
+| 通知 workflow | `.github/workflows/daily-notify.yml` + リポ secrets |
+| Discord ハンドラ | `src/discord_books.py`（変更したら Discord で `/restart`） |
+| チャンネル紐付け | `.nexus.json`（channel_id 1528306664422510644 = `#📚06_books`） |
+| ローカル同期 | `~/Library/LaunchAgents/com.oshomadesse.bookssummary.pull.plist`（原本 `src/`） |
+| 設計正本 | `docs/設計記録.md`（ライフサイクル10要素）・依存グラフは `README.md` |
 
-## ディレクトリ構成
+## ディレクトリ構成（graph-scaffold 準拠: 読む=.claude／行う=src／書く=state／見る=docs）
 ```
-📖 books-summary/
-├── ROUTINE.md                # ★ クラウド Routine の実行指示書（システムの心臓部）
-├── .github/workflows/
-│   └── line-notify.yml       # LINE Flex 通知（data/latest.json の push で発火）
-├── data/
-│   ├── books_read.json       # 読了リスト（選書の除外に使用、Routine が毎日追記）
-│   └── latest.json           # 当日分メタ情報（LINE 通知 Action が読む）
-├── 100_Inbox/                # Books-YYYY-MM-DD.md（Routine が生成、git 管理、Obsidian から閲覧）
-├── infographics/             # 生成 HTML 図解（マスター）
-├── docs/                     # GitHub Pages 公開用（https://oshomadesse.github.io/books-summary/）
-└── src/                      # 旧ローカル実行システム（→「旧システム」参照）
-    └── com.oshomadesse.bookssummary.pull.plist  # pull 専用 LaunchAgent 定義（現役）
+06_Books/
+├── ROUTINE.md            # ★ クラウド Routine の実行指示書（システムの心臓部）
+├── README.md             # 表紙＋mermaid 依存グラフ（変更時は同じ push で更新）
+├── CLAUDE.md             # このファイル
+├── .nexus.json           # Discord チャンネル名札＋handler 指定
+├── .github/workflows/daily-notify.yml
+├── state/
+│   ├── books_read.json   # 既読リスト（append-only の正本）
+│   ├── latest.json       # 当日メタ
+│   ├── backfill/         # 一括リンクの判定台帳とバックアップ
+│   └── legacy/           # 旧システムのデータ遺物
+├── 100_Inbox/            # Routine の生成先（pull 後に vault へ移送、通常は .gitkeep のみ）
+├── infographics/         # 図解 HTML マスター = GitHub Pages 配信ルート（Actions 配信）
+├── docs/                 # 設計記録.md・更新記録.md（人間ドキュメント専用）
+└── src/
+    ├── books-summary-pull.sh       # pull＋移送＋逆リンク（原本。配備先 ~/.local/bin）
+    ├── com.oshomadesse.bookssummary.pull.plist
+    ├── backlink_books.py           # 逆リンク追記（launchd 経路・brctl 前置き）
+    ├── discord_books.py            # 🔍詳細ボタン→モーダル→NEXUS 注入ハンドラ
+    ├── tools/backfill_links.py     # 過去ノート一括リンク（scan/apply・1回もの）
+    └── legacy/                     # 旧ローカル実行システム（参照用・実行されない）
 ```
 
 ## 運用
 
 ### 通常運用
-何もしなくてよい。毎朝 7:00 JST に Routine が走り、7:20 に Mac が pull する。
-Mac がスリープ中でも**生成は止まらない**（クラウド実行）。pull は次回起動時に追いつく。
+何もしなくてよい。7:00 生成 → 7:0x Discord 通知 → 7:20 Mac が pull・移送・逆リンク。
+Mac スリープ中でも生成と通知は止まらない（クラウド完結）。pull は次回起動時に追いつく。
 
 ### 手動で今すぐ実行したいとき
-このリポジトリで Claude Code から `RemoteTrigger` の `run`（trigger_id: `trig_01UUowz2BR5ao6tvqc8URNbD`）を叩く。
-または https://claude.ai/code/routines から手動実行。
+このリポで Claude Code から `RemoteTrigger` の `run`（trigger_id: `trig_01UUowz2BR5ao6tvqc8URNbD`）。
+または https://claude.ai/code/routines から手動実行。通知だけ再送するなら
+`gh workflow run daily-notify.yml --repo oshomadesse/books-summary`。
 
 ### ローカルに反映されないとき
 ```bash
 bash ~/.local/bin/books-summary-pull.sh   # ログ: ~/Library/Logs/BooksSummary/pull.log
 ```
 
-### 出力フォーマットを変えたいとき
-`ROUTINE.md` を編集して push するだけ（選書条件・リサーチ項目・インフォグラフィックの
-デザイン指示・ノートテンプレートが全部そこにある）。
+### 出力フォーマット・選書条件を変えたいとき
+`ROUTINE.md` を編集して push するだけ。
+
+### 過去ノートの関連書籍を一括リンクしたいとき（バックフィル）
+```bash
+python3 src/tools/backfill_links.py scan          # 照合台帳を再生成
+# state/backfill/decisions.json の ambiguous を LLM 判定（accepted/rejected）
+python3 src/tools/backfill_links.py apply --dry-run
+python3 src/tools/backfill_links.py apply         # 適用前に state/backfill/backup/ へ自動バックアップ
+```
 
 ## ⚠️ 過去の障害から学んだ制約（重要）
 1. **このリポジトリは iCloud「デスクトップと書類」同期の配下にある。**
@@ -97,21 +112,13 @@ bash ~/.local/bin/books-summary-pull.sh   # ログ: ~/Library/Logs/BooksSummary/
    launchd 起動のプロセスは退避ファイルを読めず `EDEADLK (Resource deadlock avoided)`
    で死ぬ（2026-07-04〜07 の 4 日連続障害の根因）。
 2. その対策として **`.git` の実体は `~/.gitdirs/books-summary` に移設済み**
-   （ワークツリー直下の `.git` は `gitdir:` 参照ファイル）。iCloud の外なので退避されない。
-   リポジトリを clone し直す場合はこの構成を再現すること。
-3. ワークツリー側のファイルも退避され得る。launchd から中身を読む処理は追加しないこと。
-   **pull(merge) も既存ファイルの更新時に現物を読むため、対象が退避済みだと死ぬ**
-   （2026-07-12〜17 の 6 日連続障害。「新規ファイルを書くだけなら安全」は半分誤りだった）。
-   → pull スクリプトは fetch 後にリモート差分ファイルを `brctl download` で
-   ハイドレーションしてから merge する（brctl はデーモンへの依頼なので launchd からでも実体化できる）。
+   （ワークツリー直下の `.git` は `gitdir:` 参照ファイル）。clone し直す場合はこの構成を再現すること。
+3. launchd から既存ファイルを読む処理は、**必ず `brctl download` でハイドレーションしてから**
+   （pull の merge も、backlink_books.py のノート読みもこの型。2026-07-12〜17 の6日連続障害の教訓）。
 4. iCloud は同期競合時に **`.git` 参照ファイルを「.git 2」へリネームして実質消す**ことがある
-   （2026-07-08〜11 の 4 日連続障害）。
-   → pull スクリプトは `--git-dir` 明示で参照ファイルに依存せず、参照ファイル自体も毎回自己修復する。
+   （2026-07-08〜11 の4日連続障害）。pull スクリプトは `--git-dir` 明示＋参照ファイル毎回自己修復で対処済み。
+5. **`src/books-summary-pull.sh` を編集したら `~/.local/bin/` へも複製する**（launchd は配備先を実行する）。
 
-## 旧システム（src/ 以下、2026-07-07 停止）
-Gemini(推薦) + GPT-5(リサーチ) + Claude API(図解) をローカル Mac の LaunchAgent で
-毎朝実行していた構成。iCloud 退避問題で恒常的に不安定だったため Routine 版へ全面移行した。
-- `src/*.py` は参照用に残置（フォーマットの出典。実行はされない）
-- LaunchAgent `com.oshomadesse.bookssummary.run` は削除済み
-- `.github/workflows/daily_workflow.yml`（API 依存の CI フォールバック）は削除済み
-- Google Sheets の読了リストは `data/books_read.json` へ移行済み（シートは凍結）
+## 旧システム（src/legacy/・state/legacy/、2026-07-07 停止）
+Gemini + GPT-5 + Claude API をローカル LaunchAgent で回していた第1弾の遺物。参照用に残置、実行されない。
+Google Sheets の読了リストは `state/books_read.json` へ移行済み（シートは凍結）。
