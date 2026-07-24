@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贈与論 - インフォグラフィック</title>
+    <!-- カラーパレット: プライマリー #667eea, セカンダリー #764ba2, アクセント #f093fb -->
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --text: #333;
+            --bg: #f8f9fa;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .summary-block {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--accent);
+        }
+        
+        .summary-block h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .summary-content {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .summary-item {
+            padding: 10px;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+        }
+        
+        .summary-item strong {
+            color: var(--secondary);
+        }
+        
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .tab-button {
+            background: var(--white);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 12px 20px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--accent);
+        }
+        
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .card ul {
+            list-style: none;
+        }
+        
+        .card li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .card li::before {
+            content: "🎁";
+            position: absolute;
+            left: 0;
+        }
+        
+        .concept-card {
+            border-top-color: var(--secondary);
+        }
+        
+        .concept-card li::before {
+            content: "💡";
+        }
+        
+        .structure-diagram {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .flow-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .flow-item {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .flow-arrow {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .venn-diagram {
+            width: 100%;
+            height: 300px;
+            margin: 20px 0;
+        }
+        
+        .circle {
+            fill-opacity: 0.6;
+            stroke-width: 2;
+        }
+        
+        .circle1 { fill: var(--primary); stroke: var(--primary); }
+        .circle2 { fill: var(--secondary); stroke: var(--secondary); }
+        .circle3 { fill: var(--accent); stroke: var(--accent); }
+        
+        .action-list {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        
+        .action-list h3 {
+            margin-bottom: 15px;
+        }
+        
+        .action-list li {
+            margin: 10px 0;
+            padding: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .flow-chart {
+                gap: 15px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎁 贈与論</h1>
+            <p>マルセル・モース著 - 社会を結ぶ互酬の力学</p>
+        </header>
+
+        <div class="summary-block">
+            <h2>📋 要約 - 問い×答え×根拠</h2>
+            <div class="summary-content">
+                <div class="summary-item">
+                    <strong>❓ 問い:</strong> 無償の贈り物は存在するか、そして社会はなぜ贈与で結ばれるのか？
+                </div>
+                <div class="summary-item">
+                    <strong>✅ 答え:</strong> 贈与は「全体的社会事実」であり、与える/受け取る/返礼する義務が互酬性を生んで関係と秩序を維持する。完全な無償は稀で、贈与は名誉と信頼を循環させる社会装置である。
+                </div>
+                <div class="summary-item">
+                    <strong>🔍 Why:</strong> ポリネシアのハウ概念、北西沿岸のポトラッチ、古代ローマ・ゲルマン・インド法の慣行に共通する互酬の規範が示す普遍性
+                </div>
+                <div class="summary-item">
+                    <strong>🛠️ How:</strong> 儀礼や規範の可視化、返礼のタイミング設計、互酬性の場の役割分担、市場外の相互扶助制度化によって信頼を持続させる
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('concepts')" aria-label="主要概念タブ">🧠 主要概念</button>
+            <button class="tab-button" onclick="showTab('structure')" aria-label="構造図タブ">📊 構造と関係</button>
+            <button class="tab-button" onclick="showTab('examples')" aria-label="事例タブ">🌍 文化事例</button>
+            <button class="tab-button" onclick="showTab('quotes')" aria-label="重要引用タブ">💬 重要引用</button>
+            <button class="tab-button" onclick="showTab('actions')" aria-label="実践タブ">🎯 今日の実践</button>
+        </div>
+
+        <div id="concepts" class="tab-content active">
+            <div class="cards-grid">
+                <div class="card concept-card">
+                    <h3>🌐 全体的社会事実</h3>
+                    <ul>
+                        <li>経済・法・宗教・道徳が交差する現象</li>
+                        <li>贈与はこの総合点として作動</li>
+                        <li>単一領域では理解不可能</li>
+                        <li>社会の交差点的存在</li>
+                    </ul>
+                </div>
+                <div class="card concept-card">
+                    <h3>⚖️ 三重の義務</h3>
+                    <ul>
+                        <li>与える義務・受け取る義務・返礼する義務</li>
+                        <li>互酬性の最小構成要素</li>
+                        <li>関係継続と秩序形成を担う</li>
+                        <li>互酬のエンジン機能</li>
+                    </ul>
+                </div>
+                <div class="card concept-card">
+                    <h3>👻 ハウ（霊的力）</h3>
+                    <ul>
+                        <li>贈物に宿る力や霊性</li>
+                        <li>与え主の人格的痕跡を帯びる</li>
+                        <li>返礼の圧力を生む源泉</li>
+                        <li>贈物の霊的側面</li>
+                    </ul>
+                </div>
+                <div class="card concept-card">
+                    <h3>🏆 ポトラッチ</h3>
+                    <ul>
+                        <li>北西アメリカ先住民の競争的贈与</li>
+                        <li>破壊・浪費を含む威信獲得</li>
+                        <li>同盟関係の構築手段</li>
+                        <li>威信の戦場</li>
+                    </ul>
+                </div>
+                <div class="card concept-card">
+                    <h3>🔄 互酬性の型</h3>
+                    <ul>
+                        <li>一般化互酬（親密圏）</li>
+                        <li>均衡互酬（取引圏）</li>
+                        <li>負の互酬（敵対圏）</li>
+                        <li>返礼の型による分類</li>
+                    </ul>
+                </div>
+                <div class="card concept-card">
+                    <h3>👑 名誉（威信）</h3>
+                    <ul>
+                        <li>贈与を通じて蓄積される評価資源</li>
+                        <li>返礼能力が名誉を規定</li>
+                        <li>社会的影響力の源泉</li>
+                        <li>評価通貨として機能</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="structure" class="tab-content">
+            <div class="structure-diagram">
+                <h2>🔗 贈与の構造と関係性</h2>
+                <div class="flow-chart">
+                    <div class="flow-item">三重の義務</div>
+                    <div class="flow-arrow">⬇️</div>
+                    <div class="flow-item">互酬性の持続</div>
+                    <div class="flow-arrow">⬇️</div>
+                    <div class="flow-item">社会的信頼の形成</div>
+                </div>
+            </div>
+
+            <svg class="venn-diagram" viewBox="0 0 400 300">
+                <circle class="circle circle1" cx="150" cy="120" r="80"/>
+                <circle class="circle circle2" cx="250" cy="120" r="80"/>
+                <circle class="circle circle3" cx="200" cy="200" r="80"/>
+                <text x="120" y="80" fill="white" font-weight="bold">経済</text>
+                <text x="260" y="80" fill="white" font-weight="bold">法</text>
+                <text x="180" y="240" fill="white" font-weight="bold">宗教</text>
+                <text x="200" y="130" fill="white" font-weight="bold" text-anchor="middle">贈与</text>
+            </svg>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div>義務の種類</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">∞</div>
+                    <div>関係の持続</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div>文化圏の事例</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="examples" class="tab-content">
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>🏝️ ポリネシア・メラネシア</h3>
+                    <ul>
+                        <li>ハウ概念による霊的拘束力</li>
+                        <li>コウハの交換システム</li>
+                        <li>物に宿る人格性の観念</li>
+                        <li>返礼義務の内面化</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>🦅 北西沿岸部族</h3>
+                    <ul>
+                        <li>ポトラッチの競争的贈与</li>
+                        <li>威信と同盟の獲得手段</li>
+                        <li>破壊による優位性誇示</li>
+                        <li>階層の動態的再編</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>🏛️ 古代ローマ・ゲルマン</h3>
+                    <ul>
+                        <li>法制に残る贈与規範</li>
+                        <li>互酬の制度化された形態</li>
+                        <li>契約以前の義務関係</li>
+                        <li>近代以前の普遍性</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>🕉️ 古代インド法</h3>
+                    <ul>
+                        <li>ダーナ（布施）の体系</li>
+                        <li>宗教的義務としての贈与</li>
+                        <li>カースト間の互酬関係</li>
+                        <li>道徳と経済の統合</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="quotes" class="tab-content">
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>💎 「贈与は全体的社会事実である」</h3>
+                    <ul>
+                        <li>単なる経済行為を超えた現象</li>
+                        <li>社会の総合現象として把握</li>
+                        <li>複数領域の同時関与</li>
+                        <li>分析の基軸概念</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>👻 「贈り物には霊が宿る」</h3>
+                    <ul>
+                        <li>返礼義務の内的根拠</li>
+                        <li>文化論的説明の提示</li>
+                        <li>無償観の修正</li>
+                        <li>物の人格化理論</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>⚖️ 「三重の義務」</h3>
+                    <ul>
+                        <li>与える・受け取る・返礼する</li>
+                        <li>互酬メカニズムの定式化</li>
+                        <li>操作的概念の提供</li>
+                        <li>社会結合の最小単位</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>🏆 「威信のための競争的贈与」</h3>
+                    <ul>
+                        <li>贈与と権力の結びつき</li>
+                        <li>政治性の明確化</li>
+                        <li>階層化メカニズム</li>
+                        <li>競争原理の導入</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="actions" class="tab-content">
+            <div class="action-list">
+                <h3>🎯 今日から始める実践</h3>
+                <ul>
+                    <li>📝 身近な支援者へ感謝の手紙を書く</li>
+                    <li>📋 受贈と返礼のリストを3件作る</li>
+                    <li>🎁 週内の小さな贈与を一つ準備</li>
+                </ul>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>📚 関連書籍</h3>
+                    <ul>
+                        <li>「経済の人類学」- モース</li>
+                        <li>「親族の基本構造」- レヴィ=ストロース</li>
+                        <li>「大転換」- ポランニー</li>
+                        <li>「負債論」- グレーバー</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>🔄 現代への応用</h3>
+                    <ul>
+                        <li>相互扶助制度の設計</li>
+                        <li>職業団体の連帯強化</li>
+                        <li>地域コミュニティの互酬</li>
+                        <li>贈与基金の制度化</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // すべてのタブコンテンツを非表示
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // すべてのタブボタンを非アクティブ
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // 選択されたタブを表示
+            document.getElementById(tabName).classList.add('active');
+            
+            // 対応するボタンをアクティブ
+            event.target.classList.add('active');
+            
+            // アクセシビリティ属性の更新
+            buttons.forEach(button => {
+                button.setAttribute('aria-selected', 'false');
+            });
+            event.target.setAttribute('aria-selected', 'true');
+        }
+        
+        // 初期化時にアクセシビリティ属性を設定
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach((button, index) => {
+                button.setAttribute('role', 'tab');
+                button.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
+            });
+            
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.setAttribute('role', 'tabpanel');
+            });
+        });
+    </script>
+</body>
+</html>

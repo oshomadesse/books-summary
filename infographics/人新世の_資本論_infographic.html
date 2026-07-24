@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人新世の「資本論」- インフォグラフィック</title>
+    <!-- カラーパレット: プライマリー #2d5a87, セカンダリー #4a90a4, アクセント #f39c12 -->
+    <style>
+        :root {
+            --primary: #2d5a87;
+            --secondary: #4a90a4;
+            --accent: #f39c12;
+            --bg-light: #f8f9fa;
+            --text-dark: #2c3e50;
+            --border: #e9ecef;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--bg-light) 0%, #ffffff 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 15px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 15px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-dark);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .tab-button:hover {
+            background: var(--bg-light);
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom-color: var(--accent);
+            background: var(--bg-light);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card ul {
+            list-style: none;
+        }
+
+        .card li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .card li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .concept-card {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .concept-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .concept-card p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .concept-card .summary {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+            display: inline-block;
+        }
+
+        .flow-diagram {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .flow-step:last-child {
+            margin-bottom: 0;
+        }
+
+        .flow-arrow {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin: 0 15px;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            background: var(--border);
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            transition: width 1s ease;
+        }
+
+        .quote-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .quote-card:before {
+            content: """;
+            font-size: 4rem;
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            opacity: 0.3;
+        }
+
+        .quote-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .quote-importance {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .action-list {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px dashed var(--accent);
+        }
+
+        .action-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .action-icon {
+            background: var(--accent);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .book-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--secondary);
+        }
+
+        .book-title {
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .book-author {
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .book-relation {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab-button {
+                flex: none;
+                text-align: left;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🌍 人新世の「資本論」</h1>
+            <p>地球の限界を超える成長至上主義から脱成長コミュニズムへ</p>
+        </header>
+
+        <nav class="tabs" role="tablist">
+            <button class="tab-button active" data-tab="overview" role="tab" aria-selected="true">📊 概要</button>
+            <button class="tab-button" data-tab="concepts" role="tab" aria-selected="false">💡 主要概念</button>
+            <button class="tab-button" data-tab="structure" role="tab" aria-selected="false">🔄 関係性</button>
+            <button class="tab-button" data-tab="quotes" role="tab" aria-selected="false">💬 重要引用</button>
+            <button class="tab-button" data-tab="action" role="tab" aria-selected="false">⚡ アクション</button>
+            <button class="tab-button" data-tab="books" role="tab" aria-selected="false">📚 関連書籍</button>
+        </nav>
+
+        <div id="overview" class="tab-content active" role="tabpanel">
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🎯 核心メッセージ</h3>
+                    <ul>
+                        <li>地球の限界を超える資本主義の成長至上主義</li>
+                        <li>気候・生態危機は構造的に不可避</li>
+                        <li>マルクスのエコロジー的再解釈が鍵</li>
+                        <li>コモンズと民主的計画による転換</li>
+                        <li>公正と持続可能性の両立を目指す</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>🌡️ 人新世の現実</h3>
+                    <ul>
+                        <li>人間活動が地球システムを規定</li>
+                        <li>気候・生態の臨界点を突破中</li>
+                        <li>先進国の歴史的責任が重大</li>
+                        <li>効率化だけでは解決不可能</li>
+                        <li>システム転換が急務</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>❌ グリーン成長の限界</h3>
+                    <ul>
+                        <li>効率化による反発効果</li>
+                        <li>再エネの資源・土地制約</li>
+                        <li>総排出量は横ばい/増加</li>
+                        <li>技術楽観主義の幻想</li>
+                        <li>需要側転換の必要性</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>🔄 脱成長コミュニズム</h3>
+                    <ul>
+                        <li>量的成長から質的発展へ</li>
+                        <li>コモンズの民主的管理</li>
+                        <li>労働時間短縮と余暇拡大</li>
+                        <li>ケア・公共サービス充実</li>
+                        <li>生活の脱商品化推進</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-card">
+                    <span class="stat-number">1.5°C</span>
+                    <div class="stat-label">気候目標上限</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2030</span>
+                    <div class="stat-label">転換期限年</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">80%</span>
+                    <div class="stat-label">必要削減率</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">20%</span>
+                    <div class="stat-label">富裕層排出割合</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="concepts" class="tab-content" role="tabpanel">
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>🌍 人新世</h4>
+                    <p>人間活動が地球システムを規定する時代。気候・生態の臨界を越えつつある。</p>
+                    <span class="summary">地球時代</span>
+                </div>
+                <div class="concept-card">
+                    <h4>📈 成長至上主義</h4>
+                    <p>資本の利潤拡大のために経済の量的拡大を恒常的に追求するイデオロギー。</p>
+                    <span class="summary">成長信仰</span>
+                </div>
+                <div class="concept-card">
+                    <h4>💔 代謝的亀裂</h4>
+                    <p>資本主義が社会と自然の物質循環を破壊すること。土壌・炭素・栄養塩の断裂が典型。</p>
+                    <span class="summary">断裂</span>
+                </div>
+                <div class="concept-card">
+                    <h4>🔄 脱成長コミュニズム</h4>
+                    <p>量的成長を目的とせず、コモンズと民主的計画により必要充足と自由を最大化する社会像。</p>
+                    <span class="summary">転換</span>
+                </div>
+                <div class="concept-card">
+                    <h4>🌱 グリーン成長批判</h4>
+                    <p>効率化・再エネでも反発効果と素材・土地制約で絶対的脱炭素は困難という批判。</p>
+                    <span class="summary">幻想</span>
+                </div>
+                <div class="concept-card">
+                    <h4>👑 帝国的生活様式</h4>
+                    <p>グローバル北の豊かな消費が資源収奪と環境負荷を周辺に外部化する構造。</p>
+                    <span class="summary">外部化</span>
+                </div>
+                <div class="concept-card">
+                    <h4>🤝 コモンズ</h4>
+                    <p>市場や国家の外で、共同体がルールに基づき共有資源を管理・再生産する仕組み。</p>
+                    <span class="summary">共有</span>
+                </div>
+                <div class="concept-card">
+                    <h4>🗳️ 民主的計画</h4>
+                    <p>市民参加と透明性に基づき、需給・資源配分を合意形成で決める意思決定様式。</p>
+                    <span class="summary">合意</span>
+                </div>
+                <div class="concept-card">
+                    <h4>📊 スループット</h4>
+                    <p>経済を通過するエネルギーと素材の総量。環境負荷の第一の決定要因。</p>
+                    <span class="summary">削減</span>
+                </div>
+                <div class="concept-card">
+                    <h4>⏰ 労働時間短縮</h4>
+                    <p>余暇とケアを拡大し、消費主導の成長依存を弱める鍵となる政策。</p>
+                    <span class="summary">余暇</span>
+                </div>
+                <div class="concept-card">
+                    <h4>💝 ケア・公共サービス</h4>
+                    <p>医療・教育・移動・住居などの普遍的提供で生活の脱商品化を進める。</p>
+                    <span class="summary">ケア</span>
+                </div>
+                <div class="concept-card">
+                    <h4>⚖️ 気候正義</h4>
+                    <p>歴史的責任と能力に応じて負担・利益を配分し、公正な移行を実現する原則。</p>
+                    <span class="summary">公正</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="structure" class="tab-content" role="tabpanel">
+            <div class="flow-diagram">
+                <h3>🔄 因果関係フロー</h3>
+                <div class="flow-step">
+                    <div>📈 資本主義の成長至上主義</div>
+                    <div class="flow-arrow">→</div>
+                    <div>📊 スループット増大</div>
+                    <div class="flow-arrow">→</div>
+                    <div>🌡️ 気候危機・生物多様性喪失</div>
+                </div>
+                <div class="flow-step">
+                    <div>👑 帝国的生活様式</div>
+                    <div class="flow-arrow">→</div>
+                    <div>🏭 資源収奪/汚染の外部化</div>
+                    <div class="flow-arrow">→</div>
+                    <div>⚖️ 南北不公正・犠牲の移転</div>
+                </div>
+                <div class="flow-step">
+                    <div>⚡ 効率化・再エネ</div>
+                    <div class="flow-arrow">→</div>
+                    <div>📈 反発効果（需要増）</div>
+                    <div class="flow-arrow">→</div>
+                    <div>📊 総排出横ばい/増加</div>
+                </div>
+                <div class="flow-step">
+                    <div>🗳️ 民主的計画 + 🤝 コモンズ</div>
+                    <div class="flow-arrow">→</div>
+                    <div>🎯 不要需要の抑制・共同消費</div>
+                    <div class="flow-arrow">→</div>
+                    <div>📉 スループット削減</div>
+                </div>
+                <div class="flow-step">
+                    <div>⏰ 労働時間短縮 + 💝 公共サービス充実</div>
+                    <div class="flow-arrow">→</div>
+                    <div>🔓 脱商品化</div>
+                    <div class="flow-arrow">→</div>
+                    <div>📉 成長依存の低下</div>
+                </div>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>📖 論理展開の構造</h3>
+                    <ul>
+                        <li>人新世の現状認識と先進国責任</li>
+                        <li>グリーン成長の検証と限界証明</li>
+                        <li>マルクス再読による理論基盤</li>
+                        <li>帝国的生活様式の分析</li>
+                        <li>脱成長コミュニズムの提示</li>
+                        <li>制度設計と移行戦略</li>
+                        <li>希望と実践の呼びかけ</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>🔗 マルクスの代謝論</h3>
+                    <ul>
+                        <li>社会-自然の物質循環に注目</li>
+                        <li>資本主義による代謝断裂</li>
+                        <li>生産至上主義からの脱却</li>
+                        <li>コモンズへの関心</li>
+                        <li>脱成長コミュニズムの理論基盤</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="quotes" class="tab-content" role="tabpanel">
+            <div class="quote-card">
+                <div class="quote-text">成長なき資本主義は不可能であり、持続可能な成長も幻想だ。</div>
+                <div class="quote-importance">💡 経済成長と脱炭素の両立可能性を根本から問い直す中核命題</div>
+            </div>
+
+            <div class="quote-card">
+                <div class="quote-text">脱成長は貧困化ではなく、生活の脱商品化による自由の拡大だ。</div>
+                <div class="quote-importance">💡 否定的イメージを反転し、社会的魅力を伴う移行像を示す</div>
+            </div>
+
+            <div class="quote-card">
+                <div class="quote-text">マルクスは自然との代謝に注目し、生産至上主義を乗り越えようとした。</div>
+                <div class="quote-importance">💡 理論的基盤をマルクスの再解釈に求める本書の核心を支える</div>
+            </div>
+
+            <div class="quote-card">
+                <div class="quote-text">効率化だけでは反発効果で総排出は減らない。</div>
+                <div class="quote-importance">💡 グリーン成長政策の限界を簡潔に指摘し、需要側転換の必要性を示す</div>
+            </div>
+
+            <div class="quote-card">
+                <div class="quote-text">コモンズの民主的管理が、公正で低資源な供給を可能にする。</div>
+                <div class="quote-importance">💡 代替システムの制度的中核を要約し、実装の方向性を与える</div>
+            </div>
+        </div>
+
+        <div id="action" class="tab-content" role="tabpanel">
+            <div class="action-list">
+                <h3>⚡ 今日できるアクション（15-30分で実行可能）</h3>
+                
+                <div class="action-item">
+                    <div class="action-icon">📊</div>
+                    <div>
+                        <strong>自宅の電力使用を30分記録する</strong>
+                        <p>現在の消費パターンを把握し、削減ポイントを見つける</p>
+                    </div>
+                </div>
+
+                <div class="action-item">
+                    <div class="action-icon">🚌</div>
+                    <div>
+                        <strong>週2日の公共交通移動を計画する</strong>
+                        <p>個人の移動を見直し、低炭素な選択肢を具体化する</p>
+                    </div>
+                </div>
+
+                <div class="action-item">
+                    <div class="action-icon">🤝</div>
+                    <div>
+                        <strong>近所で共有できる物を10個列挙</strong>
+                        <p>コモンズの実践として、地域での共有可能性を探る</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🎯 長期的な実践方向</h3>
+                    <ul>
+                        <li>労働時間短縮の職場での提案</li>
+                        <li>地域コミュニティでの共有活動</li>
+                        <li>公共サービス拡充への政治参加</li>
+                        <li>消費パターンの根本的見直し</li>
+                        <li>気候正義の学習と発信</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>🌱 システム転換への貢献</h3>
+                    <ul>
+                        <li>脱成長の理念を周囲に伝える</li>
+                        <li>民主的計画の実験に参加</li>
+                        <li>帝国的生活様式の自己点検</li>
+                        <li>代替経済の実践支援</li>
+                        <li>政策転換を求める運動参加</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="books" class="tab-content" role="tabpanel">
+            <div class="book-grid">
+                <div class="book-card">
+                    <div class="book-title">ドーナツ経済学</div>
+                    <div class="book-author">ケイト・ラワース</div>
+                    <div class="book-relation">地球の限界と社会的基盤を両立する枠組みが脱成長論と接続する。</div>
+                </div>
+
+                <div class="book-card">
+                    <div class="book-title">帝国的生活様式</div>
+                    <div class="book-author">ウルリッヒ・ブランド／マルクス・ヴィッセン</div>
+                    <div class="book-relation">北の生活様式の外部化構造を分析し、本書の不公正論証を補強。</div>
+                </div>
+
+                <div class="book-card">
+                    <div class="book-title">脱成長</div>
+                    <div class="book-author">ヨルゴス・カリス</div>
+                    <div class="book-relation">脱成長の理論と政策を体系化し、本書の提案を理論面で補完。</div>
+                </div>
+
+                <div class="book-card">
+                    <div class="book-title">This Changes Everything 気候vs.資本主義</div>
+                    <div class="book-author">ナオミ・クライン</div>
+                    <div class="book-relation">気候危機と資本主義の構造的矛盾を報告的に描く。</div>
+                </div>
+
+                <div class="book-card">
+                    <div class="book-title">少ないほど豊かに生きる</div>
+                    <div class="book-author">ジェイソン・ヒッケル</div>
+                    <div class="book-relation">成長から解放された豊かさのビジョンを提示。</div>
+                </div>
+
+                <div class="book-card">
+                    <div class="book-title">資本論</div>
+                    <div class="book-author">カール・マルクス</div>
+                    <div class="book-relation">代謝論と価値論の原典として本書の再解釈の基盤となる。</div>
+                </div>
+
+                <div class="book-card">
+                    <div class="book-title">コモンズの再生</div>
+                    <div class="book-author">デヴィッド・ボリュア／ジルケ・ヘルフリヒ</div>
+                    <div class="book-relation">コモンズの設計原理と実践事例が政策提案の具体化に資する。</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.setAttribute('aria-selected', 'false');
+                    });
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button and corresponding content
+                    this.classList.add('active');
+                    this.setAttribute('aria-selected', 'true');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+
+            // Animate progress bars when visible
+            const progressBars = document.querySelectorAll('.progress-fill');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const progressBar = entry.target;
+                        const width = progressBar.getAttribute('data-width') || '75%';
+                        progressBar.style.width = width;
+                    }
+                });
+            });
+
+            progressBars.forEach(bar => {
+                observer.observe(bar);
+            });
+
+            // Add keyboard navigation
+            tabButtons.forEach((button, index) => {
+                button.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        const nextIndex = (index + 1) % tabButtons.length;
+                        tabButtons[nextIndex].focus();
+                        tabButtons[nextIndex].click();
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        const prevIndex = (index - 1 + tabButtons.length) % tabButtons.length;
+                        tabButtons[prevIndex].focus();
+                        tabButtons[prevIndex].click();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

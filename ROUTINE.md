@@ -6,13 +6,13 @@
 ## 前提・共通ルール
 
 - 「今日」の日付は必ず `TZ=Asia/Tokyo date +%Y-%m-%d` で取得する（以下 `YYYY-MM-DD`）。
-- **多重実行防止**: `100_Inbox/Books-YYYY-MM-DD.md` が既に存在する場合、本日分は生成済み。何もコミットせず終了する。
-- LINE 通知はこのエージェントの仕事ではない。push を受けた GitHub Actions（`.github/workflows/line-notify.yml`）が `data/latest.json` を読んで送信する。
+- **多重実行防止**: `state/books_read.json` に今日の `date` のエントリが既に存在する場合、本日分は生成済み。何もコミットせず終了する。
+- 通知はこのエージェントの仕事ではない。push を受けた GitHub Actions（`.github/workflows/daily-notify.yml`）が `state/latest.json` を読んで送信する。
 - 捏造禁止: Web 上で確認できた情報のみ使う。曖昧・不明な点は「不明」と書く。
 
 ## Step 1: 選書
 
-1. `data/books_read.json`（既読リスト）を読む。
+1. `state/books_read.json`（既読リスト）を読む。
 2. 以下の条件で「今日読むべき本」の候補を **5冊** 選ぶ:
    - カテゴリは **ビジネス / 自己啓発 / ライフスタイル / 心理学** のいずれか1つ
    - 日本語で出版されている**実在の書籍**（日本語タイトル）。翻訳書は日本語版タイトルで扱う
@@ -62,12 +62,11 @@ Step 2 の調査内容を、以下の指示（旧システムから継承した�
 書名を NFKC 正規化 → 空白を `_` に → `[^\w\-]`（Python の unicode \w 基準。日本語文字は残る）を `_` に → 連続 `_` を1つに圧縮 → 先頭末尾の `_` を除去 → 80文字まで。
 例: 「DIE WITH ZERO 人生が豊かになりすぎる究極のルール」→ `DIE_WITH_ZERO_人生が豊かになりすぎる究極のルール_infographic.html`
 
-**保存先（2箇所）:**
-- `infographics/<slug>_infographic.html`（マスター）
-- `docs/<slug>_infographic.html`（GitHub Pages 公開用、同一内容のコピー）
+**保存先:**
+- `infographics/<slug>_infographic.html`
 
 **公開URL:**
-`https://oshomadesse.github.io/books-summary/<ファイル名をURLエンコード>?openExternalBrowser=1`
+GitHub Actions が push を受けて `infographics/` を GitHub Pages に配信する（URL は従来どおり `https://oshomadesse.github.io/books-summary/<ファイル名をURLエンコード>?openExternalBrowser=1`）。
 
 ## Step 4: 読書ノート生成
 
@@ -109,29 +108,42 @@ tags: [books]
 - ...
 ~~~
 
+## Step 4.5: 関連書籍の既読リンク
+
+`state/books_read.json`（全既読リスト）を読み、Step 2 で挙げた関連書籍それぞれについて既読本との**意味照合**を行う。完全一致だけでなく、表記ゆれ・サブタイトル有無・翻訳版タイトル違い・新版旧版を同一書と判定し、判断に迷う程度の弱い類似は繋がない。
+
+- 一致した関連書籍は、ノートの関連書籍の行を `- [[Books-YYYY-MM-DD|書名]]（著者）: 関連性` 形式にする。`YYYY-MM-DD` は `books_read.json` の該当エントリの `date`、書名はノートに書く表記のままとする。
+- 関連書籍に既読本が1冊も含まれなかった場合、既読リストからテーマまたは著者が最も近い1冊を選んで関連書籍に追記し、同形式でリンクする。明確な関連が全く無い場合のみ省略してよい。
+- このリンクは、Obsidian のグラフで書籍ノート同士を必ず繋ぐための仕組みである。
+
 ## Step 5: データ更新
 
-1. `data/books_read.json` の末尾に追記: `{"date": "YYYY-MM-DD", "title": "...", "author": "...", "category": "..."}`
-2. `data/latest.json` を**上書き**で作成（LINE 通知 Action が読む）:
+1. `state/books_read.json` の末尾に追記: `{"date": "YYYY-MM-DD", "title": "...", "author": "...", "category": "..."}`
+2. `state/latest.json` を**上書き**で作成（通知 Action が読む）:
 
 ```json
 {
   "date": "YYYY-MM-DD",
   "title": "書名",
   "author": "著者",
+  "category": "カテゴリ",
+  "note": "Books-YYYY-MM-DD",
+  "related_dates": ["YYYY-MM-DD"],
   "core_message": "核心的メッセージ（60文字以内。超える場合は60文字で切って…を付ける）",
   "infographic_url": "https://oshomadesse.github.io/books-summary/..._infographic.html?openExternalBrowser=1"
 }
 ```
 
+`related_dates` は Step 4.5 でリンクした既読本の `date` の配列とし、無ければ `[]` にする。
+
 ## Step 6: コミット & push
 
 ```bash
-git add 100_Inbox/Books-YYYY-MM-DD.md infographics/ docs/ data/books_read.json data/latest.json
+git add 100_Inbox/Books-YYYY-MM-DD.md infographics/ state/books_read.json state/latest.json
 git commit -m "📚 Daily reading update (<書名>)"
 git push origin main
 ```
 
-- コミットメッセージに `[skip ci]` を**入れない**こと（LINE 通知 Action の発火に必要）。
+- コミットメッセージに `[skip ci]` を**入れない**こと（通知 Action の発火に必要）。
 - push が reject された場合は `git pull --rebase origin main` して再 push（最大3回）。
-- push 完了をもってこの Routine の仕事は終了。Pages 反映待ちと LINE 送信は Action 側が行う。
+- push 完了をもってこの Routine の仕事は終了。Pages 反映待ちと通知送信は Action 側が行う。

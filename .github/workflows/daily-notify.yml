@@ -1,0 +1,178 @@
+name: Daily Notify
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'state/latest.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: infographics
+
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  notify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    env:
+      DISCORD_CHANNEL_ID: '1528306664422510644'
+    steps:
+      - name: Checkout latest.json
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            state/latest.json
+          sparse-checkout-cone-mode: false
+
+      - name: Read latest.json
+        id: latest
+        run: |
+          {
+            echo "title=$(jq -r '.title' state/latest.json)"
+            echo "author=$(jq -r '.author' state/latest.json)"
+            echo "category=$(jq -r '.category' state/latest.json)"
+            echo "core_message=$(jq -r '.core_message' state/latest.json)"
+            echo "url=$(jq -r '.infographic_url' state/latest.json)"
+            echo "date=$(jq -r '.date' state/latest.json)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Wait for GitHub Pages (max 120s)
+        env:
+          INFOGRAPHIC_URL: ${{ steps.latest.outputs.url }}
+        run: |
+          for i in $(seq 1 12); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -I "$INFOGRAPHIC_URL" || true)
+            echo "attempt $i: HTTP $code"
+            if [ "$code" = "200" ]; then
+              echo "Pages ready."
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::warning::Pages 反映待ちタイムアウト（通知は送信します）"
+
+      - name: Send Discord message
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          BOOK_TITLE: ${{ steps.latest.outputs.title }}
+          BOOK_AUTHOR: ${{ steps.latest.outputs.author }}
+          BOOK_CATEGORY: ${{ steps.latest.outputs.category }}
+          CORE_MESSAGE: ${{ steps.latest.outputs.core_message }}
+          INFOGRAPHIC_URL: ${{ steps.latest.outputs.url }}
+          BOOK_DATE: ${{ steps.latest.outputs.date }}
+        run: |
+          jq -n \
+            --arg title "$BOOK_TITLE" \
+            --arg author "$BOOK_AUTHOR" \
+            --arg category "$BOOK_CATEGORY" \
+            --arg core "$CORE_MESSAGE" \
+            --arg url "$INFOGRAPHIC_URL" \
+            --arg date "$BOOK_DATE" \
+            '{
+              content: "📚 今日の一冊",
+              embeds: [{
+                title: $title,
+                description: $core,
+                fields: [
+                  {name: "著者", value: $author, inline: true},
+                  {name: "カテゴリ", value: $category, inline: true}
+                ],
+                color: 10381359
+              }],
+              components: [{
+                type: 1,
+                components: [
+                  {type: 2, style: 5, label: "✅ 確認", url: $url},
+                  {type: 2, style: 1, label: "🔍 詳細", custom_id: ("bookdetail:" + $date)}
+                ]
+              }]
+            }' > discord-payload.json
+
+          status=$(curl -s -o discord-response.txt -w '%{http_code}' \
+            -X POST "https://discord.com/api/v10/channels/${DISCORD_CHANNEL_ID}/messages" \
+            -H "Authorization: Bot $DISCORD_BOT_TOKEN" \
+            -H "User-Agent: DiscordBot (https://github.com/oshomadesse/books-summary, 1.0)" \
+            -H "Content-Type: application/json" \
+            -d @discord-payload.json)
+          cat discord-response.txt
+          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+            echo "::error::Discord 送信失敗 (HTTP $status)"
+            exit 1
+          fi
+          echo "Discord 送信 OK (HTTP $status)"
+
+      - name: Send LINE Flex Message
+        continue-on-error: true
+        env:
+          LINE_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_TO: ${{ secrets.LINE_USER_ID }}
+          BOOK_TITLE: ${{ steps.latest.outputs.title }}
+          BOOK_AUTHOR: ${{ steps.latest.outputs.author }}
+          CORE_MESSAGE: ${{ steps.latest.outputs.core_message }}
+          INFOGRAPHIC_URL: ${{ steps.latest.outputs.url }}
+        run: |
+          jq -n \
+            --arg to "$LINE_TO" \
+            --arg title "$BOOK_TITLE" \
+            --arg author "$BOOK_AUTHOR" \
+            --arg core "$CORE_MESSAGE" \
+            --arg url "$INFOGRAPHIC_URL" \
+            '{
+              to: $to,
+              messages: [{
+                type: "flex",
+                altText: ("📚 本日の読書本はこちら！: " + $title),
+                contents: {
+                  type: "bubble",
+                  header: { type: "box", layout: "vertical", contents: [
+                    { type: "text", text: "📚 本日の読書本はこちら！", weight: "bold", color: "#000000", size: "sm" }
+                  ]},
+                  body: { type: "box", layout: "vertical", contents: [
+                    { type: "text", text: $title, weight: "bold", size: "xl", wrap: true },
+                    { type: "text", text: $author, size: "sm", color: "#666666", wrap: true, margin: "sm" },
+                    { type: "text", text: $core, size: "sm", color: "#666666", wrap: true, margin: "md" }
+                  ]},
+                  footer: { type: "box", layout: "vertical", spacing: "sm", flex: 0, contents: [
+                    { type: "button", style: "primary", height: "sm",
+                      action: { type: "uri", label: "図解を見る", uri: $url } }
+                  ]}
+                }
+              }]
+            }' > line-payload.json
+
+          status=$(curl -s -o line-response.txt -w '%{http_code}' \
+            -X POST https://api.line.me/v2/bot/message/push \
+            -H "Authorization: Bearer $LINE_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d @line-payload.json)
+          cat line-response.txt
+          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+            echo "::error::LINE 送信失敗 (HTTP $status)"
+            exit 1
+          fi
+          echo "LINE 送信 OK (HTTP $status)"
