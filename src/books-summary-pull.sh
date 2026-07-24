@@ -10,7 +10,7 @@
 #       読めず EDEADLK で中断 → fetch 後に差分ファイルを brctl download で
 #       取り寄せてから merge（2026-07-12〜17 障害）
 # .git の実体は iCloud の外 (~/.gitdirs/books-summary) にあり退避されない。
-REPO="/Users/seihoushouba/Oshomadesse-pc/11_Engineering/01_個人/📖 books-summary"
+REPO="/Users/seihoushouba/Oshomadesse-pc/06_Books"
 GIT_DIR="$HOME/.gitdirs/books-summary"
 LOG_DIR="$HOME/Library/Logs/BooksSummary"
 mkdir -p "$LOG_DIR"
