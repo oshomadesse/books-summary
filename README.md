@@ -76,7 +76,6 @@ flowchart TD
     MK[Tool: menu_keeper 60秒番人 常設🔎検索メニュー最下部維持]:::tool --> SM[Human: 検索モーダル 本やテーマを伝える]:::human
     SM --> DB2[Tool: discord_books.py → headless NEXUS注入]:::tool
     DB2 --> SA[Agent: 既読照合orWeb提案で該当本を提出]:::agent
-    W -.->|並走・近日廃止| LN[Human: LINE Flex通知]:::human
     W -->|Discord送信失敗| ErrW([End: workflow失敗 → GitHub通知メール]):::startend
     Start2([Start: 毎朝7:20 launchd pull]):::startend --> PU[Tool: books-summary-pull.sh fetch→brctl→merge]:::tool
     PU -->|失敗5回| ErrP([End: pull失敗ログ 翌回自己回復]):::startend
@@ -105,7 +104,6 @@ flowchart TD
 |---|---|---:|---|
 | Routine（クラウド） | push reject | 3 | Routine実行履歴（claude.ai/code/routines）＋翌朝Discord通知が来ないことで発覚 |
 | daily-notify.yml Discord送信 | HTTP 2xx以外 | 1 | workflow失敗 → GitHubの失敗通知メール |
-| daily-notify.yml LINE送信 | HTTP 2xx以外 | 1 | continue-on-error（並走扱い、workflowは失敗しない） |
 | books-summary-pull.sh | fetch/merge失敗 | 5 | `~/Library/Logs/BooksSummary/pull.log`（翌回実行で自己回復） |
 | ノート移送コミットのpush | reject | 3 | pull.log（次回実行の未pushコミット回収で自己回復） |
 | backlink_books.py | ノート不在・退避タイムアウト | 各1 | pull.log（部分失敗でも pull は成功扱い） |

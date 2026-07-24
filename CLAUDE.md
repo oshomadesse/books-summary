@@ -27,8 +27,7 @@ summary: 毎朝AIが本を選定しインフォグラフィック付きサマリ
 ② GitHub Actions .github/workflows/daily-notify.yml
    job deploy: infographics/ を GitHub Pages へ Actions 配信（URL は従来互換）
    job notify: Pages 200 待ち → Discord Embed ＋ [✅確認(bookconfirm:date)] [🔍詳細(bookdetail:date)]（両方紫）
-               → LINE Flex（push時のみ発火＝手動テストでは送らない。continue-on-error・並走中、安定したら廃止）
-   (secrets: DISCORD_BOT_TOKEN / LINE_CHANNEL_ACCESS_TOKEN / LINE_USER_ID)
+   (secrets: DISCORD_BOT_TOKEN。LINE は 2026-07-25 に完全撤去)
       ↓
 ③ ローカル Mac: LaunchAgent com.oshomadesse.bookssummary.pull (毎朝7:20 JST)
    ~/.local/bin/books-summary-pull.sh:
