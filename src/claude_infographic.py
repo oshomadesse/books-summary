@@ -16,7 +16,7 @@ if os.getenv("GITHUB_ACTIONS"):
     VAULT_ROOT = PROJECT_DIR
     INBOX_DIR = VAULT_ROOT / "100_Inbox"
 else:
-    VAULT_ROOT = Path(os.getenv("VAULT_ROOT", "/Users/seihoushouba/Documents/Oshomadesse-pc")).resolve()
+    VAULT_ROOT = Path(os.getenv("VAULT_ROOT", "/Users/seihoushouba/Oshomadesse-pc")).resolve()
     INBOX_DIR  = Path(os.getenv("INBOX_DIR", str(VAULT_ROOT / "100_Inbox"))).resolve()
 
 for d in (DATA_DIR, INF_DIR, INBOX_DIR):
@@ -29,7 +29,7 @@ except Exception as e:
     raise RuntimeError("anthropic パッケージが必要です: pip install anthropic") from e
 
 MODEL       = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6")
-MAX_TOKENS  = int(os.getenv("ANTHROPIC_MAX_TOKENS", "16384"))
+MAX_TOKENS  = int(os.getenv("ANTHROPIC_MAX_TOKENS", "64000"))
 TEMPERATURE = float(os.getenv("ANTHROPIC_TEMPERATURE", "0"))
 
 client = None
@@ -226,35 +226,36 @@ def _call_claude(user_text):
         "与えられた本文に明確にない情報を勝手に追加せず、曖昧な箇所は「不明」と記載してください。"
     )
 
-    resp = _get_client().messages.create(
+    # 大きな max_tokens（>21333相当）では非ストリーミングだと SDK が
+    # "Streaming is required..." 例外を投げるため、常にストリーミングで受ける。
+    out = ""
+    resp = None
+    with _get_client().messages.stream(
         model=os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6"),
-        max_tokens=int(os.getenv("ANTHROPIC_MAX_TOKENS", "16384")),
+        max_tokens=int(os.getenv("ANTHROPIC_MAX_TOKENS", "64000")),
         temperature=float(os.getenv("ANTHROPIC_TEMPERATURE", "0")),
         system=system_text,
         messages=[{"role":"user","content":user_text}],
-    )
+    ) as stream:
+        for chunk in stream.text_stream:
+            out += chunk
+        resp = stream.get_final_message()
 
     try:
         _save_raw_resp(resp, ts)
     except Exception:
         pass
 
-    out = ""
-    try:
-        for part in (getattr(resp, "content", []) or []):
-            if getattr(part, "type", None) == "text":
-                out += getattr(part, "text", "") or ""
-            else:
-                out += getattr(part, "text", "") or ""
-    except Exception:
-        pass
-
     if not out:
-        out = getattr(resp, "text", "") or getattr(resp, "output_text", "") or ""
+        try:
+            for part in (getattr(resp, "content", []) or []):
+                out += getattr(part, "text", "") or ""
+        except Exception:
+            pass
     if not out:
         out = repr(resp)
 
-    return out, getattr(resp, "usage", None)
+    return out, getattr(resp, "usage", None), getattr(resp, "stop_reason", None)
 
 def _extract_fields_for_template(deep_text:str):
     fields = {}
@@ -405,14 +406,14 @@ def generate_infographic(deep, book_title):
     deep_text = _coerce_deep_text(deep, book_title)
     print(f"🧪 deep_text chars = {len(deep_text)}")
     user_text = _build_user_text(deep_text, book_title)
-    html, _usage = _call_claude(user_text)
+    html, _usage, _stop = _call_claude(user_text)
     return html
 
 def generate_infographic_complete(deep, book_title):
     deep_text = _coerce_deep_text(deep, book_title)
     print(f"🧪 deep_text chars = {len(deep_text)}")
     user_text = _build_user_text(deep_text, book_title)
-    html, usage = _call_claude(user_text)
+    html, usage, stop_reason = _call_claude(user_text)
 
     start = re.search(r'(?is)(<!DOCTYPE\s+html[^>]*>|<html\b[^>]*>)', html)
     if start:
@@ -421,8 +422,10 @@ def generate_infographic_complete(deep, book_title):
     if end:
         html = html[:end.end()]
 
-    if (not html) or (len(html.strip()) < 200) or ('<html' not in html.lower()):
-        print("⚠️ 生成HTMLが不十分なためテンプレートベースのフォールバックを作成します。")
+    # 途中切れ検知: max_tokens で打ち切られた / 終端タグ </html> が欠落 → 壊れたHTMLを公開しない
+    truncated = (stop_reason == "max_tokens") or ('</html' not in html.lower())
+    if (not html) or (len(html.strip()) < 200) or ('<html' not in html.lower()) or truncated:
+        print(f"⚠️ 生成HTMLが不十分または途中切れ（stop_reason={stop_reason}, has_close_html={'</html' in (html or '').lower()}）。テンプレートベースのフォールバックを作成します。")
         tpl = _read_template()
         if tpl:
             fields = _extract_fields_for_template(deep_text)

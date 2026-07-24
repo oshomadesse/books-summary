@@ -12,8 +12,8 @@
 set -uo pipefail
 
 # ---- 設定 ----
-REPO_DIR="/Users/seihoushouba/Documents/Oshomadesse-pc/11_Engineering/01_個人/📖 books-summary"
-VAULT_ROOT="/Users/seihoushouba/Documents/Oshomadesse-pc"
+REPO_DIR="/Users/seihoushouba/Oshomadesse-pc/11_Engineering/01_個人/📖 books-summary"
+VAULT_ROOT="/Users/seihoushouba/Oshomadesse-pc"
 INBOX_DIR="$VAULT_ROOT/100_Inbox"
 BRANCH="main"
 LOG_FILE="$REPO_DIR/data/integrated/run_local.log"

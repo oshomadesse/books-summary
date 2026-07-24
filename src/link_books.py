@@ -25,14 +25,8 @@ import os
 # プロジェクトルート（srcの親ディレクトリ）
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 VAULT_ROOT = PROJECT_DIR.parent
-if os.getenv("GITHUB_ACTIONS"):
-    INBOX = ROOT / '100_Inbox'
-else:
-    # Try to find vault root from env or assume parent of parent if in a subfolder, 
-    # but here we are likely in 11_Engineering/books-summary.
-    # If we want to target the main vault inbox:
-    VAULT_ROOT = Path(os.getenv("VAULT_ROOT", "/Users/seihoushouba/Documents/Oshomadesse-pc")).resolve()
-    INBOX = Path(os.getenv("INBOX_DIR", str(VAULT_ROOT / "100_Inbox"))).resolve()
+VAULT_ROOT = Path(os.getenv("VAULT_ROOT", "/Users/seihoushouba/Oshomadesse-pc")).resolve()
+INBOX = Path(os.getenv("INBOX_DIR", str(VAULT_ROOT / "100_Inbox"))).resolve()
 
 def nfkc(s: str) -> str:
     return unicodedata.normalize('NFKC', s)
@@ -185,8 +179,8 @@ def load_notes():
         author = parse_author(lines)
         notes.append({
             'path': p,
-            'rel': p.relative_to(ROOT),
-            'rel_no_ext': str(p.relative_to(ROOT)).rsplit('.', 1)[0],
+            'rel': p.relative_to(VAULT_ROOT),
+            'rel_no_ext': str(p.relative_to(VAULT_ROOT)).rsplit('.', 1)[0],
             'title': title,
             'author': author,
             'title_norm': norm_title(title) if title else None,

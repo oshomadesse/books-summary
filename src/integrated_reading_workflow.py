@@ -39,7 +39,7 @@ if os.getenv("GITHUB_ACTIONS"):
     INBOX_DIR = PROJECT_DIR / "artifacts"
 else:
     # ローカル環境: 環境変数または親ディレクトリからの推測
-    VAULT_ROOT = Path(os.getenv("VAULT_ROOT", "/Users/seihoushouba/Documents/Oshomadesse-pc")).resolve()
+    VAULT_ROOT = Path(os.getenv("VAULT_ROOT", "/Users/seihoushouba/Oshomadesse-pc")).resolve()
     # ユーザー要望: ローカル実行時は oshomadesse-pc > 100_Inbox (つまり VAULT_ROOT 直下の 100_Inbox)
     # INBOX_DIR は PROJECT_DIR / "100_Inbox" で固定されるため、VAULT_ROOTからの推測は不要
     # ただし、互換性のため環境変数INBOX_DIRが設定されていればそれを優先
@@ -236,14 +236,23 @@ def step2_generate_recommendations(excluded, usage_records):
     excluded_titles = _coerce_to_title_list(excluded)
     print("DEBUG: excluded_titles ->", excluded_titles)
 
-    # 2) コネクタ準備
-    connector = GeminiRecommendConnector(verbose=True)
-    print("✅ Gemini Connector 準備完了")
-    print(f"   📚 本推薦: {FLASH_MODEL}")
+    # 2) 推薦取得
+    #    RECOMMEND_OVERRIDE_JSON が指定されていれば Gemini を呼ばず、その推薦を採用する。
+    #    推薦モデルが使えない（例: 無料枠クォータ枯渇）ときの手動フォールバック。
+    #    形式: [{"title","author","category","reason"}, ...]。除外フィルタは従来どおり適用。
+    override_raw = os.getenv("RECOMMEND_OVERRIDE_JSON")
+    if override_raw:
+        raw_result = json.loads(override_raw)
+        print(f"🔧 推薦オーバーライド適用: Gemini をスキップ（{len(raw_result)}件）")
+    else:
+        # コネクタ準備
+        connector = GeminiRecommendConnector(verbose=True)
+        print("✅ Gemini Connector 準備完了")
+        print(f"   📚 本推薦: {FLASH_MODEL}")
 
-    # 3) 推薦取得
-    print("🔍 Gemini で本推薦中...")
-    raw_result = connector.get_book_recommendations(excluded_titles)
+        # 推薦取得
+        print("🔍 Gemini で本推薦中...")
+        raw_result = connector.get_book_recommendations(excluded_titles)
 
     # 4) 検証・整形
     validated = _validate(raw_result, target=5)
@@ -721,7 +730,7 @@ def step6_mid_summary(book, deep_research, infographic_result):
     try:
         import re as _re, datetime as _dt
         from pathlib import Path as _P
-        _vault = _P("/Users/seihoushouba/Documents/Oshomadesse-pc")
+        _vault = _P("/Users/seihoushouba/Oshomadesse-pc")
         _inbox = _vault / "100_Inbox"
         _today = _dt.datetime.now().strftime("%Y-%m-%d")
         _cands = sorted(_inbox.glob(f"Books-{_today}.md"), key=lambda p: p.stat().st_mtime, reverse=True)
@@ -907,7 +916,7 @@ tags: [books]
         try:
             import re as _re, datetime as _dt
             from pathlib import Path as _P
-            _vault = _P("/Users/seihoushouba/Documents/Oshomadesse-pc")
+            _vault = _P("/Users/seihoushouba/Oshomadesse-pc")
             _inbox = _vault / "100_Inbox"
             _today = _dt.datetime.now().strftime("%Y-%m-%d")
             # 生成対象（今日の Books-YYYY-MM-DD.md を優先、無ければ最新の Books-*.md）
@@ -1117,7 +1126,7 @@ def _build_obsidian_note_url(note_path: str) -> str:
     #     except Exception:
     #         return f"https://github.com/{repo}"
 
-    vault_root = _Path(os.getenv("VAULT_ROOT", "/Users/seihoushouba/Documents/Oshomadesse-pc")).resolve()
+    vault_root = _Path(os.getenv("VAULT_ROOT", "/Users/seihoushouba/Oshomadesse-pc")).resolve()
     vault_name = os.getenv("OBSIDIAN_VAULT_NAME", "Oshomadesse-main")
     note_abs = _Path(note_path).resolve()
     try:

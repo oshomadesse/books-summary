@@ -20,7 +20,7 @@ if os.getenv("GITHUB_ACTIONS"):
     VAULT_ROOT = Path(PROJECT_DIR).resolve()
     INBOX_DIR = VAULT_ROOT / "100_Inbox"
 else:
-    VAULT_ROOT = Path(os.getenv("VAULT_ROOT", "/Users/seihoushouba/Documents/Oshomadesse-pc")).resolve()
+    VAULT_ROOT = Path(os.getenv("VAULT_ROOT", "/Users/seihoushouba/Oshomadesse-pc")).resolve()
     INBOX_DIR = Path(os.getenv("INBOX_DIR", str(VAULT_ROOT / "100_Inbox"))).resolve()
 
 DATA_DIR    = PROJECT_DIR / "data"
