@@ -11,7 +11,7 @@ summary: 毎朝AIが本を選定しインフォグラフィック付きサマリ
 毎朝7:00に「今日読むべき本」をAIが自動選定・リサーチし、インフォグラフィック付きのサマリーを生成して Discord `#📚06_books` に通知する。書籍ノートは Obsidian に蓄積され、関連書籍どうしが wikiリンクでグラフとして繋がる。
 
 ## システム概要（2026-07-24 第3弾: 06_Books 移設・Discord 版）
-**クラウドの Claude Routine** が毎朝 7:00 JST に起動し、選書→リサーチ→図解生成→ノート作成→既読本との LLM リンク→`main` push までを Claude 1本で完結。push を受けた **GitHub Actions が Pages 配信と Discord/LINE 通知**を行い、ローカル Mac は 7:20 に pull してノートを vault へ移送・逆リンクするだけ。**外部 AI API 不使用**（Claude サブスク内）。
+**クラウドの Claude Routine** が毎朝 7:00 JST に起動し、選書→リサーチ→図解生成→ノート作成→既読本との LLM リンク→`main` push までを Claude 1本で完結。push を受けた **GitHub Actions が Pages 配信と Discord 通知**を行い、ローカル Mac は 7:20 に pull してノートを vault へ移送・逆リンクするだけ。**外部 AI API 不使用**（Claude サブスク内）。
 
 ### アーキテクチャ
 ```
