@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット（断捨離 インフォグラフィック）
+  - プライマリー:   #2E7D6B (深緑 / 空間に呼吸を取り戻す静けさ)
+  - セカンダリー:   #1F3A34 (濃い墨緑 / 手放した後に残る芯の強さ)
+  - アクセント:     #E8A33D (温かい琥珀色 / モノに宿る「今」の輝き)
+  - グラデーション: linear-gradient(135deg, #2E7D6B 0%, #E8A33D 100%)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>断捨離 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#2E7D6B;
+    --secondary:#1F3A34;
+    --accent:#E8A33D;
+    --bg:#F5F7F5;
+    --card:#FFFFFF;
+    --text:#1D2620;
+    --text-sub:#5C6862;
+    --line:#DFE6E1;
+    --shadow: 0 4px 16px rgba(31,58,52,0.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 0 48px;}
+
+  /* ===== Header / Hero ===== */
+  header.hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color:#fff;
+    padding:32px 20px 28px;
+    border-radius:0 0 28px 28px;
+    box-shadow:var(--shadow);
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.12em;
+    opacity:.9;
+    font-weight:700;
+    display:flex;align-items:center;gap:6px;
+  }
+  h1.title{
+    font-size:22px;
+    margin:8px 0 4px;
+    font-weight:800;
+    line-height:1.35;
+  }
+  .subtitle{font-size:13px;opacity:.92;margin:0 0 4px;}
+  .byline{font-size:13px;opacity:.9;margin-top:2px;}
+
+  .why-how-box{
+    margin:20px 0 0;
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:16px;
+    padding:16px 16px 14px;
+    backdrop-filter:blur(2px);
+  }
+  .why-how-box .qa-label{
+    font-size:11px;font-weight:800;letter-spacing:.08em;
+    opacity:.95;margin-bottom:6px;
+  }
+  .why-how-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start;}
+  .why-how-row .tag{
+    flex:0 0 auto;
+    background:#fff;color:var(--primary);
+    font-size:11px;font-weight:800;
+    padding:3px 8px;border-radius:999px;
+    margin-top:1px;
+  }
+  .why-how-row .body{font-size:13.5px;font-weight:600;}
+  .why-how-row.evidence .tag{color:var(--secondary);}
+
+  /* ===== Stat badges on hero ===== */
+  .stat-strip{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+    margin-top:16px;
+  }
+  .stat-chip{
+    background:#fff;border-radius:12px;padding:10px 6px;text-align:center;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  }
+  .stat-chip .num{font-size:16px;font-weight:800;color:var(--primary);display:block;}
+  .stat-chip .label{font-size:10px;color:var(--text-sub);margin-top:2px;display:block;}
+
+  /* ===== Tabs ===== */
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:16px 16px 0;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:10;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card);
+    color:var(--text-sub);
+    font-size:12.5px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    border:1px solid var(--line);
+    transition:all .15s ease;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--secondary);
+    color:#fff;
+    border-color:var(--secondary);
+  }
+
+  main{padding:16px 16px 0;}
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  h2.panel-title{
+    font-size:17px;font-weight:800;margin:4px 0 14px;
+    display:flex;align-items:center;gap:6px;
+    color:var(--secondary);
+  }
+
+  /* ===== Cards ===== */
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+  }
+  .card h3{
+    font-size:15px;margin:0 0 8px;font-weight:800;
+    display:flex;align-items:center;gap:6px;
+  }
+  .card h3 .num-badge{
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    background:var(--primary);color:#fff;font-size:11px;
+    display:flex;align-items:center;justify-content:center;font-weight:800;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;}
+  .card ul li{margin-bottom:5px;}
+  .why-tag{
+    margin-top:10px;
+    background:#EAF3EF;
+    border-left:3px solid var(--primary);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:var(--text-sub);
+  }
+  .why-tag b{color:var(--primary);}
+
+  /* quote card */
+  .quote-card{
+    background:linear-gradient(135deg, rgba(46,125,107,0.08), rgba(232,163,61,0.12));
+    border:1px dashed var(--primary);
+  }
+  .quote-card blockquote{
+    margin:0 0 8px;font-size:14.5px;font-weight:700;color:var(--text);
+    border-left:3px solid var(--accent);padding-left:10px;
+  }
+  .quote-card .quote-note{font-size:12px;color:var(--text-sub);}
+  .quote-tag-badge{
+    display:inline-block;font-size:10px;font-weight:800;color:#fff;
+    background:var(--secondary);border-radius:6px;padding:2px 6px;margin-bottom:6px;
+  }
+
+  /* action card */
+  .action-card{border-left:4px solid var(--accent);}
+  .action-meta{
+    display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;
+  }
+  .action-meta span{
+    font-size:11px;font-weight:700;background:#FBEBD1;color:#7A4E0A;
+    padding:3px 8px;border-radius:999px;
+  }
+
+  /* related books */
+  .related-item{
+    display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);
+    font-size:13px;
+  }
+  .related-item:last-child{border-bottom:none;}
+  .related-item .icon{flex:0 0 auto;font-size:18px;}
+
+  footer{
+    text-align:center;font-size:11px;color:var(--text-sub);padding:24px 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">🧹 今日の一冊 ・ ライフスタイル</div>
+    <h1 class="title">断捨離</h1>
+    <p class="subtitle">ヨガの行法哲学から生まれた、モノを通して「今の自分」を問い直す片づけの思想</p>
+    <p class="byline">著者: やましたひでこ</p>
+
+    <div class="why-how-box">
+      <div class="qa-label">📣 要約 = 問い × 答え × 根拠</div>
+      <div class="why-how-row">
+        <span class="tag">問い</span>
+        <span class="body">なぜモノを片づけても片づけても、部屋も心もすっきりしないのか。「捨てる」だけでは何が足りないのか。</span>
+      </div>
+      <div class="why-how-row">
+        <span class="tag">答え</span>
+        <span class="body">断捨離とは単なる片づけ術ではなく、モノに「今」という時間の概念を与え、「要・適・快」という基準で選び取る自己探訪のメソッドである。モノへの執着を手放すことで、空間だけでなく心にも余白が生まれ、人生そのものが変わっていく。</span>
+      </div>
+      <div class="why-how-row evidence">
+        <span class="tag">根拠</span>
+        <span class="body">提唱者やましたひでこは、学生時代に出会ったヨガの行法哲学「断行・捨行・離行」を日常の片づけに応用し、25年にわたり片づけに悩む人々を指導。国内外累計700万部超のシリーズとして、15言語以上に翻訳され、実践者の暮らしと人間関係の変化が数多く報告されている。</span>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-chip"><span class="num">700万部</span><span class="label">シリーズ<br>累計発行部数</span></div>
+      <div class="stat-chip"><span class="num">15言語</span><span class="label">以上に<br>翻訳</span></div>
+      <div class="stat-chip"><span class="num">要・適・快</span><span class="label">モノを選ぶ<br>3つの基準</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィック タブ">
+    <button class="tab-btn" role="tab" id="tab-btn-concepts" aria-controls="tab-concepts" aria-selected="true" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-btn-chapters" aria-controls="tab-chapters" aria-selected="false" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-btn-examples" aria-controls="tab-examples" aria-selected="false" onclick="switchTab('examples')">🔍 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-btn-quotes" aria-controls="tab-quotes" aria-selected="false" onclick="switchTab('quotes')">💬 引用</button>
+    <button class="tab-btn" role="tab" id="tab-btn-actions" aria-controls="tab-actions" aria-selected="false" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+    <!-- ============ 主要概念 ============ -->
+    <section class="panel active" id="tab-concepts" role="tabpanel" aria-labelledby="tab-btn-concepts">
+      <h2 class="panel-title">🧩 主要概念の詳細</h2>
+
+      <div class="card">
+        <h3><span class="num-badge">1</span>断捨離の語源（断行・捨行・離行）</h3>
+        <ul>
+          <li>ヨガの行法哲学「断行・捨行・離行」に着想を得た言葉</li>
+          <li>断＝入ってくる不要なモノを断つ、捨＝家にある不要なモノを捨てる、離＝モノへの執着から離れる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 断捨離が単なる整理整頓のテクニックではなく、精神的な修行に根ざした思想であることを示すから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">2</span>「要・適・快」の3つの軸</h3>
+        <ul>
+          <li>要＝今の自分に必要か、適＝今の自分にふさわしいか、快＝身に着けていて心地よいか</li>
+          <li>この3つを基準にモノを選び取ることが断捨離の判断の中心になる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 「捨てる／捨てない」という二択ではなく、モノとの関係を能動的に選び直す視点を与えるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">3</span>モノの3分類</h3>
+        <ul>
+          <li>忘却物（存在すら忘れているモノ）、執着物（使わないのに手放せないモノ）、今の生活で有効活用しているモノ</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 漠然と「片づけなければ」と思うだけでなく、自分の持ち物を具体的に仕分ける視点を与えるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">4</span>主語は「私」、時間軸は「今」</h3>
+        <ul>
+          <li>「まだ使えるか」ではなく「今の私に必要か」で判断する</li>
+          <li>モノを主語にすると手放せなくなるため、常に自分を主語に置き換える</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> もったいない・いつか使うという思考が片づけを止める最大の要因であり、その発想を転換する核心だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">5</span>片づけ・整頓・掃除の区別</h3>
+        <ul>
+          <li>片づけ＝いらないモノを絞り込むこと、整頓＝モノの在り方を整えること（収納）、掃除＝掃く・拭く・磨くこと</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 収納グッズを増やして満足してしまう「なんちゃって片づけ」との違いを明確にするから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">6</span>空間のヨガ</h3>
+        <ul>
+          <li>断捨離は住空間に「呼吸」を取り戻す行為として位置づけられる</li>
+          <li>モノで埋め尽くされた空間は、心の余白も奪っていくと考える</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 片づけを「作業」ではなく「自分と向き合う時間」として捉え直すきっかけになるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">7</span>キャパオーバーという視点</h3>
+        <ul>
+          <li>片づけられなくなる原因は、自分が扱える許容量に対してモノの量が多すぎること</li>
+          <li>年齢を重ねるほど気力・体力が落ち、キャパオーバーが顕著になりやすい</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 「片づけられない自分」を責めるのではなく、モノの総量を見直すべきだと発想を切り替えられるから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num-badge">8</span>一点突破・小さく始める実践論</h3>
+        <ul>
+          <li>「考えるより、まず行動」。引き出し1つ・1日1か所からで良い</li>
+          <li>リバウンドしても、また片づければよいと捉える</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 完璧主義が挫折の最大の原因であり、続けられる仕組みこそが最も重要だから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 各章の要約 ============ -->
+    <section class="panel" id="tab-chapters" role="tabpanel" aria-labelledby="tab-btn-chapters">
+      <h2 class="panel-title">📖 各章の要約（論点別の疑似章立て）</h2>
+
+      <div class="card">
+        <h3>第1部 なぜ片づけられないのか</h3>
+        <ul>
+          <li>モノに埋もれた部屋は、単に散らかっているのではなく「決断の保留」の蓄積である</li>
+          <li>「とりあえず取っておく」という選択の積み重ねが、キャパオーバーを引き起こす</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 片づけの問題を「性格」ではなく「習慣化した意思決定のクセ」として捉え直せるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第2部 断捨離とは何か</h3>
+        <ul>
+          <li>ヨガの行法哲学「断行・捨行・離行」を日常の片づけへ落とし込んだ自己探訪メソッド</li>
+          <li>単なる収納・整理のテクニックとは一線を画す、生き方そのものの思想であると説く</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 断捨離という言葉が独り歩きしがちな中で、本来の思想的な出自を押さえておく必要があるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第3部 「要・適・快」で選び取る技術</h3>
+        <ul>
+          <li>モノを「今の自分」を主語にして、要・適・快の3軸で判断する具体的な方法を提示</li>
+          <li>忘却物・執着物・今使っているモノという3分類でモノを仕分ける</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 抽象的な思想を、実際にモノの前に立ったときの判断基準へと落とし込む本書の核心だから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第4部 空間を変えると人生が変わる</h3>
+        <ul>
+          <li>モノを減らすことで生まれた空間的・時間的な余白が、心や人間関係にも波及すると説く</li>
+          <li>職場の机や人間関係、意思決定など、モノ以外の領域にも断捨離の考え方は応用できる</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 断捨離が「片づけ」で完結せず、生き方全般の技術として広がっていく展開を示すから。</div>
+      </div>
+
+      <div class="card">
+        <h3>第5部 継続のコツ ― 小さく始めて一点突破</h3>
+        <ul>
+          <li>引き出し1つ・1日1か所・5分〜15分という小さな単位から始めることを推奨</li>
+          <li>「考えるより、まず行動」「リバウンドしても、また片づければいい」という姿勢を説く</li>
+        </ul>
+        <div class="why-tag"><b>理由:</b> 挫折しやすい片づけを継続可能な習慣に変える、実践面での最重要ポイントだから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 具体例 ============ -->
+    <section class="panel" id="tab-examples" role="tabpanel" aria-labelledby="tab-btn-examples">
+      <h2 class="panel-title">🔍 具体例・ケーススタディ</h2>
+
+      <div class="card">
+        <h3>① 引き出し1つ・1日1か所の実践</h3>
+        <ul>
+          <li><b>背景:</b> まとまった時間が取れない人向けに、出かける前や寝る前の隙間時間に引き出し1つだけ向き合う方法を提案</li>
+          <li><b>示唆:</b> 物の置き場をぎゅうぎゅうにせず、出し入れしやすい状態にすることで「巡り」が良くなる</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 断捨離は一気にやり切る特別な作業ではなく、日常に組み込める小さな習慣として設計されていることを示すから。</div>
+      </div>
+
+      <div class="card">
+        <h3>② 重度の知的障害のある子育てと断捨離</h3>
+        <ul>
+          <li><b>背景:</b> 大変な子育てに追われていた実践者が断捨離を知り、モノを減らすことで「コト」に割ける時間と心の余裕を増やそうとした</li>
+          <li><b>示唆:</b> モノを減らす行為は、単なる整理ではなく、限られた時間とエネルギーを何に使うかという優先順位づけの実践である</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 断捨離が余暇のある人だけの趣味ではなく、負担の大きい生活の中でこそ効果を発揮しうることを示すから。</div>
+      </div>
+
+      <div class="card">
+        <h3>③ 夫婦関係・人間関係への応用</h3>
+        <ul>
+          <li><b>背景:</b> コロナ禍で表面化した夫婦間の危機に対し、断捨離の考え方を人間関係にも応用する提案がなされている</li>
+          <li><b>示唆:</b> 「今の自分にとって適切か」という基準は、モノだけでなく人との関係性を見直す際にも応用できる</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 断捨離のフレームワークがモノの片づけを超え、人生の選択全般に転用できる汎用性を持つことを示すから。</div>
+      </div>
+
+      <div class="card">
+        <h3>④ ビジネスシーンでの断捨離</h3>
+        <ul>
+          <li><b>背景:</b> 提唱者自身が、机まわりの整理から意思決定の絞り込みまで、ビジネスの現場に断捨離の考え方を紹介している</li>
+          <li><b>示唆:</b> 不要な書類・情報・会議を減らすことは、業務の質とスピードを上げることに直結する</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）:</b> 断捨離が家庭内の片づけにとどまらず、仕事のパフォーマンスにも波及する実用的な思考法であることを示すから。</div>
+      </div>
+    </section>
+
+    <!-- ============ 引用 ============ -->
+    <section class="panel" id="tab-quotes" role="tabpanel" aria-labelledby="tab-btn-quotes">
+      <h2 class="panel-title">💬 重要な引用</h2>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>モノに「今」という時間の概念を与えることが大切。そのモノは今必要なのか、今の自分にそれは相応しいものなのか、という基準で判断することが断捨離の基本である。</blockquote>
+        <div class="quote-note">やましたひでこ公式サイトおよび複数の紹介記事で共通して語られている、本書の中心的な主張を要旨としてまとめたもの。原典ページからの逐語引用は確認できなかったため要旨として掲載。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>断捨離は、学生時代に出会ったヨガの行法哲学「断行・捨行・離行」を日常の片づけに落とし込んだ、誰もが実践可能な自己探訪メソッドである。</blockquote>
+        <div class="quote-note">著者の来歴や思想を紹介する複数の記事に基づく要旨。</div>
+      </div>
+
+      <div class="card quote-card">
+        <span class="quote-tag-badge">要旨</span>
+        <blockquote>考えるより、まず行動。一点突破から始めて、リバウンドしてもまた片づければいい。</blockquote>
+        <div class="quote-note">実践者へのアドバイスとして紹介されている著者の発言を要旨としてまとめたもの。</div>
+      </div>
+    </section>
+
+    <!-- ============ 今日のアクション ============ -->
+    <section class="panel" id="tab-actions" role="tabpanel" aria-labelledby="tab-btn-actions">
+      <h2 class="panel-title">✅ 今日できるアクション</h2>
+
+      <div class="card action-card">
+        <h3>① 引き出し1つ・15分だけ断捨離する</h3>
+        <ul>
+          <li>自宅の引き出しや棚のうち、最も手をつけやすい1か所だけを選び、中身をすべて出して「要・適・快」で判断する</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要15分</span>
+          <span>🎯 目的: 完璧主義を手放し、小さな成功体験から行動のハードルを下げる</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 「できた」という達成感が生まれ、次の片づけへの意欲につながる好循環が始まる。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>② 「要・適・快」チェックでモノを1つ手放す</h3>
+        <ul>
+          <li>気になっているモノを1つ選び、「今の自分に必要か（要）」「今の自分にふさわしいか（適）」「身に着けて心地よいか（快）」を自問し、当てはまらなければ手放す</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要15分</span>
+          <span>🎯 目的: モノ主語ではなく自分主語で判断する練習をする</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 「もったいない」という思考の自動反応から離れ、主体的にモノを選び取る感覚が身につく。</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>③ 「とりあえず」の保留を1つ決着させる</h3>
+        <ul>
+          <li>試供品・もらい物・保留にしていた書類などを1つ選び、今日中に使い切るか、手放すかのどちらかに決める</li>
+        </ul>
+        <div class="action-meta">
+          <span>⏱️ 所要20分</span>
+          <span>🎯 目的: 「決断の保留」がモノを増やす最大の原因であることを体感する</span>
+        </div>
+        <div class="why-tag"><b>期待効果:</b> 保留にしていたモノに決着をつけることで、判断を先送りしない感覚が日常の意思決定にも波及する。</div>
+      </div>
+
+      <h2 class="panel-title" style="margin-top:24px;">📚 関連書籍</h2>
+      <div class="card">
+        <div class="related-item"><span class="icon">📘</span><span><b>ぼくたちに、もうモノは必要ない。</b>（佐々木典士）: ミニマリズムの実践書で、断捨離の「モノを減らす」哲学を独身男性の視点から先鋭化させた一冊。</span></div>
+        <div class="related-item"><span class="icon">📗</span><span><b>人生がときめく片づけの魔法</b>（近藤麻理恵）: 「ときめくかどうか」という感覚的な判断基準を提示する片づけ本で、断捨離の「要・適・快」の基準と響き合う。</span></div>
+        <div class="related-item"><span class="icon">📙</span><span><b>持たない暮らし</b>（下重暁子）: モノを持たないことで得られる自由と身軽さを説く随筆で、断捨離が目指す精神的な軽さと共鳴する。</span></div>
+        <div class="related-item"><span class="icon">📕</span><span><b>シンプルに生きる 人生の本物の安らぎを味わう</b>（ドミニック・ローホー）: フランス人著者によるミニマルな生き方の提案で、「今の自分に必要なものだけを選ぶ」思想と通じる。</span></div>
+        <div class="related-item"><span class="icon">📔</span><span><b>限りある時間の使い方</b>（オリバー・バークマン）: 有限な時間・エネルギーをどう配分するかを説く一冊で、モノだけでなく時間にも「今の自分に必要か」を問う視点を補強する。</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>📖 books-summary daily reading digest ・ 断捨離</footer>
+</div>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('section.panel');
+    var btns = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){
+      var active = (p.id === 'tab-' + name);
+      p.classList.toggle('active', active);
+    });
+    btns.forEach(function(b){
+      var active = (b.id === 'tab-btn-' + name);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+  }
+</script>
+</body>
+</html>
