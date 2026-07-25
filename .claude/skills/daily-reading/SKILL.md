@@ -1,6 +1,6 @@
 ---
 name: daily-reading
-description: 毎朝7:00にクラウド Claude Routine が実行する読書サマリー生成手順（選書→Deep Research→図解HTML→ノート生成→既読リンク→push）
+description: 毎朝7:00にクラウド Claude Routine が実行する読書サマリー生成手順（選書→Deep Research→図解HTML→ノート生成→既読リンク→push）。**クラウド Routine 専用。しょーまが明示的に指示しない限り呼び出さない**（当日エントリ生成前に走ると append-only の正本 state/books_read.json に本日分が二重登録される）
 ---
 
 # 📖 日次読書サマリー生成 — Routine 指示書
