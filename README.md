@@ -124,7 +124,8 @@ flowchart TD
     end
 
     subgraph trouble["困ったとき"]
-        E1["⚠️ どこかが壊れたとき"]:::trouble --> E2["📲 Discordに通知が来ないことで気づく"]:::receive
+        E1["⚠️ ボタンを押して失敗したとき"]:::trouble --> E2["📲 その場でエラーが返る"]:::receive
+        E3["⚠️ 朝に『今日の一冊』が届かなかったとき"]:::trouble --> E4["🙋 それ自体が壊れたサイン<br>Gmailに失敗メールが来てないか見る"]:::do
     end
 
     A2 --> B1
