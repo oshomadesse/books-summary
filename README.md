@@ -9,10 +9,10 @@
 
 | 原則 | フォルダ | ライフサイクル要素 | 役割 |
 |---|---|---|---|
-| 読む | `.claude/` + `ROUTINE.md` | Node定義 | AIが読む指示書（ROUTINE.md はクラウドRoutineが読む本体） |
+| 読む | `.claude/` | Node定義 | AIが読む指示書（`.claude/skills/daily-reading/SKILL.md` はクラウドRoutineが読む本体） |
 | 行う | `src/` | Node実装 | 機械が実行する処理系 |
-| 書く | `state/` | State | 機械が書き残す記憶 |
-| 見る | `docs/` | State | 人が読む記録（公開HTMLは `infographics/` から Pages Actions 配信） |
+| 書く | `state/` | State | 機械が書き残す記憶（生成物は `state/infographics/` 図解HTML・`state/inbox/` ノート一時置き場） |
+| 見る | `docs/` | State | 人が読む記録（公開HTMLは `state/infographics/` から Pages Actions 配信） |
 | 企む | `plans/` | State（一時） | NEXUSの実行計画。コミットメッセージに全文転記して削除 |
 
 上記5フォルダはライフサイクル10要素のうち State / Node の置き場。Edgeは専用フォルダを持たない。`CLAUDE.md`の規則とスクリプト内の分岐が実体。
@@ -65,13 +65,13 @@ flowchart TD
     %% この図はHumanがグラフを監視する唯一の場所。Node・Edge・Loop・State変更時は同じpushで必ず更新する（.claude/rules/docs-sync.md）。
     Start([Start: 毎朝7:00 JST クラウドRoutine起動]):::startend --> G{Judgement: books_read.jsonに今日のdateあり?}:::judgement
     G -->|あり・生成済み| EndSkip([End: 何もせず終了]):::startend
-    G -->|なし| A[Agent: 選書→Deep Research→図解HTML→ノート生成 ROUTINE.md]:::agent
+    G -->|なし| A["Agent: 選書→Deep Research→図解HTML→ノート生成<br>.claude/skills/daily-reading/SKILL.md"]:::agent
     A --> L[Agent: 関連書籍を既読リストとLLM意味照合し wikiリンク Step4.5]:::agent
-    L --> SR[(State: books_read.json / latest.json / infographics/ / 100_Inbox ノート)]:::state
+    L --> SR[("State: state/books_read.json / state/latest.json<br>state/infographics/ / state/inbox/ ノート")]:::state
     SR --> P[Tool: git push origin main]:::tool
     P -->|reject時 rebaseして最大3回| P
     P --> W[Tool: GitHub Actions daily-notify.yml]:::tool
-    W --> PG[(State: GitHub Pages infographics配信)]:::state
+    W --> PG[(State: GitHub Pages state/infographics配信 URL不変)]:::state
     W --> DN[Human: Discord #books 通知 Embed+確認/詳細ボタン 両方紫]:::human
     DN -->|✅確認| CF[Tool: discord_books.py 図解URLをephemeral返信]:::tool
     MK[Tool: menu_keeper 60秒番人 常設🔎検索メニュー最下部維持]:::tool --> SM[Human: 検索モーダル 本やテーマを伝える]:::human
@@ -80,7 +80,7 @@ flowchart TD
     W -->|Discord送信失敗| ErrW([End: workflow失敗 → GitHub通知メール]):::startend
     Start2([Start: 毎朝7:20 launchd pull]):::startend --> PU[Tool: books-summary-pull.sh fetch→brctl→merge]:::tool
     PU -->|失敗5回| ErrP([End: pull失敗ログ 翌回自己回復]):::startend
-    PU --> MV[Tool: ノートをvault 100_Inboxへ移送 + skip-ci commit push]:::tool
+    PU --> MV[Tool: state/inbox のノートをvault 100_Inboxへ移送 + skip-ci commit push]:::tool
     MV --> BL[Tool: backlink_books.py 逆リンク追記 brctl前置き]:::tool
     BL --> OB[(State: Obsidianグラフ 書籍ノート相互リンク)]:::state
     DN -->|🔍詳細→モーダル質問| HD[Human: しょーまの質問]:::human

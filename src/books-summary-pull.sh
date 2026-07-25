@@ -69,7 +69,7 @@ post_pull(){
   inbox="/Users/seihoushouba/Oshomadesse-pc/100_Inbox"
   moved=0
 
-  for src in "$REPO"/100_Inbox/Books-*.md; do
+  for src in "$REPO"/state/inbox/Books-*.md; do
     [ -e "$src" ] || continue
     name="${src##*/}"
     dst="$inbox/$name"
@@ -94,7 +94,7 @@ post_pull(){
   done
 
   if [ "$moved" -eq 1 ]; then
-    if GIT add 100_Inbox >> "$LOG" 2>&1 &&
+    if GIT add state/inbox >> "$LOG" 2>&1 &&
        GIT commit -m "📥 ノートをvault Inboxへ移送 [skip ci]" \
          -m "Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>" >> "$LOG" 2>&1; then
       for i in {1..3}; do

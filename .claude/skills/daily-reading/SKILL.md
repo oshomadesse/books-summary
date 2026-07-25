@@ -1,3 +1,8 @@
+---
+name: daily-reading
+description: 毎朝7:00にクラウド Claude Routine が実行する読書サマリー生成手順（選書→Deep Research→図解HTML→ノート生成→既読リンク→push）
+---
+
 # 📖 日次読書サマリー生成 — Routine 指示書
 
 このファイルは、毎朝 07:00 JST に起動するクラウド Claude エージェント（Routine）の実行手順書。
@@ -63,14 +68,14 @@ Step 2 の調査内容を、以下の指示（旧システムから継承した�
 例: 「DIE WITH ZERO 人生が豊かになりすぎる究極のルール」→ `DIE_WITH_ZERO_人生が豊かになりすぎる究極のルール_infographic.html`
 
 **保存先:**
-- `infographics/<slug>_infographic.html`
+- `state/infographics/<slug>_infographic.html`
 
 **公開URL:**
-GitHub Actions が push を受けて `infographics/` を GitHub Pages に配信する（URL は従来どおり `https://oshomadesse.github.io/books-summary/<ファイル名をURLエンコード>?openExternalBrowser=1`）。
+GitHub Actions が push を受けて `state/infographics/` を GitHub Pages に配信する（URL は従来どおり `https://oshomadesse.github.io/books-summary/<ファイル名をURLエンコード>?openExternalBrowser=1`）。
 
 ## Step 4: 読書ノート生成
 
-`100_Inbox/Books-YYYY-MM-DD.md` を以下のテンプレートに**厳密に**沿って作成する
+`state/inbox/Books-YYYY-MM-DD.md` を以下のテンプレートに**厳密に**沿って作成する
 （`{...}` を実値で置換。関連書籍は `- ` 箇条書きに整形）:
 
 ~~~
@@ -139,7 +144,7 @@ tags: [books]
 ## Step 6: コミット & push
 
 ```bash
-git add 100_Inbox/Books-YYYY-MM-DD.md infographics/ state/books_read.json state/latest.json
+git add state/inbox/Books-YYYY-MM-DD.md state/infographics/ state/books_read.json state/latest.json
 git commit -m "📚 Daily reading update (<書名>)"
 git push origin main
 ```

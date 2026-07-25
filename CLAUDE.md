@@ -17,22 +17,22 @@ summary: 毎朝AIが本を選定しインフォグラフィック付きサマリ
 ```
 ① Claude Routine "daily-reading-summary"
    (trig_01UUowz2BR5ao6tvqc8URNbD / cron 0 22 * * * UTC = 毎朝7:00 JST / claude-sonnet-5)
-   ROUTINE.md の手順: 選書(state/books_read.json 参照)
-   → Web Deep Research → infographics/ に HTML 生成
-   → 100_Inbox/Books-YYYY-MM-DD.md 生成
+   .claude/skills/daily-reading/SKILL.md の手順: 選書(state/books_read.json 参照)
+   → Web Deep Research → state/infographics/ に HTML 生成
+   → state/inbox/Books-YYYY-MM-DD.md 生成
    → Step4.5: 関連書籍を既読リストと意味照合し [[Books-YYYY-MM-DD|書名]] リンク
    → state/books_read.json 追記 + state/latest.json 更新（related_dates 含む）
    → main へ commit & push（[skip ci] 禁止）
       ↓ push (state/latest.json 変更で発火)
 ② GitHub Actions .github/workflows/daily-notify.yml
-   job deploy: infographics/ を GitHub Pages へ Actions 配信（URL は従来互換）
+   job deploy: state/infographics/ を GitHub Pages へ Actions 配信（URL は従来互換）
    job notify: Pages 200 待ち → Discord Embed ＋ [✅確認(bookconfirm:date)] [🔍詳細(bookdetail:date)]（両方紫）
    (secrets: DISCORD_BOT_TOKEN。LINE は 2026-07-25 に完全撤去)
       ↓
 ③ ローカル Mac: LaunchAgent com.oshomadesse.bookssummary.pull (毎朝7:20 JST)
    ~/.local/bin/books-summary-pull.sh:
    fetch → brctl ハイドレート → merge（未push有なら rebase 回収）
-   → post_pull: ノートを vault 100_Inbox へ移送＋[skip ci]コミット
+   → post_pull: state/inbox のノートを vault 100_Inbox へ移送＋[skip ci]コミット
    → backlink_books.py が related_dates の各ノートに逆リンク追記（brctl 前置き）
       ↓
 ④ Discord interaction（随時）: .discord-daemon デーモンが .nexus.json の名札で
@@ -48,7 +48,7 @@ summary: 毎朝AIが本を選定しインフォグラフィック付きサマリ
 ### 管理ポイント
 | 対象 | 場所 |
 |---|---|
-| Routine の指示書 | `ROUTINE.md`（リポ直下。編集して push すれば翌朝から反映） |
+| Routine の指示書 | `.claude/skills/daily-reading/SKILL.md`（編集して push すれば翌朝から反映。Routine 側の指示文がこのパスを名指ししているので、移動時は `RemoteTrigger update` も必須） |
 | Routine の管理画面 | https://claude.ai/code/routines |
 | 読了リスト（唯一の正・append-only） | `state/books_read.json` |
 | 当日メタ（通知・逆リンクが読む） | `state/latest.json` |
@@ -61,19 +61,22 @@ summary: 毎朝AIが本を選定しインフォグラフィック付きサマリ
 ## ディレクトリ構成（graph-scaffold 準拠: 読む=.claude／行う=src／書く=state／見る=docs）
 ```
 06_Books/
-├── ROUTINE.md            # ★ クラウド Routine の実行指示書（システムの心臓部）
 ├── README.md             # 表紙＋mermaid 依存グラフ（変更時は同じ push で更新）
 ├── CLAUDE.md             # このファイル
 ├── .nexus.json           # Discord チャンネル名札＋handler 指定
 ├── .github/workflows/daily-notify.yml
+├── .claude/
+│   ├── skills/daily-reading/SKILL.md  # ★ クラウド Routine の実行指示書（システムの心臓部）
+│   └── rules/docs-sync.md             # push 時のドキュメント同期基準
 ├── state/
 │   ├── books_read.json   # 既読リスト（append-only の正本）
 │   ├── latest.json       # 当日メタ
+│   ├── inbox/            # Routine の生成先（pull 後に vault へ移送、通常は .gitkeep のみ）
+│   ├── infographics/     # 図解 HTML マスター = GitHub Pages 配信ルート（Actions 配信）
 │   ├── backfill/         # 一括リンクの判定台帳とバックアップ
 │   └── legacy/           # 旧システムのデータ遺物
-├── 100_Inbox/            # Routine の生成先（pull 後に vault へ移送、通常は .gitkeep のみ）
-├── infographics/         # 図解 HTML マスター = GitHub Pages 配信ルート（Actions 配信）
 ├── docs/                 # 設計記録.md・更新記録.md（人間ドキュメント専用）
+├── plans/                # NEXUS の実行計画（コミットメッセージへ転記後に削除）
 └── src/
     ├── books-summary-pull.sh       # pull＋移送＋逆リンク（原本。配備先 ~/.local/bin）
     ├── com.oshomadesse.bookssummary.pull.plist
@@ -100,7 +103,7 @@ bash ~/.local/bin/books-summary-pull.sh   # ログ: ~/Library/Logs/BooksSummary/
 ```
 
 ### 出力フォーマット・選書条件を変えたいとき
-`ROUTINE.md` を編集して push するだけ。
+`.claude/skills/daily-reading/SKILL.md` を編集して push するだけ。
 
 ### 過去ノートの関連書籍を一括リンクしたいとき（バックフィル）
 ```bash

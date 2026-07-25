@@ -140,7 +140,7 @@ def build_search_prompt(query: str) -> str:
         f"① まず {BOOKS_PATH} を照合する。該当・関連する既読本があれば、その本のノート "
         f"{VAULT_INBOX}/Books-YYYY-MM-DD.md を読んで、要点＋図解URL＋ノートへの言及を提出する。",
         "② 既読に無ければ Web で該当書籍を特定・提案する。最大3冊、最有力を先頭にし、"
-        "「明日の一冊として読むなら ROUTINE.md の選書に指名を入れるで」と選択肢を出す。",
+        "「明日の一冊として読むなら .claude/skills/daily-reading/SKILL.md の選書に指名を入れるで」と選択肢を出す。",
         "返答はスマホ幅前提の Discord 書式（vault ルート CLAUDE.md の規定）で。",
     ])
 
