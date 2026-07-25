@@ -13,8 +13,9 @@
 | 行う | `src/` | Node実装 | 機械が実行する処理系 |
 | 書く | `state/` | State | 機械が書き残す記憶 |
 | 見る | `docs/` | State | 人が読む記録（公開HTMLは `infographics/` から Pages Actions 配信） |
+| 企む | `plans/` | State（一時） | NEXUSの実行計画。コミットメッセージに全文転記して削除 |
 
-上記4フォルダはライフサイクル10要素のうち State / Node の置き場。Edgeは専用フォルダを持たない。`CLAUDE.md`の規則とスクリプト内の分岐が実体。
+上記5フォルダはライフサイクル10要素のうち State / Node の置き場。Edgeは専用フォルダを持たない。`CLAUDE.md`の規則とスクリプト内の分岐が実体。
 
 Judgementも専用フォルダを持たない。Edge上の条件分岐として実装内に存在する。
 

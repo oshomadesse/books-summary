@@ -126,3 +126,12 @@ python3 src/tools/backfill_links.py apply         # 適用前に state/backfill/
 ## 旧システム（src/legacy/・state/legacy/、2026-07-07 停止）
 Gemini + GPT-5 + Claude API をローカル LaunchAgent で回していた第1弾の遺物。参照用に残置、実行されない。
 Google Sheets の読了リストは `state/books_read.json` へ移行済み（シートは凍結）。
+
+## plans/ 運用
+
+- タスク着手時、NEXUS が `plans/_template.md` を複製して `plans/YYYY-MM-DD_<slug>.md` を作成してから実装に入る
+- 必須項目: 目的 / **計画者（Fable か、リミット時代替の Opus 5 か）** / **担当モデル（モデルグラフのどの分岐で決めたかを1行で）** / 手順 / 検証方法
+- モデルの役割定義はグローバル `~/.claude/CLAUDE.md`「モデル移譲ポリシー」が正本。ここにモデル名の条件を書き足さない
+- 実装完了・検証後、plan の**全文をコミットメッセージ本文**にしてコミットする
+  - 1行目: 通常の要約行、空行を挟んで plan 全文を貼る
+- コミット直後に plan ファイルを削除する（`plans/*` は gitignore 済み。計画の正本はコミットメッセージであり、ファイルは作業中の一時置き場）
