@@ -12,7 +12,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BOOKS_PATH = ROOT / "state" / "books_read.json"
 LATEST_PATH = ROOT / "state" / "latest.json"
-MENU_PATH = ROOT / "state" / "discord_menu.json"
 VAULT_INBOX = Path("/Users/seihoushouba/Oshomadesse-pc/100_Inbox")
 INFOGRAPHIC_RE = re.compile(
     r"^.*インフォグラフィック.*?\[[^\]]*\]\((https?://[^)\s]+)\)",
@@ -160,69 +159,6 @@ def menu_payload() -> dict:
     }
 
 
-def saved_menu_id() -> str | None:
-    try:
-        return json.loads(MENU_PATH.read_text(encoding="utf-8")).get("message_id")
-    except (OSError, ValueError):
-        return None
-
-
-def save_menu_id(message_id: str) -> None:
-    MENU_PATH.parent.mkdir(parents=True, exist_ok=True)
-    MENU_PATH.write_text(
-        json.dumps({"message_id": message_id}, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-
-
-def post_menu_sync(context, delete_old: bool) -> str:
-    api_call = context["api_call"]
-    token = context["token"]
-    channel_id = context["channel_id"]
-    old = saved_menu_id()
-    if delete_old and old:
-        try:
-            api_call("DELETE", f"/channels/{channel_id}/messages/{old}", token)
-        except Exception as exc:
-            context["log"](f"books: 旧メニュー削除失敗（続行）: {exc}")
-    response = api_call(
-        "POST", f"/channels/{channel_id}/messages", token, menu_payload()
-    )
-    message_id = (response or {}).get("id")
-    if not message_id:
-        raise RuntimeError("メニュー投稿の応答に message_id が無い")
-    save_menu_id(message_id)
-    return message_id
-
-
-async def repost_menu(context) -> None:
-    try:
-        await asyncio.to_thread(post_menu_sync, context, True)
-    except Exception as exc:
-        context["log"](f"books: メニュー貼り直し失敗: {exc}")
-
-
-def keep_menu_sync(context) -> None:
-    channel_id = context["channel_id"]
-    latest = context["api_call"](
-        "GET",
-        f"/channels/{channel_id}/messages?limit=1",
-        context["token"],
-    )
-    if latest and latest[0].get("id") == saved_menu_id():
-        return
-    post_menu_sync(context, True)
-
-
-async def menu_keeper(context) -> None:
-    while True:
-        try:
-            await asyncio.to_thread(keep_menu_sync, context)
-        except Exception as exc:
-            context["log"](f"books: メニュー番人失敗: {exc}")
-        await asyncio.sleep(60)
-
-
 async def callback(d, context, payload) -> None:
     await asyncio.to_thread(
         context["api_call"],
@@ -258,7 +194,7 @@ async def handle_interaction(d, context) -> bool:
             {"type": 4, "data": {"content": content, "flags": 64}},
         )
         log(f"書籍確認 応答: {date}")
-        await repost_menu(context)
+        await context["repost_menu"]()
         return True
 
     if interaction_type == 3 and custom_id == "booksearch":
@@ -295,7 +231,7 @@ async def handle_interaction(d, context) -> bool:
             context,
             {"type": 4, "data": {"content": "🔎 探すで。ちょい待ち"}},
         )
-        await repost_menu(context)
+        await context["repost_menu"]()
         asyncio.create_task(context["chat"](build_search_prompt(query)))
         log("書籍検索 チャット注入")
         return True
@@ -374,8 +310,3 @@ async def handle_interaction(d, context) -> bool:
         return True
 
     return False
-
-
-def background_tasks(context):
-    """daemon 起動中、常設メニューを最下部に保つ。"""
-    return (menu_keeper(context),)

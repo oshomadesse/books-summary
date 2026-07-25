@@ -40,8 +40,10 @@ summary: 毎朝AIが本を選定しインフォグラフィック付きサマリ
    - ✅確認 → 図解URLを ephemeral で返す（URLボタンは灰色固定のため紫化はこの方式）
    - 🔍詳細 → モーダル質問 → headless NEXUS が当日ノートを読んで深掘り回答
    - 常設メニュー「🔎 検索」→ モーダル「特定の本やテーマを伝える」→ NEXUS が
-     既読ノート照合 or Web提案で該当本を提出（menu_keeper が60秒ごと最下部を維持、
-     message_id は state/discord_menu.json）
+     既読ノート照合 or Web提案で該当本を提出（投稿・台帳・60秒番人・貼り直しは
+     すべてコア `.discord-daemon` 標準機能。本リポは `menu_payload()` を宣言するのみ。
+     管理は台帳 `state/discord_menu.json`・実装作法の正本は discord-daemon の
+     `docs/HANDLER_API.md`「常設メニュー（コア標準機能）」）
    - 通常発言は普通の NEXUS 対話
 ```
 

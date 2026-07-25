@@ -74,7 +74,7 @@ flowchart TD
     W --> PG[(State: GitHub Pages state/infographics配信 URL不変)]:::state
     W --> DN[Human: Discord #books 通知 Embed+確認/詳細ボタン 両方紫]:::human
     DN -->|✅確認| CF[Tool: discord_books.py 図解URLをephemeral返信]:::tool
-    MK[Tool: menu_keeper 60秒番人 常設🔎検索メニュー最下部維持]:::tool --> SM[Human: 検索モーダル 本やテーマを伝える]:::human
+    MK[Tool: discord-daemon コア 常設メニュー番人60秒 サイレント投稿]:::tool --> SM[Human: 検索モーダル 本やテーマを伝える]:::human
     SM --> DB2[Tool: discord_books.py → headless NEXUS注入]:::tool
     DB2 --> SA[Agent: 既読照合orWeb提案で該当本を提出]:::agent
     W -->|Discord送信失敗| ErrW([End: workflow失敗 → GitHub通知メール]):::startend
@@ -149,7 +149,7 @@ flowchart TD
 | ノート移送コミットのpush | reject | 3 | pull.log（次回実行の未pushコミット回収で自己回復） |
 | backlink_books.py | ノート不在・退避タイムアウト | 各1 | pull.log（部分失敗でも pull は成功扱い） |
 | discord_books.py | 台帳未検出・図解URL不明 | 1 | Discord上でエラー返答（ephemeral） |
-| menu_keeper | メニュー貼り直し失敗 | 60秒ごと再試行 | daemon.log（次周期で自己回復） |
+| discord-daemon コア 常設メニュー番人 | メニュー貼り直し失敗 | 60秒ごと再試行 | daemon.log（次周期で自己回復。本リポは `menu_payload()` の宣言のみで実装はコア側） |
 
 ## むずかしい言葉なし版
 
