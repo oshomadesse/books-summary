@@ -99,6 +99,43 @@ flowchart TD
     classDef startend fill:#e8e8e8,stroke:#555,color:#222
 ```
 
+## 体験グラフ
+
+依存グラフが「システムがどう動くか」を描くのに対し、この図は**しょーま目線で「何が起きるか」だけ**を描く。出典は下の「むずかしい言葉なし版」で、そちらを書き換えたらこの図も同じpushで直す。
+
+凡例: 🙋 橙＝しょーまがする操作／📲 緑＝しょーまに届くもの／⏰ 灰＝何もしなくても起きること／⚠️ 赤＝失敗の知らせ
+
+```mermaid
+flowchart TD
+    %% 体験グラフ: ノードにしてよいのは「しょーまが見る・する・受け取る」ものだけ。
+    %% 禁止: スクリプト名・ファイルパス・launchd/cron式・State(円筒)・Judgement(菱形)・exit code・loop6/7/9。
+
+    subgraph auto["何もしなくても届くもの"]
+        A1["⏰ 朝7時に勝手に"]:::auto --> A2["📲 7時すぎにDiscordへ『今日の一冊』が届く"]:::receive
+        A1 --> A3["📲 図解ページと読書ノートが保存される"]:::receive
+        A4["⏰ 7時20分にMacが勝手に取り込む"]:::auto --> A5["📲 Obsidianの受信箱で<br>関連する過去の本と線で繋がる"]:::receive
+        A3 --> A4
+    end
+
+    subgraph act["自分から動くとき"]
+        B1["🙋 [✅確認] を押す"]:::do --> B2["📲 図解が開く"]:::receive
+        C1["🙋 [🔍詳細] を押して質問を書く"]:::do --> C2["📲 深掘りした答えが返る"]:::receive
+        D1["🙋 [🔎検索] で本やテーマを伝える"]:::do --> D2["📲 既読ノートかWebから該当の本が返る"]:::receive
+    end
+
+    subgraph trouble["困ったとき"]
+        E1["⚠️ どこかが壊れたとき"]:::trouble --> E2["📲 Discordに通知が来ないことで気づく"]:::receive
+    end
+
+    A2 --> B1
+    A2 --> C1
+
+    classDef do fill:#ffd8a8,stroke:#e8590c,color:#222
+    classDef receive fill:#c3fae8,stroke:#087f5b,color:#222
+    classDef auto fill:#dee2e6,stroke:#495057,color:#222
+    classDef trouble fill:#ffc9c9,stroke:#c92a2a,color:#222
+```
+
 ## エラー出口一覧
 
 出口の届き先が空欄の行があってはなりません。
