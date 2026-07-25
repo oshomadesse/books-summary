@@ -36,7 +36,7 @@ Humanノードも専用フォルダを持たない。人間本人と通知チャ
 | 4 | Edge | 遷移条件と接続 |
 | 5 | Judgement | 機械が即決する分岐。即決できないなら7か9へ |
 | 6 | Loop | node再試行の戻り先・上限・出口 |
-| 7 | Verification | 3rd partyによる最終関門（既定: FABER）。固定基準で裁く。自己採点しない |
+| 7 | Verification | 3rd partyによる最終関門（評価者＝作り手と別ベンダー）。固定基準で裁く。自己採点しない |
 | 8 | End | 全runが必ず到達する終端（正常・エラー両方） |
 | 9 | Human | Endの外。通知を受け、feedbackが次runのStartになる。Validation（妥当性確認）層 |
 
