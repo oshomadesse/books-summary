@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>amazon 世界最先端の戦略がわかる | インフォグラフィック</title>
+<!--
+  カラーパレット（プライマリー/セカンダリー/アクセント）
+  Primary:   #FF9900 → #232F3E (グラデーション, Amazonオレンジ→ダークネイビー)
+  Secondary: #146EB4 (Amazon Blue)
+  Accent:    #37D67A (成長・キャッシュフローを表すグリーン)
+-->
+<style>
+  :root{
+    --primary-1:#FF9900;
+    --primary-2:#232F3E;
+    --secondary:#146EB4;
+    --accent:#37D67A;
+    --bg:#F7F8FA;
+    --card-bg:#FFFFFF;
+    --text:#1B1F27;
+    --text-sub:#5B6472;
+    --border:#E5E8EC;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header.hero{
+    background:linear-gradient(135deg,var(--primary-1) 0%, var(--primary-2) 100%);
+    color:#fff;
+    padding:28px 20px 34px;
+    text-align:center;
+  }
+  header.hero .eyebrow{
+    font-size:13px;
+    letter-spacing:.08em;
+    opacity:.85;
+    margin-bottom:6px;
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 6px;
+    line-height:1.4;
+  }
+  header.hero .meta{
+    font-size:13px;
+    opacity:.9;
+  }
+
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px;}
+
+  /* 要約=問い×答え×根拠 ブロック */
+  .qar{
+    margin-top:-20px;
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    box-shadow:0 8px 24px rgba(35,47,62,.12);
+    padding:20px;
+    position:relative;
+    z-index:2;
+  }
+  .qar h2{
+    font-size:14px;
+    color:var(--secondary);
+    margin:0 0 12px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qar-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+    align-items:flex-start;
+  }
+  .qar-row:last-child{margin-bottom:0;}
+  .qar-tag{
+    flex:0 0 auto;
+    font-size:11px;
+    font-weight:700;
+    color:#fff;
+    background:var(--secondary);
+    border-radius:999px;
+    padding:3px 10px;
+    white-space:nowrap;
+  }
+  .qar-row.answer .qar-tag{background:var(--primary-1);}
+  .qar-row.why .qar-tag{background:var(--accent);}
+  .qar-text{font-size:14px;color:var(--text);}
+
+  /* 指標バッジ */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin:16px 0 0;
+  }
+  .stat-badge{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px 6px;
+    text-align:center;
+  }
+  .stat-badge .num{
+    font-size:18px;
+    font-weight:800;
+    color:var(--primary-2);
+    display:block;
+  }
+  .stat-badge .label{
+    font-size:10.5px;
+    color:var(--text-sub);
+  }
+
+  /* タブ */
+  .tabs{
+    margin-top:22px;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    padding:10px 0 8px;
+    z-index:5;
+    overflow-x:auto;
+    white-space:nowrap;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    display:inline-block;
+    border:none;
+    background:var(--card-bg);
+    color:var(--text-sub);
+    border:1px solid var(--border);
+    padding:8px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+    margin-right:8px;
+    cursor:pointer;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary-2);
+    color:#fff;
+    border-color:var(--primary-2);
+  }
+
+  .panel{display:none;padding-top:8px;}
+  .panel.active{display:block;}
+
+  .card{
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 2px 10px rgba(20,30,45,.06);
+    border:1px solid var(--border);
+  }
+  .card h3{
+    font-size:15px;
+    margin:0 0 8px;
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+  .card ul{
+    margin:0 0 10px;
+    padding-left:20px;
+    font-size:13.5px;
+  }
+  .card ul li{margin-bottom:4px;}
+  .why-box{
+    background:rgba(55,214,122,.1);
+    border-left:3px solid var(--accent);
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:12.5px;
+    color:#1e5c3d;
+  }
+  .quote-box{
+    background:linear-gradient(135deg, rgba(255,153,0,.08), rgba(20,110,180,.08));
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+    border:1px solid var(--border);
+  }
+  .quote-box p.quote{
+    font-size:14.5px;
+    font-style:italic;
+    margin:0 0 8px;
+  }
+  .quote-box .note{
+    font-size:11.5px;
+    color:var(--text-sub);
+  }
+  .tag-yoshi{
+    display:inline-block;
+    font-size:10.5px;
+    background:var(--secondary);
+    color:#fff;
+    padding:2px 8px;
+    border-radius:999px;
+    margin-bottom:6px;
+  }
+  .action-num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:22px;height:22px;
+    border-radius:50%;
+    background:var(--primary-1);
+    color:#fff;
+    font-size:12px;
+    font-weight:800;
+    margin-right:6px;
+  }
+  footer{
+    max-width:720px;
+    margin:24px auto 0;
+    padding:0 16px;
+    font-size:11px;
+    color:var(--text-sub);
+    text-align:center;
+  }
+  @media (min-width:640px){
+    header.hero h1{font-size:26px;}
+    .stats{grid-template-columns:repeat(3,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">📚 今日読むべき本</div>
+  <h1>amazon 世界最先端の戦略がわかる</h1>
+  <div class="meta">著者: 成毛眞 ｜ カテゴリ: ビジネス</div>
+</header>
+
+<div class="wrap">
+  <section class="qar">
+    <h2>🎯 要約：問い × 答え × 根拠</h2>
+    <div class="qar-row">
+      <span class="qar-tag">問い</span>
+      <span class="qar-text">なぜAmazonは赤字覚悟の投資を続けても、株式市場からも顧客からも見放されず、次々と新事業を制覇できるのか？</span>
+    </div>
+    <div class="qar-row answer">
+      <span class="qar-tag">答え</span>
+      <span class="qar-text">会計上の利益より営業キャッシュフローを重視し、そのキャッシュを技術・物流・顧客体験に再投資する「フライホイール（弾み車）」構造を持つから。</span>
+    </div>
+    <div class="qar-row why">
+      <span class="qar-tag">根拠</span>
+      <span class="qar-text">低価格→顧客増→出品者増→品揃え拡大という循環がAWS・Prime・物流網まで巻き込みながら自己強化し、技術の外部化（AWS誕生）が新たな収益源を生み続けている。</span>
+    </div>
+    <div class="stats">
+      <div class="stat-badge"><span class="num">376p</span><span class="label">単行本ページ数</span></div>
+      <div class="stat-badge"><span class="num">8視点</span><span class="label">小売/資本/クラウド等</span></div>
+      <div class="stat-badge"><span class="num">2018</span><span class="label">刊行年(8月)</span></div>
+    </div>
+  </section>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button class="tab-btn" role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📖 各章要約</button>
+    <button class="tab-btn" role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">🔍 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 引用</button>
+    <button class="tab-btn" role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日の行動</button>
+  </nav>
+
+  <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🔄 フライホイール効果</h3>
+      <ul>
+        <li>低価格 → 顧客増 → 出品者増 → 品揃え拡大 → 顧客体験向上 → さらなる低価格、という自己強化ループ</li>
+        <li>2001年、ベゾスがジム・コリンズの「弾み車」概念に着想を得て描いたとされる成長モデル</li>
+        <li>小売・AWS・Primeなど複数事業が互いを加速させる構造の核心</li>
+      </ul>
+      <div class="why-box">理由: 単発の施策ではなく「循環」を設計することで、投資対効果が時間とともに逓増するため。</div>
+    </div>
+    <div class="card">
+      <h3>💰 キャッシュフロー経営</h3>
+      <ul>
+        <li>会計上の利益は薄くても、営業キャッシュフローは潤沢</li>
+        <li>「キャッシュがあるから失敗できる」という逆説的な強さで新規事業に投資し続けられる</li>
+        <li>Amazon Fresh・Amazon Pay・Amazon Fashion・Amazon Lendingなど次々に事業展開できる原資</li>
+      </ul>
+      <div class="why-box">理由: 短期利益を追わない分、長期的な市場支配力の構築に資源を回せるため。</div>
+    </div>
+    <div class="card">
+      <h3>🛒 プラットフォーム戦略</h3>
+      <ul>
+        <li>自社在庫を持たないマーケットプレイス形式で品揃えを拡張しつつ在庫リスクを外部化</li>
+        <li>出品者間の価格競争が働き、結果的に低価格が実現する</li>
+        <li>出版流通など既存業界の価格慣行にも切り込んだ</li>
+      </ul>
+      <div class="why-box">理由: 自前で在庫を抱えずに規模を拡大できる、資本効率の高い成長モデルだから。</div>
+    </div>
+    <div class="card">
+      <h3>☁️ 技術の外部化（AWS）</h3>
+      <ul>
+        <li>自社ECサイト運営のために構築した膨大なITインフラを外部に販売したのがAWSの起点</li>
+        <li>内製で磨いた技術をそのまま新規事業の収益源に転換する発想</li>
+        <li>本書はAmazonを小売業ではなく「テクノロジー企業」と位置づける</li>
+      </ul>
+      <div class="why-box">理由: 一つの投資を複数の収益源に転用できれば、投資効率が飛躍的に高まるため。</div>
+    </div>
+    <div class="card">
+      <h3>🎗️ Amazon Prime（会員サービス）</h3>
+      <ul>
+        <li>会費収入と利用頻度向上によって顧客をロックインする戦略</li>
+        <li>配送だけでなく動画・音楽などのコンテンツもバンドルし利用習慣を生活に組み込む</li>
+        <li>Amazon Freshなど生鮮領域への展開ともシナジーを持つ</li>
+      </ul>
+      <div class="why-box">理由: 一度会員になった顧客の離脱コストを高め、生涯価値(LTV)を最大化できるため。</div>
+    </div>
+    <div class="card">
+      <h3>🎲 非対称なベット（意思決定の哲学）</h3>
+      <ul>
+        <li>ベゾスの哲学「10%の確率で100倍のリターンがあるなら必ず賭けるべき」（要旨）</li>
+        <li>失敗の期待損失より成功時の期待利得が圧倒的に大きい賭けに資源を集中</li>
+        <li>Whole Foods買収など隣接領域へのM&Aもこの発想の延長線上にある</li>
+      </ul>
+      <div class="why-box">理由: 平均的な安全策より、非対称に上振れするチャンスを取り続ける方が長期的な期待値が高いため。</div>
+    </div>
+  </section>
+
+  <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>🚪 プロローグ：アマゾンがなかったら生活できないかも</h3>
+      <ul><li>読者の日常にすでにAmazonが深く入り込んでいることを起点に、本書全体の問い「なぜここまで強いのか」を提示</li></ul>
+      <div class="why-box">理由: 身近な実感から入ることで、後続の経営理論パートへの導線をつくるため。</div>
+    </div>
+    <div class="card">
+      <h3>🛍️ 第1部 小売：圧倒的な商品数と安い値段の仕組み</h3>
+      <ul><li>マーケットプレイス構造による品揃え拡大と価格競争の仕組みを解説</li><li>出版業界における価格支配力の獲得過程にも言及</li></ul>
+      <div class="why-box">理由: Amazonの強さの土台である「小売としての基本戦略」を最初に押さえるため。</div>
+    </div>
+    <div class="card">
+      <h3>💵 第2部 資本：キャッシュがあるから失敗できる</h3>
+      <ul><li>営業キャッシュフロー重視の経営スタイルと、それが新規事業への投資余力を生む構造を解説</li></ul>
+      <div class="why-box">理由: 会計利益だけを見ていては、Amazonの本当の強さを見誤るため。</div>
+    </div>
+    <div class="card">
+      <h3>☁️ 第3部 クラウド：AWSはどう生まれ世界を支配したか</h3>
+      <ul><li>社内インフラの外部提供という発想の転換がクラウド事業の起点になった経緯</li></ul>
+      <div class="why-box">理由: Amazonが小売業の枠を超えた「テクノロジー企業」であることの最大の証拠だから。</div>
+    </div>
+    <div class="card">
+      <h3>🎁 第4部 会員サービス：Prime・Fresh・Payが生活に入り込む理由</h3>
+      <ul><li>会員サービス群が相互にシナジーを持ちながら生活インフラ化していくプロセス</li></ul>
+      <div class="why-box">理由: 顧客との接点を増やすほどフライホイールが加速する構造を示すため。</div>
+    </div>
+    <div class="card">
+      <h3>🚚 第5部 M&A・物流：Whole Foods買収と物流網構築</h3>
+      <ul><li>隣接領域の買収と自社物流網の拡大が、配送スピードと生鮮領域への拡張を同時に実現</li></ul>
+      <div class="why-box">理由: オーガニック成長だけでなくM&Aによる時間の短縮も戦略の一部であることを示すため。</div>
+    </div>
+    <div class="card">
+      <h3>🏢 第6部 テクノロジーと組織：なぜ小売業ではないのか</h3>
+      <ul><li>組織文化・技術投資の観点からAmazonを「経営学の革命」と位置づける著者の結論</li></ul>
+      <div class="why-box">理由: 個別施策の集合ではなく、経営思想そのものが革新的であると締めくくるため。</div>
+    </div>
+  </section>
+
+  <section id="panel-cases" class="panel" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3>🥦 Amazon Fresh</h3>
+      <ul>
+        <li>背景: 購買頻度の低い耐久財中心のECから、頻度の高い生鮮食品領域への拡張</li>
+        <li>展開: Prime会員向けに生鮮配送を組み込み、日常利用の頻度を引き上げた</li>
+      </ul>
+      <div class="why-box">この例が示すこと: 購買頻度の高い領域を取り込むほど、フライホイールの回転数が上がる。</div>
+    </div>
+    <div class="card">
+      <h3>☁️ AWS誕生の経緯</h3>
+      <ul>
+        <li>背景: 自社ECサイト運営のために構築した膨大なサーバーインフラに余剰能力が生じていた</li>
+        <li>展開: その余剰インフラを外部の開発者・企業に販売する形でAWS事業が始まり、現在は世界最大級のクラウド事業に成長</li>
+      </ul>
+      <div class="why-box">この例が示すこと: 内部投資を外部収益化する発想が、まったく新しい事業の柱を生み出す。</div>
+    </div>
+    <div class="card">
+      <h3>📚 出版業界での価格戦略</h3>
+      <ul>
+        <li>背景: 紙・電子書籍の価格設定という既存の出版流通慣行が存在していた</li>
+        <li>展開: 価格設定に切り込み、出版業界内での価格支配力を強めていった</li>
+      </ul>
+      <div class="why-box">この例が示すこと: 既存業界の慣行であっても、規模とデータを武器に交渉力を握れば変えられる。</div>
+    </div>
+    <div class="card">
+      <h3>🛒 Whole Foods Market買収</h3>
+      <ul>
+        <li>背景: リアル店舗網・生鮮食品の物流ノウハウがAmazon単独では不足していた</li>
+        <li>展開: M&Aによって店舗網とデータを一気に取り込み、生鮮食品×IT戦略を加速させた</li>
+      </ul>
+      <div class="why-box">この例が示すこと: 自前主義に固執せず、時間を買うM&Aも拡張戦略の重要な選択肢になる。</div>
+    </div>
+  </section>
+
+  <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote-box">
+      <span class="tag-yoshi">要旨</span>
+      <p class="quote">「10%の確率で100倍のリターンが得られるのであれば、その賭けには必ず乗るべきだ」</p>
+      <div class="note">ジェフ・ベゾスの意思決定哲学として本書内で紹介されている考え方（原典の一字一句の引用ではなく要旨）。</div>
+    </div>
+    <div class="quote-box">
+      <span class="tag-yoshi">要旨</span>
+      <p class="quote">Amazonのビジネスは経営学の革命であり、10年後には経営学の教科書に載るようなエポックメイキングな存在になる</p>
+      <div class="note">著者・成毛眞氏の評価として本書内で述べられている要旨。</div>
+    </div>
+  </section>
+
+  <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="card">
+      <h3><span class="action-num">1</span>自分の「フライホイール」を書き出す（15分）</h3>
+      <ul><li>目的: どの活動が他の活動を加速させているか可視化する</li><li>期待効果: 一番投資すべきレバレッジポイントが見えてくる</li></ul>
+    </div>
+    <div class="card">
+      <h3><span class="action-num">2</span>直近の意思決定を期待値で評価し直す（20分）</h3>
+      <ul><li>目的: 感情や短期利益ではなく期待値ベースで意思決定する訓練</li><li>期待効果: 「10%×100倍」のような非対称に大きいチャンスの見落としに気づける</li></ul>
+    </div>
+    <div class="card">
+      <h3><span class="action-num">3</span>社内ノウハウの外部化候補を3つ挙げる（15分）</h3>
+      <ul><li>目的: AWSのように内製技術・ノウハウを新たな収益源に転用できないか探る</li><li>期待効果: 既存投資の再利用による新規事業の種が見つかる</li></ul>
+    </div>
+  </section>
+</div>
+
+<footer>© 今日の読書サマリー ｜ 情報はWeb検索に基づき作成。不明点は「不明」と明記。</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab-btn');
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-cases':'panel-cases',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(b){ b.setAttribute('aria-selected','false'); });
+      Object.values(panels).forEach(function(pid){
+        document.getElementById(pid).classList.remove('active');
+      });
+      btn.setAttribute('aria-selected','true');
+      document.getElementById(panels[btn.id]).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
