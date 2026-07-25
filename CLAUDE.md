@@ -35,7 +35,7 @@ summary: 毎朝AIが本を選定しインフォグラフィック付きサマリ
    → post_pull: ノートを vault 100_Inbox へ移送＋[skip ci]コミット
    → backlink_books.py が related_dates の各ノートに逆リンク追記（brctl 前置き）
       ↓
-④ Discord interaction（随時）: .nexus-discord デーモンが .nexus.json の名札で
+④ Discord interaction（随時）: .discord-daemon デーモンが .nexus.json の名札で
    src/discord_books.py へ委譲。
    - ✅確認 → 図解URLを ephemeral で返す（URLボタンは灰色固定のため紫化はこの方式）
    - 🔍詳細 → モーダル質問 → headless NEXUS が当日ノートを読んで深掘り回答
