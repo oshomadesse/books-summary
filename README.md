@@ -85,7 +85,9 @@ flowchart TD
     BL --> OB[(State: Obsidianグラフ 書籍ノート相互リンク)]:::state
     DN -->|🔍詳細→モーダル質問| HD[Human: しょーまの質問]:::human
     HD --> DB[Tool: discord_books.py → headless NEXUS注入]:::tool
-    DB --> DA[Agent: ノートを読んで深掘り回答]:::agent
+    DB --> DA[Agent: ノートを読んで深掘り回答<br>応答の届き先は経路で分かれる<br>StartC→#📚06_books／StartG→#🤖00_general]:::agent
+    StartC([Start: #📚06_books へ通常発言]):::startend --> DA
+    StartG([Start: 📱ショートカット → #🤖00_general<br>名札 desc 一致/Haiku分類で本リポへ転送 cwdは本リポ]):::startend --> DA
     DA -.->|loop9・翌日の選書や指示に反映| Start
 
     classDef agent fill:#e4d4ff,stroke:#6f42c1,color:#222
