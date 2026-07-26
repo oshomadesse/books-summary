@@ -69,7 +69,9 @@ summary: 毎朝AIが本を選定しインフォグラフィック付きサマリ
 ├── .github/workflows/daily-notify.yml
 ├── .claude/
 │   ├── skills/daily-reading/SKILL.md  # ★ クラウド Routine の実行指示書（システムの心臓部）
-│   └── rules/docs-sync.md             # push 時のドキュメント同期基準
+│   ├── rules/docs-sync.md             # push 時のドキュメント同期基準
+│   └── memory/                        # グローバル hook memory-sync.sh の同期先。
+│                                      # **public リポなので中身は gitignore**（.gitkeep のみ追跡）
 ├── state/
 │   ├── books_read.json   # 既読リスト（append-only の正本）
 │   ├── latest.json       # 当日メタ
