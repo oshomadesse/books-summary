@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我慢して生きるほど人生は長くない - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #2b6777, セカンダリー #5b3758, アクセント #f2a154 -->
+<style>
+:root {
+  --primary: #2b6777;
+  --secondary: #5b3758;
+  --accent: #f2a154;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+.badge .num {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(43,103,119,0.1), rgba(242,161,84,0.12));
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.example-card h4 {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  margin-bottom: 0.8rem;
+}
+.example-card p {
+  margin-bottom: 0.6rem;
+  line-height: 1.7;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(43,103,119,0.06), rgba(91,55,88,0.06));
+  border-left: 4px solid var(--primary);
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card .quote-text {
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+}
+.quote-card .quote-note {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.6rem;
+}
+.action-card .action-meta {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.book-list {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.book-item h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.4rem;
+}
+.book-item .author {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-item .relation {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧭 我慢して生きるほど人生は長くない</h1>
+  <p>「我慢は美徳」を疑い、境界線（ライン）を守って、自分のルールで生きる</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>💡 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      なぜ私たちは、他人や社会のルールのために今を我慢し続け、生きづらさを感じるのか？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      「我慢は美徳」という思い込みを捨て、自分と他人の間の境界線（ライン）を守り、頭ではなく体の声を優先し、自分のルールで生きる。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      多くの生きづらさは「ラインオーバー」——他人が一方的に境界線を越えてくること——によって生まれる。我慢は美徳という価値観は、実は他人に我慢してもらったほうが都合の良い人たちに好都合な、他人本位のルールに過ぎない。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      1) 人間関係が「公平でおだやか」かを見極める、2) ラインオーバーする関係とは距離を置く、3) 落ち込んでいるときは重要な意思決定をしない、4) 自分の欠点も認めてくれる「信頼できる一人めの大人」を探す、5) 不快・不快でないの感覚を意思決定の軸にする。
+    </div>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge"><span class="num">5</span>章構成</span>
+    <span class="badge"><span class="num">28</span>の気づきを伝授</span>
+    <span class="badge"><span class="num">1</span>つの鍵概念：ラインオーバー</span>
+    <span class="badge"><span class="num">2018</span>年開業のクリニックでの臨床知見</span>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🚧 ラインオーバー</h3>
+        <ul>
+          <li>自分と他人の間にある境界線を、相手が一方的に越えてくること</li>
+          <li>過度な要求・一方的な評価・責任の押し付けが典型例</li>
+          <li>不快な人間関係の多くはこれが原因</li>
+          <li>気づくことが対処の第一歩</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>境界侵害という言葉で名付けることで、漠然とした「生きづらさ」を具体的に扱える問題として認識できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎭 「我慢は美徳」という思い込み</h3>
+        <ul>
+          <li>我慢を強いる文化・空気への疑問</li>
+          <li>他人に我慢してもらったほうが都合がいい人の勝手なルール</li>
+          <li>「明日のため」の我慢が他人本位になっていないか点検する</li>
+          <li>誰のための人生かを問い直す</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>思い込みの出どころを疑うことで、我慢を当然とする自動運転から抜け出せる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📏 自分のルールで生きる</h3>
+        <ul>
+          <li>他人・社会が決めた価値観より自分の価値観を優先</li>
+          <li>逃げたいときは逃げていい、辞めたいときは辞めていい</li>
+          <li>不快だと思ったものは遠ざけてよい</li>
+          <li>選択の主導権を自分に取り戻す</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>ルールの主語を自分に戻すことで、我慢に消えていた時間とエネルギーを自分の人生に再配分できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👂 頭の声より体の声</h3>
+        <ul>
+          <li>建前・理屈より身体感覚の違和感を優先</li>
+          <li>「なんとなく嫌」を軽視しない</li>
+          <li>不快感は境界侵害のサイン</li>
+          <li>体の声を意思決定の判断材料にする</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>頭で正当化できてしまう我慢も、体の不快感という一次情報に立ち返れば見抜きやすくなる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🤝 本当に信頼できる一人めの大人</h3>
+        <ul>
+          <li>自分の欠点や失敗も否定せず受け止めてくれる存在</li>
+          <li>ジャッジせずに話を聞いてくれる相手</li>
+          <li>安心できる人間関係の「拠点」になる</li>
+          <li>1人からでよいので確保する</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>安全基地となる他者がいることで、他の関係でのラインオーバーにも耐性が生まれる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🌱 自己肯定感</h3>
+        <ul>
+          <li>「何はなくとも、自分は自分であって大丈夫」という感覚</li>
+          <li>他人の評価に振り回されない土台</li>
+          <li>実力や競争とは切り離された安心感</li>
+          <li>日々の小さな選択の積み重ねで育つ</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>自己肯定感が土台にあることで、不当な要求やラインオーバーに「NO」と言いやすくなる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚖️ 好ましい人間関係の見極め</h3>
+        <ul>
+          <li>公平でおだやかな関係かどうかを基準にする</li>
+          <li>価値観を一方的に押し付けられていないか</li>
+          <li>ミスを過度に責められていないか</li>
+          <li>好ましい関係を優先的に増やす</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>関係の質を測る基準を持つことで、我慢すべき関係と手放してよい関係を区別できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📖 自分の物語を生きる</h3>
+        <ul>
+          <li>自分を喜ばせる時間・エネルギーを増やす</li>
+          <li>他人の物語の脇役から自分の物語の主役へ</li>
+          <li>「心地良くない」「楽しくない」ものを手放す</li>
+          <li>小さな選択の積み重ねが人生の物語を変える</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>我慢に費やしていた時間を自分の物語に再投資することが、生きづらさからの回復の本質だから。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 第1章：我慢せず生きていくための公平で安心な人間関係の作り方</h3>
+      <ul>
+        <li>「ラインオーバー」という境界侵害の概念を提示</li>
+        <li>公平でおだやかな関係かどうかを見極める視点を示す</li>
+        <li>安心できる人間関係の作り方の基本を解説</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>まず人間関係の質を見極める物差しを持たなければ、我慢すべきでない関係にも我慢し続けてしまうため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第2章：会社や社会に疲れてしまった人への処方箋</h3>
+      <ul>
+        <li>会社・社会のルールを無条件に受け入れることの危うさ</li>
+        <li>疲弊のサインへの気づき方</li>
+        <li>逃げる・辞める・遠ざける、という選択肢の正当性</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>組織や社会の要求と自分の限界を切り分けられないと、我慢が慢性化し心身を壊すため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第3章：思い込みを捨て、自分らしい人生を取り戻す</h3>
+      <ul>
+        <li>「我慢は美徳」という思い込みの出どころを検証</li>
+        <li>他人本位のルールから自分本位のルールへの切り替え</li>
+        <li>頭の声より体の声を優先する判断法</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>思い込みの正体を暴くことで、初めてそれを手放す選択ができるようになるため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第4章：誰にも振り回されず、自己肯定感を保つには</h3>
+      <ul>
+        <li>「本当に信頼できる一人めの大人」を見つける重要性</li>
+        <li>自分の欠点も認めてくれる存在の効果</li>
+        <li>「自分は自分であって大丈夫」という感覚の育て方</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>自己肯定感という土台がなければ、境界線を引く行動そのものに罪悪感が生じてしまうため。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 第5章：「心地良くない」「楽しくない」と感じたものは捨てていく</h3>
+      <ul>
+        <li>不快・不快でないの感覚を意思決定の軸にする</li>
+        <li>優先度の低い我慢から手放していく実践</li>
+        <li>自分を喜ばせる時間とエネルギーを増やす「自分の物語」の実践</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>気づきを行動に落とし込む最終ステップがなければ、思想の理解だけで生活は変わらないため。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>💼 例1：職場で一方的に責任を押し付けられる上司</h4>
+      <p><strong>背景：</strong>ミスの原因が複合的であるにもかかわらず、上司が特定の部下だけを一方的に責め続け、部下は反論できずに我慢を重ねる。</p>
+      <p><strong>本書の視点：</strong>これは「ラインオーバー」の典型例であり、公平でもおだやかでもない関係だと見極める。</p>
+      <p><strong>結果：</strong>関係が公平かどうかという基準を持つことで、我慢すべき筋合いのない我慢だったと気づける。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>境界侵害に名前を付けられると、「自分が悪いのかもしれない」という自責の連鎖を断ち切れる。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🫂 例2：「本当に信頼できる一人めの大人」の存在</h4>
+      <p><strong>背景：</strong>誰にも本音を話せず孤立していた人が、失敗や弱さを話しても否定せず受け止めてくれる相手に出会う。</p>
+      <p><strong>本書の視点：</strong>ジャッジせずに聞いてくれる存在が1人いるだけで、心の安全基地になる。</p>
+      <p><strong>結果：</strong>安全基地を得たことで、他の人間関係でのラインオーバーにも「NO」と言えるようになった。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>自己肯定感は独力で育てるものではなく、安心できる関係性の中で育つものであることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🧠 例3：落ち込んでいるときに転職や離婚を即決しない</h4>
+      <p><strong>背景：</strong>気分が落ち込んでいる状態で人生の重大な決断（退職・離婚など）を下しそうになる。</p>
+      <p><strong>本書の視点：</strong>「落ち込んでいるときに重要な意思決定はしない」という原則に立ち返る。</p>
+      <p><strong>結果：</strong>感情が回復してから再検討することで、後悔の少ない意思決定ができた。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>感情の波と意思決定のタイミングを切り離すことが、自分の物語を守る具体的な技術であることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🧹 例4：義理で続けていた付き合いを手放す</h4>
+      <p><strong>背景：</strong>気が進まない飲み会や集まりに「断ったら悪い」という理由だけで参加し続け、疲弊が蓄積していた。</p>
+      <p><strong>本書の視点：</strong>「心地良くない」「楽しくない」という体の感覚を判断基準にし、優先度の低いものから1つずつ手放す。</p>
+      <p><strong>結果：</strong>浮いた時間とエネルギーを、本当に大切にしたい人間関係や自分の時間に再配分できた。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>我慢の手放し方は一気にではなく、優先度の低いものから段階的に行うのが現実的であることを示す。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <div class="quote-text">
+        「逃げたいときは逃げていい。辞めたいときは辞めていい。自分が不快だと思ったことは遠ざけていい。」（要旨）
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>逃げる・辞めるという選択肢を、恥ではなく正当な自己防衛として認める本書の核となる姿勢。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「我慢は美徳というのは、他人に我慢してもらったほうが都合がいい人たちの勝手なルールに過ぎない。」（要旨）
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>我慢を賛美する空気の出どころを暴き、無条件に従う必要がないことを示す。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「落ち込んでいるときに重要な意思決定はしない。」（要旨）
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>感情のコンディションと意思決定のタイミングを切り離す、実践しやすい生活の知恵。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「本当の生きやすさは、競争や実力とは関係のないところにある。」（要旨）
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>自己肯定感を「成果」から切り離し、存在そのものへの安心感として捉え直す視点。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>✍️ アクション1：最近の「ラインオーバー」を1つ書き出す</h4>
+      <p>直近で境界線を越えられたと感じた出来事を1つ紙に書き出し、何が公平でなかったのかを言語化する。</p>
+      <div class="action-meta">
+        <strong>目的：</strong>自分と他人の境界線を意識化する<br>
+        <strong>期待効果：</strong>我慢していたパターンに気づき、次に同じ状況が起きたときの対応の型ができる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🤝 アクション2：「一人めの大人」候補にメッセージの下書きをする</h4>
+      <p>自分の欠点も受け止めてくれそうな相手を1人思い浮かべ、今週中に連絡を取るためのメッセージを下書きする。</p>
+      <div class="action-meta">
+        <strong>目的：</strong>安心できる人間関係の拠点を具体化する<br>
+        <strong>期待効果：</strong>孤立感が減り、自己肯定感の土台づくりが一歩前進する
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🧹 アクション3：「不快だけど続けていること」を1つ手放す方法を考える</h4>
+      <p>直近1週間で「不快だけど我慢して続けていること」を3つ書き出し、そのうち優先度が最も低いもの1つを手放す具体的な方法を考える。</p>
+      <div class="action-meta">
+        <strong>目的：</strong>我慢の棚卸しをする<br>
+        <strong>期待効果：</strong>エネルギーの消耗源が1つ減り、自分の物語を生きる第一歩を踏み出せる
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 3rem; padding: 2rem; background: var(--card-bg); border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+      📚 関連書籍
+    </h2>
+    <div class="book-list">
+      <div class="book-item">
+        <h4>心療内科医が教える本当の休み方</h4>
+        <div class="author">鈴木裕介</div>
+        <div class="relation">同著者による休息論。我慢をやめて自分を労わる思想が本書の土台を成す。</div>
+      </div>
+      <div class="book-item">
+        <h4>嫌われる勇気</h4>
+        <div class="author">岸見一郎・古賀史健</div>
+        <div class="relation">他人の期待から自由になり自分の人生を主体的に生きるという核心思想が共通する。</div>
+      </div>
+      <div class="book-item">
+        <h4>反応しない練習</h4>
+        <div class="author">草薙龍瞬</div>
+        <div class="relation">他人の評価・反応に振り回されず心の反応を整えるという点で通底する。</div>
+      </div>
+      <div class="book-item">
+        <h4>アドラー心理学入門</h4>
+        <div class="author">岸見一郎</div>
+        <div class="relation">対人関係の課題を自他で切り分ける考え方が、境界線（ライン）の発想と重なる。</div>
+      </div>
+      <div class="book-item">
+        <h4>スタンフォードのストレスを力に変える教科書</h4>
+        <div class="author">ケリー・マクゴニガル</div>
+        <div class="relation">我慢の蓄積がもたらす心身への影響と、ストレスとの向き合い方という点で関連する。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
