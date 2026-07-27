@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生き抜くための12のルール - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #1e3a5f, セカンダリー #b91c1c, アクセント #eab308 -->
+<style>
+:root {
+  --primary: #1e3a5f;
+  --secondary: #b91c1c;
+  --accent: #eab308;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0 0 1rem 1rem;
+}
+header h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(255,255,255,0.5);
+}
+.summary-item strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+.tab-btn {
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.95rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.quote-block {
+  background: linear-gradient(135deg, #f7fafc, #edf2f7);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-block strong {
+  display: block;
+  margin-top: 0.5rem;
+  font-style: normal;
+  color: var(--secondary);
+  font-size: 0.9rem;
+}
+.action-card {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.9rem;
+  opacity: 0.95;
+  margin-bottom: 0.25rem;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.metric-box {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+.metric-box .number {
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.metric-box .label {
+  font-size: 0.88rem;
+  opacity: 0.95;
+}
+.rule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.rule-card {
+  background: white;
+  border-radius: 0.6rem;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--accent);
+}
+.rule-card .rule-no {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 1.75rem;
+  font-weight: bold;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+.rule-card h3 {
+  font-size: 0.98rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+.rule-card ul {
+  list-style: none;
+  padding: 0;
+}
+.rule-card li {
+  font-size: 0.88rem;
+  margin-bottom: 0.4rem;
+  padding-left: 1.2rem;
+  position: relative;
+}
+.rule-card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-weight: bold;
+}
+.rule-card .reason {
+  background: #fff3cd;
+  border-left: 3px solid #ffc107;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.82rem;
+  color: #856404;
+}
+.example-card {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--accent);
+}
+.example-card h3 {
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+.example-card .bg {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.example-card .insight {
+  font-size: 0.92rem;
+  margin-bottom: 0.5rem;
+}
+.example-card .reason {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.25rem;
+  font-size: 0.88rem;
+  color: #856404;
+}
+.book-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.book-card .relation {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+@media (max-width: 768px) {
+  header h1 { font-size: 1.25rem; }
+  .tabs { flex-wrap: nowrap; }
+  .card-grid { grid-template-columns: 1fr; }
+  .rule-grid { grid-template-columns: 1fr; }
+  .metric-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🦞 生き抜くための12のルール</h1>
+  <p>人生というカオスのための解毒剤（ジョーダン・ピーターソン）</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>🎯 要約=問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      人生に避けられない苦しみと混沌（カオス）の中で、人はどうやって崩れずに立ち続けられるのか？
+    </div>
+    <div class="summary-item">
+      <strong>💡 答え</strong>
+      幸福を目標にするのではなく、姿勢を正す・責任を引き受ける・意義を追求するという小さな「秩序（オーダー）」を一つずつ積み重ねることで、人はカオスに呑まれずに生きられる。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      臨床心理学者としてのピーターソンの経験では、人生の困難は取り除けないものが多い。だが自然界のロブスターの階層構造に見られるように、姿勢や態度ひとつで自己と周囲の反応は変わる。まず自分の身の回り（家、部屋、生活）の秩序を正すことが、より大きな混沌に対処する力の土台になる。
+    </div>
+    <div class="summary-item">
+      <strong>⚙️ How（そのためには）</strong>
+      1) 姿勢を正し、社会的シグナルを自分から発する 2) 自分を他人ではなく昨日の自分と比較する 3) 場当たり的な快楽でなく意義のある目標を追求する 4) まず自分の部屋・生活という「家」の秩序を正してから世界を語る 5) 相手の話を、自分が知らない何かを知っているかもしれないという前提で聴く。
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">🧠 主要概念の詳細</h2>
+
+    <div class="metric-grid">
+      <div class="metric-box">
+        <span class="number">12</span>
+        <span class="label">人生のルール</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">1000万+</span>
+        <span class="label">全世界累計販売部数</span>
+      </div>
+      <div class="metric-box">
+        <span class="number">🦞</span>
+        <span class="label">ロブスターの階層構造</span>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>☯️ カオスと秩序（陰陽のメタファー）</h3>
+        <span class="badge">人生の基本構造</span>
+        <ul>
+          <li>人生は「既知で安全な秩序」と「未知で予測不能な混沌」の絶え間ない往復である</li>
+          <li>秩序だけでは硬直し、混沌だけでは崩壊する。その境界線上に成長がある</li>
+          <li>神話や物語がこの往復を繰り返し描いてきたのは、それが人間の根本条件だから</li>
+          <li><strong>理由:</strong> 12のルール全体を貫く世界観であり、個々のルールの意味を理解する土台になる</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🦞 ロブスターの階層社会</h3>
+        <span class="badge">ドミナンス・ヒエラルキー</span>
+        <ul>
+          <li>ロブスターは体・ハサミのサイズと化学信号で優劣を30分以内に決める</li>
+          <li>優位な個体は血清素（セロトニン）レベルが高く、姿勢も堂々とし、より長く戦える</li>
+          <li>敗者は脳が変化し、次の対立を避けるようになる</li>
+          <li><strong>理由:</strong> 序列社会が数億年続く自然界の普遍的構造であり、姿勢と地位の関係を裏付ける根拠として使われる</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🧍 姿勢が発する社会的シグナル（ルール1）</h3>
+        <span class="badge">背筋を伸ばす</span>
+        <ul>
+          <li>姿勢は自分の内面だけでなく、周囲からの扱われ方にも影響する</li>
+          <li>猫背・萎縮した姿勢は「服従」のシグナルとして周囲に受け取られやすい</li>
+          <li>胸を張ることは、脳内の化学反応と自信のフィードバックループを起動させる</li>
+          <li><strong>理由:</strong> 最も具体的で今日から実践できる、身体を起点にした自己変革の入り口</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>📏 比較対象は「昨日の自分」（ルール4）</h3>
+        <span class="badge">終わりのない他人比較を断つ</span>
+        <ul>
+          <li>メディアはあらゆる分野の「最高の人」を映し出し、誰もが劣等感を持ちやすい環境をつくる</li>
+          <li>他人との比較は基準が無限にあるため、際限のない不満につながる</li>
+          <li>唯一意味のある比較対象は「昨日の自分」であり、そこにのみ達成可能な成長がある</li>
+          <li><strong>理由:</strong> SNS時代特有の比較地獄から抜け出すための、実践可能な代替基準を示すため</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🏠 自分の家の秩序を正す（ルール6）</h3>
+        <span class="badge">批判の前に責任を</span>
+        <ul>
+          <li>世界を批判する前に、自分の部屋・生活・人間関係の秩序を正すべきだと説く</li>
+          <li>世界を否定的に見ることは、自分の悪い行動を正当化する口実になりやすい</li>
+          <li>手の届く範囲の秩序を正すことが、より大きな責任を引き受ける土台になる</li>
+          <li><strong>理由:</strong> 「社会批判」より先にやるべき、最も身近で確実な一歩を提示するため</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🎯 意義を追求する（ルール7）</h3>
+        <span class="badge">その場しのぎより意義深さ</span>
+        <ul>
+          <li>目先の快楽・利便性（expedient）ではなく、意味のある目標（meaningful）を選ぶ</li>
+          <li>意義のある目標は、犠牲や我慢を伴っても長期的な充実をもたらす</li>
+          <li>幸福は目標にならない。意味と責任こそが人生を支える柱になる</li>
+          <li><strong>理由:</strong> 快楽主義的な自己啓発と一線を画す、本書の中心的な価値観</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>👂 対話は秩序と混沌の境界（ルール9）</h3>
+        <span class="badge">相手が答えを持っている前提で聴く</span>
+        <ul>
+          <li>臨床経験から、ただ話を聴くことが患者自身の思考整理を助けると学んだ</li>
+          <li>「相互探求」としての対話は、既知（秩序）と未知（混沌）の境界で起きる</li>
+          <li>相手が自分の知らない何かを知っているかもしれない、という前提が対話の質を変える</li>
+          <li><strong>理由:</strong> 説得や指導より、対話そのものに価値を置く姿勢の転換を示す</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🧗 冒険と過保護のバランス（ルール11）</h3>
+        <span class="badge">子どものスケートボードを止めるな</span>
+        <ul>
+          <li>安全を求めすぎる社会は、若者から挑戦とリスクの機会を奪ってしまう</li>
+          <li>適度な危険を伴う遊びは、自信と能力の獲得に不可欠だとする</li>
+          <li>過剰な保護は、長期的には脆弱さを育ててしまう逆説がある</li>
+          <li><strong>理由:</strong> 「秩序（安全）」に偏りすぎることの弊害を示す、カオスとのバランス論の実例</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">📖 各章の要約（12のルール）</h2>
+
+    <div class="rule-grid">
+      <div class="rule-card">
+        <span class="rule-no">1</span>
+        <h3>背筋を伸ばして、胸を張れ</h3>
+        <ul>
+          <li>姿勢は地位のシグナルであり、自信の生化学にも影響する</li>
+          <li>ロブスターの階層研究が生物学的根拠として示される</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 最も身体的で即実践できる第一歩だから</div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-no">2</span>
+        <h3>自分自身を「助けるべき他者」として扱う</h3>
+        <ul>
+          <li>他人にはできる自己犠牲的なケアを、自分にも向ける</li>
+          <li>自分を大切にしない人ほど自暴自棄な選択をしやすい</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 自己放棄が他の全ルールの実践を妨げる根本要因になるため</div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-no">3</span>
+        <h3>あなたの最善を願う人と友達になれ</h3>
+        <ul>
+          <li>足を引っ張る人間関係を維持し続ける必要はない</li>
+          <li>成長を願ってくれる人との関係が自分を引き上げる</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 環境（人間関係）が個人の秩序に直接影響するため</div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-no">4</span>
+        <h3>今日の誰かではなく、昨日の自分と比べよ</h3>
+        <ul>
+          <li>他人との比較は基準が無限で終わりがない</li>
+          <li>達成可能な目標は「昨日の自分」との差分にしかない</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> SNS時代の比較地獄から抜け出す唯一の実践的基準だから</div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-no">5</span>
+        <h3>疎ましい行動をわが子にさせるな</h3>
+        <ul>
+          <li>子どもへの過剰な放任は、将来的な孤立を招く</li>
+          <li>健全な制限が子どもの社会性を育てる</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 秩序の欠如が世代を超えて連鎖する構造を示すため</div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-no">6</span>
+        <h3>世界を批判する前に家のなかの秩序を正せ</h3>
+        <ul>
+          <li>否定的な世界観は自分の悪い行動の言い訳になりやすい</li>
+          <li>手の届く範囲の秩序回復が最初の責任の取り方</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 社会批判の前にやるべき、最も確実で身近な一歩だから</div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-no">7</span>
+        <h3>その場しのぎでなく意義深いことを追求せよ</h3>
+        <ul>
+          <li>快楽・利便性より意味のある目標を選ぶ</li>
+          <li>犠牲を伴っても長期的な充実につながる</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 本書の価値観の中核であり、幸福至上主義への反論だから</div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-no">8</span>
+        <h3>真実を語れ。少なくとも嘘はつくな</h3>
+        <ul>
+          <li>小さな嘘の積み重ねが現実認識を歪める</li>
+          <li>正直さは自分自身の判断力を保つための基盤</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 秩序ある思考と行動の前提条件として位置づけられるため</div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-no">9</span>
+        <h3>相手が自分の知らない何かを知っていると思って聴け</h3>
+        <ul>
+          <li>臨床経験から、傾聴が相手の思考整理を助けると学んだ</li>
+          <li>対話は秩序と混沌の境界で起きる「相互探求」</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 説得より対話そのものに価値を置く視点の転換だから</div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-no">10</span>
+        <h3>正直に、正確に話せ</h3>
+        <ul>
+          <li>曖昧な言葉は問題を放置し、後の混乱を拡大させる</li>
+          <li>正確な言語化が、混沌を秩序に変換する第一歩になる</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 言葉の精度が現実対処の精度に直結するという主張の核心</div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-no">11</span>
+        <h3>スケートボードをする子どもの邪魔をするな</h3>
+        <ul>
+          <li>過剰な安全志向がリスクを取る力を奪う</li>
+          <li>適度な危険への挑戦が自信と能力を育てる</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 秩序（安全）に偏りすぎることの弊害を示す好例だから</div>
+      </div>
+
+      <div class="rule-card">
+        <span class="rule-no">12</span>
+        <h3>道で猫に出会ったら、撫でてやれ</h3>
+        <ul>
+          <li>苦難の渦中でも、小さな喜びに気づく余白を持つ</li>
+          <li>些細な美しさへの注意が、絶望への耐性を高める</li>
+        </ul>
+        <div class="reason"><strong>理由:</strong> 深刻なテーマを扱う本書を、日常の小さな救いで締めくくるため</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">💡 具体例</h2>
+
+    <div class="example-card">
+      <h3>🦞 ロブスターの神経系実験（セロトニンと姿勢）</h3>
+      <div class="bg">背景: 見知らぬロブスター同士を同じ水槽に入れると、体とハサミのサイズ・化学信号を使って30分以内に優劣を決める。</div>
+      <div class="insight">示唆: 優位に立った個体は脳内のセロトニンレベルが上昇し、姿勢が堂々とし、次の対立でも長く戦えるようになる。敗者は逆に萎縮した反応パターンに変化する。</div>
+      <div class="reason"><strong>この例が示すこと:</strong> 数億年変わらない生物学的な階層構造が、「姿勢を正す」という第一のルールの土台になっていること</div>
+    </div>
+
+    <div class="example-card">
+      <h3>🛋️ 臨床現場での「まず自分の部屋から」実践</h3>
+      <div class="bg">背景: 臨床心理士としてピーターソンは、人生の混乱を訴えるクライアントに、まず身の回りの小さな秩序回復を促してきた。</div>
+      <div class="insight">示唆: 大きな人生の問題を一気に解決しようとするより、部屋の片付けなど手の届く範囲の秩序を一つ正すことが、次の一歩への足がかりになる。</div>
+      <div class="reason"><strong>この例が示すこと:</strong> ルール6「家のなかの秩序を正す」が、抽象論ではなく臨床的に効果を確認された実践であること</div>
+    </div>
+
+    <div class="example-card">
+      <h3>🛹 スケートボード場の閉鎖と過保護な都市設計</h3>
+      <div class="bg">背景: 北米の多くの都市で、事故リスクを理由に若者向けのスケートボード施設や遊び場が次々と撤去・制限されてきた。</div>
+      <div class="insight">示唆: リスクを完全に排除しようとする過剰な安全志向は、挑戦を通じて得られるはずの自信や能力の獲得機会そのものを奪ってしまう。</div>
+      <div class="reason"><strong>この例が示すこと:</strong> 秩序（安全）への過度な傾斜が、長期的にはむしろ人を脆弱にするという逆説</div>
+    </div>
+
+    <div class="example-card">
+      <h3>👂 「ただ聴く」ことが治療になった対話</h3>
+      <div class="bg">背景: 臨床の現場で、ピーターソンは助言や解決策の提示より先に、患者に自由に話させることの効果を繰り返し観察した。</div>
+      <div class="insight">示唆: 対話相手がいることで、人は自分の記憶や経験を「物語」として整理し直すことができ、それ自体が変化のきっかけになる。</div>
+      <div class="reason"><strong>この例が示すこと:</strong> ルール9の「相手が何かを知っているかもしれない」という前提が、実務上どう機能するかを示す</div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">💬 重要な引用</h2>
+
+    <div class="quote-block">
+      人生には避けられない苦しみがある。だからこそ、その苦しみに意味を持たせる生き方を自ら選び取るべきだ。
+      <strong>― 要旨（原典引用未確認のため趣旨を要約）</strong>
+    </div>
+
+    <div class="quote-block">
+      秩序と混沌の境界線上にこそ、成長も冒険も、そして人生の意味も存在する。
+      <strong>― 要旨（原典引用未確認のため趣旨を要約）</strong>
+    </div>
+
+    <div class="quote-block">
+      自分の家のなかの秩序すら正せていないうちは、世界を批判する資格はない。
+      <strong>― 要旨（原典引用未確認のため趣旨を要約）</strong>
+    </div>
+
+    <div class="quote-block">
+      幸福を人生の目標にしてはいけない。目標にすべきは責任であり、意味である。
+      <strong>― 要旨（原典引用未確認のため趣旨を要約）</strong>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <h2 style="margin-bottom:1rem;color:var(--primary);">✅ 今日のアクション</h2>
+
+    <div class="action-card">
+      <h4>🏠 アクション1: 部屋・デスクを一角だけ完璧に片付ける</h4>
+      <p><strong>目的:</strong> ルール6「家のなかの秩序を正す」を最小単位で実践する</p>
+      <p><strong>方法:</strong> 部屋やデスクの中から範囲を一つだけ決め、20分間でそこだけ完璧に整える</p>
+      <p><strong>期待効果:</strong> 手の届く範囲での小さな達成感が、次の行動への自己効力感につながる</p>
+    </div>
+
+    <div class="action-card">
+      <h4>🎯 アクション2: 先延ばしにしていた「意義ある一歩」に着手する</h4>
+      <p><strong>目的:</strong> ルール7「その場しのぎでなく意義深いことを追求する」を実践する</p>
+      <p><strong>方法:</strong> 快適だが先延ばしにしていた課題を1つ選び、25分間だけ集中して着手する</p>
+      <p><strong>期待効果:</strong> 先延ばしの罪悪感が減り、意義ある行動を選ぶ感覚が身につく</p>
+    </div>
+
+    <div class="action-card">
+      <h4>👂 アクション3: 反論せず20分だけ聴く「傾聴セッション」</h4>
+      <p><strong>目的:</strong> ルール9「相手が知らない何かを知っていると思って聴く」を実践する</p>
+      <p><strong>方法:</strong> 身近な誰かの話を、助言や反論を挟まずに20分間最後まで聴く</p>
+      <p><strong>期待効果:</strong> 相手が自分で考えを整理する時間を作れると同時に、自分も新しい視点を得られる</p>
+    </div>
+
+    <div style="background:white;padding:1.5rem;border-radius:0.75rem;margin-top:1.5rem;border-left:4px solid var(--accent);">
+      <h3 style="color:var(--secondary);margin-bottom:1rem;">🎯 追加の実践ヒント</h3>
+      <ul style="list-style:none;padding:0;">
+        <li style="margin-bottom:0.75rem;padding-left:1.5rem;position:relative;">
+          <span style="position:absolute;left:0;color:var(--accent);font-weight:bold;">▸</span>
+          今日1日、自分がついた小さな嘘や誇張がなかったかを振り返る
+        </li>
+        <li style="margin-bottom:0.75rem;padding-left:1.5rem;position:relative;">
+          <span style="position:absolute;left:0;color:var(--accent);font-weight:bold;">▸</span>
+          他人の成功と自分を比べそうになったら「昨日の自分」との差分に意識を戻す
+        </li>
+        <li style="margin-bottom:0.75rem;padding-left:1.5rem;position:relative;">
+          <span style="position:absolute;left:0;color:var(--accent);font-weight:bold;">▸</span>
+          背筋を伸ばして胸を張る姿勢を、1日3回意識的に取る
+        </li>
+        <li style="margin-bottom:0.75rem;padding-left:1.5rem;position:relative;">
+          <span style="position:absolute;left:0;color:var(--accent);font-weight:bold;">▸</span>
+          道端の小さな美しさ（猫、花、空など）に気づいたら、一瞬立ち止まる
+        </li>
+      </ul>
+    </div>
+
+    <div class="book-card" style="margin-top:1.5rem;">
+      <h4>📚 関連書籍</h4>
+      <div class="relation" style="margin-top:0.5rem;">
+        自省録（マルクス・アウレリウス）／夜と霧（ヴィクトール・E・フランクル）／アドラー心理学入門（岸見一郎）／人生の短さについて（セネカ）／マインドセット「やればできる！」の研究（キャロル・S・ドゥエック）
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
