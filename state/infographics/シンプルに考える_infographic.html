@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット:
+  プライマリー: #1B2A4A (濃紺・LINEのビジネス的な信頼感)
+  セカンダリー: #06C755 (LINEグリーン、著者=元LINE社長を象徴)
+  アクセント: #FF8A3D (オレンジ・行動喚起)
+  グラデーション: linear-gradient(135deg, #1B2A4A 0%, #0B3D91 100%)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>シンプルに考える | 森川亮 - 読書インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#1B2A4A;
+    --primary-light:#2E4470;
+    --secondary:#06C755;
+    --accent:#FF8A3D;
+    --bg:#F5F7FA;
+    --card:#FFFFFF;
+    --text:#1B2A4A;
+    --text-sub:#5A6B87;
+    --border:#E3E8F0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary) 0%, #0B3D91 100%);
+    color:#fff;
+    padding:32px 20px 40px;
+    text-align:center;
+    position:relative;
+  }
+  header .eyebrow{
+    font-size:.8rem;
+    letter-spacing:.15em;
+    opacity:.8;
+    margin-bottom:8px;
+  }
+  header h1{
+    font-size:1.7rem;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  header .author{
+    font-size:.95rem;
+    opacity:.9;
+  }
+  .hero-block{
+    max-width:720px;
+    margin:-24px auto 24px;
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:0 8px 24px rgba(27,42,74,.15);
+    padding:20px;
+    position:relative;
+    z-index:2;
+  }
+  .hero-block h2{
+    font-size:.95rem;
+    color:var(--secondary);
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .qa-item{
+    background:var(--bg);
+    border-left:4px solid var(--secondary);
+    border-radius:8px;
+    padding:10px 14px;
+  }
+  .qa-item .q{
+    font-size:.8rem;
+    color:var(--text-sub);
+    font-weight:700;
+  }
+  .qa-item .a{
+    font-size:.9rem;
+    margin-top:4px;
+  }
+  .badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:14px;
+  }
+  .badge{
+    background:var(--primary);
+    color:#fff;
+    font-size:.75rem;
+    padding:5px 10px;
+    border-radius:20px;
+  }
+  .badge.accent{ background:var(--accent); }
+  .badge.secondary{ background:var(--secondary); }
+
+  main{ max-width:720px; margin:0 auto; padding:0 16px; }
+
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:4px 0 12px;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:5;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:9px 16px;
+    font-size:.82rem;
+    color:var(--text-sub);
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .2s;
+  }
+  .tab-btn.active{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+  .tab-panel{ display:none; animation:fade .3s ease; }
+  .tab-panel.active{ display:block; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .card{
+    background:var(--card);
+    border-radius:14px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:0 2px 8px rgba(27,42,74,.06);
+    border:1px solid var(--border);
+  }
+  .card h3{
+    font-size:1rem;
+    color:var(--primary);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{ padding-left:1.1em; font-size:.88rem; }
+  .card li{ margin-bottom:4px; }
+  .why{
+    margin-top:10px;
+    background:#FFF3EA;
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:.8rem;
+    color:#8a4a12;
+  }
+  .why b{ color:var(--accent); }
+
+  .quote-card{
+    background:linear-gradient(135deg,var(--primary) 0%, #0B3D91 100%);
+    color:#fff;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:14px;
+  }
+  .quote-card p.quote{
+    font-size:.95rem;
+    font-style:italic;
+    margin-bottom:8px;
+  }
+  .quote-card p.note{
+    font-size:.78rem;
+    opacity:.85;
+  }
+
+  .action-card{
+    border-left:5px solid var(--secondary);
+  }
+  .action-card .meta{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    font-size:.78rem;
+    color:var(--text-sub);
+    margin-top:6px;
+  }
+  .action-card .meta span{
+    background:var(--bg);
+    padding:3px 8px;
+    border-radius:6px;
+  }
+
+  .stat-row{
+    display:flex;
+    gap:10px;
+    margin:12px 0;
+    flex-wrap:wrap;
+  }
+  .stat{
+    flex:1 1 140px;
+    background:var(--bg);
+    border-radius:10px;
+    padding:10px 12px;
+    text-align:center;
+  }
+  .stat .num{
+    font-size:1.4rem;
+    font-weight:700;
+    color:var(--secondary);
+  }
+  .stat .label{
+    font-size:.72rem;
+    color:var(--text-sub);
+  }
+
+  .related-list{ list-style:none; }
+  .related-list li{
+    padding:10px 0;
+    border-bottom:1px solid var(--border);
+    font-size:.88rem;
+  }
+  .related-list li:last-child{ border-bottom:none; }
+  .related-list b{ color:var(--primary); }
+
+  footer{
+    text-align:center;
+    font-size:.75rem;
+    color:var(--text-sub);
+    margin-top:30px;
+    padding:0 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">📚 今日読むべき本</div>
+  <h1>シンプルに考える</h1>
+  <div class="author">著者：森川亮（元LINE株式会社 代表取締役社長）</div>
+</header>
+
+<div class="hero-block">
+  <h2>⚡ Why &amp; How（要約=問い×答え×根拠）</h2>
+  <div class="qa-row">
+    <div class="qa-item">
+      <div class="q">Q. なぜビジネスは複雑になっていくのか？</div>
+      <div class="a">戦略・差別化・計画・管理といった「本質ではないもの」に労力を割いてしまうから。</div>
+    </div>
+    <div class="qa-item">
+      <div class="q">A. どうすればシンプルに戻せるのか？</div>
+      <div class="a">ユーザーが本当に求めているものだけを見つめ、本当に大切な1%に100%集中し、それ以外は全部やめる。</div>
+    </div>
+    <div class="qa-item">
+      <div class="q">根拠</div>
+      <div class="a">震災直後、機能をメッセージ送信だけに絞ってリリースされたLINEは、世界最速級の成長を遂げた。</div>
+    </div>
+  </div>
+  <div class="badges">
+    <span class="badge">ビジネス</span>
+    <span class="badge secondary">経営哲学</span>
+    <span class="badge accent">LINE元社長</span>
+  </div>
+</div>
+
+<main>
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="concepts" role="tab">🧩 主要概念</button>
+    <button class="tab-btn" data-tab="chapters" role="tab">📖 各章の要約</button>
+    <button class="tab-btn" data-tab="cases" role="tab">💡 具体例</button>
+    <button class="tab-btn" data-tab="quotes" role="tab">💬 重要な引用</button>
+    <button class="tab-btn" data-tab="actions" role="tab">✅ 今日のアクション</button>
+  </div>
+
+  <section class="tab-panel active" id="concepts">
+    <div class="stat-row">
+      <div class="stat"><div class="num">1%</div><div class="label">集中すべき本質の割合</div></div>
+      <div class="stat"><div class="num">6章</div><div class="label">構成</div></div>
+      <div class="stat"><div class="num">7つ</div><div class="label">「いらない」もの</div></div>
+    </div>
+
+    <div class="card">
+      <h3>🥊 戦わない経営</h3>
+      <ul><li>競合分析・差別化に労力を割かない</li><li>ユーザーの本質的ニーズだけを見る</li><li>「勝とう」とすると本質からずれる</li></ul>
+      <div class="why"><b>理由：</b>差別化を意識するほど本質からずれ、真に価値あるものが作れなくなるため。</div>
+    </div>
+    <div class="card">
+      <h3>🎯 本当に大切な1%への集中</h3>
+      <ul><li>全リソースを最重要事項だけに投下</li><li>それ以外は思い切って捨てる</li><li>分散は凡庸な結果しか生まない</li></ul>
+      <div class="why"><b>理由：</b>人は同時に多くのことへ全力を注げず、分散は成果を薄めるため。</div>
+    </div>
+    <div class="card">
+      <h3>🕊️ 管理しないマネジメント</h3>
+      <ul><li>優秀な人材を集める</li><li>力を発揮できる環境だけ整える</li><li>細かい管理はしない</li></ul>
+      <div class="why"><b>理由：</b>管理は自律的に動ける人材の力を削ぎ、スピードを奪うため。</div>
+    </div>
+    <div class="card">
+      <h3>🗺️ ビジョン・計画不要論</h3>
+      <ul><li>壮大な将来像をあえて作らない</li><li>綿密な中期計画も持たない</li><li>変化への即応を優先する</li></ul>
+      <div class="why"><b>理由：</b>変化が速い時代には計画自体が陳腐化し、身動きを取れなくする足枷になるため。</div>
+    </div>
+    <div class="card">
+      <h3>♻️ 成功体験を捨てる勇気</h3>
+      <ul><li>過去の成功パターンに安住しない</li><li>実績やポジションに固執しない</li><li>常にゼロから見直す</li></ul>
+      <div class="why"><b>理由：</b>環境が変われば過去の正解は通用せず、固執は次の変化への対応を遅らせるため。</div>
+    </div>
+    <div class="card">
+      <h3>❤️ 感性で判断する</h3>
+      <ul><li>データや理論だけに頼らない</li><li>自分の感覚・違和感を意思決定の拠り所にする</li><li>借り物の基準では本質を見抜けない</li></ul>
+      <div class="why"><b>理由：</b>シンプルな本質は理屈より先に「感じる」ことで捉えられる場合が多いため。</div>
+    </div>
+    <div class="card">
+      <h3>🌊 不確実性を楽しむ</h3>
+      <ul><li>将来が見えないことを前提にする</li><li>不安ではなく面白さとして受け止める</li><li>「わからない」を出発点にする</li></ul>
+      <div class="why"><b>理由：</b>誰も明日を正確に予測できない以上、それを前提に動いたほうが行動は軽くなるため。</div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="chapters">
+    <div class="card">
+      <h3>第1章 ビジネスは「戦い」ではない</h3>
+      <ul><li>競合分析や差別化ではなく、ユーザーが本当に求めるものへの集中こそが成果を生む</li></ul>
+      <div class="why"><b>理由：</b>「戦い」の発想は相手を基準にするが、価値は常にユーザーからしか生まれないため。</div>
+    </div>
+    <div class="card">
+      <h3>第2章 自分の「感性」で生きる</h3>
+      <ul><li>他人の評価や既存の常識ではなく、自分の感覚を信じて判断する</li></ul>
+      <div class="why"><b>理由：</b>借り物の基準では本質を見抜けず、独自の価値も生み出せないため。</div>
+    </div>
+    <div class="card">
+      <h3>第3章 「成功」は捨て続ける</h3>
+      <ul><li>過去の成功パターンや実績に安住せず、常にゼロから見直す</li></ul>
+      <div class="why"><b>理由：</b>環境変化のスピードに対し、過去の成功体験はすぐに足かせへと変わるため。</div>
+    </div>
+    <div class="card">
+      <h3>第4章 「偉い人」はいらない</h3>
+      <ul><li>肩書きや階層による権威ではなく、現場の判断とスピードを重視する</li></ul>
+      <div class="why"><b>理由：</b>権威に基づく意思決定は現実とのズレを生み、スピードを損なうため。</div>
+    </div>
+    <div class="card">
+      <h3>第5章 余計なことは全部やめる</h3>
+      <ul><li>会議・報告・情報共有など本質に寄与しない業務を大胆に削る</li></ul>
+      <div class="why"><b>理由：</b>余計な業務は最重要事項への集中力とリソースを奪うため。</div>
+    </div>
+    <div class="card">
+      <h3>第6章 イノベーションは目指さない</h3>
+      <ul><li>「新しさ」自体を目的にせず、課題解決の結果として革新が生まれると説く</li></ul>
+      <div class="why"><b>理由：</b>イノベーションを目的化すると本質からずれ、独りよがりな発明に陥るため。</div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="cases">
+    <div class="card">
+      <h3>📱 LINEの震災リリース</h3>
+      <ul>
+        <li>2011年3月の東日本大震災直後、「大切な人と連絡が取れない」という課題の解決だけに集中</li>
+        <li>メッセージ送信機能のみというシンプルな形でリリース</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>機能を絞り込み、たった一つの本質的な課題に集中したからこそ、圧倒的なスピードでの開発と展開が可能になったことを示す。</div>
+    </div>
+    <div class="card">
+      <h3>😊 スタンプ機能の誕生</h3>
+      <ul>
+        <li>ケータイのメール文化で顔文字・絵文字・デコメールが発達していたことに着目</li>
+        <li>スマホではより大きな絵で気持ちを伝える「スタンプ」を発案</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>高度な理論やマーケティング分析ではなく、ユーザーの生活実感への率直な観察から本質的な発明が生まれることを示す。</div>
+    </div>
+    <div class="card">
+      <h3>🚫 会議・情報共有をしない組織運営</h3>
+      <ul>
+        <li>「ビジョンはいらない」「計画はいらない」「情報共有はしない」「会議はしない」という方針を実際に採用</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>管理のための管理を削ぎ落としても、優秀な人材が本質に集中できる環境さえあれば、成果とスピードはむしろ向上することを示す。</div>
+    </div>
+    <div class="card">
+      <h3>🎬 C Channel創業時の採用方針</h3>
+      <ul>
+        <li>LINE退任後に設立したC Channelでは、「会社の考え方に共感できる人」を軸に採用</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>シンプルな組織づくりの出発点は制度設計ではなく、価値観を共有できる人材選びにあることを示す。</div>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="quotes">
+    <div class="quote-card">
+      <p class="quote">「ビジネスの本質は、ユーザーが本当に求めているものを提供し続けること」</p>
+      <p class="note">差別化や競合対策より優先すべき唯一の基準を、一文で言い切っている。</p>
+    </div>
+    <div class="quote-card">
+      <p class="quote">「本当に大切な1%に100%集中する」</p>
+      <p class="note">リソース配分の指針として、著者の思考法全体を貫くキーフレーズ。</p>
+    </div>
+    <div class="quote-card">
+      <p class="quote">「シンプルなマネジメントは、管理しないこと」</p>
+      <p class="note">管理を強めるほど組織は重くなるという、逆説的なマネジメント観を端的に表す。</p>
+    </div>
+    <div class="quote-card">
+      <p class="quote">「誰でも明日のことすらわからない。これが普通なんです。わからない不安を楽しんでいくほうがずっと人生は面白い」</p>
+      <p class="note">不確実性を前提にした、著者の楽観的で軽やかな人生観が表れている。</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" id="actions">
+    <div class="card action-card">
+      <h3>① タスク1つに絞る「1%集中」タイム</h3>
+      <ul><li>今日のToDoから最も本質的な1つだけを選ぶ</li><li>他は思い切って翌日以降に回す</li><li>15〜30分、そのタスクだけに集中して取り組む</li></ul>
+      <div class="meta"><span>🎯 目的：1%集中の感覚を体で覚える</span><span>📈 効果：分散していた集中力が絞られ、短時間で普段以上の進捗</span></div>
+    </div>
+    <div class="card action-card">
+      <h3>② 「やめるものリスト」を作る</h3>
+      <ul><li>本質的な価値を生んでいない仕事・習慣・会議を3つ書き出す</li><li>そのうち1つを今日中にやめる、または断る連絡を入れる</li></ul>
+      <div class="meta"><span>🎯 目的：「余計なことは全部やめる」を小さく実践</span><span>📈 効果：時間とエネルギーの余白が生まれ、集中度が上がる</span></div>
+    </div>
+    <div class="card action-card">
+      <h3>③ ユーザー視点で1つ観察する</h3>
+      <ul><li>自分の仕事の「顧客」や身近な人の困りごとを15分観察・ヒアリング</li><li>先入観を捨てて聞く</li></ul>
+      <div class="meta"><span>🎯 目的：ユーザー本位の視点を鍛える</span><span>📈 効果：差別化や競合比較では見えなかった本質的なニーズに気づける</span></div>
+    </div>
+
+    <div class="card">
+      <h3>📚 関連書籍</h3>
+      <ul class="related-list">
+        <li><b>エッセンシャル思考</b>（グレッグ・マキューン）: 「より少なく、しかしより良く」という取捨選択の哲学が「余計なことは全部やめる」と響き合う</li>
+        <li><b>イシューからはじめよ</b>（安宅和人）: 本質的な課題だけに集中する知的生産の姿勢が共通</li>
+        <li><b>ジョブ理論</b>（クレイトン・M・クリステンセン）: 「顧客が本当に求めていること」を起点にする発想が同じ</li>
+        <li><b>ゼロ・トゥ・ワン</b>（ピーター・ティール）: 差別化ではなく独自の価値創造を重視する視点が近い</li>
+        <li><b>ビジョナリー・カンパニー</b>（ジェームズ・C・コリンズ）: ビジョンより実行と規律を重視する経営観と対比・共鳴する</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  📖 本サマリーはWeb公開情報をもとに生成された読書ノートです。詳細は書籍本文をご参照ください。
+</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected','true');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+    btn.setAttribute('role','tab');
+    btn.setAttribute('aria-selected', btn.classList.contains('active') ? 'true' : 'false');
+  });
+</script>
+
+</body>
+</html>
