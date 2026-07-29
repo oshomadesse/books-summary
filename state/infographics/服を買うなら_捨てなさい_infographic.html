@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>服を買うなら、捨てなさい ― インフォグラフィック</title>
+<!--
+  カラーパレット（3色・グラデーション使用）
+  プライマリー: #E85D75（コーラルピンク）
+  セカンダリー: #2D3047（ディープネイビー）
+  アクセント:   #F2C14E（ゴールド）
+-->
+<style>
+  :root{
+    --primary:#E85D75;
+    --primary-dark:#C7415A;
+    --secondary:#2D3047;
+    --accent:#F2C14E;
+    --bg:#FFF8F5;
+    --card-bg:#FFFFFF;
+    --text:#2D3047;
+    --text-sub:#6B6B7A;
+    --border:#F0E3DE;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--secondary) 0%,#3C4066 100%);
+    color:#fff;
+    padding:28px 20px 24px;
+    text-align:center;
+  }
+  header .eyebrow{
+    font-size:12px;
+    letter-spacing:.15em;
+    color:var(--accent);
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  header h1{
+    font-size:22px;
+    line-height:1.5;
+    margin-bottom:10px;
+  }
+  header .meta{
+    font-size:13px;
+    color:#C9CBE0;
+  }
+  .hero{
+    margin:16px 16px 0;
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    color:#fff;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 8px 20px rgba(232,93,117,.25);
+  }
+  .hero h2{
+    font-size:14px;
+    letter-spacing:.08em;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .hero .qa{
+    background:rgba(255,255,255,.14);
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:10px;
+  }
+  .hero .qa:last-child{margin-bottom:0;}
+  .hero .qa .label{
+    font-size:11px;
+    font-weight:700;
+    color:var(--accent);
+    letter-spacing:.05em;
+    margin-bottom:4px;
+  }
+  .hero .qa .body{font-size:14px;}
+  .stats{
+    display:flex;
+    gap:10px;
+    margin:16px 16px 0;
+    flex-wrap:wrap;
+  }
+  .stat-badge{
+    flex:1 1 auto;
+    min-width:90px;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px 10px;
+    text-align:center;
+  }
+  .stat-badge .num{
+    font-size:20px;
+    font-weight:800;
+    color:var(--primary);
+  }
+  .stat-badge .label{
+    font-size:11px;
+    color:var(--text-sub);
+    margin-top:2px;
+  }
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:8px;
+    margin:20px 16px 0;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+    font-size:13px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .15s ease;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--secondary);
+    color:#fff;
+    border-color:var(--secondary);
+  }
+  main{margin:16px 16px 0;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 2px 8px rgba(45,48,71,.05);
+  }
+  .card .head{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .card .icon{
+    font-size:20px;
+    flex:0 0 auto;
+  }
+  .card h3{
+    font-size:15px;
+    color:var(--secondary);
+  }
+  .card ul{
+    list-style:none;
+    padding-left:2px;
+  }
+  .card ul li{
+    font-size:13.5px;
+    color:var(--text);
+    padding:6px 0 6px 16px;
+    position:relative;
+    border-bottom:1px dashed var(--border);
+  }
+  .card ul li:last-child{border-bottom:none;}
+  .card ul li::before{
+    content:"●";
+    position:absolute;
+    left:0;
+    top:7px;
+    font-size:6px;
+    color:var(--primary);
+  }
+  .why{
+    margin-top:8px;
+    background:#FFF3E9;
+    border-left:3px solid var(--accent);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:var(--text-sub);
+  }
+  .why b{color:var(--secondary);}
+  .quote-card{
+    background:linear-gradient(135deg,var(--secondary),#3C4066);
+    color:#fff;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:12px;
+  }
+  .quote-card .mark{color:var(--accent);font-size:24px;line-height:1;}
+  .quote-card p{font-size:15px;margin:6px 0 8px;}
+  .quote-card .note{font-size:11px;color:#C9CBE0;}
+  .action-card{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 auto;
+    width:28px;height:28px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    font-weight:800;
+    font-size:13px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .action-card .body p{font-size:12.5px;color:var(--text-sub);margin-top:4px;}
+  .bar-wrap{margin:10px 0;}
+  .bar-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    margin-bottom:4px;
+    color:var(--text-sub);
+  }
+  .bar-bg{
+    height:10px;
+    background:var(--border);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .bar-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--primary),var(--accent));
+    border-radius:6px;
+  }
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--text-sub);
+    margin-top:24px;
+    padding:0 20px;
+  }
+  @media(min-width:640px){
+    main{max-width:680px;margin-left:auto;margin-right:auto;}
+    .hero,.stats,nav.tabs{max-width:680px;margin-left:auto;margin-right:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">📚 TODAY'S BOOK ｜ ライフスタイル</div>
+  <h1>服を買うなら、捨てなさい</h1>
+  <div class="meta">著者：地曳いく子　｜　2026-07-30</div>
+</header>
+
+<div class="hero">
+  <h2>🔎 要約：問い × 答え × 根拠</h2>
+  <div class="qa">
+    <div class="label">Q. おしゃれになるために必要なことは？</div>
+    <div class="body">服を「買う」ことではなく、ダサい服・着ない服を「捨てる」こと。</div>
+  </div>
+  <div class="qa">
+    <div class="label">A. なぜ捨てることが第一歩なのか</div>
+    <div class="body">ダサい服を持っていると、つい着てしまい「オシャレの平均点」が下がる。過去や未来ではなく"今の自分"に似合う服だけを残すと、自然とスタイルが整う。</div>
+  </div>
+  <div class="qa">
+    <div class="label">根拠</div>
+    <div class="body">本当におしゃれな人ほど「着まわし」にこだわらず、少ない服・同じ靴・同じバッグを高頻度で使い回している。量ではなく精度でおしゃれを判断しているから。</div>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat-badge"><div class="num">2足</div><div class="label">1シーズンの靴</div></div>
+  <div class="stat-badge"><div class="num">1つ</div><div class="label">バッグの数</div></div>
+  <div class="stat-badge"><div class="num">3〜5万円</div><div class="label">靴への投資目安</div></div>
+  <div class="stat-badge"><div class="num">ラック1本</div><div class="label">理想のワードローブ量</div></div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">💡 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <div class="head"><span class="icon">🙅‍♀️</span><h3>① 着まわし不要論</h3></div>
+      <p style="font-size:13.5px;">本当におしゃれな人ほど同じ服を高頻度で着回す。バリエーションの多さは「おしゃれ」の証明ではない。</p>
+      <div class="why"><b>理由：</b>選択肢を増やすほど「今日何を着るか」の判断コストが上がり、結果的に無難な服に頼りがちになるから。</div>
+    </div>
+    <div class="card">
+      <div class="head"><span class="icon">😇</span><h3>② 買うは天国、捨てるは地獄</h3></div>
+      <p style="font-size:13.5px;">購入は一瞬の快感だが、手放すには精神的なパワーが要る。年を重ねるほど物は増え、捨てる気力は目減りしていく。</p>
+      <div class="why"><b>理由：</b>「増える」は自動的に起きるが「減らす」は意志の力が要るため、先に"捨てる仕組み"を作らないと物は溜まり続けるから。</div>
+    </div>
+    <div class="card">
+      <div class="head"><span class="icon">👞</span><h3>③ 靴2足・バッグ1つの法則</h3></div>
+      <p style="font-size:13.5px;">1シーズンの靴は2足、バッグは1つで十分。数を絞ることで選ぶ迷いも管理コストも減る。</p>
+      <div class="why"><b>理由：</b>アイテム数が少ないほど1点あたりにかけられる予算と手入れの手間が増え、結果的に質が上がるから。</div>
+    </div>
+    <div class="card">
+      <div class="head"><span class="icon">💰</span><h3>④ 足元への投資</h3></div>
+      <p style="font-size:13.5px;">服より靴を優先する。普段履きの靴に3〜5万円投資すると、全身の印象が格上げされる。</p>
+      <div class="why"><b>理由：</b>靴は体重を支え、姿勢や歩き方まで左右するため、見た目以上に全体の印象に直結するから。</div>
+    </div>
+    <div class="card">
+      <div class="head"><span class="icon">📉</span><h3>⑤ オシャレの平均点理論</h3></div>
+      <p style="font-size:13.5px;">ダサい服を1着でも持っていると「ついで」に着てしまい、日々のコーディネートの平均的なクオリティが下がる。</p>
+      <div class="why"><b>理由：</b>クローゼットにある選択肢の中からしか選べない以上、最低ラインの質がその日の見た目の下限を決めてしまうから。</div>
+    </div>
+    <div class="card">
+      <div class="head"><span class="icon">⏳</span><h3>⑥ "今の自分"基準</h3></div>
+      <p style="font-size:13.5px;">「痩せたら着る」「もったいないから」は捨てる基準にならない。今すぐ袖を通したいかどうかで判断する。</p>
+      <div class="why"><b>理由：</b>過去や未来の自分のための服は、"今日のコーディネート"には一切貢献しないから。</div>
+    </div>
+    <div class="card">
+      <div class="head"><span class="icon">🗄️</span><h3>⑦ ワードローブはラック1本理論</h3></div>
+      <p style="font-size:13.5px;">理想のワードローブは季節ごとにラック1本に収まる量。量ではなく「勝負服」の質で構成する。</p>
+      <div class="why"><b>理由：</b>物理的な上限を先に決めることで、「増やす」ではなく「入れ替える」発想に強制的に切り替わるから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+    <div class="card">
+      <div class="head"><span class="icon">1️⃣</span><h3>おしゃれな人ほど、少ない服で生きている</h3></div>
+      <ul>
+        <li>本当におしゃれな人ほどワードローブが少ない</li>
+        <li>「着まわし」ではなく「同じ服の高頻度着用」がスタイルを作る</li>
+        <li>おしゃれは服の量ではなく、自分への理解度に比例する</li>
+      </ul>
+      <div class="why"><b>理由：</b>量より精度でおしゃれを判断する基準を最初に示すことで、以降の章の「捨てる」提案に説得力を持たせている。</div>
+    </div>
+    <div class="card">
+      <div class="head"><span class="icon">2️⃣</span><h3>無駄服を増やす、さまざまな罠</h3></div>
+      <ul>
+        <li>セール・福袋買いで「安いから」と量が増える罠</li>
+        <li>「痩せたら着る」「そのうち着る」という未来買いの罠</li>
+        <li>思い出があって捨てられない服の罠</li>
+      </ul>
+      <div class="why"><b>理由：</b>罠のパターンを知らないと同じ失敗を無自覚に繰り返してしまうため、先に「型」を認識させている。</div>
+    </div>
+    <div class="card">
+      <div class="head"><span class="icon">3️⃣</span><h3>いらない服とすっきりお別れする方法</h3></div>
+      <ul>
+        <li>実際に試着して"今"ときめくか・似合うかで判断する</li>
+        <li>感情ではなく機械的な基準で仕分けする</li>
+        <li>捨てる罪悪感より、着ない服が場所を奪うコストを重視する</li>
+      </ul>
+      <div class="why"><b>理由：</b>「捨てる方法」ではなく「捨てる意味」がわかることを本書は目指しており、判断基準を持つことが行動の継続に直結するから。</div>
+    </div>
+    <div class="card">
+      <div class="head"><span class="icon">4️⃣</span><h3>理想的なワードローブ大検証！</h3></div>
+      <ul>
+        <li>靴2足・バッグ1つなど、具体的な数字でワードローブを検証</li>
+        <li>「少数精鋭」の中身を実例で示す</li>
+        <li>抽象論で終わらせず、行動に落とし込める形にする</li>
+      </ul>
+      <div class="why"><b>理由：</b>具体的な数字があることで読者が自分のクローゼットと比較でき、実践のハードルが下がるから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+    <div class="card">
+      <div class="head"><span class="icon">👠</span><h3>靴2足・バッグ1つで乗り切る実践例</h3></div>
+      <p style="font-size:13.5px;">数を絞ることで、逆にコーディネートに迷わなくなり、自分の「勝負服」の輪郭がはっきりする、という著者自身の実践に基づく提案。</p>
+      <div class="why"><b>この例が示すこと：</b>選択肢を減らすことは制約ではなく、むしろ自由と時短につながる。</div>
+    </div>
+    <div class="card">
+      <div class="head"><span class="icon">👗</span><h3>「痩せたら着る」服を何年も残していたケース</h3></div>
+      <p style="font-size:13.5px;">読者レビューに繰り返し登場する典型例。結局着ないまま何年もクローゼットの場所を占領し続け、手放した瞬間にクローゼットも気持ちもすっきりしたという声が多数寄せられている。</p>
+      <div class="why"><b>この例が示すこと：</b>未来の理想の自分のための服は、"今日"には一切貢献しない。</div>
+    </div>
+    <div class="card">
+      <div class="head"><span class="icon">🔁</span><h3>週2〜3回同じ服を着ることへの抵抗を手放したケース</h3></div>
+      <p style="font-size:13.5px;">「毎日違う服を着ないと恥ずかしい」という思い込みから解放され、むしろお気に入りを着る頻度が増えて満足度が上がったという読者の変化が複数のレビューで報告されている。</p>
+      <div class="why"><b>この例が示すこと：</b>「バリエーション＝おしゃれ」という常識自体が、単なる思い込みに過ぎない場合がある。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+    <div class="quote-card">
+      <div class="mark">“</div>
+      <p>買うは天国、捨てるは地獄。</p>
+      <div class="note">著者が繰り返し用いる持論として複数の紹介記事・書評で引用されているフレーズ。</div>
+    </div>
+    <div class="quote-card">
+      <div class="mark">“</div>
+      <p>要旨：本当におしゃれな人ほど、いつも同じような服・同じバッグを持ち、靴もせいぜい2足で1シーズンを乗り切っている。</p>
+      <div class="note">※原文の直接引用ではなく要旨として紹介</div>
+    </div>
+    <div class="quote-card">
+      <div class="mark">“</div>
+      <p>要旨：捨てるべき服を手元に置いているから、つい着てしまい、オシャレの平均点が下がる。</p>
+      <div class="note">※原文の直接引用ではなく要旨として紹介</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div class="body">
+        <h3>「痩せたら着る」服を1着選び、実際に袖を通す</h3>
+        <p>目的：“今の自分”基準で服を見る練習をする。<br>期待効果：手放すべき服の輪郭が具体的に見えてくる（所要目安：15分）。</p>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div class="body">
+        <h3>直近1週間で実際に着た服だけをリストアップする</h3>
+        <p>目的：自分の本当の「勝負服」がどれかを可視化する。<br>期待効果：着ていない服にどれだけスペースとお金を使っているか気づける（所要目安：15分）。</p>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div class="body">
+        <h3>普段履きの靴を1足選び、状態をチェックする</h3>
+        <p>目的：「靴が全身の印象を決める」という本書の主張を自分の足元で確認する。<br>期待効果：次に何へ投資すべきかの優先順位が見えてくる（所要目安：15〜20分）。</p>
+      </div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-label"><span>行動の負荷</span><span>低め</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:30%"></div></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  📚 books-summary daily reading ｜ 生成日: 2026-07-30
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-cases':'panel-cases',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){
+        t.setAttribute('aria-selected','false');
+        var p = document.getElementById(panels[t.id]);
+        p.classList.remove('active');
+        p.setAttribute('hidden','');
+      });
+      tab.setAttribute('aria-selected','true');
+      var activePanel = document.getElementById(panels[tab.id]);
+      activePanel.classList.add('active');
+      activePanel.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
