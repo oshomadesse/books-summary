@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>減速して自由に生きる ダウンシフターズ インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #2f5233 / セカンダリー #c17f45 / アクセント #e0a458 -->
+<style>
+:root {
+  --primary: #2f5233;
+  --secondary: #c17f45;
+  --accent: #e0a458;
+  --bg: #fafaf7;
+  --card-bg: #ffffff;
+  --text: #2b2b2b;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.7rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--secondary), var(--accent));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f0;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #f3ede4, #f9f0e5);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #f0f4ef, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+}
+.metric-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  min-width: 80px;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f6, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #f3ede1, #fbf6ec);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.05rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌾 減速して自由に生きる ダウンシフターズ</h1>
+  <p>年収1000万円を手放した元エリート社員が実践する「自給・自信・自立・自由」の生き方</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>がむしゃらに稼ぎ、消費し続ける生き方の先に、本当の豊かさはあるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>稼ぐ額を自分で決めて「減速（ダウンシフト）」し、自給と人とのつながり（縁）を土台にすれば、収入は減っても自由な時間と心のゆとりを手に入れられる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>大量生産・大量消費を前提にした資本主義システムの中では、「もっと稼ぎ、もっと消費する」ことが当たり前とされ、走り続ける限り時間もお金の心配も終わらない。著者・高坂勝は年収1000万円のエリート社員だったが、バブル崩壊後の心労で30歳のとき退職。1年間の旅と料理修行を経て、2004年に無借金で池袋にたった6坪のオーガニックバー「たまにはTSUKIでも眺めましょ」を開業した。年収を300万円ほどに減らしながらも、無理な集客をしない黒字経営と、千葉県匝瑳市での米・大豆の自給、人とのつながりを土台にすることで、時間的にも精神的にも自由な生き方を実現した。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>①支出を見直し「本当に必要な額」を自分で決める、②米や大豆など生活の基礎を自分の手で作る自給を始める、③カネの利益より人との縁（つながり）を資産として意識する、④会社や社会の「もっと稼ぐのが当然」という前提から一度降りてみる——という4つのステップで、無理なく段階的に実践していく。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🌿 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>💡 ダウンシフト</h3>
+    <ul>
+      <li>稼ぐ額をあえて減らし、それに応じて支出も減らす生き方</li>
+      <li>「もっと稼ぐ」ことを前提にした人生設計から自ら降りるという選択</li>
+      <li>収入を絞ることで、逆に時間という最大の資産を取り戻せる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書のタイトルであり全体を貫く中心概念。他のすべての概念はこのダウンシフトを実現するための具体的な手段だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌾 自給→自信→自立→自由</h3>
+    <ul>
+      <li>米や大豆など生活の基礎を自分の手で作ることが「自給」の第一歩</li>
+      <li>自給できた実感が「自信」を生み、会社に依存しない「自立」につながる</li>
+      <li>自立した状態こそが、最終的な「自由」を可能にするという著者独自の連鎖モデル</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>第7章の章題そのものであり、著者の実践プロセスを一言で示す本書の設計図にあたる概念だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 円（カネ）でなく縁（ツナガリ）</h3>
+    <ul>
+      <li>貨幣的な利益より、人とのつながりそのものを資産とみなす価値観の転換</li>
+      <li>「儲ける」のではなく「縁を設ける」という言葉遊びで表現される</li>
+      <li>お客・地域・仲間との関係が、いざという時に助け合える見えない財産になる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>第6章の章題であり、著者のバー経営と自給生活の両方を貫く価値基準になっているから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚪 システムから降りる</h3>
+    <ul>
+      <li>大量生産・大量消費・終身雇用など「当たり前」とされる社会システムを一度疑う</li>
+      <li>システムに乗り続ける限り、稼ぎと消費の競争から抜け出せない</li>
+      <li>降りることは「脱落」ではなく、自分の物差しで生き方を選び直すこと</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>第8章の章題であり、著者自身がエリート社員から独立するときに経た決定的な思考の転換だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌱 半農半X</h3>
+    <ul>
+      <li>収入を得る仕事（X）と、自給的な農作業を半分ずつ組み合わせる生き方</li>
+      <li>塩見直紀氏が提唱した概念で、著者もこれを自ら実践している</li>
+      <li>農にすべてを頼らず、得意なことで少額を稼ぎながら自給で生活costを下げる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>著者が匝瑳市で実践する自給生活の具体的な型であり、ダウンシフトを暮らしのレベルまで落とし込んだ実例だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏪 ヒマで繁盛しないのに黒字経営</h3>
+    <ul>
+      <li>売上を追わず、身の丈にあった小さな経営規模をあえて維持する</li>
+      <li>1日の売上目標を低く絞り、無理な集客や拡大をしない</li>
+      <li>忙しさと引き換えではなく、自由な時間を保ったまま黒字を出す</li>
+    </ul>
+    <div class="metric">
+      <span class="metric-label">拡大志向の経営</span>
+      <div class="metric-bar"><div class="metric-fill" style="width: 25%;"></div></div>
+      <span class="metric-label">身の丈経営</span>
+      <div class="metric-bar"><div class="metric-fill" style="width: 85%;"></div></div>
+    </div>
+    <div class="reason-box">
+      <strong>理由：</strong>第5章の章題であり、「稼ぐ額は自分で決める」というダウンシフトの考え方を、経営という具体的な形で示しているから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌍 小ささで世界を変える</h3>
+    <ul>
+      <li>大きな組織や資本の力でなく、個人単位の小さな実践の積み重ねが社会を変える</li>
+      <li>一人のダウンシフターが増えることが、社会全体の価値観を少しずつ揺らす</li>
+      <li>著者自身の6坪のバーとNPO活動が、その思想の実例になっている</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>第10章の章題であり、個人の生き方の選択が社会変革につながるという、本書の締めくくりのメッセージだから。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>もっと稼ぐ社会の前提</span>
+      <span class="flow-arrow">→</span>
+      <span>システムから降りる決意</span>
+      <span class="flow-arrow">→</span>
+      <span>ダウンシフト（稼ぐ額を自分で決める）</span>
+    </div>
+    <div class="flow-item">
+      <span>米・大豆の自給（半農半X）</span>
+      <span class="flow-arrow">→</span>
+      <span>自信</span>
+      <span class="flow-arrow">→</span>
+      <span>自立</span>
+      <span class="flow-arrow">→</span>
+      <span>自由</span>
+    </div>
+    <div class="flow-item">
+      <span>ヒマで繁盛しない経営</span>
+      <span class="flow-arrow">→</span>
+      <span>円より縁を重視</span>
+      <span class="flow-arrow">→</span>
+      <span>小ささで世界を変える</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>第1章：「豊かさ」のリデザイン</h3>
+    <ul>
+      <li>年収や物の量で測る「豊かさ」の定義そのものを問い直す</li>
+      <li>時間・つながり・心のゆとりも「豊かさ」の構成要素であると再定義する</li>
+      <li>本書全体の問題提起となる導入章</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>以降の全章の前提となる価値観の転換を最初に提示する章だから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章：ビジネスパーソンだったころのパラドックス</h3>
+    <ul>
+      <li>著者が年収1000万円のエリート社員として働いていた頃の実体験を振り返る</li>
+      <li>収入は高くても、時間も心の余裕もなくなっていく矛盾（パラドックス）を描く</li>
+      <li>バブル崩壊後の心労が、生き方を見直す転機になった</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>読者に「稼ぐこと＝豊かさ」という前提の限界を、著者自身の失敗経験を通じて実感させる章だから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章：月が沈むとき——旅で得た知恵</h3>
+    <ul>
+      <li>退職後、1年間の旅を通じて得た価値観の変化を描く</li>
+      <li>金沢での料理修行など、次のキャリアへの準備期間としての意味を持つ</li>
+      <li>店名の由来にもなる「月」のモチーフが登場する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>退職からバー開業までの空白期間が、実は次のステップを形づくる重要な準備だったことを示す章だから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章：たった6坪の呑み屋——「たまにはTSUKIでも眺めましょ」開店</h3>
+    <ul>
+      <li>2004年、無借金で池袋にわずか6坪のオーガニックバーを開業した経緯</li>
+      <li>大きな資本をかけず、身の丈にあった規模から始める選択</li>
+      <li>1人で切り盛りできる小ささが、後の自由な働き方の土台になる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「小ささ」という本書のキーワードが、実際の店舗という具体的な形で初めて登場する章だから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章：ヒマで繁盛しないのに黒字経営！</h3>
+    <ul>
+      <li>売上を追わず、1日の目標額を絞った経営スタイルを紹介</li>
+      <li>忙しく拡大するのではなく、暇な時間を残したまま黒字を維持する方法</li>
+      <li>週休2日、後に週休3日へと段階的に休みを増やしていく</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「稼ぐ額は自分で決める」というダウンシフトの考え方を、経営という具体的な数字で裏づける章だから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章：「円（カネ）」を儲けるのでなく、「縁（ツナガリ）」を設ける</h3>
+    <ul>
+      <li>お客や地域との関係を、お金以上の資産として捉える考え方</li>
+      <li>「儲ける」と「縁を設ける」を掛け合わせた著者独自の言葉遊びで表現</li>
+      <li>つながりが増えることで、経済的な安心感も同時に得られる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書の価値基準の中心にある「円より縁」という考え方を最も端的に示す章だから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7章：自給→自信→自立→自由</h3>
+    <ul>
+      <li>千葉県匝瑳市で米と大豆の自給を始めた経緯を描く</li>
+      <li>自分の手で作物を育てられた経験が自信につながっていく過程</li>
+      <li>自給→自信→自立→自由という連鎖モデルを提示する、本書の核となる章</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>著者の思想を要約する4つのキーワードが章題そのものになっている、本書で最も引用される章だから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第8章：システムから降りる</h3>
+    <ul>
+      <li>大量生産・大量消費・終身雇用という社会の前提を疑う視点を提示</li>
+      <li>「降りる」ことは逃避ではなく、自分の物差しで生き方を選び直すことだと説く</li>
+      <li>会社員時代との対比で、システムの外に出た後の変化を描く</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書のタイトル「減速して自由に生きる」の思想的な裏づけを最も直接的に語る章だから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第9章：ダウンシフターズ</h3>
+    <ul>
+      <li>著者と同じように減速する生き方を選んだ人々（ダウンシフターズ）を紹介</li>
+      <li>一人だけの実践ではなく、共感し実践する仲間が広がっている様子を描く</li>
+      <li>本書の原題（副題）にもなっている中心テーマの章</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>個人の体験談から、社会的な潮流としての「ダウンシフト」へと視野を広げる転換点の章だから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第10章：小ささで世界を変える</h3>
+    <ul>
+      <li>個人単位の小さな実践の積み重ねが、社会全体を変えていく可能性を説く</li>
+      <li>大きな資本や権力に頼らない変革のあり方を提示する</li>
+      <li>本編の締めくくりとして、著者の思想を社会的な広がりへとつなげる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>個人の生き方の選択が社会変革につながるという、本書全体のメッセージを集約する章だから。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>最終章：文庫版のために</h3>
+    <ul>
+      <li>単行本刊行後、NPO法人SOSA PROJECTの設立など活動が広がった経緯を追記</li>
+      <li>週休2日から週休3日へ、さらに自給の範囲が広がったその後の変化を報告</li>
+      <li>文庫化にあたっての著者からの読者へのメッセージ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>単行本刊行後の著者自身の実践の進展を伝え、本書の提案が一過性でないことを裏づける章だから。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例</h2>
+
+  <div class="card">
+    <h3>🍸 例1：エリート社員から6坪のバーオーナーへの転身</h3>
+    <ul>
+      <li><strong>背景：</strong>著者・高坂勝は大手小売チェーンに勤め、年収1000万円のエリート社員だった</li>
+      <li><strong>転機：</strong>バブル崩壊後の心労がたたり、30歳のときに退職。1年間の旅と金沢での料理修行を経る</li>
+      <li><strong>展開：</strong>2004年、無借金で池袋にたった6坪のオーガニックバー「たまにはTSUKIでも眺めましょ」を開業し、1人で8年間経営</li>
+      <li><strong>示唆：</strong>年収は1000万円から300万円程度まで減ったが、時間と心の自由を得た</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>本書の主張が理論ではなく、著者自身が実際に収入を大きく減らして得た実体験であることを裏づけるから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌾 例2：千葉県匝瑳市での米・大豆の自給とNPO法人SOSA PROJECT</h3>
+    <ul>
+      <li><strong>背景：</strong>2009年、バーを週休2日制にして、千葉県匝瑳市の田んぼで米と大豆の自給を開始</li>
+      <li><strong>展開：</strong>2012年には週休3日制に移行し、自給の範囲をさらに広げる</li>
+      <li><strong>発展：</strong>「自給」「電気」「家」「生業」の自立をテーマにNPO法人SOSA PROJECTを設立し、都市住民の移住・半農半Xの実践支援へと活動を広げた</li>
+      <li><strong>示唆：</strong>個人の自給実践が、他者を支援する社会的な仕組みへと発展した好例</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「自給→自信→自立→自由」の連鎖が、個人の生活を超えて地域活動にまで広がっていく過程を具体的に示すから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📉 例3：ヒマで繁盛しないのに黒字経営のバー運営</h3>
+    <ul>
+      <li><strong>背景：</strong>バーの1日の売上目標をあえて低く設定し、無理な集客や拡大をしない経営方針を貫く</li>
+      <li><strong>展開：</strong>従業員を雇わず、家賃の安い立地を選ぶことで固定費を抑え、少ない売上でも黒字を維持</li>
+      <li><strong>結果：</strong>週休2日から週休3日へと、段階的に休みを増やしながらも経営を続けられた</li>
+      <li><strong>示唆：</strong>売上の最大化ではなく、身の丈にあった規模を維持することが持続可能性につながる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「稼ぐ額は自分で決める」というダウンシフトの考え方が、具体的な経営数字として成立することを示すから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ 例4：SOSA PROJECTでの電気・住まいの自給活動</h3>
+    <ul>
+      <li><strong>背景：</strong>SOSA PROJECTは米づくりだけでなく、電気・住まいの自給にも活動範囲を広げている</li>
+      <li><strong>展開：</strong>太陽光など自然エネルギーによるオフグリッド発電、空き家の自力リノベーションなどを実践</li>
+      <li><strong>参加：</strong>年間約100人の都市住民が、味噌・醤油づくりや小屋の自力建築などのプログラムに参加</li>
+      <li><strong>示唆：</strong>自給の対象は食だけでなく、電気や住まいにまで広げられることを実例で示している</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「自給」という概念が食料に限らず、暮らし全般の自立につながる幅広い実践であることを裏づけるから。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      減速すれば、景色が鮮明に見える。発見もある。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>作家・村上龍による本書の帯文であり、「減速」がもたらす気づきという本書全体のテーマを一言で凝縮している。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      （要旨）稼ぐ額を自分で決め、それ以上を追わないことが、時間という最大の資産を取り戻す道である。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>「ヒマで繁盛しないのに黒字経営」という著者の実践を貫く、ダウンシフトの基本姿勢を言い表している。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      （要旨）円（カネ）を儲けるのではなく、縁（ツナガリ）を設ける生き方こそが、いざという時に自分を支えてくれる。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>お金より人とのつながりを資産と捉える、本書の価値基準の中心をなす考え方だから。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">📚 関連書籍</h3>
+
+  <div class="card">
+    <h3>📖 週4時間だけ働く。</h3>
+    <p><strong>著者：</strong>ティモシー・フェリス</p>
+    <p><strong>関連性：</strong>働く時間と収入を意図的に絞り、自由な時間を最大化するという発想が「ダウンシフト」の考え方と直接重なる。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 ウォールデン 森の生活</h3>
+    <p><strong>著者：</strong>ヘンリー・デイヴィッド・ソロー</p>
+    <p><strong>関連性：</strong>自給自足による簡素な暮らしを実践し、消費社会から距離を置く生き方を提示した源流的な一冊。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 半農半Xという生き方</h3>
+    <p><strong>著者：</strong>塩見直紀</p>
+    <p><strong>関連性：</strong>著者自身が実践する「半農半X」という言葉の提唱者であり、本書の自給の思想的な出典にあたる。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 シンプルに生きる 人生の本物の安らぎを味わう</h3>
+    <p><strong>著者：</strong>ドミニック・ローホー</p>
+    <p><strong>関連性：</strong>物や情報を減らし、身の丈にあった生活に立ち返るという点で、ダウンシフトの思想と共鳴する。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 持たない暮らし</h3>
+    <p><strong>著者：</strong>下重暁子</p>
+    <p><strong>関連性：</strong>所有や消費を手放すことで得られる自由という主題が、本書の「降りる」生き方と重なる。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🚀 今日のアクション</h2>
+  <p style="margin-bottom: 1.5rem; color: var(--text-light);">読後すぐに15〜30分で実行できる具体的な行動</p>
+
+  <div class="action-card">
+    <h4>📝 支出の棚卸しで「足るを知る」ラインを可視化する（15分）</h4>
+    <p><strong>目的：</strong>自分にとって本当に必要な支出額を把握し、収入を減らしても成立する生活水準の見当をつける</p>
+    <p><strong>手順：</strong></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>📝 直近1ヶ月の支出項目を紙またはメモアプリに書き出す</li>
+      <li>📝 「本当に必要な支出」と「惰性で続けている支出」に色分けする</li>
+      <li>📝 惰性の支出を1つだけ選び、来月やめると決める</li>
+    </ul>
+    <p><strong>期待効果：</strong>「もっと稼がなければ」という漠然とした焦りが、具体的な数字に置き換わり、減速への現実的な一歩になる</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🤝 「縁（ツナガリ）」に感謝を伝える（10分）</h4>
+    <p><strong>目的：</strong>カネではなく人とのつながりを資産として意識する練習をする</p>
+    <p><strong>手順：</strong></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>📝 最近助けてもらった人・お世話になっている人を1人思い浮かべる</li>
+      <li>📝 その人に短い感謝のメッセージを送る</li>
+      <li>📝 送った後、自分の中に生まれた気持ちの変化に気づく</li>
+    </ul>
+    <p><strong>期待効果：</strong>お金では測れない人間関係という資産の存在に気づき、安心感の源が広がる</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🐢 意図的に「減速」する時間を1つだけつくる（20〜30分）</h4>
+    <p><strong>目的：</strong>「システムから降りる」感覚を、日常の中で小さく体験する</p>
+    <p><strong>手順：</strong></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>📝 今日の予定の中から「本当にそのペースが必要か」怪しいものを1つ選ぶ</li>
+      <li>📝 その予定を意図的に早めに切り上げる、または1つ削る</li>
+      <li>📝 生まれた時間で何もせず、景色や気分の変化をただ眺めてみる</li>
+    </ul>
+    <p><strong>期待効果：</strong>「減速すれば、景色が鮮明に見える」という帯文の感覚を、実際に短時間でも体感できる</p>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">📊 アクション実行の優先順位</h3>
+  <div class="metric">
+    <span class="metric-label">支出の棚卸し</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 90%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--primary);">最優先</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">「縁」への感謝を伝える</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 75%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">中</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">意図的な減速の時間をつくる</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 70%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">中</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
