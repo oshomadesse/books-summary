@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<!-- Primary: #2C3E70 / Secondary: #F4A261 / Accent: #E76F51 -->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>行動経済学が最強の学問である | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#2C3E70;
+    --primary-light:#4A5D9E;
+    --secondary:#F4A261;
+    --accent:#E76F51;
+    --bg:#FAF9F6;
+    --card:#FFFFFF;
+    --text:#232B3E;
+    --muted:#6B7280;
+    --border:#E6E2D8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:16px 16px 48px;}
+  header{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);
+    color:#fff;
+    padding:28px 20px;
+    border-radius:16px;
+    margin-bottom:16px;
+  }
+  header .cat{
+    display:inline-block;
+    background:rgba(255,255,255,0.18);
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:0.78rem;
+    letter-spacing:0.05em;
+    margin-bottom:10px;
+  }
+  header h1{font-size:1.5rem;margin:0 0 6px;line-height:1.4;}
+  header .author{font-size:0.9rem;opacity:0.85;}
+
+  .hero{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 2px 8px rgba(44,62,112,0.06);
+  }
+  .hero h2{
+    font-size:0.95rem;
+    color:var(--primary);
+    margin:0 0 12px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .qa-block{display:flex;flex-direction:column;gap:10px;}
+  .qa-item{padding:12px 14px;border-radius:12px;background:#F5F3EE;border-left:4px solid var(--secondary);}
+  .qa-item.answer{border-left-color:var(--accent);}
+  .qa-label{font-size:0.72rem;font-weight:700;color:var(--muted);letter-spacing:0.05em;margin-bottom:4px;}
+  .qa-text{font-size:0.92rem;}
+
+  .stats{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .stat-badge{
+    flex:1;min-width:100px;
+    background:var(--primary);
+    color:#fff;
+    border-radius:12px;
+    padding:10px 8px;
+    text-align:center;
+  }
+  .stat-badge .num{font-size:1.3rem;font-weight:800;display:block;}
+  .stat-badge .label{font-size:0.68rem;opacity:0.85;}
+  .stat-badge.alt{background:var(--accent);}
+  .stat-badge.alt2{background:var(--secondary);color:#3a2a15;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin-bottom:14px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--primary);
+    font-size:0.78rem;
+    font-weight:700;
+    padding:9px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+
+  .panel{display:none;}
+  .panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 1px 4px rgba(44,62,112,0.05);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:1rem;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{margin:8px 0 0;padding-left:1.1em;font-size:0.88rem;}
+  .card li{margin-bottom:5px;}
+  .why{
+    margin-top:10px;
+    background:#FFF4EC;
+    border-radius:10px;
+    padding:8px 10px;
+    font-size:0.8rem;
+    color:#8a4a2a;
+  }
+  .why b{color:var(--accent);}
+
+  .bar-row{display:flex;align-items:center;gap:8px;margin:6px 0;}
+  .bar-label{font-size:0.75rem;width:92px;flex:0 0 auto;color:var(--muted);}
+  .bar-track{flex:1;background:#EFEBE2;border-radius:999px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--secondary),var(--accent));border-radius:999px;}
+
+  blockquote{
+    margin:0 0 10px;
+    padding:12px 14px;
+    background:#F5F3EE;
+    border-left:4px solid var(--primary);
+    border-radius:8px;
+    font-size:0.88rem;
+    font-style:italic;
+  }
+  blockquote .note{display:block;margin-top:6px;font-size:0.72rem;font-style:normal;color:var(--muted);}
+
+  .action-item{display:flex;gap:10px;align-items:flex-start;}
+  .action-num{
+    flex:0 0 auto;
+    width:28px;height:28px;border-radius:50%;
+    background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:0.85rem;
+  }
+  footer{text-align:center;font-size:0.72rem;color:var(--muted);margin-top:22px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="cat">🧠 心理学 / 行動経済学</span>
+    <h1>行動経済学が最強の学問である</h1>
+    <div class="author">著者：相良奈美香</div>
+  </header>
+
+  <section class="hero">
+    <h2>⚡ 要約＝問い×答え×根拠</h2>
+    <div class="qa-block">
+      <div class="qa-item">
+        <div class="qa-label">Q. 問い</div>
+        <div class="qa-text">なぜ人は「損」を極端に嫌い、環境や気分ひとつで判断を変えてしまうのか？</div>
+      </div>
+      <div class="qa-item answer">
+        <div class="qa-label">A. 答え</div>
+        <div class="qa-text">意思決定は「認知のクセ」「状況」「感情」という3つの力に体系的に歪められているから。この3分類を知れば非合理性を予測し、逆手に取れる。</div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-label">Why. 根拠</div>
+        <div class="qa-text">ナッジ理論・プロスペクト理論・アフェクトなど行動経済学の主要理論を、著者が初めてこの3分類で体系化。19万部超のベストセラーとして支持されている。</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat-badge"><span class="num">3</span><span class="label">非合理の分類軸</span></div>
+      <div class="stat-badge alt"><span class="num">7+</span><span class="label">主要理論を体系化</span></div>
+      <div class="stat-badge alt2"><span class="num">19万部</span><span class="label">突破のベストセラー</span></div>
+    </div>
+  </section>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">🔑 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases" onclick="switchTab('cases')">💡 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">🗨️ 重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </nav>
+
+  <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🐢🐇 システム1 vs システム2</h3>
+      <ul>
+        <li>システム1＝直感的・瞬間的な「ファスト」な思考</li>
+        <li>システム2＝注意深く分析する「スロー」な思考</li>
+        <li>普段の判断の大半はシステム1に依存している</li>
+      </ul>
+      <div class="why"><b>理由：</b>サンクコスト・機会コスト・ホットハンド効果など、他の認知バイアスの多くがここから派生する「土台」の理論だから。</div>
+    </div>
+    <div class="card">
+      <h3>🪁 ナッジ理論</h3>
+      <ul>
+        <li>罰則や金銭的インセンティブなしに、環境設計だけで望ましい行動を後押しする</li>
+        <li>2008年セイラー＆サンスティーンが提唱</li>
+      </ul>
+      <div class="why"><b>理由：</b>強制せずに行動を変えられるため、行政・企業双方でコストの低い施策として応用範囲が広い。</div>
+    </div>
+    <div class="card">
+      <h3>⚖️ プロスペクト理論（損失回避）</h3>
+      <ul>
+        <li>人は「得る喜び」より「失う痛み」を強く感じる</li>
+        <li>確率を歪めて認知し、非合理な選択をしてしまう</li>
+      </ul>
+      <div class="why"><b>理由：</b>期間限定セールや保険商品など、消費行動の裏側にある心理を説明する最重要理論の一つだから。</div>
+    </div>
+    <div class="card">
+      <h3>🖐️ 身体的認知（エンボディード・コグニション）</h3>
+      <ul>
+        <li>脳内だけでなく身体感覚も判断に影響する</li>
+        <li>「重い／軽い」など具体的な感覚で抽象的な概念を理解する「概念メタファー」</li>
+      </ul>
+      <div class="why"><b>理由：</b>頭で考えているつもりでも、実は手触りや温度などの身体感覚に判断が左右されている事実を示すため。</div>
+    </div>
+    <div class="card">
+      <h3>🌫️ アフェクト（淡い感情）</h3>
+      <ul>
+        <li>喜怒哀楽ほど強くない、ふんわりした好き嫌いの感覚</li>
+        <li>「アフェクト・ヒューリスティック」がリスク評価や購買判断を歪める</li>
+      </ul>
+      <div class="why"><b>理由：</b>人は「何を知っているか」だけでなく「どう感じているか」で判断することを端的に示す概念だから。</div>
+    </div>
+    <div class="card">
+      <h3>🌪️ 不確実性理論</h3>
+      <ul>
+        <li>不確実な状況ほど人の判断は歪みやすい</li>
+        <li>先が読めない場面での意思決定パターンを説明する</li>
+      </ul>
+      <div class="why"><b>理由：</b>「予測できない時代」にこそ、非合理な判断を自覚し補正する必要があるため。</div>
+    </div>
+    <div class="card">
+      <h3>💬 パワー・オブ・ビコーズ</h3>
+      <ul>
+        <li>エレン・ランガー提唱。理由を添えるだけで人は納得・協力しやすくなる</li>
+        <li>理由の中身が弱くても効果を発揮する</li>
+      </ul>
+      <div class="why"><b>理由：</b>交渉・依頼・説得といった日常のコミュニケーションに即応用できる実践的な理論だから。</div>
+    </div>
+  </section>
+
+  <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>序章：行動経済学とは何か</h3>
+      <ul>
+        <li>経済学（合理性）と心理学（感情・直感）が融合した学問</li>
+        <li>Google・Amazon・Netflixなど世界のトップ企業が人材を奪い合う「最強の学問」</li>
+      </ul>
+      <div class="why"><b>理由：</b>本書全体の前提として、なぜ今このスキルが求められるのかを示す章だから。</div>
+    </div>
+    <div class="card">
+      <h3>第1部：認知のクセが生む非合理</h3>
+      <ul>
+        <li>システム1／システム2、サンクコスト、機会コスト、ホットハンド効果</li>
+        <li>頭の中の「思考のクセ」が判断を歪める仕組みを解説</li>
+      </ul>
+      <div class="why"><b>理由：</b>最も基本的で応用範囲の広いカテゴリーであり、他の2部の土台になるため。</div>
+    </div>
+    <div class="card">
+      <h3>第2部：状況が変える意思決定</h3>
+      <ul>
+        <li>天気、周囲に人がいるか、物や人の並び順など「環境」の影響</li>
+        <li>ナッジ理論・身体的認知が中心テーマ</li>
+      </ul>
+      <div class="why"><b>理由：</b>「関係ない」と思われがちな外部要因が、実は判断を大きく左右する事実を示すため。</div>
+    </div>
+    <div class="card">
+      <h3>第3部：感情が動かす判断</h3>
+      <ul>
+        <li>プロスペクト理論、アフェクト、不確実性理論</li>
+        <li>感情という「数値化しにくい要素」を体系的に扱う</li>
+      </ul>
+      <div class="why"><b>理由：</b>合理性のモデルだけでは説明できない、人間らしい判断のブレを理解するため。</div>
+    </div>
+    <div class="card">
+      <h3>終章：ビジネス・日常への応用</h3>
+      <ul>
+        <li>パワー・オブ・ビコーズなど、実践フレームワークの提示</li>
+        <li>3分類（認知のクセ／状況／感情）を使いこなすための総まとめ</li>
+      </ul>
+      <div class="why"><b>理由：</b>知識を「知っている」から「使える」へ変えるための着地点だから。</div>
+    </div>
+  </section>
+
+  <section id="panel-cases" class="panel" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3>🪰 スキポール空港の小便器のハエ</h3>
+      <ul>
+        <li>男性用小便器の中央に小バエの絵を描いただけ</li>
+        <li>「狙いたくなる」心理を利用し、清掃費を大幅削減</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>罰則も説得も使わず、環境デザインだけで行動が変わるナッジの威力を象徴する事例だから。</div>
+    </div>
+    <div class="card">
+      <h3>👣 レジ待ちの足跡ステッカー</h3>
+      <ul>
+        <li>床の足跡マークに沿って人は自然に並ぶ</li>
+        <li>指示や注意書きより行動誘導効果が高い</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「状況」という一見無関係な要素が行動を強く左右することを示す身近な例だから。</div>
+    </div>
+    <div class="card">
+      <h3>🏷️ 期間限定セール</h3>
+      <ul>
+        <li>「今買わないと損」という損失回避の心理を刺激</li>
+        <li>それほど欲しくない商品まで購入してしまう</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>プロスペクト理論がマーケティング現場でどう利用されているかを具体的に示すため。</div>
+    </div>
+    <div class="card">
+      <h3>🖨️ コピー機の順番待ち実験（エレン・ランガー）</h3>
+      <ul>
+        <li>「コピーを取らせてください、急いでいるので」と理由を添えるだけで承諾率が上昇</li>
+        <li>理由の中身が弱くても効果は変わらないケースが多い</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>パワー・オブ・ビコーズが交渉や依頼の場でいかに実用的かを示す代表例だから。</div>
+    </div>
+  </section>
+
+  <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes">
+    <blockquote>
+      人は「何を知っているか」だけでなく、「どう感じているか」で判断する。
+      <span class="note">※原典の引用文が確認できなかったため要旨で代替（要旨）</span>
+    </blockquote>
+    <blockquote>
+      行動経済学は、人間の非合理性を単なる「バグ」としてではなく、体系的に予測可能な「クセ」として捉え直す学問である。
+      <span class="note">※要旨</span>
+    </blockquote>
+    <blockquote>
+      「認知のクセ」「状況」「感情」という3つの視点で理論を整理すると、断片的な知識が実践可能なスキルに変わる。
+      <span class="note">※要旨</span>
+    </blockquote>
+  </section>
+
+  <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="card">
+      <div class="action-item">
+        <div class="action-num">1</div>
+        <div>
+          <h3 style="margin-top:0;">損失回避チェック（15分）</h3>
+          <ul>
+            <li>目的：衝動買いや不要な契約を防ぐ</li>
+            <li>やること：買い物や契約の直前に「今、損をしたくない気持ちに流されていないか」を自問する</li>
+            <li>期待効果：無駄な支出の削減、冷静な意思決定</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="action-item">
+        <div class="action-num">2</div>
+        <div>
+          <h3 style="margin-top:0;">環境デザイン実験（20〜30分）</h3>
+          <ul>
+            <li>目的：「状況」が自分の行動に与える影響を体感する</li>
+            <li>やること：デスクの配置や通知設定など身の回りの環境を1つ変え、行動の変化を観察する</li>
+            <li>期待効果：意志力に頼らず望ましい習慣を作る手がかりを得る</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="action-item">
+        <div class="action-num">3</div>
+        <div>
+          <h3 style="margin-top:0;">パワー・オブ・ビコーズ実践（15分）</h3>
+          <ul>
+            <li>目的：依頼や交渉の成功率を高める</li>
+            <li>やること：誰かに頼み事をするとき「なぜなら〜だから」と理由を一言添える</li>
+            <li>期待効果：相手の協力・承諾を得やすくなる</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📊 3分類フレームワークの重み</h3>
+      <div class="bar-row"><span class="bar-label">認知のクセ</span><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div></div>
+      <div class="bar-row"><span class="bar-label">状況</span><div class="bar-track"><div class="bar-fill" style="width:70%"></div></div></div>
+      <div class="bar-row"><span class="bar-label">感情</span><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div></div>
+      <div class="why"><b>理由：</b>3要素はそれぞれ独立ではなく重なり合って働くため、どれか一つでも意識できれば非合理な判断を減らせる。</div>
+    </div>
+  </section>
+
+  <footer>📚 books-summary daily infographic</footer>
+</div>
+
+<script>
+function switchTab(name){
+  var panels = document.querySelectorAll('.panel');
+  var tabs = document.querySelectorAll('nav.tabs button');
+  panels.forEach(function(p){ p.classList.remove('active'); });
+  tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('tab-'+name).setAttribute('aria-selected','true');
+}
+</script>
+</body>
+</html>
