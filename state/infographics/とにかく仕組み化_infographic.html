@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>とにかく仕組み化 — インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー:   #1E3A5F (紺 - 信頼・秩序)
+  セカンダリー:   #E8963C (オレンジ - 行動・危機感)
+  アクセント:     #2FA88A (グリーン - 成長・進行感)
+  背景グラデーション: linear-gradient(135deg, #0F1E33 0%, #1E3A5F 100%)
+-->
+<style>
+  :root{
+    --primary:#1E3A5F;
+    --primary-light:#2E547F;
+    --secondary:#E8963C;
+    --accent:#2FA88A;
+    --bg:#0F1E33;
+    --card-bg:#ffffff;
+    --text-dark:#1a1a2e;
+    --text-light:#f5f6fa;
+    --muted:#6b7280;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+    background:linear-gradient(135deg,var(--bg) 0%,var(--primary) 100%);
+    color:var(--text-dark);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    padding:32px 20px 24px;
+    text-align:center;
+    color:var(--text-light);
+  }
+  header .eyebrow{
+    font-size:0.8rem;
+    letter-spacing:0.15em;
+    color:var(--secondary);
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  header h1{
+    font-size:1.6rem;
+    font-weight:800;
+    margin-bottom:6px;
+  }
+  header .author{
+    font-size:0.9rem;
+    color:#c9d4e3;
+  }
+  .container{
+    max-width:900px;
+    margin:0 auto;
+    padding:0 16px;
+  }
+  /* ファーストビュー: Why & How ブロック */
+  .hero-block{
+    background:var(--card-bg);
+    border-radius:16px;
+    padding:22px 20px;
+    margin:20px 0;
+    box-shadow:0 8px 30px rgba(0,0,0,0.25);
+    border-top:6px solid var(--secondary);
+  }
+  .hero-block h2{
+    font-size:1.05rem;
+    color:var(--primary);
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .why-how{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .why-how .item{
+    background:#f4f7fb;
+    border-radius:10px;
+    padding:14px 16px;
+    border-left:4px solid var(--primary);
+  }
+  .why-how .item.answer{border-left-color:var(--accent);}
+  .why-how .item.evidence{border-left-color:var(--secondary);}
+  .why-how .label{
+    font-size:0.75rem;
+    font-weight:700;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:6px;
+  }
+  .why-how p{font-size:0.92rem;color:var(--text-dark);}
+
+  .stats-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:16px;
+  }
+  .stat-badge{
+    flex:1;
+    min-width:120px;
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);
+    color:#fff;
+    border-radius:10px;
+    padding:12px 10px;
+    text-align:center;
+  }
+  .stat-badge .num{font-size:1.3rem;font-weight:800;color:var(--secondary);}
+  .stat-badge .lbl{font-size:0.7rem;color:#dbe4f0;margin-top:2px;}
+
+  /* タブ */
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:24px 0 12px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    background:rgba(255,255,255,0.12);
+    color:var(--text-light);
+    border:none;
+    border-radius:999px;
+    padding:9px 16px;
+    font-size:0.82rem;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .2s;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--secondary);
+    color:#1a1a2e;
+  }
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  .card{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:0 4px 16px rgba(0,0,0,0.15);
+  }
+  .card h3{
+    font-size:1rem;
+    color:var(--primary);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{padding-left:1.2em;font-size:0.9rem;}
+  .card ul li{margin-bottom:5px;}
+  .why-tag{
+    display:inline-block;
+    margin-top:10px;
+    background:#fdf1e0;
+    color:#9a5b0e;
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:0.82rem;
+  }
+  .why-tag b{color:var(--secondary);}
+
+  .example-card{border-left:5px solid var(--accent);}
+  .quote-card{
+    background:linear-gradient(135deg,#fdf1e0 0%,#fff 100%);
+    border-left:5px solid var(--secondary);
+  }
+  .quote-card blockquote{
+    font-size:0.95rem;
+    font-style:italic;
+    color:var(--text-dark);
+    margin-bottom:8px;
+  }
+  .quote-tag{
+    font-size:0.7rem;
+    background:var(--secondary);
+    color:#1a1a2e;
+    padding:2px 8px;
+    border-radius:6px;
+    font-weight:700;
+  }
+
+  .action-card{border-left:5px solid var(--primary);}
+  .action-card .meta{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:8px;
+    font-size:0.8rem;
+  }
+  .action-card .meta span{
+    background:#eef2f8;
+    border-radius:8px;
+    padding:4px 8px;
+    color:var(--primary);
+  }
+
+  .related-list{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:16px 18px;
+    font-size:0.88rem;
+  }
+  .related-list li{margin-bottom:8px;list-style:none;padding-left:1.2em;position:relative;}
+  .related-list li::before{
+    content:"📖";
+    position:absolute;
+    left:0;
+  }
+
+  footer{
+    text-align:center;
+    color:#c9d4e3;
+    font-size:0.75rem;
+    margin-top:28px;
+    padding:0 20px;
+  }
+
+  @media(min-width:640px){
+    .why-how{grid-template-columns:1fr 1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">📚 TODAY'S BOOK</div>
+  <h1>とにかく仕組み化<br>人の上に立ち続けるための思考法</h1>
+  <div class="author">著者: 安藤広大（株式会社識学 代表取締役社長）／ダイヤモンド社</div>
+</header>
+
+<div class="container">
+
+  <section class="hero-block">
+    <h2>🎯 要約：問い × 答え × 根拠</h2>
+    <div class="why-how">
+      <div class="item">
+        <div class="label">Why - 問い</div>
+        <p>会社や組織が「気合い」「個人の頑張り」「優秀な人材」に頼らず、リーダーが変わっても成長し続けるにはどうすればいいのか？</p>
+      </div>
+      <div class="item answer">
+        <div class="label">How - 答え</div>
+        <p>属人化を排し、責任と権限・危機感・比較と平等・企業理念・進行感の5つの仕組みを整えること。個人ではなく「仕組み」を責め、ルールで運営する組織をつくる。</p>
+      </div>
+      <div class="item evidence">
+        <div class="label">根拠</div>
+        <p>「識学」というマネジメント法は、著者の起業以来9年で4,500社以上に導入され、ベストセラー3部作（『リーダーの仮面』『数値化の鬼』本書）シリーズ累計100万部を突破している。</p>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-badge"><div class="num">4,500社+</div><div class="lbl">識学 導入実績</div></div>
+      <div class="stat-badge"><div class="num">100万部+</div><div class="lbl">識学3部作 累計</div></div>
+      <div class="stat-badge"><div class="num">5つ</div><div class="lbl">仕組み化の柱</div></div>
+    </div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="コンテンツタブ">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">💡 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples" onclick="switchTab('examples')">🔍 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-related" id="tab-related" onclick="switchTab('related')">🔗 関連書籍</button>
+  </div>
+
+  <!-- 主要概念 -->
+  <div class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3>⚙️ 仕組み化</h3>
+      <ul>
+        <li>「誰がやっても同じ成果が出る」状態を制度・ルールでつくること</li>
+        <li>個人の気合いやセンスに依存する運営から脱却する</li>
+        <li>「会社が変わる」＝「会社の仕組みが変わる」こと</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> 優秀な個人がいなくなっても組織が機能し続けるための最重要インフラだから。</div>
+    </div>
+
+    <div class="card">
+      <h3>📏 責任と権限（正しく線を引く）</h3>
+      <ul>
+        <li>役割ごとに「どこまで自分で決めていいか」を明確にする</li>
+        <li>権限を渡さずに責任だけ負わせる状態を防ぐ</li>
+        <li>線引きが曖昧だと現場の意思決定が遅くなる</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> 権限と責任のズレは、部下の主体性を奪い、意思決定の停滞を招くから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⚠️ 危機感（本当の意味での怖い人）</h3>
+      <ul>
+        <li>ぬるい優しさではなく、健全な緊張感がチームを前進させる</li>
+        <li>「言うべきことを言う」姿勢がリーダーには必要</li>
+        <li>「いいリーダーの言葉は、時間差で遅れて効いてくる」</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> 心地よさだけを優先する組織は、成長のための痛みを避け続けて停滞するから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ 比較と平等（負けを認められること）</h3>
+      <ul>
+        <li>公平な評価軸があるからこそ、人は自分の現在地を正しく認識できる</li>
+        <li>「平等」とは結果を揃えることではなく、機会とルールを揃えること</li>
+        <li>負けを認められる環境が次の成長のスタート地点になる</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> 比較を避け続けると、現状維持のぬるま湯から抜け出せなくなるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧭 企業理念（神の見えざる手）</h3>
+      <ul>
+        <li>ルールだけでは対応できない状況で、判断の拠り所になるのが理念</li>
+        <li>理念は掲げるだけでなく、日々の意思決定に浸透して初めて機能する</li>
+        <li>仕組みの「上位」に位置する共通の目的地</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> ルールが想定していない例外的な場面でも、理念があれば全員が同じ方向を向けるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🚀 進行感（より大きなことを成す）</h3>
+      <ul>
+        <li>「前に進んでいる」という実感が個人と組織のエネルギー源になる</li>
+        <li>小さな達成を積み重ね、ゴールへの距離を可視化する</li>
+        <li>仕組み化の最終目的は、より大きな目標に組織全体で挑むこと</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> 進行感がないと、仕組みが「管理のための管理」に堕落してしまうから。</div>
+    </div>
+
+  </div>
+
+  <!-- 各章要約 -->
+  <div class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <div class="card">
+      <h3>序章：なぜ仕組み化が必要か</h3>
+      <ul>
+        <li>属人化した組織は、キーパーソンが抜けた瞬間に崩壊する</li>
+        <li>「個人を責めず、仕組みを責める」という基本姿勢を提示</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> 本書全体の土台となる問題意識を最初に共有するため。</div>
+    </div>
+
+    <div class="card">
+      <h3>第1章：責任と権限 ─ 正しく線を引く</h3>
+      <ul>
+        <li>役割と権限の境界を曖昧にしないルール設計を解説</li>
+        <li>権限委譲とセットで結果責任を持たせる考え方</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> 仕組み化の出発点は「誰が何を決めていいか」を明文化することだから。</div>
+    </div>
+
+    <div class="card">
+      <h3>第2章：危機感 ─ 本当の意味で怖い人になる</h3>
+      <ul>
+        <li>優しさだけのリーダーがチームを甘やかすリスクを指摘</li>
+        <li>健全な緊張関係のつくり方を扱う</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> ぬるい人間関係は、短期的な快適さと引き換えに成長を止めてしまうから。</div>
+    </div>
+
+    <div class="card">
+      <h3>第3章：比較と平等 ─ 負けを認められる仕組み</h3>
+      <ul>
+        <li>公平な評価制度が個人の成長意欲を引き出す仕組みを解説</li>
+        <li>「平等」の本当の意味を再定義する</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> あいまいな評価基準は不満と不信の温床になり、仕組みの信頼性を損なうから。</div>
+    </div>
+
+    <div class="card">
+      <h3>第4章：企業理念 ─ 神の見えざる手</h3>
+      <ul>
+        <li>ルールが及ばない領域を理念がどう補うかを説明</li>
+        <li>理念の浸透プロセスに触れる</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> ルールだけの組織は硬直化するため、理念という上位概念が柔軟性を担保するから。</div>
+    </div>
+
+    <div class="card">
+      <h3>第5章：進行感 ─ より大きなことを成す</h3>
+      <ul>
+        <li>目標達成のプロセスを実感できる設計の重要性</li>
+        <li>仕組み化の先にある「組織としての挑戦」を描く</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> 仕組みは守りのためだけでなく、より大きな挑戦のための攻めの土台でもあるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>終章：仕組みが人を成長させる</h3>
+      <ul>
+        <li>仕組み化は人を縛るのではなく、成長の土台をつくる営みだとまとめる</li>
+      </ul>
+      <div class="why-tag"><b>理由:</b> 「仕組み＝冷たい管理」という誤解を解き、本書のメッセージを再確認するため。</div>
+    </div>
+
+  </div>
+
+  <!-- 具体例 -->
+  <div class="tab-panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+
+    <div class="card example-card">
+      <h3>🏢 例1：「あの人がいないと回らない」現場</h3>
+      <ul>
+        <li>特定のベテラン社員だけが業務のやり方を把握している状態</li>
+        <li>本人の退職・休職で業務が止まるリスクを常に抱える</li>
+        <li>本書はこれを「属人化」の典型例として位置づける（一般化した例・要旨）</li>
+      </ul>
+      <div class="why-tag"><b>理由（この例が示すこと）:</b> 個人のスキルに依存する組織は、成長ではなく「その人への依存」を強めてしまう。</div>
+    </div>
+
+    <div class="card example-card">
+      <h3>🤝 例2：権限のない「責任者」</h3>
+      <ul>
+        <li>肩書き上は責任者だが、決裁権限は上司に握られたままの状態</li>
+        <li>現場判断のたびに承認待ちが発生し、スピードが落ちる</li>
+        <li>本書はこれを責任と権限の線引き不足の例として説明（一般化した例・要旨）</li>
+      </ul>
+      <div class="why-tag"><b>理由（この例が示すこと）:</b> 権限が伴わない責任は、当事者の主体性とスピードの両方を奪う。</div>
+    </div>
+
+    <div class="card example-card">
+      <h3>📊 例3：識学導入企業の広がり</h3>
+      <ul>
+        <li>著者が2015年に創業した識学は、9年間で4,500社以上に導入</li>
+        <li>『リーダーの仮面』『数値化の鬼』と合わせたシリーズ累計は100万部超</li>
+      </ul>
+      <div class="why-tag"><b>理由（この例が示すこと）:</b> 「気合いではなく仕組みで動く組織」という考え方が、業種を問わず多くの企業に必要とされている証左。</div>
+    </div>
+
+  </div>
+
+  <!-- 重要な引用 -->
+  <div class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <blockquote>「いいリーダーの言葉は、時間差で遅れて効いてくる」</blockquote>
+      <p style="font-size:0.85rem;color:var(--muted);">補足: リーダーの発言は、その場で称賛されなくても、後になって部下の行動や成長に効いてくるという考え方。</p>
+    </div>
+
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <blockquote>個人を責めるのではなく、「仕組み」の不備を責めよ。</blockquote>
+      <p style="font-size:0.85rem;color:var(--muted);">補足: 失敗の原因究明を人格攻撃で終わらせず、再発を防ぐルール・制度の改善に向けるべきという本書の一貫した姿勢。</p>
+    </div>
+
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <blockquote>「会社が変わる」とは「会社の仕組みが変わる」ことである。</blockquote>
+      <p style="font-size:0.85rem;color:var(--muted);">補足: 意識改革のスローガンだけでは組織は変わらず、制度・ルールそのものに手を入れて初めて変化が起きるという主張。</p>
+    </div>
+
+  </div>
+
+  <!-- 今日のアクション -->
+  <div class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="card action-card">
+      <h3>1️⃣ 属人化チェックリストを書き出す</h3>
+      <ul>
+        <li>自分のチームで「自分（またはあの人）がいないと回らない業務」を1つ書き出す</li>
+        <li>それを代替可能にするための最初の一歩（マニュアル化・手順書化）をメモする</li>
+      </ul>
+      <div class="meta"><span>🎯 目的: 属人化リスクの可視化</span><span>📈 期待効果: 不在時の業務停止リスク低減</span><span>⏱ 20分</span></div>
+    </div>
+
+    <div class="card action-card">
+      <h3>2️⃣ 責任と権限の線を紙に書く</h3>
+      <ul>
+        <li>自分が任せている・任されているタスクを1つ選ぶ</li>
+        <li>「権限はどこまで渡っているか」「責任の範囲はどこまでか」を書き出して比べる</li>
+      </ul>
+      <div class="meta"><span>🎯 目的: 権限と責任のズレの発見</span><span>📈 期待効果: 意思決定スピードと納得感の向上</span><span>⏱ 15分</span></div>
+    </div>
+
+    <div class="card action-card">
+      <h3>3️⃣ 曖昧なルールを1つ明文化する</h3>
+      <ul>
+        <li>チームで口頭伝承のまま運用されているルールを1つ選ぶ</li>
+        <li>箇条書きで5分だけ言語化し、誰が読んでも同じ行動になるか確認する</li>
+      </ul>
+      <div class="meta"><span>🎯 目的: 暗黙知を仕組みに変換する練習</span><span>📈 期待効果: 再現性のある業務プロセスの第一歩</span><span>⏱ 15分</span></div>
+    </div>
+
+  </div>
+
+  <!-- 関連書籍 -->
+  <div class="tab-panel" id="panel-related" role="tabpanel" aria-labelledby="tab-related">
+    <ul class="related-list">
+      <li><b>リーダーの仮面（安藤広大）</b>: 同じ識学三部作の一冊。感情を排し「型」に沿って部下と向き合うリーダー論を扱い、仕組み化の前提となる個人のマネジメントスタンスを補完する。</li>
+      <li><b>数値化の鬼（安藤広大）</b>: 同じ識学三部作の一冊。行動を数値で管理する思考法を扱い、仕組み化を実現するための「評価の物差し」を提供する。</li>
+      <li><b>ティール組織（フレデリック・ラルー）</b>: 管理・ヒエラルキーを最小化する新しい組織モデルを提示し、本書のルールベースのマネジメント思想と対照的な視点を与える。</li>
+      <li><b>マネジメント（P.F.ドラッカー）</b>: 個人の資質に頼らず機能する組織づくりの重要性を説く経営学の古典で、本書の主張と通じる。</li>
+      <li><b>学習する組織（ピーター・センゲ）</b>: 仕組みや構造が組織の行動パターンを規定するという「システム思考」の観点から、本書の仕組み化の議論を補強する。</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  📚 books-summary daily infographic ／ 情報源: Web検索による公開情報（書店・出版社・書評記事）
+</footer>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('.tab-panel');
+    var tabs = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){ p.classList.remove('active'); });
+    tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+    document.getElementById('panel-'+name).classList.add('active');
+    document.getElementById('tab-'+name).setAttribute('aria-selected','true');
+  }
+</script>
+
+</body>
+</html>
