@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ユダヤ人大富豪の教え - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #1e3a5f, セカンダリー #c9a227, アクセント #f4c430 -->
+<style>
+:root {
+  --primary: #1e3a5f;
+  --secondary: #c9a227;
+  --accent: #f4c430;
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text: #2d3748;
+  --text-light: #718096;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-radius: 0 0 1rem 1rem;
+  margin-bottom: 2rem;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 1rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: var(--card-bg);
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  color: var(--secondary);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+.tab-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.tab-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-color: var(--secondary);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.4s;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, rgba(30,58,95,0.08), rgba(244,196,48,0.12));
+  border-left: 3px solid var(--secondary);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+}
+.reason-box strong {
+  color: var(--primary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.chapter-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+}
+.chapter-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.chapter-card li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+}
+.chapter-card li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--secondary);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.example-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.example-card h4 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.8rem;
+}
+.example-card p {
+  margin-bottom: 0.6rem;
+  line-height: 1.7;
+}
+.quote-card {
+  background: linear-gradient(135deg, rgba(30,58,95,0.05), rgba(201,162,39,0.08));
+  border-left: 4px solid var(--primary);
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+.quote-card .quote-text {
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+}
+.quote-card .quote-note {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-style: normal;
+}
+.action-card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--secondary);
+}
+.action-card h4 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.6rem;
+}
+.action-card .action-meta {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.flow-diagram {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, rgba(30,58,95,0.06), rgba(244,196,48,0.1));
+  border-radius: 0.5rem;
+}
+.flow-arrow {
+  font-size: 1.5rem;
+  color: var(--secondary);
+  margin: 0 0.8rem;
+}
+.book-list {
+  display: grid;
+  gap: 1rem;
+}
+.book-item {
+  background: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.book-item h4 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.4rem;
+}
+.book-item .author {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+.book-item .relation {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.stat-badge {
+  flex: 1;
+  min-width: 140px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+.stat-badge .num {
+  font-size: 1.6rem;
+  font-weight: 700;
+  display: block;
+}
+.stat-badge .label {
+  font-size: 0.8rem;
+  opacity: 0.9;
+}
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  .tabs {
+    flex-wrap: nowrap;
+  }
+  .tab-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>💰 ユダヤ人大富豪の教え</h1>
+  <p>幸せな金持ちになる17の秘訣 — 本田健</p>
+</header>
+
+<div class="container">
+  <div class="summary-block">
+    <h2>💡 要約：問い×答え×根拠</h2>
+    <div class="summary-item">
+      <strong>❓ 問い</strong>
+      お金と幸せの両方を手に入れるには、何を学び、どう行動すればいいのか？
+    </div>
+    <div class="summary-item">
+      <strong>✅ 答え</strong>
+      自分が大好きなことを見つけ、それを通じて社会に質と量の伴ったサービスを提供し続ける「技術」を、17の秘訣として段階的に身につける。
+    </div>
+    <div class="summary-item">
+      <strong>🔍 Why（なぜそうなのか）</strong>
+      報酬は提供したサービスの質と量で決まるため、情熱を持って取り組める分野でこそ、質と量を長期的に積み上げられる。著者自身がユダヤ人大富豪ゲラー氏に師事し、体験課題を通じて実証した学びである。
+    </div>
+    <div class="summary-item">
+      <strong>🛠️ How（そのためには）</strong>
+      1) 自分を知り大好きなことを見つける、2) 直観力と思考・感情の力を鍛える、3) セールス・スピーチ・人脈の技術を実践で磨く、4) お金の法則と自分のビジネスの持ち方を学ぶ、5) 人に気持ちよく助けてもらいパートナーシップを築く、6) 恐れず決断し、失敗と付き合い、夢を見続ける。
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-badge"><span class="num">17</span><span class="label">秘訣の数</span></div>
+    <div class="stat-badge"><span class="num">200万部+</span><span class="label">シリーズ累計発行部数</span></div>
+    <div class="stat-badge"><span class="num">2003年</span><span class="label">刊行年</span></div>
+    <div class="stat-badge"><span class="num">1,000個</span><span class="label">電球販売課題の個数</span></div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念の詳細</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+  </div>
+
+  <div id="tab1" class="tab-content active" role="tabpanel">
+    <div class="card-grid">
+      <div class="card">
+        <h3>🕊️ 自由人と不自由人</h3>
+        <ul>
+          <li>人生の手綱を自分で握っているかどうかの違い</li>
+          <li>時間・お金・人間関係を自分で選べる状態</li>
+          <li>社会の成り立ちを知ることが出発点</li>
+          <li>本書全体を貫く世界観</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>社会の構造を理解しないまま行動しても、自由人になる道筋が見えない。まずここを知ることが全ての土台になる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>⚖️ サービスの質と量が報酬を決める</h3>
+        <ul>
+          <li>報酬額は提供した価値に比例する</li>
+          <li>質と量の両方を高め続ける必要がある</li>
+          <li>好きなことなら質と量を積み上げやすい</li>
+          <li>「大好きなこと」を仕事にする根拠</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>この原則を理解すると、収入は運や才能ではなく、日々の提供価値の積み重ねだと納得できる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🔮 直観力</h3>
+        <ul>
+          <li>人やものを見る目を養う</li>
+          <li>頭で考える前の瞬時の判断力</li>
+          <li>経験と観察の積み重ねで磨かれる</li>
+          <li>ビジネス判断の速さと精度を支える</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>情報が不完全な状況でも素早く正しい判断を下せることが、チャンスをつかむ決め手になる。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🧠 思考と感情の力</h3>
+        <ul>
+          <li>内面の状態が現実の結果に反映される</li>
+          <li>恐れや不安は行動を鈍らせる</li>
+          <li>ポジティブな感情は行動力を高める</li>
+          <li>感謝と平安を選び取る姿勢</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>外部環境より先に内面が整っていないと、せっかくの技術やチャンスも生かしきれない。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🗣️ セールス・スピーチの技術</h3>
+        <ul>
+          <li>相手の立場に立った説明の力</li>
+          <li>電球1000個販売など実践課題で鍛える</li>
+          <li>人前で話す自信と構成力</li>
+          <li>信頼を得る伝え方の型</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>どんなに良いアイデアや商品も、伝えて動かす力がなければ価値として社会に届かない。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🤝 人脈とパートナーシップ</h3>
+        <ul>
+          <li>人に気持ちよく助けてもらう関係性</li>
+          <li>与え合うことで信頼が積み上がる</li>
+          <li>「アラジンの魔法のランプ」の比喩</li>
+          <li>一人でやり切ろうとしない姿勢</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>大きな成果ほど一人では成し得ず、助け合える人間関係が成功のスピードと安定性を左右する。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💵 お金の法則と自分のビジネス</h3>
+        <ul>
+          <li>お金は道具であり目的ではない</li>
+          <li>雇われる側から価値を生み出す側へ</li>
+          <li>収入源を自分でコントロールする</li>
+          <li>自分のビジネスを持つ意義</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>お金の仕組みを理解し自分の事業を持つことで、外部要因に振り回されない経済的自由に近づく。
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>👑 ミリオネア・メンタリティ</h3>
+        <ul>
+          <li>豊かさを当然のものとして受け入れる思考</li>
+          <li>失敗を恐れず情熱的に決断し行動する</li>
+          <li>失敗を学びに変える付き合い方</li>
+          <li>夢を見続け人生の全てを受け取る姿勢</li>
+        </ul>
+        <div class="reason-box">
+          <strong>理由：</strong>技術やお金の知識だけでなく、成功者に共通する思考のクセを身につけることが最後の決め手になる。
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-diagram">
+      <h3 style="color: var(--primary); margin-bottom: 1rem;">🔄 学びの因果関係</h3>
+      <div class="flow-item">
+        <span>社会の成り立ちを知る</span>
+        <span class="flow-arrow">→</span>
+        <span>自由人／不自由人の違いに気づく</span>
+        <span class="flow-arrow">→</span>
+        <span>人生の手綱を握る覚悟が生まれる</span>
+      </div>
+      <div class="flow-item">
+        <span>大好きなことを見つける</span>
+        <span class="flow-arrow">→</span>
+        <span>サービスの質と量が自然に上がる</span>
+        <span class="flow-arrow">→</span>
+        <span>報酬（富）が結果として増える</span>
+      </div>
+      <div class="flow-item">
+        <span>思考と感情を整える</span>
+        <span class="flow-arrow">→</span>
+        <span>恐れが減り行動力が上がる ↑</span>
+        <span class="flow-arrow">→</span>
+        <span>直観的な判断の精度が上がる</span>
+      </div>
+      <div class="flow-item">
+        <span>セールス・スピーチを鍛える</span>
+        <span class="flow-arrow">→</span>
+        <span>価値が正しく相手に伝わる</span>
+        <span class="flow-arrow">→</span>
+        <span>信頼と収入の両方が積み上がる</span>
+      </div>
+      <div class="flow-item">
+        <span>人に気持ちよく助けてもらう</span>
+        <span class="flow-arrow">→</span>
+        <span>人脈とパートナーシップが育つ</span>
+        <span class="flow-arrow">→</span>
+        <span>一人では届かない規模の成果が生まれる</span>
+      </div>
+      <div class="flow-item">
+        <span>お金の法則を学ぶ</span>
+        <span class="flow-arrow">→</span>
+        <span>自分のビジネスを持つ</span>
+        <span class="flow-arrow">→</span>
+        <span>収入源を自分でコントロールできる</span>
+      </div>
+      <div class="flow-item">
+        <span>勇気ある決断と行動</span>
+        <span class="flow-arrow">→</span>
+        <span>失敗を学びに変える ↑</span>
+        <span class="flow-arrow">→</span>
+        <span>ミリオネア・メンタリティが定着する</span>
+      </div>
+      <div class="flow-item">
+        <span>ミリオネア・メンタリティ</span>
+        <span class="flow-arrow">→</span>
+        <span>夢を見続ける</span>
+        <span class="flow-arrow">→</span>
+        <span>人生がもたらす全てを受け取る境地へ</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab2" class="tab-content" role="tabpanel">
+    <div class="chapter-card">
+      <h3>📖 社会と自分を知る（第1・第2の秘訣）</h3>
+      <ul>
+        <li>自由人と不自由人の違い、社会の成り立ちを理解する</li>
+        <li>サービスの質と量で報酬が決まる原則を学ぶ</li>
+        <li>自分が大好きなことを掘り下げて知る</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>この後の全ての秘訣は、社会の仕組みと自分自身を正しく理解していることを前提に組み立てられている。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 直観・思考・感情の力（第3・第4の秘訣）</h3>
+      <ul>
+        <li>ものや人を見る目を養い、直観力を高める</li>
+        <li>思考と感情が現実を作り出す仕組みを知る</li>
+        <li>恐れではなく感謝と平安を選び取る練習をする</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>外側の技術を学ぶ前に、内面の状態を整えることが、その後の学びの吸収度を左右する。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 セールスとスピーチの技術（第5・第6の秘訣）</h3>
+      <ul>
+        <li>セールスの達人になるための実践課題をこなす</li>
+        <li>スピーチの天才になるための場数を踏む</li>
+        <li>失敗を恐れず、伝える経験を積み重ねる</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>価値を生み出しても、伝え動かす力がなければ収入にも影響力にもつながらない。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 人脈とお金の法則（第7・第8の秘訣）</h3>
+      <ul>
+        <li>人脈を使いこなし、必要な人とつながる</li>
+        <li>お金の法則を学び、道具としてのお金を理解する</li>
+        <li>信頼をベースにした関係づくりを実践する</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>人とお金の両方の流れを理解することで、単発の成功でなく持続する豊かさの土台ができる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 自分のビジネスと助けてもらう技術（第9〜第11の秘訣）</h3>
+      <ul>
+        <li>自分のビジネスを持ち、価値を生み出す側に回る</li>
+        <li>「アラジンの魔法のランプ」の使い方＝人に上手に頼る技術を学ぶ</li>
+        <li>多くの人に気持ちよく助けてもらう関係を築く</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>一人で抱え込まず周囲の力を借りられることが、事業を継続的に成長させる鍵になる。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 パートナーシップとミリオネア・マインド（第12・第13の秘訣）</h3>
+      <ul>
+        <li>対等なパートナーシップの力を知る</li>
+        <li>豊かさを当然のものとして受け入れる思考を身につける</li>
+        <li>成功者に共通する心理パターンを学ぶ</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>技術やスキルだけでなく、思考の土台（マインドセット）が長期的な成功と幸福の差を生む。
+      </div>
+    </div>
+
+    <div class="chapter-card">
+      <h3>📖 勇気・失敗・夢・人生を受け取る（第14〜第17の秘訣）</h3>
+      <ul>
+        <li>勇気をもって決断し、情熱的に行動する</li>
+        <li>失敗とうまくつき合い、そこから学ぶ</li>
+        <li>夢を見ることをやめず、人生がもたらす全てを受け取る</li>
+      </ul>
+      <div class="reason-box">
+        <strong>理由：</strong>最終的に成功と幸福を分けるのは、行動を止めない勇気と、結果を素直に受け取る心の姿勢である。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab3" class="tab-content" role="tabpanel">
+    <div class="example-card">
+      <h4>💡 例1：電球を1000個売る課題</h4>
+      <p><strong>背景：</strong>ゲラーはケンに、理屈だけでなく体で学ばせるため「電球を1000個売ってこい」という実践課題を与える。</p>
+      <p><strong>展開：</strong>ケンは断られ続けながらも、相手が本当に必要としているものは何かを考え、伝え方を工夫しながら売り歩く。</p>
+      <p><strong>結果：</strong>試行錯誤の末に目標を達成し、セールスとは「押し売り」ではなく相手の役に立つ提案だと体感的に理解する。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>知識として教わるより、実際に断られる経験を重ねることで、セールスの本質が腹落ちすることを示している。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>✍️ 例2：3日以内に1000人分の署名を集める課題</h4>
+      <p><strong>背景：</strong>限られた時間で大きな目標を達成するため、ゲラーはケンに厳しい期限つきの課題を課す。</p>
+      <p><strong>展開：</strong>ケンは一人で回るだけでは間に合わないと気づき、周囲の人に協力を依頼し、人脈と巻き込み力を総動員する。</p>
+      <p><strong>結果：</strong>期限内に目標を達成し、「一人でやり切ろうとしない」「人に気持ちよく助けてもらう」ことの威力を実感する。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>大きな目標ほど、自分一人の努力量ではなく、人を動かす・巻き込む力が結果を左右することを示している。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>👴 例3：ゲラー自身の半生</h4>
+      <p><strong>背景：</strong>ユダヤ人として差別や困難に直面しながらも、ゲラーは若い頃から働き、事業を興して財を成した人物として描かれる。</p>
+      <p><strong>展開：</strong>逆境の中でも「サービスの質と量」を高め続け、直観力とパートナーシップを活かして事業を拡大していく。</p>
+      <p><strong>結果：</strong>経済的な成功だけでなく、後進を育てる余裕と喜びを持つ「幸せな金持ち」としての人生を築く。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>本書の教えが抽象論ではなく、逆境を乗り越えた一人の人物の生き方として体現されていることを示す。
+      </div>
+    </div>
+
+    <div class="example-card">
+      <h4>🌱 例4：師弟関係そのものが体現する学びの構造</h4>
+      <p><strong>背景：</strong>本書は「自分と向き合う→才能を開発する→自分のすべてを分かち合う」という順序を、ケンとゲラーの関係自体で描いている。</p>
+      <p><strong>展開：</strong>ゲラーはケンに答えを教えず、課題と問いかけを通じて自ら気づかせるスタイルでメンタリングする。</p>
+      <p><strong>結果：</strong>ケンは知識としてではなく、自分の体験として17の秘訣を内面化し、後に自らも教える側に回っていく。</p>
+      <div class="reason-box">
+        <strong>理由（この例が示すこと）：</strong>本当に身につく学びは、答えを与えられることではなく、自ら経験し気づくプロセスから生まれることを示している。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab4" class="tab-content" role="tabpanel">
+    <div class="quote-card">
+      <div class="quote-text">
+        「実業家として成功したいなら、三つの要素が絶対にいる。何かをやろうと決めたら、その目標に向かって、戦略を立てること。そして、それを実行すること。それがうまくいくかどうかについて悩んで時間をつぶさずに、それをやり遂げる情熱だ。」
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>戦略・実行・情熱の3要素が揃って初めて成果が出るという、本書のビジネス観の核心を端的に示す一文。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「夢を追いかけるのを忘れて、安定した人生を選んだ人間は、退屈な人生を生きる終身刑を自らに課しているのに等しい。」
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>安定と引き換えに情熱を手放すことのリスクを鋭く突き、夢を見続けることの価値を強調する。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「幸せな金持ちになるための秘訣は、自分の大好きなことを仕事にすることだ。」
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>本書全体を貫く「好きなこと×サービスの質と量」という方程式を一言に凝縮している。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        「外の状況がどういうものであれ、感謝と平安のみを選択しなさい。」
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>思考と感情が現実を形作るという教えを、日々の心構えとして実践可能な形に落とし込んだ言葉。
+      </div>
+    </div>
+
+    <div class="quote-card">
+      <div class="quote-text">
+        （要旨）自分と向き合い、自分の才能を開発し、その全てを人と分かち合う——この一連の努力こそが、心の平安・富・友情・人生の充実感をもたらす。
+      </div>
+      <div class="quote-note">
+        <strong>重要性：</strong>17の秘訣全体を貫く三段階の構造（自己理解→才能開発→分かち合い）を要約した、本書の核となる教え。
+      </div>
+    </div>
+  </div>
+
+  <div id="tab5" class="tab-content" role="tabpanel">
+    <div class="action-card">
+      <h4>📝 アクション1：「大好きなこと」の棚卸し</h4>
+      <p>時間を忘れて没頭できることを3つ紙に書き出し、それぞれが誰かの役に立つとしたらどんな形かを1行ずつ添える。</p>
+      <div class="action-meta">
+        <strong>目的：</strong>自分の情熱と社会への提供価値を結びつける最初の一歩を作る<br>
+        <strong>期待効果：</strong>「好きなことを仕事にする」という本書の核心テーマを自分ごととして捉え直せる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🤲 アクション2：見返りを求めない小さな親切を1つ実行する</h4>
+      <p>今日出会う人のうち1人に、頼まれていない具体的な手助けを1つ申し出て、実際に行動する。</p>
+      <div class="action-meta">
+        <strong>目的：</strong>人脈と信頼を「与える」ことから始める姿勢を体で覚える<br>
+        <strong>期待効果：</strong>「人に気持ちよく助けてもらう」秘訣の土台となる、互恵的な人間関係の作り方を体感できる
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h4>🌟 アクション3：「1つの夢」と「最初の一歩」を書く</h4>
+      <p>実現したい夢を1つ選び、それを叶えるために今日〜明日中にできる最初の具体的な一歩を1つ書き出す。</p>
+      <div class="action-meta">
+        <strong>目的：</strong>夢を漠然とした願望から具体的な行動計画に変換する<br>
+        <strong>期待効果：</strong>「勇気をもって決断し、情熱的に行動する」秘訣を、実際の一歩として体験できる
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 3rem; padding: 2rem; background: var(--card-bg); border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+      📚 関連書籍
+    </h2>
+    <div class="book-list">
+      <div class="book-item">
+        <h4>バビロンの大富豪</h4>
+        <div class="author">ジョージ・S・クレイソン</div>
+        <div class="relation">お金にまつわる普遍的な法則を物語形式で説く古典で、本書の「お金の法則を学ぶ」秘訣と同じ構造を持つ。</div>
+      </div>
+      <div class="book-item">
+        <h4>思考は現実化する</h4>
+        <div class="author">ナポレオン・ヒル</div>
+        <div class="relation">「思考と感情の力」が現実を形作るという核心思想が本書と共通する。</div>
+      </div>
+      <div class="book-item">
+        <h4>金持ち父さん貧乏父さん</h4>
+        <div class="author">ロバート・キヨサキ</div>
+        <div class="relation">学校では教わらないお金持ちのマインドセットを説く点で、本書の「ミリオネア・メンタリティ」と響き合う。</div>
+      </div>
+      <div class="book-item">
+        <h4>影響力の武器</h4>
+        <div class="author">ロバート・B・チャルディーニ</div>
+        <div class="relation">説得・セールスの心理学を扱い、本書の「セールスの達人になる」「スピーチの天才になる」秘訣と直結する。</div>
+      </div>
+      <div class="book-item">
+        <h4>GIVE &amp; TAKE 「与える人」こそ成功する時代</h4>
+        <div class="author">アダム・グラント</div>
+        <div class="relation">与えることで成功するという思想が、本書の人脈・パートナーシップの秘訣と重なる。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
