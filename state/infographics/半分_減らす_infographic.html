@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット:
+  プライマリー: #2F4F3E (深緑・禅寺の静けさ)
+  セカンダリー: #E8DFC8 (生成り・和紙)
+  アクセント: #C77B4A (朱色がかったオレンジ・木の実)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>半分、減らす。 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#2F4F3E;
+    --primary-light:#4C7060;
+    --secondary:#E8DFC8;
+    --secondary-dark:#D8CBA8;
+    --accent:#C77B4A;
+    --accent-light:#E2A87A;
+    --text:#2A2A24;
+    --bg:#FBF8F1;
+    --card-bg:#FFFFFF;
+    --shadow: 0 4px 14px rgba(47,79,62,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:linear-gradient(180deg,var(--bg) 0%, #F3EEE0 100%);
+    color:var(--text);
+    line-height:1.7;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--primary-light) 100%);
+    color:var(--secondary);
+    padding:28px 20px 24px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  header::before{
+    content:"半";
+    position:absolute;
+    font-size:220px;
+    opacity:0.06;
+    right:-30px;
+    top:-60px;
+    font-weight:900;
+    color:#fff;
+  }
+  header h1{
+    margin:0 0 6px;
+    font-size:1.6rem;
+    letter-spacing:0.05em;
+  }
+  header p.sub{
+    margin:0;
+    font-size:0.85rem;
+    opacity:0.85;
+  }
+  header p.author{
+    margin-top:10px;
+    font-size:0.9rem;
+    background:rgba(255,255,255,0.12);
+    display:inline-block;
+    padding:4px 14px;
+    border-radius:20px;
+  }
+
+  .hero{
+    margin:16px 16px 0;
+    background:var(--card-bg);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    padding:20px;
+    border-left:6px solid var(--accent);
+  }
+  .hero h2{
+    margin:0 0 10px;
+    font-size:1rem;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-block{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .qa-item{
+    background:var(--secondary);
+    border-radius:10px;
+    padding:12px 14px;
+  }
+  .qa-item .label{
+    font-size:0.72rem;
+    font-weight:700;
+    color:var(--accent);
+    letter-spacing:0.05em;
+  }
+  .qa-item .content{
+    margin-top:4px;
+    font-size:0.92rem;
+  }
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:20px 16px 0;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:2px solid var(--secondary-dark);
+    color:var(--primary);
+    padding:9px 14px;
+    border-radius:20px;
+    font-size:0.82rem;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .2s;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+
+  main{
+    padding:16px;
+  }
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .card{
+    background:var(--card-bg);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:16px 18px;
+    margin-bottom:14px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:1rem;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card h3 .num{
+    background:var(--accent);
+    color:#fff;
+    width:24px;height:24px;
+    border-radius:50%;
+    display:inline-flex;
+    align-items:center;justify-content:center;
+    font-size:0.75rem;
+    flex:0 0 auto;
+  }
+  .card ul{
+    margin:0;
+    padding-left:1.1em;
+    font-size:0.88rem;
+  }
+  .card ul li{margin-bottom:4px;}
+  .card .why{
+    margin-top:10px;
+    background:var(--secondary);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:0.8rem;
+    color:#4a4a3c;
+  }
+  .card .why b{color:var(--accent);}
+
+  .badge-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:10px 0 4px;
+  }
+  .badge{
+    background:var(--primary);
+    color:#fff;
+    font-size:0.75rem;
+    padding:4px 10px;
+    border-radius:14px;
+  }
+
+  .halfbar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:8px 0;
+    font-size:0.82rem;
+  }
+  .halfbar .track{
+    flex:1;
+    background:var(--secondary);
+    border-radius:8px;
+    height:14px;
+    overflow:hidden;
+  }
+  .halfbar .fill{
+    background:linear-gradient(90deg,var(--accent),var(--accent-light));
+    height:100%;
+    width:50%;
+    border-radius:8px 0 0 8px;
+  }
+
+  blockquote{
+    margin:0 0 14px;
+    padding:14px 16px;
+    background:var(--card-bg);
+    border-left:5px solid var(--accent);
+    border-radius:0 10px 10px 0;
+    font-size:0.92rem;
+    box-shadow:var(--shadow);
+  }
+  blockquote footer{
+    margin-top:8px;
+    font-size:0.78rem;
+    color:var(--accent);
+  }
+  .note-tag{
+    display:inline-block;
+    font-size:0.7rem;
+    background:var(--secondary);
+    padding:2px 8px;
+    border-radius:8px;
+    margin-bottom:6px;
+    color:#6b6b56;
+  }
+
+  .action-card{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .action-card .icon{
+    flex:0 0 auto;
+    width:34px;height:34px;
+    background:var(--accent);
+    border-radius:50%;
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1rem;
+  }
+  .action-card .meta{
+    font-size:0.76rem;
+    color:#6b6b56;
+    margin-top:4px;
+  }
+
+  footer.page-footer{
+    text-align:center;
+    padding:22px 16px 30px;
+    font-size:0.75rem;
+    color:#8a8a75;
+  }
+
+  @media (max-width:380px){
+    header h1{font-size:1.35rem;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="sub">📚 今日読むべき本</p>
+  <h1>半分、減らす。</h1>
+  <p class="author">👤 川野泰周</p>
+</header>
+
+<section class="hero">
+  <h2>🎯 要約：問い × 答え × 根拠</h2>
+  <div class="qa-block">
+    <div class="qa-item">
+      <div class="label">Q. 問い</div>
+      <div class="content">モノ・食事・消費・情報・仕事に振り回される暮らしを、どうすれば軽くできるか？</div>
+    </div>
+    <div class="qa-item">
+      <div class="label">A. 答え</div>
+      <div class="content">「ちょっと減らす」ではなく、思い切って<b>半分</b>減らす意識を持つ。数値化された明確な目標が本当の行動変容を生む。</div>
+    </div>
+    <div class="qa-item">
+      <div class="label">Why. 根拠</div>
+      <div class="content">著者は精神科医と禅僧の二足のわらじ。仏教の「中道」思想とマインドフルネス、臨床心理の知見を組み合わせ、極端な我慢ではなく「ほどほど」に落ち着くことがストレスを減らし持続可能だと説く。</div>
+    </div>
+  </div>
+</section>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">🧩 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases" onclick="switchTab('cases')">💡 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">🗣️ 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <!-- 主要概念 -->
+  <div class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3><span class="num">1</span>1/2の心がけ</h3>
+      <div class="halfbar"><span>いつもの量</span><div class="track"><div class="fill"></div></div><span>半分</span></div>
+      <ul>
+        <li>「少し減らそう」という弱い決心では習慣は変わらない</li>
+        <li>「半分」という明確な数値目標が行動を具体的に変える</li>
+        <li>物・食事・消費・情報・仕事の5領域すべてに適用する共通原則</li>
+      </ul>
+      <div class="why"><b>理由：</b>目標が曖昧だと脳は判断を先延ばしにする。「半分」という具体的な基準は迷いを減らし、実行のハードルを下げる。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">2</span>仏教の「中道」</h3>
+      <ul>
+        <li>極端な禁欲でも放縦でもない、過不足のないバランス</li>
+        <li>「減らす」ことをゴールにせず、心地よい状態への通過点とする</li>
+        <li>著者は臨済宗建長寺派の禅僧でもある</li>
+      </ul>
+      <div class="why"><b>理由：</b>ゼロを目指す完璧主義はリバウンドしやすい。中道の発想は無理なく続けられる仕組みを作る。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">3</span>考えない片づけ</h3>
+      <ul>
+        <li>モノを一つひとつ吟味せず、ルールで機械的に半分に絞る</li>
+        <li>「要る・要らない」の判断疲れを避ける</li>
+        <li>結果として部屋だけでなく思考もすっきりする</li>
+      </ul>
+      <div class="why"><b>理由：</b>判断の数を減らすことが、片づけを継続できるかどうかの分かれ目になる。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">4</span>マインドフルネスと「今、ここ」</h3>
+      <ul>
+        <li>禅由来の瞑想を用いて意識を「今」に向ける</li>
+        <li>「食べたい」「欲しい」という衝動を観察してから行動を選ぶ</li>
+        <li>深い呼吸を伴う短い実践から始められる</li>
+      </ul>
+      <div class="why"><b>理由：</b>衝動と行動の間に意識的な「間」を作ることで、暴飲暴食や衝動買いを防げる。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">5</span>情報・スマホの半減</h3>
+      <ul>
+        <li>スマホ利用時間や通知の量を可視化してから減らす</li>
+        <li>情報過多は脳の疲労とストレスの主要因</li>
+        <li>使い方を「あらためる」だけで心身の健康が戻る</li>
+      </ul>
+      <div class="why"><b>理由：</b>情報の量そのものより「無自覚に摂取している」ことが問題であり、可視化が第一歩になる。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">6</span>仕事の半減＝やり方を変える</h3>
+      <ul>
+        <li>作業量そのものより「いつものやり方」を見直す発想</li>
+        <li>マルチタスクを減らし、集中の質を上げる方向へ</li>
+        <li>生産性は「詰め込む」のではなく「削る」ことで上がる</li>
+      </ul>
+      <div class="why"><b>理由：</b>タスクを減らさずに頑張り続けると燃え尽きにつながる。仕組みごと変えることが持続性を生む。</div>
+    </div>
+
+  </div>
+
+  <!-- 各章の要約 -->
+  <div class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+
+    <div class="card">
+      <h3><span class="num">序</span>1/2を心がけよう</h3>
+      <ul>
+        <li>「ほどほど」で人生を好転させるという本書全体のコンセプト</li>
+        <li>禅の中道思想を現代の暮らしに翻訳する</li>
+      </ul>
+      <div class="why"><b>理由：</b>各論に入る前に「なぜ半分なのか」という土台を共有するための章。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">1</span>「物」を半分、減らす</h3>
+      <ul>
+        <li>「考えない片づけ」というコツを軸に解説</li>
+        <li>一つひとつ悩まず、機械的なルールで手放す</li>
+      </ul>
+      <div class="why"><b>理由：</b>判断疲れをなくすことが片づけを継続させる鍵だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">2</span>「食事」を半分、減らす</h3>
+      <ul>
+        <li>「いつのまにか」量が半減する食べ方を紹介</li>
+        <li>我慢ではなく食べ方の工夫で自然に量が減る設計</li>
+      </ul>
+      <div class="why"><b>理由：</b>我慢に頼るダイエットは続かないため、仕組みで量を減らす発想が重要。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">3</span>「消費」を半分、減らす</h3>
+      <ul>
+        <li>衝動買いをなくす一番いい方法を提示</li>
+        <li>欲求のピークが来る前に選択する練習</li>
+      </ul>
+      <div class="why"><b>理由：</b>消費行動は感情に左右されやすく、意識化するだけで大きく変わるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">4</span>「情報」を半分、減らす</h3>
+      <ul>
+        <li>スマホの使い方をあらためることを軸に解説</li>
+        <li>通知・アプリ利用時間の可視化から着手</li>
+      </ul>
+      <div class="why"><b>理由：</b>情報過多への無自覚さが心身の疲労を蓄積させるため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">5</span>「仕事」を半分、減らす</h3>
+      <ul>
+        <li>いつものやり方を変えるヒントを提示</li>
+        <li>マルチタスクから抜け出し、集中を取り戻す</li>
+      </ul>
+      <div class="why"><b>理由：</b>働き方そのものを変えないと、頑張りだけでは限界が来るから。</div>
+    </div>
+
+  </div>
+
+  <!-- 具体例 -->
+  <div class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+
+    <div class="card">
+      <h3><span class="num">1</span>「考えないルール」で部屋も心も軽くなる</h3>
+      <div class="badge-row"><span class="badge">物</span></div>
+      <ul>
+        <li>一点ずつ悩む代わりに「同じ用途は1つだけ残す」等の機械的なルールを先に決める</li>
+        <li>判断回数が減ることで片づけが最後まで続く</li>
+        <li>物理的なスペースだけでなく、選択の負担も同時に軽くなる</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>片づけが続かない原因は「意志の弱さ」ではなく「判断の多さ」にあるという逆転の視点。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">2</span>「いつもの盛り」を変えるだけの食事術</h3>
+      <div class="badge-row"><span class="badge">食事</span></div>
+      <ul>
+        <li>器を変える、盛る量を変えるなど「量を意識せずに減る」工夫を紹介</li>
+        <li>空腹・満腹のサインをマインドフルに観察する練習を組み合わせる</li>
+        <li>我慢を強いる食事制限より継続しやすい設計</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>意志力に頼らず環境や習慣を変えるほうが行動は持続するという原則の実例。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">3</span>スマホ通知を半分にして睡眠と集中を取り戻す</h3>
+      <div class="badge-row"><span class="badge">情報</span></div>
+      <ul>
+        <li>まずスマホの利用時間・通知数を可視化するところから始める</li>
+        <li>最も時間を奪っているアプリの通知だけをオフにする段階的アプローチ</li>
+        <li>情報の「量」より「無自覚な摂取」を断つことに主眼を置く</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>デジタル環境も「物」と同じく、意識せず溜め込んでしまうものであるという共通構造。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">4</span>衝動買い前の「一呼吸」</h3>
+      <div class="badge-row"><span class="badge">消費</span></div>
+      <ul>
+        <li>「欲しい」という衝動が生まれた瞬間ではなく、ピークが過ぎるまで待つ</li>
+        <li>マインドフルネスの深い呼吸を使って衝動と行動の間に間を作る</li>
+        <li>禁止するのではなく「一度立ち止まる」だけで消費行動が変わる</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>欲求そのものを否定せず、行動に移すタイミングだけをずらすという禅的な発想の応用例。</div>
+    </div>
+
+  </div>
+
+  <!-- 重要な引用 -->
+  <div class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+
+    <blockquote>
+      「思い切って『半分、減らす』くらいの意識を持つことが、本当の行動変容を実現してくれる。」
+      <footer>— 川野泰周『半分、減らす。』</footer>
+    </blockquote>
+
+    <blockquote>
+      <span class="note-tag">要旨</span>
+      「ちょっと減らそう」という弱い決心では、習慣は変えられない。数値として明確な「半分」を目指すからこそ、行動が具体的になり継続できる。
+      <footer>— 本書の主張の要旨</footer>
+    </blockquote>
+
+    <blockquote>
+      <span class="note-tag">要旨</span>
+      「半分、減らす」の対象は物や食事だけでなく、消費・情報・仕事にまで及ぶ。生活全体を「ほどほど」の状態に整えることが、ストレスの少ない毎日につながる。
+      <footer>— 本書全体のコンセプトの要旨</footer>
+    </blockquote>
+
+  </div>
+
+  <!-- 今日のアクション -->
+  <div class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+
+    <div class="card action-card">
+      <div class="icon">🗂️</div>
+      <div>
+        <h3 style="margin-bottom:4px;">カバン・財布の中身を半分に絞る</h3>
+        <ul>
+          <li>中身を全部出し、「今日使わなかったもの」を基準に半分だけ元に戻す</li>
+        </ul>
+        <div class="meta">⏱️ 目安15分 ｜ 🎯 目的：判断疲れを起こさず「考えない片づけ」を体感する ｜ 💡 期待効果：持ち物の判断基準が明確になり、他の場所の片づけにも応用できる</div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="icon">🍚</div>
+      <div>
+        <h3 style="margin-bottom:4px;">次の食事を「いつもの8割盛り」で試す</h3>
+        <ul>
+          <li>普段よりひと回り小さい器・少なめの盛り付けで食事し、満腹感の変化を観察する</li>
+        </ul>
+        <div class="meta">⏱️ 目安20分 ｜ 🎯 目的：我慢ではなく仕組みで食事量を減らす感覚をつかむ ｜ 💡 期待効果：無理のない範囲で食べ過ぎを防ぐ習慣の第一歩になる</div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="icon">📵</div>
+      <div>
+        <h3 style="margin-bottom:4px;">スマホの通知を1つだけオフにする</h3>
+        <ul>
+          <li>スクリーンタイムを確認し、最も使用時間の長いアプリの通知をオフにする</li>
+        </ul>
+        <div class="meta">⏱️ 目安15分 ｜ 🎯 目的：情報の「無自覚な摂取」に気づき、断つ練習をする ｜ 💡 期待効果：中断が減ることで集中力と睡眠の質の改善が期待できる</div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  📚 books-summary daily reading digest
+</footer>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('.panel');
+    var tabs = document.querySelectorAll('nav.tabs button');
+    panels.forEach(function(p){
+      var active = p.id === 'panel-' + name;
+      p.classList.toggle('active', active);
+      if(active){ p.removeAttribute('hidden'); } else { p.setAttribute('hidden',''); }
+    });
+    tabs.forEach(function(t){
+      var selected = t.id === 'tab-' + name;
+      t.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+  }
+</script>
+
+</body>
+</html>
