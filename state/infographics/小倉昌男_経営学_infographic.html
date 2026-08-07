@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット:
+  プライマリー: #16324F (濃紺・物流企業の信頼感)
+  セカンダリー: #F1EAD6 (生成り・伝票の紙色)
+  アクセント: #E08E2B (山吹オレンジ・宅急便の躍動感)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小倉昌男 経営学 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#16324F;
+    --primary-light:#2C5583;
+    --secondary:#F1EAD6;
+    --secondary-dark:#E1D5B0;
+    --accent:#E08E2B;
+    --accent-light:#F0B65C;
+    --text:#232323;
+    --bg:#FBF8F1;
+    --card-bg:#FFFFFF;
+    --shadow: 0 4px 14px rgba(22,50,79,0.14);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:linear-gradient(180deg,var(--bg) 0%, #F1EAD6 100%);
+    color:var(--text);
+    line-height:1.7;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--primary-light) 100%);
+    color:#fff;
+    padding:28px 20px 24px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  header::before{
+    content:"急";
+    position:absolute;
+    font-size:220px;
+    opacity:0.07;
+    right:-30px;
+    top:-60px;
+    font-weight:900;
+    color:#fff;
+  }
+  header h1{
+    margin:0 0 6px;
+    font-size:1.5rem;
+    letter-spacing:0.04em;
+  }
+  header p.sub{
+    margin:0;
+    font-size:0.85rem;
+    opacity:0.85;
+  }
+  header p.author{
+    margin-top:10px;
+    font-size:0.9rem;
+    background:rgba(255,255,255,0.16);
+    display:inline-block;
+    padding:4px 14px;
+    border-radius:20px;
+  }
+
+  .hero{
+    margin:16px 16px 0;
+    background:var(--card-bg);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    padding:20px;
+    border-left:6px solid var(--accent);
+  }
+  .hero h2{
+    margin:0 0 10px;
+    font-size:1rem;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-block{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .qa-item{
+    background:var(--secondary);
+    border-radius:10px;
+    padding:12px 14px;
+  }
+  .qa-item .label{
+    font-size:0.72rem;
+    font-weight:700;
+    color:var(--accent);
+    letter-spacing:0.05em;
+  }
+  .qa-item .content{
+    margin-top:4px;
+    font-size:0.92rem;
+  }
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:20px 16px 0;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:2px solid var(--secondary-dark);
+    color:var(--primary);
+    padding:9px 14px;
+    border-radius:20px;
+    font-size:0.82rem;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .2s;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+
+  main{
+    padding:16px;
+  }
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .card{
+    background:var(--card-bg);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:16px 18px;
+    margin-bottom:14px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:1rem;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card h3 .num{
+    background:var(--accent);
+    color:#fff;
+    width:24px;height:24px;
+    border-radius:50%;
+    display:inline-flex;
+    align-items:center;justify-content:center;
+    font-size:0.75rem;
+    flex:0 0 auto;
+  }
+  .card ul{
+    margin:0;
+    padding-left:1.1em;
+    font-size:0.88rem;
+  }
+  .card ul li{margin-bottom:4px;}
+  .card .why{
+    margin-top:10px;
+    background:var(--secondary);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:0.8rem;
+    color:#4a4a3c;
+  }
+  .card .why b{color:var(--accent);}
+
+  .badge-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:10px 0 4px;
+  }
+  .badge{
+    background:var(--primary);
+    color:#fff;
+    font-size:0.75rem;
+    padding:4px 10px;
+    border-radius:14px;
+  }
+
+  .stat-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:10px 0 4px;
+  }
+  .stat{
+    flex:1 1 100px;
+    background:var(--secondary);
+    border-radius:10px;
+    padding:10px 12px;
+    text-align:center;
+  }
+  .stat .num-big{
+    font-size:1.3rem;
+    font-weight:800;
+    color:var(--accent);
+    display:block;
+  }
+  .stat .label-small{
+    font-size:0.7rem;
+    color:#5a5a4c;
+  }
+
+  blockquote{
+    margin:0 0 14px;
+    padding:14px 16px;
+    background:var(--card-bg);
+    border-left:5px solid var(--accent);
+    border-radius:0 10px 10px 0;
+    font-size:0.92rem;
+    box-shadow:var(--shadow);
+  }
+  blockquote footer{
+    margin-top:8px;
+    font-size:0.78rem;
+    color:var(--accent);
+  }
+  .note-tag{
+    display:inline-block;
+    font-size:0.7rem;
+    background:var(--secondary);
+    padding:2px 8px;
+    border-radius:8px;
+    margin-bottom:6px;
+    color:#6b6b56;
+  }
+
+  .action-card{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .action-card .icon{
+    flex:0 0 auto;
+    width:34px;height:34px;
+    background:var(--accent);
+    border-radius:50%;
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1rem;
+  }
+  .action-card .meta{
+    font-size:0.76rem;
+    color:#6b6b56;
+    margin-top:4px;
+  }
+
+  footer.page-footer{
+    text-align:center;
+    padding:22px 16px 30px;
+    font-size:0.75rem;
+    color:#8a8a75;
+  }
+
+  @media (max-width:380px){
+    header h1{font-size:1.25rem;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="sub">📚 今日読むべき本</p>
+  <h1>小倉昌男 経営学</h1>
+  <p class="author">👤 小倉昌男</p>
+</header>
+
+<section class="hero">
+  <h2>🎯 要約：問い × 答え × 根拠</h2>
+  <div class="qa-block">
+    <div class="qa-item">
+      <div class="label">Q. 問い</div>
+      <div class="content">「儲からない」と誰もが反対した個人宅配市場を、なぜヤマト運輸は日本のインフラにまで育てられたのか？</div>
+    </div>
+    <div class="qa-item">
+      <div class="label">A. 答え</div>
+      <div class="content"><b>「サービスが先、利益は後」</b>という信念を貫き、規制官庁とも正面から闘い、現場のセールスドライバー一人ひとりが自ら考え動く<b>「全員経営」</b>の仕組みを作ったこと。</div>
+    </div>
+    <div class="qa-item">
+      <div class="label">Why. 根拠</div>
+      <div class="content">著者はヤマト運輸元社長。1976年に取扱個数わずか11個からスタートした宅急便を、自らの決断と失敗の記録として書き下ろした一次資料であり、抽象論ではなく実体験に基づく経営学だから。</div>
+    </div>
+  </div>
+</section>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">🧩 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases" onclick="switchTab('cases')">💡 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">🗣️ 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <!-- 主要概念 -->
+  <div class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3><span class="num">1</span>サービスが先、利益は後</h3>
+      <ul>
+        <li>宅急便開始当初から役員・社員に繰り返し説いたモットー</li>
+        <li>「安全第一、営業第二」と言いながら決算月には利益第一になってしまう、という反省から生まれた</li>
+        <li>まず確実に翌日配達することを最優先し、利益は結果として後からついてくると位置づけた</li>
+      </ul>
+      <div class="why"><b>理由：</b>短期の利益を優先すると現場のサービス品質が落ち、結局は顧客が離れて長期の利益を損なうため。順序を明文化することで組織全体の判断基準を揃えた。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">2</span>市場の転換（商業貨物から個人宅配へ）</h3>
+      <ul>
+        <li>企業間の大口輸送が主流だった時代に、個人の小口荷物を翌日届けるという発想に転換</li>
+        <li>社内外から「採算が合わない」と猛反対を受けた不確実な市場への挑戦</li>
+        <li>誰も手をつけていない市場だからこそ、先行者として独自のインフラを築けた</li>
+      </ul>
+      <div class="why"><b>理由：</b>既存事業の延長線ではなく、顧客の本当の不便（荷物を送る手段がない）から発想したことが、後の爆発的成長につながった。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">3</span>全員経営</h3>
+      <ul>
+        <li>セールスドライバー（SD）を単なる作業員ではなく「寿司職人」に例える発想</li>
+        <li>社員一人ひとりが経営者の視点を持ち、現場で自発的に判断・改善する仕組み</li>
+        <li>トップダウンの指示待ちではなく、現場の裁量を広げることで組織全体の対応力を高めた</li>
+      </ul>
+      <div class="why"><b>理由：</b>宅急便は無数の顧客接点で成り立つサービスであり、現場の判断力なしには翌日配達という約束を守り続けられないため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">4</span>規制と闘う経営者</h3>
+      <div class="stat-row">
+        <div class="stat"><span class="num-big">1986</span><span class="label-small">運輸省を提訴した年</span></div>
+        <div class="stat"><span class="num-big">4ヶ月</span><span class="label-small">提訴後、免許が下りるまで</span></div>
+      </div>
+      <ul>
+        <li>1986年、運輸省の不作為を「違法」として自ら提訴するという前代未聞の行動に出た</li>
+        <li>旧郵政省とは、宅急便荷物が「信書」にあたるかをめぐって対立</li>
+        <li>「消費者の便益を損なう規制は認めない」という姿勢を貫いた</li>
+      </ul>
+      <div class="why"><b>理由：</b>許認可権を持つ監督官庁と正面から闘うのは大きなリスクだが、顧客の利益を守るという一貫した基準があったからこそ怯まなかった。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">5</span>サービスの差別化とコストの関係</h3>
+      <ul>
+        <li>全国均一料金・翌日配達という分かりやすいサービス基準を先に固定</li>
+        <li>取扱個数が増えるほど集配網1件あたりのコストが下がる構造を意図的に作った</li>
+        <li>価格競争ではなく「利便性」で他社と差をつける戦略</li>
+      </ul>
+      <div class="why"><b>理由：</b>個数が増えるほど有利になる仕組みを先に設計したことで、後発の模倣者に対する参入障壁を築けたため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">6</span>経営リーダー10の条件</h3>
+      <ul>
+        <li>本書終盤にまとめられた、著者が考える経営者に必須の資質のリスト</li>
+        <li>「論理的思考」「高い倫理観」「時代の風を読む」などが含まれる</li>
+        <li>実体験から逆算して抽出された、抽象論ではない条件群</li>
+      </ul>
+      <div class="why"><b>理由：</b>感覚や気合ではなく、言語化・体系化された条件として示すことで、他の経営者にも再現可能な指針にしたかったため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">7</span>学習する経営者</h3>
+      <ul>
+        <li>異業種や海外の視察（マンハッタンで見た宅配の光景など）から着想を得るエピソードが豊富</li>
+        <li>現場・顧客からの学びを経営判断に反映し続けた</li>
+        <li>謙虚に学び続ける姿勢と、決断する際の強さが同居している</li>
+      </ul>
+      <div class="why"><b>理由：</b>成功体験に固執せず学び続けたことが、規制業界の中で長期にわたり事業を進化させ続けられた原動力になったため。</div>
+    </div>
+
+  </div>
+
+  <!-- 各章の要約 -->
+  <div class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+
+    <div class="card">
+      <h3><span class="num">第1部</span>牛丼とマンハッタン ─ 宅急便前史</h3>
+      <ul>
+        <li>宅急便前史：商業貨物輸送を担っていた時代のヤマト運輸の状況</li>
+        <li>私の学習時代：異業種の視察や日常のヒントから経営を学んだ経験</li>
+        <li>市場の転換：商業貨物から個人宅配へと舵を切る決断の背景</li>
+      </ul>
+      <div class="why"><b>理由：</b>宅急便という発明がゼロから生まれたのではなく、長年の観察と学習の蓄積の先にあったことを示す導入部だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">第2部</span>サービスは市場を創造する ─ 宅急便の経営学</h3>
+      <ul>
+        <li>宅急便の開発：翌日配達・全国均一料金という仕様をどう固めたか</li>
+        <li>サービスの差別化：価格ではなく利便性で市場を切り拓く発想</li>
+        <li>サービスとコストの問題：取扱個数と単位コストの関係をどう設計したか</li>
+      </ul>
+      <div class="why"><b>理由：</b>本書の中核部分であり、「サービスを先に決め、そこから逆算して経営を組み立てる」という著者の方法論が最も具体的に示されているため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">第3部</span>私の経営哲学</h3>
+      <ul>
+        <li>組織の活性化：「全員経営」を現場でどう機能させたか</li>
+        <li>経営リーダー10の条件：著者が抽出した経営者に必要な資質</li>
+        <li>規制官庁との闘いを含む、経営哲学の集大成としての総括</li>
+      </ul>
+      <div class="why"><b>理由：</b>個別の事業ノウハウを超えて、著者の経営哲学そのものを一般化し、他の経営者にも応用できる形でまとめた締めくくりの部だから。</div>
+    </div>
+
+  </div>
+
+  <!-- 具体例 -->
+  <div class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+
+    <div class="card">
+      <h3><span class="num">1</span>宅急便、初日わずか11個からの出発</h3>
+      <div class="badge-row"><span class="badge">市場の転換</span></div>
+      <ul>
+        <li>1976年1月、業界・官庁・社内全員が反対する中で宅急便サービスを強行開始</li>
+        <li>初日の取扱個数はわずか11個だった</li>
+        <li>その後、年間20億個を超える日本のインフラへと成長した</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>始まりの小ささは失敗の兆候ではなく、正しい方向への第一歩に過ぎないという、事業を長期で育てる視点の重要性を示している。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">2</span>運輸省を提訴、4ヶ月で免許交付</h3>
+      <div class="badge-row"><span class="badge">規制との闘い</span></div>
+      <ul>
+        <li>1986年、路線免許の交付が遅れる運輸省の「不作為」を違法として提訴</li>
+        <li>事業者が監督官庁を訴えるという前代未聞の行動</li>
+        <li>提訴からわずか4ヶ月で免許が交付された</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>顧客の利益という一貫した基準さえあれば、力関係で不利に見える相手にも筋を通して対抗できるという教訓。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">3</span>郵政省との「信書」論争</h3>
+      <div class="badge-row"><span class="badge">規制との闘い</span></div>
+      <ul>
+        <li>宅急便で運ぶ荷物が「信書（手紙）」にあたるかをめぐり郵政省と対立</li>
+        <li>郵政省は信書の独占配達権の侵害を主張し、宅急便の業務範囲に介入しようとした</li>
+        <li>小倉は「消費者の便益を損なう規制は認めない」姿勢を崩さなかった</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>法解釈という一見技術的な論点も、突き詰めれば「誰の便益を優先するか」という経営哲学の問題であることを示す。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">4</span>三越事件 ─ 「ネコがライオンにかみついた」</h3>
+      <div class="badge-row"><span class="badge">サービスの差別化</span></div>
+      <ul>
+        <li>1979年、創業以来の大口取引先だった三越から運賃引き下げ等の理不尽な要求を繰り返し受けた</li>
+        <li>交渉の末、小倉は自ら三越との取引停止を通告した</li>
+        <li>大口顧客への依存を断ち、個人向け事業へ経営資源を集中する転機となった</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>目先の売上規模より、自社が本当に強みを発揮できる市場を選び取る決断力の重要性を象徴するエピソード。</div>
+    </div>
+
+  </div>
+
+  <!-- 重要な引用 -->
+  <div class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+
+    <blockquote>
+      「サービスが先、利益は後。」
+      <footer>— 小倉昌男『小倉昌男 経営学』</footer>
+    </blockquote>
+
+    <blockquote>
+      <span class="note-tag">要旨</span>
+      うちの会社には「安全第一、営業第二」というモットーがあったが、毎月の会議になると営業第一になり、決算月になると利益第一になってしまう。それで宅急便を始めたときも「サービスが先で、利益は後だ」というモットーを作って社内に徹底させた。
+      <footer>— 著者の発言の要旨</footer>
+    </blockquote>
+
+    <blockquote>
+      <span class="note-tag">要旨</span>
+      経営リーダーに必要な条件の一つとして「時代の風を読む」ことを挙げ、業界の垣根がなくなっていく時代への備えを説いている。
+      <footer>— 「経営リーダー10の条件」の要旨</footer>
+    </blockquote>
+
+  </div>
+
+  <!-- 今日のアクション -->
+  <div class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+
+    <div class="card action-card">
+      <div class="icon">📝</div>
+      <div>
+        <h3 style="margin-bottom:4px;">「サービスが先、利益は後」を自分の仕事に当てはめる</h3>
+        <ul>
+          <li>自分の業務で、目先の効率や数字より先に「相手の信頼」を優先すべき場面を1つ書き出す</li>
+        </ul>
+        <div class="meta">⏱️ 目安15分 ｜ 🎯 目的：本書の中心概念を自分の職場に翻訳する ｜ 💡 期待効果：短期的な指標に流されず、優先順位を意識して判断できるようになる</div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="icon">🙋</div>
+      <div>
+        <h3 style="margin-bottom:4px;">「全員経営者」として1つ提案を用意する</h3>
+        <ul>
+          <li>指示を待つのではなく、自分の持ち場で気づいた改善点を1つ選び、上司やチームに共有できる形に整理する</li>
+        </ul>
+        <div class="meta">⏱️ 目安20〜30分 ｜ 🎯 目的：現場発の自発的な改善提案という「全員経営」の考え方を体験する ｜ 💡 期待効果：受け身の姿勢から一歩抜け出し、当事者意識を持って働く感覚をつかめる</div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="icon">🔍</div>
+      <div>
+        <h3 style="margin-bottom:4px;">「前例」に流されている判断を1つ点検する</h3>
+        <ul>
+          <li>自分やチームの意思決定の中で、規制・慣習・前例をそのまま踏襲しているだけの箇所がないか見直す</li>
+        </ul>
+        <div class="meta">⏱️ 目安15分 ｜ 🎯 目的：規制や前例と正面から向き合った著者の姿勢を自分の判断に応用する ｜ 💡 期待効果：思考停止した判断を減らし、本質的に何が顧客のためかを問い直す習慣がつく</div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  📚 books-summary daily reading digest
+</footer>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('.panel');
+    var tabs = document.querySelectorAll('nav.tabs button');
+    panels.forEach(function(p){
+      var active = p.id === 'panel-' + name;
+      p.classList.toggle('active', active);
+      if(active){ p.removeAttribute('hidden'); } else { p.setAttribute('hidden',''); }
+    });
+    tabs.forEach(function(t){
+      var selected = t.id === 'tab-' + name;
+      t.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+  }
+</script>
+
+</body>
+</html>
