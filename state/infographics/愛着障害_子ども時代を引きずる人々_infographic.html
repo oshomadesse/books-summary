@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット（プライマリー / セカンダリー / アクセント）
+  Primary:   #4A6FA5 (信頼・安定を表す落ち着いた青)
+  Secondary: #E8A87C (安全基地・温かさを表す柔らかいピーチ)
+  Accent:    #6B4E71 (心理の深層を表す紫)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>愛着障害 ― 子ども時代を引きずる人々｜インフォグラフィック</title>
+<style>
+  :root {
+    --primary: #4A6FA5;
+    --primary-dark: #33517d;
+    --secondary: #E8A87C;
+    --secondary-dark: #d68c5c;
+    --accent: #6B4E71;
+    --bg: #F7F5F2;
+    --card-bg: #FFFFFF;
+    --text: #2E2A28;
+    --text-sub: #6b6560;
+    --border: #E4DDD5;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: #fff;
+    padding: 28px 18px 24px;
+    text-align: center;
+  }
+  header .kicker {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    opacity: 0.85;
+  }
+  header h1 {
+    font-size: 1.5rem;
+    margin: 8px 0 4px;
+  }
+  header .author {
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  /* ファーストビュー: 問い×答え×根拠 */
+  .hero-box {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-left: 6px solid var(--secondary);
+    border-radius: 12px;
+    padding: 18px 16px;
+    margin: -18px 0 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  }
+  .hero-box .row { margin-bottom: 10px; }
+  .hero-box .row:last-child { margin-bottom: 0; }
+  .hero-label {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: bold;
+    color: #fff;
+    background: var(--primary);
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+  }
+  .hero-box .row:nth-child(2) .hero-label { background: var(--accent); }
+  .hero-box .row:nth-child(3) .hero-label { background: var(--secondary-dark); }
+  .hero-text { font-size: 0.95rem; }
+
+  .badge-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 16px 0 24px;
+  }
+  .badge {
+    flex: 1 1 100px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .badge .num {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--primary-dark);
+    display: block;
+  }
+  .badge .label {
+    font-size: 0.68rem;
+    color: var(--text-sub);
+  }
+
+  /* タブ */
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    margin-bottom: 14px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-sub);
+    padding: 9px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .tab-btn[aria-selected="true"] {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    font-weight: bold;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card ul { margin: 6px 0 0; padding-left: 1.1em; }
+  .card li { margin-bottom: 4px; font-size: 0.9rem; }
+  .why {
+    margin-top: 8px;
+    background: #FBF2E9;
+    border-left: 3px solid var(--secondary-dark);
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    color: var(--text-sub);
+    border-radius: 4px;
+  }
+
+  .bar-wrap { margin: 10px 0; }
+  .bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+  }
+  .bar-track {
+    background: #EDE8E2;
+    border-radius: 8px;
+    height: 14px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 8px;
+  }
+
+  blockquote {
+    margin: 0 0 10px;
+    padding: 10px 14px;
+    background: #F1EAF2;
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+    font-size: 0.9rem;
+  }
+  blockquote .tag {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-top: 4px;
+    font-weight: bold;
+  }
+
+  .action-card { display: flex; gap: 10px; align-items: flex-start; }
+  .action-num {
+    flex: 0 0 30px;
+    height: 30px;
+    background: var(--secondary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--text-sub);
+    padding: 24px 16px 32px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">📚 今日読むべき本</div>
+  <h1>🧠 愛着障害<br><span style="font-weight:normal;font-size:1rem;">子ども時代を引きずる人々</span></h1>
+  <div class="author">著者：岡田尊司（精神科医）</div>
+</header>
+
+<div class="container">
+
+  <div class="hero-box">
+    <div class="row">
+      <span class="hero-label">問い</span>
+      <div class="hero-text">なぜ大人になっても「人間関係のパターン」が変わらず、生きづらさを感じ続けるのか？</div>
+    </div>
+    <div class="row">
+      <span class="hero-label">答え</span>
+      <div class="hero-text">幼少期に養育者との間で形成された「愛着スタイル」が、パーソナリティの土台として生涯にわたり人間関係・仕事・恋愛を支配しているから。</div>
+    </div>
+    <div class="row">
+      <span class="hero-label">根拠</span>
+      <div class="hero-text">愛着はオキシトシンという神経伝達物質に支えられた生物学的メカニズムであり、幼少期に身についたパターンは7〜8割の人で「第二の天性」として持続することが臨床データで示されている。</div>
+    </div>
+  </div>
+
+  <div class="badge-row">
+    <div class="badge"><span class="num">7〜8割</span><span class="label">幼少期の愛着スタイルが生涯持続する人の割合</span></div>
+    <div class="badge"><span class="num">4種類</span><span class="label">安定・不安・回避・恐れ回避の愛着スタイル</span></div>
+    <div class="badge"><span class="num">6章</span><span class="label">本書の構成（発生要因〜克服まで）</span></div>
+  </div>
+
+  <div role="tablist" class="tabs" aria-label="インフォグラフィックのセクション">
+    <button class="tab-btn" role="tab" id="tab-concept" aria-controls="panel-concept" aria-selected="true">🔑 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-chapter" aria-controls="panel-chapter" aria-selected="false">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-case" aria-controls="panel-case" aria-selected="false">🧩 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-quote" aria-controls="panel-quote" aria-selected="false">💬 引用</button>
+    <button class="tab-btn" role="tab" id="tab-action" aria-controls="panel-action" aria-selected="false">✅ 今日のアクション</button>
+  </div>
+
+  <div id="panel-concept" class="tab-panel active" role="tabpanel" aria-labelledby="tab-concept">
+    <div class="card">
+      <h3>① 愛着スタイル（アタッチメントスタイル）</h3>
+      <ul>
+        <li>幼少期の養育経験から作られる、対人関係の基本パターン</li>
+        <li>パーソナリティの土台となり、無自覚のまま生き方を左右する</li>
+        <li>安定型・不安型・回避型・恐れ回避型の4タイプに分類される</li>
+      </ul>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>安定型</span><span>約55%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--primary);"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>回避型</span><span>約23%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:23%;background:var(--accent);"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>不安型</span><span>約17%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:17%;background:var(--secondary-dark);"></div></div>
+      </div>
+      <div class="why">理由：自分がどのタイプに近いかを知ることが、生きづらさの正体を掴む第一歩になるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>② 安全基地</h3>
+      <ul>
+        <li>不安な時に戻れば安心できる、心の拠り所となる人・場所・習慣</li>
+        <li>安全基地があるからこそ、人は外の世界へ探索・挑戦できる</li>
+        <li>大人になってからでも意図的に「再構築」できる</li>
+      </ul>
+      <div class="why">理由：安全基地の有無が、ストレス耐性と自立度を決定づける核心要素だから。</div>
+    </div>
+
+    <div class="card">
+      <h3>③ オキシトシン（愛着ホルモン）</h3>
+      <ul>
+        <li>愛着を支える神経伝達物質。「幸福ホルモン」とも呼ばれる</li>
+        <li>スキンシップ・信頼できる関係・親切な行為で分泌が促される</li>
+        <li>ストレス緩和、他者への共感・寛容さを高める働きを持つ</li>
+      </ul>
+      <div class="why">理由：愛着障害を「気持ちの問題」ではなく生物学的な仕組みとして理解できるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>④ 不安型愛着</h3>
+      <ul>
+        <li>見捨てられ不安が強く、他人の顔色に敏感になる</li>
+        <li>共感性が高く献身的な反面、依存しやすく傷つきやすい</li>
+        <li>男性の約15%、女性の約20%が該当すると推測される</li>
+      </ul>
+      <div class="why">理由：職場や恋愛で「頑張りすぎて疲れる」人の背景にあるパターンだから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑤ 回避型愛着</h3>
+      <ul>
+        <li>親密な関係を避け、感情を切り離して冷静さを保とうとする</li>
+        <li>人を信用しにくく、深い関わりを負担に感じやすい</li>
+        <li>不安型と組み合わさると悪循環（追う・逃げる）が生まれやすい</li>
+      </ul>
+      <div class="why">理由：「冷たく見える人」の内面を理解し、関係の悪循環を断つ手がかりになるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑥ 恐れ・回避型（未解決型）</h3>
+      <ul>
+        <li>親密さを求める気持ちと恐れる気持ちが同時に存在する</li>
+        <li>虐待やネグレクトなど深刻な養育環境と関連しやすい、最も重篤なタイプ</li>
+        <li>対人関係・情緒の不安定さが強く出やすい</li>
+      </ul>
+      <div class="why">理由：発達障害と誤診されやすいケースの多くがこのタイプに関係するため。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑦ 世代間伝達</h3>
+      <ul>
+        <li>親の愛着スタイルは、子育てを通じて子どもに受け継がれやすい</li>
+        <li>本人が意識・介入しない限り、パターンは繰り返される傾向がある</li>
+        <li>自分の愛着スタイルを知ることが連鎖を断つ出発点になる</li>
+      </ul>
+      <div class="why">理由：「自分の子育てが心配」という悩みの構造を理解する鍵になるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑧ 愛着アプローチ</h3>
+      <ul>
+        <li>うつ・依存症・不安障害などの「症状」を直接治そうとしない</li>
+        <li>不安定な愛着そのものを安定させることを目指す治療思想</li>
+        <li>安全基地の確保、語り直し、役割を持つことなどが柱になる</li>
+      </ul>
+      <div class="why">理由：対症療法では改善しにくい生きづらさに、根本からアプローチできるため。</div>
+    </div>
+  </div>
+
+  <div id="panel-chapter" class="tab-panel" role="tabpanel" aria-labelledby="tab-chapter" hidden>
+    <div class="card">
+      <h3>第1章 愛着障害と愛着スタイル</h3>
+      <ul>
+        <li>愛着障害とは何か、基本概念を定義</li>
+        <li>「発達障害」との混同が増えている現状を提起</li>
+        <li>愛着スタイルが人生全般に及ぼす影響を概観</li>
+      </ul>
+      <div class="why">理由：本書全体の地図となる、最初に押さえるべき章だから。</div>
+    </div>
+    <div class="card">
+      <h3>第2章 愛着障害が生まれる要因と背景</h3>
+      <ul>
+        <li>養育環境（愛情不足・不安定な関わり）が主因</li>
+        <li>オキシトシン系の働きなど生物学的な土台も関係する</li>
+        <li>虐待だけでなく、過保護や一貫性のない養育も要因になりうる</li>
+      </ul>
+      <div class="why">理由：「特別に不幸な家庭でなくても起こりうる」ことを理解するため。</div>
+    </div>
+    <div class="card">
+      <h3>第3章 愛着障害の特性と病理</h3>
+      <ul>
+        <li>うつ、依存症、摂食障害など多様な症状との関連</li>
+        <li>対人関係における生きづらさの具体的な現れ方</li>
+        <li>発達障害と誤診されやすい背景を掘り下げる</li>
+      </ul>
+      <div class="why">理由：不調の「本当の原因」を見誤らないための知識になるから。</div>
+    </div>
+    <div class="card">
+      <h3>第4章 愛着スタイルを見分ける</h3>
+      <ul>
+        <li>安定・不安・回避・恐れ回避の見分け方を具体的に解説</li>
+        <li>自分や身近な人のタイプを推測するヒントを提供</li>
+        <li>タイプは固定ではなく、程度や状況で変化しうる</li>
+      </ul>
+      <div class="why">理由：自己診断の第一歩として、この章の視点が実践に直結するため。</div>
+    </div>
+    <div class="card">
+      <h3>第5章 愛着スタイルと対人関係、仕事、愛情</h3>
+      <ul>
+        <li>職場での振る舞い・リーダーシップへの影響</li>
+        <li>恋愛・結婚生活における相性とすれ違いのパターン</li>
+        <li>不安型と回避型が引き合い、悪循環を作りやすい構造</li>
+      </ul>
+      <div class="why">理由：仕事や恋愛の悩みの多くが、症状ではなく愛着の問題であるため。</div>
+    </div>
+    <div class="card">
+      <h3>第6章 愛着障害の克服</h3>
+      <ul>
+        <li>安全基地を持つこと・再構築することの重要性</li>
+        <li>信頼できる人に過去を語り尽くす「語り直し」の効果</li>
+        <li>役割を持つこと、書くことによる自己整理の方法</li>
+      </ul>
+      <div class="why">理由：本書の実践パート。読了後に何をすべきかが具体的にわかるため。</div>
+    </div>
+  </div>
+
+  <div id="panel-case" class="tab-panel" role="tabpanel" aria-labelledby="tab-case" hidden>
+    <div class="card">
+      <h3>🖋️ 夏目漱石</h3>
+      <ul>
+        <li>生後まもなく里子・養子に出され、実の親子関係が不安定なまま育つ</li>
+        <li>生涯にわたる人間不信・被害妄想的な傾向を抱えたとされる</li>
+        <li>作品にも人間関係の疑心や孤独のテーマが色濃く表れている</li>
+      </ul>
+      <div class="why">理由（この例が示すこと）：幼少期の養育の不安定さが、才能や社会的成功とは無関係に生涯の生きづらさを残しうることを示す例。</div>
+    </div>
+    <div class="card">
+      <h3>🖋️ 太宰治</h3>
+      <ul>
+        <li>大家族の中で乳母に育てられ、実母との愛着形成が乏しかったとされる</li>
+        <li>生涯「見捨てられる不安」に苦しみ、薬物依存・自殺未遂を繰り返した</li>
+        <li>作品にも自己否定と他者への強い希求が繰り返し描かれる</li>
+      </ul>
+      <div class="why">理由（この例が示すこと）：不安型愛着の特徴（見捨てられ不安・依存）が極端な形で表れた典型例として提示される。</div>
+    </div>
+    <div class="card">
+      <h3>🖋️ 三島由紀夫</h3>
+      <ul>
+        <li>幼少期を祖母のもとで支配的に育てられ、両親からは切り離された</li>
+        <li>太宰治への強い対抗意識を燃やしつつも、重度の愛着障害を抱えていたとされる</li>
+        <li>最終的に自死という形で生涯を閉じた</li>
+      </ul>
+      <div class="why">理由（この例が示すこと）：愛着の傷は、本人が意識的に「乗り越えよう」とするだけでは解決しきれない根深さを持つことを示す。</div>
+    </div>
+    <div class="card">
+      <h3>💼 現代の職場に見られるパターン（本書の視点の一般化）</h3>
+      <ul>
+        <li>頼まれごとを断れず抱え込みすぎる「不安型」の同僚・部下</li>
+        <li>部下や家族との距離を無意識に取り、冷淡に見られる「回避型」の上司</li>
+        <li>両者が組むと「追いかける／逃げる」の悪循環に陥りやすい</li>
+      </ul>
+      <div class="why">理由（この例が示すこと）：愛着障害は特別な人だけの問題ではなく、身近な人間関係の摩擦の多くに関与していることを示す。</div>
+    </div>
+  </div>
+
+  <div id="panel-quote" class="tab-panel" role="tabpanel" aria-labelledby="tab-quote" hidden>
+    <blockquote>
+      愛着スタイルはパーソナリティの土台となる部分を作り、その人の生き方を気づかないところで支配している。
+      <span class="tag">要旨（原典引用ではなく本書の主旨をまとめたもの）</span>
+    </blockquote>
+    <blockquote>
+      幼い頃に身についた愛着スタイルは、7〜8割の人で生涯にわたり持続し、生まれ持った気質とともに「第二の天性」として刻み込まれる。
+      <span class="tag">要旨（原典引用ではなく本書の主旨をまとめたもの）</span>
+    </blockquote>
+    <blockquote>
+      安全基地があるからこそ、人は危険が去ったあと再び外の世界へ探索行動に出て、自立していくことができる。
+      <span class="tag">要旨（原典引用ではなく本書の主旨をまとめたもの）</span>
+    </blockquote>
+  </div>
+
+  <div id="panel-action" class="tab-panel" role="tabpanel" aria-labelledby="tab-action" hidden>
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div>
+        <h3 style="margin-bottom:4px;">自分の愛着スタイルをセルフチェックする</h3>
+        <ul>
+          <li>本書または信頼できる心理学サイトのチェック項目で15分ほど確認</li>
+          <li>目的：自分が安定・不安・回避のどのパターンに近いか把握する</li>
+          <li>期待効果：人間関係で繰り返すパターンに気づき、次の一歩を選びやすくなる</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div>
+        <h3 style="margin-bottom:4px;">子ども時代の心残りを一つ、信頼できる人に話す</h3>
+        <ul>
+          <li>20〜30分、評価や解決を求めず、ただ聞いてもらう時間を作る</li>
+          <li>目的：語ることで感情を整理し、愛着を少しずつ安定させる</li>
+          <li>期待効果：一人で抱えていた感情の重さが軽くなる</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div>
+        <h3 style="margin-bottom:4px;">自分の「安全基地」を3つ書き出す</h3>
+        <ul>
+          <li>頼れる人・落ち着ける場所・安心できる習慣を紙やメモに書く（15分）</li>
+          <li>目的：安全基地を可視化し、意識的にアクセスできるようにする</li>
+          <li>期待効果：ストレスの多い場面で頼れる拠り所をすぐ思い出せる</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  🧠 Daily Reading Summary — 生成日: 2026-08-09
+</footer>
+
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+  var panels = {
+    'tab-concept': document.getElementById('panel-concept'),
+    'tab-chapter': document.getElementById('panel-chapter'),
+    'tab-case': document.getElementById('panel-case'),
+    'tab-quote': document.getElementById('panel-quote'),
+    'tab-action': document.getElementById('panel-action')
+  };
+  tabs.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      tabs.forEach(function (b) {
+        b.setAttribute('aria-selected', 'false');
+        var p = panels[b.id];
+        p.classList.remove('active');
+        p.setAttribute('hidden', '');
+      });
+      btn.setAttribute('aria-selected', 'true');
+      var activePanel = panels[btn.id];
+      activePanel.classList.add('active');
+      activePanel.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
