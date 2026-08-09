@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>頭のいい人が話す前に考えていること インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #3a6ea5 / セカンダリー #1c3f60 / アクセント #ffb703 -->
+<style>
+:root {
+  --primary: #3a6ea5;
+  --secondary: #1c3f60;
+  --accent: #ffb703;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff8ea, #fff3d6);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eef4fb, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff9e6, #fffbf0);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 頭のいい人が話す前に考えていること</h1>
+  <p>「知性」と「信頼」を同時にもたらす、話す前の思考法</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>話し方のテクニックをいくら磨いても伝わらない・信頼されないのはなぜか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>伝わるかどうかは「話し方」ではなく「話す前の思考の質」でほぼ決まる。反応せず、課題と向き合い、他者のために知識を使う人が、知性と信頼を同時に得る。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>感情的な反応・自己主張・承認欲求の暴走は思考の質を下げ、相手との対立を生む。一方、冷静な客観視と整理された思考は、相手に「ちゃんと考えてくれている」という信頼を生む。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>7つの黄金法則（反応しない・他人が頭の良さを決める・信頼構築・課題と闘う等）を実践し、客観視・整理・傾聴・質問・言語化の5つの思考法で日々の会話の質を底上げする。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🛑 とにかく反応するな</h3>
+    <ul>
+      <li>怒っている・焦っているときは誰でも頭が悪くなる</li>
+      <li>感情に任せてすぐ口を開かず、まず数秒待つ</li>
+      <li>「反応」と「思考」は別物と自覚する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>即座の反応は思考の質を著しく下げ、後から取り返しのつかない発言を生むため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👀 頭のよさは、他人が決める</h3>
+    <ul>
+      <li>「自分が賢いと思うかどうか」ではなく相手の評価が全て</li>
+      <li>相手にとって役立つ思考・発言をしているかが基準</li>
+      <li>自己満足な知識披露は逆効果になりうる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>評価軸を自分から他者に移すことで、独りよがりな発言を防げるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 人はちゃんと考えてくれてる人を信頼する</h3>
+    <ul>
+      <li>正しさよりも「本気で考えてくれた」という姿勢が信頼を生む</li>
+      <li>結論の速さより、思考のプロセスが伝わることが重要</li>
+      <li>コンサル1年目でも経験者に信頼されうる理由</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>信頼は正解率ではなく、相手のために思考を尽くした痕跡から生まれるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚔️ 人と闘うな、課題と闘え</h3>
+    <ul>
+      <li>議論の目的は相手を打ち負かすことではない</li>
+      <li>本質的な課題そのものにフォーカスする</li>
+      <li>議論の「勝ち負け」は思考の質を下げる罠</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>対人闘争モードに入ると視野が狭まり、本来解決すべき課題を見失うため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💬 伝わらないのは話し方でなく考えが足りないせい</h3>
+    <ul>
+      <li>話す技術の前に、思考の深さ・整理度が伝達の質を決める</li>
+      <li>話し方の小手先の改善では根本解決にならない</li>
+      <li>「何を考えたか」が「どう話すか」より先にある</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>多くの人が話し方の練習に走るが、本質的なボトルネックは思考の浅さにあるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎁 知識は誰かのために使って初めて知性になる</h3>
+    <ul>
+      <li>知識の量そのものは知性ではない</li>
+      <li>他者の課題解決に使われて初めて価値を持つ</li>
+      <li>披露目的の知識は信頼を損なうことすらある</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>知性は「持っているもの」ではなく「使い方」で評価されるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🙌 承認欲求を満たす側に回れ</h3>
+    <ul>
+      <li>自分の承認欲求を抑え、相手の承認欲求を満たすことに注力する</li>
+      <li>聞き役・引き出し役に回れる人がコミュニケーション上手</li>
+      <li>「自分が認められたい」を脇に置く訓練</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>相手を承認する側に回ることで、対話の主導権と信頼を同時に得られるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔍 客観視の思考法</h3>
+    <ul>
+      <li>物事をできるだけ正確・客観的に捉えようとする姿勢</li>
+      <li>確証バイアス（都合の良い情報だけ集める）に注意する</li>
+      <li>自分と真逆の意見・統計データも調べる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>バイアスを自覚しない思考は、いくら深めても偏った結論にしか至らないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗂️ 整理の思考法</h3>
+    <ul>
+      <li>頭のいい人の説明がわかりやすいのは、事前に整理されているから</li>
+      <li>話す前に構造化することで伝達効率が上がる</li>
+      <li>結論・理由・具体例の順で整える</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>整理されていない思考は、話す段階でどれだけ工夫しても相手に伝わらないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👂 傾聴・質問・言語化の思考法</h3>
+    <ul>
+      <li>話す前に、まず深く聞く・教わる姿勢を持つ</li>
+      <li>問いを立てることで相手の思考を引き出す</li>
+      <li>最後に適切な言語化でインパクトを残す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>聞く・問う・言語化するの3ステップが揃って初めて、知性と信頼が同時に伝わるため。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>感情的な反応</span>
+      <span class="flow-arrow">→</span>
+      <span>思考の質低下</span>
+      <span class="flow-arrow">→</span>
+      <span>「とにかく反応するな」で防止</span>
+    </div>
+    <div class="flow-item">
+      <span>客観視・整理</span>
+      <span class="flow-arrow">→</span>
+      <span>思考の深さ↑</span>
+      <span class="flow-arrow">→</span>
+      <span>伝わる話し方が自然に生まれる</span>
+    </div>
+    <div class="flow-item">
+      <span>人と闘わず課題と闘う</span>
+      <span class="flow-arrow">→</span>
+      <span>本質的な議論</span>
+      <span class="flow-arrow">→</span>
+      <span>信頼構築</span>
+    </div>
+    <div class="flow-item">
+      <span>承認欲求を満たす側に回る</span>
+      <span class="flow-arrow">→</span>
+      <span>傾聴・質問</span>
+      <span class="flow-arrow">→</span>
+      <span>相手の信頼獲得</span>
+    </div>
+    <div class="flow-item">
+      <span>知識を誰かのために使う</span>
+      <span class="flow-arrow">→</span>
+      <span>知性として認識される</span>
+      <span class="flow-arrow">→</span>
+      <span>頭のよさは他人が決める、が成立</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>第1部：7つの黄金法則 ─ 「知性」と「信頼」を同時にもたらす</h3>
+    <ul>
+      <li>①とにかく反応するな：感情の反応と思考は別物</li>
+      <li>②頭のよさは、他人が決める：評価軸は自分でなく相手にある</li>
+      <li>③人はちゃんと考えてくれてる人を信頼する：正しさより思考の姿勢</li>
+      <li>④人と闘うな、課題と闘え：議論の目的は課題解決</li>
+      <li>⑤伝わらないのは話し方ではなく考えが足りないせい：思考が先、話法は後</li>
+      <li>⑥知識は誰かのために使って初めて知性になる：知識の使い道が価値を決める</li>
+      <li>⑦承認欲求を満たす側に回れ：自分より相手の承認欲求を満たす</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>コンサルタントとして1,000社・8,000人以上と接した著者の経験から抽出された、再現性のある思考習慣であるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2部：5つの思考法 ─ 一気に頭のいい人になる思考の深め方</h3>
+    <ul>
+      <li>①「客観視」の思考法：バイアスを自覚し正確に捉える</li>
+      <li>②「整理」の思考法：説明が分かりやすい人は先に整理している</li>
+      <li>③「傾聴」の思考法：話す前にまず深く聞く</li>
+      <li>④「質問」の思考法：問いを立てて相手の思考を引き出す</li>
+      <li>⑤「言語化」の思考法：適切な言葉でインパクトを残す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>黄金法則という「心構え」を、日々使える具体的な「技術」に落とし込むための実践パートであるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>会議・組織での応用</h3>
+    <ul>
+      <li>会議で一番偉いのは「最初に案を出す人」</li>
+      <li>批判は誰でもできるが、最初に案を出すには勇気と準備がいる</li>
+      <li>発言前に「誰のためか」「意思決定を前進させるか」「単なる感想でないか」を自問する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>個人の思考法を、実際の職場コミュニケーションに直結させて実践できるようにするため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>😤 怒りへの「6秒ルール」</h3>
+    <ul>
+      <li>イラッ・ムカッとした瞬間、まず6秒待つ</li>
+      <li>その間に代案や別の見方を検討する</li>
+      <li>反射的な反論より落ち着いた対応の方が結果的に信頼される</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「反応するな」という抽象的な法則を、6秒待つという具体行動に翻訳できることを示す好例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧑‍💼 コンサル1年目が経営者に助言できる理由</h3>
+    <ul>
+      <li>実務経験は経営者の方が圧倒的に上でも、信頼を得ることがある</li>
+      <li>理由は「経験の量」ではなく「本気で考え抜いた提案」だから</li>
+      <li>最初に案を出す人は批判者より高く評価される</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>知性・信頼は経験年数に依存せず、思考の誠実さから生まれることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 確証バイアスと後知恵バイアス</h3>
+    <ul>
+      <li>確証バイアス：自分に都合のいい情報ばかり集める傾向</li>
+      <li>後知恵バイアス：結果を知った後で「予測していた」と錯覚する傾向</li>
+      <li>両方とも客観視を妨げる典型的な思考の罠</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「客観的に考える」という言葉が具体的にどんな罠を避けることなのかを明確にする。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗣️ 会議で最初に案を出す人が評価される場面</h3>
+    <ul>
+      <li>批判・ダメ出しは誰にでもできる低コストな行為</li>
+      <li>最初に案を出すには勉強と準備、恥をかくリスクを負う覚悟が必要</li>
+      <li>結果としてその人が組織で最も信頼される存在になる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「頭のよさは他人が決める」という法則が職場でどう機能するかの具体的な観察例。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">怒っているときは誰でも頭が悪くなる。話す前にちゃんと考えるとは、感情に任せて反応するのではなく、冷静になることである。（要旨）</p>
+    <p class="quote-why">※原典の一字一句の引用ではなく要旨。感情反応と思考を切り分ける本書の出発点となる考え方。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">人を打ち負かす議論は、決して頭がいいとは言えない。本当に頭のいい人は、向かっている課題の解決から目を逸らさない。（要旨）</p>
+    <p class="quote-why">※要旨。「人と闘うな、課題と闘え」の核心を表す一文。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">伝わらないのは話し方のせいではなく、考えが足りないせいである。（要旨）</p>
+    <p class="quote-why">※要旨。話法よりも思考の深さを重視する本書全体のメッセージを凝縮した表現。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">どんな仕事でも、一番偉いのは最初に案を出す人。批判なんて誰でもできるが、最初に案を出すのは勇気がいるし、バカにされないよう一生懸命勉強しなければならない。（要旨）</p>
+    <p class="quote-why">※要旨。会議・組織での実践に直結する一節。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>⏱️ 反応する前に6秒待つ練習</h4>
+    <p><strong>やること：</strong>今日、イラッとする場面が来たら、口を開く前に心の中で6秒数える。</p>
+    <p><strong>目的：</strong>感情的な反応と冷静な思考を切り分ける習慣をつける。</p>
+    <p><strong>期待効果：</strong>衝動的な発言が減り、後から後悔する対話が少なくなる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🔍 自分の意見の「反対側」を1つ調べる</h4>
+    <p><strong>やること：</strong>今持っている意見や判断について、真逆の立場の意見を1つだけ検索して読む。</p>
+    <p><strong>目的：</strong>確証バイアスを自覚し、客観視の思考法を体験する。</p>
+    <p><strong>期待効果：</strong>次の会話で、より根拠のある・偏りの少ない発言ができるようになる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🙋 会議やチャットで「最初に案を出す」を1回やってみる</h4>
+    <p><strong>やること：</strong>今日の会議・雑談・チャットのどこかで、批判ではなく「たたき台の案」を最初に出す。</p>
+    <p><strong>目的：</strong>「批判は誰でもできる、最初に案を出す人が信頼される」を体感する。</p>
+    <p><strong>期待効果：</strong>周囲からの信頼・評価が積み重なり、発言力が高まる。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 90%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
