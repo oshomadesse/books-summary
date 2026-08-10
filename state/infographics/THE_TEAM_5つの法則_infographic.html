@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE TEAM 5つの法則 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #2a7f62 / セカンダリー #1b4d3e / アクセント #f4a259 -->
+<style>
+:root {
+  --primary: #2a7f62;
+  --secondary: #1b4d3e;
+  --accent: #f4a259;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff8ea, #fff3d6);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eaf5f0, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff9e6, #fffbf0);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+.type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+.type-cell {
+  background: #f5faf8;
+  border: 1px solid #dcece5;
+  border-radius: 8px;
+  padding: 0.8rem;
+  font-size: 0.85rem;
+}
+.type-cell strong {
+  display: block;
+  color: var(--primary);
+  margin-bottom: 0.3rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚽ THE TEAM 5つの法則</h1>
+  <p>偉大なチームに必要なのは、偉大なリーダーではなく偉大な法則</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>優れたチームは、カリスマ的なリーダーや偶然の相性の良さがなければ作れないのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>いいえ。優れたチームに必要なのは属人的なカリスマ性ではなく、誰でも実践できる「5つの法則」（Aim・Boarding・Communication・Decision・Engagement）という型である。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>目標の掲げ方、メンバーの選び方、意思疎通の仕方、決め方、共感の作り方には、心理学・行動経済学に裏付けられた再現性のあるパターンが存在する。感覚やカリスマに頼るチーム運営は属人化し、再現できない。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>まず自分のチームが「サッカー型・野球型・駅伝型・柔道団体戦型」のどれに近いかを見極め、そのうえでABCDEの頭文字を取った5つの法則を順に適用し、目標・人選・対話・決定・共感のそれぞれを型として設計する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🏳️ Aimの法則（目標設定）：旗を掲げよ</h3>
+    <ul>
+      <li>目標は「意義目標」「成果目標」「行動目標」の3層構造で捉える</li>
+      <li>行動目標だけを追うと「仕事の奴隷」になる</li>
+      <li>成果目標だけを追うと「数字の奴隷」になる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>目指す旗（意義）がないままの数字・行動指示は、メンバーを疲弊させ長続きしないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧭 4つのチーム類型</h3>
+    <ul>
+      <li>環境変化度（相手の出方への依存度）×人材連携度（メンバー間の連携必要度）で分類</li>
+      <li>サッカー型：環境変化度・人材連携度ともに高い</li>
+      <li>野球型：環境変化度は低いが人材連携度は高い</li>
+      <li>駅伝型／柔道団体戦型：個々の独立性が高く連携度は低い</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>チームの成功法則はひとつではなく、自チームの型を見極めて初めて他の法則の重み付けが決まるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🛳️ Boardingの法則（人員選定）：共に戦える仲間を選べ</h3>
+    <ul>
+      <li>「何をするか」より「誰とするか」が成果を左右する</li>
+      <li>誰を招き入れ、誰を外すかの明確な基準を持つ</li>
+      <li>加入・離脱のルールを曖昧にしない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>人選の基準が曖昧なチームは、能力や価値観のミスマッチを抱えたまま機能不全に陥りやすいため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💬 Communicationの法則（意思疎通）：最高の空間を作れ</h3>
+    <ul>
+      <li>コミュニケーションのルールは、実は少ないほうがよい</li>
+      <li>心理的安全性を確保したうえで、自分から自己開示する</li>
+      <li>感情がコミュニケーションを阻害する要因になりうる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>過剰なルールや心理的安全性の欠如は、率直な意見交換そのものを妨げてしまうため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧾 Decisionの法則（意思決定）：進むべき道を示せ</h3>
+    <ul>
+      <li>「正しい意思決定」よりも「強い意思決定」を優先する</li>
+      <li>強い意思決定とは、決定の速さとメンバーの納得感・実行力を伴うもの</li>
+      <li>決めた後の実行過程で仮説検証していく姿勢が重要</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>完璧な正解を探して意思決定が遅れるほど、チームは機動力を失い機会を逃すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔥 Engagementの法則（共感創造）：力を出し切れ</h3>
+    <ul>
+      <li>モチベーションは「Will（やりたい）」「Can（やれる）」「Must（やるべき）」の掛け算</li>
+      <li>いずれか一つが欠けても本気の力は出ない</li>
+      <li>チームへの共感がメンバーの全力を引き出す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>やる気・実現可能性・必要性のどれか一つでも欠けると、行動が持続しないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎁 4P（エンゲージメントを高める4つの切り口）</h3>
+    <ul>
+      <li>Philosophy（理念・方針）：何のためにやるのか</li>
+      <li>Profession（活動・成長）：何を経験し何を得られるか</li>
+      <li>People（人材・風土）：誰とどんな空気の中で働くか</li>
+      <li>Privilege（特権・待遇）：どんな条件・報酬を得られるか</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>チームによって魅力の源泉となるPは異なり、どのPに投資すべきかを見極める必要があるため。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>チームの型を見極める</span>
+      <span class="flow-arrow">→</span>
+      <span>5つの法則の重み付けが決まる</span>
+    </div>
+    <div class="flow-item">
+      <span>Aimで旗を掲げる</span>
+      <span class="flow-arrow">→</span>
+      <span>Boardingで戦う仲間を選ぶ</span>
+      <span class="flow-arrow">→</span>
+      <span>Communicationで最高の空間を作る</span>
+    </div>
+    <div class="flow-item">
+      <span>Decisionで強い決定を下す</span>
+      <span class="flow-arrow">→</span>
+      <span>Engagementで全力を引き出す</span>
+      <span class="flow-arrow">→</span>
+      <span>チームの成果が最大化する</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>はじめに：チームの法則で売上・時価総額10倍</h3>
+    <ul>
+      <li>著者自身の低迷していたコンサルティングチームが法則適用で劇的に改善</li>
+      <li>属人的なカリスマではなく再現可能な「法則」であることを強調</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>理論だけでなく著者自身が実践・検証した経験談から説得力を担保するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第1章 Aimの法則：旗を掲げよ</h3>
+    <ul>
+      <li>意義目標・成果目標・行動目標の3層で目標を設計する</li>
+      <li>目標の掲げ方を誤るとチームは迷走・疲弊する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>チームの出発点である「何を目指すか」が曖昧だと、以降の全法則が機能しなくなるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章 Boardingの法則：共に戦えるメンバーを選べ</h3>
+    <ul>
+      <li>誰を入れ、誰を外すかの基準を明確化する</li>
+      <li>「何をするか」より「誰とするか」を重視する視点</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>人選の質がチームの土台であり、後からの法則ではカバーしきれないため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章 Communicationの法則：最高の空間を作れ</h3>
+    <ul>
+      <li>ルールは少なく、心理的安全性を優先する</li>
+      <li>自己開示から始める信頼構築のプロセス</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>率直な対話ができる「空間」がなければ、目標も決定も共有されないため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章 Decisionの法則：進むべき道を示せ</h3>
+    <ul>
+      <li>「正しさ」より「速さと納得感」を伴う強い意思決定</li>
+      <li>決定後の実行を通じた仮説検証を重視</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>意思決定の質は、決めた瞬間ではなく決めた後の実行力込みで評価すべきため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章 Engagementの法則：力を出し切れ</h3>
+    <ul>
+      <li>Will×Can×Mustの動機付けモデル</li>
+      <li>Philosophy／Profession／People／Privilegeの4Pで共感を設計する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>メンバーが持てる力を出し切るには、納得だけでなく感情面の共感創造が必要なため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>特別編〜最終章：チームの落とし穴、そして組織へ</h3>
+    <ul>
+      <li>チームは足し算にも掛け算にも割り算にもなりうる、という警鐘</li>
+      <li>5つの法則を実践した著者自身の組織変革の軌跡</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>法則を誤用・放置するとチームは機能不全（割り算）に陥りうることを示すため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>⚽ サッカー日本代表（南アフリカW杯ベスト16）</h3>
+    <ul>
+      <li>環境変化度・人材連携度がともに高い「サッカー型」の代表例</li>
+      <li>相手の出方に応じて瞬時に連携・判断を変える必要がある</li>
+      <li>個人技だけでなく、連携設計そのものが勝敗を分ける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>環境変化・連携度が高いチームほどCommunicationとDecisionの法則の比重が増すことを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🥋 全日本柔道団体戦</h3>
+    <ul>
+      <li>環境変化度は高いが人材連携度は低い「柔道団体戦型」</li>
+      <li>個々の対戦自体は独立しているが、相手チームのオーダーが自チームの采配に影響する</li>
+      <li>連携よりも個々の力量とオーダー（Boarding）の巧拙が鍵になる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>連携度が低いチーム類型では、Boardingの法則（誰を起用するか）の重みが増すことを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏢 著者自身のコンサルティングチーム改革</h3>
+    <ul>
+      <li>業績が低迷していた自チームに5つの法則を適用</li>
+      <li>売上・時価総額をともに10倍規模に伸ばした実体験</li>
+      <li>理論を自ら実践し検証した点が本書の説得力の核</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>5つの法則が机上の理論ではなく、実際の組織で再現性を持つことを裏付ける。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗣️ 会議での「案を出す」場面（Decisionの法則の応用）</h3>
+    <ul>
+      <li>完璧な正解を待つより、たたき台となる案を早く出す</li>
+      <li>決定後の実行過程で修正していくスタンスを取る</li>
+      <li>速さと納得感を伴う「強い意思決定」の実務的な現れ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「正しい意思決定」より「強い意思決定」という抽象的な法則を、日常の会議行動に翻訳できることを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">偉大なチームに必要なのは、偉大なリーダーではなく、偉大な法則である。（要旨）</p>
+    <p class="quote-why">※原典の一字一句の引用ではなく要旨。本書全体を貫く中心メッセージ。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">行動目標だけを追いかければ「仕事の奴隷」に、成果目標だけを追いかければ「数字の奴隷」になる。（要旨）</p>
+    <p class="quote-why">※要旨。Aimの法則における目標の3層構造の重要性を表す一節。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">チームにとって重要なのは、何をするかではなく、誰とするかである。（要旨）</p>
+    <p class="quote-why">※要旨。Boardingの法則の核心を表す一文。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">目指すべきは「正しい意思決定」ではなく「強い意思決定」である。（要旨）</p>
+    <p class="quote-why">※要旨。Decisionの法則における速さと納得感の重視を象徴する一節。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>🧭 自分のチームの型を15分で診断する</h4>
+    <p><strong>やること：</strong>今関わっているチームが「環境変化度」「人材連携度」のどちらが高いかを書き出し、サッカー型・野球型・駅伝型・柔道団体戦型のどれに近いか判定する。</p>
+    <p><strong>目的：</strong>自チームに合った法則の優先順位を把握する。</p>
+    <p><strong>期待効果：</strong>やみくもな改善ではなく、効きやすい法則から着手できるようになる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🏳️ 目標を3層に分解して書く</h4>
+    <p><strong>やること：</strong>今取り組んでいる仕事の目標を「意義目標」「成果目標」「行動目標」の3つに分けてそれぞれ1行で書く（15〜20分）。</p>
+    <p><strong>目的：</strong>行動や数字だけに偏った目標設定になっていないか点検する。</p>
+    <p><strong>期待効果：</strong>目標に立ち返る軸ができ、チームメンバーへの説明の説得力が増す。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🔥 Will・Can・Mustを自己診断する</h4>
+    <p><strong>やること：</strong>今の仕事について「やりたい（Will）」「やれる（Can）」「やるべき（Must）」をそれぞれ10点満点で自己採点し、最も低い項目への対策を1つ考える（15分）。</p>
+    <p><strong>目的：</strong>自分自身のエンゲージメントの欠落要因を特定する。</p>
+    <p><strong>期待効果：</strong>モチベーション低下の原因が明確になり、対処の打ち手を選びやすくなる。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 85%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
