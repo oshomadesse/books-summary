@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>快感回路 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #7b2cbf / セカンダリー #3c096c / アクセント #ff8fa3 -->
+<style>
+:root {
+  --primary: #7b2cbf;
+  --secondary: #3c096c;
+  --accent: #ff8fa3;
+  --bg: #faf8fc;
+  --card-bg: #ffffff;
+  --text: #2b2233;
+  --text-light: #6b6178;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f0fa;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fdf2ff, #f7e8ff);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #f3e8fb, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e6dcee;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #faf7fc, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff0f4, #fff8fa);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+.pathway-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.pathway-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.pathway-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 快感回路</h1>
+  <p>なぜ気持ちいいのか なぜやめられないのか</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>薬物・食・性・ギャンブルへの依存と、慈善活動や瞑想がもたらす満足感は、脳の中でまったく別のものなのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>いいえ。両者は同じ脳の一つの神経回路——腹側被蓋野から側坐核へと至る中脳辺縁系ドーパミン回路——を経由して生まれており、快感を作る仕組み自体には善悪の区別がない。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>快感回路は「生存・繁殖に有利か」ではなく「刺激がどれだけ強くドーパミン神経を駆動するか」だけに反応する。進化が想定していなかった薬物やスロットマシンのような人工的刺激は、この回路を自然な報酬以上に強く乗っ取ってしまう。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>まず自分の「やめられない行動」が回路のどの性質（即時性・不確実性・強い刺激）を突いているかを理解し、同じ回路の性質を利他的行動や達成感といった健全な形に応用し直す。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>⚡ 中脳辺縁系ドーパミン回路（報酬回路）</h3>
+    <ul>
+      <li>腹側被蓋野（VTA）から側坐核・前頭前皮質・扁桃体へドーパミンが放出される単一の経路</li>
+      <li>薬物・食・性・ギャンブル・慈善活動など、あらゆる快感が最終的にここを通る</li>
+      <li>快感の「入口」は多様でも「出口」はただ一つ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>依存症や欲望の多様な現れ方を、たった一つの神経メカニズムで統一的に説明できる本書全体の土台となる概念だから。
+    </div>
+  </div>
+
+  <div class="pathway-diagram">
+    <div class="pathway-item">刺激（薬物・食・性・賭け・慈善）<span class="pathway-arrow">→</span>腹側被蓋野（VTA）<span class="pathway-arrow">→</span>側坐核・前頭前皮質・扁桃体<span class="pathway-arrow">→</span>「気持ちいい」という感覚</div>
+  </div>
+
+  <div class="card">
+    <h3>📏 快感の強さ＝価値ではなく回路の駆動強度</h3>
+    <ul>
+      <li>快感の大きさは「生存・繁殖への有利さ」に比例しない</li>
+      <li>回路をどれだけ強く直接駆動するかだけで快感の強度が決まる</li>
+      <li>薬物のような人工的刺激は自然な報酬を上回る強さで回路を駆動できる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「なぜ体に悪いとわかっていてもやめられないのか」という依存症の根本的な逆説を説明する鍵になるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔁 耐性と感作</h3>
+    <ul>
+      <li>同じ刺激を繰り返すと、同じ快感を得るために必要な刺激量が増える（耐性）</li>
+      <li>一方で特定の「手がかり刺激」への欲求だけは逆に強まる（感作）</li>
+      <li>この二つが同時進行することで「満足していないのにやめられない」状態が生まれる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>依存が単なる快楽の追求ではなく、快感が減っているのに欲求だけが暴走するという矛盾した状態であることを示すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎭 ウォンティングとライキングの分離</h3>
+    <ul>
+      <li>「欲しい」という欲求（ウォンティング）と「好き」という快感そのもの（ライキング）は脳内で別回路が担う</li>
+      <li>依存症が進むと、快感（ライキング）は減っても欲求（ウォンティング）だけが強く残ることがある</li>
+      <li>「楽しくないのに求めてしまう」という依存者の実感を神経科学的に裏付ける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>依存症を「意志の弱さ」ではなく、欲求と快感が乖離した脳の状態として理解し直すために不可欠な区別だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ 快感回路の民主性（善悪を区別しない）</h3>
+    <ul>
+      <li>薬物・ギャンブルだけでなく、慈善活動・瞑想・宗教的体験・利他的行動も同じ回路を活性化させる</li>
+      <li>回路そのものは「良い快感」「悪い快感」を区別しない中立的な仕組み</li>
+      <li>快感の善悪は、その行動が個人・社会にもたらす結果によって決まる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>依存症を「快感を求めること自体が悪」と捉える誤解を解き、快感回路を健全な習慣づくりに応用する発想につながるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧬 個人差を生む遺伝的要因</h3>
+    <ul>
+      <li>ドーパミン受容体の遺伝的な違いが、同じ快感刺激への反応の強さに個人差を生む</li>
+      <li>依存しやすさ・快感の感じやすさは生まれつきの神経科学的な土台に左右される部分がある</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>依存を「その人の性格や意志の問題」に還元せず、生物学的な個人差として捉える視点を与えるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔔 予測誤差信号としてのドーパミン</h3>
+    <ul>
+      <li>ドーパミンは快感そのものよりも「予想外の報酬」に強く反応する予測誤差信号としての性質を持つ</li>
+      <li>予測できてしまった快感には反応が鈍る＝これが「刺激に慣れる」ことの正体</li>
+      <li>ギャンブルの不確実性が強い快感を生むのはこの性質のため</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「なぜ同じ刺激を繰り返すと物足りなくなるのか」「なぜ不確実な報酬ほど熱中しやすいのか」を同時に説明できるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>第1章 快感ボタンを押し続けるネズミ</h3>
+    <ul>
+      <li>脳内快感中枢に電極を埋め込まれたラットが、食事も忘れてレバーを押し続けた実験を起点に快感回路の発見史をたどる</li>
+      <li>快感には単一の神経経路があるという発見の重要性を示す</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>本書全体の土台となる「快感回路は一つ」という発見の物語だから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章 やめられない薬</h3>
+    <ul>
+      <li>コカイン・覚醒剤・アルコール・ヘロイン・ニコチン・大麻など作用機序の異なる薬物を解説</li>
+      <li>すべての薬物が最終的にドーパミン放出という同じ結果に行き着くことを示す</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>「なぜ多様な依存症が似た症状を示すのか」への答えになるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章 もっと食べたい</h3>
+    <ul>
+      <li>高カロリー食が快感回路を強く刺激する仕組みを説明</li>
+      <li>飽食の現代環境でも脳が「もっと食べろ」と命令し続ける進化的ミスマッチを扱う</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>現代の肥満・過食問題を進化的観点から理解できるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章 性的な脳</h3>
+    <ul>
+      <li>性行動やオーガズムが快感回路をどう駆動するかを解説</li>
+      <li>性的嗜好の多様性の神経科学的背景を扱う</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>快感回路が生殖という進化的目的と直結する典型例だから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章 ギャンブル依存症</h3>
+    <ul>
+      <li>「勝つかもしれない」という不確実性そのものが快感回路を強く刺激することを示す</li>
+      <li>実際の金銭的利得以上に脳を興奮させるメカニズムを解説</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>物質を摂取しない「行動嗜癖」も同じ回路で説明できることを示すため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章 悪徳ばかりが快感ではない</h3>
+    <ul>
+      <li>慈善活動・利他的行動・瞑想・宗教的体験も快感回路を活性化させることを紹介</li>
+      <li>快感回路が善悪を区別しない中立的な仕組みであることを裏付ける</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>快感＝悪という誤解を解き、健全な快感の可能性を示す章だから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7章 快感の未来</h3>
+    <ul>
+      <li>快感回路の理解が依存症治療・薬物政策・脳刺激デバイスなどにどう応用されうるかを展望</li>
+      <li>科学的知見を実生活・社会制度に活かす視点で締めくくる</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>科学的知見を今後の応用にどうつなげるかという本書の結論だから。</div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例</h2>
+
+  <div class="card">
+    <h3>🐭 ラットの自己刺激実験</h3>
+    <ul>
+      <li>1950年代、脳の快感中枢に電極を埋め込まれたラットは、レバーを押すたびに刺激を受けられる装置で、食事も睡眠も忘れて1時間に数千回もレバーを押し続けた</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>快感回路は生存本能さえ凌駕しうるほど強力であり、依存の恐ろしさを最も原初的な形で示す事例だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎰 ギャンブルの「ニアミス効果」</h3>
+    <ul>
+      <li>スロットマシンで絵柄があと一つでそろわなかった「ニアミス」は、実際には外れであるにもかかわらず、脳の報酬系を勝利時とほぼ同じ強さで活性化させることが脳スキャン研究で示されている</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>カジノやゲームのデザインがこの神経科学的性質を利用してユーザーの継続利用を引き出していることを示すから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 慈善活動による快感の脳内活性化</h3>
+    <ul>
+      <li>実際に他者へ寄付やボランティアを行った被験者の脳をスキャンすると、金銭的報酬を得たときと同様に側坐核が活性化することが確認された</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「良い行い」も脳にとっては薬物や賭け事と地続きの快感であり、これをポジティブな習慣形成に応用できることを示すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💊 多様な薬物が行き着く共通の終着点</h3>
+    <ul>
+      <li>コカイン・覚醒剤・アルコール・ヘロイン・ニコチン・大麻は作用の仕方がまったく異なるにもかかわらず、最終的にはすべてドーパミン放出という同じ結果に収束する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>依存症を薬物ごとに個別に理解するのではなく、共通する一つの神経メカニズムとして統一的に扱える根拠を示すから。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📜 重要な引用</h2>
+  <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 1rem;">※原典の一字一句の引用が確認できないため、以下はすべて本書の主張の要旨です。</p>
+
+  <div class="quote-card">
+    <p class="quote-text">快感を生み出す脳の回路はただ一つであり、コカインであれチョコレートであれセックスであれ慈善活動であれ、同じ神経経路を通って「気持ちいい」という感覚をつくり出している。（要旨）</p>
+    <p class="quote-why">※本書全体を貫く中心メッセージ。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">依存症とは意志の弱さの問題ではなく、この単一の快感回路が特定の刺激によってハイジャックされた状態である。（要旨）</p>
+    <p class="quote-why">※依存症の当事者への理解と治療の方向性を示す一節。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">快感回路そのものは善悪を判断しない。悪徳だけが快感を生むのではなく、利他的な行為もまた同じ強さでこの回路を駆動しうる。（要旨）</p>
+    <p class="quote-why">※第6章「悪徳ばかりが快感ではない」の核心を表す一節。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>📝 「なぜハマるのか」を1つ書き出す（15分）</h4>
+    <p><strong>やること：</strong>自分がついつい繰り返してしまう行動（スマホ、間食、SNSなど）を1つ選び、それが快感回路のどの性質（不確実性・即時性・強い刺激）を突いているか紙に書き出す。</p>
+    <p><strong>目的：</strong>依存的な行動を「意志の弱さ」ではなく回路の仕組みとして客観視する。</p>
+    <p><strong>期待効果：</strong>対策を立てやすくなり、自己嫌悪を減らせる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🎲 「予測できない小さなご褒美」を仕事に組み込む（20分）</h4>
+    <p><strong>やること：</strong>今日のタスクリストに、達成したらランダムなご褒美（好きな飲み物・5分休憩など）が得られる仕組みを1つ作る。</p>
+    <p><strong>目的：</strong>ギャンブルと同じ「不確実性による報酬系の活性化」を、依存ではなく生産性向上に応用する。</p>
+    <p><strong>期待効果：</strong>タスクへの取り組みやすさとモチベーションが上がる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🤝 「利他的な快感」を1つ実行する（30分）</h4>
+    <p><strong>やること：</strong>家族・同僚・友人に感謝を伝える、小さな手助けをするなど利他的な行動を1つ実際に行う。</p>
+    <p><strong>目的：</strong>慈善活動が快感回路を活性化させるという知見を体感する。</p>
+    <p><strong>期待効果：</strong>依存的な快感に頼らずとも満足感を得られることを実感できる。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 90%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
