@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>持たない幸福論 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #2f6b4f / セカンダリー #1b4332 / アクセント #f2a541 -->
+<style>
+:root {
+  --primary: #2f6b4f;
+  --secondary: #1b4332;
+  --accent: #f2a541;
+  --bg: #f7f6f1;
+  --card-bg: #ffffff;
+  --text: #24291f;
+  --text-light: #6b6f61;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f0f5f0;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fdf6e8, #fbeecb);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eaf3ec, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #dbe8dd;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f8faf7, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff8ec, #fffdf7);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+.pathway-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.pathway-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.pathway-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌱 持たない幸福論</h1>
+  <p>働きたくない、家族を作らない、お金に縛られない</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>正社員になり、結婚して家族を持ち、お金を貯める——この「普通」のモデルに乗れない・乗りたくない人は、幸せになれないのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>いいえ。会社・血縁の核家族・お金という3つの「所有」を手放しても、興味関心でつながる仲間と複数の居場所さえあれば、そこそこ幸せに生きていける。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>「正社員にならねば」「結婚しなければ」という「こうあらねば」思考は、時代が変わっても更新されない古い生き方モデルであり、それが人を追い詰めている。生活コストを下げ、価値観を相対化すれば、その呪縛から抜けられる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>単一の所属（会社・家族）に依存する代わりに、シェアハウスのような緩やかな共同体や趣味のコミュニティを複数持ち、モノやお金への執着を減らして身軽に暮らす。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🚫 「こうあらねば」思考からの解放</h3>
+    <ul>
+      <li>正社員になる・結婚する・子どもを持つ・貯蓄するという「普通」の生き方モデルを無意識に前提にしてしまう思考のクセ</li>
+      <li>時代や環境が変わっても、このモデルだけが古いまま高いハードルとして残り続けている</li>
+      <li>「べき」を疑うことが、生きづらさをほどく最初の一歩になる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書全体を貫く出発点であり、以降の「働かない」「家族を作らない」「お金に縛られない」という各論はすべてこの思考の相対化から導かれるため。
+    </div>
+  </div>
+
+  <div class="pathway-diagram">
+    <div class="pathway-item">「普通」のモデルを疑う<span class="pathway-arrow">→</span>生活コストを下げる<span class="pathway-arrow">→</span>単一の所属に依存しない<span class="pathway-arrow">→</span>仲間・居場所を複数持つ<span class="pathway-arrow">→</span>そこそこの幸福</div>
+  </div>
+
+  <div class="card">
+    <h3>💼 働きたくない（正社員信仰の相対化）</h3>
+    <ul>
+      <li>フルタイムで働き続けることだけが生きる手段ではないという発想</li>
+      <li>生活コストを下げれば、必ずしも正社員として働き続けなくても暮らしていける</li>
+      <li>著者自身が28歳で退職し、以降定職を持たずに暮らしてきた実践</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「働かざる者食うべからず」という社会規範に押しつぶされている人へ、生き方の選択肢を具体的に示す章の核だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👨‍👩‍👧 家族を作らない（血縁の核家族以外の居場所）</h3>
+    <ul>
+      <li>血縁の核家族だけが「安心できる居場所」ではないという視点</li>
+      <li>興味関心の合う人同士のシェアハウスも、家族に近い機能を果たしうる</li>
+      <li>ライフステージに応じて住まい方・つながり方を柔軟に更新してよい</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「結婚・出産をしないと孤独になる」という不安の前提そのものを問い直すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💰 お金に縛られない</h3>
+    <ul>
+      <li>お金の多寡と幸福度は必ずしも比例しないという主張</li>
+      <li>最低限の生活費で暮らせる工夫（固定費を下げる・シェアするなど）を積み重ねる</li>
+      <li>「好きなことをして仲間がいれば、お金がなくても毎日は楽しい」という実感</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>お金を稼ぐこと自体を目的化せず、生活コストと欲望の両方を小さくすることで自由度を上げる発想を示すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏠 仲間・居場所の複線化</h3>
+    <ul>
+      <li>会社・家族という単一の所属先だけに頼らず、興味関心でつながるコミュニティを複数持つ</li>
+      <li>一つの居場所を失っても他の居場所が残っていれば孤立しない、というセーフティネットの発想</li>
+      <li>ネットを使って自分から仲間を集める行動力も重視される</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「働かない」「家族を作らない」を選んだ場合に生じる孤独・不安を埋める、本書の実践的な結論部分だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📦 モノを持たないことによる思考の身軽さ</h3>
+    <ul>
+      <li>持ち物が多いほど身動きが取りづらくなり、思考の幅も狭まるという主張</li>
+      <li>モノを減らすことは節約だけでなく、選択肢と自由度を増やす行為として位置づけられる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本のタイトルにもなっている「持たない」という価値観の、経済面だけでない心理的な根拠を示すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔎 社会規範を相対化する視点（見田宗介・鶴見済の影響）</h3>
+    <ul>
+      <li>著者は社会学者・見田宗介と評論家・鶴見済の影響を強く受けたと述べている</li>
+      <li>「普通」とされる価値観を絶対視せず、一つの選択肢として距離を取って眺める姿勢</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書の思想的な背景を知ることで、単なる「生活の知恵」ではなく一貫した価値観の書であることが分かるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>第1章 働きたくない</h3>
+    <ul>
+      <li>正社員として働き続けることを当然視する社会の前提を問い直す</li>
+      <li>生活コストを下げれば、フルタイムで働かなくても生きていけるという著者自身の実感を語る</li>
+      <li>「働かないこと」への罪悪感の正体を解きほぐす</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>本書の第一のテーマである「働き方」への固定観念を最初に揺さぶる章だから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章 家族を作らない</h3>
+    <ul>
+      <li>結婚し子どもを持つことだけが「安心できる居場所」を得る方法ではないと説く</li>
+      <li>シェアハウスなど、血縁によらないゆるやかな共同体のあり方を紹介</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>「結婚しないと孤独になる」という不安の前提を相対化する章だから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章 お金に縛られない</h3>
+    <ul>
+      <li>お金をたくさん稼ぐことより、生活コストと欲望自体を小さくすることの効果を説く</li>
+      <li>お金がなくても工夫次第で日々を楽しめるという具体的な姿勢を示す</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>「お金がないと不幸」という前提を崩し、自由に近づくための実践的な章だから。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章 居場所の作り方</h3>
+    <ul>
+      <li>会社・家族に依存しない代わりに必要になる「仲間」「居場所」の作り方を具体的に語る</li>
+      <li>興味関心でつながる複数のコミュニティを持つことがセーフティネットになると説く</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>前3章で手放したものの代わりに何を持てばよいのか、という本書の結論に当たる章だから。</div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例</h2>
+
+  <div class="card">
+    <h3>🏘️ ギークハウスプロジェクト</h3>
+    <ul>
+      <li>2008年、東京・南町田で始まった趣味の合う人同士のシェアハウス</li>
+      <li>3LDKのマンションに、Twitterで募集した住人が最大3人ほどで共同生活</li>
+      <li>家賃や生活の孤独感を分散し、興味関心でつながる小さなコミュニティとして機能した</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>血縁によらない「家族的な居場所」が、実際に運営可能な仕組みとして成立することを具体的に示す事例だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎓 著者自身のキャリアの転換</h3>
+    <ul>
+      <li>京都大学卒業後にいったん就職するも、いわゆる「社内ニート」的な状態を経験</li>
+      <li>28歳で退職し、以降は定職を持たずに「ふらふら」暮らす生き方を長く続けている</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>高学歴・エリートコースを歩んだ人物でも「正社員という普通」から降りて生きていけることを、実体験として裏づけているため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 シェアハウス解散から一人暮らしへの移行</h3>
+    <ul>
+      <li>2019年、著者は長く続けてきたシェアハウス生活を解散し、一人暮らしへと移行した</li>
+      <li>「みんなで暮らす」という青春的な生き方にも終わりがあってよいという柔軟な姿勢を示す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「持たない生き方」は一つの正解に固定するものではなく、ライフステージに応じて更新してよいものだと示す事例だから。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📜 重要な引用</h2>
+  <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 1rem;">※原典の一字一句の引用がWeb上で確認できないため、以下は書評・レビュー記事に紹介された文章に基づく要旨です。</p>
+
+  <div class="quote-card">
+    <p class="quote-text">お金はあまりないけど、最低限生きてはいけるし、好きなことをやっていれば毎日は楽だし、仲間がいればわりと楽しいし、お金がなくてもちょっと工夫をすれば毎日の中で面白いことがたくさんできる。（要旨）</p>
+    <p class="quote-why">※「お金に縛られない」章の核心的な生活観を表す一節。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">物はできるだけ持たない。持っているものが多ければ多いほど、いろいろと身動きがしづらくなったり、思考が狭められたりして、人生の面白さが減るような気がする。（要旨）</p>
+    <p class="quote-why">※本のタイトルにもなっている「持たない」という価値観そのものを表す一節。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">「正社員にならねば」「結婚しなければ」「子どもを作らねば」といった「こうあらねば」が人を追いつめている。（要旨）</p>
+    <p class="quote-why">※本書全体の出発点となる問題意識を表す一節。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>📝 「こうあらねばリスト」を書き出す（15分）</h4>
+    <p><strong>やること：</strong>自分が無意識に従っている「〜すべき」「〜せねば」という思い込みを5つ紙に書き出し、それぞれ「本当に必要か？」を自問する。</p>
+    <p><strong>目的：</strong>自分を縛っている社会規範を言語化し、相対化する。</p>
+    <p><strong>期待効果：</strong>漠然とした息苦しさの正体がはっきりし、少し軽くなる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>💳 固定費を1つ見直す（20分）</h4>
+    <p><strong>やること：</strong>使っていないサブスクや保険、家賃・通信費などの固定費を1つ選び、解約・見直しできないか調べる。</p>
+    <p><strong>目的：</strong>生活コストを下げ、お金や仕事への依存度を減らす。</p>
+    <p><strong>期待効果：</strong>「稼ぎ続けなければ」というプレッシャーがわずかに軽くなる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🤝 会社・家族以外のつながりに一言連絡する（15〜30分）</h4>
+    <p><strong>やること：</strong>趣味のコミュニティやSNSグループなど、会社でも家族でもないつながりの相手に一言メッセージを送るか、参加予定を立てる。</p>
+    <p><strong>目的：</strong>居場所を複線化し、単一の所属先への依存を減らす。</p>
+    <p><strong>期待効果：</strong>一つの場所を失っても大丈夫だという安心感が生まれる。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 90%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
