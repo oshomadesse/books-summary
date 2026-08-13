@@ -153,7 +153,7 @@ flowchart TD
 | books-summary-pull.sh | fetch/merge失敗 | 5 | `~/Library/Logs/BooksSummary/pull.log`（翌回実行で自己回復） |
 | ノート移送コミットのpush | reject | 3 | pull.log（次回実行の未pushコミット回収で自己回復） |
 | backlink_books.py | ノート不在・退避タイムアウト | 各1 | pull.log（部分失敗でも pull は成功扱い） |
-| discord_books.py | 図解URLの3経路がすべて空（GitHub raw の2.5秒タイムアウトを含む） | 1 | Discord上でエラー返答（ephemeral） |
+| discord_books.py | 図解URLの3経路がすべて空（GitHub raw の2.0秒タイムアウトを含む） | 1 | Discord上でエラー返答（ephemeral） |
 | discord-daemon コア 常設メニュー番人 | メニュー貼り直し失敗 | 60秒ごと再試行 | daemon.log（次周期で自己回復。本リポは `menu_payload()` の宣言のみで実装はコア側） |
 
 ## むずかしい言葉なし版
