@@ -4,6 +4,8 @@ tags:
   - books-summary
 project_name: 📖 書籍要約くん
 summary: 毎朝AIが本を選定しインフォグラフィック付きサマリーをDiscord通知、書籍ノートをLLMリンクでグラフ化
+relations:
+  - "MENTIONS [[Obsidian]]"
 ---
 # 読書サマリー自動生成システム（books-summary）
 
