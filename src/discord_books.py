@@ -92,7 +92,7 @@ def note_metadata(date: str) -> tuple[str, str]:
 def remote_latest(date: str) -> tuple[str, str]:
     """リモートの latest.json から書名と図解 URL を返す。"""
     try:
-        with urllib.request.urlopen(RAW_LATEST_URL, timeout=2.5) as response:
+        with urllib.request.urlopen(RAW_LATEST_URL, timeout=2.0) as response:
             data = json.load(response)
         if str(data.get("date", "")) == date:
             title = str(data.get("title", "")).strip()
