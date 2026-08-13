@@ -118,13 +118,13 @@ def confirm_details(date: str) -> tuple[str, str]:
     except (OSError, ValueError):
         pass
     if not url or not title:
-        note_title, note_url = note_metadata(date)
-        title = title or note_title
-        url = url or note_url
-    if not url or not title:
         remote_title, remote_url = remote_latest(date)
         title = title or remote_title
         url = url or remote_url
+    if not url or not title:
+        note_title, note_url = note_metadata(date)
+        title = title or note_title
+        url = url or note_url
     return title, url
 
 
@@ -138,7 +138,7 @@ def build_prompt(date: str, entry: dict, question: str) -> str:
         f"カテゴリ: {entry.get('category', '')}",
         f"date: {date}",
         f"ノートパス: {note_path}",
-        f"ノート（{note_path}）が存在しなければ bash ~/.local/bin/books-summary-pull.sh を先に走らせてから読むこと。",
+        f"ノート（{note_path}）が存在しなければ bash /Users/seihoushouba/.local/bin/books-summary-pull.sh を先に走らせてから読むこと。",
         "このノートを読んでから答えること。ノート内にインフォグラフィックのURLもある。",
     ]
     if question:

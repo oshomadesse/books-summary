@@ -77,7 +77,7 @@ flowchart TD
     P --> W[Tool: GitHub Actions daily-notify.yml]:::tool
     W --> PG[(State: GitHub Pages state/infographics配信 URL不変)]:::state
     W --> DN[Human: Discord #books 通知 Embed+確認/詳細ボタン 両方紫]:::human
-    DN -->|✅確認| CF[Tool: discord_books.py 図解URL解決<br>ローカルlatest→vaultノート→GitHub raw の3段]:::tool
+    DN -->|✅確認| CF[Tool: discord_books.py 図解URL解決<br>ローカルlatest→GitHub raw→vaultノート の3段]:::tool
     CF -.->|pull未着時| GR[(State: GitHub raw state/latest.json)]:::state
     MK[Tool: discord-daemon コア 常設メニュー番人60秒 サイレント投稿]:::tool --> SM[Human: 検索モーダル 本やテーマを伝える]:::human
     SM --> DB2[Tool: discord_books.py → headless NEXUS注入]:::tool
