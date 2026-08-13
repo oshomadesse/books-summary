@@ -1,3 +1,7 @@
+---
+relations:
+  - "MENTIONS [[Obsidian]]"
+---
 # books-summary
 
 > 目的: 毎朝7:00に「今日読むべき本」をAIが選定・リサーチし、図解付きサマリーをDiscordへ届けて読書習慣と知識インプットを自動化する。
@@ -73,7 +77,8 @@ flowchart TD
     P --> W[Tool: GitHub Actions daily-notify.yml]:::tool
     W --> PG[(State: GitHub Pages state/infographics配信 URL不変)]:::state
     W --> DN[Human: Discord #books 通知 Embed+確認/詳細ボタン 両方紫]:::human
-    DN -->|✅確認| CF[Tool: discord_books.py 図解URLをephemeral返信]:::tool
+    DN -->|✅確認| CF[Tool: discord_books.py 図解URL解決<br>ローカルlatest→vaultノート→GitHub raw の3段]:::tool
+    CF -.->|pull未着時| GR[(State: GitHub raw state/latest.json)]:::state
     MK[Tool: discord-daemon コア 常設メニュー番人60秒 サイレント投稿]:::tool --> SM[Human: 検索モーダル 本やテーマを伝える]:::human
     SM --> DB2[Tool: discord_books.py → headless NEXUS注入]:::tool
     DB2 --> SA[Agent: 既読照合orWeb提案で該当本を提出]:::agent
@@ -148,9 +153,9 @@ flowchart TD
 | books-summary-pull.sh | fetch/merge失敗 | 5 | `~/Library/Logs/BooksSummary/pull.log`（翌回実行で自己回復） |
 | ノート移送コミットのpush | reject | 3 | pull.log（次回実行の未pushコミット回収で自己回復） |
 | backlink_books.py | ノート不在・退避タイムアウト | 各1 | pull.log（部分失敗でも pull は成功扱い） |
-| discord_books.py | 台帳未検出・図解URL不明 | 1 | Discord上でエラー返答（ephemeral） |
+| discord_books.py | 図解URLの3経路がすべて空（GitHub raw の2.5秒タイムアウトを含む） | 1 | Discord上でエラー返答（ephemeral） |
 | discord-daemon コア 常設メニュー番人 | メニュー貼り直し失敗 | 60秒ごと再試行 | daemon.log（次周期で自己回復。本リポは `menu_payload()` の宣言のみで実装はコア側） |
 
 ## むずかしい言葉なし版
 
-朝7時にクラウドのAIが本を1冊選んで調べ、図解ページと読書ノートを作って保存する。7時すぎにスマホのDiscordへ「今日の一冊」が届き、✅確認を押すと図解が開き、🔍詳細を押すと質問箱が出てAIと深掘りできる。7時20分にMacが自動で最新を取り込み、ノートはObsidianの受信箱に移って、関連する過去の本と線で繋がる。壊れたときはDiscordに通知が来ないことで気づけて、ログは `~/Library/Logs/BooksSummary/` にある。
+朝7時にクラウドのAIが本を1冊選んで調べ、図解ページと読書ノートを作って保存する。7時すぎにスマホのDiscordへ「今日の一冊」が届き、✅確認を押すと図解が開き、🔍詳細を押すと質問箱が出てAIと深掘りできる。Macが取り込む7時20分より前に✅確認を押しても、図解が開くようになった。7時20分にMacが自動で最新を取り込み、ノートはObsidianの受信箱に移って、関連する過去の本と線で繋がる。壊れたときはDiscordに通知が来ないことで気づけて、ログは `~/Library/Logs/BooksSummary/` にある。

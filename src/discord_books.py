@@ -6,12 +6,14 @@ import json
 import re
 import subprocess
 import time
+import urllib.request
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 BOOKS_PATH = ROOT / "state" / "books_read.json"
 LATEST_PATH = ROOT / "state" / "latest.json"
+RAW_LATEST_URL = "https://raw.githubusercontent.com/oshomadesse/books-summary/main/state/latest.json"
 VAULT_INBOX = Path("/Users/seihoushouba/Oshomadesse-pc/100_Inbox")
 INFOGRAPHIC_RE = re.compile(
     r"^.*インフォグラフィック.*?\[[^\]]*\]\((https?://[^)\s]+)\)",
@@ -87,6 +89,20 @@ def note_metadata(date: str) -> tuple[str, str]:
     return title, url_match.group(1) if url_match else ""
 
 
+def remote_latest(date: str) -> tuple[str, str]:
+    """リモートの latest.json から書名と図解 URL を返す。"""
+    try:
+        with urllib.request.urlopen(RAW_LATEST_URL, timeout=2.5) as response:
+            data = json.load(response)
+        if str(data.get("date", "")) == date:
+            title = str(data.get("title", "")).strip()
+            url = str(data.get("infographic_url", "")).strip()
+            return title, url
+    except Exception:
+        pass
+    return "", ""
+
+
 def confirm_details(date: str) -> tuple[str, str]:
     """確認応答に使う書名と図解 URL を解決する。"""
     try:
@@ -105,6 +121,10 @@ def confirm_details(date: str) -> tuple[str, str]:
         note_title, note_url = note_metadata(date)
         title = title or note_title
         url = url or note_url
+    if not url or not title:
+        remote_title, remote_url = remote_latest(date)
+        title = title or remote_title
+        url = url or remote_url
     return title, url
 
 
@@ -118,6 +138,7 @@ def build_prompt(date: str, entry: dict, question: str) -> str:
         f"カテゴリ: {entry.get('category', '')}",
         f"date: {date}",
         f"ノートパス: {note_path}",
+        f"ノート（{note_path}）が存在しなければ bash ~/.local/bin/books-summary-pull.sh を先に走らせてから読むこと。",
         "このノートを読んでから答えること。ノート内にインフォグラフィックのURLもある。",
     ]
     if question:
