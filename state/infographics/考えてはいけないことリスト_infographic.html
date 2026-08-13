@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>考えてはいけないことリスト インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #5B4FE9 / セカンダリー #2A2550 / アクセント #FF6B6B -->
+<style>
+:root {
+  --primary: #5B4FE9;
+  --secondary: #2A2550;
+  --accent: #FF6B6B;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #f1efff, #e9e5ff);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eeecfd, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #f1efff, #f7f6ff);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠🚫 考えてはいけないことリスト</h1>
+  <p>科学的根拠にもとづく「思考の断捨離」で心を軽くする</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>「もっと考えれば答えが出る」はずなのに、なぜ悩んでも悩んでも心が軽くならないのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>他人の評価・過去の後悔・未来への不安・自己否定・堂々巡りという5領域の悩みの多くは、そもそも「考えても何も生み出さない思考」である。その事実を自覚し、意識的に手放すだけで心は軽くなる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>「もっと考えれば解決する」という信念が反芻思考を"有益な活動"だと錯覚させ、脳内会話を止まらなくさせる。しかし心配事の大半は現実化せず、過去の後悔や他人の評価は自分の力で変えられない領域にある。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>悩みを5つの型に分類して「これは考えるべきでない思考だ」と機械的に判定し、書き出す・コントロール可能／不可能を仕分ける・「今、この瞬間」に意識を戻すという3つの具体的技術で反芻のループを断ち切り、「考えてもいいこと（前に進める思考）」に置き換える。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🔁 反芻思考（ルーミネーション）</h3>
+    <ul>
+      <li>同じ悩みを頭の中で何度も繰り返し考えてしまう状態</li>
+      <li>不安・抑うつを悪化させる主要な心理メカニズム</li>
+      <li>「考えている」のに「進んでいない」のが特徴</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>まず自分が反芻思考に陥っていると自覚することが、思考の断捨離の第一歩になるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📉 心配事の的中率の低さ</h3>
+    <ul>
+      <li>心配していることの多くは実際には起こらない</li>
+      <li>米ペンシルベニア大学ボルコヴェックらの研究が根拠の一つ</li>
+      <li>「考えれば備えられる」という思い込みへの反証データ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>数字という客観的根拠があることで、反芻をやめる強い動機づけになるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗂️ 5つの思考ドメイン</h3>
+    <ul>
+      <li>①他人の評価　②過去の後悔　③未来の不安</li>
+      <li>④自己否定　⑤答えの出ない反芻・自問自答</li>
+      <li>悩みをこの型に分類すると「考えるべきでない」と判定しやすくなる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>抽象的な「悩み」を具体的な型に分けることで、対処法を機械的に選べるようになるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ コントロール可能／不可能の仕分け</h3>
+    <ul>
+      <li>悩みを「自分で変えられること」と「変えられないこと」に分ける</li>
+      <li>変えられないことへの思考は手放す</li>
+      <li>変えられることだけに労力を向ける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>不安を「次にやる行動」に転換できると、無力感が減り心理的負担が軽くなるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✍️ エクスプレッシブ・ライティング（書き出し法）</h3>
+    <ul>
+      <li>頭の中の悩みを紙やスマホに書き出す</li>
+      <li>ネガティブな感情を書き出すと反芻思考が減少すると心理学研究で確認</li>
+      <li>頭の外に出すことでワーキングメモリが解放される</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>頭の中だけで処理し続けるより、外部化した方が客観視しやすく効果的なため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧘 マインドフルネス（今この瞬間への集中）</h3>
+    <ul>
+      <li>過去・未来ではなく「今」に意識を戻す技法</li>
+      <li>反芻のループを物理的に断ち切る手段</li>
+      <li>呼吸など身体感覚に注意を向けるのが基本動作</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>反芻は過去や未来への意識の暴走であり、「今」に戻すことが最も直接的な対処になるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>➡️ 「考えてもいいことリスト」（前に進める思考）</h3>
+    <ul>
+      <li>「考えない」で終わらせず、代わりに何を考えるべきかを示す</li>
+      <li>建設的で行動につながる思考だけを残す</li>
+      <li>本書の最終章で提示される実践的な代替リスト</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>禁止だけでは思考を止められないため、実行可能な代替行動を用意することで初めて習慣が変わるため。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>「もっと考えれば答えが出る」という信念</span>
+      <span class="flow-arrow">→</span>
+      <span>反芻思考が続く</span>
+      <span class="flow-arrow">→</span>
+      <span>心配事の的中率の低さを知ることで信念が崩れる</span>
+    </div>
+    <div class="flow-item">
+      <span>悩みを5つのドメインに分類</span>
+      <span class="flow-arrow">→</span>
+      <span>「考えるべきでない」と機械的に判定</span>
+      <span class="flow-arrow">→</span>
+      <span>思考の断捨離が進む</span>
+    </div>
+    <div class="flow-item">
+      <span>書き出す・仕分ける・今に戻る</span>
+      <span class="flow-arrow">→</span>
+      <span>反芻のループを断ち切る</span>
+      <span class="flow-arrow">→</span>
+      <span>「考えてもいいこと」だけが残る</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>序章：その悩み、考えすぎていませんか？</h3>
+    <ul>
+      <li>「考えること」自体は良いことという前提を疑う</li>
+      <li>読者に自分の反芻思考パターンを自覚させる導入</li>
+      <li>世界の学術論文から信頼できる知見だけを厳選する本書のスタンスを提示</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書全体の問題提起であり、これ以降の各章の前提を共有するパートであるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第1章：それはあなたの思考ではない【他人・評価編】</h3>
+    <ul>
+      <li>他人からどう思われているかを気にする思考を扱う</li>
+      <li>相手の内心は自分ではコントロールできない領域</li>
+      <li>「それはあなたの思考ではない」＝考えても答えの出ない他人の領域</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>他人の評価という、最も日常的で手放しづらい悩みから最初に扱うことで実践のハードルを下げるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章：思考はタイムマシンにならない【過去・後悔編】</h3>
+    <ul>
+      <li>過去の失敗や発言への後悔を繰り返し考えてしまう思考を扱う</li>
+      <li>どれだけ考えても過去の出来事は変えられないという事実</li>
+      <li>後悔の反芻がストレスと不眠につながるメカニズム</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「思考でタイムマシンにはなれない」という比喩で、過去への反芻の非合理さを直感的に理解させるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章：まだ起きていないことで苦しまない【未来・不安編】</h3>
+    <ul>
+      <li>将来の失敗や不確実性への不安を扱う</li>
+      <li>心配事の多くは現実にならないという研究データを提示</li>
+      <li>「先回りして考える」ことの非効率さを示す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>科学的データで不安を相対化することが、感情論ではなく納得感を持って手放す助けになるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章：自分という迷路から出る【自己否定・抽象思考編】</h3>
+    <ul>
+      <li>自己評価や「自分は何者か」といった抽象的な自問自答を扱う</li>
+      <li>答えの出ない自己否定的なループから抜け出す方法を提示</li>
+      <li>自己探求の反芻は「前に進む思考」ではないと指摘</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>最も根深く、単純な対処法だけでは解決しにくい自己否定の思考を独立の章で丁寧に扱うため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章："前に進める思考"だけを残す【考えてもいいことリスト】</h3>
+    <ul>
+      <li>「考えない」で終わらせず、代わりに考えるべきことを提示</li>
+      <li>建設的で行動につながる思考の具体例をリスト化</li>
+      <li>本書全体の実践パートとして機能する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>禁止事項の提示だけでは行動は変わらないため、代替となる思考習慣を示して実践に橋渡しするため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>😟 「余計なこと言ってしまったかな」ループ</h3>
+    <ul>
+      <li>友人との会話後、「気を悪くしたかも」と何日も考え続ける</li>
+      <li>相手の内心という自分には確かめようのない領域を反芻</li>
+      <li>考え続けても真相はわからず、不安だけが増幅する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「他人の評価」は本来、自分の思考の対象にすべきでない領域だと体感的にわかる例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗣️ 会議後の「あの発言、まずかったかも」反芻</h3>
+    <ul>
+      <li>会議の場面を何度も思い返し「空気を壊したのは自分の発言かも」と考える</li>
+      <li>過去の行動への後悔ループの典型例</li>
+      <li>反芻しても過去の発言そのものは変えられない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「思考はタイムマシンにならない」という本書の核心を象徴する具体的シーン。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 ボルコヴェックらの心配事研究</h3>
+    <ul>
+      <li>米ペンシルベニア大学の研究者らが「心配事」の的中率を調査</li>
+      <li>心配していた出来事の大半は実際には起こらなかった</li>
+      <li>現実化するのはごく一部にとどまるという結果</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「先回りして考えれば備えられる」という思い込みに対する客観的な反証データとして機能する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📝 書き出し（エクスプレッシブ・ライティング）の実験</h3>
+    <ul>
+      <li>ネガティブな感情を紙に書き出す群と書き出さない群を比較</li>
+      <li>書き出した群でストレス反応・反芻思考の軽減が確認された</li>
+      <li>頭の中だけで処理するより外部化する方が心理的に有効</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>今日から実践できる「書き出す」アクションに、心理学的な裏付けを与える例。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">心配していることの多くは、実際には現実にならない。それでも人は「もっと考えれば答えが出る」と信じて、反芻を"有益な活動"だと錯覚し続けてしまう。（要旨）</p>
+    <p class="quote-why">※原典からの一字一句の引用ではなく要旨。反芻思考が続く最大の理由を説明する本書の核心的な指摘。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">それはあなたの思考ではない。他人がどう思うかは、あなたがどれだけ考えても変えられない領域にある。（要旨）</p>
+    <p class="quote-why">※要旨。第1章「他人・評価編」の中心メッセージを凝縮した表現。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">思考はタイムマシンにはならない。過去の出来事は、どれだけ考え直しても変わらない。（要旨）</p>
+    <p class="quote-why">※要旨。第2章「過去・後悔編」の核心を示す比喩表現。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">"考えない"で終わらせるのではなく、"前に進める思考"だけを残す。それが最後にたどり着くべき状態である。（要旨）</p>
+    <p class="quote-why">※要旨。第5章「考えてもいいことリスト」に通じる本書の着地点。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>✍️ 頭の中の悩みを1つ、紙かメモに書き出す</h4>
+    <p><strong>やること：</strong>今ぐるぐる考えている悩みを1つ選び、思いつくまま紙かスマホのメモに書き出す。</p>
+    <p><strong>目的：</strong>頭の中だけで処理していた反芻思考を外部化し、客観視できる状態にする。</p>
+    <p><strong>期待効果：</strong>ワーキングメモリが解放され、「これは考えるべきでない思考だ」と気づきやすくなる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>⚖️ その悩みを「変えられること」「変えられないこと」に仕分ける</h4>
+    <p><strong>やること：</strong>書き出した悩みを見返し、自分でコントロールできる部分とできない部分に分け、できる部分について次の行動を1つだけ書く。</p>
+    <p><strong>目的：</strong>無駄な反芻を、実行可能な具体的行動に転換する。</p>
+    <p><strong>期待効果：</strong>不安が「次にやること」に変わり、心理的な負担が軽くなる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🧘 3分間、呼吸だけに意識を向けるミニ瞑想</h4>
+    <p><strong>やること：</strong>タイマーを3分にセットし、呼吸の感覚だけに意識を向ける。考えが浮かんだら気づいてまた呼吸に戻す。</p>
+    <p><strong>目的：</strong>「今、この瞬間」に意識を戻すマインドフルネスの基本動作を体験する。</p>
+    <p><strong>期待効果：</strong>過去・未来への意識のループが一時的に断ち切られ、心拍や緊張が落ち着く。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 90%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
