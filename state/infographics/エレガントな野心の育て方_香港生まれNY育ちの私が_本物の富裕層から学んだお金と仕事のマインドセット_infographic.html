@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>エレガントな野心の育て方 | 読書インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #7C3AED（エレガントな紫）/ セカンダリー #F5B841（ゴールド）/ アクセント #1E1B2E（ダークネイビーパープル） -->
+<style>
+  :root{
+    --primary:#7C3AED;
+    --primary-light:#A78BFA;
+    --secondary:#F5B841;
+    --secondary-light:#FBD98A;
+    --accent:#1E1B2E;
+    --bg:#FAF9FC;
+    --card:#FFFFFF;
+    --text:#2A2438;
+    --text-sub:#6B6478;
+    --border:#E9E4F3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--accent) 0%,var(--primary) 100%);
+    color:#fff;
+    padding:28px 20px 32px;
+    text-align:center;
+  }
+  header .kicker{
+    display:inline-block;
+    background:rgba(255,255,255,0.15);
+    border-radius:999px;
+    padding:4px 14px;
+    font-size:12px;
+    letter-spacing:0.05em;
+    margin-bottom:12px;
+  }
+  header h1{
+    font-size:22px;
+    font-weight:800;
+    line-height:1.4;
+    margin-bottom:8px;
+  }
+  header .sub{
+    font-size:13px;
+    color:rgba(255,255,255,0.85);
+  }
+  header .meta{
+    margin-top:14px;
+    font-size:12px;
+    color:rgba(255,255,255,0.7);
+  }
+
+  .hero{
+    max-width:720px;
+    margin:-18px auto 0;
+    padding:0 16px;
+  }
+  .hero-card{
+    background:var(--card);
+    border-radius:18px;
+    box-shadow:0 8px 24px rgba(30,27,46,0.12);
+    padding:20px;
+    border:1px solid var(--border);
+  }
+  .hero-card h2{
+    font-size:14px;
+    color:var(--primary);
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-block{display:flex;flex-direction:column;gap:10px;}
+  .qa-row{display:flex;gap:10px;align-items:flex-start;}
+  .qa-badge{
+    flex-shrink:0;
+    width:26px;height:26px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:800;color:#fff;
+  }
+  .qa-badge.q{background:var(--primary);}
+  .qa-badge.a{background:var(--secondary);color:var(--accent);}
+  .qa-text{font-size:13.5px;color:var(--text);}
+  .qa-text b{color:var(--accent);}
+
+  .stat-row{
+    display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;
+  }
+  .stat-badge{
+    flex:1;min-width:90px;
+    background:linear-gradient(135deg,var(--secondary-light),var(--secondary));
+    border-radius:12px;
+    padding:10px 8px;
+    text-align:center;
+  }
+  .stat-badge .num{font-size:18px;font-weight:800;color:var(--accent);}
+  .stat-badge .label{font-size:10.5px;color:var(--accent);opacity:0.75;}
+
+  nav.tabs{
+    max-width:720px;
+    margin:18px auto 0;
+    padding:0 16px;
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:12.5px;
+    font-weight:700;
+    white-space:nowrap;
+    cursor:pointer;
+    transition:all .2s;
+  }
+  nav.tabs button.active{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+
+  main{max-width:720px;margin:0 auto;padding:16px;}
+  section.tabpanel{display:none;animation:fade .25s ease;}
+  section.tabpanel.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    font-size:14.5px;
+    color:var(--accent);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card h3 .num{
+    background:var(--primary);
+    color:#fff;
+    width:20px;height:20px;
+    border-radius:6px;
+    font-size:11px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .card ul{padding-left:18px;font-size:13px;color:var(--text-sub);}
+  .card ul li{margin-bottom:4px;}
+  .why-box{
+    margin-top:10px;
+    background:#F4EEFD;
+    border-left:3px solid var(--primary);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12px;
+    color:var(--accent);
+  }
+  .why-box b{color:var(--primary);}
+
+  .quote-card{
+    background:linear-gradient(135deg,var(--accent),#332B4D);
+    color:#fff;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:12px;
+  }
+  .quote-card .qmark{font-size:26px;color:var(--secondary);line-height:1;}
+  .quote-card p.qtext{font-size:14px;margin:6px 0 8px;font-weight:600;}
+  .quote-card p.qnote{font-size:11.5px;color:var(--secondary-light);}
+  .tag{
+    display:inline-block;
+    font-size:10px;
+    background:rgba(255,255,255,0.15);
+    padding:2px 8px;
+    border-radius:999px;
+    margin-bottom:8px;
+  }
+
+  .action-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    display:flex;
+    gap:12px;
+  }
+  .action-num{
+    flex-shrink:0;
+    width:34px;height:34px;
+    border-radius:10px;
+    background:linear-gradient(135deg,var(--secondary),var(--secondary-light));
+    color:var(--accent);
+    font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .action-card h4{font-size:13.5px;margin-bottom:4px;color:var(--accent);}
+  .action-card .purpose,.action-card .effect{font-size:12px;color:var(--text-sub);margin-top:2px;}
+  .action-card .purpose b, .action-card .effect b{color:var(--primary);}
+
+  footer{
+    max-width:720px;margin:20px auto 0;padding:0 16px;
+    font-size:11px;color:var(--text-sub);text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">📚 今日読むべき本</div>
+  <h1>エレガントな野心の育て方<br>香港生まれNY育ちの私が、本物の富裕層から学んだお金と仕事のマインドセット</h1>
+  <div class="sub">著者: Joey ／ 幻冬舎</div>
+  <div class="meta">カテゴリ: 自己啓発</div>
+</header>
+
+<div class="hero">
+  <div class="hero-card">
+    <h2>🎯 要約：問い × 答え × 根拠</h2>
+    <div class="qa-block">
+      <div class="qa-row">
+        <div class="qa-badge q">Q</div>
+        <div class="qa-text">上品さと野心は両立できるのか？</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-badge a">A</div>
+        <div class="qa-text"><b>「売るのは商品ではない、生き方である」</b>という姿勢で自分の美意識を軸に働けば、野心はエレガントに育てられる。</div>
+      </div>
+      <div class="qa-row">
+        <div class="qa-badge q">根拠</div>
+        <div class="qa-text">香港生まれ・NY育ちの著者が海外ブランド10社以上を日本に導入し、SABON日本45店舗展開・MARVIS日本展開などを実現した実体験と、世界の富裕層から学んだお金と仕事への向き合い方に基づく。</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-badge"><div class="num">10+</div><div class="label">日本導入ブランド数</div></div>
+      <div class="stat-badge"><div class="num">45</div><div class="label">SABON国内店舗数</div></div>
+      <div class="stat-badge"><div class="num">2014</div><div class="label">UPPER HOUSE設立年</div></div>
+    </div>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+  <button class="active" role="tab" aria-selected="true" aria-controls="panel-concepts" onclick="switchTab('concepts')">💡 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" onclick="switchTab('chapters')">📖 各章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-examples" onclick="switchTab('examples')">🧩 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" onclick="switchTab('quotes')">💬 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <section id="panel-concepts" class="tabpanel active" role="tabpanel">
+    <div class="card">
+      <h3><span class="num">1</span>「売るのは商品ではない、生き方である」</h3>
+      <ul>
+        <li>ブランドを扱うとは、商品スペックではなく背後にある価値観・美意識を届けること</li>
+        <li>顧客が買っているのは「その人がなりたい生き方」そのもの</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>これがブランドを日本市場で成功させた著者の一貫した軸であり、本書全体を貫くテーマだから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">2</span>エレガントな野心</h3>
+      <ul>
+        <li>野心＝がむしゃらさではなく、自分の美意識に沿って上品に育てるもの</li>
+        <li>他者との比較ではなく、自分なりの基準で「もっと良くしたい」を追求する姿勢</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>タイトルそのものであり、著者が香港・NYという複数文化圏で培った価値観の中心にある考え方だから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">3</span>富裕層のお金への向き合い方</h3>
+      <ul>
+        <li>世界の富裕層と接する中で学んだ、お金の使い方・稼ぎ方に対する考え方</li>
+        <li>お金そのものより、お金が支える生き方・時間の使い方に重心を置く発想</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>本書のサブタイトルに明記された核心テーマであり、著者が実業を通じて直接得た知見だから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">4</span>仕事と人生の両立</h3>
+      <ul>
+        <li>仕事だけに偏らず、人生全体を豊かにする働き方を選ぶという考え方</li>
+        <li>ブランドを育てることと自分の人生を育てることを重ねて捉える視点</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>本書が「仕事、お金、ライフスタイル、人生」を一体のテーマとして扱っているため。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">5</span>越境者としての複眼的視点</h3>
+      <ul>
+        <li>香港生まれ・NY育ち・日本で起業という3つの文化圏を横断した経験</li>
+        <li>一つの市場・一つの常識にとらわれない発想の源泉</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>著者のキャリア（銀行・会計事務所のプログラマーからブランド起業家へ）を支える背景として本書内で語られているため。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">6</span>愛されるブランドをつくる</h3>
+      <ul>
+        <li>SABON・MARVISなど海外ブランドを日本の生活者に「愛される」形へ翻訳する視点</li>
+        <li>市場に合わせて単に売るのではなく、共感を育てる姿勢</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>目次にも独立した章として設けられている、著者の実務上の核心スキルだから。</div>
+    </div>
+  </section>
+
+  <section id="panel-chapters" class="tabpanel" role="tabpanel">
+    <div class="card">
+      <h3><span class="num">序</span>はじめに：野心を持つことで成長できた</h3>
+      <ul>
+        <li>「野心」という言葉に対する著者自身の再定義から本書は始まる</li>
+        <li>野心を恥じず、上品に育てることが人生を切り拓く鍵だと提示</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>本書全体のテーマ設定を行う導入部であるため。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">1</span>第1章：NYでSABONと出会う</h3>
+      <ul>
+        <li>NY時代にイスラエル発ブランドSABONと出会ったエピソード</li>
+        <li>この出会いが後の日本でのブランド導入キャリアの出発点になる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>著者のキャリアの転機であり、以降の章の前提となる原体験だから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">2</span>第2章：SABONを離れ、自分の基盤を築く</h3>
+      <ul>
+        <li>SABON日本進出の成功後、そこから独立して自分の事業基盤を築く過程</li>
+        <li>2014年のUPPER HOUSE設立に至る意思決定が語られる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「野心を自分の手で形にする」という本書の主題が最も具体的に現れる章だから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">3</span>第3章：愛されるブランドを作る</h3>
+      <ul>
+        <li>MARVISなど複数の海外ブランドを日本市場に定着させた手法</li>
+        <li>「売るのは商品ではなく生き方」という哲学の実践編</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>抽象的な哲学を実務スキルへ落とし込む、本書の核となる章だから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">4</span>第4章：世界の富裕層のお金への向き合い方</h3>
+      <ul>
+        <li>著者が実業を通じて接した世界の富裕層のお金の使い方・考え方</li>
+        <li>本物の豊かさとは何かという問いへの著者なりの答え</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>サブタイトルの核心テーマを正面から扱う章であるため。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">5</span>第5章以降：関連トピック</h3>
+      <ul>
+        <li>具体的な章タイトルは公開情報からは確認できず、内容は不明</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>Web上で確認できた目次情報は第4章までであり、それ以降を捏造しないため「不明」と明記。</div>
+    </div>
+  </section>
+
+  <section id="panel-examples" class="tabpanel" role="tabpanel">
+    <div class="card">
+      <h3><span class="num">1</span>SABON日本上陸・45店舗展開</h3>
+      <ul>
+        <li>背景：イスラエル発のボディケアブランドSABONを著者が日本に導入</li>
+        <li>結果：日本国内で45店舗まで展開する成功を収めた</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>「エレガントな野心」を実際の事業成果に結びつけた最初の実例であり、本書の説得力の土台になっている。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">2</span>高級歯磨き粉ブランドMARVISの日本展開</h3>
+      <ul>
+        <li>背景：2,000円を超える価格帯の高級歯磨き粉ブランドMARVISを日本に導入</li>
+        <li>結果：日常品を「生き方を売る」ブランドとして日本の生活者に定着させた</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>「売るのは商品ではない、生き方である」という哲学が、価格の高いニッチな商品でも通用することを示す例。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">3</span>UPPER HOUSE設立と海外ブランド10社以上の日本展開</h3>
+      <ul>
+        <li>背景：2014年、SABONでの経験を土台に自身の会社UPPER HOUSEを設立</li>
+        <li>結果：MARVIS・LABSOLUE・PRORASO・LE TAN・SMERALDINAなど10以上の海外ブランドを日本へ導入</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>一度の成功を再現可能な事業モデルへ発展させた、著者の「野心の育て方」そのものを体現する例。</div>
+    </div>
+  </section>
+
+  <section id="panel-quotes" class="tabpanel" role="tabpanel">
+    <div class="quote-card">
+      <span class="tag">引用</span>
+      <div class="qmark">"</div>
+      <p class="qtext">売るのは商品ではない、生き方である。</p>
+      <p class="qnote">— 本書のテーマを象徴するフレーズとして各種書誌情報で紹介されている一文</p>
+    </div>
+    <div class="quote-card">
+      <span class="tag">要旨</span>
+      <div class="qmark">"</div>
+      <p class="qtext">仕事、お金、ライフスタイル、そして人生を自分らしく切り拓くための考え方を、野心を「エレガントに」育てるという視点でまとめている。</p>
+      <p class="qnote">— 出版社（幻冬舎）による内容紹介の要旨</p>
+    </div>
+    <div class="quote-card">
+      <span class="tag">要旨</span>
+      <div class="qmark">"</div>
+      <p class="qtext">香港生まれ・NY育ちの著者が、数々のブランドビジネスを手がけてきた経験をもとに、本物の富裕層から学んだお金と仕事のマインドセットを綴った一冊。</p>
+      <p class="qnote">— 出版社（幻冬舎）による内容紹介の要旨</p>
+    </div>
+  </section>
+
+  <section id="panel-actions" class="tabpanel" role="tabpanel">
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <div>
+        <h4>自分の「エレガントな野心」を1行で書き出す</h4>
+        <div class="purpose"><b>目的：</b>比較や焦りではなく、自分の美意識に基づいた野心の輪郭をはっきりさせる。</div>
+        <div class="effect"><b>期待効果：</b>今の仕事や目標に対するモチベーションの源泉を言語化でき、判断の軸が明確になる。</div>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <div>
+        <h4>自分が扱う商品・サービスの「売っている生き方」を書き出す</h4>
+        <div class="purpose"><b>目的：</b>「売るのは商品ではない、生き方である」という視点を自分の仕事に当てはめる。</div>
+        <div class="effect"><b>期待効果：</b>提案や説明の切り口が変わり、顧客・上司への伝え方に一段深みが出る。</div>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <div>
+        <h4>今月のお金の使い方を1つだけ「豊かさ」の観点で見直す</h4>
+        <div class="purpose"><b>目的：</b>お金そのものではなく、お金が支える時間や経験に意識を向ける練習をする。</div>
+        <div class="effect"><b>期待効果：</b>支出の優先順位が「本物の豊かさ」に近づき、無駄な浪費や我慢を減らせる。</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  本インフォグラフィックはWeb上で確認できた公開情報（出版社情報・著者経歴等）を基に作成。書籍本文からの直接引用が確認できない箇所は「要旨」として記載しています。
+</footer>
+
+<script>
+function switchTab(id){
+  document.querySelectorAll('.tabpanel').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('nav.tabs button').forEach(function(el){
+    el.classList.remove('active');
+    el.setAttribute('aria-selected','false');
+  });
+  document.getElementById('panel-'+id).classList.add('active');
+  var btn = document.querySelector('nav.tabs button[aria-controls="panel-'+id+'"]');
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected','true');
+}
+</script>
+
+</body>
+</html>
