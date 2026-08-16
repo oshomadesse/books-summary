@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>がんばらない戦略 インフォグラフィック</title>
+<!--
+  カラーパレット（プライマリー / セカンダリー / アクセント）
+  primary  : #2563EB (青)   … 焦点を絞る・冷静な判断
+  secondary: #F59E0B (琥珀) … 温存されるエネルギー・意志力
+  accent   : #10B981 (緑)   … 習慣の定着・成長
+-->
+<style>
+  :root{
+    --primary:#2563EB;
+    --primary-soft:#DBEAFE;
+    --secondary:#F59E0B;
+    --secondary-soft:#FEF3C7;
+    --accent:#10B981;
+    --accent-soft:#D1FAE5;
+    --bg:#F8FAFC;
+    --card:#FFFFFF;
+    --ink:#0F172A;
+    --sub:#475569;
+    --line:#E2E8F0;
+    --shadow:0 4px 14px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary) 0%,#1E40AF 100%);
+    color:#fff;
+    padding:28px 18px 34px;
+    text-align:center;
+  }
+  header .kicker{
+    font-size:.78rem;
+    letter-spacing:.12em;
+    opacity:.85;
+    margin-bottom:6px;
+  }
+  header h1{
+    font-size:1.5rem;
+    margin:0 0 6px;
+    font-weight:800;
+  }
+  header p.sub{
+    margin:0;
+    font-size:.9rem;
+    opacity:.9;
+  }
+  .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 14px;
+  }
+  .hero{
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    margin-top:-18px;
+    padding:18px;
+    border:1px solid var(--line);
+  }
+  .hero h2{
+    font-size:.95rem;
+    color:var(--primary);
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:grid;
+    gap:10px;
+    grid-template-columns:1fr;
+  }
+  .qa-block{
+    background:var(--bg);
+    border-radius:10px;
+    padding:12px 14px;
+    border-left:4px solid var(--primary);
+  }
+  .qa-block.answer{border-left-color:var(--secondary);}
+  .qa-block.why{border-left-color:var(--accent);}
+  .qa-label{
+    font-size:.72rem;
+    font-weight:700;
+    color:var(--sub);
+    letter-spacing:.05em;
+    margin-bottom:4px;
+  }
+  .qa-text{font-size:.9rem;}
+  .badges{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .badge{
+    flex:1 1 auto;
+    min-width:96px;
+    text-align:center;
+    background:var(--primary-soft);
+    color:var(--primary);
+    border-radius:10px;
+    padding:10px 6px;
+  }
+  .badge:nth-child(2){background:var(--secondary-soft);color:#92400E;}
+  .badge:nth-child(3){background:var(--accent-soft);color:#065F46;}
+  .badge .num{font-size:1.35rem;font-weight:800;display:block;}
+  .badge .lbl{font-size:.68rem;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:22px 0 14px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--sub);
+    padding:9px 13px;
+    border-radius:999px;
+    font-size:.8rem;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:1rem;
+    color:var(--primary);
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .card ul{
+    margin:0 0 10px;
+    padding-left:1.2em;
+    font-size:.87rem;
+    color:var(--ink);
+  }
+  .card ul li{margin-bottom:3px;}
+  .why-box{
+    background:var(--accent-soft);
+    color:#065F46;
+    font-size:.8rem;
+    border-radius:8px;
+    padding:8px 10px;
+    display:flex;
+    gap:6px;
+  }
+  .why-box b{white-space:nowrap;}
+
+  .example-card .bg{font-size:.82rem;color:var(--sub);margin-bottom:6px;}
+  .example-card .content{font-size:.87rem;margin-bottom:8px;}
+
+  blockquote{
+    background:var(--secondary-soft);
+    border-left:4px solid var(--secondary);
+    margin:0 0 12px;
+    padding:12px 14px;
+    border-radius:0 10px 10px 0;
+    font-size:.9rem;
+  }
+  blockquote .note{
+    display:block;
+    margin-top:6px;
+    font-size:.72rem;
+    color:#92400E;
+  }
+
+  .action-card{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 auto;
+    width:30px;height:30px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;
+    font-size:.9rem;
+  }
+  .action-body h3{margin:0 0 4px;font-size:.95rem;color:var(--ink);}
+  .action-meta{font-size:.78rem;color:var(--sub);}
+  .action-meta b{color:var(--accent);}
+
+  footer{
+    text-align:center;
+    font-size:.72rem;
+    color:var(--sub);
+    margin-top:26px;
+    padding:0 14px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">📚 今日読むべき本</div>
+  <h1>がんばらない戦略</h1>
+  <p class="sub">99%のムダな努力を捨てて、大切な1%に集中する方法 ｜ 川下和彦・たむらようこ</p>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <h2>🔎 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-block">
+        <div class="qa-label">Q. なぜ頑張っているのに成果が出ないのか？</div>
+        <div class="qa-text">「もっと頑張れば報われる」という思い込みのまま、意志力という有限の資源を無駄づかいしているから。</div>
+      </div>
+      <div class="qa-block answer">
+        <div class="qa-label">A. どうすればいいのか？</div>
+        <div class="qa-text">小さな決断を自動化し、習慣を無意識レベルまで落とし込み、成果の大部分を生む「大切な1%」だけに力を注ぐ。</div>
+      </div>
+      <div class="qa-block why">
+        <div class="qa-label">Why. なぜそれで結果が出るのか？</div>
+        <div class="qa-text">意志力を温存する仕組み（自動化・宣言・記録・得意集中）を先に作れば、残り99%を手放しても最高の結果と幸福度に届く、と物語形式で描く。</div>
+      </div>
+    </div>
+    <div class="badges">
+      <div class="badge"><span class="num">10</span><span class="lbl">王国で出会う住人の数</span></div>
+      <div class="badge"><span class="num">1%</span><span class="lbl">集中すべき"大切な"部分</span></div>
+      <div class="badge"><span class="num">99%</span><span class="lbl">手放してよい努力</span></div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+    <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🧩 主要概念</button>
+    <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false" tabindex="-1">📖 各章の要約</button>
+    <button role="tab" id="tab-examples" aria-controls="panel-examples" aria-selected="false" tabindex="-1">💡 具体例</button>
+    <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false" tabindex="-1">🗣️ 引用</button>
+    <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false" tabindex="-1">✅ 今日のアクション</button>
+  </nav>
+
+  <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>⛽ 意志力は有限の資源</h3>
+      <ul>
+        <li>意志力は心のガソリンのようなもの</li>
+        <li>使うほど減り、寝ると回復する</li>
+        <li>浪費するとやる気そのものが枯渇する</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「頑張れば頑張るほど成果が出る」という思い込みを崩す、本書全体の土台となる考え方だから。</div>
+    </div>
+    <div class="card">
+      <h3>👕 決断の自動化</h3>
+      <ul>
+        <li>服・朝食・ルートなど"どうでもいい選択"を固定する</li>
+        <li>選ばないことで脳のリソースを温存する</li>
+        <li>ルーティン化して迷う回数そのものを減らす</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>小さな決断の積み重ねが、大事な場面で使う意志力を先食いしてしまうから。</div>
+    </div>
+    <div class="card">
+      <h3>📣 宣言効果（一貫性の原理）</h3>
+      <ul>
+        <li>SNSや周囲の人に目標を先に公言する</li>
+        <li>予定や約束にして"退路を断つ"</li>
+        <li>有言実行のプレッシャーを味方にする</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「言った手前やらなきゃ」という心理を利用すれば、意志力に頼らず継続できるから。</div>
+    </div>
+    <div class="card">
+      <h3>📝 記録による可視化</h3>
+      <ul>
+        <li>やったことを1行でも書き残す</li>
+        <li>頑張りを"見える化"して達成感につなげる</li>
+        <li>ブログやSNSで共有すると効果が増す</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>頑張りが目に見えないと続かない。記録が小さな成功体験を積み上げる燃料になるから。</div>
+    </div>
+    <div class="card">
+      <h3>❤️ 得意・好きへの集中</h3>
+      <ul>
+        <li>苦手なことは意志力を余計に消耗する</li>
+        <li>得意なことは楽しく自然に続けられる</li>
+        <li>自分の向き不向きを見極める</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>苦痛を我慢する頑張り方は長続きせず、結果的に一番の遠回りになるから。</div>
+    </div>
+    <div class="card">
+      <h3>🪜 段階的な習慣化</h3>
+      <ul>
+        <li>ゼロか100かで考えない</li>
+        <li>「食べない」ではなく「減らす」発想</li>
+        <li>小さく始めて徐々に負荷を上げる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>極端な変化は挫折率が高く、意志力を一気に使い切ってしまうから。</div>
+    </div>
+    <div class="card">
+      <h3>🔁 無意識化のメカニズム</h3>
+      <ul>
+        <li>同じ時間・同じ状況で繰り返す</li>
+        <li>最初は意識的、やがて自動運転になる</li>
+        <li>脳が"省エネモード"に切り替わる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>習慣が無意識化された瞬間、意志力を使わずに行動できるようになるから。</div>
+    </div>
+    <div class="card">
+      <h3>🎯 「大切な1%」への集中</h3>
+      <ul>
+        <li>成果の大部分を生む行動を見極める</li>
+        <li>残り99%を手放す勇気を持つ</li>
+        <li>頑張る対象を厳選する</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>全部に全力を注ぐと共倒れする。的を絞ることが最大効率を生むから。</div>
+    </div>
+  </section>
+
+  <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+    <div class="card">
+      <h3>🏃 序章：ミサキの家出とガンバラン王国</h3>
+      <ul>
+        <li>ガンバール国は「頑張れ」が口癖の国</li>
+        <li>主人公ミサキは息苦しさから家出する</li>
+        <li>たどり着いたガンバラン王国は"頑張らない"のに幸福度・経済・スポーツで一位</li>
+        <li>すれ違う人々の表情がガンバール国とまるで違うことに驚く</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「頑張る」ことの正体と副作用を、対比の効いた物語設定で読者に体感させるため。</div>
+    </div>
+    <div class="card">
+      <h3>👔 決断を自動化する男との出会い</h3>
+      <ul>
+        <li>いつも同じ服を着る男が登場する</li>
+        <li>「選ばない」ことで消耗を防ぐ生き方を語る</li>
+        <li>小さな選択の積み重ねが1日の疲労の正体だと説く</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>意志力の浪費源が、自覚しにくい日常の小さな決断にあると気づかせるため。</div>
+    </div>
+    <div class="card">
+      <h3>🤝 宣言する男と予約する女</h3>
+      <ul>
+        <li>目標を先に公言してしまう男が登場</li>
+        <li>予定を先に確保してしまう女が登場</li>
+        <li>「後に引けない状況」を自分で作る技術を紹介</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>意志の弱さを責めるのではなく、仕組みで自分を動かす発想への転換を示すため。</div>
+    </div>
+    <div class="card">
+      <h3>🌟 好き・得意に生きる住人たち／記録する住人</h3>
+      <ul>
+        <li>苦手を我慢するのをやめた住人たちが登場</li>
+        <li>得意なことに時間を注ぐ姿が描かれる</li>
+        <li>小さな行動を記録し可視化する習慣が紹介される</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「頑張り方」自体を変えるだけで、同じ努力量でも続けやすさが劇的に変わることを示すため。</div>
+    </div>
+    <div class="card">
+      <h3>🏡 終章：ガンバール国へ帰るミサキ</h3>
+      <ul>
+        <li>10人から学んだ知恵を携えて帰郷する</li>
+        <li>「頑張らない」は「何もしない」ではないと悟る</li>
+        <li>大切な1%に集中する新しい生き方を実践し始める</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>物語のまとめとして、読者が明日から真似できる行動指針に落とし込むため。</div>
+    </div>
+  </section>
+
+  <section id="panel-examples" class="panel example-card" role="tabpanel" aria-labelledby="tab-examples" hidden>
+    <div class="card">
+      <h3>👕 同じ服を着る男（決断疲れの回避）</h3>
+      <div class="bg">背景：ガンバラン王国で最初に出会う住人の一人。いつも似た服装で過ごしている。</div>
+      <div class="content">「何を着るか」を毎朝考えない。服だけでなく朝食やルートなど"どうでもいい選択"を先に固定している。</div>
+      <div class="why-box"><b>理由：</b>小さな選択の数を減らすほど、本当に大事な場面で意志力を使い切らずに済むことを示す例だから。</div>
+    </div>
+    <div class="card">
+      <h3>📣 宣言する男と予約する女（一貫性の原理）</h3>
+      <div class="bg">背景：目標を立てても三日坊主になりがちな人向けのエピソード。</div>
+      <div class="content">目標をSNSや周囲に先に公言する、あるいは実行日を先に予約してしまうことで「やらない」という選択肢を自分から奪う。</div>
+      <div class="why-box"><b>理由：</b>意志力に頼らず、環境や社会的プレッシャーを味方にする仕組みづくりが継続の近道になることを示す例だから。</div>
+    </div>
+    <div class="card">
+      <h3>🍚 糖質制限のたとえ話（段階的な習慣化）</h3>
+      <div class="bg">背景：食事制限ダイエットの失敗あるあるを引き合いに出す場面。</div>
+      <div class="content">「食べない」というゼロか100かの我慢はすぐ破綻するが、「量を減らす」という妥協案なら持続できる。</div>
+      <div class="why-box"><b>理由：</b>完璧を目指す頑張り方より、続けられる程度に力を抜いた戦略の方が最終的な成果は大きいことを示す例だから。</div>
+    </div>
+  </section>
+
+  <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+    <div class="card">
+      <blockquote>
+        「納得してからやった方がいい。頑張るのが一番、ホントにダメ。」
+        <span class="note">要旨：読者レビューで引用された劇中のセリフ（原典の一次確認は取れていないため要旨扱い）</span>
+      </blockquote>
+      <div class="why-box"><b>補足：</b>「とにかく頑張る」という精神論への警鐘を象徴する一言。</div>
+    </div>
+    <div class="card">
+      <blockquote>
+        「意志の力は有限で、使えば使うほど消耗する。だからこそ、頑張らずに済む仕組みを先に作ってしまうのが一番の近道だ」
+        <span class="note">要旨：本書全体を貫く中心思想のまとめ（要旨）</span>
+      </blockquote>
+      <div class="why-box"><b>補足：</b>本書のすべての技術（自動化・宣言・記録・得意集中・段階的習慣化）はこの一文に集約される。</div>
+    </div>
+  </section>
+
+  <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions" hidden>
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <h3>明日着る服を前夜に固定しておく</h3>
+        <ul>
+          <li>目的：無駄な決断で意志力を消耗しないため</li>
+          <li>期待効果：<b>朝の意思決定コストがゼロ</b>になり、他の重要な判断に力を回せる</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <h3>小さな目標を人かSNSに宣言する</h3>
+        <ul>
+          <li>目的：一貫性の原理で自分を後に引けなくするため</li>
+          <li>期待効果：<b>「言った手前やらなきゃ」</b>という圧が継続率を押し上げる</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <h3>今日やった小さな行動を1行だけ記録する</h3>
+        <ul>
+          <li>目的：頑張りを可視化して達成感を得るため</li>
+          <li>期待効果：<b>小さな成功体験</b>が積み上がり、習慣化の土台になる</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  📚 books-summary daily infographic ／ 本ページはWeb公開情報にもとづく要約です
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs [role="tab"]');
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-examples':'panel-examples',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){
+        t.setAttribute('aria-selected','false');
+        t.setAttribute('tabindex','-1');
+      });
+      tab.setAttribute('aria-selected','true');
+      tab.setAttribute('tabindex','0');
+      Object.values(panels).forEach(function(id){
+        var el = document.getElementById(id);
+        el.classList.remove('active');
+        el.setAttribute('hidden','');
+      });
+      var activeId = panels[tab.id];
+      var activeEl = document.getElementById(activeId);
+      activeEl.classList.add('active');
+      activeEl.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
