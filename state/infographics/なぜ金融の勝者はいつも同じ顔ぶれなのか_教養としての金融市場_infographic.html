@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>なぜ金融の勝者はいつも同じ顔ぶれなのか インフォグラフィック</title>
+<!--
+  カラーパレット（プライマリー / セカンダリー / アクセント）
+  primary  : #1E3A8A (紺) … 歴史・制度・信用という土台
+  secondary: #D97706 (琥珀・金) … 富・相場・資産
+  accent   : #059669 (緑)  … 勝者・生き残り・成長
+-->
+<style>
+  :root{
+    --primary:#1E3A8A;
+    --primary-soft:#DBEAFE;
+    --secondary:#D97706;
+    --secondary-soft:#FEF3C7;
+    --accent:#059669;
+    --accent-soft:#D1FAE5;
+    --bg:#F8FAFC;
+    --card:#FFFFFF;
+    --ink:#0F172A;
+    --sub:#475569;
+    --line:#E2E8F0;
+    --shadow:0 4px 14px rgba(15,23,42,.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary) 0%,#0F2557 100%);
+    color:#fff;
+    padding:28px 18px 34px;
+    text-align:center;
+  }
+  header .kicker{
+    font-size:.78rem;
+    letter-spacing:.12em;
+    opacity:.85;
+    margin-bottom:6px;
+  }
+  header h1{
+    font-size:1.4rem;
+    margin:0 0 6px;
+    font-weight:800;
+  }
+  header p.sub{
+    margin:0;
+    font-size:.9rem;
+    opacity:.9;
+  }
+  .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 14px;
+  }
+  .hero{
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    margin-top:-18px;
+    padding:18px;
+    border:1px solid var(--line);
+  }
+  .hero h2{
+    font-size:.95rem;
+    color:var(--primary);
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:grid;
+    gap:10px;
+    grid-template-columns:1fr;
+  }
+  .qa-block{
+    background:var(--bg);
+    border-radius:10px;
+    padding:12px 14px;
+    border-left:4px solid var(--primary);
+  }
+  .qa-block.answer{border-left-color:var(--secondary);}
+  .qa-block.why{border-left-color:var(--accent);}
+  .qa-label{
+    font-size:.72rem;
+    font-weight:700;
+    color:var(--sub);
+    letter-spacing:.05em;
+    margin-bottom:4px;
+  }
+  .qa-text{font-size:.9rem;}
+  .badges{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .badge{
+    flex:1 1 auto;
+    min-width:96px;
+    text-align:center;
+    background:var(--primary-soft);
+    color:var(--primary);
+    border-radius:10px;
+    padding:10px 6px;
+  }
+  .badge:nth-child(2){background:var(--secondary-soft);color:#92400E;}
+  .badge:nth-child(3){background:var(--accent-soft);color:#065F46;}
+  .badge .num{font-size:1.35rem;font-weight:800;display:block;}
+  .badge .lbl{font-size:.68rem;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:22px 0 14px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--sub);
+    padding:9px 13px;
+    border-radius:999px;
+    font-size:.8rem;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:1rem;
+    color:var(--primary);
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .card ul{
+    margin:0 0 10px;
+    padding-left:1.2em;
+    font-size:.87rem;
+    color:var(--ink);
+  }
+  .card ul li{margin-bottom:3px;}
+  .why-box{
+    background:var(--accent-soft);
+    color:#065F46;
+    font-size:.8rem;
+    border-radius:8px;
+    padding:8px 10px;
+    display:flex;
+    gap:6px;
+  }
+  .why-box b{white-space:nowrap;}
+
+  .example-card .bg{font-size:.82rem;color:var(--sub);margin-bottom:6px;}
+  .example-card .content{font-size:.87rem;margin-bottom:8px;}
+
+  blockquote{
+    background:var(--secondary-soft);
+    border-left:4px solid var(--secondary);
+    margin:0 0 12px;
+    padding:12px 14px;
+    border-radius:0 10px 10px 0;
+    font-size:.9rem;
+  }
+  blockquote .note{
+    display:block;
+    margin-top:6px;
+    font-size:.72rem;
+    color:#92400E;
+  }
+
+  .action-card{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 auto;
+    width:30px;height:30px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;
+    font-size:.9rem;
+  }
+  .action-body h3{margin:0 0 4px;font-size:.95rem;color:var(--ink);}
+  .action-meta{font-size:.78rem;color:var(--sub);}
+  .action-meta b{color:var(--accent);}
+
+  footer{
+    text-align:center;
+    font-size:.72rem;
+    color:var(--sub);
+    margin-top:26px;
+    padding:0 14px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">📚 今日読むべき本</div>
+  <h1>なぜ金融の勝者はいつも同じ顔ぶれなのか</h1>
+  <p class="sub">教養としての金融市場 ｜ 鹿子木健</p>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <h2>🔎 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-block">
+        <div class="qa-label">Q. なぜ金融市場では、いつも同じような人たちが勝ち続けるのか？</div>
+        <div class="qa-text">大多数は値動きを「予測」しようとして疲弊するが、勝者は歴史・制度・人間心理が生む「構造」そのものを読んでいるから。</div>
+      </div>
+      <div class="qa-block answer">
+        <div class="qa-label">A. では、どう考えればいいのか？</div>
+        <div class="qa-text">金融市場を単なる損得のゲームではなく、人類が積み重ねてきた歴史と制度、そして人間心理を映す「教養」として捉え直す。</div>
+      </div>
+      <div class="qa-block why">
+        <div class="qa-label">Why. なぜそれで結果が変わるのか？</div>
+        <div class="qa-text">恐慌・熱狂・破綻は形を変えて何度も繰り返されており、その反復パターンを知る者だけが、パニックに流されず場に居座り続けられるから。</div>
+      </div>
+    </div>
+    <div class="badges">
+      <div class="badge"><span class="num">10冊目</span><span class="lbl">著者・鹿子木健の著作</span></div>
+      <div class="badge"><span class="num">5人</span><span class="lbl">登場する金融史の巨人</span></div>
+      <div class="badge"><span class="num">3軸</span><span class="lbl">歴史・制度・人間心理</span></div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+    <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🧩 主要概念</button>
+    <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false" tabindex="-1">📖 各章の要約</button>
+    <button role="tab" id="tab-examples" aria-controls="panel-examples" aria-selected="false" tabindex="-1">💡 具体例</button>
+    <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false" tabindex="-1">🗣️ 引用</button>
+    <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false" tabindex="-1">✅ 今日のアクション</button>
+  </nav>
+
+  <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🔭 予測ではなく構造で読む</h3>
+      <ul>
+        <li>「次に上がるか下がるか」の当てものをやめる</li>
+        <li>誰が・何が・なぜ動かしているかという仕組みを見る</li>
+        <li>著者自身の相場観の核となる視点</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>予測は当たり外れの運任せになりやすいが、構造理解は繰り返し使える普遍的な武器になるから。</div>
+    </div>
+    <div class="card">
+      <h3>📜 金融市場は歴史の反復である</h3>
+      <ul>
+        <li>恐慌・バブル・破綻は形を変えて何度も起きている</li>
+        <li>過去の事件を知っていれば「初めて見る危機」は減る</li>
+        <li>歴史上の勝者・敗者のパターンから学べる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「なぜ同じ構造が繰り返されるのか」という本書のタイトルの問い、その答えの核心だから。</div>
+    </div>
+    <div class="card">
+      <h3>🧠 判断を誤らせる人間心理</h3>
+      <ul>
+        <li>価格の変動に一喜一憂する行為はギャンブル化のサイン</li>
+        <li>頻繁に相場を確認するほど短期思考に飲まれる</li>
+        <li>「なぜ判断を誤るのか」を心理面から解剖する</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>制度や歴史をいくら学んでも、自分の心理的な弱さを自覚しなければ同じ失敗を繰り返すから。</div>
+    </div>
+    <div class="card">
+      <h3>🏛️ 信用制度という"発明"</h3>
+      <ul>
+        <li>アレクサンダー・ハミルトンが米国の信用制度を設計した</li>
+        <li>「お金」や「信用」は人類が共有する仕組みそのもの</li>
+        <li>制度の成り立ちを知ると市場の前提が見えてくる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>市場を動かすルール自体が誰かの設計物だと知ることが、「構造で読む」ことの第一歩だから。</div>
+    </div>
+    <div class="card">
+      <h3>⚔️ 中央銀行を打ち負かした投機</h3>
+      <ul>
+        <li>ジョージ・ソロスは「イングランド銀行を打ち負かした男」と呼ばれる</li>
+        <li>1992年、ポンドの構造的な弱点を見抜いて巨額の利益を得た</li>
+        <li>国家という巨大な相手にも構造的な隙は存在する</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>個人でも構造を読み切れば、巨大な力に対抗しうるという象徴的な事例だから。</div>
+    </div>
+    <div class="card">
+      <h3>🦢 ブラック・スワンと予測不可能性</h3>
+      <ul>
+        <li>ナシーム・ニコラス・タレブが提唱した概念</li>
+        <li>「起こりえないはずの極端な事象」が市場を動かす</li>
+        <li>予測できないことを前提に備える発想への転換</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「予測」の限界そのものを示し、「構造」で備える姿勢の必要性を裏付けるから。</div>
+    </div>
+    <div class="card">
+      <h3>🏦 パニックを鎮めた"最後の貸し手"</h3>
+      <ul>
+        <li>J.P.モルガンは1907年恐慌で自ら資金を投じて収拾に動いた</li>
+        <li>「金融王」と呼ばれ、市場の信用を一身に支えた</li>
+        <li>個人の信用が制度を支えた時代の象徴</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>制度が未成熟な時代には「人」そのものが構造の一部になっていたことを示す例だから。</div>
+    </div>
+    <div class="card">
+      <h3>⏳ 長期で勝ち続ける思考</h3>
+      <ul>
+        <li>ウォーレン・バフェットは「オマハの賢人」と呼ばれる</li>
+        <li>短期の値動きに反応せず、長期の複利で資産を築く</li>
+        <li>「買わなくても平然としていられる力」が武器になる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>短期のギャンブル化から抜け出し、長期で「同じ顔ぶれ」の勝者側に回るための実践知だから。</div>
+    </div>
+  </section>
+
+  <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+    <div class="card">
+      <h3>🎬 序章：なぜ勝者はいつも同じ顔ぶれなのか</h3>
+      <ul>
+        <li>金融理論や小手先の投資ノウハウだけでは勝者になれない</li>
+        <li>「人はなぜ判断を誤るのか」「なぜ勝者は入れ替わらないのか」を問う</li>
+        <li>金融市場を人間・社会・世界の構造を映す「教養」として読み解く枠組みを提示</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>本書全体を貫く問題意識を最初に共有し、以降の歴史・心理・構造の各論への橋渡しをするため。</div>
+    </div>
+    <div class="card">
+      <h3>🏛️ 第1部（歴史編）：金融市場を設計した男たち</h3>
+      <ul>
+        <li>アレクサンダー・ハミルトンによる米国信用制度の誕生</li>
+        <li>J.P.モルガンが1907年恐慌を個人の信用で収拾した経緯</li>
+        <li>制度と信用がどのように積み上げられてきたかを描く</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>今の市場ルールが「最初からあったもの」ではなく人為的な積み重ねだと理解させるため。</div>
+    </div>
+    <div class="card">
+      <h3>🧠 第2部（心理編）：人はなぜ判断を誤るのか</h3>
+      <ul>
+        <li>価格変動を頻繁に確認する行為の「ギャンブル化」を指摘</li>
+        <li>「搾取される側」から「永続的に生き残る側」への移行を論じる</li>
+        <li>即効性と実用性を兼ねた具体的なアクションプランを提示</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>歴史や制度を知るだけでは不十分で、自分自身の心理的な癖を変えなければ同じ轍を踏むと示すため。</div>
+    </div>
+    <div class="card">
+      <h3>🔭 第3部（構造編）：予測ではなく構造で読む</h3>
+      <ul>
+        <li>ジョージ・ソロスによるポンド危機の構造的な読み</li>
+        <li>ナシーム・ニコラス・タレブのブラック・スワン概念</li>
+        <li>「当てる」から「仕組みを見抜く」への発想転換を提示</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>本書のタイトルにある「勝者」に共通する思考のOSを、具体的な人物像を通して解説するため。</div>
+    </div>
+    <div class="card">
+      <h3>🌱 終章（実践編）：生き残るための思考法</h3>
+      <ul>
+        <li>ウォーレン・バフェットの長期・複利思考を紹介</li>
+        <li>相場で勝つ力とは「買わなくても平然としていられる力」と説く</li>
+        <li>教養としての金融市場理解を、日々の行動に落とし込む</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>歴史・心理・構造という抽象的な学びを、読者が明日から使える判断軸に変換して締めくくるため。</div>
+    </div>
+  </section>
+
+  <section id="panel-examples" class="panel example-card" role="tabpanel" aria-labelledby="tab-examples" hidden>
+    <div class="card">
+      <h3>⚔️ ジョージ・ソロスとポンド危機（1992年）</h3>
+      <div class="bg">背景：「イングランド銀行を打ち負かした男」と呼ばれる伝説的投資家のエピソード。</div>
+      <div class="content">英国の為替制度が抱えていた構造的な矛盾を見抜き、ポンドの空売りを仕掛けて巨額の利益を得た。国家中央銀行という巨大な相手にも、構造的な隙は存在することを証明した。</div>
+      <div class="why-box"><b>理由：</b>「予測」ではなく「構造を見抜く力」が、個人を国家規模の力に対抗させうることを示す象徴的な例だから。</div>
+    </div>
+    <div class="card">
+      <h3>🏦 J.P.モルガンと1907年恐慌</h3>
+      <div class="bg">背景：中央銀行が未整備だった時代のアメリカで起きた金融パニック。</div>
+      <div class="content">「金融王」と呼ばれたJ.P.モルガンが、自らの資金と信用を投じて銀行間の連鎖破綻を食い止め、市場の秩序を回復させた。</div>
+      <div class="why-box"><b>理由：</b>制度が未成熟な段階では、個人の信用そのものが市場を支える「構造」になっていたことを示す例だから。</div>
+    </div>
+    <div class="card">
+      <h3>🏛️ アレクサンダー・ハミルトンと信用制度の設計</h3>
+      <div class="bg">背景：建国間もないアメリカが抱えていた膨大な戦争債務という課題。</div>
+      <div class="content">「近代金融の設計者」と呼ばれるハミルトンが、連邦政府による債務引き受けと国立銀行の設立を通じて、国家の信用を制度として作り上げた。</div>
+      <div class="why-box"><b>理由：</b>今日当たり前に使っている「信用」や「お金」の仕組みが、誰かによって意図的に設計されたものだと示す例だから。</div>
+    </div>
+    <div class="card">
+      <h3>🦢 ナシーム・ニコラス・タレブとブラック・スワン</h3>
+      <div class="bg">背景：リーマンショックのような「起こりえないはずの」金融危機が繰り返される現象。</div>
+      <div class="content">「ブラック・スワン」を提唱したタレブは、極端で予測不能な事象こそが歴史を動かす主因だと説き、予測に頼る危うさを指摘した。</div>
+      <div class="why-box"><b>理由：</b>「予測は当てにならない」という前提に立つことこそが、構造で備える発想への出発点になることを示す例だから。</div>
+    </div>
+  </section>
+
+  <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+    <div class="card">
+      <blockquote>
+        「相場で勝つために必要な能力は、どこで買うかを見極める力ではない。買わなくても平然としていられる力だ」
+        <span class="note">要旨：著者・鹿子木健の相場観を伝える発言として複数の媒体で紹介されているもの（本書内での一字一句の原文確認は取れていないため要旨扱い）</span>
+      </blockquote>
+      <div class="why-box"><b>補足：</b>短期の値動きに反応しない胆力こそが、長期で「同じ顔ぶれ」の勝者に残るための資質だと示す一言。</div>
+    </div>
+    <div class="card">
+      <blockquote>
+        相場を「予測」ではなく「構造」として捉える
+        <span class="note">要旨：著者の投資教育における一貫した視点として紹介されているキーフレーズ（要旨）</span>
+      </blockquote>
+      <div class="why-box"><b>補足：</b>本書全体、そして著者の金融教育活動全体を貫く中心思想。タイトルの問い「なぜ勝者は同じ顔ぶれなのか」への答えの核。</div>
+    </div>
+  </section>
+
+  <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions" hidden>
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <h3>保有資産や気になる銘柄のチェックを今日だけ「1回」に制限する</h3>
+        <ul>
+          <li>目的：値動きに一喜一憂する「ギャンブル化」から距離を置くため</li>
+          <li>期待効果：<b>短期ノイズへの反応</b>が減り、自分の判断軸を落ち着いて見直せる</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <h3>直近の金融ニュースを1つ選び「歴史上似た出来事」を15分調べる</h3>
+        <ul>
+          <li>目的：目の前の現象を「初めて起きたこと」ではなく「構造の反復」として捉える訓練のため</li>
+          <li>期待効果：<b>パニック的な判断</b>を避け、次に似た局面が来たときの心構えができる</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <h3>自分の最近のお金の判断を1つ選び「予測」か「構造」かを書き出す</h3>
+        <ul>
+          <li>目的：本書の核心である「予測」と「構造」の違いを、自分の行動に当てはめて言語化するため</li>
+          <li>期待効果：<b>感覚的な判断</b>から一歩引き、再現性のある判断軸を持てるようになる</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  📚 books-summary daily infographic ／ 本ページはWeb公開情報にもとづく要約です
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs [role="tab"]');
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-examples':'panel-examples',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){
+        t.setAttribute('aria-selected','false');
+        t.setAttribute('tabindex','-1');
+      });
+      tab.setAttribute('aria-selected','true');
+      tab.setAttribute('tabindex','0');
+      Object.values(panels).forEach(function(id){
+        var el = document.getElementById(id);
+        el.classList.remove('active');
+        el.setAttribute('hidden','');
+      });
+      var activeId = panels[tab.id];
+      var activeEl = document.getElementById(activeId);
+      activeEl.classList.add('active');
+      activeEl.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
