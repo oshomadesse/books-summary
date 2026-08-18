@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>90日で手に入れる「余白」のある暮らしのつくり方 ― インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様）
+  プライマリー: #4A7A6D（セージグリーン。禅・自然・呼吸のような落ち着きを表現）
+  セカンダリー: #F5EDE4（生成り／和紙のようなベージュ。余白そのものを表す背景色）
+  アクセント: #E8896A（テラコッタ。手放した後に残る「温かい実り」を表現）
+  グラデーション: linear-gradient(135deg, #4A7A6D 0%, #6FA593 100%)
+-->
+<style>
+  :root{
+    --primary:#4A7A6D;
+    --primary-dark:#375A50;
+    --primary-light:#6FA593;
+    --secondary:#F5EDE4;
+    --accent:#E8896A;
+    --accent-dark:#C96B4E;
+    --ink:#2E2A26;
+    --ink-soft:#5C564F;
+    --card-bg:#FFFFFF;
+    --border:#E4DACB;
+    --shadow: 0 4px 16px rgba(74,122,109,0.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--secondary);
+    color:var(--ink);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{max-width:100%;}
+  .wrap{max-width:880px;margin:0 auto;padding:0 0 60px;}
+
+  header.hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color:#fff;
+    padding:36px 20px 32px;
+    border-radius:0 0 28px 28px;
+    box-shadow:var(--shadow);
+  }
+  .badge{
+    display:inline-block;
+    background:rgba(255,255,255,0.22);
+    border:1px solid rgba(255,255,255,0.4);
+    padding:4px 14px;
+    border-radius:999px;
+    font-size:0.8rem;
+    letter-spacing:0.04em;
+    margin-bottom:14px;
+  }
+  h1.book-title{
+    font-size:1.55rem;
+    margin:0 0 10px;
+    font-weight:700;
+    line-height:1.5;
+  }
+  .book-meta{font-size:0.92rem;opacity:0.92;margin:0;}
+  .book-meta span{margin-right:14px;}
+
+  .why-how{
+    max-width:880px;
+    margin:-22px auto 28px;
+    padding:0 20px;
+  }
+  .why-how-card{
+    background:var(--card-bg);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    padding:22px 22px 20px;
+    border-top:6px solid var(--accent);
+  }
+  .why-how-card h2{
+    font-size:1rem;
+    margin:0 0 12px;
+    color:var(--accent-dark);
+    display:flex;align-items:center;gap:8px;
+  }
+  .qa-row{display:flex;flex-direction:column;gap:12px;}
+  .qa-item{
+    background:var(--secondary);
+    border-radius:14px;
+    padding:14px 16px;
+  }
+  .qa-label{
+    font-size:0.72rem;
+    font-weight:700;
+    color:var(--primary-dark);
+    letter-spacing:0.06em;
+    margin-bottom:4px;
+  }
+  .qa-text{font-size:0.95rem;color:var(--ink);}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:0 16px;
+    margin-bottom:18px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    color:var(--ink-soft);
+    padding:10px 16px;
+    border-radius:999px;
+    font-size:0.85rem;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .2s ease;
+    font-weight:600;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+
+  main{padding:0 16px;}
+  .panel{display:none;animation:fadeIn .25s ease;}
+  .panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .section-lead{
+    font-size:0.88rem;
+    color:var(--ink-soft);
+    margin:4px 0 16px;
+  }
+
+  .card{
+    background:var(--card-bg);
+    border-radius:16px;
+    padding:18px 18px 16px;
+    box-shadow:var(--shadow);
+    margin-bottom:14px;
+    border-left:5px solid var(--primary);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:1.02rem;
+    color:var(--primary-dark);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card ul{margin:8px 0 10px;padding-left:1.1em;}
+  .card li{margin-bottom:5px;font-size:0.92rem;}
+  .why-box{
+    background:var(--secondary);
+    border-radius:10px;
+    padding:8px 12px;
+    font-size:0.85rem;
+    color:var(--primary-dark);
+    margin-top:8px;
+  }
+  .why-box b{color:var(--accent-dark);}
+
+  .case-card{border-left-color:var(--accent);}
+  .case-card h3{color:var(--accent-dark);}
+
+  .quote-card{
+    background:linear-gradient(135deg,#fff 0%, var(--secondary) 100%);
+    border-left:5px solid var(--accent);
+    border-radius:16px;
+    padding:20px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .quote-text{
+    font-size:1.05rem;
+    font-style:italic;
+    color:var(--ink);
+    margin:0 0 10px;
+    line-height:1.9;
+  }
+  .quote-src{font-size:0.8rem;color:var(--ink-soft);}
+  .quote-note{
+    display:inline-block;
+    margin-top:6px;
+    font-size:0.72rem;
+    background:var(--secondary);
+    color:var(--primary-dark);
+    padding:2px 10px;
+    border-radius:999px;
+  }
+
+  .action-card{
+    border-left-color:var(--primary-light);
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 auto;
+    width:34px;height:34px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:0.95rem;
+  }
+  .action-body h3{margin:0 0 6px;font-size:1rem;color:var(--primary-dark);}
+  .action-meta{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:8px;
+    font-size:0.78rem;
+  }
+  .pill{
+    background:var(--secondary);
+    color:var(--primary-dark);
+    padding:3px 10px;
+    border-radius:999px;
+  }
+
+  .stat-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:14px 0 18px;
+  }
+  .stat-tile{
+    flex:1 1 130px;
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:14px 12px;
+    text-align:center;
+    box-shadow:var(--shadow);
+  }
+  .stat-num{font-size:1.5rem;font-weight:800;color:var(--primary);}
+  .stat-label{font-size:0.72rem;color:var(--ink-soft);margin-top:2px;}
+
+  .bar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .bar-label{flex:0 0 96px;font-size:0.78rem;color:var(--ink-soft);}
+  .bar-track{flex:1;background:var(--secondary);border-radius:999px;height:14px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--primary-light));}
+
+  .related-list{list-style:none;margin:0;padding:0;}
+  .related-list li{
+    background:var(--card-bg);
+    border-radius:12px;
+    padding:12px 14px;
+    margin-bottom:8px;
+    font-size:0.88rem;
+    box-shadow:var(--shadow);
+    border-left:4px solid var(--accent);
+  }
+  .related-title{font-weight:700;color:var(--ink);}
+  .related-rel{color:var(--ink-soft);font-size:0.82rem;margin-top:3px;}
+
+  footer{
+    text-align:center;
+    font-size:0.75rem;
+    color:var(--ink-soft);
+    padding:24px 16px 4px;
+  }
+
+  @media (min-width:640px){
+    .qa-row{flex-direction:row;}
+    .qa-item{flex:1;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="badge">📚 ライフスタイル</span>
+    <h1 class="book-title">90日で手に入れる「余白」のある暮らしのつくり方</h1>
+    <p class="book-meta">
+      <span>👤 みしぇる</span>
+      <span>🏢 小学館クリエイティブ</span>
+      <span>📅 2024年8月刊</span>
+    </p>
+  </header>
+
+  <div class="why-how">
+    <div class="why-how-card">
+      <h2>🧭 要約：問い × 答え × 根拠</h2>
+      <div class="qa-row">
+        <div class="qa-item">
+          <div class="qa-label">❓ 問い</div>
+          <div class="qa-text">モノ・時間・心に追われる毎日から、どうすれば「余白」を取り戻せるのか？</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-label">💡 答え</div>
+          <div class="qa-text">大きく手放すのではなく、1日1トピックずつ「家」「心と体」「時間」「家事」の4領域を90日かけて手放していく。</div>
+        </div>
+        <div class="qa-item">
+          <div class="qa-label">📖 根拠</div>
+          <div class="qa-text">道元禅師の「放てば手に満てり」―― 執着を手放すほど、本当に大切なものが手に入るという禅の思想を土台にしている。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-tile"><div class="stat-num">90</div><div class="stat-label">日間・1日1トピック</div></div>
+    <div class="stat-tile"><div class="stat-num">4</div><div class="stat-label">つの余白カテゴリ</div></div>
+    <div class="stat-tile"><div class="stat-num">11</div><div class="stat-label">年 著者の実践歴</div></div>
+    <div class="stat-tile"><div class="stat-num">208</div><div class="stat-label">ページ・見開き完結</div></div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィック タブ">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📑 各章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">🔍 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+    <!-- 主要概念 -->
+    <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+      <p class="section-lead">初見でも理解できるよう、本書を貫く8つのキーワードを噛み砕いて整理。</p>
+
+      <div class="card">
+        <h3>🍃 放てば手に満てり</h3>
+        <ul>
+          <li>道元禅師『正法眼蔵』「弁道話」に由来する言葉。</li>
+          <li>執着しているモノ・考え・予定を手放すほど、本当に大切なものが手元に残るという逆説。</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>本書全体の思想的な背骨。4つの余白すべてがこの一言に集約される。</div>
+      </div>
+
+      <div class="card">
+        <h3>🌱 ゆるミニマリズム</h3>
+        <ul>
+          <li>「モノを極限まで減らす」のではなく、暮らしの中で無理なく続けられる範囲で手放す考え方。</li>
+          <li>著者自身、3人の子育てをしながら11年間「1日1つ手放す」を継続してきた実践者。</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>忙しい家庭でも実践できるハードルの低さが、90日という長さでも続く理由になっている。</div>
+      </div>
+
+      <div class="card">
+        <h3>🗓️ 1日1トピック×90日</h3>
+        <ul>
+          <li>見開き2ページで1トピックが完結する構成。1日ひとつ読んで、ひとつ行動するだけでよい。</li>
+          <li>図や写真を交えたビジュアル解説で、読んだその日から実践できる。</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>一気に暮らしを変えようとする挫折を防ぎ、90日という助走で習慣化を狙う設計。</div>
+      </div>
+
+      <div class="card">
+        <h3>🏠 家の余白</h3>
+        <ul>
+          <li>不要なモノを手放し、家族それぞれのための物理的な空間を取り戻す。</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>モノが多いと視界・思考・動線のすべてが圧迫される、という発想が起点。</div>
+      </div>
+
+      <div class="card">
+        <h3>🧘 心と体の余白</h3>
+        <ul>
+          <li>心のゆとりには「シンプルな視点」を、体のゆとりには毎日の運動と栄養を、と分けて扱う。</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>心と体は連動しているため、どちらか一方だけを整えても余白は生まれにくい。</div>
+      </div>
+
+      <div class="card">
+        <h3>⏰ 時間の余白</h3>
+        <ul>
+          <li>予定に追われる毎日から、「自分のための時間」を意図的に取り戻す視点。</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>時間は目に見えないぶん、モノ以上に無意識に埋め尽くされやすいから。</div>
+      </div>
+
+      <div class="card">
+        <h3>🧹 家事の余白</h3>
+        <ul>
+          <li>家事そのものをなくすのではなく、小さな工夫で「一石二鳥」の仕組みに変えていく。</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>家事は毎日繰り返す作業だからこそ、小さな効率化の複利効果が大きい。</div>
+      </div>
+
+      <div class="card">
+        <h3>📖 見開き完結フォーマット</h3>
+        <ul>
+          <li>1トピック=見開き2ページで、文章＋図解＋写真がセットになっている。</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>読者レビューでも「見開きで話題が完結し図や写真もありわかりやすい」と評価されている実用書としての設計。</div>
+      </div>
+    </section>
+
+    <!-- 各章の要約（4つの余白を疑似章として扱う） -->
+    <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters">
+      <p class="section-lead">本書は明確な「第1章・第2章」形式ではなく、90日間を貫く4つの余白テーマで構成される。ここではそのテーマを疑似章として要約する。</p>
+
+      <div class="card">
+        <h3>第1部｜家の余白</h3>
+        <ul>
+          <li>不要なモノを手放し、家族一人ひとりの居場所と動線を取り戻す。</li>
+          <li>「1日1つ」の小さな手放しを積み重ね、収納の見直しへとつなげる。</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>物理空間の余白は目に見えるぶん、最初の成功体験を作りやすく90日間のスタート地点に置かれている。</div>
+      </div>
+
+      <div class="card">
+        <h3>第2部｜心と体の余白</h3>
+        <ul>
+          <li>考えすぎず、シンプルな視点で物事を捉える心の整え方。</li>
+          <li>毎日の運動・栄養など、体のコンディションを底上げする小さな習慣。</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>空間が整った後に内面へと視点を移すことで、「余白」の対象を外から内へ自然に広げている。</div>
+      </div>
+
+      <div class="card">
+        <h3>第3部｜時間の余白</h3>
+        <ul>
+          <li>予定やタスクに追われる状態から抜け出し、「私の時間」を意識的に確保する。</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>モノと心が整理された次の段階として、最も無意識に消費されがちな「時間」を扱う。</div>
+      </div>
+
+      <div class="card">
+        <h3>第4部｜家事の余白</h3>
+        <ul>
+          <li>家事の負担そのものを見直し、小さな工夫で「ついで」にこなせる仕組みに変える。</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>家事は毎日発生する行動だからこそ、最後に扱うことで日々の暮らしに定着させやすい。</div>
+      </div>
+    </section>
+
+    <!-- 具体例・ケーススタディ -->
+    <section id="panel-cases" class="panel" role="tabpanel" aria-labelledby="tab-cases">
+      <p class="section-lead">核心メッセージ「手放すほど余白が手に入る」が伝わる、確認できた実際の事例を紹介。</p>
+
+      <div class="card case-card">
+        <h3>🌾 著者自身の11年間の実践</h3>
+        <ul>
+          <li>著者みしぇるは「1日1つ手放す」を11年間継続してきたゆるミニマリスト。</li>
+          <li>これまでに8冊のライフスタイル本を著し、雑誌『ESSE』などにも取り上げられている。</li>
+        </ul>
+        <div class="why-box"><b>この例が示すこと：</b>特別な才能や大掃除ではなく、小さな習慣の継続だけで「余白のある暮らし」に到達できることの証明になっている。</div>
+      </div>
+
+      <div class="card case-card">
+        <h3>👨‍👩‍👧‍👦 3人の子育てをしながらの実践</h3>
+        <ul>
+          <li>著者は3人の子を育てながら、シングル育児の最終段階にあるという生活背景を公表している。</li>
+          <li>忙しい日常の中でも「1日1トピック」の小さな行動なら続けられるという設計思想が、この生活背景と直結している。</li>
+        </ul>
+        <div class="why-box"><b>この例が示すこと：</b>時間のない子育て世帯こそ、大きな改革ではなく小さな手放しの積み重ねが現実的であること。</div>
+      </div>
+
+      <div class="card case-card">
+        <h3>🗣️ 読者の声</h3>
+        <ul>
+          <li>「見開きで話題が完結し、図や写真もあってわかりやすい」という読者レビューが寄せられている。</li>
+          <li>「1日1つのものを手放すことで、家の中の不用品に自然と目が行くようになり、意識づけが重要だと感じた」という感想も見られる。</li>
+        </ul>
+        <div class="why-box"><b>この例が示すこと：</b>読み進めるだけで「モノを見る目」が変わり始める、行動変容のきっかけになっていること。</div>
+      </div>
+    </section>
+
+    <!-- 重要な引用 -->
+    <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes">
+      <p class="section-lead">Web上で確認できた引用・出典を掲載。原文の該当ページを直接確認できない箇所は要旨で代替している。</p>
+
+      <div class="quote-card">
+        <p class="quote-text">「放てば手に満てり」</p>
+        <p class="quote-src">道元禅師『正法眼蔵』第一巻「弁道話」より。本書が拠り所とする核心の言葉。</p>
+      </div>
+
+      <div class="quote-card">
+        <p class="quote-text">執着しているモノを手放せば、本当に大切なモノが手に入る――という、道元の言葉に基づいた本書全体の姿勢。</p>
+        <p class="quote-src">本書のコンセプト解説（要旨）</p>
+        <span class="quote-note">要旨（本文からの直接引用は未確認）</span>
+      </div>
+
+      <div class="quote-card">
+        <p class="quote-text">見開きで話題が完結し、図や写真もあってわかりやすい。1日1つのものを手放すことで、家の中の不用品に自然と目が行くようになった。</p>
+        <p class="quote-src">読者レビューの要旨</p>
+        <span class="quote-note">要旨（複数レビューを要約）</span>
+      </div>
+    </section>
+
+    <!-- 今日のアクション -->
+    <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions">
+      <p class="section-lead">本書の「1日1トピック」の精神にならい、15〜30分でできる3つの行動。</p>
+
+      <div class="card action-card">
+        <div class="action-num">1</div>
+        <div class="action-body">
+          <h3>🏠 引き出し1つだけ「手放す」</h3>
+          <p>今日使わなかったモノを1つだけ選んで手放す。捨てる／譲る／売るのどれでもよい。</p>
+          <div class="action-meta">
+            <span class="pill">⏱️ 15分</span>
+            <span class="pill">🎯 目的：小さな成功体験で「手放す」ハードルを下げる</span>
+            <span class="pill">📈 効果：翌日以降も続けたくなる動機づけ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card action-card">
+        <div class="action-num">2</div>
+        <div class="action-body">
+          <h3>⏰ 「何もしない15分」を予定に入れる</h3>
+          <p>今日の予定の中に、あえて何も入れない15分の「自分時間」をスケジュール帳に確保する。</p>
+          <div class="action-meta">
+            <span class="pill">⏱️ 15分</span>
+            <span class="pill">🎯 目的：時間に追われる感覚をリセットする</span>
+            <span class="pill">📈 効果：「時間の余白」を体感として実感できる</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card action-card">
+        <div class="action-num">3</div>
+        <div class="action-body">
+          <h3>🧹 明日の家事を「ついで化」する</h3>
+          <p>今日の家事のついでにできる形で、明日の家事をひとつ前倒しで準備する（例：夕食の下ごしらえを翌朝分まで一緒に済ませる）。</p>
+          <div class="action-meta">
+            <span class="pill">⏱️ 20分</span>
+            <span class="pill">🎯 目的：家事を「一石二鳥」の仕組みに変える</span>
+            <span class="pill">📈 効果：翌日の家事負担が具体的に減る</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="why-how" style="margin-top:6px;">
+    <div class="why-how-card">
+      <h2>📚 関連書籍</h2>
+      <ul class="related-list">
+        <li>
+          <div class="related-title">断捨離（やましたひでこ）</div>
+          <div class="related-rel">「モノを手放す」実践思想の源流。本書の「家の余白」と直結する。</div>
+        </li>
+        <li>
+          <div class="related-title">ぼくたちに、もうモノは必要ない。（佐々木典士）</div>
+          <div class="related-rel">ミニマリズムの実践的入門書。「手放し＝豊かさ」という逆説を共有する。</div>
+        </li>
+        <li>
+          <div class="related-title">持たない暮らし（下重暁子）</div>
+          <div class="related-rel">「持たない」ことによる精神的自由を描き、本書の「心と体の余白」と響き合う。</div>
+        </li>
+        <li>
+          <div class="related-title">半分、減らす。（川野泰周）</div>
+          <div class="related-rel">禅僧の視点からモノと心の両方を減らす提案。本書の道元引用と直接つながる。</div>
+        </li>
+        <li>
+          <div class="related-title">持たない幸福論（pha）</div>
+          <div class="related-rel">働き方・時間の自由という切り口で、本書の「時間の余白」の思想と共鳴する。</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    📖 読書サマリー自動生成システム｜Web検索で確認できた情報のみを掲載しています
+  </footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){
+        t.setAttribute('aria-selected', 'false');
+        document.getElementById(t.getAttribute('aria-controls')).classList.remove('active');
+      });
+      tab.setAttribute('aria-selected', 'true');
+      document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
