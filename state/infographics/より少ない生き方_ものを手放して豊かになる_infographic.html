@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>より少ない生き方 ものを手放して豊かになる｜インフォグラフィック</title>
+<!--
+  カラーパレット
+  プライマリー: #2F6D5E（深緑・落ち着き / 手放した先の静けさ）
+  セカンダリー: #E8DCC8（サンドベージュ・余白 / 生活の温もり）
+  アクセント: #E67E52（テラコッタ・行動喚起 / 今日のアクション）
+  グラデーション: linear-gradient(135deg, #2F6D5E 0%, #3E8E77 100%)
+-->
+<style>
+  :root{
+    --primary:#2F6D5E;
+    --primary-light:#3E8E77;
+    --secondary:#E8DCC8;
+    --secondary-dark:#D9C7A6;
+    --accent:#E67E52;
+    --accent-dark:#CC6640;
+    --ink:#28322E;
+    --ink-soft:#5B665F;
+    --paper:#FBF8F3;
+    --card:#FFFFFF;
+    --line:#E4DCCC;
+    --radius:16px;
+    --shadow:0 4px 18px rgba(47,109,94,0.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  img,svg{max-width:100%;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 16px 56px;}
+
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--primary-light) 100%);
+    color:#fff;
+    padding:36px 16px 28px;
+    border-radius:0 0 28px 28px;
+    text-align:center;
+  }
+  .hero .eyebrow{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:.08em;
+    background:rgba(255,255,255,0.16);
+    padding:4px 12px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:clamp(22px,6vw,30px);
+    margin:0 0 8px;
+    font-weight:800;
+    line-height:1.4;
+  }
+  .hero .author{
+    font-size:14px;
+    opacity:.9;
+    margin:0;
+  }
+
+  /* Why & How ファーストビュー要約ブロック */
+  .why-how{
+    max-width:760px;
+    margin:-22px auto 28px;
+    padding:0 16px;
+  }
+  .why-how-card{
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:20px;
+    border:1px solid var(--line);
+  }
+  .why-how-card h2{
+    font-size:14px;
+    color:var(--primary);
+    margin:0 0 14px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-weight:800;
+  }
+  .qa-row{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start;}
+  .qa-row:last-child{margin-bottom:0;}
+  .qa-tag{
+    flex:none;
+    width:34px;height:34px;
+    border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:14px;color:#fff;
+    background:var(--primary);
+  }
+  .qa-row.how .qa-tag{background:var(--accent);}
+  .qa-text{font-size:14.5px;color:var(--ink);}
+  .qa-text b{color:var(--primary);}
+  .qa-row.how .qa-text b{color:var(--accent-dark);}
+
+  section{margin:28px 0;}
+  .section-title{
+    font-size:18px;
+    font-weight:800;
+    color:var(--primary);
+    margin:0 0 14px;
+    display:flex;align-items:center;gap:8px;
+  }
+
+  /* 数値バッジ */
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:16px 0 28px;
+  }
+  .stat-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 8px;
+    text-align:center;
+  }
+  .stat-num{font-size:clamp(18px,5vw,22px);font-weight:800;color:var(--accent-dark);}
+  .stat-label{font-size:11px;color:var(--ink-soft);margin-top:4px;}
+
+  .bar-block{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:16px 0 28px;box-shadow:var(--shadow);}
+  .bar-row{margin-bottom:14px;}
+  .bar-row:last-child{margin-bottom:0;}
+  .bar-row .bar-label{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:5px;}
+  .bar-track{background:var(--secondary);border-radius:8px;height:14px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--primary),var(--primary-light));}
+  .bar-fill.accent{background:linear-gradient(90deg,var(--accent-dark),var(--accent));}
+
+  /* タブ */
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+  .tab-btn{
+    flex:1 1 auto;
+    min-width:74px;
+    background:var(--card);
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    padding:10px 6px;
+    border-radius:10px;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    text-align:center;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+  }
+  .card h3{
+    font-size:15.5px;
+    margin:0 0 8px;
+    color:var(--ink);
+    font-weight:800;
+    display:flex;gap:8px;align-items:center;
+  }
+  .card h3 .num{
+    flex:none;
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--secondary);
+    color:var(--primary);
+    font-size:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;
+  }
+  .card ul{margin:0;padding-left:1.15em;font-size:13.8px;}
+  .card li{margin-bottom:4px;}
+  .why-tag{
+    display:inline-block;
+    margin-top:10px;
+    font-size:12px;
+    background:var(--secondary);
+    color:var(--primary);
+    padding:5px 10px;
+    border-radius:8px;
+  }
+  .why-tag b{color:var(--accent-dark);}
+
+  .quote-card{
+    background:var(--card);
+    border-left:4px solid var(--accent);
+    border-radius:0 12px 12px 0;
+    padding:14px 16px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+  }
+  .quote-card p.q{font-size:14.5px;font-style:italic;margin:0 0 6px;color:var(--ink);}
+  .quote-card p.note{font-size:12px;color:var(--ink-soft);margin:0;}
+
+  .action-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px 18px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+  }
+  .action-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .action-time{
+    flex:none;
+    background:var(--accent);
+    color:#fff;
+    font-size:12px;
+    font-weight:800;
+    padding:4px 10px;
+    border-radius:999px;
+  }
+  .action-head h3{margin:0;font-size:15px;font-weight:800;}
+  .action-card .meta{font-size:13px;color:var(--ink-soft);margin:4px 0 0;}
+  .action-card .meta b{color:var(--primary);}
+
+  footer{
+    text-align:center;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    margin-top:36px;
+  }
+
+  @media (max-width:380px){
+    .stat-grid{grid-template-columns:repeat(3,1fr);gap:8px;}
+    .tab-btn{font-size:11.5px;padding:9px 4px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="eyebrow">📖 ライフスタイル</span>
+  <h1>より少ない生き方<br>ものを手放して豊かになる</h1>
+  <p class="author">ジョシュア・ベッカー 著</p>
+</header>
+
+<div class="why-how">
+  <div class="why-how-card">
+    <h2>🔎 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-tag">Q</div>
+      <div class="qa-text"><b>物が多いほど幸せになれるのか？</b></div>
+    </div>
+    <div class="qa-row">
+      <div class="qa-tag">A</div>
+      <div class="qa-text"><b>いいえ。</b>「物＝豊かさ」は広告が作った幻想。一番大切なものを優先し、それを妨げるモノを手放すほど人生は満ちる。</div>
+    </div>
+    <div class="qa-row how">
+      <div class="qa-tag">W</div>
+      <div class="qa-text">根拠：平均的な家庭は<b>30万点</b>もの物を所有し、広告露出は1970年代の1日500回から現代は<b>1日5000回</b>に急増。著者自身も所有物の<b>60%以上</b>を手放し、時間・お金・寛大さを取り戻した。</div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <div class="section-title">📊 データで見るミニマリズム</div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-num">30万点</div><div class="stat-label">平均的な家庭の所有物</div></div>
+      <div class="stat-card"><div class="stat-num">1日5000回</div><div class="stat-label">現代人が接する広告数</div></div>
+      <div class="stat-card"><div class="stat-num">60%超</div><div class="stat-label">著者が手放した所有物の割合</div></div>
+    </div>
+    <div class="bar-block">
+      <div class="bar-row">
+        <div class="bar-label"><span>広告露出（1970年代）</span><span>1日 約500回</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:10%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>広告露出（現代）</span><span>1日 約5000回</span></div>
+        <div class="bar-track"><div class="bar-fill accent" style="width:100%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">🧭 本の内容</div>
+    <div class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+      <button class="tab-btn" role="tab" id="tab-btn-concepts" aria-selected="true" aria-controls="tab-concepts">主要概念</button>
+      <button class="tab-btn" role="tab" id="tab-btn-chapters" aria-selected="false" aria-controls="tab-chapters" tabindex="-1">各章の要約</button>
+      <button class="tab-btn" role="tab" id="tab-btn-cases" aria-selected="false" aria-controls="tab-cases" tabindex="-1">具体例</button>
+      <button class="tab-btn" role="tab" id="tab-btn-quotes" aria-selected="false" aria-controls="tab-quotes" tabindex="-1">重要な引用</button>
+      <button class="tab-btn" role="tab" id="tab-btn-actions" aria-selected="false" aria-controls="tab-actions" tabindex="-1">今日のアクション</button>
+    </div>
+
+    <!-- 主要概念の詳細 -->
+    <div class="tab-panel active" id="tab-concepts" role="tabpanel" aria-labelledby="tab-btn-concepts">
+      <div class="card">
+        <h3><span class="num">1</span>ミニマリズムの定義</h3>
+        <ul>
+          <li>「一番大切にしているものを最優先し、それを妨げるものを排除すること」</li>
+          <li>全てを捨てるのではなく、自分にとって適正な量を持つこと</li>
+        </ul>
+        <div class="why-tag"><b>理由：</b>曖昧な「なるべく減らす」ではなく、判断基準を明確にするため</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">2</span>消費社会の罠</h3>
+        <ul>
+          <li>広告露出は1970年代の1日500回→現代は1日5000回に急増</li>
+          <li>平均的な家庭は30万点もの物を所有している</li>
+        </ul>
+        <div class="why-tag"><b>理由：</b>「もっと買えば幸せ」という刷り込みの規模を知ることで無自覚な消費から抜け出せる</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">3</span>隠れた3つの動機</h3>
+        <ul>
+          <li>安心（Security）：不安を埋めるための所有</li>
+          <li>承認（Acceptance）：人に認められるための所有</li>
+          <li>満足（Contentment）：満たされない気持ちを埋めるための所有</li>
+        </ul>
+        <div class="why-tag"><b>理由：</b>動機を自覚しないまま片づけても、物は再び増えてしまう</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">4</span>ミニマリズムの6つの恩恵</h3>
+        <ul>
+          <li>時間とエネルギーが増える／お金が増える／ストレスが減る</li>
+          <li>他人との比較が減る／明晰さと満足感が増す／寛大になれる</li>
+        </ul>
+        <div class="why-tag"><b>理由：</b>「モノを減らす」ことの先にある具体的な報酬を可視化する</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">5</span>小さな空間から始める原則</h3>
+        <ul>
+          <li>トイレ・風呂場・寝室など小さな場所から着手する</li>
+          <li>「捨てる」という行為そのものに慣れていく</li>
+        </ul>
+        <div class="why-tag"><b>理由：</b>いきなり全部だと挫折するため、小さな成功体験を積み上げる設計</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">6</span>手放せないものと向き合う</h3>
+        <ul>
+          <li>思い出の品は写真に撮ってから手放す等の工夫</li>
+          <li>「いつか使うかも」という不安との向き合い方</li>
+        </ul>
+        <div class="why-tag"><b>理由：</b>感情的な執着こそが最大の障壁になるから</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">7</span>手放した先の「意味のある人生」</h3>
+        <ul>
+          <li>浮いた時間・お金・エネルギーを他者への貢献に振り向ける</li>
+          <li>片づけはゴールではなく、人生を再配分する手段</li>
+        </ul>
+        <div class="why-tag"><b>理由：</b>ミニマリズムの最終目的は「空間」でなく「人生の意味」だから</div>
+      </div>
+    </div>
+
+    <!-- 各章の要約 -->
+    <div class="tab-panel" id="tab-chapters" role="tabpanel" aria-labelledby="tab-btn-chapters" hidden>
+      <div class="card">
+        <h3><span class="num">1</span>より少ない生き方を始める</h3>
+        <ul><li>著者が2008年、車庫の片づけ中に隣人の一言をきっかけに歩み始めた経緯</li></ul>
+        <div class="why-tag"><b>理由：</b>特別な人だけの話ではないと、個人的な体験談から示す</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">2</span>ものを減らして自由になる</h3>
+        <ul><li>物が増えるほど管理コストが増し、時間とお金の自由が奪われる</li></ul>
+        <div class="why-tag"><b>理由：</b>「物＝自由」ではなく「物＝負債」という逆転の視点を提示</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">3</span>自分らしいより少ない生き方を見つける</h3>
+        <ul><li>ミニマリズムに唯一の正解はなく、各自の価値観に応じた量がある</li></ul>
+        <div class="why-tag"><b>理由：</b>極端な「持たない自慢」に走らせないため</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">4</span>消費社会の罠を知り尽くす</h3>
+        <ul><li>広告業界の仕組みと、それに踊らされる心理を解説</li></ul>
+        <div class="why-tag"><b>理由：</b>敵の正体を知らなければ対処できないため</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">5</span>「欲しい」という気持ちを探る</h3>
+        <ul><li>安心・承認・満足という3つの隠れた動機を掘り下げる</li></ul>
+        <div class="why-tag"><b>理由：</b>表面的な片づけでは根本原因が残ってしまうため</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">6</span>簡単なところからものを手放していく</h3>
+        <ul><li>明らかなゴミや使っていない物から着手する具体手順</li></ul>
+        <div class="why-tag"><b>理由：</b>行動のハードルを下げ、継続を後押しするため</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">7</span>どうしても手放せないものと向き合う</h3>
+        <ul><li>思い出の品への具体的な対処法</li></ul>
+        <div class="why-tag"><b>理由：</b>感情的な壁を越える技術が必要だから</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">8</span>少ないもので暮らす実験をする</h3>
+        <ul><li>一定期間、物を減らして暮らしてみる「実験」の提案</li></ul>
+        <div class="why-tag"><b>理由：</b>頭で考えるより体感した方が納得できるため</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">9</span>より少ない生き方を維持する</h3>
+        <ul><li>リバウンドを防ぐための習慣化の方法</li></ul>
+        <div class="why-tag"><b>理由：</b>一度片づけても油断すると元に戻ってしまうため</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">10</span>家族でより少ない生き方をする</h3>
+        <ul><li>配偶者や子どもを巻き込む対話の進め方</li></ul>
+        <div class="why-tag"><b>理由：</b>家族の理解なしには実践が続かないため</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">11</span>手放して「意味のある人生」を実現する</h3>
+        <ul><li>浮いたリソースを人助けなど本当に大切なことに使う</li></ul>
+        <div class="why-tag"><b>理由：</b>ゴールが「空間」でなく「人生の意味」であることを示す</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">12</span>何のために生きるのかを見つめる</h3>
+        <ul><li>人生の目的そのものを問い直す章</li></ul>
+        <div class="why-tag"><b>理由：</b>モノの整理は生き方の整理そのものにつながるため</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">13</span>ものの少ない暮らしの先にあるもの</h3>
+        <ul><li>ミニマリズムを実践した先に見える景色のまとめ</li></ul>
+        <div class="why-tag"><b>理由：</b>読後の実践意欲を持続させるため</div>
+      </div>
+    </div>
+
+    <!-- 具体例 -->
+    <div class="tab-panel" id="tab-cases" role="tabpanel" aria-labelledby="tab-btn-cases" hidden>
+      <div class="card">
+        <h3><span class="num">1</span>車庫掃除の一言（2008年）</h3>
+        <ul>
+          <li>メモリアルデーに車庫を掃除していた著者に、隣人が「そんなに物を持たなくてもいいのでは」と何気なく声をかけた</li>
+          <li>その一言をきっかけに、著者一家は所有物の60%以上を売却・寄付・処分した</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）：</b>きっかけは劇的な事件ではなく日常の一言でも十分で、誰でも今日から始められることを示す</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">2</span>The Hope Effect の設立</h3>
+        <ul>
+          <li>著者は2014年、友人ジョー・ダラゴと共に孤児支援の非営利団体「The Hope Effect」を設立</li>
+          <li>書籍の収益の一部を、世界の恵まれない子どもの支援に充てている</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）：</b>物を手放して生まれた時間・お金・エネルギーは、最終的に他者への貢献へ転換できるという、ミニマリズムの最終形を体現している</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">3</span>30万点の所有物と広告5000回</h3>
+        <ul>
+          <li>平均的なアメリカの家庭は30万点ものアイテムを所有</li>
+          <li>広告露出は1970年代の1日500回から現代は1日5000回に急増</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）：</b>物が多いのは意志の弱さのせいではなく、社会構造の産物であることを客観的に裏付ける</div>
+      </div>
+      <div class="card">
+        <h3><span class="num">4</span>小さな空間から始める実践例</h3>
+        <ul>
+          <li>トイレ・風呂場・寝室など小さな空間から片づけを始める具体的な進め方</li>
+        </ul>
+        <div class="why-tag"><b>理由（この例が示すこと）：</b>完璧主義で挫折する人が多い中、成功体験を積み重ねる設計の重要性を示す</div>
+      </div>
+    </div>
+
+    <!-- 重要な引用 -->
+    <div class="tab-panel" id="tab-quotes" role="tabpanel" aria-labelledby="tab-btn-quotes" hidden>
+      <div class="quote-card">
+        <p class="q">「ミニマリズムとは、一番大切にしているものを最優先し、それを妨げるすべてのものを取り除くことである」</p>
+        <p class="note">※要旨（原典の逐語引用が確認できないため趣旨をまとめたもの）</p>
+      </div>
+      <div class="quote-card">
+        <p class="q">「広告は物を持つことが自由をもたらすと語るが、実際には物こそが、あなたの時間・お金・空間という自由を奪っていく」</p>
+        <p class="note">※要旨</p>
+      </div>
+      <div class="quote-card">
+        <p class="q">「寛大な人ほど、もっと欲しいという気持ちが少なく、所有物の外側に充足・意味・価値を見出している」</p>
+        <p class="note">※要旨</p>
+      </div>
+    </div>
+
+    <!-- 今日のアクション -->
+    <div class="tab-panel" id="tab-actions" role="tabpanel" aria-labelledby="tab-btn-actions" hidden>
+      <div class="action-card">
+        <div class="action-head"><span class="action-time">15分</span><h3>小さな引き出し・棚を1つ片づける</h3></div>
+        <p class="meta"><b>やること：</b>引き出しや棚を1つ選び、「明らかなゴミ」と「1年以上使っていない物」だけを取り除く</p>
+        <p class="meta"><b>目的：</b>片づけの心理的ハードルを下げ、最初の成功体験を作る</p>
+        <p class="meta"><b>期待効果：</b>「捨てる」ことへの抵抗感が薄れ、次の行動につながる弾みがつく</p>
+      </div>
+      <div class="action-card">
+        <div class="action-head"><span class="action-time">20分</span><h3>大切なものと妨げるモノを書き出す</h3></div>
+        <p class="meta"><b>やること：</b>「自分が一番大切にしているもの・こと」を3つ書き、それぞれを妨げているモノを1つずつ挙げる</p>
+        <p class="meta"><b>目的：</b>安心・承認・満足という隠れた動機を言語化し、片づけの判断基準を明確にする</p>
+        <p class="meta"><b>期待効果：</b>「なんとなく」ではなく「大切なもののため」という軸で物を選別できるようになる</p>
+      </div>
+      <div class="action-card">
+        <div class="action-head"><span class="action-time">15分</span><h3>1点、写真に撮ってから手放す</h3></div>
+        <p class="meta"><b>やること：</b>今後1年使う予定のない持ち物を1点選び、写真に撮ってから売る・譲る・捨てる</p>
+        <p class="meta"><b>目的：</b>思い出や「いつか使うかも」への執着を手放す練習を小さく始める</p>
+        <p class="meta"><b>期待効果：</b>実際に1つ手放せた達成感が、翌日以降の継続的な片づけ習慣につながる</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>📖 Books Summary Auto-Generator ｜ より少ない生き方 ものを手放して豊かになる（ジョシュア・ベッカー）</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = [
+    {btn:'tab-btn-concepts', panel:'tab-concepts'},
+    {btn:'tab-btn-chapters', panel:'tab-chapters'},
+    {btn:'tab-btn-cases', panel:'tab-cases'},
+    {btn:'tab-btn-quotes', panel:'tab-quotes'},
+    {btn:'tab-btn-actions', panel:'tab-actions'}
+  ];
+  function select(idx){
+    tabs.forEach(function(t, i){
+      var btn = document.getElementById(t.btn);
+      var panel = document.getElementById(t.panel);
+      var active = (i === idx);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+      btn.tabIndex = active ? 0 : -1;
+      panel.hidden = !active;
+      panel.classList.toggle('active', active);
+    });
+  }
+  tabs.forEach(function(t, i){
+    document.getElementById(t.btn).addEventListener('click', function(){ select(i); });
+  });
+})();
+</script>
+
+</body>
+</html>
