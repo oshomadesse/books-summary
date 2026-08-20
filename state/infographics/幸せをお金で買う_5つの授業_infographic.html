@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>「幸せをお金で買う」5つの授業 | インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様に基づき明記）
+  primary:   #1B5E4F  深緑（お金・成長のイメージ）
+  secondary: #D9A62E  ゴールド（豊かさ）
+  accent:    #E8734A  コーラル（幸福感・温かみ）
+  グラデーション: linear-gradient(135deg, #1B5E4F, #2E8B6F)
+-->
+<style>
+  :root{
+    --primary:#1B5E4F;
+    --primary-light:#2E8B6F;
+    --secondary:#D9A62E;
+    --accent:#E8734A;
+    --bg:#FAF7F0;
+    --card-bg:#FFFFFF;
+    --text:#22302B;
+    --text-sub:#5B6B63;
+    --border:#E6E0D4;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary),var(--primary-light));
+    color:#fff;
+    padding:28px 20px 24px;
+    text-align:center;
+  }
+  header .kicker{
+    font-size:0.8rem;
+    letter-spacing:0.15em;
+    opacity:0.85;
+    margin-bottom:6px;
+  }
+  header h1{
+    font-size:1.5rem;
+    line-height:1.4;
+    margin-bottom:8px;
+  }
+  header .author{
+    font-size:0.95rem;
+    opacity:0.9;
+  }
+  .container{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 16px;
+  }
+  /* Why&How ファーストビュー */
+  .why-how{
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    box-shadow:0 4px 16px rgba(27,94,79,0.10);
+    margin-top:-18px;
+    padding:20px;
+    position:relative;
+    z-index:2;
+  }
+  .why-how h2{
+    font-size:1rem;
+    color:var(--primary);
+    margin-bottom:12px;
+  }
+  .why-how .row{
+    display:flex;
+    gap:10px;
+    margin-bottom:12px;
+    align-items:flex-start;
+  }
+  .why-how .tag{
+    flex-shrink:0;
+    font-size:0.75rem;
+    font-weight:bold;
+    color:#fff;
+    background:var(--primary);
+    border-radius:8px;
+    padding:3px 8px;
+    white-space:nowrap;
+  }
+  .why-how .row:nth-child(2) .tag{background:var(--accent);}
+  .why-how .row:nth-child(3) .tag{background:var(--secondary);color:#3a2c05;}
+  .why-how p{font-size:0.92rem;color:var(--text);}
+
+  /* タブ */
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin-top:20px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tabs button{
+    flex:0 0 auto;
+    font-size:0.82rem;
+    font-weight:bold;
+    padding:9px 14px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--text-sub);
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+  .panel{display:none;margin-top:16px;}
+  .panel.active{display:block;}
+
+  .card{
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    border:1px solid var(--border);
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .card h3{
+    font-size:1rem;
+    color:var(--primary);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{
+    padding-left:1.1em;
+    font-size:0.88rem;
+    margin-bottom:8px;
+  }
+  .card ul li{margin-bottom:4px;}
+  .why-badge{
+    display:inline-flex;
+    align-items:flex-start;
+    gap:6px;
+    background:#F4EFE1;
+    border-left:3px solid var(--secondary);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:0.82rem;
+    color:var(--text-sub);
+  }
+
+  /* 数値の視覚化 */
+  .stat-badge{
+    display:inline-block;
+    background:var(--accent);
+    color:#fff;
+    font-weight:bold;
+    font-size:0.85rem;
+    border-radius:8px;
+    padding:4px 10px;
+    margin:4px 6px 4px 0;
+  }
+  .bar-wrap{margin:10px 0;}
+  .bar-label{font-size:0.8rem;color:var(--text-sub);margin-bottom:3px;display:flex;justify-content:space-between;}
+  .bar-track{background:#EFEAE0;border-radius:999px;height:14px;overflow:hidden;}
+  .bar-fill{background:linear-gradient(90deg,var(--primary),var(--primary-light));height:100%;border-radius:999px;}
+
+  .quote-card{
+    background:linear-gradient(135deg,#1B5E4F,#2E8B6F);
+    color:#fff;
+    border-radius:var(--radius);
+    padding:18px;
+    margin-bottom:14px;
+    font-size:0.92rem;
+  }
+  .quote-card .label{
+    font-size:0.7rem;
+    letter-spacing:0.1em;
+    opacity:0.8;
+    margin-bottom:6px;
+  }
+
+  .action-card{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex-shrink:0;
+    width:30px;height:30px;
+    border-radius:50%;
+    background:var(--secondary);
+    color:#3a2c05;
+    font-weight:bold;
+    display:flex;align-items:center;justify-content:center;
+    font-size:0.9rem;
+  }
+
+  footer{
+    text-align:center;
+    font-size:0.75rem;
+    color:var(--text-sub);
+    margin-top:24px;
+    padding:0 16px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">📚 今日の一冊 ・ 心理学</div>
+  <h1>「幸せをお金で買う」5つの授業</h1>
+  <div class="author">エリザベス・ダン ／ マイケル・ノートン</div>
+</header>
+
+<div class="container">
+
+  <section class="why-how">
+    <h2>🎯 要約：問い × 答え × 根拠</h2>
+    <div class="row">
+      <span class="tag">問い</span>
+      <p>なぜ収入が増えても、幸せは思うほど増えないのか？</p>
+    </div>
+    <div class="row">
+      <span class="tag">答え</span>
+      <p>お金の「量」ではなく「使い方」が幸福度を決める。経験・時間・人間関係への支出に切り替えるだけで、同じ収入でも幸福感は大きく変わる。</p>
+    </div>
+    <div class="row">
+      <span class="tag">根拠</span>
+      <p>ハーバード大学・UBC（ブリティッシュコロンビア大学）の行動科学者が、Science誌掲載の実験（Dunn et al., 2008）をはじめとする実証研究をもとにまとめた「幸せをお金で買う」5つの原則。</p>
+    </div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">🔍 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </div>
+
+  <!-- 主要概念の詳細 -->
+  <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3>① 経験を買う</h3>
+      <ul>
+        <li>モノより旅行・食事・趣味などの「体験」にお金を使う</li>
+        <li>モノは所有すると当たり前になるが、経験は記憶として語り継がれ価値が増す</li>
+        <li>約57%の人が「経験の方が幸せ」と回答（コロラド大学ボルダー校／コーネル大学調査）</li>
+      </ul>
+      <div class="why-badge">💡 理由：モノへの満足は所有した瞬間がピークで下がっていくが、経験は思い出として何度も語られ、幸福感が長持ちするから。</div>
+    </div>
+
+    <div class="card">
+      <h3>② ご褒美にする</h3>
+      <ul>
+        <li>好きなものほど、あえて頻度に「制限」をかける</li>
+        <li>例：毎日の習慣的な出費を、週1回の特別な「ご褒美」に変える</li>
+        <li>快楽順応（慣れ）により、当たり前になった喜びは目減りしていく</li>
+      </ul>
+      <div class="why-badge">💡 理由：人は同じ快楽が続くとすぐに慣れてしまう（快楽順応）。頻度を下げることで「久しぶりの喜び」がリセットされ、同じ支出でも満足度が上がるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>③ 時間を買う</h3>
+      <ul>
+        <li>掃除・雑用など気の進まない作業を外注し、自由時間を増やす</li>
+        <li>2017年PNAS掲載研究：所得水準に関わらず「時間を買った人」の幸福度が高かった</li>
+      </ul>
+      <div class="why-badge">💡 理由：「時間の余裕がある」という感覚は、モノの所有よりも幸福度と強く結びつくと分かっているから。</div>
+    </div>
+
+    <div class="card">
+      <h3>④ 先に支払って、あとで消費する</h3>
+      <ul>
+        <li>旅行代金などは事前決済にしておく</li>
+        <li>支払いの「痛み」と消費の「喜び」を時間的に切り離す</li>
+        <li>「計画してワクワクしている期間」自体が幸福度を押し上げる</li>
+      </ul>
+      <div class="why-badge">💡 理由：後払いだと楽しい体験の直後にお金を払う痛みが生じ、幸福感が相殺されてしまう。先払いなら当日は「もう払い終えている」感覚で純粋に楽しめるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑤ 他人に投資する</h3>
+      <ul>
+        <li>自分のためよりも、誰かのための支出の方が幸福度が高い</li>
+        <li>Dunn(2008)の実験では、金額（5ドル／20ドル）に関わらず効果は同等だった</li>
+      </ul>
+      <div class="why-badge">💡 理由：利他的な支出は人とのつながりを強め、快感回路を刺激することが分かっているから。金額の大小は関係ない。</div>
+    </div>
+
+  </section>
+
+  <!-- 各章の要約 -->
+  <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <div class="card">
+      <h3>授業1：経験を買う</h3>
+      <ul>
+        <li>モノより旅行・イベント・スポーツ観戦などの体験に使う</li>
+        <li>高級車の価格は運転の楽しさと相関しないという研究も紹介</li>
+      </ul>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>「経験の方が幸せ」と回答した割合</span><span>57%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:57%"></div></div>
+      </div>
+      <div class="why-badge">💡 理由：モノは「所有物」として慣れてしまうが、経験は「物語」として繰り返し味わえるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>授業2：ご褒美にする</h3>
+      <ul>
+        <li>毎日の当たり前の楽しみを、あえて希少にする</li>
+        <li>「制限をかける」ことが、喜びを再生させる装置になる</li>
+      </ul>
+      <div class="why-badge">💡 理由：際限なく手に入るものへの喜びは急速に低下する（快楽順応）が、希少さを演出すれば新鮮な喜びを取り戻せるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>授業3：時間を買う</h3>
+      <ul>
+        <li>面倒な家事・雑用を代行サービスに任せる</li>
+        <li>浮いた時間を「意図的に」何に使うかが重要</li>
+      </ul>
+      <span class="stat-badge">2017年 PNAS研究</span>
+      <div class="why-badge">💡 理由：時間的な余裕の実感は、所得の多寡を超えて幸福度に直結することが実証されているから。</div>
+    </div>
+
+    <div class="card">
+      <h3>授業4：先に支払って、あとで消費する</h3>
+      <ul>
+        <li>旅行代金・チケットなどはできるだけ前払いにする</li>
+        <li>「期待している時間」そのものが幸福の一部になる</li>
+      </ul>
+      <div class="why-badge">💡 理由：支払いのタイミングをずらすだけで、同じ支出でも体験の楽しみ方が変わるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>授業5：他人に投資する</h3>
+      <ul>
+        <li>誰かのためにお金を使うと、自分のために使うより幸福度が上がる</li>
+        <li>効果は金額の大小に依存しない</li>
+      </ul>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>自分のために使った場合の幸福度</span><span>低</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:40%;background:linear-gradient(90deg,#C9C2AE,#B7AF95)"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>他人のために使った場合の幸福度</span><span>高</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+      </div>
+      <div class="why-badge">💡 理由：利他的な支出はつながりを生み、「自分のためだけの消費」よりも満足感の持続時間が長いから。</div>
+    </div>
+
+  </section>
+
+  <!-- 具体例 -->
+  <section id="panel-cases" class="panel" role="tabpanel" aria-labelledby="tab-cases">
+
+    <div class="card">
+      <h3>🧪 Dunn et al. (2008) Science誌の実験</h3>
+      <ul>
+        <li>46名を対象に、朝5ドルまたは20ドルを渡す</li>
+        <li>半数には「自分のため」、半数には「他人のため」にその日中に使うよう指示</li>
+        <li>夕方に幸福度を測定した結果、「他人のため」に使ったグループの方が幸福度が高かった</li>
+        <li>金額（5ドル vs 20ドル）による差はなかった</li>
+      </ul>
+      <div class="why-badge">💡 この例が示すこと：高額でなくても、少額の利他的支出だけで幸福感は得られる。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧪 2017年 PNAS掲載研究（時間の外注）</h3>
+      <ul>
+        <li>芝刈り・掃除・用事などの「面倒な作業」を代行業者に依頼する実験</li>
+        <li>所得水準にかかわらず、時間を買った人ほど幸福度が高かった</li>
+      </ul>
+      <div class="why-badge">💡 この例が示すこと：「時間の余裕」は所得の多寡を超えて幸福に効く。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧪 コロラド大学ボルダー校／コーネル大学の消費者調査</h3>
+      <ul>
+        <li>消費者アンケートで約57%が「モノを買うより経験を買う方が幸せ」と回答</li>
+        <li>旅行・映画・スポーツ観戦などが特に高評価</li>
+      </ul>
+      <div class="why-badge">💡 この例が示すこと：消費の“中身”を経験にシフトするだけで幸福度の底上げが可能。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧪 旅行代金の先払い効果</h3>
+      <ul>
+        <li>クレジットカードや事前予約で旅行代金を先に支払っておく</li>
+        <li>当日は「もう払い終えている」感覚で、支払いの痛みを感じずに体験を楽しめる</li>
+        <li>「旅行を計画している期待の期間」自体が、旅行そのものより高い幸福度をもたらす場合もある</li>
+      </ul>
+      <div class="why-badge">💡 この例が示すこと：支払いのタイミングを工夫するだけで、同じ支出でも体感の幸福度が変わる。</div>
+    </div>
+
+  </section>
+
+  <!-- 重要な引用 -->
+  <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <div class="quote-card">
+      <div class="label">要旨（原典の直接引用は確認できず、主張の要旨で代替）</div>
+      「幸せを買うコツは、お金の“量”を増やすことではなく、お金の“使い方”を変えることにある。」
+    </div>
+
+    <div class="quote-card">
+      <div class="label">要旨</div>
+      「同じ金額でも、モノではなく経験に、自分のためではなく他人のために使うことで、幸福度は変わる。」
+    </div>
+
+    <div class="quote-card">
+      <div class="label">要旨</div>
+      「際限なく手に入るものへの喜びはすぐに慣れてしまう。喜びを保つには、あえて“制限”をかけることが有効。」
+    </div>
+
+  </section>
+
+  <!-- 今日のアクション -->
+  <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div>
+        <h3 style="margin-bottom:6px;">誰かに小さなご馳走をする</h3>
+        <p style="font-size:0.88rem;">同僚にコーヒーを奢る、家族にちょっとしたお菓子を買って帰るなど、500〜1000円程度で「他人に投資する」を体感する。</p>
+        <div class="why-badge" style="margin-top:8px;">🎯 目的：利他的支出の効果を体験する ／ 📈 期待効果：Dunn(2008)実験の通り、金額の大小に関わらず幸福度が上がる。</div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div>
+        <h3 style="margin-bottom:6px;">週末の予定を今すぐ事前決済で予約する</h3>
+        <p style="font-size:0.88rem;">外食・映画・小さな旅行などの予定を、その場払いではなく前払いで確定させる。</p>
+        <div class="why-badge" style="margin-top:8px;">🎯 目的：「先に支払って、あとで消費する」を実践する ／ 📈 期待効果：支払いの痛みを前倒しにし、当日と「期待する時間」の両方で幸福感を得られる。</div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div>
+        <h3 style="margin-bottom:6px;">「毎日の習慣」を1つ、週1回の「ご褒美」に変える</h3>
+        <p style="font-size:0.88rem;">例えば毎日のコンビニスイーツをやめて、週1回だけ少し良いスイーツを楽しむと決める。</p>
+        <div class="why-badge" style="margin-top:8px;">🎯 目的：快楽順応をリセットする ／ 📈 期待効果：頻度を下げることで、同じ支出でも喜びの強度が回復する。</div>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="card" style="margin-top:24px;">
+    <h3>📚 関連書籍</h3>
+    <ul style="padding-left:1.2em;font-size:0.9rem;">
+      <li>明日の幸せを科学する（ダニエル・ギルバート）：人は将来の幸福を予測するのが苦手だと説く心理学の古典。お金の使い方の判断ミスの根本原因を補足する。</li>
+      <li>サイコロジー・オブ・マネー（モーガン・ハウセル）：お金と感情・行動の関係を扱い、「お金の使い方が幸福を左右する」という本書のテーマと直結する。</li>
+      <li>選択の科学（シーナ・アイエンガー）：選択と幸福感の心理学。お金の「使い方の選択」がもたらす効果を補完する視点を与える。</li>
+      <li>精神科医が見つけた3つの幸福（樺沢紫苑）：幸福の実践的な捉え方。日常の小さな行動が幸福度を左右する点で共通する。</li>
+      <li>幸福優位7つの法則（ショーン・エイカー）：幸福とパフォーマンスの相関を扱い、幸福を「結果」ではなく「原因」として捉える視点が本書と共通する。</li>
+    </ul>
+  </section>
+
+</div>
+
+<footer>
+  📚 06_Books 自動生成インフォグラフィック ／ Web上で確認できた情報のみに基づき作成
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('[role="tab"]');
+  var panels = document.querySelectorAll('.panel');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
