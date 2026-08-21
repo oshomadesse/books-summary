@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>リーダーの仮面 ― インフォグラフィック</title>
+<!-- Primary: #1B263B / Secondary: #415A77 / Accent: #E0A458 -->
+<style>
+  :root{
+    --primary:#1B263B;
+    --secondary:#415A77;
+    --accent:#E0A458;
+    --bg:#F4F6F8;
+    --card:#FFFFFF;
+    --text:#1B263B;
+    --muted:#5C6B7A;
+    --border:#DDE3E8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#fff;
+    padding:28px 18px 22px;
+    text-align:center;
+  }
+  header .kicker{
+    font-size:12px;
+    letter-spacing:.15em;
+    opacity:.8;
+    margin-bottom:8px;
+  }
+  header h1{
+    font-size:22px;
+    line-height:1.5;
+    margin-bottom:6px;
+  }
+  header .sub{
+    font-size:13px;
+    opacity:.85;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 14px;}
+  .hero{
+    background:var(--card);
+    border-radius:16px;
+    margin-top:-14px;
+    padding:18px;
+    box-shadow:0 6px 20px rgba(27,38,59,.12);
+    position:relative;
+    z-index:2;
+  }
+  .hero .qa{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .qa .q, .qa .a, .qa .w{
+    padding:12px 14px;
+    border-radius:10px;
+    font-size:14px;
+  }
+  .qa .q{background:#EEF2F6;color:var(--primary);font-weight:bold;}
+  .qa .a{background:var(--primary);color:#fff;font-weight:bold;}
+  .qa .w{background:#FFF6EA;color:#7A4E12;border:1px solid #F0DBB0;}
+  .qa .label{
+    display:inline-block;
+    font-size:11px;
+    letter-spacing:.05em;
+    opacity:.75;
+    margin-bottom:4px;
+  }
+  .stats{
+    display:flex;
+    gap:8px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .stat{
+    flex:1;
+    min-width:90px;
+    background:#EEF2F6;
+    border-radius:10px;
+    padding:10px 8px;
+    text-align:center;
+  }
+  .stat .num{font-size:18px;font-weight:bold;color:var(--secondary);}
+  .stat .lbl{font-size:10px;color:var(--muted);margin-top:2px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:18px 0 12px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--muted);
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+    font-weight:bold;
+  }
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 2px 8px rgba(27,38,59,.06);
+    border-left:4px solid var(--accent);
+  }
+  .card h3{
+    font-size:15px;
+    color:var(--primary);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{padding-left:18px;font-size:13.5px;color:var(--text);}
+  .card ul li{margin-bottom:5px;}
+  .card .why{
+    margin-top:10px;
+    background:#F4F6F8;
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:var(--secondary);
+  }
+  .card .why b{color:var(--primary);}
+
+  .badge{
+    display:inline-block;
+    background:var(--accent);
+    color:#fff;
+    font-size:11px;
+    padding:2px 8px;
+    border-radius:999px;
+    margin-right:6px;
+  }
+
+  .quote-card{
+    background:linear-gradient(135deg,#1B263B,#415A77);
+    color:#fff;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:12px;
+  }
+  .quote-card p.q-text{
+    font-size:15px;
+    line-height:1.8;
+    margin-bottom:10px;
+  }
+  .quote-card p.q-text::before{content:"“";}
+  .quote-card p.q-text::after{content:"”";}
+  .quote-card .q-note{font-size:12px;opacity:.85;}
+  .tag-summary{
+    display:inline-block;
+    background:rgba(255,255,255,.2);
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:10px;
+    margin-bottom:6px;
+  }
+
+  .action-card{
+    background:var(--card);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    border:1px solid var(--border);
+    display:flex;
+    gap:12px;
+  }
+  .action-num{
+    flex:0 0 30px;
+    height:30px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:14px;
+  }
+  .action-card h4{font-size:14px;color:var(--primary);margin-bottom:4px;}
+  .action-card p{font-size:12.5px;color:var(--muted);margin-bottom:3px;}
+
+  .related{
+    background:var(--card);
+    border-radius:14px;
+    padding:14px 16px;
+    font-size:12.5px;
+    color:var(--muted);
+    margin-top:6px;
+  }
+  .related h3{font-size:14px;color:var(--primary);margin-bottom:8px;}
+  .related li{margin-bottom:6px;list-style:none;}
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--muted);
+    margin-top:24px;
+    padding:0 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">📚 BOOK INFOGRAPHIC</div>
+  <h1>リーダーの仮面</h1>
+  <div class="sub">「いちプレーヤー」から「マネジャー」に頭を切り替える思考法 / 安藤広大</div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="qa">
+      <div class="q"><span class="label">❓ 問い</span>プレーヤーとして優秀だった人が、マネージャーになると失敗するのはなぜか？</div>
+      <div class="a"><span class="label">💡 答え</span>「良い人」の仮面を脱ぎ、感情を横に置いて「ルール・位置・利益・結果・成長」の5つの思考法で部下と向き合う「リーダーの仮面」をかぶるべきだから。</div>
+      <div class="w"><span class="label">🔍 根拠</span>識学という組織運営理論に基づき、約1900社に導入・実証されてきたマネジメント手法だから。</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num">5つ</div><div class="lbl">思考法</div></div>
+      <div class="stat"><div class="num">1900社+</div><div class="lbl">導入実績</div></div>
+      <div class="stat"><div class="num">4年連続</div><div class="lbl">年間ベストセラー</div></div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples" onclick="switchTab('examples')">💡 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">✍️ 重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </nav>
+
+  <!-- 主要概念の詳細 -->
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🎭 リーダーの仮面</h3>
+      <ul>
+        <li>「良い人間」であることと「上司としての役割」は別物</li>
+        <li>個人的な感情をいったん横に置き、役割としての言動を選ぶ</li>
+        <li>仮面は自分を守る盾にもなり、人間関係の衝突や攻撃を受け流せる</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>感情ベースの評価は部下の不公平感を生み、組織を機能不全にするため。役割に徹することが結果的に部下の成長を早める。</div>
+    </div>
+    <div class="card">
+      <h3><span class="badge">①</span>ルールの思考法</h3>
+      <ul>
+        <li>「姿勢のルール」＝誰でも守れる行動基準（挨拶・期限・報告など）を明文化する</li>
+        <li>能力に関係なく守れる基準に統一するのがコツ</li>
+        <li>信号機のように明確なルールがあるから、部下は安心して行動できる</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>曖昧なルールは「空気を読む」ストレスを部下に強い、行動の質にムラを生むから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="badge">②</span>位置の思考法</h3>
+      <ul>
+        <li>上司と部下は対等ではなく、上下の立場からコミュニケーションする</li>
+        <li>「ほうれんそう（報告・連絡・相談）」を感情抜きに機械的に仕組み化する</li>
+        <li>迷わず適切な距離をとることで、無用な忖度や馴れ合いを防ぐ</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>友達感覚の距離感は指摘や評価をあいまいにし、部下の成長機会を奪うため。</div>
+    </div>
+    <div class="card">
+      <h3><span class="badge">③</span>利益の思考法</h3>
+      <ul>
+        <li>「大きなマンモスを狩りに行かせる」＝目先の得より組織全体の利益を優先させる</li>
+        <li>部下に当事者意識（＝自分ごと化）を持たせる働きかけをする</li>
+        <li>チームの成果が結果的に個人の評価・報酬につながる構造を示す</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>個人の目先の損得だけで動くメンバーが増えると、チーム全体の成果が最大化されないため。</div>
+    </div>
+    <div class="card">
+      <h3><span class="badge">④</span>結果の思考法</h3>
+      <ul>
+        <li>「褒められて伸びるタイプを生み出すな」＝プロセスでなく結果で評価する</li>
+        <li>過程を評価しすぎると、部下は「頑張っている感」で満足してしまう</li>
+        <li>結果に対する言い訳を安易に受け入れない（言い訳スルー）</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>努力の演出が評価されると、成果を出す本質的な行動から目がそれてしまうため。</div>
+    </div>
+    <div class="card">
+      <h3><span class="badge">⑤</span>成長の思考法</h3>
+      <ul>
+        <li>「先頭の鳥が群れを引っ張っていく」＝リーダー自身がまず変化・成長する</li>
+        <li>とにかく一度行動させ、経験から学ばせるサイクルを回す</li>
+        <li>恐怖ではなく、健全な緊張感の中で成長を促す</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>リーダーが変わらないまま部下だけに成長を求めても、チームは変わらないため。</div>
+    </div>
+  </section>
+
+  <!-- 各章の要約 -->
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>序章｜リーダーの仮面をかぶるための準備</h3>
+      <ul>
+        <li>プレーヤーからマネージャーへ、頭を切り替える質問を自分に投げかける</li>
+        <li>「良い人」でいたい感情を一旦脇に置く覚悟を決める</li>
+      </ul>
+      <div class="why"><b>理由：</b>心構えを変えないまま手法だけ真似ても機能しないため、最初に土台を作る。</div>
+    </div>
+    <div class="card">
+      <h3>第1章｜安心して信号を渡らせよ（ルール）</h3>
+      <ul>
+        <li>誰でも守れる「姿勢のルール」を設定し、明文化する</li>
+        <li>ルールがあることで部下は自由に、安心して動ける</li>
+      </ul>
+      <div class="why"><b>理由：</b>ルールの不在こそが現場の迷いとストレスの最大の原因だから。</div>
+    </div>
+    <div class="card">
+      <h3>第2章｜部下とは迷わず距離をとれ（位置）</h3>
+      <ul>
+        <li>上司・部下という立場を明確にし、機械的な報連相を仕組み化する</li>
+        <li>「正しいほうれんそう」を実践する</li>
+      </ul>
+      <div class="why"><b>理由：</b>立場の曖昧さが指摘・評価をぼかし、成長の機会を奪うから。</div>
+    </div>
+    <div class="card">
+      <h3>第3章｜大きなマンモスを狩りに行かせる（利益）</h3>
+      <ul>
+        <li>目先の損得でなく組織全体の利益に向かわせる</li>
+        <li>チームでの成果達成が個人の評価につながる仕組みを示す</li>
+      </ul>
+      <div class="why"><b>理由：</b>個人最適の集合はチーム最適にならないため、視座を上げさせる必要がある。</div>
+    </div>
+    <div class="card">
+      <h3>第4章｜褒められて伸びるタイプを生み出すな（結果）</h3>
+      <ul>
+        <li>点と点の目標設定で、結果にフォーカスした評価を行う</li>
+        <li>言い訳をスルーし、結果に向き合わせる</li>
+      </ul>
+      <div class="why"><b>理由：</b>プロセス評価への依存は、成果に直結しない努力の演出を助長するため。</div>
+    </div>
+    <div class="card">
+      <h3>第5章｜先頭の鳥が群れを引っ張っていく（成長）</h3>
+      <ul>
+        <li>とにかく一度行動させ、経験から学ぶサイクルを作る</li>
+        <li>リーダー自身が変化し続ける姿勢を見せる</li>
+      </ul>
+      <div class="why"><b>理由：</b>行動なき議論は成長を生まず、まずやってみることが最短の学習経路だから。</div>
+    </div>
+    <div class="card">
+      <h3>終章｜リーダーの素顔</h3>
+      <ul>
+        <li>仮面をかぶった先に、組織にもたらされる本当の成長を描く</li>
+        <li>私たちの成長の話として、リーダー自身の変化を締めくくる</li>
+      </ul>
+      <div class="why"><b>理由：</b>仮面は目的ではなく手段であり、その先にある成長こそが本題だから。</div>
+    </div>
+  </section>
+
+  <!-- 具体例 -->
+  <section class="panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="card">
+      <h3>🚦 信号機のたとえ</h3>
+      <ul>
+        <li>背景：赤信号で止まり青信号で渡る、というルールがあるから人は安心して道路を渡れる</li>
+        <li>示唆：職場でも同じで、明確な「姿勢のルール」があるほど部下は迷わず動ける</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>ルールは自由を奪うものではなく、行動の安心を生む土台であること。</div>
+    </div>
+    <div class="card">
+      <h3>🦣 マンモスを狩りに行く比喩</h3>
+      <ul>
+        <li>背景：原始時代、目の前の小動物ではなく大きなマンモスをチームで狩る方が全員が豊かになる</li>
+        <li>示唆：個人の目先の得より、チーム全体の大きな成果に向かう当事者意識が利益を最大化する</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>視座を「個人の得」から「チームの利益」に引き上げることの重要性。</div>
+    </div>
+    <div class="card">
+      <h3>🐦 先頭の鳥のたとえ</h3>
+      <ul>
+        <li>背景：渡り鳥の群れは、先頭の鳥が方向と速度を示すことで群れ全体が同じ方向に進める</li>
+        <li>示唆：リーダー自らが率先して変化・成長する姿を見せることで、チーム全体が動き出す</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>リーダーの言動そのものがチームの成長スピードの上限を決めるということ。</div>
+    </div>
+    <div class="card">
+      <h3>📋 「正しいほうれんそう」の仕組み化</h3>
+      <ul>
+        <li>背景：感情や忖度が絡む報連相は、悪い情報ほど上がってこなくなる</li>
+        <li>示唆：フォーマットや頻度をルール化し、機械的に報告させる仕組みをつくる</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>属人的な「空気を読む」報連相ではなく、仕組みで情報の流れを担保することの価値。</div>
+    </div>
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote-card">
+      <span class="tag-summary">引用</span>
+      <p class="q-text">仮面はあなたを守るものでもあります。人間関係の衝突をなくす盾となり、他人からの攻撃を受け流してくれます</p>
+      <div class="q-note">— リーダーの仮面という概念について</div>
+    </div>
+    <div class="quote-card">
+      <span class="tag-summary">要旨</span>
+      <p class="q-text">信頼関係やモチベーションは、仕事をするからこそ生まれるものであって、それが無いから仕事ができない、というのは順序が逆である</p>
+      <div class="q-note">— 感情に頼らないマネジメント哲学の要旨</div>
+    </div>
+    <div class="quote-card">
+      <span class="tag-summary">要旨</span>
+      <p class="q-text">いかなるときも「個人的な感情」を横に置き、役割としてどう振る舞うべきかを先に考える</p>
+      <div class="q-note">— リーダーとしての基本姿勢の要旨</div>
+    </div>
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <div>
+        <h4>「姿勢のルール」を1つ明文化する</h4>
+        <p>🎯 目的：誰でも守れる基準（挨拶・返信期限・報告タイミングなど）を1つ選び、紙かチャットに書き出す</p>
+        <p>📈 期待効果：曖昧な期待値がなくなり、部下・チームメイトが迷わず行動できるようになる</p>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <div>
+        <h4>「ほうれんそう」のテンプレートを1つ作る</h4>
+        <p>🎯 目的：進捗・課題・相談を機械的に共有できる簡単なフォーマットを作成し、チームに共有する</p>
+        <p>📈 期待効果：悪い情報ほど早く上がる状態を作り、問題の早期発見につながる</p>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <div>
+        <h4>直近の1つの評価を「結果」で言語化し直す</h4>
+        <p>🎯 目的：直近の部下・自分自身の仕事を、プロセスではなく「出た結果」ベースで一文にまとめる</p>
+        <p>📈 期待効果：評価の軸がぶれなくなり、次に取るべき行動が明確になる</p>
+      </div>
+    </div>
+
+    <div class="related">
+      <h3>📚 関連書籍</h3>
+      <li>🔗 [[Books-2026-04-23|数値化の鬼]]（安藤広大）: 同著者・同じ識学メソッドの姉妹編。感情でなく数値で結果を測る視点を補完する</li>
+      <li>🔗 [[Books-2026-02-14|マネジメント]]（ピーター・ドラッカー）: マネジメントの原典。役割としてのリーダー論の源流にあたる</li>
+      <li>🔗 [[Books-2026-02-25|最高のリーダー、マネジャーが大切にしていること]]（マーカス・バッキンガム, カート・コフマン）: 部下の個性を活かすマネジメントの実証研究として対比できる</li>
+      <li>🔗 [[Books-2026-04-20|THE CULTURE CODE 最強チームをつくる方法]]（ダニエル・コイル）: ルールで安心を作る本書に対し、心理的安全性からチーム文化を作る視点を補う</li>
+    </div>
+  </section>
+</div>
+
+<footer>
+  © 読書サマリー自動生成システム / 本インフォグラフィックはWeb上の公開情報をもとに生成されています
+</footer>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('.panel');
+    var tabs = document.querySelectorAll('nav.tabs button');
+    panels.forEach(function(p){ p.classList.remove('active'); });
+    tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+    document.getElementById('panel-' + name).classList.add('active');
+    document.getElementById('tab-' + name).setAttribute('aria-selected','true');
+  }
+</script>
+
+</body>
+</html>
