@@ -64,6 +64,8 @@ Judgementは Edge上の条件分岐であり Node ではない。
 
 ## 依存グラフ
 
+### 稼働系と保守
+
 ```mermaid
 flowchart TD
     %% この図はHumanがグラフを監視する唯一の場所。Node・Edge・Loop・State変更時は同じpushで必ず更新する（.claude/rules/docs-sync.md）。
@@ -75,17 +77,19 @@ flowchart TD
     SR --> P[Tool: git push origin main]:::tool
     P -->|reject時 rebaseして最大3回| P
     P --> W[Tool: GitHub Actions daily-notify.yml]:::tool
-    W --> PG[(State: GitHub Pages state/infographics配信 URL不変)]:::state
+    W --> PG[("State: GitHub Pages 図解配信 URL不変")]:::state
     W --> DN[Human: Discord #books 通知 Embed+確認/詳細ボタン 両方紫]:::human
     DN -->|✅確認| CF[Tool: discord_books.py 図解URL解決<br>ローカルlatest→GitHub raw→vaultノート の3段]:::tool
     CF -.->|pull未着時| GR[(State: GitHub raw state/latest.json)]:::state
     MK[Tool: discord-daemon コア 常設メニュー番人60秒 サイレント投稿]:::tool --> SM[Human: 検索モーダル 本やテーマを伝える]:::human
+    MK -->|WRITES| DMS[("State: state/discord_menu.json<br>常設メニュー台帳")]:::state
     SM --> DB2[Tool: discord_books.py → headless NEXUS注入]:::tool
     DB2 --> SA[Agent: 既読照合orWeb提案で該当本を提出]:::agent
     W -->|Discord送信失敗| ErrW([End: workflow失敗 → GitHub通知メール]):::startend
-    Start2([Start: 毎朝7:20 launchd pull]):::startend --> PU[Tool: books-summary-pull.sh fetch→brctl→merge]:::tool
+    PL(["Trigger: src/com.oshomadesse.bookssummary.pull.plist<br>7:20 pull用LaunchAgent原本"]):::startend -->|TRIGGERS: 配備用原本| PU[Tool: books-summary-pull.sh fetch→brctl→merge]:::tool
+    Start2([Start: 毎朝7:20 launchd pull]):::startend --> PU
     PU -->|失敗5回| ErrP([End: pull失敗ログ 翌回自己回復]):::startend
-    PU --> MV[Tool: state/inbox のノートをvault 100_Inboxへ移送 + skip-ci commit push]:::tool
+    PU --> MV[Tool: state/inbox/ のノートをvault 100_Inboxへ移送 + skip-ci commit push]:::tool
     MV --> BL[Tool: backlink_books.py 逆リンク追記 brctl前置き]:::tool
     BL --> OB[(State: Obsidianグラフ 書籍ノート相互リンク)]:::state
     DN -->|🔍詳細→モーダル質問| HD[Human: しょーまの質問]:::human
@@ -94,6 +98,9 @@ flowchart TD
     StartC([Start: #📚06_books へ通常発言]):::startend --> DA
     StartG([Start: 📱ショートカット → #🤖00_general<br>名札 desc 一致/Haiku分類で本リポへ転送 cwdは本リポ]):::startend --> DA
     DA -.->|loop9・翌日の選書や指示に反映| Start
+    ManualBF([Start: macOS commands による手動CLI実行]):::startend -->|TRIGGERS| BF["Tool: src/tools/backfill_links.py<br>過去ノートの関連リンク一括判定・適用"]:::tool
+    BF -->|READS / WRITES| BFS[("State: state/backfill/<br>判定台帳と適用前バックアップ")]:::state
+    BF -->|READS / WRITES: 承認済み相互リンク| OB
 
     classDef agent fill:#e4d4ff,stroke:#6f42c1,color:#222
     classDef tool fill:#d7f5df,stroke:#2e8b57,color:#222
@@ -101,6 +108,25 @@ flowchart TD
     classDef evaluator fill:#ffe0b2,stroke:#d97706,color:#222
     classDef state fill:#d6eaff,stroke:#2878b5,color:#222
     classDef judgement fill:#fff3b0,stroke:#b8860b,color:#222
+    classDef startend fill:#e8e8e8,stroke:#555,color:#222
+```
+
+### 停止済み旧ローカル系
+
+```mermaid
+flowchart TD
+    %% 2026-07-07停止済み。旧LaunchAgentから旧ローカル統合ワークフローへ至る因果だけを示す。
+    OldPL(["Trigger: src/legacy/com.oshomadesse.bookssummary.run.plist<br>旧日次ジョブのLaunchAgent原本"]):::startend -->|TRIGGERS: 旧配備用原本| OldRun["Tool: src/legacy/run_local.sh<br>旧ローカル日次ランナー"]:::tool
+    OldRun -->|CALLS| OldFlow["Tool: src/legacy/integrated_reading_workflow.py<br>旧ローカル統合ワークフロー"]:::tool
+    OldFlow -->|CALLS| OldGemini["Tool: src/legacy/gemini_recommend.py<br>旧Gemini選書"]:::tool
+    OldFlow -->|CALLS| OldResearch["Tool: src/legacy/chatgpt_research.py<br>旧OpenAIリサーチ"]:::tool
+    OldFlow -->|CALLS| OldGraphic["Tool: src/legacy/claude_infographic.py<br>旧Claude図解生成"]:::tool
+    OldFlow -->|CALLS| OldSheets["Tool: src/legacy/sheets_connector.py<br>旧Google Sheets読取"]:::tool
+    OldFlow -->|CALLS| OldLine["Tool: src/legacy/line_messaging.py<br>旧LINE通知"]:::tool
+
+    classDef tool fill:#d7f5df,stroke:#2e8b57,color:#222
+    classDef state fill:#d6eaff,stroke:#2878b5,color:#222
+    classDef human fill:#ffd6e7,stroke:#c94f7c,color:#222
     classDef startend fill:#e8e8e8,stroke:#555,color:#222
 ```
 
