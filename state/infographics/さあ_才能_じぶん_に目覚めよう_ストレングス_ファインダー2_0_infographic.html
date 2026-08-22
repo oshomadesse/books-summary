@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>さあ、才能(じぶん)に目覚めよう ストレングス・ファインダー2.0 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #2a6f6f / セカンダリー #17414a / アクセント #f2a541 -->
+<style>
+:root {
+  --primary: #2a6f6f;
+  --secondary: #17414a;
+  --accent: #f2a541;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.7rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff8ea, #fff3d6);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eaf3f3, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff9e6, #fffbf0);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+.domain-box {
+  background: linear-gradient(135deg, #eaf3f3, #fff);
+  border-radius: 8px;
+  padding: 0.6rem;
+  text-align: center;
+  font-size: 0.75rem;
+  border: 1px solid #d8e8e8;
+}
+.domain-box .num {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+.related-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  border-left: 3px solid var(--secondary);
+  font-size: 0.88rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+  .domain-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌱 さあ、才能(じぶん)に目覚めよう ストレングス・ファインダー2.0</h1>
+  <p>弱みの克服ではなく、生まれ持った「才能」を磨いて強みに変える</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>弱点を克服しようと努力しても伸び悩むのはなぜか？　人はどうすればもっと成果を出し、満たされた人生を送れるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>成功は弱みの克服からではなく、生まれつき自然に繰り返される思考・感情・行動パターン＝「才能」を見つけ、それに意識的な投資を重ねて「強み」へと磨き上げることから生まれる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>人の脳の配線（シナプスの繋がり方）は幼少期に大部分が固定され、生まれつき得意な思考パターンを大きく作り替えるのは難しい。一方、既にある才能に知識・スキルという投資を重ねれば、伸びしろは理論上ほぼ無限大になる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>付属のWebアセスメントで自分の上位資質（34資質のうち特に強く出るもの）を特定し、それぞれの資質が「実行力・影響力・人間関係構築力・戦略的思考力」のどの領域にあるかを理解した上で、日々の行動・役割選びに意識的に反映させる。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🌱 才能（タレント）とは何か</h3>
+    <ul>
+      <li>「自然に繰り返される思考・感情・行動のパターン」と定義される</li>
+      <li>努力しなくても自然にできてしまう、無意識のクセに近いもの</li>
+      <li>脳のシナプスの繋がり方は幼少期にほぼ固定され、大人になってからの作り替えは難しい</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「才能は生まれつき」と正しく理解することで、無いものねだりの弱み克服に時間を浪費せず、既にある種を育てる方向に努力を向けられるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>➕ 才能×投資＝強み の公式</h3>
+    <ul>
+      <li>才能だけでは「強み」にならない。知識・スキル・練習という「投資」を掛け合わせて初めて強みになる</li>
+      <li>投資とは、勉強・トレーニング・実践経験の積み重ねを指す</li>
+      <li>同じ才能を持つ人でも、投資量によって成果に大きな差が出る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「才能があれば自動的に成功する」という誤解を正し、才能発見後の継続的な行動へと読者を導くため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 弱み克服からの発想転換</h3>
+    <ul>
+      <li>従来の人材育成は「弱点をなくす」ことに重きを置きがちだった</li>
+      <li>本書は「得意分野を伸ばして成果を出す方法」として磨き上げることを推奨する</li>
+      <li>強みを伸ばすことで、相対的に弱みは「気にならないもの」になっていく</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>限られた時間とエネルギーを、伸びしろの小さい弱み克服ではなく、伸びしろの大きい強み育成に配分した方が総合的な成果が高くなるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧭 34の資質と4つの領域</h3>
+    <p style="font-size:0.88rem; margin-bottom:0.6rem;">177の質問に答えるWebアセスメントで、34資質のうち上位のものが「あなたらしさ」として提示される。34資質は下記の4領域に分類される。</p>
+    <div class="domain-grid">
+      <div class="domain-box"><span class="num">9</span>実行力<br>（達成欲・規律性など）</div>
+      <div class="domain-box"><span class="num">8</span>影響力<br>（活発性・自我など）</div>
+      <div class="domain-box"><span class="num">9</span>人間関係構築力<br>（共感性・調和性など）</div>
+      <div class="domain-box"><span class="num">8</span>戦略的思考力<br>（分析思考・学習欲など）</div>
+    </div>
+    <div class="reason-box">
+      <strong>理由：</strong>34種類全てを個別に覚えるのではなく、4領域という大枠で捉えることで、チーム編成時に「領域の偏り・不足」を一目で把握できるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏛️ ギャラップ社と開発者ドン・クリフトン博士</h3>
+    <ul>
+      <li>「ポジティブ心理学の祖父」と呼ばれる心理学者ドン・クリフトンが、約50年・200万人以上のインタビュー調査を基に開発</li>
+      <li>1998年に初版のストレングスファインダーが完成し、本書はその改訂版「2.0」</li>
+      <li>2003年、米国大統領表彰で「強みに基づく心理学の父」と称された</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>個人の内省や自己啓発本にありがちな主観論ではなく、大規模な実証調査に基づくツールであるという信頼性の根拠になっているため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👥 マネジメント・チームでの活用</h3>
+    <ul>
+      <li>役割分担の際にメンバー各人の資質領域を把握し、強みが活きる配置を行う</li>
+      <li>「強みの貸し借り」という発想で、互いの弱い領域を他者の強みで補い合う</li>
+      <li>1on1やチームビルディングの共通言語として使われるケースが多い</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>個人の強み理解を、個人の自己満足で終わらせず、チーム全体の成果に接続する視点を与えるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+  <p style="font-size:0.85rem; color:var(--text-light); margin-bottom:1rem;">※原著は「第1部：あなたの強みを見つけよう／第2部：あなたの強みを活用しよう」の2部構成。ここではテーマごとに5つの疑似章として整理する。</p>
+
+  <div class="chapter-card">
+    <h3>第1章：なぜ「弱み克服」ではダメなのか</h3>
+    <p style="font-size:0.9rem;">従来の教育・人材育成が「苦手を平均点まで引き上げる」ことに時間を使いすぎてきた問題を指摘。苦手分野は努力してもせいぜい人並みにしかならないのに対し、得意分野への投資は青天井に伸びる可能性がある、という前提を提示する。</p>
+    <div class="reason-box"><strong>理由：</strong>読者に「強みに目を向けてよいのだ」という許可を与える導入部として機能するため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章：才能×投資＝強みという方程式</h3>
+    <p style="font-size:0.9rem;">才能・知識・技術という3要素のうち、才能だけは後天的に大きく変えられないが、知識と技術は投資によって積み上げられると説明。生まれ持った資質を土台に、意識的な練習を重ねることで初めて「常に完璧に近い成果を生み出す能力」＝強みが完成する。</p>
+    <div class="reason-box"><strong>理由：</strong>「才能診断で終わり」にせず、診断後の行動が本質であることを読者に印象づけるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章：アセスメントの受け方と読み解き方</h3>
+    <p style="font-size:0.9rem;">Webテストで177の対になった質問に直感的に答え、上位5つの資質（トップ5）を導き出す仕組みを解説。トップ5だけでも十分に個性を表すが、順位の低い資質も含めて全体像を把握することで、自分が無意識に避けている役割も見えてくる。</p>
+    <div class="reason-box"><strong>理由：</strong>診断結果を「当たった/外れた」で消費させず、日常の行動選択に活かす読み方を教えるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章：34資質と4つの領域（実行力・影響力・人間関係構築力・戦略的思考力）</h3>
+    <p style="font-size:0.9rem;">34資質それぞれの定義と、その資質を持つ人が職場でどう振る舞いがちかを解説。各資質には「行動アイデア」が付属し、その資質を意図的に強みへ育てるための具体的な取り組み方が示される。</p>
+    <div class="reason-box"><strong>理由：</strong>抽象的な自己理解で終わらせず、翌日から実践できる粒度の行動リストに落とし込むため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章：組織・チームでの強みの活かし方</h3>
+    <p style="font-size:0.9rem;">個人の強み理解をチームマネジメントに接続する章。メンバーの資質の偏りを把握し、足りない領域を補い合う「強みの貸し借り」の発想や、採用・配置・評価にどう反映させるかの視点を提示する。</p>
+    <div class="reason-box"><strong>理由：</strong>本書が個人向け自己啓発書であると同時に、マネジメント書としても読まれている理由を示すため。</div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>🏢 ヤフーでの全社導入</h3>
+    <ul>
+      <li>約6000人の社員のうち半数以上がストレングスファインダーを受診</li>
+      <li>関連の社内研修が用意され、1on1ミーティングやチームビルディングの共通言語として活用</li>
+      <li>資質の異なるメンバー同士が「なぜあの人はこう考えるのか」を理解する助けになった</li>
+    </ul>
+    <div class="reason-box"><strong>この例が示すこと：</strong>個人向け診断ツールが、組織規模でも「相互理解のインフラ」として機能しうることを示している。</div>
+  </div>
+
+  <div class="card">
+    <h3>📋 「アレンジ」資質を持つマネジャーの采配</h3>
+    <ul>
+      <li>「アレンジ」資質が高い人は、複数の変数（人・時間・リソース）を同時に組み替えて最適な配置を見つけるのが得意</li>
+      <li>プロジェクトの進行中に急な人員変更が起きても、混乱を最小限に再編成できる</li>
+      <li>この資質を持たないマネジャーが同じ状況に直面すると、計画変更自体に強いストレスを感じやすい</li>
+    </ul>
+    <div class="reason-box"><strong>この例が示すこと：</strong>「変化への強さ」は精神論ではなく、生まれ持った資質差である可能性を示す一例。</div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 「達成欲」資質を持つ人の一日</h3>
+    <ul>
+      <li>「達成欲」資質が高い人は、毎日何かを成し遂げないと満たされない内的な欲求を持つ</li>
+      <li>タスクを終えるたびに小さな達成感を得るが、その満足は長続きせず、すぐ次の目標を探す</li>
+      <li>目標が明確でない環境に置かれると、意欲が空回りしやすい</li>
+    </ul>
+    <div class="reason-box"><strong>この例が示すこと：</strong>同じ「頑張り屋」に見える人でも、資質によってモチベーションの源泉が全く異なることを示す。</div>
+  </div>
+
+  <div class="card">
+    <h3>🔀 弱み克服からの方向転換で成果が変わった例</h3>
+    <ul>
+      <li>人前で話すのが苦手な社員が、長年「プレゼン力を人並みにする」訓練に時間を投じても伸び悩んでいた（要旨・一般化した例）</li>
+      <li>代わりに得意な「分析思考」資質を活かし、資料設計・データ整理の役割にシフトしたところ評価が大きく向上した</li>
+      <li>本人の自己肯定感も、比較して劣る領域を頑張っていた頃より高まった</li>
+    </ul>
+    <div class="reason-box"><strong>この例が示すこと：</strong>「弱みを克服する」より「強みが活きる役割に移る」方が、本人・組織双方にとって費用対効果が高い場合があることを示す。</div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">才能とは、自然に繰り返される思考、感情、または行動のパターンである。（要旨）</p>
+    <p class="quote-why">※要旨。本書全体の核となる「才能」の定義。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">才能に投資を重ねて初めて、真の意味での強みが生まれる。才能×投資＝強み。（要旨）</p>
+    <p class="quote-why">※要旨。診断結果を「終着点」ではなく「出発点」として位置づける一節。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">人は自分が変えられないところに一生を費やすより、変えられるところ、伸ばせるところに時間を投じるべきだ。（要旨）</p>
+    <p class="quote-why">※要旨。弱み克服偏重の教育観への異議申し立てとして本書が繰り返し強調するメッセージ。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>📝 「努力していないのに褒められること」を3つ書き出す</h4>
+    <p><strong>やること：</strong>今まで人から褒められたことのうち、自分では「別に頑張っていない」と感じていたものを3つノートに書き出す。</p>
+    <p><strong>目的：</strong>自分では気づきにくい「才能」の手がかりを、他者評価から逆算して見つける。</p>
+    <p><strong>期待効果：</strong>自己理解が進み、今後の役割選択や仕事の頼み方を「得意分野基準」に切り替える第一歩になる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🔍 自分の資質を4領域のどこに当てはめて考えるか仮決めする</h4>
+    <p><strong>やること：</strong>「実行力・影響力・人間関係構築力・戦略的思考力」の4つのうち、自分が最も自然体でいられる領域を1つ選び、理由をメモする。</p>
+    <p><strong>目的：</strong>正式な診断を受ける前でも、自己認識のたたき台を作る。</p>
+    <p><strong>期待効果：</strong>今後のタスクの引き受け方・断り方の判断基準が明確になる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🙋 チームメンバー1人の「強み」を言葉にして伝える</h4>
+    <p><strong>やること：</strong>同僚や家族のうち1人を選び、「あなたはこういうところが自然にうまいと思う」と具体的に言葉で伝える。</p>
+    <p><strong>目的：</strong>強みベースの視点を、自分だけでなく他者との関係にも広げる。</p>
+    <p><strong>期待効果：</strong>相手のモチベーションが上がると同時に、自分自身も強み探しの視点が習慣化する。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 92%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
