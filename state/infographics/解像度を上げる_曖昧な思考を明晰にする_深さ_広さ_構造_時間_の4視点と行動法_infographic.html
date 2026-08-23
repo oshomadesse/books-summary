@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>解像度を上げる――曖昧な思考を明晰にする「深さ・広さ・構造・時間」の４視点と行動法 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #1e5f8a / セカンダリー #123a52 / アクセント #ff7a3d -->
+<style>
+:root {
+  --primary: #1e5f8a;
+  --secondary: #123a52;
+  --accent: #ff7a3d;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff3ea, #fff8f2);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #e8f1f7, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff3ea, #fffaf5);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+.domain-box {
+  background: linear-gradient(135deg, #e8f1f7, #fff);
+  border-radius: 8px;
+  padding: 0.6rem;
+  text-align: center;
+  font-size: 0.78rem;
+  border: 1px solid #d5e3ee;
+}
+.domain-box .num {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.05rem;
+  margin-bottom: 0.8rem;
+}
+.related-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  border-left: 3px solid var(--secondary);
+  font-size: 0.88rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+  .domain-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🔍 解像度を上げる</h1>
+  <p>曖昧な思考を明晰にする「深さ・広さ・構造・時間」の４視点と行動法</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>同じ情報・同じ時間を与えられても、人によって課題の捉え方や成果に大きな差が出るのはなぜか？「なんとなく分かった気になる」思考のまま行動しても空回りしてしまうのはなぜか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>対象への認識の精度＝「解像度」を、「深さ・広さ・構造・時間」という4つの視点から高めることで、課題と解決策の本質が見え、意思決定と行動の精度が飛躍的に上がる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>低い解像度のまま意思決定するのは、霧の中で見えない的に矢を射るようなもの（要旨）。的が見えていなければ、どれだけ経験や気合いがあっても当たらない。逆に的が鮮明に見えていれば、努力の方向を誤らずに済む。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>情報を集めて自分の中に取り込む「内化」と、書く・話す・作るという形で外に出す「外化」を繰り返しながら、課題・解決策それぞれを「深さ・広さ・構造・時間」の4視点で掘り下げ、最後は実験して検証するサイクルを回す。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🔍 解像度とは何か</h3>
+    <ul>
+      <li>ある対象について、どれだけ精度高く認識・理解できているかの度合い</li>
+      <li>解像度が低い状態の特徴は「ふわっとしている」「既視感がある（どこかで聞いた話にしか聞こえない）」「ピンとこない」の3つ</li>
+      <li>解像度の高い提案・企画は、聞いた瞬間に「なるほど、その視点はなかった」と思わせる具体性を持つ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>自分や相手の解像度が低い状態を自覚できないと、いつまでも表面的な議論から抜け出せず、努力の量を増やしても成果につながらないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌊 深さ（Depth）</h3>
+    <ul>
+      <li>物事の原因・要因・方法を、具体的なレベルまで掘り下げて捉える視点</li>
+      <li>「なぜ？」を繰り返し問い、表面的な理解から一段深い理解へ進む</li>
+      <li>本書では課題の解像度を上げる上で最も不足しがちな視点として重点的に扱われる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>多くの人は「広さ」（アイデアの数）には意識が向くが、1つの課題をとことん掘り下げる「深さ」が不足しがちで、そこが解像度不足の最大の原因になりやすいため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗺️ 広さ（Breadth）</h3>
+    <ul>
+      <li>検討する原因・要因・アプローチの選択肢に多様性を持たせる視点</li>
+      <li>1つの見方に固執せず、複数の切り口から対象を眺め直す</li>
+      <li>深さで掘り下げた1本の穴を、別の場所でも複数掘ることで思い込みに気づける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>深さだけを追求すると特定の思い込みに囚われやすく、広さを組み合わせることで視野の偏りを補正できるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧩 構造（Structure）</h3>
+    <ul>
+      <li>深さ・広さで見えてきた要素を、意味のあるまとまりに分ける視点</li>
+      <li>要素同士の関係性・因果・相対的な重要度を把握し、全体像を整理する</li>
+      <li>優先順位付けやボトルネックの特定は、この構造化の視点があって初めて可能になる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>情報をただ集めて並べるだけでは行動につながらず、構造化して「どこに手を打つべきか」を明確にする必要があるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏳ 時間（Time）</h3>
+    <ul>
+      <li>物事の変化・因果関係・プロセスの流れを時間軸で捉える視点</li>
+      <li>現在のスナップショットだけでなく、「これまでどう変化してきたか」「これからどう変化しうるか」を考える</li>
+      <li>解決策だけでなく「未来の解像度」を上げる最終章にもつながる視点</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>課題も解決策も静止画ではなく動画のように移り変わるため、時間軸を欠いた理解は状況の変化に脆いものになるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔄 内化と外化のサイクル</h3>
+    <ul>
+      <li>内化：顧客インタビューや観察、文献調査などで詳しい情報を自分の中に取り込むこと</li>
+      <li>外化：取り込んだ情報を、言語化・図解・発表など「書く・話す・作る」形でアウトプットすること</li>
+      <li>内化と外化を繰り返すこと自体が、解像度を上げる基本エンジンになる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>頭の中で分かった気になっていても、外化してみると理解が曖昧な箇所が可視化され、そこが次の内化のテーマになるという循環が生まれるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✖️ 情報×思考×行動の掛け算</h3>
+    <ul>
+      <li>解像度は「情報を集めること」「情報をもとに考えること」「実際に行動すること」の3つの掛け算で高まる</li>
+      <li>どれか1つが0に近いと、他がどれだけ優れていても全体の解像度は上がらない</li>
+      <li>本を読むだけ（情報のみ）でも、考えるだけ（思考のみ）でも解像度は頭打ちになる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「勉強すれば解像度が上がる」という誤解を正し、行動と検証を伴わない理解には限界があることを示すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🛠️ 解像度を上げる「型」</h3>
+    <ul>
+      <li>言語化、顧客インタビュー、サーベイ、分けることと比較すること、抽象化と具体化、先を読むことなど、具体的な行動パターンが多数紹介される</li>
+      <li>それぞれの型は「深さ・広さ・構造・時間」のどの視点を鍛えるものかに紐づけて整理されている</li>
+      <li>特定の職種に限らず、企画・営業・研究など幅広い仕事に応用できる汎用的な手法として提示される</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>4つの視点という抽象論だけでは行動に移せないため、明日から実践できる具体的な「型」に落とし込む必要があるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>第1章：解像度を上げる4つの視点</h3>
+    <p style="font-size:0.9rem;">「解像度」という概念を定義し、「深さ・広さ・構造・時間」という4つの視点の全体像を提示する導入章。なぜこの4視点なのか、それぞれがどう補い合うのかの基本フレームを示す。</p>
+    <div class="reason-box"><strong>理由：</strong>以降の章で個別に深掘りする4視点の地図を先に渡すことで、読者が迷子にならないようにするため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章：あなたの今の解像度を診断しよう</h3>
+    <p style="font-size:0.9rem;">「ふわっとしている」「既視感がある」「ピンとこない」という3つの兆候から、自分や自分の企画・提案の解像度が今どの程度かをセルフチェックする章。</p>
+    <div class="reason-box"><strong>理由：</strong>解像度の低さは自覚しにくいため、まず現在地を診断する具体的な物差しを与えるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章：型を意識しながら、まず行動からはじめて、粘り強く取り組み続ける</h3>
+    <p style="font-size:0.9rem;">解像度を上げるための心構えを扱う章。完璧な準備を待つのではなく、まず小さく行動して情報を得ることの重要性と、粘り強く内化・外化を繰り返す姿勢を説く。</p>
+    <div class="reason-box"><strong>理由：</strong>知識として4視点を知っただけでは解像度は上がらず、行動を起点にした継続的な取り組みが不可欠であるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章：課題の解像度を上げる――「深さ」</h3>
+    <p style="font-size:0.9rem;">課題の本質に迫るために不可欠な「深さ」の視点を重点的に解説。顧客インタビューや現場観察を通じて「なぜ」を繰り返し、表層的な課題認識から本質的な課題認識へと掘り下げる方法を扱う。</p>
+    <div class="reason-box"><strong>理由：</strong>著者が最も不足しがちだと指摘する視点であり、本書全体の中でも特に重点的に紙幅が割かれているため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章：課題の解像度を上げる――「広さ」「構造」「時間」</h3>
+    <p style="font-size:0.9rem;">深さで掘り下げた課題理解を、複数の切り口（広さ）で検証し、要素同士の関係を整理（構造化）し、時間の流れの中で捉え直す方法を扱う。課題理解を立体的にする章。</p>
+    <div class="reason-box"><strong>理由：</strong>深さだけで固まった課題認識を、他の3視点で検証・補強することで、思い込みによる誤った課題設定を防ぐため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章：解決策の解像度を上げる――「広さ」「構造」「時間」</h3>
+    <p style="font-size:0.9rem;">課題が明確になった後、解決策の選択肢を広げ、優先順位や実行順序を構造化し、時間軸を踏まえて解決策を磨き上げる方法を扱う。</p>
+    <div class="reason-box"><strong>理由：</strong>良い課題設定ができても、解決策の検討が浅いままでは成果に結びつかないため、同じ4視点を解決策側にも適用する必要があるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7章：実験して検証する</h3>
+    <p style="font-size:0.9rem;">頭の中で組み立てた課題・解決策の仮説を、小さな実験で実際に検証するプロセスを扱う。仮説と現実のズレを早期に発見し、修正していく重要性を説く。</p>
+    <div class="reason-box"><strong>理由：</strong>思考だけで完結させず、行動による検証を伴って初めて解像度は現実に即したものになるため。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第8章：未来の解像度を上げる</h3>
+    <p style="font-size:0.9rem;">現在の課題・解決策だけでなく、これから起こりうる変化を見据えて「未来」に対する解像度を高める方法を扱う締めくくりの章。時間の視点を未来予測にまで拡張する。</p>
+    <div class="reason-box"><strong>理由：</strong>変化の速い環境では、現在の解像度だけでなく将来を見通す力も競争力の源泉になるため。</div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>🎯 霧の中で見えない的を射る（要旨）</h3>
+    <ul>
+      <li>解像度の低い状態での意思決定は、深い霧の中で、的がどこにあるかも分からないまま矢を放つことに例えられる（要旨）</li>
+      <li>矢を射る技術（実行力）がどれだけ高くても、的が見えていなければ結果は運任せになる</li>
+      <li>解像度を上げるとは、霧を晴らして的の位置・大きさ・距離を鮮明にすることに等しい</li>
+    </ul>
+    <div class="reason-box"><strong>この例が示すこと：</strong>「頑張っているのに成果が出ない」の原因が、努力量ではなく認識の解像度不足にある場合が多いことを直感的に理解させる。</div>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ わかりやすさが時に毒になる（要旨）</h3>
+    <ul>
+      <li>複雑な物事を無理に単純化・図式化すると、一見わかった気にはなるが本質を取りこぼす危険がある（要旨）</li>
+      <li>複雑な物事は、複雑なまま正確に理解しようとする姿勢自体が解像度を上げる第一歩になる</li>
+      <li>安易な「一言で言うと〇〇」という要約に飛びつくことへの警鐘として語られる</li>
+    </ul>
+    <div class="reason-box"><strong>この例が示すこと：</strong>解像度の高さは「シンプルに説明できること」だけでなく「複雑さを複雑なまま扱えること」でもあるという逆説を示す。</div>
+  </div>
+
+  <div class="card">
+    <h3>🩺 解像度が低い提案の3兆候</h3>
+    <ul>
+      <li>「ふわっとしている」：具体性がなく、誰にでも当てはまるような曖昧な表現に終始する</li>
+      <li>「既視感がある」：どこかで聞いたことがある一般論の域を出ておらず、対象固有の発見がない</li>
+      <li>「ピンとこない」：聞き手が自分ごととして納得できる手触り感（実感）を持てない</li>
+    </ul>
+    <div class="reason-box"><strong>この例が示すこと：</strong>企画会議やレビューの場で「なぜこの提案は刺さらないのか」を言語化できる、実用的な診断の物差しになる。</div>
+  </div>
+
+  <div class="card">
+    <h3>🧰 「型」を組み合わせた実践例</h3>
+    <ul>
+      <li>言語化：頭の中の曖昧な感覚を、あえて短い文章にしてみることで理解の穴を見つける</li>
+      <li>顧客インタビュー・サーベイ：仮説を検証する情報を、当事者から直接得る（内化の代表的手法）</li>
+      <li>「分けることと比較すること」「抽象化と具体化」：構造化・深さの視点を鍛える基本動作として繰り返し登場する</li>
+      <li>「先を読むこと」：時間の視点を鍛える型として、未来の解像度を高める章にもつながる</li>
+    </ul>
+    <div class="reason-box"><strong>この例が示すこと：</strong>4つの視点は抽象論で終わらず、日々の具体的な行動（型）に翻訳して初めて解像度向上につながることを示す。</div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">低い解像度で意思決定をするのは、霧の中で見えない的に矢を射るようなものだ。</p>
+    <p class="quote-why">※要旨。低解像度な意思決定の危うさを表す本書を象徴する比喩。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">わかりやすさが、時に毒になる。複雑なものは、複雑なまま理解する努力が要る。</p>
+    <p class="quote-why">※要旨。安易な単純化への警鐘として本書が繰り返し強調するメッセージ。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">高い解像度は、情報・思考・行動の掛け算によってもたらされる。どれか一つでも欠ければ、解像度は頭打ちになる。</p>
+    <p class="quote-why">※要旨。「知っているだけ」「考えているだけ」では不十分であることを示す本書の中核原則。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>❓ 今抱えている課題に「なぜ？」を5回問いかける</h4>
+    <p><strong>やること：</strong>今取り組んでいる課題や悩みを1つ選び、「それはなぜ起きているのか？」を5回連続で自問し、答えを紙に書き出す。</p>
+    <p><strong>目的：</strong>表面的な課題認識から一段深いレベルの原因にたどり着き、「深さ」の視点を体感する。</p>
+    <p><strong>期待効果：</strong>これまで見えていなかった根本原因や、本当に手を打つべきポイントが見えてくる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🗺️ その課題の別の捉え方を3つ書き出す</h4>
+    <p><strong>やること：</strong>同じ課題について、「別の立場から見たら」「別の切り口で見たら」どう見えるかを3パターン書き出す。</p>
+    <p><strong>目的：</strong>1つの見方への思い込みを崩し、「広さ」の視点を確保する。</p>
+    <p><strong>期待効果：</strong>これまで気づかなかった見落としや、より効果的なアプローチの選択肢が増える。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🧩 書き出した要素を重要度順に並べ替える</h4>
+    <p><strong>やること：</strong>上記で出てきた原因・要素をすべて紙やメモアプリに書き出し、「影響が大きい順」に並べ替える。</p>
+    <p><strong>目的：</strong>バラバラに見えていた要素の関係性を整理し、「構造」の視点で全体像を把握する。</p>
+    <p><strong>期待効果：</strong>次に何から手をつけるべきかが明確になり、行動の優先順位に迷わなくなる。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 90%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
