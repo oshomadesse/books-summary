@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>筋肉が全て インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #2e7d55 / セカンダリー #14432f / アクセント #ff7a45 -->
+<style>
+:root {
+  --primary: #2e7d55;
+  --secondary: #14432f;
+  --accent: #ff7a45;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #f1f9f4, #e6f5eb);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eef8f1, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff4ee, #fff9f5);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>💪 筋肉が全て</h1>
+  <p>健康・不老・メンタル、人生のすべてが変わる唯一の方法</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>健康診断で「体脂肪」や「血糖値」ばかり気にしているのに、なぜ不調・老化・気分の落ち込みが改善しないのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>本当に見るべき指標は体脂肪ではなく「骨格筋量」。筋肉は動くための道具ではなく、血糖・炎症・気分・老化スピードを司る「臓器」であり、筋肉を中心に人生を設計し直すことが不老と好調の唯一の方法である。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>骨格筋は体内最大の「血糖の貯蔵庫」であり、炎症性サイトカインのバランスを取る「制御センター」でもある。筋肉が痩せると血糖コントロール・免疫・認知機能・気分のすべてが連鎖的に悪化するため、見た目が太っていなくても不健康な「隠れ不足筋」の人が急増している。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>体重1kgあたり1.6〜2.2gのタンパク質を1日3食に分散して摂り、週2〜3回の高強度レジスタンス運動を行う「筋肉中心医療（Muscle-Centric Medicine）」を実践する。年齢・体力レベルに応じたメニューと減量食レシピが本書には付属する。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🏭 筋肉は「臓器」である（筋肉中心医療）</h3>
+    <ul>
+      <li>骨格筋は運動器官であると同時に、代謝・炎症・免疫を司る内分泌臓器</li>
+      <li>「脂肪を減らす」ではなく「筋肉を増やす」ことを健康の中心に据える発想の転換</li>
+      <li>著者が提唱するアプローチ名は「Muscle-Centric Medicine（筋肉中心医療）」</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>従来の医療・ダイエット文化は「体脂肪をどう減らすか」に偏重してきたが、実際に病気や老化を進行させる主因は筋肉量の不足であるため、パラダイムそのものを転換する必要がある。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🍬 筋肉は「血糖の貯蔵庫」</h3>
+    <ul>
+      <li>骨格筋は体内で最大の血糖（グルコース）の取り込み・貯蔵先</li>
+      <li>筋肉量が少ないと血液中の糖が行き場を失い、血糖値が乱れやすくなる</li>
+      <li>見た目が痩せていても筋肉量不足なら血糖コントロールは悪化しうる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>健康診断で体重・見た目だけを指標にすると、この「隠れ高リスク」を見逃してしまうため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔥 筋肉は「炎症の制御センター」</h3>
+    <ul>
+      <li>筋肉が収縮すると「マイオカイン」という物質が分泌される</li>
+      <li>マイオカインは抗炎症作用を持ち、慢性炎症を抑える働きがある</li>
+      <li>筋肉量の不足は慢性炎症を招き、生活習慣病リスクを高める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>慢性炎症は糖尿病・心血管疾患・認知症など多くの病気の共通土台であり、筋肉がその制御弁になっているため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 筋肉とメンタル・認知機能のつながり</h3>
+    <ul>
+      <li>マイオカインは脳にも作用し、気分・認知機能に影響する</li>
+      <li>運動習慣はうつ・不安症状の軽減や、気分の安定と関連する</li>
+      <li>身体を鍛えることが精神的な強さの土台になるという発想</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「身体が変われば感情も変わり、感情が変われば行動が変わる」という好循環の起点として筋肉が機能するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🕰️ 「不老」とは若返りではなく機能維持</h3>
+    <ul>
+      <li>本書が扱う「不老」は見た目の若返りではなく、動ける・回復できる状態を保つこと</li>
+      <li>加齢対策の中心を「肌」ではなく「筋肉」に置き直す</li>
+      <li>サルコペニア（加齢性筋肉減少）が老化と疾病リスクの本丸</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>見た目のアンチエイジングに投資しても、筋肉量が落ちれば病気になりやすく自立した生活も送れなくなるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🥩 タンパク質1.6〜2.2g/kg・分散摂取</h3>
+    <ul>
+      <li>体重1kgあたり1.6〜2.2gのタンパク質摂取を目安とする</li>
+      <li>1回の食事にまとめず、朝・昼・晩に分散して摂ることで筋タンパク合成が最大化される</li>
+      <li>目安として1食あたり約30〜45gのタンパク質</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>加齢により筋肉がタンパク質を利用する効率（同化抵抗性）が下がるため、若い頃より多く・こまめに摂る必要があるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏋️ 週2〜3回のレジスタンス運動</h3>
+    <ul>
+      <li>高強度のレジスタンス（筋力）運動を週2〜3回、全身に行う</li>
+      <li>有酸素運動だけでは筋肉量の維持・増加には不十分</li>
+      <li>レベルに応じた運動メニューが本書内に用意されている</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>筋肉は「使われる刺激」がなければ加齢とともに一方的に失われていくため、意図的な負荷が不可欠であるため。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>筋肉量の不足</span>
+      <span class="flow-arrow">→</span>
+      <span>血糖処理能力の低下</span>
+      <span class="flow-arrow">→</span>
+      <span>糖尿病・代謝疾患リスク↑</span>
+    </div>
+    <div class="flow-item">
+      <span>筋肉量の不足</span>
+      <span class="flow-arrow">→</span>
+      <span>マイオカイン不足</span>
+      <span class="flow-arrow">→</span>
+      <span>慢性炎症・気分の不調</span>
+    </div>
+    <div class="flow-item">
+      <span>タンパク質分散摂取＋レジスタンス運動</span>
+      <span class="flow-arrow">→</span>
+      <span>筋肉量維持</span>
+      <span class="flow-arrow">→</span>
+      <span>不老・好調・メンタル安定</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>第1部：The Stakes（何が賭けられているか）</h3>
+    <ul>
+      <li>これまでの「体脂肪中心」の健康観・ダイエット文化の歴史を検証</li>
+      <li>「太っていないのに不健康」な隠れ不足筋の患者が急増している実態</li>
+      <li>脂肪を減らすことより骨格筋量を増やすことこそが本丸だと主張</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>読者がこれまで信じてきた「痩せる＝健康」という前提そのものを揺さぶり、筋肉中心の新しい健康観へと橋渡しするため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2部：Chart Your Road Map to Success（成功への地図を描く）</h3>
+    <ul>
+      <li>筋肉と血糖・炎症・認知・気分・老化の関係を科学的エビデンスで解説</li>
+      <li>「筋肉中心医療」という枠組みで、健康診断の見方をアップデート</li>
+      <li>体脂肪や体重ではなく骨格筋量を軸にした自己評価の方法</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>行動を変える前に、なぜ筋肉が health の中心指標たりうるのかを理解させ、納得した上で実践に進ませるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3部：Take Action（行動に移す）</h3>
+    <ul>
+      <li>体重1kgあたり1.6〜2.2gのタンパク質を3食に分散する具体的な食事法</li>
+      <li>週2〜3回の高強度レジスタンス運動プログラム</li>
+      <li>睡眠・回復・ライフスタイル全体を筋肉中心に組み立て直す指針</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>知識だけで終わらせず、今日から実行できる食事・運動の具体的プロトコルに落とし込むため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>付録：レベル別メニュー・減量食レシピ</h3>
+    <ul>
+      <li>初心者〜上級者までレベルに応じた運動メニューを収録</li>
+      <li>タンパク質を軸にした減量期の食事レシピを掲載</li>
+      <li>実践のハードルを下げるための具体的な献立・トレーニング例</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「何をどう始めればいいか分からない」という読者の最後のハードルを、具体例で取り除くため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>🩺 「太っていないのに血糖コントロールが悪い」患者たち</h3>
+    <ul>
+      <li>著者の診療経験で繰り返し見られたパターン</li>
+      <li>見た目の体型は標準的でも、骨格筋量が明らかに不足していた</li>
+      <li>体脂肪ではなく筋肉量の不足こそが真の共通因子だった</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「太っていない＝健康」という思い込みがいかに危険かを、著者自身の臨床経験から具体的に示している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏃 マイオカインと運動によるうつ・不安の軽減</h3>
+    <ul>
+      <li>筋肉の収縮によって放出されるマイオカインが脳に作用</li>
+      <li>運動習慣のある人は気分の落ち込みや不安症状が軽減しやすい傾向</li>
+      <li>身体を動かす→気分が上向く→さらに動きたくなる好循環が生まれる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「筋肉はメンタルにも効く」という本書の主張を、体内物質のメカニズムレベルで裏づける例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🥗 1日3食・45gずつのタンパク質分散モデル</h3>
+    <ul>
+      <li>朝・昼・晩それぞれ約45gのタンパク質を摂る分散摂取のモデルケース</li>
+      <li>1回にまとめて摂るより、筋タンパク合成のスイッチが1日に複数回入る</li>
+      <li>日本の一般的な食生活では意識しないと不足しがちな量</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「タンパク質を摂る」という抽象的な助言を、1日の食事に具体的に落とし込むための実例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📉 サルコペニア（加齢性筋肉減少）と自立喪失の関係</h3>
+    <ul>
+      <li>加齢とともに何も対策をしなければ筋肉量は一方的に減っていく</li>
+      <li>サルコペニアが進むと転倒・骨折・要介護状態につながりやすい</li>
+      <li>見た目の若さ対策より先に、筋肉量の維持が老後の自立を左右する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「不老＝見た目の若返り」ではなく「不老＝機能の維持」であるという本書の再定義を裏づける。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">筋肉は動くためだけの組織ではない。血糖を取り込む最大の貯蔵庫であり、炎症のバランスを取る制御センターでもある。（要旨）</p>
+    <p class="quote-why">※要旨。筋肉を「臓器」として再定義する本書の出発点となる考え方。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">Muscle is the organ of longevity（筋肉は長寿の臓器である）</p>
+    <p class="quote-why">※著者ガブリエル・ライオンが講演やSNSで繰り返し用いている本書の核心を表すフレーズ。日本語版でも同旨のメッセージが軸となっている。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">私たちが向き合ってきた患者の多くは、脂肪が多すぎるのではなく、筋肉が少なすぎたのだ。（要旨）</p>
+    <p class="quote-why">※要旨。臨床経験から「体脂肪中心」の健康観を覆す著者の気づきを表す一節。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">加齢とともに体は同じ量のタンパク質を以前ほど効率よく使えなくなる。だからこそ、若い頃より多く、こまめに摂る必要がある。（要旨）</p>
+    <p class="quote-why">※要旨。「同化抵抗性」という加齢に伴う身体変化と、タンパク質分散摂取の必要性を結びつける説明。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>🥩 次の食事でタンパク質30g以上を意識する</h4>
+    <p><strong>やること：</strong>直近の食事（例：夕食）に、肉・魚・卵・豆製品などを組み合わせてタンパク質量を30g以上にする。</p>
+    <p><strong>目的：</strong>「タンパク質を分散して十分量摂る」という本書の中心的アクションを、まず1食だけ体験する。</p>
+    <p><strong>期待効果：</strong>普段の食事にどれだけタンパク質が不足しているかを実感でき、明日以降の食事設計が変わる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🏋️ 15〜20分の自重レジスタンス運動を1セット行う</h4>
+    <p><strong>やること：</strong>スクワット・プッシュアップ・プランクなど自重種目を組み合わせ、15〜20分だけ全身に負荷をかける。</p>
+    <p><strong>目的：</strong>「週2〜3回の高強度レジスタンス運動」の第一歩を、ジムなしで今日から踏み出す。</p>
+    <p><strong>期待効果：</strong>翌日以降の運動へのハードルが下がり、習慣化の初速がつく。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>📝 直近の健康診断結果を「筋肉目線」で見直す</h4>
+    <p><strong>やること：</strong>過去の健康診断結果（体重・体脂肪率・血糖値など）を見返し、「筋肉量」に関する情報が抜けていないか確認する。</p>
+    <p><strong>目的：</strong>体脂肪・体重中心の見方から、筋肉量を意識した健康観へ視点を切り替える。</p>
+    <p><strong>期待効果：</strong>次回の健康診断や人間ドックで、筋肉量・骨格筋率の測定を追加で依頼する動機づけになる。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 85%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
