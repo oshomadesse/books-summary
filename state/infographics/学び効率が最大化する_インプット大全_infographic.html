@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学び効率が最大化する インプット大全 | インフォグラフィック</title>
+<!--
+  カラーパレット（3色・グラデーション可）
+  プライマリー: #2A5C8A（知の落ち着き・信頼感を表す紺青）
+  セカンダリー: #F2A65A（暖かみのあるオレンジ・行動と気づきを表す）
+  アクセント: #4FB0A5（学びの成長を表す青緑）
+-->
+<style>
+  :root{
+    --primary:#2A5C8A;
+    --primary-dark:#1B3D5C;
+    --secondary:#F2A65A;
+    --accent:#4FB0A5;
+    --bg:#F7F9FC;
+    --card-bg:#FFFFFF;
+    --text:#1F2937;
+    --text-soft:#5B6472;
+    --border:#E3E8EF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 0 48px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    color:#fff;
+    padding:28px 20px 24px;
+    border-radius:0 0 24px 24px;
+  }
+  header.hero .eyebrow{
+    display:inline-block;
+    background:rgba(255,255,255,0.15);
+    border:1px solid rgba(255,255,255,0.35);
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    letter-spacing:0.05em;
+    margin-bottom:12px;
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 6px;
+    font-weight:800;
+    line-height:1.4;
+  }
+  header.hero .author{
+    font-size:13px;
+    opacity:0.85;
+    margin:0;
+  }
+
+  .why-how{
+    margin:-18px 16px 20px;
+    background:var(--card-bg);
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(27,61,92,0.18);
+    padding:18px 18px 14px;
+    position:relative;
+    z-index:2;
+  }
+  .why-how .row{margin-bottom:12px;}
+  .why-how .row:last-child{margin-bottom:0;}
+  .why-how .label{
+    display:flex;align-items:center;gap:6px;
+    font-size:12px;font-weight:700;color:var(--accent);
+    margin-bottom:4px;
+  }
+  .why-how .label .dot{
+    width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block;
+  }
+  .why-how .row.q .label,.why-how .row.q .dot{color:var(--secondary);background:none;}
+  .why-how .row.q .dot{background:var(--secondary);}
+  .why-how p{margin:0;font-size:14px;color:var(--text);}
+
+  .badge-row{
+    display:flex;gap:10px;margin:14px 16px 0;flex-wrap:wrap;
+  }
+  .badge{
+    flex:1 1 auto;min-width:96px;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:10px 12px;
+    text-align:center;
+  }
+  .badge .num{font-size:20px;font-weight:800;color:var(--primary);}
+  .badge .num small{font-size:11px;font-weight:600;color:var(--text-soft);}
+  .badge .cap{font-size:11px;color:var(--text-soft);margin-top:2px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:22px 16px 0;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    color:var(--text-soft);
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+
+  main{margin:16px 16px 0;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .card h3 .idx{
+    flex:0 0 auto;
+    background:var(--accent);
+    color:#fff;
+    font-size:11px;
+    font-weight:800;
+    width:22px;height:22px;
+    border-radius:7px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--text);}
+  .card ul li{margin-bottom:4px;}
+  .card .why{
+    margin-top:10px;
+    background:#FFF3E6;
+    border-left:3px solid var(--secondary);
+    padding:8px 10px;
+    font-size:12.5px;
+    border-radius:0 8px 8px 0;
+    color:#7A4A12;
+  }
+  .card .why b{color:var(--secondary);}
+
+  .quote-card{
+    background:linear-gradient(135deg,#EAF3FF,#F7F9FC);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .quote-card .tag{
+    font-size:11px;
+    font-weight:700;
+    color:var(--primary);
+    background:#fff;
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:999px;
+    margin-bottom:8px;
+    border:1px solid var(--border);
+  }
+  .quote-card blockquote{
+    margin:0;
+    font-size:14px;
+    font-weight:600;
+    color:var(--primary-dark);
+    line-height:1.8;
+  }
+  .quote-card blockquote::before{content:"“";}
+  .quote-card blockquote::after{content:"”";}
+
+  .action-card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:14px;
+    display:flex;
+    gap:12px;
+  }
+  .action-card .check{
+    flex:0 0 auto;
+    width:28px;height:28px;border-radius:50%;
+    background:var(--accent);
+    color:#fff;font-weight:800;font-size:13px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .action-card h3{margin:0 0 6px;font-size:14.5px;}
+  .action-card .meta{font-size:12.5px;color:var(--text-soft);margin:2px 0;}
+  .action-card .meta b{color:var(--primary);}
+
+  .bar-row{margin:10px 0;}
+  .bar-row .bar-label{font-size:12px;color:var(--text-soft);display:flex;justify-content:space-between;margin-bottom:3px;}
+  .bar-track{background:#EDF1F7;border-radius:999px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+
+  footer.info{
+    margin:24px 16px 0;
+    font-size:11.5px;
+    color:var(--text-soft);
+    text-align:center;
+  }
+
+  @media (min-width:760px){
+    header.hero{border-radius:0 0 28px 28px;}
+    .why-how{margin-left:auto;margin-right:auto;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow">📖 今日読むべき本 ・ 自己啓発</span>
+    <h1>学び効率が最大化する<br>インプット大全</h1>
+    <p class="author">著者：樺沢紫苑</p>
+  </header>
+
+  <div class="why-how">
+    <div class="row q">
+      <div class="label"><span class="dot"></span>Q. 問い</div>
+      <p>忙しい毎日の中で、なぜ「たくさん読んでいるのに」学びが身につかないのか？</p>
+    </div>
+    <div class="row a">
+      <div class="label"><span class="dot"></span>A. 答え</div>
+      <p>インプットは「量」ではなく「質」で決まる。目的とゴールを先に決め、必ずアウトプットを前提にして情報を取り込むことで、限られた時間でも学びの効果を最大化できる。</p>
+    </div>
+    <div class="row h">
+      <div class="label"><span class="dot"></span>How. 根拠</div>
+      <p>精神科医・樺沢紫苑が脳科学の知見をもとに、読む・聞く・見る・ネット活用・学ぶの5手段にわたる80のインプット術を体系化。記憶定着の仕組みから逆算した具体的な行動指針を提示する。</p>
+    </div>
+  </div>
+
+  <div class="badge-row">
+    <div class="badge"><div class="num">80<small>項目</small></div><div class="cap">インプット術</div></div>
+    <div class="badge"><div class="num">3:7</div><div class="cap">IN : OUT 黄金比</div></div>
+    <div class="badge"><div class="num">15<small>分</small></div><div class="cap">記憶のゴールデンタイム</div></div>
+    <div class="badge"><div class="num">7<small>章</small></div><div class="cap">構成</div></div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切替">
+    <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">💡 主要概念</button>
+    <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📑 各章の要約</button>
+    <button role="tab" id="tab-examples" aria-controls="panel-examples" aria-selected="false">🔍 具体例</button>
+    <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 重要な引用</button>
+    <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+    <!-- 主要概念 -->
+    <section id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts" class="panel active">
+
+      <div class="card">
+        <h3><span class="idx">1</span>AZ読書法</h3>
+        <ul>
+          <li>マーカー・付箋を使いながら読む</li>
+          <li>読書感想文を書くつもりで能動的に読む</li>
+          <li>受け身の「読むだけ」読書からの脱却</li>
+        </ul>
+        <div class="why"><b>理由：</b>能動的に処理した情報だけが記憶に残るため、受動読書は数週間で大半を忘れる。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">2</span>IN:OUT = 3:7の黄金比</h3>
+        <ul>
+          <li>インプットに偏りがちな学習配分を見直す</li>
+          <li>学んだことの7割は行動・発信に回す</li>
+          <li>螺旋階段のように繰り返すことで成長する</li>
+        </ul>
+        <div class="why"><b>理由：</b>インプットだけでは脳内世界しか変わらず、現実世界を変えるのはアウトプットだから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">3</span>記憶のゴールデンタイム（就寝前15分）</h3>
+        <ul>
+          <li>眠る直前に暗記した情報が最も定着しやすい</li>
+          <li>学習の順序設計に直結する知見</li>
+          <li>6時間を切る睡眠は記憶・認知機能を低下させる</li>
+        </ul>
+        <div class="why"><b>理由：</b>睡眠中に脳が記憶を整理・定着させるため、直前の入力内容が翌日の記憶量を左右する。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">4</span>記憶の衝突</h3>
+        <ul>
+          <li>暗記直後に別の情報（映画・ゲーム等）を入れると定着が乱れる</li>
+          <li>学習後は「そのまま眠る」のが最も効果的</li>
+          <li>学習後の行動まで含めて設計するのが記憶術の本質</li>
+        </ul>
+        <div class="why"><b>理由：</b>似た情報や余計な情報が脳内で衝突し、定着しかけた記憶が上書きされてしまうため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">5</span>方向性とゴールの事前設定</h3>
+        <ul>
+          <li>学ぶ前に「何のために」「どこまで」を決める</li>
+          <li>同じ時間でもインプットの精度が飛躍的に上がる</li>
+          <li>漫然とした情報収集を戒める</li>
+        </ul>
+        <div class="why"><b>理由：</b>目的のないインプットは脳が「不要な情報」と判断し、素通りしてしまうため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">6</span>「月10冊」より「月3冊＋アウトプット」</h3>
+        <ul>
+          <li>量を追う読書から少数を深く読む読書への転換</li>
+          <li>読了数ではなく語れる量・使える量で成果を測る</li>
+          <li>2週間で3回以上触れると長期記憶化する</li>
+        </ul>
+        <div class="why"><b>理由：</b>多読を誇る人ほど内容を語れないケースが多く、量は定着の保証にならないため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">7</span>非言語情報の活用</h3>
+        <ul>
+          <li>セミナー等では話者の表情・仕草も情報源にする</li>
+          <li>音声だけより対面・映像の方が理解度が高い</li>
+          <li>五感を複数使うインプットほど定着が強い</li>
+        </ul>
+        <div class="why"><b>理由：</b>複数のチャネルで受け取った情報は、脳内で相互に補強し合い記憶ネットワークが強化されるため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">8</span>運動とインプットの組み合わせ</h3>
+        <ul>
+          <li>歩きながらのオーディオブック視聴が有効</li>
+          <li>身体活動と情報摂取を組み合わせる</li>
+          <li>生活動線にインプットを組み込む発想</li>
+        </ul>
+        <div class="why"><b>理由：</b>軽い運動は血流を促し脳の働きを活性化させるため、座学より記憶効率が上がる場合がある。</div>
+      </div>
+
+    </section>
+
+    <!-- 各章の要約 -->
+    <section id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" class="panel">
+
+      <div class="card">
+        <h3><span class="idx">1</span>インプットの基本法則</h3>
+        <ul>
+          <li>インプットは「量」ではなく「質」で評価する</li>
+          <li>アウトプット前提で取り込むと定着率が飛躍的に上がる</li>
+        </ul>
+        <div class="why"><b>理由：</b>目的なきインプットは右から左へ抜けていくため、脳に「使う情報」だと認識させる必要がある。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">2</span>読む</h3>
+        <ul>
+          <li>AZ読書法でマーカー・付箋を使い能動的に読む</li>
+          <li>読んだ冊数よりアウトプットできる冊数を重視</li>
+        </ul>
+        <div class="why"><b>理由：</b>受動的な「読んだだけ」の読書は数週間で内容の大半を忘れてしまうため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">3</span>聞く</h3>
+        <ul>
+          <li>講師の表情・仕草も聞くインプットの一部として活用</li>
+          <li>歩きながらの音声学習など運動と組み合わせる</li>
+        </ul>
+        <div class="why"><b>理由：</b>五感を複数使うインプットほど記憶への定着が強くなるため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">4</span>見る</h3>
+        <ul>
+          <li>日常の観察そのものを学びの素材として意識的に扱う</li>
+          <li>「見る」インプットは受け身になりやすく意識的な焦点化が必要</li>
+        </ul>
+        <div class="why"><b>理由：</b>漫然と見るだけでは記憶に残らず、注意を向けた対象だけが学びに変わるため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">5</span>インターネット情報活用術</h3>
+        <ul>
+          <li>情報の信頼性を見極めながら取捨選択する</li>
+          <li>検索前に「何を知りたいか」を明確にしてから調べる</li>
+        </ul>
+        <div class="why"><b>理由：</b>無目的なネットサーフィンは時間を消費するだけで学びに繋がりにくいため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">6</span>学ぶ</h3>
+        <ul>
+          <li>学ぶ対象を絞り込み、方向性とゴールを事前に定める</li>
+          <li>2週間で3回以上、同じ情報に触れて長期記憶化する</li>
+        </ul>
+        <div class="why"><b>理由：</b>反復と目的意識のある学習だけが、時間の経過に耐える記憶になるため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">7</span>インプット力を飛躍させる6つの方法（応用編）</h3>
+        <ul>
+          <li>睡眠の質・量を確保し「記憶のゴールデンタイム」を活用</li>
+          <li>暗記直後は別の情報を入れず、記憶の衝突を避ける</li>
+        </ul>
+        <div class="why"><b>理由：</b>睡眠中に記憶が整理・定着されるため、直前の行動が翌日の記憶量を左右する。</div>
+      </div>
+
+    </section>
+
+    <!-- 具体例 -->
+    <section id="panel-examples" role="tabpanel" aria-labelledby="tab-examples" class="panel">
+
+      <div class="card">
+        <h3><span class="idx">1</span>「月10冊」vs「月3冊＋アウトプット」</h3>
+        <ul>
+          <li>多読を誇る人ほど内容を語れないケースがある</li>
+          <li>3冊を深く読みSNSや会話でアウトプットする読書を推奨</li>
+        </ul>
+        <div class="why"><b>理由（この例が示すこと）：</b>読書の成果は「読んだ量」ではなく「語れる量・使える量」で測るべき。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">2</span>就寝前15分の暗記と記憶の衝突</h3>
+        <ul>
+          <li>暗記直後にスマホでニュースや動画を見ると定着率が落ちる</li>
+          <li>そのまま眠るのが最も記憶に残る方法</li>
+        </ul>
+        <div class="why"><b>理由（この例が示すこと）：</b>学習の「あとに何をするか」まで設計に含めることが記憶術の本質。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">3</span>セミナー・勉強会での「聞くインプット」</h3>
+        <ul>
+          <li>音声だけより講師の表情・身振りを見ながら聞く方が理解度が高い</li>
+        </ul>
+        <div class="why"><b>理由（この例が示すこと）：</b>同じ情報でも取り込むチャネルを増やすほど記憶は強化される。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">4</span>ウォーキング中のオーディオブック活用</h3>
+        <ul>
+          <li>運動しながら情報を聞くと座って読むより記憶に残りやすい</li>
+        </ul>
+        <div class="why"><b>理由（この例が示すこと）：</b>インプットは机の前だけでなく生活動線に組み込むことで継続しやすくなる。</div>
+      </div>
+
+    </section>
+
+    <!-- 重要な引用 -->
+    <section id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" class="panel">
+
+      <div class="quote-card">
+        <span class="tag">要旨</span>
+        <blockquote>インプットの精度は、事前に「方向性」と「ゴール」を決めるだけで飛躍的に高まる。</blockquote>
+      </div>
+
+      <div class="quote-card">
+        <span class="tag">要旨</span>
+        <blockquote>インプットとアウトプットは、螺旋階段を上るように繰り返すことで初めて自己成長につながる。黄金比はおよそ3対7。</blockquote>
+      </div>
+
+      <div class="quote-card">
+        <span class="tag">要旨</span>
+        <blockquote>暗記した直後にそのまま眠ることが、記憶を最も強く定着させる。学習後に映画やゲームを挟むのは記憶術的には最悪の選択。</blockquote>
+      </div>
+
+      <div class="card">
+        <h3><span class="idx">📊</span>IN:OUTバランスの目安</h3>
+        <div class="bar-row">
+          <div class="bar-label"><span>インプット</span><span>3</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:30%"></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label"><span>アウトプット</span><span>7</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:70%"></div></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 今日のアクション -->
+    <section id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" class="panel">
+
+      <div class="action-card">
+        <div class="check">1</div>
+        <div>
+          <h3>「AZ読書」を10分だけ試す</h3>
+          <p class="meta"><b>目的：</b>受動的な読書から能動的な読書への切り替えを体感する</p>
+          <p class="meta">手元の本や記事を1つ選び、気になった一文をメモアプリに書き出しながら読む。</p>
+          <p class="meta"><b>期待効果：</b>読了後すぐ内容を人に説明できる状態になり、記憶の定着率が体感で変わる。</p>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="check">2</div>
+        <div>
+          <h3>今日インプットすることの「方向性」と「ゴール」を1行で書く</h3>
+          <p class="meta"><b>目的：</b>目的意識のないインプットを防ぐ</p>
+          <p class="meta">ニュースや本を読む前に「何のために」「読み終えたらどう使うか」をメモに書く。</p>
+          <p class="meta"><b>期待効果：</b>同じ15分でも情報の取捨選択が速くなり、記憶に残る情報量が増える。</p>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="check">3</div>
+        <div>
+          <h3>就寝前15分をスマホから離して今日覚えたいことの振り返りに使う</h3>
+          <p class="meta"><b>目的：</b>記憶のゴールデンタイムを活用し、記憶の衝突を避ける</p>
+          <p class="meta">今日読んだ・聞いた内容のうち1つだけを思い出し、そのままスマホを見ずに就寝する。</p>
+          <p class="meta"><b>期待効果：</b>翌朝、覚えたい情報がより鮮明に想起できるようになる。</p>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="info">
+    📚 読書サマリー自動生成システム ・ Web調査に基づき生成（不明点は明記）
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs [role="tab"]');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){
+        t.setAttribute('aria-selected','false');
+        document.getElementById(t.getAttribute('aria-controls')).classList.remove('active');
+      });
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
