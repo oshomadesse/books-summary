@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100の基本 松浦弥太郎のベーシックノート - インフォグラフィック</title>
+    <!-- カラーパレット: プライマリー #3A6B58（深緑）, セカンダリー #C97B4A（テラコッタ）, アクセント #E8B84B（山吹） -->
+    <style>
+        :root {
+            --primary: #3A6B58;
+            --secondary: #C97B4A;
+            --accent: #E8B84B;
+            --text-dark: #2d3436;
+            --text-light: #6b7280;
+            --bg-light: #faf7f2;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Yu Gothic', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--bg-light) 0%, #ece3d3 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 32px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, #285141 100%);
+            border-radius: 20px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(58, 107, 88, 0.3);
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2.3rem);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header .author {
+            font-size: 1.05rem;
+            opacity: 0.9;
+        }
+
+        .header .category-badge {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 5px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(6px);
+        }
+
+        .hero {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 28px 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-left: 6px solid var(--accent);
+        }
+
+        .hero h2 {
+            font-size: 1.15rem;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .hero-item {
+            background: var(--bg-light);
+            border-radius: 14px;
+            padding: 16px;
+        }
+
+        .hero-item .label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--secondary);
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .hero-item p {
+            font-size: 0.92rem;
+            color: var(--text-dark);
+        }
+
+        .stat-badges {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        .stat-badge {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: white;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            flex: 1;
+            min-width: 130px;
+        }
+
+        .stat-badge .num {
+            display: block;
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 24px;
+            background: white;
+            border-radius: 15px;
+            padding: 5px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            overflow-x: auto;
+            gap: 4px;
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 12px 18px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-light);
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, var(--primary) 0%, #285141 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 22px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 14px;
+            gap: 10px;
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.02rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .card-points {
+            list-style: none;
+        }
+
+        .card-points li {
+            padding: 6px 0 6px 22px;
+            position: relative;
+            font-size: 0.88rem;
+            color: var(--text-dark);
+            border-bottom: 1px dashed #eee;
+        }
+
+        .card-points li:last-child {
+            border-bottom: none;
+        }
+
+        .card-points li::before {
+            content: "・";
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .reason-box {
+            margin-top: 12px;
+            padding: 10px 12px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            font-size: 0.82rem;
+            color: var(--text-light);
+            border-left: 3px solid var(--accent);
+        }
+
+        .reason-box b {
+            color: var(--secondary);
+        }
+
+        .quote-card {
+            background: linear-gradient(135deg, #fff 0%, var(--bg-light) 100%);
+            border-radius: 15px;
+            padding: 24px;
+            margin-bottom: 18px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+            border-left: 5px solid var(--primary);
+            position: relative;
+        }
+
+        .quote-card::before {
+            content: "\201C";
+            font-size: 3rem;
+            color: var(--accent);
+            opacity: 0.4;
+            position: absolute;
+            top: -6px;
+            left: 12px;
+            font-family: Georgia, serif;
+        }
+
+        .quote-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            padding-left: 24px;
+        }
+
+        .quote-note {
+            font-size: 0.82rem;
+            color: var(--text-light);
+            padding-left: 24px;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 15px;
+            padding: 22px;
+            margin-bottom: 16px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .action-number {
+            flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .action-body h3 {
+            font-size: 1rem;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .action-body p {
+            font-size: 0.86rem;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .action-body .meta {
+            font-size: 0.78rem;
+            color: var(--text-light);
+        }
+
+        .related-list {
+            list-style: none;
+        }
+
+        .related-list li {
+            background: white;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            font-size: 0.88rem;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .section-title {
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin: 24px 0 12px;
+            font-weight: 700;
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 12px; }
+            .tab-button { padding: 10px 14px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🧺 100の基本 松浦弥太郎のベーシックノート</h1>
+            <p class="author">著者: 松浦弥太郎</p>
+            <span class="category-badge">📂 ライフスタイル</span>
+        </header>
+
+        <section class="hero" aria-label="要約">
+            <h2>❓ 問い × 💡 答え × 📌 根拠（Why &amp; How）</h2>
+            <div class="hero-grid">
+                <div class="hero-item">
+                    <span class="label">問い</span>
+                    <p>特別な才能や強い意志がなくても、自分らしく機嫌よく生きるにはどうすればいいか？</p>
+                </div>
+                <div class="hero-item">
+                    <span class="label">答え</span>
+                    <p>当たり前だが忘れがちな「小さな基本」を100個言語化し、日々の振る舞いとして繰り返し、常に更新し続けること。</p>
+                </div>
+                <div class="hero-item">
+                    <span class="label">根拠</span>
+                    <p>松浦個人の100の基本、職場COW BOOKSの100のルール、読者自身が書き込む100の基本という3層構成が、思想を実際の行動へ翻訳する仕組みを示している。</p>
+                </div>
+            </div>
+            <div class="stat-badges">
+                <div class="stat-badge"><span class="num">3部構成</span>個人・職場・あなた</div>
+                <div class="stat-badge"><span class="num">100+100</span>項目の基本（本人・COW BOOKS）</div>
+                <div class="stat-badge"><span class="num">9年間</span>暮しの手帖 編集長</div>
+            </div>
+        </section>
+
+        <div class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+            <button class="tab-button active" role="tab" aria-selected="true" aria-controls="concepts" id="tab-concepts" onclick="switchTab('concepts', this)">🔑 主要概念</button>
+            <button class="tab-button" role="tab" aria-selected="false" aria-controls="chapters" id="tab-chapters" onclick="switchTab('chapters', this)">📖 各章の要約</button>
+            <button class="tab-button" role="tab" aria-selected="false" aria-controls="examples" id="tab-examples" onclick="switchTab('examples', this)">💡 具体例</button>
+            <button class="tab-button" role="tab" aria-selected="false" aria-controls="quotes" id="tab-quotes" onclick="switchTab('quotes', this)">💬 重要な引用</button>
+            <button class="tab-button" role="tab" aria-selected="false" aria-controls="actions" id="tab-actions" onclick="switchTab('actions', this)">✅ 今日のアクション</button>
+        </div>
+
+        <div id="concepts" class="tab-content active" role="tabpanel" aria-labelledby="tab-concepts">
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">🧩</span>
+                        <h3 class="card-title">基本（きほん）</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>才能や大きな決意でなく、日々繰り返す小さな振る舞いの積み重ね</li>
+                        <li>「過去についてうそをつかない」など具体的な一文で示される</li>
+                        <li>特別なことをしなくても実践できるのが特徴</li>
+                    </ul>
+                    <div class="reason-box"><b>理由:</b> 抽象的な「良い人間になる」ではなく、行動レベルの一文にすることで初めて実践・継続できるから。</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">🏠</span>
+                        <h3 class="card-title">生活人間</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>「仕事人間にはならない。生活人間になる。」という一文に象徴</li>
+                        <li>仕事の成果より、暮らしそのものを土台に据える生き方</li>
+                        <li>著者自身が編集長を退きIT業界へ転じるなど生き方を更新し続けてきた</li>
+                    </ul>
+                    <div class="reason-box"><b>理由:</b> 仕事の成果は変動するが、生活の質は自分でコントロールし続けられるという価値観の転換点だから。</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">👀</span>
+                        <h3 class="card-title">想像力としての思いやり</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>「思いやりではなく想像力。」という一文</li>
+                        <li>相手の気持ちを漠然と"察する"のではなく具体的に"想像"する</li>
+                        <li>COW BOOKSの接客ルールにも同じ発想が反映されている</li>
+                    </ul>
+                    <div class="reason-box"><b>理由:</b> 「思いやり」は気持ちの話で終わりがちだが、「想像力」と言い換えると具体的な行動に繋がりやすいから。</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">🛑</span>
+                        <h3 class="card-title">ブレーキ上手</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>「アクセルよりもハンドリングよりもブレーキ上手になる。」</li>
+                        <li>勢いや器用さより、止まる・控える判断力を重視</li>
+                        <li>忙しいときほど手を止める勇気を説く</li>
+                    </ul>
+                    <div class="reason-box"><b>理由:</b> 走り続けることは評価されやすいが、適切に止まる判断こそ質を守るという逆説を示すから。</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">🔄</span>
+                        <h3 class="card-title">基本の更新</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>「自分の基本の更新を常に行う。」（100番目の項目）</li>
+                        <li>基本は一度決めたら終わりではなく、生活の変化に合わせて見直す</li>
+                        <li>読者が自分の基本を書き込むノートを本書自体に組み込む</li>
+                    </ul>
+                    <div class="reason-box"><b>理由:</b> 固定化した基本はやがて形骸化するため、更新の仕組みそのものを基本のひとつに含めているから。</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">🏪</span>
+                        <h3 class="card-title">個人と組織の基本の接続</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>松浦個人の100の基本と、職場COW BOOKSの100のルールが対になっている</li>
+                        <li>「健康管理が一番の仕事」など個人の心がけを職場の言葉に翻訳</li>
+                        <li>個人の哲学がそのまま組織文化になり得ることを示す実例</li>
+                    </ul>
+                    <div class="reason-box"><b>理由:</b> 個人の価値観は言語化して共有して初めて、他者にも実践可能な組織のルールになるから。</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="chapters" class="tab-content" role="tabpanel" aria-labelledby="tab-chapters">
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">1️⃣</span>
+                        <h3 class="card-title">松浦弥太郎の100の基本（個人編）</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>過去についてうそをつかない</li>
+                        <li>小さい約束ほど大切にする</li>
+                        <li>思いやりではなく想像力</li>
+                        <li>指先と手を常に清潔に</li>
+                        <li>いつも15分前</li>
+                        <li>敗者になっても弱者になるな</li>
+                        <li>自分の基本の更新を常に行う</li>
+                    </ul>
+                    <div class="reason-box"><b>理由:</b> 個人の信頼や自己管理は、大きな決意ではなくこうした細部の積み重ねで形作られるから。</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">2️⃣</span>
+                        <h3 class="card-title">COW BOOKSの100の基本（仕事・組織編）</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>朝は必ずシャワーを浴びて清潔に</li>
+                        <li>ゴミをためない</li>
+                        <li>本棚を見ているお客様の前を決して横切らない</li>
+                        <li>どんなに忙しくても不機嫌になって仕事をしない</li>
+                        <li>連絡、報告、相談を決して怠らない</li>
+                        <li>健康管理が一番の仕事</li>
+                        <li>自分以外の人がどうしたら喜んでくれるかをいつも考える</li>
+                    </ul>
+                    <div class="reason-box"><b>理由:</b> 個人の心がけだけでは組織は動かない。全員が共有できる言葉に翻訳して初めて、店の信頼が積み上がるから。</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">3️⃣</span>
+                        <h3 class="card-title">あなたの100の基本（実践・書き込み編）</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>読んだ基本をなぞるだけでは自分のものにならない</li>
+                        <li>空白のノートに自分の言葉で基本を書き出す欄がある</li>
+                        <li>「今の自分にとっての基本」を定期的に見直す仕組みが用意されている</li>
+                    </ul>
+                    <div class="reason-box"><b>理由:</b> 基本はコピーではなく自分の生活から立ち上げるものであり、書く行為を通じてはじめて行動に定着するから。</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="examples" class="tab-content" role="tabpanel" aria-labelledby="tab-examples">
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">⏰</span>
+                        <h3 class="card-title">「いつも15分前」という基本</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>背景: 松浦個人の100の基本のひとつ</li>
+                        <li>示唆: 遅刻の言い訳を重ねるより、単純に早く着く習慣を持つ方が信頼を積み上げやすい</li>
+                    </ul>
+                    <div class="reason-box"><b>理由（この例が示すこと）:</b> 「対策」ではなく「デフォルトの行動」に変えることで、意思の力に頼らず信頼を維持できる好例だから。</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">📚</span>
+                        <h3 class="card-title">「本棚を見ているお客様の前を決して横切らない」</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>背景: 古書店COW BOOKSという接客業ならではの具体的なルール</li>
+                        <li>示唆: 抽象的な「思いやりを持て」でなく、現場に即した一文にまで落とし込むことで全員が同じ行動を取れる</li>
+                    </ul>
+                    <div class="reason-box"><b>理由（この例が示すこと）:</b> 理念を行動レベルの一文へ翻訳する重要性を、実際の職場ルールとして示しているから。</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">📞</span>
+                        <h3 class="card-title">「連絡、報告、相談を決して怠らない」</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>背景: COW BOOKSのスタッフ間で共有されている基本のひとつ</li>
+                        <li>示唆: 報連相という基本を「怠らない」という否定形で明文化し、忙しい時ほど抜け落ちやすいと釘を刺す</li>
+                    </ul>
+                    <div class="reason-box"><b>理由（この例が示すこと）:</b> 組織の信頼はスキルより日々の情報共有の徹底で決まることを示す例だから。</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-icon">🏳️</span>
+                        <h3 class="card-title">「敗者になっても弱者になるな」</h3>
+                    </div>
+                    <ul class="card-points">
+                        <li>背景: 松浦個人の100の基本の一つ</li>
+                        <li>示唆: 勝ち負けの結果は常にコントロールできなくても、姿勢としての「弱者」にはならないという発想</li>
+                    </ul>
+                    <div class="reason-box"><b>理由（この例が示すこと）:</b> 成果でなく振る舞いを自分の管理下に置くという、本書全体を貫く自己コントロールの発想を象徴するから。</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="quotes" class="tab-content" role="tabpanel" aria-labelledby="tab-quotes">
+            <div class="quote-card">
+                <p class="quote-text">過去についてうそをつかない。</p>
+                <p class="quote-note">松浦弥太郎の100の基本（004番）より</p>
+            </div>
+            <div class="quote-card">
+                <p class="quote-text">小さい約束ほど大切にする。</p>
+                <p class="quote-note">松浦弥太郎の100の基本（013番）より</p>
+            </div>
+            <div class="quote-card">
+                <p class="quote-text">思いやりではなく想像力。</p>
+                <p class="quote-note">松浦弥太郎の100の基本（021番）より</p>
+            </div>
+            <div class="quote-card">
+                <p class="quote-text">敗者になっても弱者になるな。</p>
+                <p class="quote-note">松浦弥太郎の100の基本（093番）より</p>
+            </div>
+            <div class="quote-card">
+                <p class="quote-text">自分の基本の更新を常に行う。</p>
+                <p class="quote-note">松浦弥太郎の100の基本（100番・最終項目）より</p>
+            </div>
+            <div class="quote-card">
+                <p class="quote-text">仕事人間にはならない。生活人間になる。</p>
+                <p class="quote-note">読者の印象に残る一文として紹介される言葉</p>
+            </div>
+            <div class="quote-card">
+                <p class="quote-text">やさしい人にはならない。冷たい人にもならない。</p>
+                <p class="quote-note">読者の印象に残る一文として紹介される言葉</p>
+            </div>
+            <div class="quote-card">
+                <p class="quote-text">アクセルよりもハンドリングよりもブレーキ上手になる。</p>
+                <p class="quote-note">読者の印象に残る一文として紹介される言葉</p>
+            </div>
+        </div>
+
+        <div id="actions" class="tab-content" role="tabpanel" aria-labelledby="tab-actions">
+            <div class="action-card">
+                <div class="action-number">1</div>
+                <div class="action-body">
+                    <h3>自分の「基本」を10個書き出す</h3>
+                    <p>ノートか紙に、自分が日常で大事にしている・したい小さな行動指針を10個書き出す。</p>
+                    <p class="meta">🎯 目的: 感覚でなく言語化し、実際の行動に落とし込みやすくする ／ 💪 期待効果: 迷ったときに立ち返る判断の軸ができる ／ ⏱️ 所要: 約20分</p>
+                </div>
+            </div>
+            <div class="action-card">
+                <div class="action-number">2</div>
+                <div class="action-body">
+                    <h3>「いつも15分前」を明日の一つの予定で試す準備をする</h3>
+                    <p>明日の最初の予定について、逆算して家を出る時刻をあらかじめ決めておく。</p>
+                    <p class="meta">🎯 目的: 大きな意志力に頼らず、仕組みで信頼される行動を作る ／ 💪 期待効果: 焦りが減り、相手に安心感を与えられる ／ ⏱️ 所要: 約15分</p>
+                </div>
+            </div>
+            <div class="action-card">
+                <div class="action-number">3</div>
+                <div class="action-body">
+                    <h3>身近な場面での「一文ルール」を1つ作る</h3>
+                    <p>COW BOOKSの100のルールのように、家事や仕事の一場面を思い浮かべ、「〜しない」「〜する」という具体的な一文の自分ルールを1つ書く。</p>
+                    <p class="meta">🎯 目的: 抽象的な「気をつける」を行動レベルに翻訳する練習 ／ 💪 期待効果: 同じ迷いに毎回悩まされなくなる ／ ⏱️ 所要: 約15分</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">📚 関連書籍</div>
+        <ul class="related-list">
+            <li>一汁一菜でよいという提案（土井善晴）: 暮らしの中に「これでよい」というシンプルな基本を定め、それを繰り返す思想が共通する</li>
+            <li>持たない暮らし（下重暁子）: 自分なりの生活の基本ルールを持ち、それに沿って暮らす姿勢が『100の基本』と響き合う</li>
+            <li>思考の整理学（外山滋比古）: 日々の思考や行動を自分の言葉で整理し、独自の「型」を持つ姿勢に通じる</li>
+            <li>自分の中に毒を持て（岡本太郎）: 他人の基準でなく自分の基準（基本）に正直に生きるという点で通じる</li>
+        </ul>
+
+        <footer>
+            📖 読書サマリー自動生成システム｜本ページの内容はWeb上で確認できた情報に基づき作成しています
+        </footer>
+    </div>
+
+    <script>
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.tab-content').forEach(function (el) {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(function (el) {
+                el.classList.remove('active');
+                el.setAttribute('aria-selected', 'false');
+            });
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
+        }
+    </script>
+</body>
+</html>
