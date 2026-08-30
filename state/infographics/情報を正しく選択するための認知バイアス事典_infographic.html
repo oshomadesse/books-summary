@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>情報を正しく選択するための認知バイアス事典</title>
+<!--
+  カラーパレット
+  プライマリー: #2B2E4A (濃紺・思考の色)
+  セカンダリー: #E84545 (赤・錯覚/警告の色)
+  アクセント: #903749 (深紅・注意喚起の色)
+  グラデーション: linear-gradient(135deg, #2B2E4A 0%, #903749 100%)
+-->
+<style>
+  :root{
+    --primary:#2B2E4A;
+    --secondary:#E84545;
+    --accent:#903749;
+    --bg:#F6F4F2;
+    --card:#FFFFFF;
+    --text:#232323;
+    --sub:#5b5b5b;
+    --border:#e6e1da;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+  }
+  header{
+    background:linear-gradient(135deg,#2B2E4A 0%,#903749 100%);
+    color:#fff;
+    padding:28px 18px 34px;
+    text-align:center;
+  }
+  header .kicker{font-size:.78rem;letter-spacing:.12em;opacity:.85;margin-bottom:6px;}
+  header h1{margin:0 0 6px;font-size:1.4rem;line-height:1.45;}
+  header .sub{font-size:.85rem;opacity:.9;}
+  .badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+  .badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:4px 12px;font-size:.72rem;}
+  main{max-width:720px;margin:0 auto;padding:16px 14px 60px;}
+  .hero{background:var(--card);border-radius:16px;padding:18px;margin:-20px 0 20px;box-shadow:0 6px 20px rgba(43,46,74,.12);border:1px solid var(--border);}
+  .hero h2{font-size:.95rem;color:var(--primary);margin:0 0 10px;display:flex;align-items:center;gap:6px;}
+  .qa-block{display:grid;gap:10px;}
+  .qa-row{background:#f9f7f5;border-left:4px solid var(--secondary);border-radius:8px;padding:10px 12px;font-size:.87rem;}
+  .qa-row.why{border-left-color:var(--accent);}
+  .qa-row .lbl{font-weight:700;color:var(--primary);display:block;margin-bottom:2px;font-size:.78rem;}
+  .core-msg{background:linear-gradient(135deg,#2B2E4A 0%,#903749 100%);color:#fff;border-radius:12px;padding:14px 16px;margin-top:12px;font-size:.88rem;}
+  nav.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;-webkit-overflow-scrolling:touch;}
+  nav.tabs button{flex:0 0 auto;background:var(--card);border:1px solid var(--border);color:var(--primary);padding:9px 14px;border-radius:999px;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;}
+  nav.tabs button[aria-selected="true"]{background:var(--primary);color:#fff;border-color:var(--primary);}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
+  .card h3{margin:0 0 8px;font-size:.95rem;color:var(--primary);display:flex;align-items:center;gap:6px;}
+  .card .part-tag{display:inline-block;font-size:.66rem;background:#f1eee9;color:var(--sub);border-radius:6px;padding:2px 6px;margin-bottom:6px;}
+  .card ul{margin:0;padding-left:1.1em;font-size:.85rem;}
+  .card li{margin-bottom:4px;}
+  .why{margin-top:8px;background:#fbecec;border-radius:8px;padding:8px 10px;font-size:.78rem;color:#7a2a35;}
+  .why b{color:var(--accent);}
+  .stat-row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px;}
+  .stat{flex:1 1 90px;background:#f9f7f5;border-radius:10px;padding:10px;text-align:center;}
+  .stat .num{font-size:1.3rem;font-weight:800;color:var(--accent);}
+  .stat .lbl{font-size:.68rem;color:var(--sub);}
+  .quote{border-left:4px solid var(--secondary);background:#fff4f4;padding:12px 14px;border-radius:8px;margin-bottom:12px;font-size:.86rem;}
+  .quote .note{display:block;margin-top:6px;font-size:.72rem;color:var(--sub);}
+  .action-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:12px;border-left:5px solid var(--accent);}
+  .action-card h3{margin:0 0 6px;font-size:.92rem;color:var(--primary);}
+  .action-card .meta{font-size:.78rem;color:var(--sub);}
+  .related{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;}
+  .related ul{margin:0;padding-left:1.1em;font-size:.85rem;}
+  .related li{margin-bottom:6px;}
+  footer{text-align:center;font-size:.7rem;color:var(--sub);padding:20px 0 40px;}
+  @media (min-width:600px){.hero{margin-top:-24px;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">📚 今日読むべき本</div>
+  <h1>情報を正しく選択するための<br>認知バイアス事典</h1>
+  <div class="sub">情報文化研究所（著）／高橋昌一郎（監修）・フォレスト出版</div>
+  <div class="badges">
+    <span class="badge">🧠 心理学</span>
+    <span class="badge">📖 60の心のクセ</span>
+    <span class="badge">🔎 論理学×認知科学×社会心理学</span>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <h2>⚡ 要約：Why &amp; How</h2>
+    <div class="qa-block">
+      <div class="qa-row">
+        <span class="lbl">❓ 問い</span>
+        なぜ人は間違った情報や判断を「正しい」と思い込んでしまうのか？
+      </div>
+      <div class="qa-row why">
+        <span class="lbl">💡 答え</span>
+        論理・知覚・対人関係のそれぞれに、無自覚のうちに判断を歪める「心のクセ」＝認知バイアスが備わっているから。
+      </div>
+      <div class="qa-row">
+        <span class="lbl">🔍 根拠</span>
+        論理学・認知科学・社会心理学の3分野から厳選された60項目のバイアスが、具体例とともに繰り返し確認されている。
+      </div>
+    </div>
+    <div class="core-msg">
+      📣 <b>核心的メッセージ：</b>人間の思考には「論理」「知覚」「対人関係」の3つの領域それぞれに系統的な歪み（認知バイアス）が組み込まれている。60種のバイアスを知識として持つことが、情報を正しく選択し、間違った判断を避ける最初の武器になる。
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples" onclick="switchTab('examples')">🧪 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">💬 重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </nav>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <span class="part-tag">第Ⅰ部 論理学的アプローチ</span>
+      <h3>⚖️ 二分法の誤謬</h3>
+      <ul>
+        <li>実際には多様な選択肢があるのに「敵か味方か」など2択に単純化してしまう</li>
+        <li>議論や意思決定の幅を不必要に狭める</li>
+      </ul>
+      <div class="why"><b>理由：</b>複雑な問題を安易に白黒つけようとする自分の癖に気づける。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第Ⅰ部 論理学的アプローチ</span>
+      <h3>🎲 ギャンブラーの誤謬</h3>
+      <ul>
+        <li>独立した確率事象なのに「そろそろ変わるはず」と誤って予測する</li>
+        <li>コイン投げで表が続くと次は裏が出やすいと感じてしまう</li>
+      </ul>
+      <div class="why"><b>理由：</b>投資・ギャンブル・在庫予測など、確率が絡む判断の落とし穴を防ぐ。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第Ⅰ部 論理学的アプローチ</span>
+      <h3>🍒 チェリー・ピッキング</h3>
+      <ul>
+        <li>自分の主張に都合の良いデータだけを選んで提示する</li>
+        <li>反証となるデータは無視・軽視される</li>
+      </ul>
+      <div class="why"><b>理由：</b>ニュースやSNSの主張を鵜呑みにせず、抜けている情報を疑う視点を持てる。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第Ⅱ部 認知科学的アプローチ</span>
+      <h3>👁️ ミュラー・リヤー錯視</h3>
+      <ul>
+        <li>同じ長さの線分でも、両端の矢羽根の向きで長さの見え方が変わる</li>
+        <li>知覚そのものが客観的事実からズレる代表例</li>
+      </ul>
+      <div class="why"><b>理由：</b>「見たまま」が常に正しいとは限らないという知覚バイアスの基本を示す。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第Ⅱ部 認知科学的アプローチ</span>
+      <h3>🧠 確証バイアス</h3>
+      <ul>
+        <li>自分の考えを支持する情報ばかり集め、反する情報を無視する</li>
+        <li>血液型占いなどの「思い込みの補強」に典型的に現れる</li>
+      </ul>
+      <div class="why"><b>理由：</b>意思決定・人間関係・情報収集のあらゆる場面で最も影響力の大きいバイアスの一つ。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第Ⅲ部 社会心理学的アプローチ</span>
+      <h3>😇 ハロー効果</h3>
+      <ul>
+        <li>ある際立った特徴に引きずられて全体の評価が歪む</li>
+        <li>身だしなみ・学歴・肩書きが実力以上の評価につながる</li>
+      </ul>
+      <div class="why"><b>理由：</b>採用面接・人事評価・マーケティングでの誤判断を防ぐ視点になる。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第Ⅲ部 社会心理学的アプローチ</span>
+      <h3>📈 ダニング＝クルーガー効果</h3>
+      <div class="stat-row">
+        <div class="stat"><div class="num">60項目</div><div class="lbl">収録バイアス数</div></div>
+        <div class="stat"><div class="num">3分野</div><div class="lbl">論理・認知・社会</div></div>
+      </div>
+      <ul>
+        <li>知識や能力が不足しているほど自己評価が過大になる「優越の錯覚」</li>
+        <li>初心者ほど「簡単だ」と誤解しやすい</li>
+      </ul>
+      <div class="why"><b>理由：</b>自分の実力を客観視し、過信による失敗を避けるために不可欠な概念。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第Ⅲ部 社会心理学的アプローチ</span>
+      <h3>🔁 単純接触効果</h3>
+      <ul>
+        <li>繰り返し接触するだけで対象への好感度が高まる</li>
+        <li>「よく知っている」と「良い人だ」を脳は混同しやすい</li>
+      </ul>
+      <div class="why"><b>理由：</b>広告・人間関係・意思決定で、なぜ「見慣れたもの」を選びがちなのか説明する。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>はじめに｜認知バイアスとは何か</h3>
+      <ul>
+        <li>本書全体の見取り図として、認知バイアスの定義と3つのアプローチを紹介</li>
+      </ul>
+      <div class="why"><b>理由：</b>60項目を個別に読む前に、全体の分類軸を掴んでおくため。</div>
+    </div>
+    <div class="card">
+      <h3>第Ⅰ部｜論理学的アプローチ（20項目）</h3>
+      <ul>
+        <li>二分法の誤謬・ギャンブラーの誤謬・チェリーピッキングなど、論証や推論の誤りを扱う</li>
+      </ul>
+      <div class="why"><b>理由：</b>議論や文章を「筋道として正しいか」検証する力を養うため。</div>
+    </div>
+    <div class="card">
+      <h3>第Ⅱ部｜認知科学的アプローチ（20項目）</h3>
+      <ul>
+        <li>ミュラー・リヤー錯視・確証バイアス・フォルス・メモリなど、知覚や記憶の歪みを扱う</li>
+      </ul>
+      <div class="why"><b>理由：</b>「見たもの・覚えていること」が常に事実とは限らないと知るため。</div>
+    </div>
+    <div class="card">
+      <h3>第Ⅲ部｜社会心理学的アプローチ（20項目）</h3>
+      <ul>
+        <li>ハロー効果・ダニング＝クルーガー効果・単純接触効果など、対人関係で働くバイアスを扱う</li>
+      </ul>
+      <div class="why"><b>理由：</b>他者評価やコミュニケーションの中で無自覚に働く歪みに気づくため。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="card">
+      <h3>🩸 血液型占いと確証バイアス</h3>
+      <ul>
+        <li>背景：「A型は几帳面」「O型は大雑把」といった血液型性格診断が広く信じられている</li>
+        <li>結果：当てはまる出来事だけを記憶し、外れた出来事は忘れてしまう</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>自分の思い込みに合う情報だけを無意識に集めていないか、日常的にチェックする必要がある。</div>
+    </div>
+    <div class="card">
+      <h3>💼 新入社員とダニング＝クルーガー効果</h3>
+      <ul>
+        <li>背景：入社直後に業務を覚え始めた新人が「意外と簡単だ」と感じる</li>
+        <li>結果：数ヶ月後、先輩との実力差に気づき自信を失う「谷」を経験する</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>自己評価の波を客観的な指標と照らし合わせることで、過信にも自己否定にも陥らずに済む。</div>
+    </div>
+    <div class="card">
+      <h3>🎤 有名人起用のCMとハロー効果</h3>
+      <ul>
+        <li>背景：著名なタレントを起用したテレビCMを制作</li>
+        <li>結果：タレントへの好感度がそのまま商品評価に転化し、実際の品質以上に高評価される</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「誰が言ったか」と「何を言ったか」を意識的に切り分けて判断する訓練になる。</div>
+    </div>
+    <div class="card">
+      <h3>🎵 知らない曲と単純接触効果</h3>
+      <ul>
+        <li>背景：初めて聴いたときは何とも思わなかった曲を、何度も耳にする</li>
+        <li>結果：繰り返し聴くうちに「いい曲だ」と感じるようになる</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「馴染みがある＝良い」という直感が、実際の価値判断とズレる場合があると自覚できる。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote">
+      「認知バイアスを知ることは、自分自身の思考の"クセ"を知る取扱説明書（トリセツ）を手に入れることである」
+      <span class="note">※原典の直接引用が確認できなかったため要旨で記載</span>
+    </div>
+    <div class="quote">
+      「論理・知覚・対人関係、それぞれの領域に固有の歪みがあり、一つの分野の知識だけでは情報の誤りを見抜けない」
+      <span class="note">※原典の直接引用が確認できなかったため要旨で記載</span>
+    </div>
+    <div class="quote">
+      「バイアスをゼロにすることはできないが、バイアスの存在を知っているだけで、判断の誤りを大きく減らすことができる」
+      <span class="note">※原典の直接引用が確認できなかったため要旨で記載</span>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="action-card">
+      <h3>1️⃣ 今日の主張を一つ「反証探し」してみる</h3>
+      <ul>
+        <li>自分が強く信じている意見や最近下した判断を1つ選び、あえて反対の根拠をネットで検索する</li>
+      </ul>
+      <div class="meta">🎯 目的：確証バイアス・チェリーピッキングへの気づき　／　💥 期待効果：判断の偏りを自覚できる</div>
+    </div>
+    <div class="action-card">
+      <h3>2️⃣ 「誰が言ったか」を一旦外して評価し直す</h3>
+      <ul>
+        <li>最近、肩書きや見た目で高評価・低評価をつけた人や商品を1つ思い出し、中身だけで再評価する</li>
+      </ul>
+      <div class="meta">🎯 目的：ハロー効果の低減　／　💥 期待効果：より公平な評価軸を持てる</div>
+    </div>
+    <div class="action-card">
+      <h3>3️⃣ 自分の得意分野の自己評価を数値で書き出す</h3>
+      <ul>
+        <li>仕事やスキルで「できている」と思う分野を1つ選び、客観的な基準（実績・フィードバック）と照らして点数をつける</li>
+      </ul>
+      <div class="meta">🎯 目的：ダニング＝クルーガー効果の自覚　／　💥 期待効果：過信・過小評価を防ぎ、成長課題が明確になる</div>
+    </div>
+  </section>
+
+  <div class="related">
+    <h3 style="margin:0 0 8px;color:var(--primary);font-size:.95rem;">📚 関連書籍</h3>
+    <ul>
+      <li>ファスト&スロー（ダニエル・カーネマン）：システム1・システム2という思考の二重構造から、バイアスが生まれる根本メカニズムを解説</li>
+      <li>予想どおりに不合理（ダン・アリエリー）：行動経済学の実験を通じて、人間の非合理な意思決定パターンを具体的に示す</li>
+      <li>影響力の武器（ロバート・チャルディーニ）：社会心理学的バイアスが説得・交渉の場でどう利用されるかを扱う</li>
+      <li>選択の科学（シーナ・アイエンガー）：選択という場面に現れる認知の歪みと、その乗り越え方を論じる</li>
+      <li>錯覚の科学（クリストファー・チャブリス、ダニエル・シモンズ）：知覚・注意の錯覚（第Ⅱ部と直結するテーマ）を豊富な実験で解説</li>
+    </ul>
+  </div>
+</main>
+
+<footer>📚 books-summary daily infographic</footer>
+
+<script>
+function switchTab(name){
+  document.querySelectorAll('section.panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('nav.tabs button').forEach(function(b){b.setAttribute('aria-selected','false');});
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('tab-'+name).setAttribute('aria-selected','true');
+}
+</script>
+</body>
+</html>
