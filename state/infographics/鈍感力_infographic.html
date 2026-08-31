@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鈍感力</title>
+<!--
+  カラーパレット
+  プライマリー: #33475B (紺鼠・外科医としての理知と落ち着き)
+  セカンダリー: #C1666B (くすみレッド・血流／体温を象徴)
+  アクセント: #4C9A85 (くすみグリーン・鈍さ／生命力を象徴)
+  グラデーション: linear-gradient(135deg, #33475B 0%, #4C9A85 100%)
+-->
+<style>
+  :root{
+    --primary:#33475B;
+    --secondary:#C1666B;
+    --accent:#4C9A85;
+    --bg:#F5F3EF;
+    --card:#FFFFFF;
+    --text:#242424;
+    --sub:#606060;
+    --border:#e6e2d9;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+  }
+  header{
+    background:linear-gradient(135deg,#33475B 0%,#4C9A85 100%);
+    color:#fff;
+    padding:28px 18px 34px;
+    text-align:center;
+  }
+  header .kicker{font-size:.78rem;letter-spacing:.12em;opacity:.85;margin-bottom:6px;}
+  header h1{margin:0 0 6px;font-size:1.5rem;line-height:1.45;}
+  header .sub{font-size:.85rem;opacity:.9;}
+  .badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+  .badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:4px 12px;font-size:.72rem;}
+  main{max-width:720px;margin:0 auto;padding:16px 14px 60px;}
+  .hero{background:var(--card);border-radius:16px;padding:18px;margin:-20px 0 20px;box-shadow:0 6px 20px rgba(51,71,91,.14);border:1px solid var(--border);}
+  .hero h2{font-size:.95rem;color:var(--primary);margin:0 0 10px;display:flex;align-items:center;gap:6px;}
+  .qa-block{display:grid;gap:10px;}
+  .qa-row{background:#f9f7f4;border-left:4px solid var(--secondary);border-radius:8px;padding:10px 12px;font-size:.87rem;}
+  .qa-row.why{border-left-color:var(--accent);}
+  .qa-row .lbl{font-weight:700;color:var(--primary);display:block;margin-bottom:2px;font-size:.78rem;}
+  .core-msg{background:linear-gradient(135deg,#33475B 0%,#4C9A85 100%);color:#fff;border-radius:12px;padding:14px 16px;margin-top:12px;font-size:.88rem;}
+  nav.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;-webkit-overflow-scrolling:touch;}
+  nav.tabs button{flex:0 0 auto;background:var(--card);border:1px solid var(--border);color:var(--primary);padding:9px 14px;border-radius:999px;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;}
+  nav.tabs button[aria-selected="true"]{background:var(--primary);color:#fff;border-color:var(--primary);}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:12px;}
+  .card h3{margin:0 0 8px;font-size:.95rem;color:var(--primary);display:flex;align-items:center;gap:6px;}
+  .card .part-tag{display:inline-block;font-size:.66rem;background:#f1eee6;color:var(--sub);border-radius:6px;padding:2px 6px;margin-bottom:6px;}
+  .card ul{margin:0;padding-left:1.1em;font-size:.85rem;}
+  .card li{margin-bottom:4px;}
+  .why{margin-top:8px;background:#eef5f2;border-radius:8px;padding:8px 10px;font-size:.78rem;color:#2c5c4d;}
+  .why b{color:var(--accent);}
+  .stat-row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px;}
+  .stat{flex:1 1 90px;background:#f9f7f4;border-radius:10px;padding:10px;text-align:center;}
+  .stat .num{font-size:1.3rem;font-weight:800;color:var(--accent);}
+  .stat .lbl{font-size:.68rem;color:var(--sub);}
+  .quote{border-left:4px solid var(--secondary);background:#fbeeee;padding:12px 14px;border-radius:8px;margin-bottom:12px;font-size:.86rem;}
+  .quote .note{display:block;margin-top:6px;font-size:.72rem;color:var(--sub);}
+  .action-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:12px;border-left:5px solid var(--accent);}
+  .action-card h3{margin:0 0 6px;font-size:.92rem;color:var(--primary);}
+  .action-card .meta{font-size:.78rem;color:var(--sub);}
+  .related{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;}
+  .related ul{margin:0;padding-left:1.1em;font-size:.85rem;}
+  .related li{margin-bottom:6px;}
+  footer{text-align:center;font-size:.7rem;color:var(--sub);padding:20px 0 40px;}
+  @media (min-width:600px){.hero{margin-top:-24px;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">📚 今日読むべき本</div>
+  <h1>鈍感力</h1>
+  <div class="sub">渡辺淳一（著）・集英社</div>
+  <div class="badges">
+    <span class="badge">🌱 自己啓発</span>
+    <span class="badge">🩺 元外科医が説く生きる知恵</span>
+    <span class="badge">📈 発行部数100万部超</span>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <h2>⚡ 要約：Why &amp; How</h2>
+    <div class="qa-block">
+      <div class="qa-row">
+        <span class="lbl">❓ 問い</span>
+        繊細で鋭敏な人ほど生きづらい現代社会を、私たちはどう乗り切ればよいのか？
+      </div>
+      <div class="qa-row why">
+        <span class="lbl">💡 答え</span>
+        些細な失敗や他人の言動、嫉妬や皮肉にいちいち動じない「鈍感力」こそが、恋愛・結婚・仕事・健康のすべてを支える最大の才能である。
+      </div>
+      <div class="qa-row">
+        <span class="lbl">🔍 根拠</span>
+        外科医としての臨床経験と作家としての人間観察から、血流や自律神経といった身体面、人間関係や職場での処世術まで、幅広い場面で「鈍さ」が良い結果を生む具体例が示されている。
+      </div>
+    </div>
+    <div class="core-msg">
+      📣 <b>核心的メッセージ：</b>敏感さや繊細さが評価されがちな世の中だが、些細なことに揺るがず平然と受け流す「鈍感力」こそ、複雑な現代社会を健やかにしなやかに生き抜くための、最も大切で源になる才能である。
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples" onclick="switchTab('examples')">🧪 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">💬 重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </nav>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🌫️ 鈍感力とは何か</h3>
+      <ul>
+        <li>些細な失敗・他人の一言・環境の変化にいちいち反応せず、平然と受け流す力</li>
+        <li>単なる「無神経」ではなく、大事なことにはきちんと反応する、しなやかな精神的耐久力</li>
+      </ul>
+      <div class="why"><b>理由：</b>敏感さ一辺倒では現代社会のストレス量に心身が耐えられないため、まず鈍感力の定義を押さえる。</div>
+    </div>
+    <div class="card">
+      <h3>🩸 血流と自律神経（鈍さの身体的基盤）</h3>
+      <div class="stat-row">
+        <div class="stat"><div class="num">16章</div><div class="lbl">構成される章立て</div></div>
+        <div class="stat"><div class="num">100万部+</div><div class="lbl">発行部数（集英社刊）</div></div>
+      </div>
+      <ul>
+        <li>血管がしなやかで血流の良い人ほど、ストレスによる自律神経の乱れが体調に直結しにくい</li>
+        <li>元外科医としての臨床経験から、鈍感さを精神論だけでなく身体論として説明する</li>
+      </ul>
+      <div class="why"><b>理由：</b>「鈍感力＝気の持ちよう」で終わらせず、体づくりでも鍛えられると分かる。</div>
+    </div>
+    <div class="card">
+      <h3>🙌 「図にのる」才能</h3>
+      <ul>
+        <li>褒められたときに素直に喜び、勢いに乗れる鈍感さが成長の推進力になる</li>
+        <li>謙遜しすぎたり褒め言葉を疑いすぎたりすると、伸びる機会を自ら手放してしまう</li>
+      </ul>
+      <div class="why"><b>理由：</b>「調子に乗るな」という日本的美徳が、時に成長のブレーキになると気づける。</div>
+    </div>
+    <div class="card">
+      <h3>💞 恋愛における鈍感力</h3>
+      <ul>
+        <li>相手の細かい欠点や気分のムラを深読みしすぎない鈍さが、関係を長続きさせる</li>
+        <li>好きな相手からの些細なそっけなさにいちいち傷つかない耐性が「恋愛力」につながる</li>
+      </ul>
+      <div class="why"><b>理由：</b>恋愛の悩みの多くが「相手の言動の深読みしすぎ」から生まれると分かる。</div>
+    </div>
+    <div class="card">
+      <h3>🏠 結婚生活を維持する鈍感力</h3>
+      <ul>
+        <li>日々の小さなすれ違いや不満を毎回真正面から受け止めない鈍さが夫婦関係を保つ</li>
+        <li>細部にこだわりすぎる敏感さは、長期の共同生活とは相性が悪い</li>
+      </ul>
+      <div class="why"><b>理由：</b>結婚生活を「長距離走」として捉える視点が、関係の続け方を変える。</div>
+    </div>
+    <div class="card">
+      <h3>🏢 職場で生き抜く鈍感力</h3>
+      <ul>
+        <li>上司の叱責、同僚の嫉妬や皮肉を真に受けすぎず受け流すことで、組織の中で力を発揮し続けられる</li>
+        <li>成果を出すほど嫉妬されやすいという前提を持っておくと、動揺せずに済む</li>
+      </ul>
+      <div class="why"><b>理由：</b>職場の人間関係ストレスを長期で乗り切るための現実的な処世術になる。</div>
+    </div>
+    <div class="card">
+      <h3>🎗️ 病気に強い鈍感力（ガンへの抵抗力）</h3>
+      <ul>
+        <li>くよくよ悩み続けず前向きでいられる人ほど、免疫機能が落ちにくいと著者は主張する</li>
+        <li>ストレスをためこまない性質そのものが、病気に対する一種の防御力になる</li>
+      </ul>
+      <div class="why"><b>理由：</b>メンタルの持ち方が、単なる気分の問題ではなく健康に直結すると理解できる。</div>
+    </div>
+    <div class="card">
+      <h3>🤱 母性愛という鈍感力</h3>
+      <ul>
+        <li>子どもの多少の失敗やわがままにおおらかに構える母親の鈍さが、子どもの健全な成長を支える</li>
+        <li>細部まで管理しすぎない子育てが、結果的に子どもの自立を促す</li>
+      </ul>
+      <div class="why"><b>理由：</b>鈍感力が個人の生き方だけでなく、次世代の育成にも関わると分かる。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <span class="part-tag">第1・2章</span>
+      <h3>ある才能の喪失／叱られ続けた名医</h3>
+      <ul>
+        <li>著者が医局時代に見た、上司にどれだけ叱られても動じずに腕を磨き続けた外科医のエピソードから鈍感力の重要性を説き起こす</li>
+      </ul>
+      <div class="why"><b>理由：</b>本書全体のテーマである「鈍感さ＝才能」を、著者自身の実体験から導入するため。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第3・4・7章</span>
+      <h3>血をさらさらと流すために／五感の鈍さ／鈍い腸をもった男</h3>
+      <ul>
+        <li>血流・自律神経・消化器といった身体機能の面から、鈍感さが健康と体調管理に直結することを医学的視点で解説</li>
+      </ul>
+      <div class="why"><b>理由：</b>鈍感力を精神論ではなく身体のメカニズムとして裏付けるパートのため。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第5・6章</span>
+      <h3>眠れる大人／図にのる才能</h3>
+      <ul>
+        <li>よく眠れる人ほど鈍感力が高く、また褒められて素直に伸びる「図にのる」姿勢が成功につながると論じる</li>
+      </ul>
+      <div class="why"><b>理由：</b>睡眠と自己肯定感という、日常生活に直結する切り口で鈍感力を語るため。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第8・13章</span>
+      <h3>愛の女神を射とめるために／恋愛力とは？</h3>
+      <ul>
+        <li>恋愛においては相手の言動を深読みしすぎない鈍さこそが、良い関係を築く「恋愛力」の正体だと説く</li>
+      </ul>
+      <div class="why"><b>理由：</b>恋愛という悩みの多い領域に鈍感力を当てはめ、実践的な処方箋を示すため。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第9・16章</span>
+      <h3>結婚生活を維持するために／母性愛この偉大なる鈍感力</h3>
+      <ul>
+        <li>夫婦関係の維持と子育てにおいて、細部にこだわらないおおらかさがどう機能するかを描く</li>
+      </ul>
+      <div class="why"><b>理由：</b>家庭という長期的な人間関係の中で鈍感力がどう働くかを示すため。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第12・14・15章</span>
+      <h3>嫉妬や皮肉に感謝／会社で生き抜くために／環境適応能力</h3>
+      <ul>
+        <li>組織や職場で受ける嫉妬・皮肉・変化を、脅威ではなく成長の証や環境適応の機会として捉え直す視点を提示する</li>
+      </ul>
+      <div class="why"><b>理由：</b>仕事という避けられないストレス源への具体的な対処法を提供するため。</div>
+    </div>
+    <div class="card">
+      <span class="part-tag">第10・11章</span>
+      <h3>ガンに強くなるために／女性の強さ</h3>
+      <ul>
+        <li>ストレスをためこまない性質が病気への抵抗力になるという主張と、女性に見られるしなやかな鈍感さを対比的に論じる</li>
+      </ul>
+      <div class="why"><b>理由：</b>鈍感力を生存戦略・健康戦略として締めくくるパートのため。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="card">
+      <h3>🏥 叱られ続けても名医になった外科医</h3>
+      <ul>
+        <li>背景：著者が医局に勤めていた頃、指導医から日常的に厳しく叱責され続けていた若手外科医がいた</li>
+        <li>結果：いちいち落ち込まずに執刀を重ね続け、やがて周囲から一目置かれる名医へと成長した</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>叱責を真正面から受け止めすぎないことが、技術や経験を積み続けるための土台になる。</div>
+    </div>
+    <div class="card">
+      <h3>🩺 血管がしなやかな人の身体的優位性</h3>
+      <ul>
+        <li>背景：外科手術の現場では、血管が細く硬い患者ほどストレス下で血流トラブルを起こしやすい</li>
+        <li>結果：血流がよくしなやかな体の持ち主は、精神的にも動じにくい傾向が見られる</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>メンタルの強さは気持ちだけでなく、体のコンディションづくりからも近づける。</div>
+    </div>
+    <div class="card">
+      <h3>🎉 褒められて「図にのった」ことで伸びた経験</h3>
+      <ul>
+        <li>背景：仕事や創作の場で、周囲から褒められたことを素直に受け止め自信にした人がいる</li>
+        <li>結果：謙遜して自信を打ち消す人よりも、実力を伸ばし続けやすい</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>謙虚さと自信のなさを混同すると、伸びる機会を自ら手放してしまう。</div>
+    </div>
+    <div class="card">
+      <h3>🗣️ 嫉妬や皮肉を「感謝」に転換する職場の視点</h3>
+      <ul>
+        <li>背景：成果を出した人が、同僚から陰口や皮肉を言われる場面</li>
+        <li>結果：それを「注目され、警戒されるほどの成果を出せた証」と捉え直すことで、動揺せず仕事を続けられる</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>ネガティブな反応の意味づけを変えるだけで、職場でのストレス耐性が大きく変わる。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote">
+      「鈍感力は人生を生き抜くために欠かせない。人にどう思われようと気にせず、失敗するたびにくよくよせず、人と比較して悩まない。そうした鈍さが、些細なことに揺るがない強さになる」
+      <span class="note">※原典の直接引用が確認できなかったため要旨で記載</span>
+    </div>
+    <div class="quote">
+      「愛情豊かで大らかな母親に育てられた子どもは、たくましい鈍感力を身につけていく」
+      <span class="note">※原典の直接引用が確認できなかったため要旨で記載</span>
+    </div>
+    <div class="quote">
+      「結果を出せば嫉妬や皮肉を向けられることもある。それは脅威が及ぶほどの存在になれた証と考え、むしろ感謝すべきものである」
+      <span class="note">※原典の直接引用が確認できなかったため要旨で記載</span>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="action-card">
+      <h3>1️⃣ 今日言われた一言を「受け流す」練習をする</h3>
+      <ul>
+        <li>今日、誰かに言われた小言・嫌味・きつい一言を1つ思い出し、「気にしない」と声に出してから次の作業に移る</li>
+      </ul>
+      <div class="meta">🎯 目的：反応する前にワンクッション置く習慣づけ　／　💥 期待効果：感情の消耗を減らし、平常心を保ちやすくなる</div>
+    </div>
+    <div class="action-card">
+      <h3>2️⃣ 就寝前に10分、血流を意識したストレッチをする</h3>
+      <ul>
+        <li>首・肩・ふくらはぎをゆっくり伸ばしながら深呼吸を繰り返し、体をゆるめる時間を作る</li>
+      </ul>
+      <div class="meta">🎯 目的：血流を良くし自律神経を整える　／　💥 期待効果：睡眠の質向上とストレス耐性の底上げ</div>
+    </div>
+    <div class="action-card">
+      <h3>3️⃣ 今日の小さな成功を1つ書き出し、素直に喜ぶ</h3>
+      <ul>
+        <li>今日褒められたこと・うまくいったことを1つノートやメモアプリに書き、謙遜せずにそのまま受け止める</li>
+      </ul>
+      <div class="meta">🎯 目的：「図にのる」練習をして前向きな鈍感力を養う　／　💥 期待効果：自己肯定感の向上とモチベーション維持</div>
+    </div>
+  </section>
+
+  <div class="related">
+    <h3 style="margin:0 0 8px;color:var(--primary);font-size:.95rem;">📚 関連書籍</h3>
+    <ul>
+      <li>ストレスを操るメンタル強化術（メンタリストDaiGo）：ストレスへの反応をコントロールする技術という点で、鈍感力の現代的・科学的な発展形といえる</li>
+      <li>メンタルが強い人がやめた13の習慣（エイミー・モーリン）：他人の評価に振り回されない心の持ち方を扱い、鈍感力の「メンタルの強さ」の側面と重なる</li>
+      <li>反応しない練習（草薙龍瞬）：他人の言動にいちいち反応しない生き方を説く点で、鈍感力の仏教的アプローチにあたる</li>
+      <li>神メンタル（星渉）：自己肯定感とメンタルの強さを扱い、些細なことに揺るがない在り方という核心が共通する</li>
+    </ul>
+  </div>
+</main>
+
+<footer>📚 books-summary daily infographic</footer>
+
+<script>
+function switchTab(name){
+  document.querySelectorAll('section.panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('nav.tabs button').forEach(function(b){b.setAttribute('aria-selected','false');});
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('tab-'+name).setAttribute('aria-selected','true');
+}
+</script>
+</body>
+</html>
