@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>億までの人 億からの人 — インフォグラフィック</title>
+<!--
+  カラーパレット（インフォグラフィック指示 要件4）
+  primary   : #0F3D3E  (ディープティール — 落ち着いた信頼感・堅実さ)
+  secondary : #C9A227  (ゴールド — 富・資産のメタファー)
+  accent    : #1B6B93  (スチールブルー — 知性・分析)
+  グラデーション: linear-gradient(135deg, #0F3D3E 0%, #1B6B93 100%)
+-->
+<style>
+  :root{
+    --primary:#0F3D3E;
+    --primary-light:#17595a;
+    --secondary:#C9A227;
+    --secondary-light:#e6c65c;
+    --accent:#1B6B93;
+    --bg:#f7f5ef;
+    --card:#ffffff;
+    --ink:#1c2b2b;
+    --ink-soft:#4a5a5a;
+    --border:#e4ded0;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  .hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color:#fff;
+    padding:28px 20px 32px;
+    text-align:center;
+  }
+  .hero .eyebrow{
+    font-size:13px;
+    letter-spacing:.12em;
+    opacity:.85;
+    margin-bottom:8px;
+  }
+  .hero h1{
+    font-size:clamp(20px,5vw,30px);
+    margin:0 0 6px;
+    font-weight:800;
+    line-height:1.4;
+  }
+  .hero .sub{
+    font-size:13px;
+    opacity:.9;
+    margin:0;
+  }
+  .hero .author{
+    margin-top:14px;
+    display:inline-block;
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;
+    padding:6px 16px;
+    font-size:13px;
+  }
+
+  .whywhat{
+    max-width:760px;
+    margin:-20px auto 0;
+    padding:0 16px;
+    position:relative;
+    z-index:2;
+  }
+  .whywhat-card{
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:0 10px 30px rgba(15,61,62,.15);
+    padding:20px;
+    border:1px solid var(--border);
+  }
+  .whywhat-card h2{
+    font-size:14px;
+    color:var(--secondary);
+    letter-spacing:.08em;
+    margin:0 0 12px;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .qa-item{
+    background:var(--bg);
+    border-radius:12px;
+    padding:12px 14px;
+    border-left:4px solid var(--accent);
+  }
+  .qa-item.answer{border-left-color:var(--secondary);}
+  .qa-item.why{border-left-color:var(--primary);}
+  .qa-label{font-size:11px;font-weight:700;color:var(--ink-soft);margin-bottom:4px;}
+  .qa-text{font-size:14px;font-weight:600;}
+
+  .container{max-width:760px;margin:0 auto;padding:20px 16px 0;}
+
+  .stats-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:18px 0;
+  }
+  .stat{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px 8px;
+    text-align:center;
+  }
+  .stat .num{
+    font-size:20px;
+    font-weight:800;
+    color:var(--primary);
+    display:block;
+  }
+  .stat .num small{font-size:12px;font-weight:600;}
+  .stat .label{font-size:11px;color:var(--ink-soft);margin-top:4px;}
+
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:20px 0 12px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--ink-soft);
+    padding:10px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:.15s;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+
+  .panel{display:none;}
+  .panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card h3 .badge{
+    background:var(--secondary);
+    color:#3a2c00;
+    font-size:11px;
+    font-weight:800;
+    padding:2px 8px;
+    border-radius:6px;
+  }
+  .card ul{
+    margin:0 0 10px;
+    padding-left:18px;
+    font-size:13.5px;
+  }
+  .card ul li{margin-bottom:4px;}
+  .why-box{
+    background:linear-gradient(135deg, rgba(15,61,62,.06), rgba(27,107,147,.06));
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .why-box b{color:var(--primary);}
+
+  .route-bar{
+    display:flex;
+    gap:8px;
+    margin:8px 0 12px;
+  }
+  .route-bar .seg{
+    flex:1;
+    height:10px;
+    border-radius:6px;
+  }
+  .seg.a{background:var(--primary);}
+  .seg.b{background:var(--secondary);}
+
+  .quote-card{
+    background:var(--primary);
+    color:#fff;
+    border-radius:var(--radius);
+    padding:18px;
+    margin-bottom:14px;
+    position:relative;
+  }
+  .quote-card .mark{font-size:32px;opacity:.35;line-height:0;position:absolute;top:10px;left:14px;}
+  .quote-card p.q{font-size:14.5px;font-weight:600;margin:14px 0 8px;padding-left:6px;}
+  .quote-card .note{font-size:11px;opacity:.8;padding-left:6px;}
+
+  .action-card{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 32px;
+    height:32px;
+    border-radius:50%;
+    background:var(--secondary);
+    color:#3a2c00;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:14px;
+  }
+  .action-body{flex:1;}
+  .action-body h3{margin:0 0 6px;font-size:14.5px;}
+  .action-meta{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:8px;
+  }
+  .pill{
+    font-size:11px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:3px 10px;
+    color:var(--ink-soft);
+  }
+
+  .related-card ul{list-style:none;padding:0;margin:0;}
+  .related-card li{
+    padding:10px 0;
+    border-bottom:1px dashed var(--border);
+    font-size:13.5px;
+  }
+  .related-card li:last-child{border-bottom:none;}
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--ink-soft);
+    margin-top:24px;
+    padding:0 20px;
+  }
+  @media (min-width:640px){
+    .qa-row{grid-template-columns:1fr 1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">📚 今日の一冊 ｜ ビジネス</div>
+  <h1>億までの人 億からの人</h1>
+  <p class="sub">ゴールドマン・サックス勤続17年の投資家が明かす「兆人」のマインド</p>
+  <span class="author">👤 田中渓（徳間書店）</span>
+</div>
+
+<div class="whywhat">
+  <div class="whywhat-card">
+    <h2>⚡ 要約：Why &amp; How</h2>
+    <div class="qa-row">
+      <div class="qa-item">
+        <div class="qa-label">問い（Why）</div>
+        <div class="qa-text">「億」を超えられる人と超えられない人を分けるものは何か？</div>
+      </div>
+      <div class="qa-item answer">
+        <div class="qa-label">答え（What）</div>
+        <div class="qa-text">投資テクニックや運ではなく、「決めたことを例外なくやり切る」習慣と、お金・時間・人間関係への一貫した哲学。</div>
+      </div>
+      <div class="qa-item why">
+        <div class="qa-label">根拠（How we know）</div>
+        <div class="qa-text">20カ国以上・300人超の億円〜兆円資産家・王族への直接取材から見えた共通パターン。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="stats-row">
+    <div class="stat"><span class="num">17<small>年</small></span><span class="label">GS勤続年数</span></div>
+    <div class="stat"><span class="num">300<small>人+</small></span><span class="label">取材した富裕層</span></div>
+    <div class="stat"><span class="num">20<small>ヶ国+</small></span><span class="label">交流した国・地域</span></div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases" onclick="switchTab('cases')">💡 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">🗣️ 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </div>
+
+  <!-- 主要概念の詳細 -->
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3><span class="badge">01</span>兆人（ちょうじん）のマインド</h3>
+      <ul>
+        <li>億円資産家をさらに超え、兆円規模に至った人々に共通する思考様式</li>
+        <li>資産額そのものではなく「意思決定の質と一貫性」を指す言葉</li>
+        <li>本書全体を貫く中心概念</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>資産規模を「額」ではなく「思考の再現性」で語ることで、読者にも真似できる形に翻訳しているため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">02</span>2つの富裕層ルート</h3>
+      <div class="route-bar"><div class="seg a"></div><div class="seg b"></div></div>
+      <ul>
+        <li><b>金融エリート系</b>：難関大学 → 投資銀行・戦略コンサル → 30代後半〜40代半ばで年収1億円超。組織のリソースを使い大規模資金を運用</li>
+        <li><b>ベンチャー経営者系</b>：自ら事業を起こし20代後半〜40歳前後で成功。リスクを取り革新的アイデアで市場を切り拓く</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>自分がどちらのタイプに近いかを知ることで、現実的な資産形成戦略を選べるため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">03</span>例外なきルーティン</h3>
+      <ul>
+        <li>「決めたことを、例外なく、やり切る」姿勢</li>
+        <li>例：平日21時から15分の勉強時間は誘いがあっても絶対に動かさない</li>
+        <li>意志力ではなく「仕組み」として継続を支える</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>才能や運に依存しない、誰でも今日から真似できる再現性の高い要素だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">04</span>投資しないことのリスク</h3>
+      <ul>
+        <li>現金を寝かせること自体が「機会損失」というリスクである、という共通認識</li>
+        <li>お金にお金を稼がせる仕組みを一貫して持ち続ける</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「守り」のつもりの現金保有が、実は長期的にはリスクだと気づかせてくれるため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">05</span>「触らない money」のルール</h3>
+      <ul>
+        <li>毎月の収入から投資に回す額をあらかじめ決める</li>
+        <li>必要に応じ借入も活用しつつ、期間と損益ラインを事前設定</li>
+        <li>設定したラインは感情に流されず厳格に守る</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>相場の上下に一喜一憂せず、一貫した意思決定を保つための具体的な仕組みだから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">06</span>人間関係・創造性・健康</h3>
+      <ul>
+        <li>富裕層が資産規模に関わらず本当に重視する3つの柱</li>
+        <li>「お金があれば幸せ」という単純な図式を本書ははっきり否定</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>資産形成を目的化させず、人生の充足という本来のゴールを見失わせないため。</div>
+    </div>
+
+  </section>
+
+  <!-- 各章の要約 -->
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <div class="card">
+      <h3><span class="badge">論点1</span>富裕層への2つの道</h3>
+      <ul>
+        <li>金融エリート系とベンチャー経営者系、2つの対照的なキャリアパスを比較</li>
+        <li>強み・リスク許容度・時間軸の違いを解説</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>自分のタイプを知ることで、資産形成の戦略を現実的に組み立てられるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">論点2</span>「やり切る力」としての習慣</h3>
+      <ul>
+        <li>決めたことを例外なく実行する姿勢が、知識やスキル以上に資産形成を左右する</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>誰でも真似できる、再現性の高い成功要因だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">論点3</span>お金にお金を稼がせる仕組み</h3>
+      <ul>
+        <li>「投資しないリスク」の認識</li>
+        <li>借入・運用・撤退基準を事前に決める規律的な資産運用法</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>感情に流されず一貫した意思決定を保つ具体的な仕組みが示されているから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">論点4</span>富裕層が本当に大切にしているもの</h3>
+      <ul>
+        <li>人間関係・創造性・健康という、資産額だけでは測れない充足の条件</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「お金＝幸福」という誤解を正し、資産形成の目的を見失わないための指針になるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">論点5</span>今日から始められる習慣</h3>
+      <ul>
+        <li>早起きや運動など、誰でも今すぐ着手できる具体的な実践例</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>抽象論で終わらせず、読者が実際に行動へ移せるようにするため。</div>
+    </div>
+
+  </section>
+
+  <!-- 具体例 -->
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+
+    <div class="card">
+      <h3><span class="badge">例1</span>「21時から15分」の学習ルール</h3>
+      <ul>
+        <li>ある富裕層は平日21時から15分間の金融リテラシー学習時間を決めた</li>
+        <li>飲み会などの誘いがあっても一切スケジュールを動かさなかった</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>意志力ではなく「例外を作らない仕組み」こそが継続を可能にする。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">例2</span>20カ国・300人超に共通した特徴</h3>
+      <ul>
+        <li>産油国の王族から国内の兆円資産家まで、文化的背景の異なる富裕層を取材</li>
+        <li>共通して見られたのは「決断の速さ」と「継続力」</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>資産規模や出自を問わず、成功の本質的要因は限られた普遍的な習慣に集約される。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">例3</span>一般会社員向けの資産形成戦略</h3>
+      <ul>
+        <li>毎月の収入から投資に回す額をあらかじめ決める</li>
+        <li>必要に応じ借入も活用しつつ運用</li>
+        <li>「触らないと決めた資金」には期間と損益ラインを設定し厳格に手を付けない</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>富裕層特有のノウハウではなく、誰でも今日から実践できる規律が資産形成の土台になる。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">例4</span>早起き・運動という日常習慣</h3>
+      <ul>
+        <li>著者自身を含め、富裕層が共通して大切にする基礎的な生活習慣</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>資産形成は特別な投資テクニックではなく、心身のコンディションを整える日々の積み重ねの延長線上にある。</div>
+    </div>
+
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <div class="quote-card">
+      <div class="mark">"</div>
+      <p class="q">投資をしないこと自体が、最大のリスクである。</p>
+      <div class="note">※ 要旨（原典の逐語引用ではなく内容の要約）</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="mark">"</div>
+      <p class="q">決めたことを、例外なく、やり切る。それが知識やスキル以上に資産を築く力になる。</p>
+      <div class="note">※ 要旨（原典の逐語引用ではなく内容の要約）</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="mark">"</div>
+      <p class="q">富裕層が本当に大切にしているのは、お金そのものではなく「人間関係」「創造性」「健康」である。</p>
+      <div class="note">※ 要旨（原典の逐語引用ではなく内容の要約）</div>
+    </div>
+
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <h3>「例外なきルーティン」を1つだけ決める</h3>
+        <p style="font-size:13.5px;margin:0;">平日の決まった時間に15分だけ、家計簿の見直しや金融ニュースのチェックなど「小さく確実にできること」を1つ選び、スケジュール帳に固定で書き込む。</p>
+        <div class="action-meta">
+          <span class="pill">🎯 目的：継続力を仕組み化する</span>
+          <span class="pill">⏱️ 15分</span>
+          <span class="pill">📈 期待効果：意志力に頼らない継続感覚</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <h3>今月「投資に回せる額」を仮決めする</h3>
+        <p style="font-size:13.5px;margin:0;">家計簿アプリや給与明細を開き、生活防衛費を差し引いた上で今月投資に回せる金額を仮に決めてメモする。</p>
+        <div class="action-meta">
+          <span class="pill">🎯 目的：資産形成の第一歩を可視化</span>
+          <span class="pill">⏱️ 20分</span>
+          <span class="pill">📈 期待効果：「投資しないリスク」を自分事化</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <h3>「人間関係・創造性・健康」の現在地を書き出す</h3>
+        <p style="font-size:13.5px;margin:0;">3つの項目それぞれについて、今の満足度と半年後にどうなっていたいかを1行ずつノートに書く。</p>
+        <div class="action-meta">
+          <span class="pill">🎯 目的：資産形成の目的を見失わない棚卸し</span>
+          <span class="pill">⏱️ 15分</span>
+          <span class="pill">📈 期待効果：お金以外の充足軸を明確化</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card related-card">
+      <h3>📚 関連書籍</h3>
+      <ul>
+        <li>🔗 サイコロジー・オブ・マネー（モーガン・ハウセル）：お金との向き合い方・行動心理に焦点を当てた点で共鳴</li>
+        <li>🔗 となりの億万長者（トマス・J・スタンリー、ウィリアム・D・ダンコ）：「見た目と実際の資産は一致しない」という富裕層の実像を統計的に描く</li>
+        <li>🔗 金持ち父さん貧乏父さん（ロバート・キヨサキ）：「お金にお金を稼がせる」発想の原点</li>
+        <li>🔗 バビロンの大富豪（ジョージ・S・クレイソン）：収入の一部を先取りして投資に回す「触らないmoney」の原型</li>
+        <li>🔗 ウォール街のランダム・ウォーカー（バートン・マルキール）：「投資をしないリスク」を理論面から補完</li>
+      </ul>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  📖 読書サマリー自動生成システム｜情報はWeb公開情報に基づく要約です。捏造を避けるため、不明な点は明記しています。
+</footer>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('.panel');
+    var tabs = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){
+      p.classList.toggle('active', p.id === 'panel-' + name);
+    });
+    tabs.forEach(function(t){
+      var selected = t.id === 'tab-' + name;
+      t.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+  }
+</script>
+
+</body>
+</html>
