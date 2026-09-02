@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>これだけで、幸せ — インフォグラフィック</title>
+<!--
+  カラーパレット（インフォグラフィック指示 要件4）
+  primary   : #5B6F55  (セージグリーン — 静けさ・自然との調和)
+  secondary : #C97C5D  (テラコッタ — 手仕事の温かみ・少なく贅沢に)
+  accent    : #8A6E4B  (アースブラウン — 木や器の質感・シンプルな豊かさ)
+  グラデーション: linear-gradient(135deg, #5B6F55 0%, #8A6E4B 100%)
+-->
+<style>
+  :root{
+    --primary:#5B6F55;
+    --primary-light:#748a6d;
+    --secondary:#C97C5D;
+    --secondary-light:#e0a687;
+    --accent:#8A6E4B;
+    --bg:#FAF7F2;
+    --card:#ffffff;
+    --ink:#2b2820;
+    --ink-soft:#6b6355;
+    --border:#e8e1d3;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  .hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color:#fff;
+    padding:28px 20px 32px;
+    text-align:center;
+  }
+  .hero .eyebrow{
+    font-size:13px;
+    letter-spacing:.12em;
+    opacity:.85;
+    margin-bottom:8px;
+  }
+  .hero h1{
+    font-size:clamp(20px,5vw,30px);
+    margin:0 0 6px;
+    font-weight:800;
+    line-height:1.4;
+  }
+  .hero .sub{
+    font-size:13px;
+    opacity:.9;
+    margin:0;
+  }
+  .hero .author{
+    margin-top:14px;
+    display:inline-block;
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;
+    padding:6px 16px;
+    font-size:13px;
+  }
+
+  .whywhat{
+    max-width:760px;
+    margin:-20px auto 0;
+    padding:0 16px;
+    position:relative;
+    z-index:2;
+  }
+  .whywhat-card{
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:0 10px 30px rgba(91,111,85,.18);
+    padding:20px;
+    border:1px solid var(--border);
+  }
+  .whywhat-card h2{
+    font-size:14px;
+    color:var(--secondary);
+    letter-spacing:.08em;
+    margin:0 0 12px;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .qa-item{
+    background:var(--bg);
+    border-radius:12px;
+    padding:12px 14px;
+    border-left:4px solid var(--accent);
+  }
+  .qa-item.answer{border-left-color:var(--secondary);}
+  .qa-item.why{border-left-color:var(--primary);}
+  .qa-label{font-size:11px;font-weight:700;color:var(--ink-soft);margin-bottom:4px;}
+  .qa-text{font-size:14px;font-weight:600;}
+
+  .container{max-width:760px;margin:0 auto;padding:20px 16px 0;}
+
+  .stats-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:18px 0;
+  }
+  .stat{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px 8px;
+    text-align:center;
+  }
+  .stat .num{
+    font-size:20px;
+    font-weight:800;
+    color:var(--primary);
+    display:block;
+  }
+  .stat .num small{font-size:12px;font-weight:600;}
+  .stat .label{font-size:11px;color:var(--ink-soft);margin-top:4px;}
+
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:20px 0 12px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--ink-soft);
+    padding:10px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:.15s;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+
+  .panel{display:none;}
+  .panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card h3 .badge{
+    background:var(--secondary);
+    color:#3a2410;
+    font-size:11px;
+    font-weight:800;
+    padding:2px 8px;
+    border-radius:6px;
+  }
+  .card ul{
+    margin:0 0 10px;
+    padding-left:18px;
+    font-size:13.5px;
+  }
+  .card ul li{margin-bottom:4px;}
+  .why-box{
+    background:linear-gradient(135deg, rgba(91,111,85,.08), rgba(138,110,75,.08));
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .why-box b{color:var(--primary);}
+
+  .route-bar{
+    display:flex;
+    gap:8px;
+    margin:8px 0 12px;
+  }
+  .route-bar .seg{
+    flex:1;
+    height:10px;
+    border-radius:6px;
+  }
+  .seg.a{background:var(--primary);}
+  .seg.b{background:var(--secondary);}
+
+  .quote-card{
+    background:var(--primary);
+    color:#fff;
+    border-radius:var(--radius);
+    padding:18px;
+    margin-bottom:14px;
+    position:relative;
+  }
+  .quote-card .mark{font-size:32px;opacity:.35;line-height:0;position:absolute;top:10px;left:14px;}
+  .quote-card p.q{font-size:14.5px;font-weight:600;margin:14px 0 8px;padding-left:6px;}
+  .quote-card .note{font-size:11px;opacity:.8;padding-left:6px;}
+
+  .action-card{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 32px;
+    height:32px;
+    border-radius:50%;
+    background:var(--secondary);
+    color:#3a2410;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:14px;
+  }
+  .action-body{flex:1;}
+  .action-body h3{margin:0 0 6px;font-size:14.5px;}
+  .action-meta{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:8px;
+  }
+  .pill{
+    font-size:11px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:3px 10px;
+    color:var(--ink-soft);
+  }
+
+  .related-card ul{list-style:none;padding:0;margin:0;}
+  .related-card li{
+    padding:10px 0;
+    border-bottom:1px dashed var(--border);
+    font-size:13.5px;
+  }
+  .related-card li:last-child{border-bottom:none;}
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--ink-soft);
+    margin-top:24px;
+    padding:0 20px;
+  }
+  @media (min-width:640px){
+    .qa-row{grid-template-columns:1fr 1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="eyebrow">📚 今日の一冊 ｜ ライフスタイル</div>
+  <h1>これだけで、幸せ</h1>
+  <p class="sub">小川糸の少なく暮らす29ヵ条</p>
+  <span class="author">👤 小川糸（講談社）</span>
+</div>
+
+<div class="whywhat">
+  <div class="whywhat-card">
+    <h2>⚡ 要約：Why &amp; How</h2>
+    <div class="qa-row">
+      <div class="qa-item">
+        <div class="qa-label">問い（Why）</div>
+        <div class="qa-text">モノや人間関係を減らすことは、我慢なのか、それとも豊かさなのか？</div>
+      </div>
+      <div class="qa-item answer">
+        <div class="qa-label">答え（What）</div>
+        <div class="qa-text">数を絞り込み、心から愛せる一つを時間をかけて選び抜くこと自体が「贅沢」であるという逆説。</div>
+      </div>
+      <div class="qa-item why">
+        <div class="qa-label">根拠（How we know）</div>
+        <div class="qa-text">著者自身がモンゴルの遊牧生活とベルリンでの二拠点生活を経て辿り着いた、実体験に基づく暮らしの哲学。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="stats-row">
+    <div class="stat"><span class="num">4<small>章</small></span><span class="label">本書の構成</span></div>
+    <div class="stat"><span class="num">12<small>ヵ条</small></span><span class="label">ものづきあいの条</span></div>
+    <div class="stat"><span class="num">2<small>拠点</small></span><span class="label">東京とベルリン</span></div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases" onclick="switchTab('cases')">💡 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">🗣️ 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </div>
+
+  <!-- 主要概念の詳細 -->
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3><span class="badge">01</span>少なく贅沢に</h3>
+      <ul>
+        <li>モノや経験の数を絞り込み、一つひとつの質と満足度を高める生き方の哲学</li>
+        <li>「たくさん持つ」ことと「豊かである」ことは別物だという考え方</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>本書全体を貫くタイトルの発想そのものであり、他の全概念の土台になっているため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">02</span>ものづきあい</h3>
+      <ul>
+        <li>モノを単なる所有物ではなく、暮らしを共にする「付き合い相手」として捉える視点</li>
+        <li>迎える・使い込む・手放す、という関わり方そのものを問い直す</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>第1章の12ヵ条を貫く基本姿勢であり、モノ選びの判断軸を具体化しているため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">03</span>一生添い遂げるもの選び</h3>
+      <ul>
+        <li>安さや流行ではなく、時間をかけて選び生涯使い続けられる一点を探す姿勢</li>
+        <li>買い替えを前提としない消費観</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>40代を迎えた著者自身の実感から生まれた、本書の核心的な行動指針だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">04</span>五感を喜ばせる暮らし</h3>
+      <ul>
+        <li>視覚・聴覚・嗅覚・味覚・触覚のすべてを意識的に満たす工夫を暮らしに組み込む</li>
+        <li>モノの数でなく感覚の満足度で日常の充足を測る</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>第2章の中心テーマであり、「少なく」を実践する具体的な方法を五感という切り口で示しているため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">05</span>遊牧的ミニマリズム</h3>
+      <ul>
+        <li>モンゴルの遊牧民に象徴される、必要最小限の持ち物で移動可能に暮らすあり方</li>
+        <li>所有への執着を手放すヒントとして描かれる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「モノが多い＝豊か」という先入観を覆す実例として、思想の説得力を裏づけているため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">06</span>ベルリン的自由</h3>
+      <ul>
+        <li>見栄や体裁にとらわれず、自分らしい基準で暮らしを組み立てるドイツ・ベルリンの生活文化</li>
+        <li>他者の目より自分の心地よさを優先する姿勢の象徴</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「少なく持つ」ことが我慢でなく自分の基準づくりだと示す、対照的な異文化の例だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">07</span>人間関係の断捨離</h3>
+      <ul>
+        <li>モノだけでなく、義理や惰性で続く付き合いも見直す発想</li>
+        <li>心から大切にしたい「ひと」だけを選び取る</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>第4章でモノの話から人間関係・時間の使い方へと視点を広げる、本書の着地点だから。</div>
+    </div>
+
+  </section>
+
+  <!-- 各章の要約 -->
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <div class="card">
+      <h3><span class="badge">第1章</span>これだけで、幸せな「ものづきあい」12ヵ条</h3>
+      <ul>
+        <li>モノを買う前に「一生使うか」を自問する</li>
+        <li>流行や値段より、自分の手になじむかどうかを基準にする</li>
+        <li>気に入らないものは無理に使い続けず、思い切って手放す</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>数を絞るほど一つ一つへの愛着と手入れの丁寧さが増すため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">第2章</span>「五感」を喜ばせる7つの秘訣</h3>
+      <ul>
+        <li>好きな香り・音・肌触りを暮らしに意図的に取り入れる</li>
+        <li>質の良い食材や器で、日々の食事を小さな儀式にする</li>
+        <li>季節の変化を五感で味わう習慣を持つ</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>モノの数でなく感覚の満足度を上げることが、真の豊かさに直結するため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">第3章</span>シンプルで豊かなモンゴル 自由を愛するベルリン</h3>
+      <ul>
+        <li>モンゴルの遊牧民の最小限の暮らしから所有への執着を手放すヒントを得る</li>
+        <li>ベルリンの自由な生活文化に触れ、他人の目を気にしない基準づくりを学ぶ</li>
+        <li>異なる土地の暮らし方を比較し、自分の「ちょうどよさ」を再発見する</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>異文化の暮らしを知ることで、自分の当たり前を相対化できるため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">第4章</span>好きな「こと」や「ひと」だけでいい</h3>
+      <ul>
+        <li>義理や惰性で続く人付き合い・予定を棚卸しする</li>
+        <li>本当に会いたい人、やりたいことにだけ時間を使う</li>
+        <li>「ひと」との関係もモノと同じく「贅沢に、少なく」を意識する</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>時間と心のエネルギーは有限であり、絞り込むほど一つ一つが深まるため。</div>
+    </div>
+
+  </section>
+
+  <!-- 具体例 -->
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+
+    <div class="card">
+      <h3><span class="badge">例1</span>モンゴル遊牧民の住まい</h3>
+      <ul>
+        <li>著者がモンゴルを訪れ、家財道具をほとんど持たずゲルで移動しながら暮らす遊牧民の生活に触れた体験</li>
+        <li>示唆：持ち物が少ないことは不便や貧しさではなく、身軽さと自由をもたらすという発見</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>「モノが多い＝豊か」という先入観を覆す実例として、少なく暮らす思想の説得力を支えている。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">例2</span>ベルリンでの二拠点生活</h3>
+      <ul>
+        <li>著者が東京とベルリンを行き来する暮らしの中で、ドイツの人々が見栄より心地よさを優先する文化に触れたエピソード</li>
+        <li>示唆：「人からどう見えるか」でなく「自分がどう感じるか」を基準にモノや暮らし方を選ぶ姿勢</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>少なく持つことは我慢ではなく、自分の基準を持つことで初めて実現できると示している。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="badge">例3</span>一生添い遂げる器・道具選び</h3>
+      <ul>
+        <li>著者が安価なものをすぐ買い替えるのではなく、時間をかけて自分にしっくりくる器や日用品を探し、長く使い込んでいくエピソード</li>
+        <li>示唆：一つのモノと長く付き合うことで、モノへの愛着と暮らしへの満足感が深まる</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>「多く持つ」から「深く使う」への発想転換が、本書の核心的メッセージを体現している。</div>
+    </div>
+
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <div class="quote-card">
+      <div class="mark">"</div>
+      <p class="q">モノを減らすことは我慢ではなく、一つひとつをより大切に味わうための贅沢である。</p>
+      <div class="note">※ 要旨（原典の逐語引用ではなく内容の要約）</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="mark">"</div>
+      <p class="q">一生添い遂げられるものを、焦らず時間をかけて探すことこそが豊かさだ。</p>
+      <div class="note">※ 要旨（原典の逐語引用ではなく内容の要約）</div>
+    </div>
+
+    <div class="quote-card">
+      <div class="mark">"</div>
+      <p class="q">好きな「こと」や「ひと」だけを選び取ることで、心に余白が生まれる。</p>
+      <div class="note">※ 要旨（原典の逐語引用ではなく内容の要約）</div>
+    </div>
+
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <h3>愛用品を1つ選び、手入れをする</h3>
+        <p style="font-size:13.5px;margin:0;">手元にある道具や器を1つ選び、「一生使い続けたいか」を自問しながら丁寧に手入れをする。</p>
+        <div class="action-meta">
+          <span class="pill">🎯 目的：モノとの向き合い方を「数」から「質」へ切り替える</span>
+          <span class="pill">⏱️ 15分</span>
+          <span class="pill">📈 期待効果：愛用品への愛着が増し、モノを減らす判断基準が生まれる</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <h3>予定・付き合いを1つ棚卸しする</h3>
+        <p style="font-size:13.5px;margin:0;">今週の予定やSNSでの付き合いを見直し、義理や惰性で続けているものがないか書き出す。</p>
+        <div class="action-meta">
+          <span class="pill">🎯 目的：人間関係や時間の使い方にも「少なく贅沢に」を適用する</span>
+          <span class="pill">⏱️ 20分</span>
+          <span class="pill">📈 期待効果：本当に大切な人・こととの時間を意識的に増やすきっかけになる</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <h3>今日の食事を五感で味わう</h3>
+        <p style="font-size:13.5px;margin:0;">今日の食事を一つ選び、器の手触りやお茶の香りなど五感を意識して丁寧に味わう。</p>
+        <div class="action-meta">
+          <span class="pill">🎯 目的：モノの数でなく感覚の満足度を高める暮らし方を体験する</span>
+          <span class="pill">⏱️ 15〜30分</span>
+          <span class="pill">📈 期待効果：「贅沢」の基準が物量ではないと実感できる</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card related-card">
+      <h3>📚 関連書籍</h3>
+      <ul>
+        <li>🔗 断捨離（やましたひでこ）：モノを手放す思想の源流であり、本書の「少なく贅沢に」の土台となる考え方</li>
+        <li>🔗 より少ない生き方 ものを手放して豊かになる（ジョシュア・ベッカー）：数を減らすことで自由と豊かさを得るというミニマリズムの理念を共有</li>
+        <li>🔗 100の基本 松浦弥太郎のベーシックノート（松浦弥太郎）：一つひとつの道具や習慣を丁寧に選び抜く暮らしの美学が共通</li>
+        <li>🔗 食堂かたつむり（小川糸）：著者自身のデビュー作であり、「丁寧に生きる」という世界観の原点</li>
+      </ul>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  📖 読書サマリー自動生成システム｜情報はWeb公開情報に基づく要約です。捏造を避けるため、不明な点は明記しています。
+</footer>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('.panel');
+    var tabs = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){
+      p.classList.toggle('active', p.id === 'panel-' + name);
+    });
+    tabs.forEach(function(t){
+      var selected = t.id === 'tab-' + name;
+      t.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+  }
+</script>
+
+</body>
+</html>
