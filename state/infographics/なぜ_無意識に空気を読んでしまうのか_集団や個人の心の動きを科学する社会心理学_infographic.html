@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>なぜ、無意識に空気を読んでしまうのか？ インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #3a5a8c / セカンダリー #6b4e8e / アクセント #ffb703 -->
+<style>
+:root {
+  --primary: #3a5a8c;
+  --secondary: #6b4e8e;
+  --accent: #ffb703;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff9ec, #fff3d6);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eef2fb, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff9e6, #fffbf0);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+.note-box {
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 なぜ、無意識に空気を読んでしまうのか？</h1>
+  <p>集団や個人の心の動きを科学する社会心理学</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>なぜ私たちは望んでもいないのに周囲に合わせ、「空気」を読んでしまうのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>同調圧力・認知バイアス・社会的比較といった社会心理学的メカニズムが無意識下で働いているからであり、それは個人の意志の弱さではなく、誰にでも起こる普遍的な心の仕組みである。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>人は集団から外れることに強い不安を感じるよう進化的に設計されており、第一印象や色眼鏡（ハロー効果）で他者を判断し、周囲との比較で自分の価値を測る。SNS時代はこの仕組みが「いいね」による報酬系と結びつき、承認欲求と情報過多が同調圧力をさらに増幅させている。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>まず自分が無意識に空気を読んでいる場面を自覚し、同調圧力・ハロー効果・社会的比較といったメカニズムに名前をつけて理解する。そのうえで、あいづちなどの対人心理学の技術を使いながら、周囲を尊重しつつも自分の意見を保つ「心地よい関係」を築く。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🌀 同調圧力</h3>
+    <ul>
+      <li>集団の多数派の意見や行動に、自分の考えを合わせてしまう心理</li>
+      <li>「一人だけ違う」ことへの不安が原動力になる</li>
+      <li>職場・学校など身近な集団で日常的に発生する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「空気を読む」という行動の中核にある最も基本的なメカニズムだから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👓 ハロー効果（色めがねバイアス）</h3>
+    <ul>
+      <li>ある一つの目立つ特徴に引きずられ、人物全体の評価を歪めてしまう認知バイアス</li>
+      <li>第一印象が良いと他の面まで高く評価しがちになる</li>
+      <li>逆に一度の失敗で全人格を否定的に見てしまうこともある</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>私たちが「自分も他者も色めがねで見ている」ことに気づく出発点となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 社会的比較理論</h3>
+    <ul>
+      <li>人は自分の能力や価値を、他者との比較を通して判断する傾向がある</li>
+      <li>比較対象は身近な他者からSNS上の他人まで無限に広がる</li>
+      <li>比較が過剰になると自己肯定感が揺らぎやすい</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「自分のことを自分で決めていない」状態を生む中心的な仕組みだから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🐑 集団思考・集団極性化</h3>
+    <ul>
+      <li>凝集性の高い集団ほど、異論を出しにくく合意を優先してしまう傾向</li>
+      <li>議論を重ねるほど集団の意見が極端な方向へ振れやすい</li>
+      <li>「みんな同じ意見のはず」という誤った一体感を生む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>個人と集団の相互作用によって物事が動くメカニズムを象徴する概念だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ 正当世界仮説</h3>
+    <ul>
+      <li>「世界は公正であり、良い行いには良い報い、悪い行いには悪い報いがある」と信じたい心理</li>
+      <li>被害者に「何か落ち度があったはず」と原因を求めてしまう</li>
+      <li>ニュースやSNSでの被害者バッシングの背景にある</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>ネット社会で起こる集団心理の負の側面を理解する鍵となる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📱 承認欲求とSNS報酬系</h3>
+    <ul>
+      <li>「いいね」や反応を得ると脳の報酬系が刺激され、もっと欲しくなる</li>
+      <li>発信内容が「自分らしさ」より「ウケるかどうか」に置き換わっていく</li>
+      <li>情報過多と比較疲れを同時に引き起こす</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>現代特有の「増大する欲求と情報の波」の正体を説明する概念だから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🙋 傍観者心理</h3>
+    <ul>
+      <li>周囲に人が多いほど、一人ひとりの責任感が薄れ行動を起こしにくくなる</li>
+      <li>「誰かがやるだろう」という思考が集団の中で連鎖する</li>
+      <li>異論を言い出せない空気とも密接に関わる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>集団の中で個人の主体性が埋没していく過程を理解する助けになる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗣️ あいづち対話法</h3>
+    <ul>
+      <li>著者が提唱する、あいづちの種類と使い方を工夫する対人心理学の技法</li>
+      <li>相手の話を尊重しながらも、自分の立場を失わない関係づくりに使う</li>
+      <li>空気を「読んでも従わない」ための実践的な会話術</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>知識で終わらせず「自分を大切にして心地よい関係を築く」ための具体的な手段だから。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>同調圧力</span>
+      <span class="flow-arrow">→</span>
+      <span>周囲に意見を合わせる</span>
+      <span class="flow-arrow">→</span>
+      <span>集団思考・集団極性化</span>
+    </div>
+    <div class="flow-item">
+      <span>ハロー効果</span>
+      <span class="flow-arrow">→</span>
+      <span>第一印象で全体を判断</span>
+      <span class="flow-arrow">→</span>
+      <span>社会的比較の歪み</span>
+    </div>
+    <div class="flow-item">
+      <span>社会的比較理論</span>
+      <span class="flow-arrow">→</span>
+      <span>自分の価値を他者基準で決定</span>
+      <span class="flow-arrow">→</span>
+      <span>SNSでの承認欲求の増幅</span>
+    </div>
+    <div class="flow-item">
+      <span>正当世界仮説</span>
+      <span class="flow-arrow">→</span>
+      <span>被害者バッシング</span>
+      <span class="flow-arrow">→</span>
+      <span>ネット社会の分断</span>
+    </div>
+    <div class="flow-item">
+      <span>承認欲求とSNS報酬系</span>
+      <span class="flow-arrow">→</span>
+      <span>情報過多・比較疲れ</span>
+      <span class="flow-arrow">→</span>
+      <span>心地よい関係の喪失</span>
+    </div>
+    <div class="flow-item">
+      <span>あいづち対話法</span>
+      <span class="flow-arrow">→</span>
+      <span>空気を読みつつ従わない</span>
+      <span class="flow-arrow">→</span>
+      <span>自分を保った人間関係</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>PART1：集団の中で「空気」を読み合う私たち</h3>
+    <ul>
+      <li>同僚が残業していると一人だけ帰りづらいなど、身近な同調圧力の実例を紹介</li>
+      <li>多数派の行動に合わせてしまう「多数派同調バイアス」の仕組みを解説</li>
+      <li>「空気」は誰か一人が作るのではなく、集団の相互作用から生まれる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書全体の出発点として、「空気を読む」という日常的な現象を心理学の言葉で捉え直す。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>PART2：自分も他者も「色めがね」で見ている</h3>
+    <ul>
+      <li>ハロー効果やステレオタイプなど、人物評価を歪める認知バイアスを取り上げる</li>
+      <li>第一印象がその後の関係性に長く影響することを解説</li>
+      <li>自分自身も無意識に色めがねをかけていることに気づかせる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「空気を読む」判断の裏にある認知の歪みを自覚することが、対人関係改善の第一歩になる。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>PART3：自分のことを「自分で」決めていない</h3>
+    <ul>
+      <li>社会的比較理論をもとに、私たちが常に他者を基準に自己評価していることを示す</li>
+      <li>他人の評価や期待が、自分の選択を無意識に方向づけている実態を解説</li>
+      <li>「自分で決めた」と思っていた選択が外部基準に左右されていることに気づかせる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>主体性の喪失がどこから生まれるのかを明らかにし、自己理解を深める章として重要。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>PART4：ものごとは個人と集団の「相互作用」で起こる</h3>
+    <ul>
+      <li>仲の良い集団ほど異論を言いづらくなる集団思考・集団極性化のメカニズムを解説</li>
+      <li>個人の判断が集団の力学によって変化していく過程を具体例とともに示す</li>
+      <li>傍観者心理など、集団内で責任感が薄れる現象にも触れる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「空気」が個人と集団の相互作用の産物であることを、社会心理学の実証的知見から裏付ける。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>PART5：増大する「欲求と情報」の波に飲み込まれる</h3>
+    <ul>
+      <li>事件・事故の被害者へのネットバッシングを正当世界仮説から読み解く</li>
+      <li>SNSでの承認欲求と報酬系が、情報過多・比較疲れを加速させる構造を解説</li>
+      <li>現代のネット社会特有の「空気」の生まれ方を扱う</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>ネット・SNS時代に特有の集団心理を扱い、本書を現代的な問題意識に接続する章。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>PART6：自分を大切にして心地よい関係を築く</h3>
+    <ul>
+      <li>あいづち対話法など、日常で使える具体的な心理テクニックを紹介</li>
+      <li>「空気を読んでも従わない」ための実践的な振る舞い方を提示</li>
+      <li>知識を実生活の人間関係改善につなげる総まとめの章</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>ここまでの理論を「使える技術」に落とし込み、読者が明日から行動できるようにする。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例</h2>
+
+  <div class="card">
+    <h3>🏢 例1：残業する同僚がいると帰りづらい</h3>
+    <ul>
+      <li><strong>背景：</strong>仕事は終わっているのに、周囲がまだ残業していると一人だけ退社しにくい職場の空気</li>
+      <li><strong>行動：</strong>本当は必要ない残業を、周囲に合わせてしてしまう</li>
+      <li><strong>結果：</strong>個人の意思とは無関係に「みんなが残っているから」が行動基準になる</li>
+      <li><strong>示唆：</strong>同調圧力は明文化されたルールがなくても強い拘束力を持つ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>日本の職場に根強く残る同調圧力の典型例として、読者自身の体験と重なりやすい。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 例2：仲が良い集団ほど異論を言いづらい</h3>
+    <ul>
+      <li><strong>背景：</strong>結束の強いグループ内では、和を乱すことへの心理的コストが高まる</li>
+      <li><strong>行動：</strong>疑問や反対意見があっても、場の空気を優先して黙ってしまう</li>
+      <li><strong>結果：</strong>集団としての意思決定が偏り、誤った方向へ突き進みやすくなる</li>
+      <li><strong>示唆：</strong>「仲が良いこと」自体が、健全な議論を妨げる要因になり得る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>集団思考の逆説的な性質を示し、組織やチーム運営への応用が利く。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ 例3：事件・事故の被害者へのネットバッシング</h3>
+    <ul>
+      <li><strong>背景：</strong>ニュースで報じられた被害者に対し、SNS上で「落ち度があったはず」という非難が集まる現象</li>
+      <li><strong>行動：</strong>不特定多数が被害者の行動を詮索し、責任を求める発言を重ねる</li>
+      <li><strong>結果：</strong>「世界は公正であるべきだ」という信念が、加害的な集団行動に転化する</li>
+      <li><strong>示唆：</strong>正義感に見える言動が、実は認知バイアスに由来することがある</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>正当世界仮説がネット社会でどのように暴走するかを具体的に示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📱 例4：SNSの発信が「自分らしさ」から「ウケ狙い」へ変わる</h3>
+    <ul>
+      <li><strong>背景：</strong>「いいね」の数が可視化され、反応の良い投稿がわかるようになったSNS環境</li>
+      <li><strong>行動：</strong>本当に伝えたいことより、反応が取れそうな内容を優先して発信するようになる</li>
+      <li><strong>結果：</strong>SNSが「評価される場」と化し、承認欲求のループから抜け出しにくくなる</li>
+      <li><strong>示唆：</strong>デジタル環境は、身近な集団の空気読みとは別種の同調圧力を生み出す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>現代特有の「増大する欲求と情報の波」を最も体感しやすい形で示す例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👓 例5：第一印象で人の全体像を決めつけてしまう</h3>
+    <ul>
+      <li><strong>背景：</strong>初対面で感じの良い挨拶をした人には、能力や誠実さも高いと感じやすい</li>
+      <li><strong>行動：</strong>その後の言動を、最初に抱いた好印象に沿って解釈してしまう</li>
+      <li><strong>結果：</strong>実際の言動よりも、最初の印象が人物評価を長く支配する</li>
+      <li><strong>示唆：</strong>「色めがね」は他人だけでなく、自分自身の判断力も曇らせる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>ハロー効果が特別な状況ではなく日常のあらゆる対人判断に潜むことを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+  <div class="note-box">※ 原典の該当ページを直接確認できなかったため、公開されている書誌情報・目次構成をもとにした「要旨」として記載しています。</div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      （要旨）空気とは誰か一人が作るものではなく、集団の中にいる私たち一人ひとりが読み合い、作り合っているものである。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>「空気」を特定の誰かのせいにせず、集団心理として捉え直す本書全体の視点を象徴する。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      （要旨）私たちは他者を色めがねで見ているのと同時に、自分自身のことも色めがねで見ている。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>認知バイアスが他人だけでなく自己認識にも及ぶことを示し、自己理解を促す。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      （要旨）「自分で決めた」と思っている選択の多くは、実は周囲との比較の中で形づくられている。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>社会的比較理論の核心を突き、主体性を取り戻すきっかけを与える。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      （要旨）仲の良い集団ほど、実は異論を言いにくい空気が生まれやすい。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>「仲良し」と「健全な議論」が両立しないことがあるという逆説を突きつける。
+    </div>
+  </div>
+
+  <div class="quote-card">
+    <div class="quote-text">
+      （要旨）空気は読んでもいい。ただし、読んだうえで従うかどうかは自分で選べる。
+    </div>
+    <div class="quote-why">
+      <strong>なぜ重要か：</strong>本書の結論であるPART6のメッセージを凝縮し、読者への行動指針となる。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">📚 関連書籍</h3>
+
+  <div class="card">
+    <h3>📖 影響力の武器</h3>
+    <p><strong>著者：</strong>ロバート・B・チャルディーニ</p>
+    <p><strong>関連性：</strong>社会的影響力と説得のメカニズムを解説し、本書の同調心理の理解を補完する。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 情報を正しく選択するための認知バイアス事典</h3>
+    <p><strong>著者：</strong>情報文化研究所</p>
+    <p><strong>関連性：</strong>ハロー効果や色めがねバイアスなど、本書が扱う認知の歪みを辞典形式で体系的に整理できる。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 「空気」の研究</h3>
+    <p><strong>著者：</strong>山本七平</p>
+    <p><strong>関連性：</strong>「空気」概念そのものを論じた古典であり、本書の社会心理学的アプローチと対比しながら読める。</p>
+  </div>
+
+  <div class="card">
+    <h3>📖 「空気」を読んでも従わない</h3>
+    <p><strong>著者：</strong>鴻上尚史</p>
+    <p><strong>関連性：</strong>「空気を読んでも従わない」という本書PART6のテーマを、より実践的・エッセイ的に掘り下げる。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🚀 今日のアクション</h2>
+  <p style="margin-bottom: 1.5rem; color: var(--text-light);">読後すぐに15〜30分で実行できる具体的な行動</p>
+
+  <div class="action-card">
+    <h4>🗣️ 一つだけ、周囲に合わせず自分の意見を言ってみる（15分）</h4>
+    <p><strong>目的：</strong>同調圧力の存在に気づき、流されない感覚を体験する</p>
+    <p><strong>手順：</strong></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>📝 今日予定されている会話や会議を1つ選ぶ</li>
+      <li>📝 その場で周囲と違ってもよい小さな意見を1つ用意しておく</li>
+      <li>📝 実際にその意見を口に出し、周囲の反応と自分の気持ちを観察する</li>
+    </ul>
+    <p><strong>期待効果：</strong>同調圧力を「感じるだけ」の状態から「気づいて選べる」状態に変えられる</p>
+  </div>
+
+  <div class="action-card">
+    <h4>📱 SNSを開く前に「なぜ見るのか」を1行メモする（10分）</h4>
+    <p><strong>目的：</strong>承認欲求とSNS報酬系のループを自覚し、比較疲れを防ぐ</p>
+    <p><strong>手順：</strong></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>📝 SNSを開く直前に「今、何のために見るのか」を一言メモする</li>
+      <li>📝 見終わった後、実際に得られたものと最初の目的を見比べる</li>
+      <li>📝 これを今日1日、SNSを開くたびに繰り返す</li>
+    </ul>
+    <p><strong>期待効果：</strong>無目的な比較・スクロールが減り、SNSとの距離感を自分で選べるようになる</p>
+  </div>
+
+  <div class="action-card">
+    <h4>👂 あいづちを「はい」以外の言葉で3種類使ってみる（会話中20分）</h4>
+    <p><strong>目的：</strong>あいづち対話法を実践し、空気を読みつつも自分を保つ会話術を身につける</p>
+    <p><strong>手順：</strong></p>
+    <ul style="list-style: none; padding-left: 0;">
+      <li>📝 今日の会話で使うあいづちの言葉を3種類（例：「なるほど」「それで？」「たしかに」）決めておく</li>
+      <li>📝 実際の会話でそれぞれを意識的に使ってみる</li>
+      <li>📝 相手の話しやすさや会話の深まり方の変化を振り返る</li>
+    </ul>
+    <p><strong>期待効果：</strong>相手を尊重しながらも受け身一辺倒にならない、心地よい関係づくりの技術が身につく</p>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
