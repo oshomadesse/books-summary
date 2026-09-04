@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット:
+  - プライマリー: #4F46E5 (インディゴ)
+  - セカンダリー: #06B6D4 (シアン)
+  - アクセント: #F59E0B (アンバー)
+  グラデーション: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>いやな気分よ、さようなら ― インフォグラフィック</title>
+<style>
+  :root {
+    --primary: #4F46E5;
+    --primary-light: #EEF2FF;
+    --secondary: #06B6D4;
+    --secondary-light: #ECFEFF;
+    --accent: #F59E0B;
+    --accent-light: #FFFBEB;
+    --ink: #1E1B2E;
+    --ink-soft: #4B4560;
+    --bg: #F7F7FB;
+    --card-bg: #FFFFFF;
+    --border: #E5E3F0;
+    --shadow: 0 4px 14px rgba(79, 70, 229, 0.08);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+    line-height: 1.7;
+    -webkit-text-size-adjust: 100%;
+  }
+  img { max-width: 100%; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 0 48px; }
+
+  /* Header */
+  header.hero {
+    background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
+    color: #fff;
+    padding: 32px 20px 40px;
+    border-radius: 0 0 28px 28px;
+    text-align: center;
+  }
+  header.hero .cat-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.22);
+    border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 14px;
+  }
+  header.hero h1 {
+    font-size: 1.5rem;
+    margin: 0 0 8px;
+    line-height: 1.5;
+  }
+  header.hero .author {
+    font-size: 0.92rem;
+    opacity: 0.92;
+  }
+  header.hero .stat-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+  header.hero .stat-badge {
+    background: rgba(255,255,255,0.16);
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 0.72rem;
+    min-width: 92px;
+  }
+  header.hero .stat-badge b {
+    display: block;
+    font-size: 1.05rem;
+  }
+
+  /* Why & How block (first view) */
+  .whyhow {
+    margin: -22px 16px 24px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 20px 18px;
+    border: 1px solid var(--border);
+  }
+  .whyhow .row { margin-bottom: 14px; }
+  .whyhow .row:last-child { margin-bottom: 0; }
+  .whyhow .label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+  .whyhow .q { color: var(--secondary); }
+  .whyhow .a { color: var(--accent); }
+  .whyhow p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); }
+
+  section.body { padding: 0 16px; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 4px 2px 14px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--ink-soft);
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .15s ease;
+  }
+  .tab-btn[aria-selected="true"] {
+    background: linear-gradient(135deg, #4F46E5, #06B6D4);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: var(--shadow);
+  }
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px);} to { opacity: 1; transform: none; } }
+
+  h2.section-title {
+    font-size: 1.05rem;
+    margin: 4px 0 14px;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 0.98rem;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card ul { margin: 8px 0 0; padding-left: 1.2em; }
+  .card li { margin-bottom: 4px; font-size: 0.88rem; color: var(--ink-soft); }
+  .why-box {
+    margin-top: 10px;
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 0.82rem;
+    color: #7C5A0B;
+  }
+  .why-box b { color: var(--accent); }
+
+  /* Distortion badges */
+  .badge-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .badge {
+    background: var(--primary-light);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-size: 0.78rem;
+    color: var(--primary);
+    font-weight: 600;
+  }
+  .badge span.num {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px;
+    font-size: 0.68rem;
+    margin-right: 6px;
+  }
+
+  /* bar chart */
+  .bar-row { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+  .bar-label { width: 92px; font-size: 0.76rem; color: var(--ink-soft); flex: 0 0 auto; }
+  .bar-track { flex: 1; background: var(--border); border-radius: 999px; height: 10px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #4F46E5, #06B6D4); }
+  .bar-val { width: 42px; text-align: right; font-size: 0.76rem; color: var(--ink-soft); flex: 0 0 auto; }
+
+  .quote-card {
+    background: var(--secondary-light);
+    border-left: 4px solid var(--secondary);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .quote-card p.q-text {
+    font-size: 0.94rem;
+    font-style: italic;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .quote-card p.q-note {
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .tag-summary {
+    display: inline-block;
+    background: var(--secondary);
+    color: #fff;
+    font-size: 0.68rem;
+    padding: 1px 8px;
+    border-radius: 999px;
+    margin-right: 6px;
+  }
+
+  .action-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .action-card .time {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .action-card h3 { margin: 0 0 8px 0; padding-right: 70px; font-size: 0.96rem; }
+  .action-card .meta { font-size: 0.82rem; color: var(--ink-soft); margin: 4px 0; }
+  .action-card .meta b { color: var(--primary); }
+
+  footer.note {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    padding: 24px 20px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="cat-badge">🧠 心理学</span>
+    <h1>いやな気分よ、さようなら</h1>
+    <div class="author">デビッド・D・バーンズ（著）</div>
+    <div class="stat-row">
+      <div class="stat-badge"><b>500万部+</b>全米累計</div>
+      <div class="stat-badge"><b>10種類</b>認知の歪み</div>
+      <div class="stat-badge"><b>1980年</b>初版刊行</div>
+    </div>
+  </header>
+
+  <div class="whyhow">
+    <div class="row">
+      <div class="label q">❓ 問い</div>
+      <p>なぜ同じ出来事に遭っても、ある人は平気で、ある人はひどく落ち込むのか？</p>
+    </div>
+    <div class="row">
+      <div class="label a">💡 答え</div>
+      <p>気分を生んでいるのは出来事そのものではなく、出来事についての「考え方（自動思考）」である。その考え方の歪みに気づき、紙に書いて検証すれば、気分は自分でコントロールできる。</p>
+    </div>
+    <div class="row">
+      <div class="label" style="color:var(--primary)">📐 根拠（Why）</div>
+      <p>著者はスタンフォード大学の精神科医で、認知療法の効果を臨床研究で実証。全米の精神保健専門家調査で、うつ病向けセルフヘルプ書1000冊超の中で1位に選ばれた実績がある。</p>
+    </div>
+  </div>
+
+  <section class="body">
+    <div class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+      <button class="tab-btn" role="tab" id="tab-concept" aria-controls="panel-concept" aria-selected="true" onclick="switchTab('concept')">🧩 主要概念</button>
+      <button class="tab-btn" role="tab" id="tab-chapter" aria-controls="panel-chapter" aria-selected="false" onclick="switchTab('chapter')">📖 各章の要約</button>
+      <button class="tab-btn" role="tab" id="tab-example" aria-controls="panel-example" aria-selected="false" onclick="switchTab('example')">🔍 具体例</button>
+      <button class="tab-btn" role="tab" id="tab-quote" aria-controls="panel-quote" aria-selected="false" onclick="switchTab('quote')">💬 重要な引用</button>
+      <button class="tab-btn" role="tab" id="tab-action" aria-controls="panel-action" aria-selected="false" onclick="switchTab('action')">✅ 今日のアクション</button>
+    </div>
+
+    <!-- 主要概念 -->
+    <div class="panel active" id="panel-concept" role="tabpanel" aria-labelledby="tab-concept">
+      <h2 class="section-title">🧩 主要概念の詳細</h2>
+
+      <div class="card">
+        <h3>① 認知モデル（Cognitive Model）</h3>
+        <ul>
+          <li>気分は出来事そのものではなく、出来事についての「考え方」から生まれる</li>
+          <li>本書全体の土台となる、たった一つの前提</li>
+          <li>「悲しい出来事＝落ち込む」ではなく「意味づけ＝落ち込む」という順序</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>ここを理解しないと、以降のワークが単なる気休めに見えてしまうため。</div>
+      </div>
+
+      <div class="card">
+        <h3>② 自動思考（Automatic Thoughts）</h3>
+        <ul>
+          <li>状況に反応して瞬時に浮かぶ、検証されないままの考え</li>
+          <li>本人は「事実」だと感じているが、実際は思考の一種にすぎない</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>気分の直接の原因はこの思考であり、これを捕まえない限り改善は始まらないため。</div>
+      </div>
+
+      <div class="card">
+        <h3>③ 10種類の認知の歪み</h3>
+        <div class="badge-grid">
+          <div class="badge"><span class="num">1</span>全か無か思考</div>
+          <div class="badge"><span class="num">2</span>一般化のしすぎ</div>
+          <div class="badge"><span class="num">3</span>心のフィルター</div>
+          <div class="badge"><span class="num">4</span>マイナス化思考</div>
+          <div class="badge"><span class="num">5</span>結論の飛躍</div>
+          <div class="badge"><span class="num">6</span>拡大解釈と過小評価</div>
+          <div class="badge"><span class="num">7</span>感情的決めつけ</div>
+          <div class="badge"><span class="num">8</span>すべき思考</div>
+          <div class="badge"><span class="num">9</span>レッテル貼り</div>
+          <div class="badge"><span class="num">10</span>個人化</div>
+        </div>
+        <div class="why-box"><b>理由：</b>自分の思考のどのパターンが歪んでいるかを名指しできると、反論する足がかりができるため。</div>
+      </div>
+
+      <div class="card">
+        <h3>④ 3コラム法（思考記録表）</h3>
+        <ul>
+          <li>「出来事」「自動思考」「合理的反応」の3列をノートに書き出す基本ワーク</li>
+          <li>頭の中で反芻するのではなく、紙の上で検証する</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>思考を外に出して客観視することで、感情との距離が生まれるため。</div>
+      </div>
+
+      <div class="card">
+        <h3>⑤ 言葉の柔道（Verbal Judo）</h3>
+        <ul>
+          <li>批判にすべて同意するのでも反発するのでもなく、部分的に同意しつつ検証する対話術</li>
+          <li>相手を打ち負かすのではなく、事実を一緒に確かめる姿勢</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>批判への反応が「全否定」か「全肯定」の二択になりがちな人に、第三の選択肢を与えるため。</div>
+      </div>
+
+      <div class="card">
+        <h3>⑥ 承認中毒（Approval Addiction）</h3>
+        <ul>
+          <li>他者からの承認を自己価値の絶対条件にしてしまう思い込み</li>
+          <li>慢性的な落ち込みの根っこにあることが多い、とバーンズは指摘する</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>症状（落ち込み）ではなく原因（暗黙の前提）に手を付けないと再発しやすいため。</div>
+      </div>
+
+      <div class="card">
+        <h3>⑦ 完全主義の克服（中くらいであれ）</h3>
+        <ul>
+          <li>100点か0点かでしか自分を評価しない「全か無か思考」の典型的な現れ</li>
+          <li>「完璧」ではなく「十分」を基準に据え直す</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>完全主義は行動を止めてしまう最大要因の一つであるため。</div>
+      </div>
+
+      <div class="card">
+        <h3>⑧ 感情と事実の分離</h3>
+        <ul>
+          <li>「そう感じる」ことと「それが事実である」ことは別物、という原則</li>
+          <li>感情的決めつけへの直接の反論になる</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>強い感情ほど「正しい」と感じられてしまう罠から抜け出すため。</div>
+      </div>
+    </div>
+
+    <!-- 各章の要約 -->
+    <div class="panel" id="panel-chapter" role="tabpanel" aria-labelledby="tab-chapter" hidden>
+      <h2 class="section-title">📖 各章の要約（全6部構成）</h2>
+
+      <div class="card">
+        <h3>第1部｜理論と研究（第1〜3章）</h3>
+        <ul>
+          <li>うつ病治療における認知療法の登場と、薬物療法と同等以上の効果を示す研究</li>
+          <li>気分の自己診断法と、考え方が気分を変えるという中心原理の提示</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>技法に入る前に「なぜこれが効くのか」の裏付けを示すことで、実践への納得感を作るため。</div>
+      </div>
+
+      <div class="card">
+        <h3>第2部｜応用（第4〜8章）</h3>
+        <ul>
+          <li>自己評価の立て直し方、虚無感への対処、批判への「言葉の柔道」</li>
+          <li>怒りのコントロール法と罪悪感の克服法</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>日常でつまずきやすい具体的な感情（怒り・罪悪感・批判）ごとに使える技法を分けて示すため。</div>
+      </div>
+
+      <div class="card">
+        <h3>第3部｜現実的なうつ病（第9章）</h3>
+        <ul>
+          <li>「哀しみ」と「うつ病」を区別する視点</li>
+          <li>正当な悲しみまで病理化しないための線引き</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>すべてのつらい感情を歪みとして否定してしまう誤読を防ぐため。</div>
+      </div>
+
+      <div class="card">
+        <h3>第4部｜予防と人間的成長（第10〜14章）</h3>
+        <ul>
+          <li>憂うつの根本原因となる「暗黙の仮定」の掘り下げ（承認中毒・愛情への依存）</li>
+          <li>「仕事の成果＝自分の価値」という思い込みの解体と、完全主義の克服</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>対症療法で終わらせず、再発を防ぐための価値観そのものの見直しに踏み込むため。</div>
+      </div>
+
+      <div class="card">
+        <h3>第5部｜絶望感と自殺に打ち勝つ（第15章）</h3>
+        <ul>
+          <li>絶望感がもたらす極端な思考への対処と、生きる選択の再確認</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>最も深刻な状態にある読者にも本書の考え方を届けるための章であるため。</div>
+      </div>
+
+      <div class="card">
+        <h3>第6部｜日々のストレスに打ち勝つには（第16章）</h3>
+        <ul>
+          <li>著者自身が自分の理論を自分の生活にどう当てはめているかの実践記録</li>
+        </ul>
+        <div class="why-box"><b>理由：</b>専門家自身も同じワークで日常のストレスに対処していると示すことで、技法の再現性を裏付けるため。</div>
+      </div>
+    </div>
+
+    <!-- 具体例 -->
+    <div class="panel" id="panel-example" role="tabpanel" aria-labelledby="tab-example" hidden>
+      <h2 class="section-title">🔍 具体例・ケーススタディ</h2>
+
+      <div class="card">
+        <h3>ケース1｜プレゼン後の不安を3コラム法で検証する</h3>
+        <ul>
+          <li>背景：人前で話した後、「聞きにくかったはずだ」という自動思考が浮かび、緊張度は自己評価で80%に達した</li>
+          <li>検証：「十分に準備している」「以前より話せるようになっている」という根拠を書き出し、思考を再検討</li>
+          <li>結果：緊張度は80%から40%まで低下した</li>
+        </ul>
+        <div class="why-box"><b>理由（この例が示すこと）：</b>気分を変えるのに気合いは不要で、思考を紙に書いて検証するだけで感情の強度は動く、という認知モデルの実証例。</div>
+      </div>
+
+      <div class="card">
+        <h3>ケース2｜「言葉の柔道」で批判を受け流さず検証する</h3>
+        <ul>
+          <li>背景：仕事で厳しい指摘を受けると、多くの人は「全否定して落ち込む」か「反論して関係を悪化させる」かの二択に陥りがち</li>
+          <li>技法：指摘のうち事実として認められる部分にだけ同意し、誇張されている部分は質問で確かめる</li>
+        </ul>
+        <div class="why-box"><b>理由（この例が示すこと）：</b>批判への反応は「受け入れる／突っぱねる」の二択ではなく、事実確認という第三の道があることを示す。</div>
+      </div>
+
+      <div class="card">
+        <h3>ケース3｜著者自身が自分の理論を自分に当てはめる（第16章）</h3>
+        <ul>
+          <li>背景：多忙な臨床・執筆生活の中で著者自身もストレスや落ち込みを経験する</li>
+          <li>実践：本書で紹介した技法（自動思考の書き出しと検証）を自分の日常にそのまま適用する</li>
+        </ul>
+        <div class="why-box"><b>理由（この例が示すこと）：</b>専門家だから感情に振り回されないのではなく、同じ技法を使い続けているから対処できる、という再現性を示す。</div>
+      </div>
+    </div>
+
+    <!-- 重要な引用 -->
+    <div class="panel" id="panel-quote" role="tabpanel" aria-labelledby="tab-quote" hidden>
+      <h2 class="section-title">💬 重要な引用</h2>
+
+      <div class="quote-card">
+        <p class="q-text"><span class="tag-summary">要旨</span>気分は、いま起きた出来事そのものではなく、その出来事についてあなたがどう考えたかによって生まれる。</p>
+        <p class="q-note">本書全体を貫く認知モデルの核心を要約したもの。</p>
+      </div>
+
+      <div class="quote-card">
+        <p class="q-text"><span class="tag-summary">要旨</span>認知療法の気分改善効果は、うつ病に対して抗うつ薬と同等かそれ以上であると、臨床研究によって最初に証明された精神療法である。</p>
+        <p class="q-note">本書の効果を裏付ける研究知見の要約。</p>
+      </div>
+
+      <div class="quote-card">
+        <p class="q-text"><span class="tag-summary">要旨</span>「そう感じる」ことは、それが「事実である」ことを意味しない。強い感情ほど、自分には正しく思えてしまう。</p>
+        <p class="q-note">10の認知の歪みの一つ「感情的決めつけ」への反論を要約したもの。</p>
+      </div>
+    </div>
+
+    <!-- 今日のアクション -->
+    <div class="panel" id="panel-action" role="tabpanel" aria-labelledby="tab-action" hidden>
+      <h2 class="section-title">✅ 今日できるアクション</h2>
+
+      <div class="action-card">
+        <span class="time">⏱ 20分</span>
+        <h3>1. 「3コラム法」で今日のモヤモヤを書き出す</h3>
+        <div class="meta"><b>やり方：</b>ノートに「出来事」「自動思考」「合理的反応」の3列を作り、今日感じたモヤモヤをそのまま埋める</div>
+        <div class="meta"><b>目的：</b>頭の中の反芻を紙の上に固定し、客観視する</div>
+        <div class="meta"><b>期待効果：</b>感情の強度を数値化して測れるようになり、思考と感情を切り離す第一歩が踏める</div>
+      </div>
+
+      <div class="action-card">
+        <span class="time">⏱ 15分</span>
+        <h3>2. 自分の「認知の歪み」に名前をつける</h3>
+        <div class="meta"><b>やり方：</b>今日感じたネガティブな考えを、10種類の歪みリストと照らし合わせて当てはまるものに丸をつける</div>
+        <div class="meta"><b>目的：</b>自分の思考の癖を「性格」ではなく「パターン」として客観的に認識する</div>
+        <div class="meta"><b>期待効果：</b>「自分がダメだから」ではなく「歪みのパターンにハマっただけ」と捉え直せる</div>
+      </div>
+
+      <div class="action-card">
+        <span class="time">⏱ 15〜30分</span>
+        <h3>3. 「言葉の柔道」の返答を3パターン準備する</h3>
+        <div class="meta"><b>やり方：</b>最近言われて傷ついた批判を1つ思い出し、部分的に同意しつつ質問で切り返す返答を3通り書いてみる</div>
+        <div class="meta"><b>目的：</b>批判を全否定・全肯定せず、事実確認の対話に変える練習をする</div>
+        <div class="meta"><b>期待効果：</b>次に同様の批判を受けたとき、感情的に飲み込まれずに対応できるようになる</div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="note">
+    本インフォグラフィックはWeb検索による情報をもとに生成されています。原典未確認の内容は「要旨」と明記しています。
+  </footer>
+</div>
+
+<script>
+  function switchTab(name) {
+    var tabs = ['concept', 'chapter', 'example', 'quote', 'action'];
+    tabs.forEach(function(t) {
+      var btn = document.getElementById('tab-' + t);
+      var panel = document.getElementById('panel-' + t);
+      var active = (t === name);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+      if (active) {
+        panel.classList.add('active');
+        panel.removeAttribute('hidden');
+      } else {
+        panel.classList.remove('active');
+        panel.setAttribute('hidden', '');
+      }
+    });
+  }
+</script>
+</body>
+</html>
