@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自分を操る超集中力 — インフォグラフィック</title>
+<style>
+/*
+  カラーパレット（本HTML内で使用）
+  --primary:   #2C3E91  深い藍色（集中・知性・信頼）
+  --secondary: #F5A623  アクティブオレンジ（エネルギー・行動）
+  --accent:    #2ECC71  グリーン（成長・実践・アクション）
+  グラデーションは primary → secondary を基調に使用
+*/
+:root{
+  --primary:#2C3E91;
+  --primary-dark:#1E2B6B;
+  --secondary:#F5A623;
+  --accent:#2ECC71;
+  --bg:#F7F8FC;
+  --card:#FFFFFF;
+  --text:#22263A;
+  --text-sub:#5A5F7A;
+  --border:#E3E6F0;
+  --radius:14px;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 0 40px;}
+
+/* ===== ヒーロー ===== */
+.hero{
+  background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 60%,var(--secondary) 130%);
+  color:#fff;
+  padding:28px 20px 24px;
+  border-radius:0 0 24px 24px;
+}
+.hero .kicker{font-size:13px;opacity:.85;letter-spacing:.05em;}
+.hero h1{font-size:22px;margin:6px 0 4px;line-height:1.4;}
+.hero .author{font-size:13px;opacity:.9;margin-bottom:14px;}
+
+.qa-box{
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:var(--radius);
+  padding:14px 16px;
+  backdrop-filter:blur(2px);
+}
+.qa-box .q{font-size:13px;font-weight:700;opacity:.9;margin-bottom:4px;}
+.qa-box .q::before{content:"❓ ";}
+.qa-box .a{font-size:14px;font-weight:700;margin-bottom:8px;}
+.qa-box .a::before{content:"💡 ";}
+.qa-box .why{font-size:12.5px;opacity:.9;border-top:1px dashed rgba(255,255,255,.4);padding-top:8px;}
+.qa-box .why::before{content:"🔍 根拠: ";font-weight:700;}
+
+/* ===== 数値バッジ行 ===== */
+.stat-row{
+  display:flex;gap:10px;flex-wrap:wrap;
+  padding:16px 20px 4px;
+}
+.stat{
+  flex:1 1 140px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:12px 10px;
+  text-align:center;
+}
+.stat .num{font-size:20px;font-weight:800;color:var(--primary);}
+.stat .label{font-size:11px;color:var(--text-sub);margin-top:2px;}
+.bar-wrap{padding:4px 20px 16px;}
+.bar-title{font-size:12px;color:var(--text-sub);margin-bottom:6px;}
+.bar{height:10px;border-radius:6px;background:var(--border);overflow:hidden;display:flex;}
+.bar span{display:block;height:100%;}
+
+/* ===== タブ ===== */
+.tabs{
+  display:flex;
+  overflow-x:auto;
+  gap:6px;
+  padding:14px 16px 0;
+  -webkit-overflow-scrolling:touch;
+}
+.tab-btn{
+  flex:0 0 auto;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:8px 14px;
+  font-size:12.5px;
+  font-weight:700;
+  color:var(--text-sub);
+  cursor:pointer;
+  white-space:nowrap;
+}
+.tab-btn[aria-selected="true"]{
+  background:var(--primary);
+  color:#fff;
+  border-color:var(--primary);
+}
+.panels{padding:14px 16px 0;}
+.panel{display:none;}
+.panel[data-active="true"]{display:block;}
+
+/* ===== カード共通 ===== */
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:14px 16px;
+  margin-bottom:12px;
+}
+.card h3{
+  font-size:15px;margin:0 0 8px;
+  display:flex;align-items:center;gap:6px;
+}
+.card ul{margin:0 0 8px;padding-left:18px;font-size:13.5px;}
+.card ul li{margin-bottom:4px;}
+.why{
+  font-size:12px;
+  color:var(--primary-dark);
+  background:#EEF1FB;
+  border-radius:8px;
+  padding:6px 10px;
+  margin-top:6px;
+}
+.why b{color:var(--primary);}
+.tag{
+  display:inline-block;
+  font-size:11px;
+  font-weight:700;
+  color:#fff;
+  background:var(--secondary);
+  border-radius:6px;
+  padding:2px 8px;
+  margin-bottom:6px;
+}
+.quote-card{border-left:4px solid var(--secondary);}
+.quote-card p.q{font-size:14px;font-style:italic;margin:0 0 6px;}
+.quote-card p.note{font-size:12px;color:var(--text-sub);margin:0;}
+.action-card{border-left:4px solid var(--accent);}
+.action-card .goal{font-size:12.5px;color:var(--text-sub);margin:4px 0 2px;}
+.action-card .goal b{color:var(--accent);}
+
+/* ===== 章バッジ ===== */
+.chapter-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border-radius:50%;
+  background:var(--primary);color:#fff;font-size:12px;font-weight:800;
+  margin-right:6px;flex:0 0 auto;
+}
+
+footer{
+  text-align:center;font-size:11px;color:var(--text-sub);
+  padding:20px 20px 4px;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="kicker">📖 今日のインフォグラフィック要約</div>
+    <h1>🧠 自分を操る超集中力</h1>
+    <div class="author">著者: メンタリストDaiGo ／ カテゴリ: 自己啓発</div>
+
+    <div class="qa-box">
+      <div class="q">なぜ、いつも集中力が続かないのか？</div>
+      <div class="a">集中力は才能ではなく「ウィルパワー」という限りある資源の使い方の問題だから。</div>
+      <div class="why">前頭葉に備わるウィルパワーは意志力・集中力・判断力を支える共通の資源で、総量に限りがあり使うたびに消耗する。だから環境・姿勢・習慣を整えて消耗を防ぎ、正しく回復させれば、誰でも高い集中力を再現できる。</div>
+    </div>
+  </div>
+
+  <div class="stat-row" aria-label="本書の骨格となる数字">
+    <div class="stat"><div class="num">4章</div><div class="label">全体構成</div></div>
+    <div class="stat"><div class="num">7つ</div><div class="label">集中エンジン</div></div>
+    <div class="stat"><div class="num">3つ</div><div class="label">回復法</div></div>
+    <div class="stat"><div class="num">5つ</div><div class="label">時間術</div></div>
+  </div>
+
+  <div class="bar-wrap">
+    <div class="bar-title">🔋 ウィルパワーの1日の消費イメージ（起床直後を100%とした目安）</div>
+    <div class="bar" role="img" aria-label="起床直後100%から時間経過とともに徐々に消耗し夕方には残量が少なくなる目安を色の割合で表現">
+      <span style="width:45%;background:var(--accent);"></span>
+      <span style="width:30%;background:var(--secondary);"></span>
+      <span style="width:25%;background:#D64545;"></span>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="インフォグラフィックのセクション切り替え">
+    <button class="tab-btn" role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🔑 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📗 各章要約</button>
+    <button class="tab-btn" role="tab" id="tab-examples" aria-controls="panel-examples" aria-selected="false">💡 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">🗨️ 引用</button>
+    <button class="tab-btn" role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+  </div>
+
+  <div class="panels">
+
+    <!-- 主要概念 -->
+    <section class="panel" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts" data-active="true">
+
+      <div class="card">
+        <h3>🔋 ウィルパワー</h3>
+        <ul>
+          <li>意志・集中・判断をすべて支える共通の脳内リソース</li>
+          <li>前頭葉に宿り、総量に上限がある</li>
+          <li>使うたびに減り、睡眠や食事で補給される</li>
+        </ul>
+        <div class="why"><b>理由（なぜ重要か）：</b>集中力を「気合い」ではなく「資源管理」として捉え直せるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>📐 集中力を操る3つのルール</h3>
+        <ul>
+          <li>集中力は先天的資質ではなく鍛えられる</li>
+          <li>短時間集中を繰り返す方が持続する</li>
+          <li>「疲れ」は脳が生み出す思い込みで管理できる</li>
+        </ul>
+        <div class="why"><b>理由（なぜ重要か）：</b>「自分は集中できない人間だ」という思い込みを外し、鍛錬の対象にできるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>⚙️ 7つのエンジン</h3>
+        <ul>
+          <li>場所・姿勢・食事・感情・習慣・運動・瞑想の7領域を整える</li>
+          <li>環境と身体側から集中力を"自動生成"する発想</li>
+        </ul>
+        <div class="why"><b>理由（なぜ重要か）：</b>意志力に頼らず、環境を変えるだけで消耗を防げるから再現性が高い。</div>
+      </div>
+
+      <div class="card">
+        <h3>👁️ セルフモニタリング</h3>
+        <ul>
+          <li>逆手での歯磨き・ドア開閉など無意識の動作を意識化する訓練</li>
+          <li>「意識して行動する」感覚そのものがウィルパワーの筋トレになる</li>
+        </ul>
+        <div class="why"><b>理由（なぜ重要か）：</b>特別な状況でなく日常の些細な行動からでも集中力を鍛え始められるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>🌙 3つの回復法</h3>
+        <ul>
+          <li>睡眠の質を上げる／感覚から癒やす／不安を書き出す</li>
+        </ul>
+        <div class="why"><b>理由（なぜ重要か）：</b>ウィルパワーは消耗するだけでなく回復もする。回復を怠ると集中力はすぐ枯渇するから。</div>
+      </div>
+
+      <div class="card">
+        <h3>⏰ 5つの時間術</h3>
+        <ul>
+          <li>超早起き／ポモドーロ・テクニック／ウルトラディアンリズム</li>
+          <li>アイビー・リー・メソッド／スケジュールに余白をつくる</li>
+        </ul>
+        <div class="why"><b>理由（なぜ重要か）：</b>時間の型を先に決めておくことで、判断のたびに生じるウィルパワー消費を節約できるから。</div>
+      </div>
+
+      <div class="card">
+        <h3>🚧 制約の中の集中</h3>
+        <ul>
+          <li>自由なときより制約があるときの方が集中しやすい</li>
+          <li>選択肢を減らすことが集中力向上の実践的な工夫になる</li>
+        </ul>
+        <div class="why"><b>理由（なぜ重要か）：</b>「自由=良い」という直感に反する事実を知ることで、環境設計の重要性が見えるから。</div>
+      </div>
+
+    </section>
+
+    <!-- 各章要約 -->
+    <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" data-active="false">
+
+      <div class="card">
+        <h3><span class="chapter-num">1</span>集中力を自在に操る3つのルール</h3>
+        <ul>
+          <li>集中力は先天的な資質でなく鍛えられる</li>
+          <li>短時間集中の繰り返しが持続力を生む</li>
+          <li>「疲れ」は脳の思い込みでコントロール可能</li>
+        </ul>
+        <div class="why"><b>理由：</b>前提を覆すことで「集中できない自分」という思い込みを外し、集中力をトレーニングの対象として扱えるようになる。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="chapter-num">2</span>高い集中力を生み出す7つのエンジン</h3>
+        <ul>
+          <li>場所・姿勢・食事・感情・習慣・運動・瞑想を整える</li>
+          <li>セルフモニタリングで無意識の癖を鍛錬に転換する</li>
+        </ul>
+        <div class="why"><b>理由：</b>意志の力に頼らず環境・身体側を変えることで、消耗を防ぎながら安定して集中力を発揮できる。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="chapter-num">3</span>疲れをリセットする3つの回復法</h3>
+        <ul>
+          <li>睡眠の質を高めてウィルパワーを回復する</li>
+          <li>感覚（香り・音・光）から脳を癒やす</li>
+          <li>不安を書き出してワーキングメモリを解放する</li>
+        </ul>
+        <div class="why"><b>理由：</b>ウィルパワーは使うだけでなく回復もする。正しい休息法を知らなければ集中力はすぐ枯渇してしまう。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="chapter-num">4</span>集中力を自動でつくり出す5つの時間術</h3>
+        <ul>
+          <li>起床後2時間の「黄金時間」を活用する超早起き</li>
+          <li>25分集中＋5分休憩のポモドーロ、90分＋20分のウルトラディアンリズム</li>
+          <li>前日夜に翌日の重要タスクを6つだけ書くアイビー・リー・メソッド</li>
+        </ul>
+        <div class="why"><b>理由：</b>時間の型をあらかじめ決めておくことで、都度の判断で消耗するウィルパワーを節約できる。</div>
+      </div>
+
+    </section>
+
+    <!-- 具体例 -->
+    <section class="panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples" data-active="false">
+
+      <div class="card">
+        <span class="tag">CASE 1</span>
+        <h3>✋ 逆手での歯磨き・ドア開閉トレーニング</h3>
+        <p style="font-size:13.5px;margin:0 0 6px;"><b>背景：</b>著者DaiGoは学生時代、成績が227人中224位だったが、無意識の行動を意識化する訓練を積み重ねて集中力を鍛え直した。</p>
+        <p style="font-size:13.5px;margin:0;"><b>示唆：</b>特別な才能でなく、日常の小さな「意識化」の繰り返しがウィルパワーの筋トレになる。</p>
+        <div class="why"><b>理由（この例が示すこと）：</b>集中力向上は特別な環境でなく、誰でも今すぐ始められる日常の些細な行動から可能であることを示す。</div>
+      </div>
+
+      <div class="card">
+        <span class="tag">CASE 2</span>
+        <h3>🔒 「制約がある方が集中できる」現象</h3>
+        <p style="font-size:13.5px;margin:0 0 6px;"><b>背景：</b>自由すぎる環境では選択肢の多さ自体がウィルパワーを消耗させ、逆に制約された状況の方が集中しやすいことが指摘されている。</p>
+        <p style="font-size:13.5px;margin:0;"><b>示唆：</b>作業環境や使える時間をあえて狭めることが、集中力向上の実践的な工夫になる。</p>
+        <div class="why"><b>理由（この例が示すこと）：</b>「自由な方が良い」という直感に反する事実を示し、環境設計の重要性を裏付ける。</div>
+      </div>
+
+      <div class="card">
+        <span class="tag">CASE 3</span>
+        <h3>📝 アイビー・リー・メソッドによる1日6タスクへの絞り込み</h3>
+        <p style="font-size:13.5px;margin:0 0 6px;"><b>背景：</b>米国の経営コンサルタントが提唱した、前日夜に翌日やるべきことを重要順に6つだけ書き出す手法として紹介されている。</p>
+        <p style="font-size:13.5px;margin:0;"><b>示唆：</b>タスクを絞ることで判断の回数そのものを減らし、ウィルパワーの消費を最小化できる。</p>
+        <div class="why"><b>理由（この例が示すこと）：</b>「やることを減らす」ことが、そのまま「集中力を増やす」ことに直結する好例になっている。</div>
+      </div>
+
+      <div class="card">
+        <span class="tag">CASE 4</span>
+        <h3>🌅 超早起きによる「黄金の2時間」の活用</h3>
+        <p style="font-size:13.5px;margin:0 0 6px;"><b>背景：</b>起床直後の2時間はウィルパワーが最も充実しており、他人からの連絡や雑務に消耗される前の時間帯として位置づけられている。</p>
+        <p style="font-size:13.5px;margin:0;"><b>示唆：</b>1日のスケジュールで最も重要な仕事を、この時間帯に前倒しして配置するだけで生産性が変わる。</p>
+        <div class="why"><b>理由（この例が示すこと）：</b>「いつやるか」を変えるだけで、同じ作業量でも消耗の少ない集中を実現できることを示す。</div>
+      </div>
+
+    </section>
+
+    <!-- 重要な引用 -->
+    <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" data-active="false">
+
+      <div class="card quote-card">
+        <p class="q">「集中力は生まれつきの資質ではなく、トレーニングで鍛えられる」（要旨）</p>
+        <p class="note">💬 一言補足：本書全体の前提となる主張。集中力を"才能"ではなく"技術"として扱う視点。</p>
+      </div>
+
+      <div class="card quote-card">
+        <p class="q">「集中力は自由な状態より、制約がある状態でこそ高まる」（要旨）</p>
+        <p class="note">💬 一言補足：環境をあえて狭めることの有効性を示す、本書の中でも意外性の高い主張。</p>
+      </div>
+
+      <div class="card quote-card">
+        <p class="q">「疲れは脳がつくり出す思い込みであり、正しく理解すればコントロールできる」（要旨）</p>
+        <p class="note">💬 一言補足：「疲れた=もう無理」という自動的な思考パターンに疑いを持つきっかけになる一文。</p>
+      </div>
+
+    </section>
+
+    <!-- 今日のアクション -->
+    <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" data-active="false">
+
+      <div class="card action-card">
+        <h3>1️⃣ 「逆手歯磨き」を1回試す</h3>
+        <div class="goal"><b>目的：</b>無意識の動作を意識化し、ウィルパワーの基礎トレーニングを体感する</div>
+        <div class="goal"><b>期待効果：</b>些細な行動でも「意識して行う」感覚を掴め、セルフモニタリング習慣の入口になる</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>2️⃣ 今日のタスクをアイビー・リー・メソッドで6個に絞る</h3>
+        <div class="goal"><b>目的：</b>判断疲れを減らし、翌日の集中力を守る</div>
+        <div class="goal"><b>期待効果：</b>何から手をつけるか迷う時間が減り、着手までのハードルが下がる</div>
+      </div>
+
+      <div class="card action-card">
+        <h3>3️⃣ 25分作業＋5分休憩のポモドーロを1セット試す</h3>
+        <div class="goal"><b>目的：</b>短時間集中のリズムを体感し、疲労を溜め込まない働き方を試す</div>
+        <div class="goal"><b>期待効果：</b>「区切りがあるから集中できる」という制約効果を実感できる</div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <footer>📚 books-summary Daily Reading — 自分を操る超集中力（メンタリストDaiGo）</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab-btn');
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-examples':'panel-examples',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(b){ b.setAttribute('aria-selected','false'); });
+      btn.setAttribute('aria-selected','true');
+      Object.values(panels).forEach(function(pid){
+        document.getElementById(pid).setAttribute('data-active','false');
+      });
+      var targetId = panels[btn.id];
+      document.getElementById(targetId).setAttribute('data-active','true');
+    });
+  });
+})();
+</script>
+</body>
+</html>
