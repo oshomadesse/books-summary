@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>冒険する組織のつくりかた インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #1d4e89 / セカンダリー #14324f / アクセント #e8871e -->
+<style>
+:root {
+  --primary: #1d4e89;
+  --secondary: #14324f;
+  --accent: #e8871e;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.7rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff3e6, #fff8ef);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eaf1f8, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff4e6, #fffaf2);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧭 冒険する組織のつくりかた</h1>
+  <p>「軍事的世界観」を抜け出す５つの思考法</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>真面目に目標を追いかけ、組織を「強く」しようとするほど、なぜメンバーのやる気と創造性が失われていくのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>組織を、人を駒として動員し勝利をめざす「軍事的世界観」から、一人ひとりの好奇心を資源にしながら仲間と社会的ミッションを探究する「冒険的世界観」へアップデートすれば、個人の自己実現とチームの成果は両立できる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>軍事的世界観は命令・統制による短期の数値達成には強いが、不確実な時代に必要な自発的な探究心・創造性を摩耗させてしまう。人と組織を「駒」として扱う限り、ワクワクは生まれない。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>CCM（Creative Cultivation Model／冒険コンパス）で「社会的ミッションの探究」と「個人の自己実現の探究」を「事業ケイパビリティの探究」で橋渡しし、目標・チーム・会議・成長・組織という5つの冒険的レンズで組織を作り直す。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>⚔️ 軍事的世界観 vs 🧭 冒険的世界観</h3>
+    <ul>
+      <li>軍事的世界観：人を駒として動員し、効率と勝利（数値達成）を追求する組織観</li>
+      <li>冒険的世界観：好奇心を資源に、仲間と共創しながら社会的ミッションを探究する組織観</li>
+      <li>「強い組織」でも「安心・安全なだけの職場」でもない“第三の道”</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>不確実な時代のビジネスは「領地の奪い合い」から「よりよい社会の可能性を探究する活動」へ変質しており、旧来の軍事的な組織観では個人の創造性を引き出せないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧭 CCM（Creative Cultivation Model／冒険コンパス）</h3>
+    <ul>
+      <li>「社会的ミッションの探究」と「個人の自己実現の探究」の2軸を、「事業ケイパビリティ（会社の得意技）の探究」が橋渡しする</li>
+      <li>3つの探究が噛み合ったとき、組織は冒険的に前進する</li>
+      <li>本書が提示する新時代の組織モデルの中核</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>社会的意義と個人の情熱を、事業として実現可能な形にすり合わせる「羅針盤」がないと、理想論で終わってしまうため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔎 5つの冒険的レンズ</h3>
+    <ul>
+      <li>目標のレンズ／チームのレンズ／会議のレンズ／成長のレンズ／組織のレンズ</li>
+      <li>それぞれの現場を「軍事的」にではなく「冒険的」に捉え直す視点</li>
+      <li>実践編（第Ⅱ部）はこの5レンズに沿って構成される</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>抽象的な世界観の転換を、日々の業務の具体的な場面（目標設定・会議など）に落とし込むための橋渡しになるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌟 ALIVEな目標設定</h3>
+    <ul>
+      <li>Adaptive・Learningful・Interesting・Visionary・Experimentalの頭文字</li>
+      <li>SMARTの法則を否定せず、数値目標に「好奇心をくすぐる問い」を重ねる</li>
+      <li>「やらされノルマ」に意味と魂を吹き込む目標の立て方</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>測定可能性だけを追う目標はメンバーの当事者意識を奪うため、探究心を刺激する「問い」を埋め込む必要があるから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 冒険するチームづくり</h3>
+    <ul>
+      <li>同じ目標に向かうだけでなく、互いの個性・弱みまで認め合う</li>
+      <li>「自分を出しても大丈夫」という心理的安全性が土台</li>
+      <li>多様な専門性・夢を持つメンバーの探究を支え合う関係性を設計する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>画一的な機能組織では個々の好奇心が押し殺され、冒険的世界観が機能しないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💬 冒険する対話の場づくり</h3>
+    <ul>
+      <li>会議を「効率的な報告の場」から「対話と価値創造の場」へ転換する</li>
+      <li>問いを立てることでメンバーの思考と好奇心を引き出す</li>
+      <li>『問いのデザイン』で示された技法とも接続する実践パート</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>報告・承認だけの会議は思考停止を生み、冒険的な探究の芽を摘んでしまうため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📚 冒険する学習文化づくり</h3>
+    <ul>
+      <li>心理的安全性と目標への責任の両方が高い「ラーニング・ゾーン」を目指す</li>
+      <li>失敗や試行錯誤を学習資源として組織に蓄積する</li>
+      <li>個人の探究が組織全体の学びへと循環する仕組みをつくる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>不確実性の高い環境では、正解を実行する力より学習し続ける力の方が組織の持続力を左右するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗝️ 組織変革の20のカギ</h3>
+    <ul>
+      <li>目標・チーム・会議・成長・組織の5レンズ×実践的なカギ群として提示</li>
+      <li>理論（第Ⅰ部）を現場で回すための具体的な手順・問いかけ集</li>
+      <li>350社以上の組織づくり支援の知見が土台になっている</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>世界観の転換は「気づき」だけでは定着しないため、日々使える具体的な実践のカギに翻訳する必要があるから。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>軍事的世界観への気づき</span>
+      <span class="flow-arrow">→</span>
+      <span>冒険的世界観への転換</span>
+      <span class="flow-arrow">→</span>
+      <span>CCM（冒険コンパス）で3つの探究を橋渡し</span>
+    </div>
+    <div class="flow-item">
+      <span>ALIVEな目標設定</span>
+      <span class="flow-arrow">→</span>
+      <span>好奇心が刺激される</span>
+      <span class="flow-arrow">→</span>
+      <span>自発的な探究行動が生まれる</span>
+    </div>
+    <div class="flow-item">
+      <span>心理的安全性のあるチーム</span>
+      <span class="flow-arrow">→</span>
+      <span>冒険する対話の場</span>
+      <span class="flow-arrow">→</span>
+      <span>学習文化の醸成</span>
+    </div>
+    <div class="flow-item">
+      <span>5つの冒険的レンズ</span>
+      <span class="flow-arrow">→</span>
+      <span>20のカギで実践</span>
+      <span class="flow-arrow">→</span>
+      <span>組織変革が定着する</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>はじめに＋第Ⅰ部 理論編：軍事的世界観を抜け出す</h3>
+    <ul>
+      <li>序：冒険する組織とは何か ─「軍事的世界観」からの脱却というテーマ提示</li>
+      <li>第1章：会社の「世界観」を変える ─ 5つの冒険的レンズ</li>
+      <li>第2章：自己実現を手放さない「冒険コンパス」─ 新時代の組織モデルCCM</li>
+      <li>第3章：冒険する組織をつくる「5つの基本原則」</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>実践に入る前に、なぜ従来の組織観では立ち行かないのか、代わりにどんな世界観・モデルを目指すのかという土台を共有するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章：冒険する「目標設定」のカギ</h3>
+    <ul>
+      <li>SMARTな数値目標に、ALIVEな問いを重ねて意味づけする</li>
+      <li>「やらされノルマ」を自分ごとの探究へ変換する具体的な問いかけ例</li>
+      <li>短期目標にも好奇心を刺激する余白を埋め込む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>目標は組織が最初に触れる「入口」であり、ここが軍事的なままだと以降のチームづくりも冒険的になり得ないため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章：冒険する「チームビルディング」のカギ</h3>
+    <ul>
+      <li>多様な専門性・個性を持つメンバーが互いを認め合う関係性の設計</li>
+      <li>「自分を出しても大丈夫」という心理的安全性の作り方</li>
+      <li>各メンバーの探究を支え合うチーム像（ONE PIECEの麦わらの一味を例に）</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>個人の探究とチームの成果を両立させるには、統制ではなく信頼に基づくチーム設計が必要なため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章：冒険する「対話の場づくり」のカギ</h3>
+    <ul>
+      <li>会議を報告の場から、問いを立て合う対話と価値創造の場へ転換する</li>
+      <li>効率一辺倒の会議設計を見直す視点</li>
+      <li>『問いのデザイン』の技法とも接続する実践的な問いかけ集</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>会議は組織の思考が最も可視化される場であり、ここを変えることが文化変容への近道になるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7章：冒険する「学習文化づくり」のカギ</h3>
+    <ul>
+      <li>心理的安全性と責任の両方が高い「ラーニング・ゾーン」の形成</li>
+      <li>失敗・試行錯誤を組織の学習資源として蓄積する仕組み</li>
+      <li>個人の探究を組織学習へ循環させる設計</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>正解のない時代には、実行力よりも学び続ける力が組織の競争力を左右するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第8章：冒険する「組織変革」のカギ</h3>
+    <ul>
+      <li>目標・チーム・会議・成長で得た変化を、組織全体の仕組みへ拡張する</li>
+      <li>大企業を含む350社以上の支援実績に基づく変革プロセス</li>
+      <li>一部門の成功をどう全社の文化に波及させるかという視点</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>個々の実践が点で終わらず、組織全体の「世界観」の書き換えにつながるための総仕上げの章であるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>🏴‍☠️ ONE PIECE「麦わらの一味」に見る冒険する組織</h3>
+    <ul>
+      <li>航海士・剣士・料理人・医者など、異なる専門性と夢を持つメンバーで構成</li>
+      <li>効率的ではない航路を選ぶこともあるが、仲間の自己実現と絆を優先する</li>
+      <li>個人の探究とチームとしての成果（航海の達成）が両立する理想像として提示</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「冒険する組織」が抽象論ではなく、身近な物語の中にある具体的なチーム像として理解できることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 ALIVEな目標設定の実践例</h3>
+    <ul>
+      <li>「新規事業のアイディア創出の方法を学びたい」という問いから目標を設定した例</li>
+      <li>「自分の中にある暗黙知を言語化したい」という探究から目標を立てた例</li>
+      <li>「自分のブランディングを確立し、発信しながら他者と学びを深めたい」という例</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>数値ノルマではなく「好奇心の言葉」から目標が生まれると、当事者意識が全く変わることを具体的に示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏢 大企業での行動指針の「自分ごと化」ワークショップ</h3>
+    <ul>
+      <li>著者が代表を務めるMIMIGURI（旧ミミクリデザイン）が数万人規模の企業で実施</li>
+      <li>全社共通の行動指針を、社員一人ひとりが「自分ごと」として捉え直すワークショップを設計</li>
+      <li>トップダウンの指針浸透ではなく、対話を通じて内発的に意味づけるアプローチ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>本書の「冒険する対話の場づくり」が、実際の大企業の組織開発でどう応用されているかを示す実例。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">不確実な世の中で、個人のキャリアもビジネスも、自分の好奇心を資源にしながら新しい価値を探究し続ける「冒険的世界観」にシフトしている。（要旨）</p>
+    <p class="quote-why">※原典の一字一句の引用ではなく要旨。本書全体の出発点となる時代認識を示す一節。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">冒険する組織とは、やみくもに危険を冒す組織のことではない。一人ひとりのメンバーが好奇心や関心に基づいて自己実現を探究し、同時に集団としての社会的ミッションを追い求める組織のことである。（要旨）</p>
+    <p class="quote-why">※要旨。「冒険する組織」という本書のキーコンセプトの定義部分。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">ALIVEの法則はSMARTの法則を否定するものではない。既存の数値目標に、好奇心をくすぐる問いを重ね合わせることで、「やらされノルマ」に意味と魂を吹き込むことができる。（要旨）</p>
+    <p class="quote-why">※要旨。目標設定を扱う実践パートの核心的な考え方。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">冒険的文化とは、軍事的文化が持つ新たな価値を求める「外部志向性」と、家族的文化が持つ絆の側面を併せ持つ、いわば「第三の道」である。（要旨）</p>
+    <p class="quote-why">※要旨。「強い組織」でも「安心・安全なだけの職場」でもない、本書が提示する組織文化の位置づけ。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>🌟 今日のタスクを「ALIVE」で書き換える</h4>
+    <p><strong>やること：</strong>今日取り組む業務タスクを1つ選び、Adaptive・Learningful・Interesting・Visionary・Experimentalの5観点で「問い」に言い換えてみる。</p>
+    <p><strong>目的：</strong>数値目標・業務命令を、自分の好奇心につながる探究の問いへ変換する練習をする。</p>
+    <p><strong>期待効果：</strong>同じタスクでも取り組む意味づけが変わり、当事者意識とモチベーションが上がる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🗣️ チームメンバーに「最近のワクワク」を聞く</h4>
+    <p><strong>やること：</strong>同僚やチームメンバー1人に、15分ほど「最近何に好奇心や関心を持っているか」を尋ねてみる。</p>
+    <p><strong>目的：</strong>相手の内発的な動機・探究心に触れ、心理的安全性のあるチームづくりの第一歩を体験する。</p>
+    <p><strong>期待効果：</strong>相手との関係が「業務上の役割」から一歩踏み込んだものになり、対話の質が上がる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>📋 会議のアジェンダに「対話」の枠を1つ加える</h4>
+    <p><strong>やること：</strong>次に自分が運営する会議のアジェンダを見直し、報告・承認だけでなく、参加者に問いを投げかけて考えてもらう時間を1項目加える。</p>
+    <p><strong>目的：</strong>会議を「効率的な報告の場」から「対話と価値創造の場」へ、小さく転換してみる。</p>
+    <p><strong>期待効果：</strong>参加者の発言量が増え、会議で新しい視点やアイディアが生まれやすくなる。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 80%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
