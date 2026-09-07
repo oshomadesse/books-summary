@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ぜんぶ、すてれば — インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー: #1F2937 (墨色に近いダークネイビー)
+  セカンダリー: #F5F1E8 (和紙のようなオフホワイト)
+  アクセント: #C0392B → #E67E22 のグラデーション（朱色〜橙、"手放す・軽やかさ"を表現）
+-->
+<style>
+  :root{
+    --primary:#1F2937;
+    --secondary:#F5F1E8;
+    --accent1:#C0392B;
+    --accent2:#E67E22;
+    --card-bg:#FFFFFF;
+    --text-sub:#6B7280;
+    --border:#E5E0D4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Yu Gothic",system-ui,-apple-system,sans-serif;
+    background:var(--secondary);
+    color:var(--primary);
+    line-height:1.7;
+    padding-bottom:60px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary) 0%,#374151 100%);
+    color:#fff;
+    padding:28px 20px 24px;
+    text-align:center;
+  }
+  header h1{
+    font-size:1.6rem;
+    letter-spacing:.05em;
+  }
+  header p{
+    margin-top:8px;
+    font-size:.85rem;
+    color:#D1D5DB;
+  }
+  .hero{
+    margin:16px;
+    background:var(--card-bg);
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,.08);
+    border-left:6px solid var(--accent1);
+  }
+  .hero h2{
+    font-size:1rem;
+    color:var(--accent1);
+    margin-bottom:10px;
+  }
+  .qa-block{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .qa-item{
+    background:var(--secondary);
+    border-radius:10px;
+    padding:12px 14px;
+  }
+  .qa-item .label{
+    font-size:.72rem;
+    font-weight:bold;
+    color:var(--accent2);
+  }
+  .qa-item .content{
+    font-size:.92rem;
+    margin-top:4px;
+  }
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:0 16px;
+    margin:20px 0 12px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:8px 14px;
+    font-size:.8rem;
+    color:var(--primary);
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:linear-gradient(135deg,var(--accent1),var(--accent2));
+    color:#fff;
+    border-color:transparent;
+    font-weight:bold;
+  }
+  main{padding:0 16px;}
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  .card{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:0 1px 6px rgba(0,0,0,.06);
+    border:1px solid var(--border);
+  }
+  .card h3{
+    font-size:.95rem;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{
+    padding-left:1.1em;
+    font-size:.85rem;
+  }
+  .card li{margin-bottom:4px;}
+  .why{
+    margin-top:10px;
+    background:#FBEFE7;
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:.78rem;
+    color:#8B4513;
+  }
+  .why b{color:var(--accent1);}
+  .badge-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:10px 0 14px;
+  }
+  .badge{
+    background:var(--primary);
+    color:#fff;
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:.72rem;
+    flex:1 1 100px;
+    text-align:center;
+  }
+  .badge .num{
+    font-size:1.1rem;
+    font-weight:bold;
+    display:block;
+    color:#FFD8B8;
+  }
+  .bar{
+    background:var(--secondary);
+    border-radius:6px;
+    overflow:hidden;
+    height:14px;
+    margin:6px 0 2px;
+  }
+  .bar-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  }
+  blockquote{
+    border-left:4px solid var(--accent2);
+    padding:8px 12px;
+    font-size:.88rem;
+    font-style:italic;
+    background:#FFF8F0;
+    border-radius:0 8px 8px 0;
+    margin-bottom:10px;
+  }
+  blockquote .note{
+    display:block;
+    margin-top:4px;
+    font-size:.72rem;
+    font-style:normal;
+    color:var(--text-sub);
+  }
+  .action-item{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    margin-bottom:12px;
+  }
+  .action-item .icon{font-size:1.3rem;}
+  .action-item .meta{font-size:.72rem;color:var(--text-sub);margin-top:2px;}
+  footer{
+    text-align:center;
+    font-size:.7rem;
+    color:var(--text-sub);
+    margin-top:24px;
+    padding:0 16px;
+  }
+  @media(min-width:640px){
+    main{max-width:680px;margin:0 auto;padding:0 20px;}
+    .hero{max-width:680px;margin:16px auto;}
+    nav.tabs{max-width:680px;margin:20px auto 12px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 ぜんぶ、すてれば</h1>
+  <p>中野善壽（元寺田倉庫代表取締役社長・CEO）｜ライフスタイル</p>
+</header>
+
+<div class="hero">
+  <h2>📌 要約 = 問い × 答え × 根拠</h2>
+  <div class="qa-block">
+    <div class="qa-item">
+      <div class="label">Q. なぜ「持たない」のか？</div>
+      <div class="content">過去や未来、他人の評価に縛られず、「今日」という一瞬に集中して身軽に生きるため。</div>
+    </div>
+    <div class="qa-item">
+      <div class="label">A. すべて手放し「今日がすべて」で生きる</div>
+      <div class="content">モノ・肩書き・こだわり・評価への執着をぜんぶ捨てれば、本当に大切な自由と今この瞬間が残る。</div>
+    </div>
+    <div class="qa-item">
+      <div class="label">💡 根拠（Why & How）</div>
+      <div class="content">著者自身が家・車・高級腕時計を持たず、生活費以外の稼ぎは全額寄付。寺田倉庫では「余計なものをそぎ落とす」経営で、坪単価を5倍に変えた実績を持つ。</div>
+    </div>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">🧩 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases" onclick="switchTab('cases')">🔍 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">💬 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>① 今日がすべて</h3>
+      <ul>
+        <li>過去にも未来にも縛られず、「今」だけに意識を向けるマインドフルネス的発想</li>
+        <li>雑念になるモノや執着を持たないことが集中の前提条件</li>
+        <li>颯爽と軽やかに生きるための土台となる考え方</li>
+      </ul>
+      <div class="why"><b>理由:</b> 「今」に集中できないと、日々の選択が過去の後悔や将来の不安に引きずられてしまうため。</div>
+    </div>
+    <div class="card">
+      <h3>② 持たない自由</h3>
+      <ul>
+        <li>モノ・肩書き・地位を持たないことで、身軽に動ける選択肢が広がる</li>
+        <li>著者自身、家は賃貸、車も高級腕時計も持たない実践者</li>
+        <li>「持つこと」自体が自由を制約するという逆説</li>
+      </ul>
+      <div class="why"><b>理由:</b> 所有物が増えるほど、それを維持・管理するための時間と心理的負担が増えるから。</div>
+    </div>
+    <div class="card">
+      <h3>③ 自分が納得できるか</h3>
+      <ul>
+        <li>他人の評価を判断基準にしない</li>
+        <li>「自分自身が納得できるか」を唯一の物差しにする</li>
+        <li>周囲の期待より内的な一貫性を優先する生き方</li>
+      </ul>
+      <div class="why"><b>理由:</b> 他人軸で生きると、評価が変わるたびに自分の行動基準がぶれてしまうため。</div>
+    </div>
+    <div class="card">
+      <h3>④ こだわりを捨てる</h3>
+      <ul>
+        <li>自分の「こだわり」よりも相手が本当に求めているものを差し出す</li>
+        <li>頑固さを手放すことで柔軟な判断ができるようになる</li>
+        <li>ビジネスでも人間関係でも通じる姿勢</li>
+      </ul>
+      <div class="why"><b>理由:</b> こだわりに固執すると、相手のニーズとのズレに気づけず、成果を出しにくくなるため。</div>
+    </div>
+    <div class="card">
+      <h3>⑤ 余計なものをそぎ落とす経営</h3>
+      <ul>
+        <li>寺田倉庫改革では、旧来の倉庫業モデルを縮小してでも大胆に再編</li>
+        <li>付加価値の低い事業を手放し、アート・ワイン保管などの高付加価値領域へ集中</li>
+        <li>「捨てる」経営判断が結果的に収益を大きく伸ばした</li>
+      </ul>
+      <div class="why"><b>理由:</b> 個人の生き方だけでなく、組織経営にも「持たない・捨てる」思想が応用できることを示す実例だから。</div>
+    </div>
+    <div class="card">
+      <h3>⑥ 抜けているくらいがちょうどいい</h3>
+      <ul>
+        <li>完璧主義を手放し、余白を残す</li>
+        <li>すべてをコントロールしようとしないことが結果的にうまくいく</li>
+        <li>「隙」があることが人や機会を引き寄せる</li>
+      </ul>
+      <div class="why"><b>理由:</b> 完璧を求めすぎると身動きが取れなくなり、変化や偶然のチャンスを逃してしまうため。</div>
+    </div>
+  </section>
+
+  <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters">
+    <p style="font-size:.75rem;color:var(--text-sub);margin-bottom:10px;">※本書には目次がなく、著者の言葉が短い断章形式で綴られている。ここでは論点ごとに疑似章として整理する。</p>
+    <div class="card">
+      <h3>第1部（疑似）: 生き方編 — 今日がすべて</h3>
+      <ul>
+        <li>颯爽と軽やかに、ぜんぶ捨てれば見えてくるものがある</li>
+        <li>不確実な「個の時代」を自立して生きるための心構え</li>
+        <li>今という時間を最優先する暮らし方</li>
+      </ul>
+      <div class="why"><b>理由:</b> 本書全体を貫く核心テーマであり、以降の各論の土台となるため。</div>
+    </div>
+    <div class="card">
+      <h3>第2部（疑似）: 仕事編 — こだわりを捨てる経営</h3>
+      <ul>
+        <li>相手が求めるものを差し出すという発想の転換</li>
+        <li>寺田倉庫での天王洲エリア改革・アート街への変貌</li>
+        <li>売上縮小を恐れず大胆に事業を再編する決断力</li>
+      </ul>
+      <div class="why"><b>理由:</b> 「持たない」思想を最も具体的なビジネス成果として示すパートだから。</div>
+    </div>
+    <div class="card">
+      <h3>第3部（疑似）: 人間関係編 — 自分の納得を軸にする</h3>
+      <ul>
+        <li>人の評価を気にせず、自分自身が納得できるかを問う</li>
+        <li>「抜けているくらいがちょうどいい」という余白の哲学</li>
+        <li>他人と比較しない生き方の実践</li>
+      </ul>
+      <div class="why"><b>理由:</b> モノの所有だけでなく、人間関係や評価への執着も「捨てる」対象であることを示すため。</div>
+    </div>
+    <div class="card">
+      <h3>第4部（疑似）: お金・モノ編 — 所有しないという選択</h3>
+      <ul>
+        <li>家は賃貸、車も高級腕時計も持たない暮らし</li>
+        <li>生活費以外の収入はすべて寄付</li>
+        <li>お気に入りのものを長く使い続けるという価値観</li>
+      </ul>
+      <div class="why"><b>理由:</b> 「持たない」を最も分かりやすく体現する具体的な生活実践だから。</div>
+    </div>
+    <div class="card">
+      <h3>第5部（疑似）: 台湾移住編 — 衝動的な決断が花開いたキャリア</h3>
+      <ul>
+        <li>鈴屋を退社した翌日、衝動的に空港へ向かい台湾に住み着く</li>
+        <li>台湾の財閥企業で経営者として活躍</li>
+        <li>計画よりも直感的な決断を大切にする姿勢</li>
+      </ul>
+      <div class="why"><b>理由:</b> 「捨てる」ことが新しい可能性を開いた最も象徴的なエピソードだから。</div>
+    </div>
+  </section>
+
+  <section id="panel-cases" class="panel" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3>🔍 事例1: 衝動的な台湾移住</h3>
+      <ul>
+        <li>背景: 鈴屋を退社した翌日、目的地も決めずに空港へ向かった</li>
+        <li>経緯: トランジットで立ち寄った台湾にそのまま住み着き、現地の財閥企業でキャリアを再構築</li>
+        <li>結果: 力覇集団百貨店部門代表、遠東集団特別顧問などを歴任</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）:</b> 計画やしがらみを「持たない」ことが、かえって新しい道を開くことを体現している。</div>
+    </div>
+    <div class="card">
+      <h3>🔍 事例2: 寺田倉庫の天王洲アート改革</h3>
+      <ul>
+        <li>背景: 2011年に社長就任時、坪単価は約5,000円という旧来型倉庫業だった</li>
+        <li>経緯: 旧来事業を縮小してでもアート・ワイン保管など高付加価値領域へ大胆にシフト</li>
+        <li>結果: 坪単価は改革前の5倍以上に。2017年にはデヴィッド・ボウイの大回顧展を開催、2018年には日本法人初のモンブラン国際文化賞を受賞</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）:</b> 「余計なものをそぎ落とす」思想が、個人の生き方だけでなく企業経営でも大きな成果を生むことを示す。</div>
+    </div>
+    <div class="card">
+      <h3>🔍 事例3: 生活費以外はすべて寄付</h3>
+      <ul>
+        <li>背景: 経営者として得た収入をどう使うかという個人的な選択</li>
+        <li>経緯: 生きるために必要な分を除き、稼ぎは全額を寄付。家は賃貸、車や高級腕時計も持たない</li>
+        <li>結果: 本書の印税も全額寄付される、思想と実践が一致した生き方を貫いている</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）:</b> 「持たない」が単なる標語ではなく、日々の暮らしの隅々まで貫かれた実践であることを裏付ける。</div>
+    </div>
+  </section>
+
+  <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes">
+    <blockquote>
+      「何も、必要ありません。ぜんぶ、捨てればいいんですよ」
+      <span class="note">一言補足: 本書全体のメッセージを凝縮した、著者の基本姿勢を表す言葉。</span>
+    </blockquote>
+    <blockquote>
+      「僕が何より伝えたいのは、『今日がすべて』という言葉です」
+      <span class="note">一言補足: 過去にも未来にも囚われず、今この瞬間に集中することの大切さを説く核心のフレーズ。</span>
+    </blockquote>
+    <blockquote>
+      「何も持たないからこそ、過去に縛られず、未来に悩まず、今日を大切に生きることができる」
+      <span class="note">一言補足: 「持たない」がもたらす自由の具体的な効能を説明している。</span>
+    </blockquote>
+    <blockquote>
+      「人の評価は気にしない。自分自身が納得できるか」
+      <span class="note">一言補足: 判断基準を他人ではなく自分に置くという、著者の一貫した価値観を示す言葉。</span>
+    </blockquote>
+  </section>
+
+  <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="badge-row">
+      <div class="badge"><span class="num">15-30分</span>1アクションの目安時間</div>
+      <div class="badge"><span class="num">3つ</span>今日試せる行動</div>
+      <div class="badge"><span class="num">5倍</span>寺田倉庫改革の坪単価向上</div>
+    </div>
+    <div class="bar"><div class="bar-fill" style="width:100%"></div></div>
+
+    <div class="card">
+      <div class="action-item">
+        <div class="icon">🗑️</div>
+        <div>
+          <b>1年以上使っていないモノを1つ手放す</b>
+          <div class="meta">⏱️ 約15分 ｜ 🎯 目的: 「持たない」感覚を小さく体験する ｜ 💡 期待効果: 身の回りが少し軽くなり、判断の基準が「必要か」ではなく「大切か」に変わる第一歩になる</div>
+        </div>
+      </div>
+      <div class="action-item">
+        <div class="icon">🧘</div>
+        <div>
+          <b>「今ここ」に集中する時間を10分つくる（散歩・瞑想など）</b>
+          <div class="meta">⏱️ 約10-15分 ｜ 🎯 目的: 「今日がすべて」という考え方を体感する ｜ 💡 期待効果: 過去の後悔や将来の不安から一時的に離れ、今この瞬間への集中力が高まる</div>
+        </div>
+      </div>
+      <div class="action-item">
+        <div class="icon">✍️</div>
+        <div>
+          <b>直近の判断を「自分が納得できるか」で書き直してみる</b>
+          <div class="meta">⏱️ 約20-30分 ｜ 🎯 目的: 他人軸ではなく自分軸で意思決定する練習をする ｜ 💡 期待効果: 評価に振り回されにくくなり、次の選択がぶれにくくなる</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  📚 books-summary Daily Reading ｜ 2026-09-08
+</footer>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('section.panel');
+    var tabs = document.querySelectorAll('nav.tabs button');
+    panels.forEach(function(p){ p.classList.remove('active'); });
+    tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+    document.getElementById('panel-' + name).classList.add('active');
+    document.getElementById('tab-' + name).setAttribute('aria-selected','true');
+  }
+</script>
+
+</body>
+</html>
