@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世界のエリートがやっている 最高の休息法 - インフォグラフィック</title>
+    <!-- カラーパレット: プライマリー #1F4E5F（瞑想的な深い藍）, セカンダリー #E08E45（夕陽オレンジ）, アクセント #7FB3A6（呼吸のミントグリーン） -->
+    <style>
+        :root {
+            --primary: #1F4E5F;
+            --primary-dark: #123642;
+            --secondary: #E08E45;
+            --accent: #7FB3A6;
+            --text-dark: #23343b;
+            --text-light: #647278;
+            --bg-light: #f4f8f7;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', 'Yu Gothic', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--bg-light) 0%, #e4eeec 100%);
+            min-height: 100vh;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 32px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 20px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(31, 78, 95, 0.35);
+        }
+
+        .header h1 { font-size: clamp(1.4rem, 4vw, 2.2rem); margin-bottom: 10px; font-weight: 700; }
+        .header .author { font-size: 1.05rem; opacity: 0.9; }
+        .header .category-badge {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 5px 16px;
+            background: rgba(255,255,255,0.18);
+            border-radius: 999px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(6px);
+        }
+
+        .hero {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 26px 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-left: 6px solid var(--secondary);
+        }
+
+        .hero h2 { font-size: 1.1rem; color: var(--primary); margin-bottom: 14px; }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .hero-item { background: var(--bg-light); border-radius: 14px; padding: 15px; }
+        .hero-item .label {
+            font-size: 0.75rem; font-weight: 700; color: var(--secondary);
+            letter-spacing: 0.05em; margin-bottom: 7px; display: block;
+        }
+        .hero-item p { font-size: 0.92rem; color: var(--text-dark); }
+
+        .dmn-bar-wrap { margin-top: 18px; }
+        .dmn-bar-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-light); margin-bottom: 6px; }
+        .dmn-bar-bg { width: 100%; height: 20px; background: #e3e9e8; border-radius: 999px; overflow: hidden; }
+        .dmn-bar-fill {
+            height: 100%; width: 70%;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 999px;
+            display: flex; align-items: center; justify-content: flex-end; padding-right: 8px;
+            color: white; font-size: 0.72rem; font-weight: 700;
+        }
+
+        nav.tabs {
+            display: flex; gap: 8px; overflow-x: auto; margin-bottom: 18px;
+            -webkit-overflow-scrolling: touch; padding-bottom: 4px;
+        }
+        nav.tabs button {
+            flex: 0 0 auto;
+            border: none; cursor: pointer;
+            padding: 10px 16px; border-radius: 999px;
+            background: var(--white); color: var(--primary);
+            font-size: 0.85rem; font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            white-space: nowrap;
+            transition: background 0.2s, color 0.2s;
+        }
+        nav.tabs button[aria-selected="true"] {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .panel { display: none; }
+        .panel.active { display: block; animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+
+        .card {
+            background: var(--white); border-radius: 16px; padding: 18px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+            border-top: 4px solid var(--accent);
+        }
+        .card h3 { font-size: 1rem; color: var(--primary); margin-bottom: 10px; }
+        .card ul { list-style: none; }
+        .card ul li { font-size: 0.88rem; padding: 4px 0 4px 20px; position: relative; }
+        .card ul li::before { content: "▸"; position: absolute; left: 0; color: var(--secondary); font-weight: 700; }
+        .card .why {
+            margin-top: 12px; padding: 10px 12px; background: var(--bg-light);
+            border-radius: 10px; font-size: 0.82rem; color: var(--text-light);
+        }
+        .card .why b { color: var(--primary); }
+
+        .lecture-card { display: flex; gap: 14px; align-items: flex-start; }
+        .lecture-num {
+            flex: 0 0 auto; width: 42px; height: 42px; border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white; display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1.1rem;
+        }
+
+        .quote-card {
+            background: var(--white); border-radius: 16px; padding: 20px;
+            margin-bottom: 14px; box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+            border-left: 5px solid var(--secondary);
+        }
+        .quote-card blockquote { font-size: 1rem; color: var(--primary-dark); font-style: italic; margin-bottom: 8px; }
+        .quote-card .note-tag {
+            display: inline-block; background: var(--accent); color: white;
+            font-size: 0.7rem; padding: 2px 8px; border-radius: 999px; margin-bottom: 8px;
+        }
+        .quote-card .comment { font-size: 0.85rem; color: var(--text-light); }
+
+        .action-card {
+            background: var(--white); border-radius: 16px; padding: 18px;
+            margin-bottom: 14px; box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+            display: flex; gap: 14px; align-items: flex-start;
+        }
+        .action-num {
+            flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+            background: var(--secondary); color: white; display: flex;
+            align-items: center; justify-content: center; font-weight: 700;
+        }
+        .action-card .time-badge {
+            display: inline-block; background: var(--bg-light); color: var(--primary);
+            font-size: 0.72rem; padding: 2px 10px; border-radius: 999px; margin-left: 8px;
+        }
+        .action-meta { margin-top: 6px; font-size: 0.83rem; color: var(--text-light); }
+        .action-meta b { color: var(--primary); }
+
+        .related-list { list-style: none; }
+        .related-list li {
+            background: var(--white); border-radius: 12px; padding: 12px 14px;
+            margin-bottom: 8px; font-size: 0.86rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--accent);
+        }
+
+        footer { text-align: center; padding: 24px 0 8px; color: var(--text-light); font-size: 0.78rem; }
+
+        @media (max-width: 480px) {
+            .container { padding: 12px; }
+            .header { padding: 24px 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🧠 世界のエリートがやっている 最高の休息法</h1>
+            <p class="author">著者: 久賀谷亮</p>
+            <span class="category-badge">🏷️ 自己啓発</span>
+        </header>
+
+        <section class="hero">
+            <h2>⚡ 要約：問い × 答え × 根拠</h2>
+            <div class="hero-grid">
+                <div class="hero-item">
+                    <span class="label">❓ 問い</span>
+                    <p>ぐっすり眠っているのに、なぜ脳の疲れが取れないのか？</p>
+                </div>
+                <div class="hero-item">
+                    <span class="label">✅ 答え</span>
+                    <p>脳の疲れの正体は「体の疲労」ではなく「雑念の暴走」。マインドフルネスでそれを鎮めることこそが真の休息。</p>
+                </div>
+                <div class="hero-item">
+                    <span class="label">🔬 根拠（Why & How）</span>
+                    <p>脳エネルギーの60〜80%を消費するDMN（デフォルト・モード・ネットワーク）を、7つの科学的メソッドで抑制する。</p>
+                </div>
+            </div>
+            <div class="dmn-bar-wrap">
+                <div class="dmn-bar-label">
+                    <span>🔋 脳の消費エネルギーに占めるDMN（雑念回路）の割合</span>
+                    <span>最大80%</span>
+                </div>
+                <div class="dmn-bar-bg">
+                    <div class="dmn-bar-fill" style="width:80%">DMN 60〜80%</div>
+                </div>
+            </div>
+        </section>
+
+        <nav class="tabs" role="tablist" aria-label="インフォグラフィック タブ">
+            <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">💡 主要概念</button>
+            <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📖 各章の要約</button>
+            <button role="tab" id="tab-examples" aria-controls="panel-examples" aria-selected="false">🎯 具体例</button>
+            <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 重要な引用</button>
+            <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+        </nav>
+
+        <section id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts" class="panel active">
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🌀 DMN（デフォルト・モード・ネットワーク）</h3>
+                    <ul>
+                        <li>脳が意識的な作業をしていない「アイドリング状態」でも働き続ける回路</li>
+                        <li>脳の全消費エネルギーの60〜80%を占める</li>
+                        <li>過去の後悔・未来への不安といった雑念で暴走しやすい</li>
+                    </ul>
+                    <div class="why"><b>理由：</b>疲れの正体を正しく特定しないと、休息法そのものを間違えてしまうから。</div>
+                </div>
+                <div class="card">
+                    <h3>🫁 マインドフルネス呼吸法</h3>
+                    <ul>
+                        <li>姿勢を整え、呼吸と体の感覚に意識を向ける基本瞑想</li>
+                        <li>1日5〜10分から実践可能</li>
+                        <li>7つのメソッドの土台となる入口技術</li>
+                    </ul>
+                    <div class="why"><b>理由：</b>DMNの暴走を止める最もシンプルで再現性の高い方法だから。</div>
+                </div>
+                <div class="card">
+                    <h3>🐒 モンキーマインド</h3>
+                    <ul>
+                        <li>木から木へ飛び移る猿のように思考が次々移り変わる状態</li>
+                        <li>「雑念が疲労を呼ぶ」メカニズムの核心</li>
+                        <li>思考のループから抜け出せなくなる原因</li>
+                    </ul>
+                    <div class="why"><b>理由：</b>この状態を自覚することが、対処への第一歩になるから。</div>
+                </div>
+                <div class="card">
+                    <h3>🚶 ムーブメント瞑想</h3>
+                    <ul>
+                        <li>歩行など体の動きに意識を集中させながら行う瞑想</li>
+                        <li>手足の感覚・地面との接触を意識する</li>
+                        <li>Googleの社員研修「SIY」にも採用</li>
+                    </ul>
+                    <div class="why"><b>理由：</b>静かに座る瞑想が苦手な人でも実践できる代替ルートだから。</div>
+                </div>
+                <div class="card">
+                    <h3>🌬️ ブリージングスペース</h3>
+                    <ul>
+                        <li>①気づく → ②呼吸に集中 → ③体全体に意識を広げる、3ステップ</li>
+                        <li>3分程度の短時間で完結</li>
+                        <li>ストレスで体調が崩れそうな時の応急処置</li>
+                    </ul>
+                    <div class="why"><b>理由：</b>ストレス反応が慢性化する前に、日常の隙間で断ち切れるから。</div>
+                </div>
+                <div class="card">
+                    <h3>🌧️ RAIN</h3>
+                    <ul>
+                        <li>Recognize（認識）・Accept（受容）・Investigate（探求）・Non-identification（同一化しない）</li>
+                        <li>怒りや衝動に流されそうな時に使う4ステップ</li>
+                        <li>感情そのものを観察対象として距離を置く</li>
+                    </ul>
+                    <div class="why"><b>理由：</b>衝動的な言動や判断ミスを未然に防げるから。</div>
+                </div>
+                <div class="card">
+                    <h3>💗 メッタ（慈悲の瞑想）</h3>
+                    <ul>
+                        <li>他人への否定的な感情を和らげるための瞑想</li>
+                        <li>相手の幸せを願う言葉を心の中で繰り返す</li>
+                        <li>対人ストレスへのアプローチ</li>
+                    </ul>
+                    <div class="why"><b>理由：</b>人間関係のストレスも脳疲労の主要因の一つだから。</div>
+                </div>
+                <div class="card">
+                    <h3>🩹 ボディスキャン</h3>
+                    <ul>
+                        <li>体の各部位に順番に意識を向けていく瞑想</li>
+                        <li>痛みや違和感を客観的に観察する</li>
+                        <li>身体感覚と脳疲労のつながりを扱う</li>
+                    </ul>
+                    <div class="why"><b>理由：</b>身体の違和感を放置すると、それ自体が新たな雑念源になるから。</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" class="panel">
+            <div class="card-grid">
+                <div class="card lecture-card">
+                    <div class="lecture-num">1</div>
+                    <div>
+                        <h3>マインドフルネス呼吸法</h3>
+                        <ul>
+                            <li>対象：とにかく脳が疲れている時</li>
+                            <li>姿勢を整え、呼吸と足裏の感覚に注意を向ける</li>
+                            <li>1日5〜10分の継続が基本</li>
+                        </ul>
+                        <div class="why"><b>理由：</b>7つのメソッドすべての土台になる最重要の技術だから。</div>
+                    </div>
+                </div>
+                <div class="card lecture-card">
+                    <div class="lecture-num">2</div>
+                    <div>
+                        <h3>ムーブメント瞑想</h3>
+                        <ul>
+                            <li>対象：気づくと考えごとをしている時</li>
+                            <li>歩行中の筋肉・関節の動きに注意を向ける</li>
+                            <li>Google「SIY」研修でも採用</li>
+                        </ul>
+                        <div class="why"><b>理由：</b>静座が苦手でも実践できるため継続率が上がるから。</div>
+                    </div>
+                </div>
+                <div class="card lecture-card">
+                    <div class="lecture-num">3</div>
+                    <div>
+                        <h3>ブリージングスペース</h3>
+                        <ul>
+                            <li>対象：ストレスで体調がすぐれない時</li>
+                            <li>気づく→呼吸→全身、の3分間ミニ瞑想</li>
+                            <li>日常の隙間時間で実践可能</li>
+                        </ul>
+                        <div class="why"><b>理由：</b>ストレスが体調不良として定着する前に断ち切れるから。</div>
+                    </div>
+                </div>
+                <div class="card lecture-card">
+                    <div class="lecture-num">4</div>
+                    <div>
+                        <h3>モンキーマインド解消法</h3>
+                        <ul>
+                            <li>対象：思考のループから脱したい時</li>
+                            <li>次々移り変わる雑念そのものを観察する</li>
+                            <li>ラベリングして雑念と距離を取る</li>
+                        </ul>
+                        <div class="why"><b>理由：</b>反芻思考を断つ具体的な鍵になるから。</div>
+                    </div>
+                </div>
+                <div class="card lecture-card">
+                    <div class="lecture-num">5</div>
+                    <div>
+                        <h3>RAIN</h3>
+                        <ul>
+                            <li>対象：怒りや衝動に流されそうな時</li>
+                            <li>認識→受容→探求→同一化しない、の4段階</li>
+                            <li>感情を客観視するプロセス</li>
+                        </ul>
+                        <div class="why"><b>理由：</b>衝動的な判断で人間関係や仕事を損なうのを防ぐから。</div>
+                    </div>
+                </div>
+                <div class="card lecture-card">
+                    <div class="lecture-num">6</div>
+                    <div>
+                        <h3>メッタ</h3>
+                        <ul>
+                            <li>対象：他人へのマイナス感情がある時</li>
+                            <li>相手の幸せを願う言葉を心の中で送る</li>
+                            <li>対人関係由来のストレスを緩和</li>
+                        </ul>
+                        <div class="why"><b>理由：</b>人間関係のストレスも脳疲労の主要な原因だから。</div>
+                    </div>
+                </div>
+                <div class="card lecture-card">
+                    <div class="lecture-num">7</div>
+                    <div>
+                        <h3>ボディスキャン</h3>
+                        <ul>
+                            <li>対象：身体に違和感・痛みがある時</li>
+                            <li>体の各部位に順番に意識を向ける</li>
+                            <li>痛みを客観的に観察し反応を和らげる</li>
+                        </ul>
+                        <div class="why"><b>理由：</b>身体感覚を放置しないことが脳の休息にも直結するから。</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="panel-examples" role="tabpanel" aria-labelledby="tab-examples" class="panel">
+            <div class="card-grid">
+                <div class="card">
+                    <h3>👩‍🔬 主人公「夏」の挫折と回復</h3>
+                    <ul>
+                        <li>京都出身、日本で博士号取得後、イェール大で脳科学研究に従事</li>
+                        <li>研究競争のプレッシャーで心身が疲弊し、叔父のベーグル店「Moment」に身を寄せる</li>
+                        <li>脳科学者「ヨーダ」の指導でマインドフルネスを実践し、少しずつ回復していく</li>
+                    </ul>
+                    <div class="why"><b>この例が示すこと：</b>最先端の研究者ですら脳疲労で倒れる。休息法は一部の人だけのものではない。</div>
+                </div>
+                <div class="card">
+                    <h3>🏢 GoogleのSIY（Search Inside Yourself）研修</h3>
+                    <ul>
+                        <li>ムーブメント瞑想（歩行瞑想）が実際の企業研修に組み込まれている</li>
+                        <li>元Googleエンジニアが開発し、社内の情動的知能向上プログラムとして定着</li>
+                        <li>世界的テック企業が科学的根拠に基づき投資している</li>
+                    </ul>
+                    <div class="why"><b>この例が示すこと：</b>マインドフルネスは精神論ではなく、実践的なビジネススキルとして評価されている。</div>
+                </div>
+                <div class="card">
+                    <h3>☕ ベーグル店に集う悩める常連客たち</h3>
+                    <ul>
+                        <li>思考のループから抜け出せない人物、怒りを抑えられない人物、同僚への嫉妬に苦しむ人物が登場</li>
+                        <li>それぞれ異なる悩みに応じて異なる休息法を学んでいく物語構成</li>
+                        <li>7つのメソッドが順に「誰の・どの悩みに効くか」として描かれる</li>
+                    </ul>
+                    <div class="why"><b>この例が示すこと：</b>症状（疲労・怒り・嫉妬・痛み）によって効果的な手法は異なり、万能の一つの方法は存在しない。</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" class="panel">
+            <div class="quote-card">
+                <span class="note-tag">要旨</span>
+                <blockquote>「脳の疲労はしばしば全身の疲労であるかのように錯覚されるが、実際には脳のエネルギーの大半を消費しているのは、何もしていない時でも働き続ける雑念回路（DMN）である。」</blockquote>
+                <p class="comment">原典からの直接引用は確認できなかったため、複数の書評・要約記事の記述を基にした要旨です。</p>
+            </div>
+            <div class="quote-card">
+                <span class="note-tag">要旨</span>
+                <blockquote>「マインドフルネスを習慣として継続すれば、脳の一時的な働きだけでなく、その構造自体が変化していく。」</blockquote>
+                <p class="comment">同様に要旨。継続的な瞑想実践が脳の構造的変化（神経可塑性）につながるという本書の主張の核心部分。</p>
+            </div>
+        </section>
+
+        <section id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" class="panel">
+            <div class="action-card">
+                <div class="action-num">1</div>
+                <div>
+                    <h3>マインドフルネス呼吸法を10分間実践する<span class="time-badge">⏱ 10分</span></h3>
+                    <p>椅子に座り姿勢を整え、呼吸と足裏・体の感覚に意識を向ける。</p>
+                    <p class="action-meta"><b>目的：</b>DMNの過活動を鎮める。 <b>期待効果：</b>雑念が減り、午後の作業への集中力が高まる。</p>
+                </div>
+            </div>
+            <div class="action-card">
+                <div class="action-num">2</div>
+                <div>
+                    <h3>20分のムーブメント瞑想（歩行瞑想）を行う<span class="time-badge">⏱ 20分</span></h3>
+                    <p>手足の筋肉・関節の動き、地面と接触する感覚に注意を向けながらゆっくり歩く。</p>
+                    <p class="action-meta"><b>目的：</b>「考えごと」から意識を体の感覚に引き戻す。 <b>期待効果：</b>反芻思考が減り、気分がリセットされる。</p>
+                </div>
+            </div>
+            <div class="action-card">
+                <div class="action-num">3</div>
+                <div>
+                    <h3>ストレスを感じた瞬間に3分間のブリージングスペースを行う<span class="time-badge">⏱ 3分</span></h3>
+                    <p>①今の状態に気づく → ②呼吸に意識を集中 → ③体全体に意識を広げる。</p>
+                    <p class="action-meta"><b>目的：</b>ストレス反応が慢性化する前に断ち切る。 <b>期待効果：</b>動悸や緊張が和らぎ、次の作業にすぐ切り替えられる。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="hero" style="margin-top: 24px;">
+            <h2>📚 関連書籍</h2>
+            <ul class="related-list">
+                <li>スマホ脳（アンデシュ・ハンセン）: デジタル刺激過多がドーパミン回路と集中力を蝕む仕組みを描き、本書のDMN理論を補完する</li>
+                <li>運動脳（アンデシュ・ハンセン）: 運動という別角度から脳疲労とストレスを軽減する方法を示し、マインドフルネスと並ぶ実践的アプローチ</li>
+                <li>ストレスを操るメンタル強化術（メンタリストDaiGo）: 科学的根拠に基づくストレス対処法という点で本書の休息メソッドと補い合う</li>
+                <li>サーチ・インサイド・ユアセルフ（チャディー・メン・タン）: 本書で紹介されるGoogleのSIY瞑想研修プログラムそのものを開発者自身が解説した原典</li>
+                <li>マインドフルネスストレス低減法（ジョン・カバットジン）: 本書の7つの休息法が依拠するマインドフルネス瞑想（MBSR）を確立した科学的基盤</li>
+            </ul>
+        </section>
+
+        <footer>📚 books-summary daily infographic ・ 2026-09-09</footer>
+    </div>
+
+    <script>
+        (function () {
+            var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+            tabs.forEach(function (tab) {
+                tab.addEventListener('click', function () {
+                    tabs.forEach(function (t) {
+                        t.setAttribute('aria-selected', 'false');
+                        document.getElementById(t.getAttribute('aria-controls')).classList.remove('active');
+                    });
+                    tab.setAttribute('aria-selected', 'true');
+                    document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
