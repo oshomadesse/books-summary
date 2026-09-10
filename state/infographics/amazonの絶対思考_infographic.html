@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>amazonの絶対思考 - インフォグラフィック</title>
+<!--
+  カラーパレット（3色・グラデーション可）
+  プライマリー: #FF9900 (アマゾンオレンジ)
+  セカンダリー: #232F3E (アマゾンダークネイビー)
+  アクセント:   #146EB4 (アマゾンブルー)
+-->
+<style>
+  :root{
+    --primary:#FF9900;
+    --primary-dark:#e88600;
+    --secondary:#232F3E;
+    --secondary-light:#37475A;
+    --accent:#146EB4;
+    --bg:#F7F8FA;
+    --card-bg:#FFFFFF;
+    --text:#1A1D23;
+    --text-sub:#5B6470;
+    --border:#E3E6EA;
+    --shadow: 0 2px 10px rgba(35,47,62,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 16px;}
+
+  header.hero{
+    background:linear-gradient(135deg,var(--secondary) 0%, var(--secondary-light) 60%, var(--accent) 100%);
+    color:#fff;
+    padding:32px 0 28px;
+  }
+  header.hero .wrap{display:flex;flex-direction:column;gap:10px;}
+  .badge{
+    display:inline-block;
+    background:var(--primary);
+    color:#232F3E;
+    font-weight:700;
+    font-size:12px;
+    padding:4px 12px;
+    border-radius:999px;
+    letter-spacing:.05em;
+    width:fit-content;
+  }
+  h1.title{font-size:1.6rem;margin:6px 0 0;line-height:1.4;}
+  .sub{font-size:.85rem;color:#C9D3DE;margin:0;}
+  .author-line{font-size:.9rem;color:#E8ECF1;margin:0;}
+
+  .whyhow{
+    margin:20px 0 0;
+    background:var(--card-bg);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:18px 18px 20px;
+    border:1px solid var(--border);
+  }
+  .whyhow h2{
+    font-size:.95rem;
+    margin:0 0 12px;
+    color:var(--accent);
+    display:flex;align-items:center;gap:6px;
+  }
+  .qa-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;}
+  .qa-block{flex:1 1 240px;background:var(--bg);border-radius:10px;padding:12px 14px;border-left:4px solid var(--primary);}
+  .qa-block.answer{border-left-color:var(--accent);}
+  .qa-label{font-size:.7rem;font-weight:700;color:var(--text-sub);letter-spacing:.05em;margin-bottom:4px;}
+  .qa-text{font-size:.92rem;font-weight:600;}
+  .evidence{font-size:.85rem;color:var(--text-sub);margin-top:6px;}
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-top:20px;
+  }
+  .stat{
+    background:var(--card-bg);
+    border-radius:12px;
+    text-align:center;
+    padding:14px 6px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--border);
+  }
+  .stat .num{font-size:1.5rem;font-weight:800;color:var(--primary-dark);}
+  .stat .label{font-size:.68rem;color:var(--text-sub);margin-top:2px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:26px 0 0;
+    padding-bottom:4px;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+    font-size:.82rem;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:10px 10px 0 0;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--secondary);
+    color:#fff;
+    border-color:var(--secondary);
+  }
+
+  .panel{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:0 0 14px 14px;
+    padding:18px 16px 20px;
+    box-shadow:var(--shadow);
+  }
+  .panel[hidden]{display:none;}
+
+  .card{
+    background:var(--bg);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    border:1px solid var(--border);
+  }
+  .card:last-child{margin-bottom:0;}
+  .card h3{
+    margin:0 0 8px;
+    font-size:.98rem;
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .card h3 .n{
+    flex:0 0 auto;
+    background:var(--primary);
+    color:#232F3E;
+    font-weight:800;
+    font-size:.75rem;
+    width:22px;height:22px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card ul{margin:6px 0 8px;padding-left:1.2em;font-size:.88rem;}
+  .card li{margin-bottom:4px;}
+  .why{
+    font-size:.8rem;
+    color:var(--accent);
+    background:rgba(20,110,180,.08);
+    border-radius:8px;
+    padding:6px 10px;
+    margin-top:6px;
+  }
+
+  .quote-card{
+    background:var(--secondary);
+    color:#fff;
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:12px;
+    position:relative;
+  }
+  .quote-card:last-child{margin-bottom:0;}
+  .quote-card .mark{color:var(--primary);font-size:1.6rem;line-height:1;margin-bottom:4px;display:block;}
+  .quote-card p.qtext{font-size:.95rem;font-weight:600;margin:0 0 8px;}
+  .quote-card p.note{font-size:.75rem;color:#C9D3DE;margin:0;}
+
+  .action-card{
+    background:var(--bg);
+    border:1px dashed var(--accent);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .action-card:last-child{margin-bottom:0;}
+  .action-card h3{margin:0 0 6px;font-size:.95rem;color:var(--secondary);}
+  .action-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--text-sub);margin-top:8px;}
+  .action-meta span b{color:var(--accent);}
+
+  footer{
+    text-align:center;
+    font-size:.72rem;
+    color:var(--text-sub);
+    margin-top:30px;
+  }
+
+  @media (max-width:480px){
+    .stats{grid-template-columns:repeat(2,1fr);}
+    h1.title{font-size:1.3rem;}
+    .qa-row{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">🏷️ ビジネス</span>
+    <h1 class="title">🧠 amazonの絶対思考</h1>
+    <p class="sub">常に、「普通という基準」を作り変える</p>
+    <p class="author-line">👤 著者: 星健一（アマゾンジャパン元経営会議メンバー／2008〜2018年在籍）</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="whyhow" aria-label="要約 問いと答えと根拠">
+    <h2>💡 要約＝問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-block">
+        <div class="qa-label">❓ 問い（WHY）</div>
+        <div class="qa-text">なぜアマゾンだけが、こんなに拡大し続けられるのか？</div>
+      </div>
+      <div class="qa-block answer">
+        <div class="qa-label">✅ 答え（HOW）</div>
+        <div class="qa-text">組織全体の「普通の基準」を桁違いに高く設定し、それを仕組みで全社員に徹底させているから。</div>
+      </div>
+    </div>
+    <div class="evidence">📌 根拠: 14のリーダーシップ・プリンシプル／パワポ禁止のナラティブ文化／Working Backwards（PR-FAQ）／フライホイール型ビジネスモデル</div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><div class="num">14</div><div class="label">リーダーシップ<br>プリンシプル数</div></div>
+    <div class="stat"><div class="num">7</div><div class="label">本書の<br>章数</div></div>
+    <div class="stat"><div class="num">10年</div><div class="label">著者の<br>アマゾン在籍期間</div></div>
+    <div class="stat"><div class="num">2019</div><div class="label">初版<br>発行年</div></div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button role="tab" id="tab-concept" aria-controls="panel-concept" aria-selected="true">🧩 主要概念</button>
+    <button role="tab" id="tab-chapter" aria-controls="panel-chapter" aria-selected="false" tabindex="-1">📖 各章の要約</button>
+    <button role="tab" id="tab-example" aria-controls="panel-example" aria-selected="false" tabindex="-1">🔍 具体例</button>
+    <button role="tab" id="tab-quote" aria-controls="panel-quote" aria-selected="false" tabindex="-1">💬 重要な引用</button>
+    <button role="tab" id="tab-action" aria-controls="panel-action" aria-selected="false" tabindex="-1">✅ 今日のアクション</button>
+  </nav>
+
+  <section class="panel" id="panel-concept" role="tabpanel" aria-labelledby="tab-concept">
+    <div class="card">
+      <h3><span class="n">1</span>普通の基準（Normal Standard）</h3>
+      <ul>
+        <li>何を「当たり前」とするかの水準そのものを、業界標準よりはるかに高く再設定する考え方</li>
+        <li>「顧客のために不可能を可能にする」ことが、アマゾンでは日常業務の前提になっている</li>
+      </ul>
+      <div class="why">💡 理由: この基準の高さこそが他社との決定的な差の源泉だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">2</span>Day One / Day Two</h3>
+      <ul>
+        <li>「創業初日のような危機感と挑戦心」対「安定・停滞して緩やかに死んでいく状態」の対比概念</li>
+        <li>ベゾスは「いつかアマゾンは潰れる。だからこそ毎日が1日目でなければならない」と説き続けた</li>
+      </ul>
+      <div class="why">💡 理由: 成功後も基準を落とさないための組織的な危機感の仕掛けだから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">3</span>14のリーダーシップ・プリンシプル（OLP）</h3>
+      <ul>
+        <li>Customer Obsession、Ownership、Invent and Simplify、Are Right A Lot、Learn and Be Curious…など全14項目</li>
+        <li>採用面接から日常の意思決定まで、全社員が同じ基準で判断するための共通言語</li>
+      </ul>
+      <div class="why">💡 理由: 「基準」を仕組みとして全社員に浸透させる中核装置だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">4</span>フライホイール（ぐるぐる）</h3>
+      <ul>
+        <li>低コスト構造 → 低価格 → 顧客増 → 出品者増 → 品揃え増 → 顧客体験向上 → さらに顧客増、という好循環</li>
+        <li>個々の施策ではなく「循環構造」そのものを設計する発想</li>
+      </ul>
+      <div class="why">💡 理由: シンプルな原理の徹底反復が、複雑な戦略よりも強い成長エンジンになるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">5</span>ナラティブ文書（1ページャー／6ページャー）</h3>
+      <ul>
+        <li>パワーポイントと箇条書きを禁止し、文章で論理を明示させる社内資料フォーマット</li>
+        <li>日常的な議題は1ページ、年次予算などの大型案件は6ページに収める</li>
+      </ul>
+      <div class="why">💡 理由: 箇条書きは行間の解釈が人によってばらつき、曖昧さを生むから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">6</span>Working Backwards / PR-FAQ</h3>
+      <ul>
+        <li>商品化前に、完成後を想定した「プレスリリース」と「よくある質問」を先に書く手法</li>
+        <li>作ってから売るのではなく、顧客への約束から逆算して作る発想の転換</li>
+      </ul>
+      <div class="why">💡 理由: 開発の最初の段階で「顧客にとっての価値」を強制的に言語化させるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">7</span>Have Backbone; Disagree and Commit</h3>
+      <ul>
+        <li>異論があれば地位に関係なく主張することが推奨される</li>
+        <li>一度決定が下れば、反対だった人間も全力でその決定に協力する</li>
+      </ul>
+      <div class="why">💡 理由: 「合意」より「健全な対立と迅速な実行」の両立を可能にするから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">8</span>スケーラビリティ</h3>
+      <ul>
+        <li>一人ひとりの努力や根性に頼らず、仕組みとして拡大再生産できるかを常に問う視点</li>
+        <li>「何ごとにもスケーラビリティを求められるのが、アマゾンの普通の基準」</li>
+      </ul>
+      <div class="why">💡 理由: 個人の頑張りに依存しない成長でなければ、規模拡大が持続しないから</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapter" role="tabpanel" aria-labelledby="tab-chapter" hidden>
+    <div class="card">
+      <h3><span class="n">1</span>「アマゾン」を数値で徹底分析</h3>
+      <ul><li>売上・成長率など定量データからアマゾンの規模と成長速度を可視化</li></ul>
+      <div class="why">💡 理由: 感覚論でなく数字で「普通でない」規模感を裏付けるため</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">2</span>ジェフ・ベゾスの考える「普通の基準」とは</h3>
+      <ul><li>「顧客のために不可能を可能にする」ことが当たり前という基準設定を解説</li></ul>
+      <div class="why">💡 理由: この基準の高さこそが他社との差の根源だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">3</span>シンプルすぎるビジネスモデルを回す</h3>
+      <ul><li>フライホイールという単純な好循環モデルの仕組みを説明</li></ul>
+      <div class="why">💡 理由: 複雑な戦略ではなく単純な原理の徹底反復が強さの正体だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">4</span>アマゾンのストロングポイント</h3>
+      <ul><li>物流・品揃え・価格・利便性など強みを要素分解して整理</li></ul>
+      <div class="why">💡 理由: 強みの源泉を分解して理解し、再現可能な形にするため</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">5</span>アマゾニアンの「常識」と「人材育成」</h3>
+      <ul><li>14のプリンシプルに基づく採用・評価・育成の仕組みを紹介</li></ul>
+      <div class="why">💡 理由: 基準を「人」に根付かせる仕組みが持続性を生むから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">6</span>「still Day One」―「常に1日目」の精神</h3>
+      <ul><li>慢心を排し危機感を保ち続ける文化的仕掛けを解説</li></ul>
+      <div class="why">💡 理由: 成功後も基準を落とさないための精神的支柱だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">7</span>アマゾンの秘密主義と課題</h3>
+      <ul><li>情報統制や競争環境の変化など、アマゾンが抱える課題にも言及</li></ul>
+      <div class="why">💡 理由: 光だけでなく影を見ることで実像に迫るため</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-example" role="tabpanel" aria-labelledby="tab-example" hidden>
+    <div class="card">
+      <h3><span class="n">1</span>パワポ禁止・沈黙の会議</h3>
+      <ul>
+        <li>会議冒頭、全員が黙って6ページのナラティブ資料を15〜20分読み、その後議論する</li>
+        <li>箇条書きは行間の解釈が人によってばらつき、後から見返しても論理が追えなくなる</li>
+      </ul>
+      <div class="why">💡 理由（この例が示すこと）: 「資料の作り方」を変えるだけで組織の思考の質そのものを底上げできる</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">2</span>Working Backwards / PR-FAQ</h3>
+      <ul>
+        <li>新製品開発の前に、完成後の姿を想定した「プレスリリース」と「よくある質問」を先に書く</li>
+        <li>企画者は顧客にとっての価値を最初に言語化せざるを得なくなる</li>
+      </ul>
+      <div class="why">💡 理由（この例が示すこと）: 「作ってから売る」ではなく「顧客への約束から逆算して作る」発想への転換</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">3</span>フライホイールと低価格戦略</h3>
+      <ul>
+        <li>低コスト構造が低価格を可能にし、低価格が顧客とトラフィックを呼ぶ</li>
+        <li>それが出品者と品揃えを呼び、さらに顧客体験を高めて再び顧客を呼ぶ</li>
+      </ul>
+      <div class="why">💡 理由（この例が示すこと）: 個々の施策ではなく「循環構造」自体を設計することが成長の本質</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">4</span>Have Backbone; Disagree and Commit の実践</h3>
+      <ul>
+        <li>会議で異論があれば地位に関係なく主張することが推奨される</li>
+        <li>一度決定が下れば、反対だった人間も全力でその決定に協力する</li>
+      </ul>
+      <div class="why">💡 理由（この例が示すこと）: 「合意形成」より「健全な対立と迅速な実行」を両立させる文化</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quote" role="tabpanel" aria-labelledby="tab-quote" hidden>
+    <div class="quote-card">
+      <span class="mark">“</span>
+      <p class="qtext">いつかアマゾンは潰れる。だからこそ、毎日が常に1日目（Day One）でなければならない。</p>
+      <p class="note">— ジェフ・ベゾス（要旨）</p>
+    </div>
+    <div class="quote-card">
+      <span class="mark">“</span>
+      <p class="qtext">何ごとにもスケーラビリティを求められるのが、アマゾンの「普通の基準」である。</p>
+      <p class="note">— 本文より（要旨）</p>
+    </div>
+    <div class="quote-card">
+      <span class="mark">“</span>
+      <p class="qtext">顧客のために不可能を可能にすることが、アマゾンにとっての「普通の基準」である。</p>
+      <p class="note">— 本文より（要旨）</p>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-action" role="tabpanel" aria-labelledby="tab-action" hidden>
+    <div class="action-card">
+      <h3>1️⃣ 企画・課題を「文章」で1ページにまとめる</h3>
+      <p>今抱えている企画や課題を、箇条書きではなく文章でA4一枚（1ページャー）にまとめてみる。</p>
+      <div class="action-meta">
+        <span>🎯 目的: <b>曖昧な思考の可視化</b></span>
+        <span>📈 期待効果: <b>論点の抜け漏れに気づける</b></span>
+        <span>⏱ 所要: <b>15〜20分</b></span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>2️⃣ 完成後を想定した「お知らせ文」を書く</h3>
+      <p>今関わっている仕事やプロジェクトについて、完成後を想定した「お客様向けの一言お知らせ文」を3行で書いてみる。</p>
+      <div class="action-meta">
+        <span>🎯 目的: <b>顧客視点からの逆算発想を体験</b></span>
+        <span>📈 期待効果: <b>提供価値の言語化力が上がる</b></span>
+        <span>⏱ 所要: <b>10分</b></span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>3️⃣ プリンシプルを1つ選び、今日の行動で体現する</h3>
+      <p>14のリーダーシップ・プリンシプルから1つ選び（例: Bias for Action）、今日の業務で具体的にどう体現するかを1つ書き出し、実行する。</p>
+      <div class="action-meta">
+        <span>🎯 目的: <b>自分の「普通の基準」を点検</b></span>
+        <span>📈 期待効果: <b>基準そのものを引き上げる視点が持てる</b></span>
+        <span>⏱ 所要: <b>15分</b></span>
+      </div>
+    </div>
+  </section>
+
+  <footer>📚 読書サマリー自動生成システム｜本インフォグラフィックはWeb調査に基づき生成されています</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('nav.tabs button'));
+  var panels = {
+    'tab-concept':'panel-concept',
+    'tab-chapter':'panel-chapter',
+    'tab-example':'panel-example',
+    'tab-quote':'panel-quote',
+    'tab-action':'panel-action'
+  };
+  function selectTab(id){
+    tabs.forEach(function(btn){
+      var isSel = btn.id === id;
+      btn.setAttribute('aria-selected', isSel ? 'true' : 'false');
+      btn.tabIndex = isSel ? 0 : -1;
+      var panel = document.getElementById(panels[btn.id]);
+      if(panel){ panel.hidden = !isSel; }
+    });
+  }
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){ selectTab(btn.id); });
+    btn.addEventListener('keydown', function(e){
+      var idx = tabs.indexOf(btn);
+      if(e.key === 'ArrowRight'){ e.preventDefault(); tabs[(idx+1)%tabs.length].focus(); selectTab(tabs[(idx+1)%tabs.length].id); }
+      if(e.key === 'ArrowLeft'){ e.preventDefault(); tabs[(idx-1+tabs.length)%tabs.length].focus(); selectTab(tabs[(idx-1+tabs.length)%tabs.length].id); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
