@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>老いの才覚 - インフォグラフィック</title>
+<!--
+  カラーパレット（3色・グラデーション可）
+  プライマリー: #C98A3E (実りの琥珀色・成熟)
+  セカンダリー: #33363D (深い墨色・落ち着き)
+  アクセント:   #4F8C6E (穏やかな緑・自立と自然体)
+-->
+<style>
+  :root{
+    --primary:#C98A3E;
+    --primary-dark:#a86f2c;
+    --secondary:#33363D;
+    --secondary-light:#4A4E58;
+    --accent:#4F8C6E;
+    --bg:#F8F6F2;
+    --card-bg:#FFFFFF;
+    --text:#25262B;
+    --text-sub:#6B6D74;
+    --border:#E7E3DB;
+    --shadow: 0 2px 10px rgba(51,54,61,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 16px;}
+
+  header.hero{
+    background:linear-gradient(135deg,var(--secondary) 0%, var(--secondary-light) 60%, var(--accent) 100%);
+    color:#fff;
+    padding:32px 0 28px;
+  }
+  header.hero .wrap{display:flex;flex-direction:column;gap:10px;}
+  .badge{
+    display:inline-block;
+    background:var(--primary);
+    color:#33363D;
+    font-weight:700;
+    font-size:12px;
+    padding:4px 12px;
+    border-radius:999px;
+    letter-spacing:.05em;
+    width:fit-content;
+  }
+  h1.title{font-size:1.6rem;margin:6px 0 0;line-height:1.4;}
+  .sub{font-size:.85rem;color:#D9D4C8;margin:0;}
+  .author-line{font-size:.9rem;color:#EAE7E0;margin:0;}
+
+  .whyhow{
+    margin:20px 0 0;
+    background:var(--card-bg);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:18px 18px 20px;
+    border:1px solid var(--border);
+  }
+  .whyhow h2{
+    font-size:.95rem;
+    margin:0 0 12px;
+    color:var(--accent);
+    display:flex;align-items:center;gap:6px;
+  }
+  .qa-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;}
+  .qa-block{flex:1 1 240px;background:var(--bg);border-radius:10px;padding:12px 14px;border-left:4px solid var(--primary);}
+  .qa-block.answer{border-left-color:var(--accent);}
+  .qa-label{font-size:.7rem;font-weight:700;color:var(--text-sub);letter-spacing:.05em;margin-bottom:4px;}
+  .qa-text{font-size:.92rem;font-weight:600;}
+  .evidence{font-size:.85rem;color:var(--text-sub);margin-top:6px;}
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-top:20px;
+  }
+  .stat{
+    background:var(--card-bg);
+    border-radius:12px;
+    text-align:center;
+    padding:14px 6px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--border);
+  }
+  .stat .num{font-size:1.5rem;font-weight:800;color:var(--primary-dark);}
+  .stat .label{font-size:.68rem;color:var(--text-sub);margin-top:2px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:26px 0 0;
+    padding-bottom:4px;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+    font-size:.82rem;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:10px 10px 0 0;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--secondary);
+    color:#fff;
+    border-color:var(--secondary);
+  }
+
+  .panel{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:0 0 14px 14px;
+    padding:18px 16px 20px;
+    box-shadow:var(--shadow);
+  }
+  .panel[hidden]{display:none;}
+
+  .card{
+    background:var(--bg);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    border:1px solid var(--border);
+  }
+  .card:last-child{margin-bottom:0;}
+  .card h3{
+    margin:0 0 8px;
+    font-size:.98rem;
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .card h3 .n{
+    flex:0 0 auto;
+    background:var(--primary);
+    color:#33363D;
+    font-weight:800;
+    font-size:.75rem;
+    width:22px;height:22px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card ul{margin:6px 0 8px;padding-left:1.2em;font-size:.88rem;}
+  .card li{margin-bottom:4px;}
+  .why{
+    font-size:.8rem;
+    color:var(--accent);
+    background:rgba(79,140,110,.1);
+    border-radius:8px;
+    padding:6px 10px;
+    margin-top:6px;
+  }
+
+  .quote-card{
+    background:var(--secondary);
+    color:#fff;
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:12px;
+    position:relative;
+  }
+  .quote-card:last-child{margin-bottom:0;}
+  .quote-card .mark{color:var(--primary);font-size:1.6rem;line-height:1;margin-bottom:4px;display:block;}
+  .quote-card p.qtext{font-size:.95rem;font-weight:600;margin:0 0 8px;}
+  .quote-card p.note{font-size:.75rem;color:#D9D4C8;margin:0;}
+
+  .action-card{
+    background:var(--bg);
+    border:1px dashed var(--accent);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .action-card:last-child{margin-bottom:0;}
+  .action-card h3{margin:0 0 6px;font-size:.95rem;color:var(--secondary);}
+  .action-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--text-sub);margin-top:8px;}
+  .action-meta span b{color:var(--accent);}
+
+  footer{
+    text-align:center;
+    font-size:.72rem;
+    color:var(--text-sub);
+    margin-top:30px;
+  }
+
+  @media (max-width:480px){
+    .stats{grid-template-columns:repeat(2,1fr);}
+    h1.title{font-size:1.3rem;}
+    .qa-row{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">🏷️ ライフスタイル</span>
+    <h1 class="title">🧠 老いの才覚</h1>
+    <p class="sub">誰にも頼らず、自分の才覚で生きる</p>
+    <p class="author-line">👤 著者: 曽野綾子（作家／日本財団元会長）</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="whyhow" aria-label="要約 問いと答えと根拠">
+    <h2>💡 要約＝問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-block">
+        <div class="qa-label">❓ 問い（WHY）</div>
+        <div class="qa-text">なぜ多くの老人は、老いとともに惨めになってしまうのか？</div>
+      </div>
+      <div class="qa-block answer">
+        <div class="qa-label">✅ 答え（HOW）</div>
+        <div class="qa-text">他人や社会に依存する甘えを捨て、「自立」と「自律」によって自分の幸福を自分の手で創り出す「老いの才覚」を鍛えていないから。</div>
+      </div>
+    </div>
+    <div class="evidence">📌 根拠: 老いる力を7つに分解した独自フレーム／死ぬまで働く生き方の提唱／孤独・病・死と馴れ親しむための具体的な習慣</div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><div class="num">7</div><div class="label">老いる力<br>（才覚）の数</div></div>
+    <div class="stat"><div class="num">8</div><div class="label">本書の<br>章数</div></div>
+    <div class="stat"><div class="num">110万部</div><div class="label">累計<br>発行部数</div></div>
+    <div class="stat"><div class="num">2010</div><div class="label">初版<br>発行年</div></div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button role="tab" id="tab-concept" aria-controls="panel-concept" aria-selected="true">🧩 主要概念</button>
+    <button role="tab" id="tab-chapter" aria-controls="panel-chapter" aria-selected="false" tabindex="-1">📖 各章の要約</button>
+    <button role="tab" id="tab-example" aria-controls="panel-example" aria-selected="false" tabindex="-1">🔍 具体例</button>
+    <button role="tab" id="tab-quote" aria-controls="panel-quote" aria-selected="false" tabindex="-1">💬 重要な引用</button>
+    <button role="tab" id="tab-action" aria-controls="panel-action" aria-selected="false" tabindex="-1">✅ 今日のアクション</button>
+  </nav>
+
+  <section class="panel" id="panel-concept" role="tabpanel" aria-labelledby="tab-concept">
+    <div class="card">
+      <h3><span class="n">1</span>老いの才覚（老いる力）</h3>
+      <ul>
+        <li>年をとってもなお、自分の頭で考え、自分の手で日々を回していく総合的な生きる技術</li>
+        <li>本書全体を貫く中心概念で、著者はこれを7つの具体的な「力」に分解して説く</li>
+      </ul>
+      <div class="why">💡 理由: 「老い」を受け身の衰えでなく、鍛えられる技能として捉え直しているから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">2</span>自立と自律</h3>
+      <ul>
+        <li>身の回りのことを他人任せにせず、自分で選び自分でやる姿勢（自立）</li>
+        <li>欲求のままに甘えず、自分で自分を律する姿勢（自律）。老いの土台となる2本柱</li>
+      </ul>
+      <div class="why">💡 理由: この2つが欠けると、他の6つの力もすべて土台を失うから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">3</span>死ぬまで働く力</h3>
+      <ul>
+        <li>定年や引退を「役割の終わり」とせず、できる範囲の仕事や役割を持ち続けるという発想</li>
+        <li>「働く」は収入目的に限らず、家事・地域活動・人の世話なども含む広い意味で捉える</li>
+      </ul>
+      <div class="why">💡 理由: 役割を失うことが老いの無気力・孤独感の最大の引き金になるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">4</span>孤独と付き合う才覚</h3>
+      <ul>
+        <li>孤独を「不幸の証」ではなく「人生を面白がるための条件」として捉え直す視点</li>
+        <li>一人の時間をどう設計し、何を面白がるかは自分の才覚次第という考え方</li>
+      </ul>
+      <div class="why">💡 理由: 高齢期は配偶者や友人を失い、孤独が避けられない前提になるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">5</span>お金に困らない生き方（身の丈）</h3>
+      <ul>
+        <li>収入の多寡ではなく、自分の身の丈に合った暮らし方を設計できるかという「才覚」</li>
+        <li>一文無しになっても心の持ちようと工夫次第で困らない生き方を提唱</li>
+      </ul>
+      <div class="why">💡 理由: 老後不安の多くはお金そのものより「身の丈を知らないこと」に起因するから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">6</span>老い・病・死と馴れ親しむ</h3>
+      <ul>
+        <li>老い・病気・死を「異常事態」ではなく「訪れて当然のもの」として日常に組み込む姿勢</li>
+        <li>恐れて遠ざけるほど、実際に直面したときの衝撃と苦しみが大きくなるという逆説</li>
+      </ul>
+      <div class="why">💡 理由: 避け続けた分だけ、直面した瞬間の心の準備がゼロになってしまうから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">7</span>神様の視点（達観のまなざし）</h3>
+      <ul>
+        <li>自分中心の視点を離れ、より大きな摂理・運命の中に自分を置いて眺める姿勢</li>
+        <li>カトリック作家である著者の信仰観に基づくが、無宗教の読者にも「達観」として応用可能</li>
+      </ul>
+      <div class="why">💡 理由: 老い・病・死という自分の力で変えられない事実を受け入れる支えになるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">8</span>甘えない姿勢</h3>
+      <ul>
+        <li>「年をとったのだから大目に見てほしい」という甘えを自らに禁じる考え方</li>
+        <li>わがままを老いの特権とせず、周囲との関係を保つための自己規律として位置づける</li>
+      </ul>
+      <div class="why">💡 理由: 甘えが積み重なることで家族・社会からの孤立を招くと著者が繰り返し警告しているから</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapter" role="tabpanel" aria-labelledby="tab-chapter" hidden>
+    <div class="card">
+      <h3><span class="n">1</span>なぜ老人は才覚を失ってしまったのか</h3>
+      <ul><li>豊かさと福祉の充実が、かえって自分で工夫し対処する力を老人から奪ったと指摘</li></ul>
+      <div class="why">💡 理由: 問題の所在を「老い」自体でなく「才覚の衰え」に置き直す導入だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">2</span>老いの基本は「自立」と「自律」</h3>
+      <ul><li>身の回りのことを自分でこなし、自分を律する姿勢こそが老いの土台になると説く</li></ul>
+      <div class="why">💡 理由: 以降の6章すべてがこの2本柱の応用編にあたるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">3</span>人間は死ぬまで働かなくてはいけない</h3>
+      <ul><li>収入目的に限らない広い意味での「役割」を持ち続けることの重要性を論じる</li></ul>
+      <div class="why">💡 理由: 役割の喪失が老いの無気力と孤立の引き金になるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">4</span>晩年になったら夫婦や親子との付き合い方も変える</h3>
+      <ul><li>子や配偶者を管理・干渉するのでなく「見守る」関係へ切り替える必要性を説く</li></ul>
+      <div class="why">💡 理由: 過干渉が家族関係を悪化させ、結果的に孤立を招くから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">5</span>一文無しになってもお金に困らない生き方</h3>
+      <ul><li>身の丈に合った暮らしの工夫こそが、お金の多寡以上に老後の安心を左右すると説く</li></ul>
+      <div class="why">💡 理由: 老後不安の核心が「金額」ではなく「身の丈を知らないこと」にあるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">6</span>孤独と付き合い、人生をおもしろがるコツ</h3>
+      <ul><li>孤独を欠乏でなく条件として受け止め、一人の時間を面白がる工夫を提案</li></ul>
+      <div class="why">💡 理由: 高齢期の孤独は避けられない前提だからこそ、向き合い方が問われるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">7</span>老い、病気、死と馴れ親しむ</h3>
+      <ul><li>老い・病・死を日常の延長として捉え、恐れずに準備しておく心構えを説く</li></ul>
+      <div class="why">💡 理由: 避け続けた分だけ直面した瞬間の衝撃が大きくなるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">8</span>神様の視点を持てば、人生と世界が理解できる</h3>
+      <ul><li>自分中心の視点を離れ、より大きな摂理の中に自分を置く達観の姿勢を提示</li></ul>
+      <div class="why">💡 理由: 自分の力で変えられない老い・死を受け入れる最終的な支えになるから</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-example" role="tabpanel" aria-labelledby="tab-example" hidden>
+    <div class="card">
+      <h3><span class="n">1</span>90代でも自分で家事をこなす著者自身の実践</h3>
+      <ul>
+        <li>曽野綾子自身が高齢になっても料理や掃除など身の回りのことを自分の手で行っていたと紹介される</li>
+        <li>物が少なければ管理の手間も減るため、身軽な暮らしが自立を続けやすくすると説く</li>
+      </ul>
+      <div class="why">💡 理由（この例が示すこと）: 「自立」は精神論でなく、日々の家事という具体的な行動の積み重ねであること</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">2</span>「年だから」という甘えを自らに許さない態度</h3>
+      <ul>
+        <li>「年をとったのだから多少のわがままは大目に見てほしい」という甘えを戒めるエピソードが繰り返し登場</li>
+        <li>周囲が優しく許してくれるほど、本人の自律の力はかえって衰えていくという逆説を指摘</li>
+      </ul>
+      <div class="why">💡 理由（この例が示すこと）: 周囲の優しさが、本人の才覚を奪う「甘やかし」にもなり得ること</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">3</span>孤独を「不幸の証拠」から「工夫の対象」へ読み替える</h3>
+      <ul>
+        <li>配偶者や友人を失い一人になった後の時間を、嘆く対象ではなく面白がる対象として設計し直す視点を提示</li>
+        <li>孤独をどう過ごすかという「才覚」の差が、晩年の充実度を大きく左右するとする</li>
+      </ul>
+      <div class="why">💡 理由（この例が示すこと）: 同じ「一人の時間」でも、捉え方次第で不幸にも豊かさにもなり得ること</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">4</span>「一文無しになっても」という極端な仮定での思考実験</h3>
+      <ul>
+        <li>お金が尽きた場合を仮定し、それでも工夫次第で困らない暮らし方があるという思考実験を提示</li>
+        <li>身の丈を知り、必要なものを絞り込む発想が経済的な安心の土台になるとする</li>
+      </ul>
+      <div class="why">💡 理由（この例が示すこと）: 経済的な安心は資産額そのものより「身の丈を知る才覚」に左右されること</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quote" role="tabpanel" aria-labelledby="tab-quote" hidden>
+    <div class="quote-card">
+      <span class="mark">“</span>
+      <p class="qtext">さまざまなものを失っていく晩年こそ、自分の得ているもので幸福を創り出す才覚が必要だと思います。</p>
+      <p class="note">— 曽野綾子（要旨）</p>
+    </div>
+    <div class="quote-card">
+      <span class="mark">“</span>
+      <p class="qtext">人間は死ぬまで働かなくてはいけない。</p>
+      <p class="note">— 曽野綾子（要旨）</p>
+    </div>
+    <div class="quote-card">
+      <span class="mark">“</span>
+      <p class="qtext">孤独と絶望は、神からの贈り物である。</p>
+      <p class="note">— 曽野綾子（要旨）</p>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-action" role="tabpanel" aria-labelledby="tab-action" hidden>
+    <div class="action-card">
+      <h3>1️⃣ 人に頼っている家事を1つ、今日は自分の手でやる</h3>
+      <p>普段誰かに任せている、あるいは面倒で後回しにしている家事（靴磨き・食器洗い・洗濯物たたみなど）を1つ選び、今日は自分の手だけで最初から最後までやり切る。</p>
+      <div class="action-meta">
+        <span>🎯 目的: <b>自立の感覚を体で確認する</b></span>
+        <span>📈 期待効果: <b>「まだ自分でできる」という自己効力感の回復</b></span>
+        <span>⏱ 所要: <b>15分</b></span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>2️⃣ 「本当に必要な物」を3つだけ書き出し、1つ手放す</h3>
+      <p>今の暮らしで本当に必要な物を紙に3つだけ書き出す。その基準に照らして、今日中に手元の不要な物を1つ処分または整理する。</p>
+      <div class="action-meta">
+        <span>🎯 目的: <b>身の丈を知り、身軽さを体感する</b></span>
+        <span>📈 期待効果: <b>物とお金への依存を減らす一歩</b></span>
+        <span>⏱ 所要: <b>20分</b></span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>3️⃣ 一人の30分を「退屈な時間」でなく「面白がる時間」に設計する</h3>
+      <p>今日、一人で過ごす30分をあらかじめ確保し、散歩・日記・読書などその時間を面白がるための具体的な過ごし方を1つ決めて実行する。</p>
+      <div class="action-meta">
+        <span>🎯 目的: <b>孤独と付き合う才覚を鍛える</b></span>
+        <span>📈 期待効果: <b>孤独への耐性と、一人の時間を楽しむ発見</b></span>
+        <span>⏱ 所要: <b>30分</b></span>
+      </div>
+    </div>
+  </section>
+
+  <footer>📚 読書サマリー自動生成システム｜本インフォグラフィックはWeb調査に基づき生成されています</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('nav.tabs button'));
+  var panels = {
+    'tab-concept':'panel-concept',
+    'tab-chapter':'panel-chapter',
+    'tab-example':'panel-example',
+    'tab-quote':'panel-quote',
+    'tab-action':'panel-action'
+  };
+  function selectTab(id){
+    tabs.forEach(function(btn){
+      var isSel = btn.id === id;
+      btn.setAttribute('aria-selected', isSel ? 'true' : 'false');
+      btn.tabIndex = isSel ? 0 : -1;
+      var panel = document.getElementById(panels[btn.id]);
+      if(panel){ panel.hidden = !isSel; }
+    });
+  }
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){ selectTab(btn.id); });
+    btn.addEventListener('keydown', function(e){
+      var idx = tabs.indexOf(btn);
+      if(e.key === 'ArrowRight'){ e.preventDefault(); tabs[(idx+1)%tabs.length].focus(); selectTab(tabs[(idx+1)%tabs.length].id); }
+      if(e.key === 'ArrowLeft'){ e.preventDefault(); tabs[(idx-1+tabs.length)%tabs.length].focus(); selectTab(tabs[(idx-1+tabs.length)%tabs.length].id); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
