@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心配事の9割は起こらない - インフォグラフィック</title>
+<!--
+  カラーパレット（3色・グラデーション可）
+  プライマリー: #6B8E5A (若竹色・禅の庭のような穏やかな緑)
+  セカンダリー: #2E3532 (墨色・禅寺の静けさと落ち着き)
+  アクセント:   #C1440E (朱色・大切な気づきを際立たせる)
+-->
+<style>
+  :root{
+    --primary:#6B8E5A;
+    --primary-dark:#527043;
+    --secondary:#2E3532;
+    --secondary-light:#454E4A;
+    --accent:#C1440E;
+    --bg:#F7F5EF;
+    --card-bg:#FFFFFF;
+    --text:#25262B;
+    --text-sub:#6B6D74;
+    --border:#E7E3D8;
+    --shadow: 0 2px 10px rgba(46,53,50,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 16px;}
+
+  header.hero{
+    background:linear-gradient(135deg,var(--secondary) 0%, var(--secondary-light) 60%, var(--primary) 100%);
+    color:#fff;
+    padding:32px 0 28px;
+  }
+  header.hero .wrap{display:flex;flex-direction:column;gap:10px;}
+  .badge{
+    display:inline-block;
+    background:var(--primary);
+    color:#fff;
+    font-weight:700;
+    font-size:12px;
+    padding:4px 12px;
+    border-radius:999px;
+    letter-spacing:.05em;
+    width:fit-content;
+  }
+  h1.title{font-size:1.6rem;margin:6px 0 0;line-height:1.4;}
+  .sub{font-size:.85rem;color:#D9D4C8;margin:0;}
+  .author-line{font-size:.9rem;color:#EAE7E0;margin:0;}
+
+  .whyhow{
+    margin:20px 0 0;
+    background:var(--card-bg);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:18px 18px 20px;
+    border:1px solid var(--border);
+  }
+  .whyhow h2{
+    font-size:.95rem;
+    margin:0 0 12px;
+    color:var(--primary-dark);
+    display:flex;align-items:center;gap:6px;
+  }
+  .qa-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;}
+  .qa-block{flex:1 1 240px;background:var(--bg);border-radius:10px;padding:12px 14px;border-left:4px solid var(--accent);}
+  .qa-block.answer{border-left-color:var(--primary);}
+  .qa-label{font-size:.7rem;font-weight:700;color:var(--text-sub);letter-spacing:.05em;margin-bottom:4px;}
+  .qa-text{font-size:.92rem;font-weight:600;}
+  .evidence{font-size:.85rem;color:var(--text-sub);margin-top:6px;}
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    margin-top:20px;
+  }
+  .stat{
+    background:var(--card-bg);
+    border-radius:12px;
+    text-align:center;
+    padding:14px 6px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--border);
+  }
+  .stat .num{font-size:1.4rem;font-weight:800;color:var(--primary-dark);}
+  .stat .label{font-size:.68rem;color:var(--text-sub);margin-top:2px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:26px 0 0;
+    padding-bottom:4px;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+    font-size:.82rem;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:10px 10px 0 0;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--secondary);
+    color:#fff;
+    border-color:var(--secondary);
+  }
+
+  .panel{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:0 0 14px 14px;
+    padding:18px 16px 20px;
+    box-shadow:var(--shadow);
+  }
+  .panel[hidden]{display:none;}
+
+  .card{
+    background:var(--bg);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    border:1px solid var(--border);
+  }
+  .card:last-child{margin-bottom:0;}
+  .card h3{
+    margin:0 0 8px;
+    font-size:.98rem;
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .card h3 .n{
+    flex:0 0 auto;
+    background:var(--primary);
+    color:#fff;
+    font-weight:800;
+    font-size:.75rem;
+    width:22px;height:22px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card ul{margin:6px 0 8px;padding-left:1.2em;font-size:.88rem;}
+  .card li{margin-bottom:4px;}
+  .why{
+    font-size:.8rem;
+    color:var(--primary-dark);
+    background:rgba(107,142,90,.12);
+    border-radius:8px;
+    padding:6px 10px;
+    margin-top:6px;
+  }
+
+  .quote-card{
+    background:var(--secondary);
+    color:#fff;
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:12px;
+    position:relative;
+  }
+  .quote-card:last-child{margin-bottom:0;}
+  .quote-card .mark{color:var(--accent);font-size:1.6rem;line-height:1;margin-bottom:4px;display:block;}
+  .quote-card p.qtext{font-size:.95rem;font-weight:600;margin:0 0 8px;}
+  .quote-card p.note{font-size:.75rem;color:#D9D4C8;margin:0;}
+
+  .action-card{
+    background:var(--bg);
+    border:1px dashed var(--primary);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .action-card:last-child{margin-bottom:0;}
+  .action-card h3{margin:0 0 6px;font-size:.95rem;color:var(--secondary);}
+  .action-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--text-sub);margin-top:8px;}
+  .action-meta span b{color:var(--primary-dark);}
+
+  footer{
+    text-align:center;
+    font-size:.72rem;
+    color:var(--text-sub);
+    margin-top:30px;
+  }
+
+  @media (max-width:480px){
+    .stats{grid-template-columns:repeat(2,1fr);}
+    h1.title{font-size:1.3rem;}
+    .qa-row{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">🏷️ 自己啓発</span>
+    <h1 class="title">🧠 心配事の9割は起こらない</h1>
+    <p class="sub">減らす、手放す、忘れる――禅の教え</p>
+    <p class="author-line">👤 著者: 枡野俊明（曹洞宗徳雄山建功寺住職／庭園デザイナー）</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="whyhow" aria-label="要約 問いと答えと根拠">
+    <h2>💡 要約＝問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-block">
+        <div class="qa-label">❓ 問い（WHY）</div>
+        <div class="qa-text">なぜ私たちは、まだ起きてもいないことにここまで心をすり減らしてしまうのか？</div>
+      </div>
+      <div class="qa-block answer">
+        <div class="qa-label">✅ 答え（HOW）</div>
+        <div class="qa-text">心配事の正体の多くは「妄想」や「思い込み」にすぎない。他人と比較する癖を手放し、「いま・ここ」でできることだけに集中すれば、心は自然と軽くなる。</div>
+      </div>
+    </div>
+    <div class="evidence">📌 根拠: 禅僧として何千人もの悩みを聞いてきた著者の実感／48の禅の教えという具体的な行動指針／心配事の大半は現実化しないという心理学的知見との一致</div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><div class="num">48</div><div class="label">紹介される<br>禅の教えの数</div></div>
+    <div class="stat"><div class="num">5</div><div class="label">本書の<br>章数</div></div>
+    <div class="stat"><div class="num">40万部</div><div class="label">累計<br>発行部数</div></div>
+    <div class="stat"><div class="num">約5%</div><div class="label">心配事のうち<br>実際に起こる割合※</div></div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button role="tab" id="tab-concept" aria-controls="panel-concept" aria-selected="true">🧩 主要概念</button>
+    <button role="tab" id="tab-chapter" aria-controls="panel-chapter" aria-selected="false" tabindex="-1">📖 各章の要約</button>
+    <button role="tab" id="tab-example" aria-controls="panel-example" aria-selected="false" tabindex="-1">🔍 具体例</button>
+    <button role="tab" id="tab-quote" aria-controls="panel-quote" aria-selected="false" tabindex="-1">💬 重要な引用</button>
+    <button role="tab" id="tab-action" aria-controls="panel-action" aria-selected="false" tabindex="-1">✅ 今日のアクション</button>
+  </nav>
+
+  <section class="panel" id="panel-concept" role="tabpanel" aria-labelledby="tab-concept">
+    <div class="card">
+      <h3><span class="n">1</span>心配事の正体＝「妄想」</h3>
+      <ul>
+        <li>禅の世界では、物欲・執着・不安など心を縛るものをまとめて「妄想」と呼ぶ</li>
+        <li>著者が悩み相談を受け続ける中で気づいたのは、その多くが事実ではなく思い込みや取り越し苦労だったということ</li>
+      </ul>
+      <div class="why">💡 理由: 心配事を「消せない現実」ではなく「手放せる妄想」と捉え直すことが、本書全体の出発点だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">2</span>比較をやめる</h3>
+      <ul>
+        <li>他人と自分を比べる限り、妄想は際限なく増え続ける</li>
+        <li>「人は人、私は私」という一線を引くことで、多くの妄想は根拠を失って消えていく</li>
+      </ul>
+      <div class="why">💡 理由: 悩みの多くは絶対的な困難ではなく、他人との相対的な比較から生まれているから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">3</span>「いま・ここ」に集中する（而今）</h3>
+      <ul>
+        <li>過去への後悔や未来への不安ではなく、目の前の一瞬に意識を置く禅の基本姿勢</li>
+        <li>「いま」できることだけに手を動かしていれば、「余計なこと」を考える余地が自然になくなる</li>
+      </ul>
+      <div class="why">💡 理由: 心配事の対象はほぼ常に「まだ来ていない未来」であり、意識を今に戻すだけで力を失うから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">4</span>減らす・手放す・忘れる</h3>
+      <ul>
+        <li>持ち物・情報・人間関係・思考のすべてにおいて「足す」より「引く」ことを優先する禅的な生き方</li>
+        <li>一度手放すと決めたことは、繰り返し引きずらずに忘れる練習をする</li>
+      </ul>
+      <div class="why">💡 理由: 無駄を抱え込むほど心のスペースが減り、些細なことにも心配が張り付きやすくなるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">5</span>良い縁と悪い縁</h3>
+      <ul>
+        <li>人間関係の悩みの多くは「縁」の結び方・切り方の下手さから生まれると説く</li>
+        <li>無理に合わせようとする関係を手放し、自然体でいられる縁を大切にする</li>
+      </ul>
+      <div class="why">💡 理由: 人間関係の心配事は本人の性格の問題ではなく、縁との距離の取り方の技術の問題だから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">6</span>悩み方を変える（お金・老い・病・死）</h3>
+      <ul>
+        <li>お金、老い、病気、死といった避けられないテーマも、悩み方を変えれば恐怖の対象ではなくなる</li>
+        <li>「なくすこと」を恐れるのではなく、「今あるもの」に目を向ける発想の転換を勧める</li>
+      </ul>
+      <div class="why">💡 理由: これらは消せない現実だからこそ、消そうとするのではなく向き合い方を変える必要があるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">7</span>心配事の科学的裏付け</h3>
+      <ul>
+        <li>ミシガン大学やペンシルベニア大学などの研究では、心配事の約8割は実際には起こらないとされる</li>
+        <li>残りのうち多くも事前の準備で対処可能で、本当に手に負えないものはごくわずかという結果</li>
+      </ul>
+      <div class="why">💡 理由: 禅の経験則が現代の心理学研究とも一致することが、本書の主張に説得力を与えているから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">8</span>シンプルに生きる</h3>
+      <ul>
+        <li>物・情報・人間関係を絞り込み、限りなくシンプルな暮らしを目指す禅的ミニマリズム</li>
+        <li>シンプルさは我慢ではなく、心配事を生む余地そのものを減らすための積極的な選択</li>
+      </ul>
+      <div class="why">💡 理由: 本書に登場する48の教えの多くが、最終的にこの一点に収斂していくから</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapter" role="tabpanel" aria-labelledby="tab-chapter" hidden>
+    <div class="card">
+      <h3><span class="n">1</span>さっさと減らそう、手放そう、忘れよう―禅的、不安と悩みの遠ざけ方</h3>
+      <ul><li>心配事の正体が「妄想」であることを示し、それを減らす・手放す・忘れるという基本動作を提示する導入章</li></ul>
+      <div class="why">💡 理由: 以降のすべての章に通じる禅的な心の整理法の土台を作っているから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">2</span>「いま」できることだけに集中する―すると、「余計なこと」は考えなくなる</h3>
+      <ul><li>「而今（にこん）」の考え方を軸に、目の前の一瞬に集中することで不安の入り込む余地をなくす方法を説く</li></ul>
+      <div class="why">💡 理由: 心配事の多くが未来志向であるため、意識の置き場所を変えることが最も直接的な対処になるから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">3</span>「競争」から一歩離れると、うまくいく―人は人、私は私、という考え方</h3>
+      <ul><li>他人との比較・競争から距離を置き、自分の基準で物事を判断する姿勢の大切さを説く</li></ul>
+      <div class="why">💡 理由: 比較こそが妄想を際限なく膨らませる最大の要因だと著者が繰り返し指摘しているから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">4</span>人間関係が驚くほどラクになるヒント―いい縁の結び方、悪い縁の切り方</h3>
+      <ul><li>人間関係の悩みを「縁」という視点で捉え直し、無理な関係を手放す考え方を提示する</li></ul>
+      <div class="why">💡 理由: 心配事の中でも人間関係は最も多くの人を悩ませるテーマだから</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">5</span>「悩み方」を変えると、人生は好転する―お金、老い、病気、死……について</h3>
+      <ul><li>避けられない現実であるお金・老い・病・死について、悩み方そのものを変える発想の転換を提案する</li></ul>
+      <div class="why">💡 理由: 消せない悩みへの向き合い方を示すことで、本書全体の教えを人生の終盤まで一貫させているから</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-example" role="tabpanel" aria-labelledby="tab-example" hidden>
+    <div class="card">
+      <h3><span class="n">1</span>禅僧として受けてきた無数の悩み相談</h3>
+      <ul>
+        <li>著者は住職として長年、檀家や参禅者から数え切れないほどの悩みを聞いてきた</li>
+        <li>その多くが「妄想」「思い込み」「勘違い」「取り越し苦労」に過ぎなかったという気づきが本書の出発点になっている</li>
+      </ul>
+      <div class="why">💡 理由（この例が示すこと）: 深刻に見える悩みほど、実は事実の検証より先に感情が独り歩きしていることが多いこと</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">2</span>ミシガン大学・ペンシルベニア大学などの心配事研究</h3>
+      <ul>
+        <li>心配事の約8割は実際には起こらず、残りの多くも事前の対処で乗り切れるという研究結果が紹介・引用される</li>
+        <li>本当にどうにもならない心配事は全体のごく一部にすぎないと示される</li>
+      </ul>
+      <div class="why">💡 理由（この例が示すこと）: 禅の経験則と現代科学のデータが一致することが、本書のタイトルに客観的な裏付けを与えていること</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">3</span>心配事を紙に書き出して仕分ける実践法</h3>
+      <ul>
+        <li>頭の中だけで抱えていた心配事を紙に書き出し、「起こる可能性が高いもの」と「自分で対処できるもの」に分類する方法が紹介される</li>
+        <li>可視化すると、その多くが対処不要な「不要な心配」だったと気づけるとする</li>
+      </ul>
+      <div class="why">💡 理由（この例が示すこと）: 心配事は「感じている」段階と「書き出して検証した」段階とで、大きさがまるで違って見えること</div>
+    </div>
+    <div class="card">
+      <h3><span class="n">4</span>庭園デザイナーとして自分の道を追求した著者自身の生き方</h3>
+      <ul>
+        <li>著者は禅の思想に基づく「禅の庭」の創作を続け、国内外から高い評価を得て、芸術選奨文部大臣新人賞やドイツ連邦共和国功労勲章を受けている</li>
+        <li>他者の評価軸に振り回されず、自分の基準で作品と向き合い続けた姿勢が本書の「競争から一歩離れる」という教えと重なる</li>
+      </ul>
+      <div class="why">💡 理由（この例が示すこと）: 「人は人、私は私」という教えが、著者自身の実生活と実績によって裏打ちされていること</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quote" role="tabpanel" aria-labelledby="tab-quote" hidden>
+    <div class="quote-card">
+      <span class="mark">“</span>
+      <p class="qtext">悩みの9割は、妄想にすぎない。比べることをやめれば、それだけで多くの妄想は消えてなくなる。</p>
+      <p class="note">— 枡野俊明（要旨）</p>
+    </div>
+    <div class="quote-card">
+      <span class="mark">“</span>
+      <p class="qtext">「いま」「ここ」に集中していれば、余計な心配事を考えている暇などない。</p>
+      <p class="note">— 枡野俊明（要旨）</p>
+    </div>
+    <div class="quote-card">
+      <span class="mark">“</span>
+      <p class="qtext">無駄なものをそぎ落とし、限りなくシンプルに生きることが、心を軽くする一番の近道である。</p>
+      <p class="note">— 枡野俊明（要旨）</p>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-action" role="tabpanel" aria-labelledby="tab-action" hidden>
+    <div class="action-card">
+      <h3>1️⃣ 心配事を紙に書き出し、「起こる可能性」で仕分ける</h3>
+      <p>いま頭の中にある心配事をすべて紙に書き出す。それぞれについて「起こる可能性が高いか」「自分で対処できるか」を○×で仕分け、対処不要なものを線で消す。</p>
+      <div class="action-meta">
+        <span>🎯 目的: <b>心配事を可視化し、実体のない妄想と切り分ける</b></span>
+        <span>📈 期待効果: <b>頭の中の不安を減らし、心配に使うエネルギーを解放する</b></span>
+        <span>⏱ 所要: <b>15分</b></span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>2️⃣ 「いま、ここ」でできる小さな一行動を1つ選んで実行する</h3>
+      <p>未来の不安に気を取られていると気づいたら、机の上を1か所だけ片付ける、お茶を丁寧に淹れるなど、目の前でできる小さな行動を1つ選んで最後までやり切る。</p>
+      <div class="action-meta">
+        <span>🎯 目的: <b>意識を「未来の不安」から「いまの行動」へ引き戻す</b></span>
+        <span>📈 期待効果: <b>禅的な集中状態を体感し、不安のループを断ち切る</b></span>
+        <span>⏱ 所要: <b>15〜20分</b></span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>3️⃣ 「人は人、私は私」と書いて、比較由来の妄想を1つ手放す</h3>
+      <p>最近誰かと比べて落ち込んだ出来事を1つ思い出し、紙に書き出す。その下に「人は人、私は私」と書き添え、比較そのものを手放すと決めて紙を閉じる。</p>
+      <div class="action-meta">
+        <span>🎯 目的: <b>比較から生まれる妄想を言語化して自分から切り離す</b></span>
+        <span>📈 期待効果: <b>他人の基準に振り回されない自分軸の感覚を取り戻す</b></span>
+        <span>⏱ 所要: <b>10〜15分</b></span>
+      </div>
+    </div>
+  </section>
+
+  <footer>📚 読書サマリー自動生成システム｜本インフォグラフィックはWeb調査に基づき生成されています</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('nav.tabs button'));
+  var panels = {
+    'tab-concept':'panel-concept',
+    'tab-chapter':'panel-chapter',
+    'tab-example':'panel-example',
+    'tab-quote':'panel-quote',
+    'tab-action':'panel-action'
+  };
+  function selectTab(id){
+    tabs.forEach(function(btn){
+      var isSel = btn.id === id;
+      btn.setAttribute('aria-selected', isSel ? 'true' : 'false');
+      btn.tabIndex = isSel ? 0 : -1;
+      var panel = document.getElementById(panels[btn.id]);
+      if(panel){ panel.hidden = !isSel; }
+    });
+  }
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){ selectTab(btn.id); });
+    btn.addEventListener('keydown', function(e){
+      var idx = tabs.indexOf(btn);
+      if(e.key === 'ArrowRight'){ e.preventDefault(); tabs[(idx+1)%tabs.length].focus(); selectTab(tabs[(idx+1)%tabs.length].id); }
+      if(e.key === 'ArrowLeft'){ e.preventDefault(); tabs[(idx-1+tabs.length)%tabs.length].focus(); selectTab(tabs[(idx-1+tabs.length)%tabs.length].id); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
