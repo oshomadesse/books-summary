@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>身体はトラウマを記録する ― インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー: #2B4162 (深い藍紺 - 安全・信頼)
+  セカンダリー: #E76F51 (温かいテラコッタ - 身体感覚・警報)
+  アクセント: #8FB8A8 (セージグリーン - 回復・落ち着き)
+  グラデーション: linear-gradient(135deg, #2B4162, #385170)
+-->
+<style>
+  :root{
+    --primary:#2B4162;
+    --primary-light:#385170;
+    --secondary:#E76F51;
+    --accent:#8FB8A8;
+    --bg:#F7F5F2;
+    --card:#FFFFFF;
+    --text:#232323;
+    --sub:#5B6472;
+    --border:#E4E1DA;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 0 60px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary),var(--primary-light));
+    color:#fff;
+    padding:32px 20px 26px;
+    border-radius:0 0 24px 24px;
+  }
+  header.hero .cat{
+    display:inline-block;
+    background:rgba(255,255,255,0.18);
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    letter-spacing:0.05em;
+    margin-bottom:12px;
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 6px;
+    line-height:1.4;
+  }
+  header.hero .author{font-size:13px;opacity:0.85;margin:0;}
+
+  .why-how{
+    margin:-18px 16px 20px;
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:0 6px 20px rgba(43,65,98,0.12);
+    padding:18px 18px 16px;
+    position:relative;
+    z-index:2;
+  }
+  .why-how h2{
+    font-size:13px;
+    color:var(--secondary);
+    margin:0 0 10px;
+    letter-spacing:0.05em;
+  }
+  .qa-row{display:flex;gap:10px;margin-bottom:10px;}
+  .qa-row .tag{
+    flex:0 0 auto;
+    font-size:11px;
+    font-weight:bold;
+    color:#fff;
+    background:var(--primary);
+    border-radius:6px;
+    padding:2px 8px;
+    height:fit-content;
+  }
+  .qa-row.answer .tag{background:var(--secondary);}
+  .qa-row.why .tag{background:var(--accent);color:#1a3a30;}
+  .qa-row p{margin:0;font-size:14px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:0 16px 10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--sub);
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:13px;
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+
+  section.panel{
+    display:none;
+    padding:4px 16px 0;
+  }
+  section.panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{margin:0;padding-left:1.1em;font-size:13.5px;}
+  .card li{margin-bottom:4px;}
+  .why-box{
+    margin-top:10px;
+    background:#F1F6F4;
+    border-left:3px solid var(--accent);
+    padding:8px 10px;
+    font-size:12.5px;
+    color:#2f4a41;
+    border-radius:0 8px 8px 0;
+  }
+  .quote-card{
+    background:linear-gradient(135deg,#2B4162,#3d5a80);
+    color:#fff;
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:14px;
+  }
+  .quote-card p.jp{font-size:14.5px;margin:0 0 8px;}
+  .quote-card p.note{font-size:12px;opacity:0.8;margin:0;}
+  .action-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:5px solid var(--secondary);
+    border-radius:10px;
+    padding:14px;
+    margin-bottom:12px;
+  }
+  .action-card .num{
+    display:inline-flex;
+    align-items:center;justify-content:center;
+    width:22px;height:22px;
+    background:var(--secondary);
+    color:#fff;
+    border-radius:50%;
+    font-size:12px;
+    margin-right:8px;
+  }
+  .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+  .badge{
+    font-size:11px;
+    background:#EFEDE7;
+    color:var(--sub);
+    padding:3px 9px;
+    border-radius:999px;
+  }
+  .stat-row{display:flex;gap:10px;margin:12px 0;flex-wrap:wrap;}
+  .stat{
+    flex:1 1 100px;
+    background:#EFF3F1;
+    border-radius:10px;
+    padding:10px;
+    text-align:center;
+  }
+  .stat b{display:block;font-size:18px;color:var(--primary);}
+  .stat span{font-size:11px;color:var(--sub);}
+  .bar-wrap{margin:10px 0;}
+  .bar-label{font-size:12px;display:flex;justify-content:space-between;margin-bottom:3px;}
+  .bar-bg{background:#E4E1DA;border-radius:6px;height:8px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--secondary),var(--accent));}
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--sub);
+    padding:20px 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <span class="cat">📚 心理学</span>
+    <h1>身体はトラウマを記録する<br>脳・心・体のつながりと回復のための手法</h1>
+    <p class="author">著者: ベッセル・ヴァン・デア・コーク（訳: 柴田裕之）</p>
+  </header>
+
+  <div class="why-how">
+    <h2>🎯 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row why">
+      <span class="tag">問い</span>
+      <p>言葉で「もう大丈夫」と分かっていても、なぜ体は反応し続けるのか？</p>
+    </div>
+    <div class="qa-row answer">
+      <span class="tag">答え</span>
+      <p>トラウマは「記憶」ではなく、脳と身体に刻まれた生理的な「警報状態」だから。回復には言葉だけでなく身体への働きかけが必要。</p>
+    </div>
+    <div class="qa-row">
+      <span class="tag">根拠</span>
+      <p>扁桃体の過活動・内受容感覚の鈍麻・耐性の窓の狭さという脳科学的所見と、EMDR・ヨガ等の臨床効果が裏付ける。</p>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">🔍 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </nav>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="stat-row">
+      <div class="stat"><b>5部</b><span>本書の構成</span></div>
+      <div class="stat"><b>約20章</b><span>原著の章数</span></div>
+      <div class="stat"><b>682頁</b><span>邦訳版のボリューム</span></div>
+    </div>
+
+    <div class="card">
+      <h3>🧠 身体はトラウマを記録する</h3>
+      <ul>
+        <li>トラウマ体験は言葉の記憶としてでなく、身体の緊張・姿勢・生理反応として蓄積される</li>
+        <li>頭では「終わったこと」と分かっていても、体は今も危険の中にいるかのように反応する</li>
+        <li>だから「思い出す」だけの治療では不十分</li>
+      </ul>
+      <div class="why-box">理由: 治療は「記憶を語る」ことに加え「身体を解放する」ことが必要だと示すから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⚠️ 扁桃体の過活動と「偽の警報」</h3>
+      <ul>
+        <li>危険を検知する扁桃体がトラウマ後に過敏になる</li>
+        <li>安全な状況でも危険信号を出し続けてしまう</li>
+        <li>理性を司る前頭前皮質の働きが抑制され、パニックを止めにくくなる</li>
+      </ul>
+      <div class="why-box">理由: 意志の力だけでは恐怖反応を止められない、生理的な理由を説明するから。</div>
+    </div>
+
+    <div class="card">
+      <h3>👂 内受容感覚（インターオセプション）</h3>
+      <ul>
+        <li>自分の内臓感覚・身体の状態に気づく能力</li>
+        <li>トラウマを負うとこの感覚が鈍り、感情に気づきにくくなる</li>
+        <li>回復の出発点は「自分の身体感覚を取り戻す」こと</li>
+      </ul>
+      <div class="why-box">理由: 感情に気づけなければ、それを調整することもできないから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🪟 耐性の窓（Window of Tolerance）</h3>
+      <ul>
+        <li>過覚醒（パニック・怒り）と低覚醒（麻痺・解離）の間にある安定領域</li>
+        <li>トラウマを負うとこの「窓」が極端に狭くなる</li>
+        <li>治療のゴールは窓を広げ、日常でその中にとどまれるようにすること</li>
+      </ul>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>健常時の耐性の窓</span><span>広い</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:78%"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>トラウマ後の耐性の窓</span><span>狭い</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:28%"></div></div>
+      </div>
+      <div class="why-box">理由: 「なぜ些細な刺激で過剰反応するのか」を説明する中核モデルだから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧒 発達性トラウマ障害</h3>
+      <ul>
+        <li>子供時代の慢性的な虐待・ネグレクトが土台となる情動調整能力を歪める</li>
+        <li>既存のPTSD診断枠では捉えきれない複合的な症状群</li>
+        <li>著者が新しい診断概念として提唱</li>
+      </ul>
+      <div class="why-box">理由: 子供のトラウマを大人のPTSDと同列に扱う限界を示すから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⬆️ ボトムアップ・アプローチ</h3>
+      <ul>
+        <li>言葉や思考（トップダウン）でなく、呼吸・動き・感覚から働きかける</li>
+        <li>ヨガ、リズム運動、演劇などが該当</li>
+        <li>会話療法が届かない層に働きかける手段</li>
+      </ul>
+      <div class="why-box">理由: 「話しても変わらない」という行き詰まりを打開する視点を与えるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🕊️ 自己主体感（エージェンシー）の回復</h3>
+      <ul>
+        <li>トラウマは「自分の人生を自分でコントロールできる」感覚を奪う</li>
+        <li>回復とはその主体感を身体レベルで取り戻すプロセス</li>
+      </ul>
+      <div class="why-box">理由: 症状消失だけでなく「人生を取り戻す」という治療の最終目標を明確にするから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🛡️ 安全であるという感覚</h3>
+      <ul>
+        <li>意識的な確認とは別に、自律神経が無意識に「安全か危険か」を判定している</li>
+        <li>支援者・治療者はまず「安全な環境」を作ることが最優先</li>
+      </ul>
+      <div class="why-box">理由: どんな治療技法も、安全感なしには効果を発揮しないから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>第1部：トラウマの再発見</h3>
+      <ul>
+        <li>ベトナム戦争帰還兵の治療から著者のキャリアが始まる</li>
+        <li>PTSDという概念が確立されていく歴史を描く</li>
+      </ul>
+      <div class="why-box">理由: トラウマ研究がまだ新しい学問分野であり、臨床現場での発見の物語だと示すため。</div>
+    </div>
+    <div class="card">
+      <h3>第2部：これがトラウマを負ったあなたの脳だ</h3>
+      <ul>
+        <li>脳画像研究でトラウマ記憶の刻まれ方を解明</li>
+        <li>扁桃体・海馬・前頭前皮質の関係を詳述</li>
+      </ul>
+      <div class="why-box">理由: トラウマが「気の持ちよう」でなく、測定可能な脳の変化だと科学的に裏付けるため。</div>
+    </div>
+    <div class="card">
+      <h3>第3部：子供たちの心</h3>
+      <ul>
+        <li>愛着形成の失敗・慢性的虐待が発達全体に及ぼす影響</li>
+        <li>発達性トラウマ障害の提唱に至る臨床データ</li>
+      </ul>
+      <div class="why-box">理由: 子供時代のトラウマが大人になっても続く影響の根深さを伝えるため。</div>
+    </div>
+    <div class="card">
+      <h3>第4部：トラウマの痕跡</h3>
+      <ul>
+        <li>記憶が断片化・非言語化されて保存される仕組み</li>
+        <li>解離やフラッシュバックのメカニズム</li>
+      </ul>
+      <div class="why-box">理由: 言語中心の心理療法だけでは対応しきれない理由を明確にするため。</div>
+    </div>
+    <div class="card">
+      <h3>第5部：回復へのさまざまな道</h3>
+      <ul>
+        <li>EMDR・ヨガ・ニューロフィードバック・演劇・内的家族システム療法を紹介</li>
+        <li>単一の万能療法はなく、統合的アプローチが必要と結論</li>
+      </ul>
+      <div class="why-box">理由: 読者に具体的な回復の選択肢と希望を示すため。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3>🪖 ベトナム戦争帰還兵の臨床例</h3>
+      <ul>
+        <li>退役軍人病院で出会った帰還兵たちの記録</li>
+        <li>戦闘終結から何年経っても、大きな音や匂いで戦場にいるようなフラッシュバックに襲われる</li>
+      </ul>
+      <div class="why-box">この例が示すこと: トラウマは「過去の記憶」ではなく、身体が今も戦場にいるかのように反応し続ける生理的現象であるということ。</div>
+    </div>
+    <div class="card">
+      <h3>🧘 虐待経験のある子供へのヨガ導入プログラム</h3>
+      <ul>
+        <li>トラウマセンターでの臨床プログラム</li>
+        <li>ヨガや身体感覚エクササイズを通じ、心拍・呼吸・緊張への気づきが向上</li>
+        <li>感情の波に飲み込まれにくくなった</li>
+      </ul>
+      <div class="why-box">この例が示すこと: 言葉によるカウンセリングが難しい子供にも、身体からのアプローチが有効であること。</div>
+    </div>
+    <div class="card">
+      <h3>👁️ EMDRによる性暴力被害者の治療事例</h3>
+      <ul>
+        <li>言葉で語ることが極めて困難だった被害者の事例</li>
+        <li>眼球運動を伴うセッションを重ね、記憶の感情的負荷が徐々に軽減</li>
+      </ul>
+      <div class="why-box">この例が示すこと: 記憶の「内容」を変えるのでなく、記憶に結びついた身体的・感情的反応そのものを再処理することが回復につながるということ。</div>
+    </div>
+    <div class="card">
+      <h3>🏙️ 9.11同時多発テロ後のニューヨーカー調査</h3>
+      <ul>
+        <li>直接被害を受けていない多くの市民にも慢性的な不安・過覚醒症状</li>
+      </ul>
+      <div class="why-box">この例が示すこと: トラウマは直接の被害者だけでなく、コミュニティ全体に波及しうる社会的現象であること。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote-card">
+      <p class="jp">「患者自身が、自分が感じていることを感じ、知っていることを知ることに耐えられるようになることが決定的に重要である。」</p>
+      <p class="note">— 感情を避けるのではなく、まず「感じ切る」力を育てることの重要性を説く一節</p>
+    </div>
+    <div class="quote-card">
+      <p class="jp">「いま感じていることに耐えられないなら、過去を掘り起こすことは苦しみを増やし、再トラウマ化させるだけだ。」</p>
+      <p class="note">— 安全な土台を作らずに過去を語らせる治療の危険性を警告</p>
+    </div>
+    <div class="quote-card">
+      <p class="jp">「秘密を抱え、情報を抑圧し続ける限り、あなたは根本的に自分自身と戦争状態にある。」</p>
+      <p class="note">— 抑圧が心身に及ぼす持続的な負荷を端的に表現</p>
+    </div>
+    <div class="quote-card">
+      <p class="jp">（要旨）邦題を「記憶」ではなく「記録」としたのは、トラウマの再生がいつ・どんな速さや音量で起きるか本人にも予測できない、テープの再生のような性質を持つことを表すためである。</p>
+      <p class="note">— 訳者・監修者による邦題解説の要旨</p>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="action-card">
+      <h3><span class="num">1</span>今この瞬間の身体スキャン（15分）</h3>
+      <ul>
+        <li>静かな場所に座り、頭から足先まで順番に身体の感覚（緊張・温度・重さ）に意識を向ける</li>
+      </ul>
+      <div class="badge-row">
+        <span class="badge">🎯 目的: 内受容感覚を鍛える</span>
+        <span class="badge">📈 効果: 不調の早期察知</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3><span class="num">2</span>4-7-8呼吸法によるリセット（10分）</h3>
+      <ul>
+        <li>4秒吸う→7秒止める→8秒かけて吐く、を5セット繰り返す</li>
+      </ul>
+      <div class="badge-row">
+        <span class="badge">🎯 目的: 自律神経を落ち着ける</span>
+        <span class="badge">📈 効果: 過覚醒からの回復手段を持てる</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3><span class="num">3</span>「安全だと感じる場所・人・時間」を3つ書き出す（15分）</h3>
+      <ul>
+        <li>心から安心できる場所・人・時間帯を3つ具体的に書き出し、理由も一言添える</li>
+      </ul>
+      <div class="badge-row">
+        <span class="badge">🎯 目的: 安全感の言語化</span>
+        <span class="badge">📈 効果: 不安時に意図的にアクセスできる心理的避難先を持てる</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>📚 books-summary 日次読書サマリー</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button');
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-cases':'panel-cases',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(b){ b.setAttribute('aria-selected','false'); });
+      btn.setAttribute('aria-selected','true');
+      Object.values(panels).forEach(function(id){
+        document.getElementById(id).classList.remove('active');
+      });
+      document.getElementById(panels[btn.id]).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
