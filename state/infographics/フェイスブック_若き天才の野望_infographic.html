@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット:
+  プライマリー: #1877F2 (Facebook Blue)
+  セカンダリー: #0F1B2D (ダークネイビー)
+  アクセント: #FF6B35 (オレンジ)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>フェイスブック 若き天才の野望 | インフォグラフィック</title>
+<style>
+  :root {
+    --primary: #1877F2;
+    --primary-dark: #0E5FCB;
+    --secondary: #0F1B2D;
+    --secondary-light: #1E2E45;
+    --accent: #FF6B35;
+    --bg: #F4F7FB;
+    --card-bg: #FFFFFF;
+    --text: #16202C;
+    --text-sub: #55637A;
+    --border: #E1E7F0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding-bottom: 40px;
+  }
+  header.hero {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    padding: 32px 20px 40px;
+    text-align: center;
+  }
+  header.hero .eyebrow {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    margin-bottom: 14px;
+  }
+  header.hero h1 {
+    font-size: clamp(22px, 5vw, 32px);
+    margin-bottom: 6px;
+    font-weight: 800;
+  }
+  header.hero .sub {
+    font-size: 13px;
+    opacity: 0.85;
+  }
+
+  .why-how {
+    max-width: 900px;
+    margin: -26px auto 24px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(15,27,45,0.12);
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+  .why-how h2 {
+    font-size: 14px;
+    color: var(--primary);
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+  }
+  .why-how-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 640px) {
+    .why-how-grid { grid-template-columns: 1fr; }
+  }
+  .why-how-cell {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .why-how-cell .label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .why-how-cell .content {
+    font-size: 13.5px;
+    color: var(--text);
+  }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 640px) {
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+  }
+  .stat-badge {
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 14px 8px;
+    text-align: center;
+  }
+  .stat-badge .num {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--primary);
+    display: block;
+  }
+  .stat-badge .cap {
+    font-size: 10.5px;
+    color: var(--text-sub);
+    margin-top: 4px;
+  }
+
+  nav.tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    margin-bottom: 18px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  nav.tabs::-webkit-scrollbar { display: none; }
+  nav.tabs button {
+    flex: 0 0 auto;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-sub);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .15s ease;
+  }
+  nav.tabs button[aria-selected="true"] {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadein .2s ease; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(4px);} to {opacity:1; transform: translateY(0);} }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .card h3 {
+    font-size: 15.5px;
+    margin-bottom: 8px;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card h3 .idx {
+    background: var(--primary);
+    color: #fff;
+    font-size: 11px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+  .card ul {
+    padding-left: 18px;
+    font-size: 13.5px;
+    color: var(--text);
+  }
+  .card ul li { margin-bottom: 5px; }
+  .why-box {
+    margin-top: 10px;
+    background: #FFF3EC;
+    border-left: 3px solid var(--accent);
+    padding: 8px 10px;
+    font-size: 12.5px;
+    color: #7A3E1D;
+    border-radius: 0 8px 8px 0;
+  }
+  .why-box b { color: var(--accent); }
+
+  blockquote.quote {
+    background: var(--secondary);
+    color: #fff;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  blockquote.quote .mark { color: var(--accent); font-size: 26px; font-weight: 800; line-height: 1; }
+  blockquote.quote p.en { font-size: 14px; font-style: italic; margin: 8px 0 4px; }
+  blockquote.quote p.ja { font-size: 13px; color: #C9D6E8; }
+  blockquote.quote p.note { font-size: 11px; color: var(--accent); margin-top: 8px; }
+
+  .action-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 12px;
+  }
+  .action-card .num-badge {
+    flex: 0 0 auto;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+  }
+  .action-card .title { font-weight: 700; font-size: 14.5px; margin-bottom: 4px; }
+  .action-card .meta { font-size: 12px; color: var(--text-sub); }
+  .action-card .meta b { color: var(--primary); }
+
+  .bar-wrap { margin: 10px 0; }
+  .bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sub); margin-bottom: 4px; }
+  .bar-bg { background: var(--border); border-radius: 999px; height: 10px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+
+  footer.credit {
+    max-width: 900px;
+    margin: 30px auto 0;
+    padding: 0 16px;
+    font-size: 11px;
+    color: var(--text-sub);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="eyebrow">📚 今日の一冊 ・ ビジネス</span>
+  <h1>フェイスブック 若き天才の野望</h1>
+  <div class="sub">デビッド・カークパトリック 著／滑川海彦・高橋信夫 訳（日経BP）</div>
+</header>
+
+<div class="why-how">
+  <h2>🔍 要約：問い × 答え × 根拠</h2>
+  <div class="why-how-grid">
+    <div class="why-how-cell">
+      <div class="label">❓ 問い</div>
+      <div class="content">学生寮のプロジェクトが、なぜ世界最大級の企業になれたのか？</div>
+    </div>
+    <div class="why-how-cell">
+      <div class="label">✅ 答え</div>
+      <div class="content">「世界をオープンでつながった場所にする」という単一ビジョンを、金銭的誘惑にも一切揺らがず貫いたから。</div>
+    </div>
+    <div class="why-how-cell">
+      <div class="label">📊 根拠</div>
+      <div class="content">10億ドル超の買収提案を複数回拒否し、"Move fast and break things"で高速に反復し続けた実績。</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="stat-row">
+    <div class="stat-badge"><span class="num">5億人</span><span class="cap">当時の利用者数</span></div>
+    <div class="stat-badge"><span class="num">150億㌦</span><span class="cap">2007年の企業評価額</span></div>
+    <div class="stat-badge"><span class="num">10億㌦</span><span class="cap">Yahoo!買収提案(拒否)</span></div>
+    <div class="stat-badge"><span class="num">544頁</span><span class="cap">日本語版ボリューム</span></div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button role="tab" id="tab-concept" aria-selected="true" aria-controls="panel-concept">🧩 主要概念</button>
+    <button role="tab" id="tab-chapter" aria-selected="false" aria-controls="panel-chapter">📖 各章の要約</button>
+    <button role="tab" id="tab-case" aria-selected="false" aria-controls="panel-case">💡 具体例</button>
+    <button role="tab" id="tab-quote" aria-selected="false" aria-controls="panel-quote">🗣️ 重要な引用</button>
+    <button role="tab" id="tab-action" aria-selected="false" aria-controls="panel-action">✅ 今日のアクション</button>
+  </nav>
+
+  <section class="panel active" id="panel-concept" role="tabpanel" aria-labelledby="tab-concept">
+    <div class="card">
+      <h3><span class="idx">1</span>Move Fast and Break Things（早く動いて、破壊せよ）</h3>
+      <ul>
+        <li>2014年まで掲げられていたFacebookの社是</li>
+        <li>完璧な計画より、まず動かして学ぶことを優先</li>
+        <li>失敗を「恥」ではなく「データ」として扱う姿勢</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> 変化の速い市場では、止まって考えるコストの方が壊すコストより高いという逆説的判断。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">2</span>ビジョン優先の経営（マネタイズ後回し）</h3>
+      <ul>
+        <li>「世界をもっとオープンでつながった場所にする」という社会的使命を最優先</li>
+        <li>初期は収益化より利用者数・エンゲージメントを追求</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> 短期的な収益圧力に屈しなかったことで、ネットワーク効果が最大化するまで規模を育てられた。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">3</span>プラットフォーム戦略（F8とサードパーティ開放）</h3>
+      <ul>
+        <li>2007年、外部開発者にAPIを開放するF8を開催</li>
+        <li>Facebook自体が「アプリの生態系」を運営するインフラへ変質</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> 自社だけで作れる価値の限界を超え、外部の創造力を取り込むことで成長速度を桁違いに上げた。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">4</span>「売らない」という一貫性</h3>
+      <ul>
+        <li>Yahoo!の10億ドル提案、その他複数の巨額買収提案を拒否</li>
+        <li>短期的な金銭より長期的な支配力・独立性を選択</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> 買収に応じていればFacebookは今日の規模に到達していなかった、という後の歴史が証明する判断。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">5</span>ニュースフィードとプライバシーの緊張関係</h3>
+      <ul>
+        <li>2006年のニュースフィード導入は当初ユーザーの猛反発を招いた</li>
+        <li>「便利さ」と「監視されている感覚」は表裏一体という教訓</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> プラットフォームが個人情報を扱う以上、機能拡張と信頼維持は常にトレードオフになる。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">6</span>段階的拡大モデル（大学→企業→全世界）</h3>
+      <ul>
+        <li>ハーバード限定 → 他大学 → 高校 → 企業 → 一般公開という慎重な順序</li>
+        <li>閉じたコミュニティで信頼と文化を作ってから開放</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> 最初から全世界に公開していれば、実名主義に基づく信頼のネットワークは築けなかった。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapter" role="tabpanel" aria-labelledby="tab-chapter" hidden>
+    <div class="card">
+      <h3><span class="idx">1</span>始まり（すべての始まり／パロアルト／フェイスブック以前）</h3>
+      <ul>
+        <li>ハーバードの学生寮でザッカーバーグがコードを書き始める</li>
+        <li>「Facemash」など、それ以前の習作的サービスの存在</li>
+        <li>夏休みにパロアルトへ移り、シリコンバレーの磁場に引き寄せられる</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> 最初から壮大な事業計画があったわけではなく、身近な課題への好奇心から始まったことが後の柔軟な方向転換を可能にした。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">2</span>大学から世界へ（2004年秋／投資家／本物の企業へ）</h3>
+      <ul>
+        <li>ハーバード限定サービスとして爆発的に普及</li>
+        <li>ピーター・ティールらエンジェル投資家からの出資を獲得</li>
+        <li>学生プロジェクトから正式な企業へと組織化</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> 早期に信頼できる投資家を選んだことが、後の急拡大局面での意思決定の自由度を守った。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">3</span>経営者としての試練（2005年秋／CEOの試練／2006年）</h3>
+      <ul>
+        <li>若すぎるCEOとして経営陣・社外から交代圧力を受ける</li>
+        <li>Yahoo!からの10億ドル買収提案を拒否</li>
+        <li>役員や共同創業者との関係が緊張する局面</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> 経験不足を理由にした周囲の圧力に屈しなかったことが、後年のビジョン一貫性の原点になった。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">4</span>プライバシーとプラットフォーム</h3>
+      <ul>
+        <li>ニュースフィード導入時の大規模なユーザー反発</li>
+        <li>謝罪と機能改善を経て信頼を回復</li>
+        <li>F8でサードパーティ開発者にプラットフォームを開放</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> 危機対応の速さと透明性が、その後のより大胆なプラットフォーム開放への信頼の土台になった。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">5</span>巨大化する価値（150億ドル／金を稼ぐ）</h3>
+      <ul>
+        <li>Microsoftが2.4億ドルを出資し、時価総額150億ドルと評価</li>
+        <li>広告モデルの模索と収益化への本格着手</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> 評価額の急騰は「ユーザー基盤を育ててから収益化する」という戦略の正しさを裏づけた。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">6</span>世界を変える（フェイスブックと世界／世界の仕組みを変える）</h3>
+      <ul>
+        <li>各国の政治・社会運動でのFacebook活用が始まる</li>
+        <li>単なるSNSから社会インフラへと位置づけが変化</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> 「つながり」というシンプルな機能が、想定を超えた社会的影響力を持ちうることを示した。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">7</span>進化と未来（フェイスブックの進化／未来へ）</h3>
+      <ul>
+        <li>組織・製品ともに継続的な自己変革を続ける姿勢</li>
+        <li>「まだ道半ば」という著者の結び</li>
+      </ul>
+      <div class="why-box"><b>理由:</b> 成功後も現状維持に安住しない姿勢こそが、長期的な競争優位の源泉として描かれている。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-case" role="tabpanel" aria-labelledby="tab-case" hidden>
+    <div class="card">
+      <h3><span class="idx">1</span>Synapse Media Player の買収拒否（18歳当時）</h3>
+      <ul>
+        <li>高校時代に開発した音楽プレイヤーソフトに、Microsoftなどから約100万ドルの買収提案</li>
+        <li>ザッカーバーグは迷わず断り、大学進学を選んだ</li>
+      </ul>
+      <div class="why-box"><b>この例が示すこと:</b> 金銭より「自分で作り続けたい」という動機の強さが、10代の頃から一貫していたことを物語る。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">2</span>Yahoo!による10億ドル買収提案の拒否（2006年）</h3>
+      <ul>
+        <li>役員会や周囲の多くが売却を勧める中、ザッカーバーグは拒否</li>
+        <li>この決断が後の社内外での信頼を大きく揺るがす局面にもなった</li>
+      </ul>
+      <div class="why-box"><b>この例が示すこと:</b> 短期的に「合理的」に見える選択を退け、長期ビジョンを優先する経営判断の難しさとリスクを象徴する。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">3</span>Microsoftの2.4億ドル出資（2007年）</h3>
+      <ul>
+        <li>Googleとの競合の末、Microsoftが出資しFacebookの企業価値を150億ドルと評価</li>
+        <li>買収提案を拒んだ同じ相手から、今度は対等な出資を引き出す立場に転換</li>
+      </ul>
+      <div class="why-box"><b>この例が示すこと:</b> 一貫して独立性を守り続けた結果、交渉力そのものが数年で劇的に逆転した好例。</div>
+    </div>
+    <div class="card">
+      <h3><span class="idx">4</span>ニュースフィード導入時のユーザー反発</h3>
+      <ul>
+        <li>2006年、友人の行動が自動で流れる「ニュースフィード」に猛烈な抗議が殺到</li>
+        <li>ザッカーバーグは公式に謝罪しつつも機能自体は撤回せず、プライバシー設定を改善して定着させた</li>
+      </ul>
+      <div class="why-box"><b>この例が示すこと:</b> ユーザーの反発は「機能が悪い」ではなく「導入の仕方」に起因することもあり、撤回ではなく改善で応じる判断が功を奏した。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quote" role="tabpanel" aria-labelledby="tab-quote" hidden>
+    <blockquote class="quote">
+      <div class="mark">"</div>
+      <p class="en">The biggest risk is not taking any risk.</p>
+      <p class="ja">最大のリスクは、リスクを取らないことだ。</p>
+    </blockquote>
+    <blockquote class="quote">
+      <div class="mark">"</div>
+      <p class="en">Done is better than perfect.</p>
+      <p class="ja">完璧であることより、まず終わらせることが重要だ。</p>
+    </blockquote>
+    <blockquote class="quote">
+      <div class="mark">"</div>
+      <p class="en">Facebook was not originally created to be a company. It was built to accomplish a social mission, to make the world more open and connected.</p>
+      <p class="ja">Facebookはもともと会社になるために作られたのではない。世界をよりオープンでつながった場所にするという社会的使命を果たすために作られたのだ。</p>
+    </blockquote>
+    <blockquote class="quote">
+      <div class="mark">"</div>
+      <p class="en">Move fast and break things.</p>
+      <p class="ja">早く動いて、破壊せよ。</p>
+      <p class="note">要旨：2014年まで社内で掲げられていたFacebookの社是。完璧な計画より高速な試行錯誤を優先する姿勢を端的に表す。</p>
+    </blockquote>
+  </section>
+
+  <section class="panel" id="panel-action" role="tabpanel" aria-labelledby="tab-action" hidden>
+    <div class="action-card">
+      <div class="num-badge">1</div>
+      <div>
+        <div class="title">今の仕事を「60%の完成度」でいったん外に出してみる</div>
+        <div class="meta"><b>所要時間:</b> 15分／<b>目的:</b> 「完璧主義による停止」を止める／<b>期待効果:</b> フィードバックを早く得て、修正コストを最小化できる</div>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="num-badge">2</div>
+      <div>
+        <div class="title">「本来の目的」を金銭条件のために譲歩していないか棚卸しする</div>
+        <div class="meta"><b>所要時間:</b> 20分／<b>目的:</b> 短期的インセンティブに流されていないか点検する／<b>期待効果:</b> 長期的に一貫した判断軸を取り戻せる</div>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="num-badge">3</div>
+      <div>
+        <div class="title">自分の仕事を「人と人・情報と情報をどうつなぐか」で1つ再設計する</div>
+        <div class="meta"><b>所要時間:</b> 30分／<b>目的:</b> プラットフォーム思考を自分の業務に応用する／<b>期待効果:</b> 単発の作業を「つながりを生む仕組み」に転換できる</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📊 買収提案とその後の評価額（推移イメージ）</h3>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>Synapse買収提案(18歳)</span><span>約100万㌦</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:2%"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>Yahoo!買収提案(拒否)</span><span>10億㌦</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:16%"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>Microsoft出資時の評価額</span><span>150億㌦</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="credit">本インフォグラフィックはWeb公開情報をもとに要約・再構成したものです。</footer>
+
+<script>
+(function() {
+  var tabs = document.querySelectorAll('nav.tabs button');
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var panelId = tab.getAttribute('aria-controls');
+      tabs.forEach(function(t) {
+        t.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.panel').forEach(function(p) {
+        p.classList.remove('active');
+        p.setAttribute('hidden', '');
+      });
+      tab.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById(panelId);
+      panel.classList.add('active');
+      panel.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
