@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小さなチーム、大きな仕事〔完全版〕 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #2f6f52 / セカンダリー #17362a / アクセント #e8873e -->
+<style>
+:root {
+  --primary: #2f6f52;
+  --secondary: #17362a;
+  --accent: #e8873e;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fdf3e9, #fdeddb);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eaf4ee, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fef6ec, #fffaf2);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📦 小さなチーム、大きな仕事〔完全版〕</h1>
+  <p>会社は小さく。失敗から学ぶな。五時には帰宅。37シグナルズが説く常識破りの仕事術</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>巨額の資金・長期計画・大所帯の組織を持たなければ、大きな仕事は成し遂げられないのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>否。小さなチームのまま「今すぐ作り、素早く学ぶ」姿勢を貫けば、規模に頼らずとも大きな成果を出せる。むしろ小ささは意思決定の速さと顧客への近さという武器になる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>長期計画は結局「予想」にすぎず外れる。会議・肥大化した組織・見せかけの忙しさはコストばかりで成果を生みにくい。制約（時間・人数・資金）はむしろ本質にフォーカスさせる力になる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>長期計画より小さな決断の積み重ね、会議より文章での意思疎通、機能追加より「半分の製品」、広告より知識の無償公開。日々の行動そのものが文化になるという発想で仕事のやり方を作り直す。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🐜 会社は小さく（Stay Lean）</h3>
+    <ul>
+      <li>規模拡大そのものを目的にしない</li>
+      <li>少人数のほうが意思疎通・意思決定が速い</li>
+      <li>顧客の声に対する感度も高いままでいられる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>大きさは成功の証ではなく、むしろ意思決定を遅くし顧客との距離を広げるコストになりうるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎲 計画は予想にすぎない（Planning is Guessing）</h3>
+    <ul>
+      <li>長期計画は「当たるかもしれない予想」でしかない</li>
+      <li>計画作りに時間をかけるより短いスパンで動く方が現実的</li>
+      <li>進みながら軌道修正する姿勢を前提にする</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>未来は本質的に不確実であり、精緻な計画ほど「外れたときの手戻り」が大きくなるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>☠️ 会議は毒（Meetings Are Toxic）</h3>
+    <ul>
+      <li>参加人数×時間のコストの割に得られる情報が薄い</li>
+      <li>議題が曖昧なまま始まる会議が多い</li>
+      <li>1つの会議が次の会議を生み増殖していく</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>会議は「働いた気になる」だけで、実際の生産物を生まないことが多いため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌙 五時には帰宅（Work Less）</h3>
+    <ul>
+      <li>長時間労働は熱意の証ではなく非効率の証</li>
+      <li>制約された時間の中でこそ優先順位が研ぎ澄まされる</li>
+      <li>睡眠不足・疲労は判断の質を下げる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>時間が無限にあると錯覚すると、本当に重要なことへの集中が失われるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚀 まず作り始めよ（Start Making Something）</h3>
+    <ul>
+      <li>アイデアの磨き込みより実行の速さを優先する</li>
+      <li>完璧な計画より小さく形にして学ぶ</li>
+      <li>実際に手を動かすことで初めて見える課題がある</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>頭の中だけで考え続けても、現実の反応を伴わない限り本当の学びは得られないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✂️ 半分の製品を、半端な製品ではなく</h3>
+    <ul>
+      <li>機能を削り本質を研ぎ澄ますことが価値を生む</li>
+      <li>「全部載せ」より「一番大事なことだけ」を優先する</li>
+      <li>機能の多さと使いやすさは必ずしも比例しない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>機能過多は複雑さを増し、本来届けたかった価値をかえって見えにくくするため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🥊 けんかを売れ（Pick a Fight）</h3>
+    <ul>
+      <li>明確な立場・強い意見を持つ企業ほど熱狂的なファンを作る</li>
+      <li>八方美人な製品・主張は誰の記憶にも残らない</li>
+      <li>「万人受け」を狙うことがかえって埋没を招く</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>誰にも嫌われない代わりに誰にも強く支持されない状態は、ブランドとして最も弱いため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌱 文化は行動の積み重ねから生まれる</h3>
+    <ul>
+      <li>社訓やポスターが文化を作るわけではない</li>
+      <li>日々の小さな意思決定の集積が組織の本質になる</li>
+      <li>制度より習慣が組織を形作る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>言葉として掲げた理念と、実際の行動が食い違えば、文化として根付かないため。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>会社は小さく</span>
+      <span class="flow-arrow">→</span>
+      <span>意思決定が速い</span>
+      <span class="flow-arrow">→</span>
+      <span>計画より行動を選べる</span>
+    </div>
+    <div class="flow-item">
+      <span>計画は予想にすぎない</span>
+      <span class="flow-arrow">→</span>
+      <span>まず作り始めよ</span>
+      <span class="flow-arrow">→</span>
+      <span>半分の製品で市場に出す</span>
+    </div>
+    <div class="flow-item">
+      <span>会議は毒／五時には帰宅</span>
+      <span class="flow-arrow">→</span>
+      <span>制約の中で優先順位が明確化</span>
+      <span class="flow-arrow">→</span>
+      <span>本質だけに集中する組織</span>
+    </div>
+    <div class="flow-item">
+      <span>けんかを売れ</span>
+      <span class="flow-arrow">→</span>
+      <span>強い立場が熱狂的ファンを生む</span>
+      <span class="flow-arrow">→</span>
+      <span>日々の行動が文化として定着</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>まず最初に／見直す</h3>
+    <ul>
+      <li>起業や成功に必要なのは巨大な資金や壮大な計画ではないと宣言</li>
+      <li>「ワークライフバランス」「起業家精神」など既存のビジネス用語そのものを問い直す</li>
+      <li>常識を疑うところから本書全体が始まる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>思考の土台をリセットしなければ、新しい働き方の議論が始まらないため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>先に進む／進展</h3>
+    <ul>
+      <li>計画よりまず行動、完璧な準備を待たず今ある資源で始める</li>
+      <li>「半分の製品」を目指し、決断は早く下す</li>
+      <li>完璧主義こそが前進を止める最大の敵</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>行動しながら学ぶ方が、計画倒れよりも速く現実の答えにたどり着けるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>生産性</h3>
+    <ul>
+      <li>長時間労働より短い集中時間を重視</li>
+      <li>会議の削減、割り込みの排除を徹底</li>
+      <li>「働いた時間」でなく「生んだ成果」で測る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>生産性は投入時間の長さではなく、集中の質によって決まるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>競合相手／進化</h3>
+    <ul>
+      <li>競合を気にしすぎず自分たちの強みに集中する</li>
+      <li>すべての要望に応えると製品の芯がぶれる</li>
+      <li>変化を恐れず、時に自分たちの直感を優先する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>他社追随は自社の個性を消し、長期的な差別化を失わせるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>プロモーション／人を雇う／ダメージ・コントロール／文化</h3>
+    <ul>
+      <li>広告に頼らず、知識を無償で発信し信頼を築く</li>
+      <li>採用は急がず実務を通じて見極める</li>
+      <li>失敗やミスは隠さず誠実に公表する</li>
+      <li>文化はスローガンでなく日々の行動の集積で作られる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>押し売りより価値提供、誤魔化しより誠実さのほうが、小さなチームには長期的な信頼を生むため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>🏢 37シグナルズ（現Basecamp）自身の成長</h3>
+    <ul>
+      <li>二つの大陸に散らばった十数人のメンバーだけで運営</li>
+      <li>それでいて数百万人の顧客を抱えるソフトウェア企業に成長</li>
+      <li>オフィスも巨額の広告費もかけずにプロダクトの評判だけで拡大</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>規模を追わずとも影響力・成功は作れるという、本書の主張そのものを体現する事例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏱️ 「会議は毒」の具体的コスト計算</h3>
+    <ul>
+      <li>5人が1時間の会議に出席すると合計5時間分の労働時間を消費</li>
+      <li>会議1本のコストを「参加人数×時間」で可視化して初めて実感できる</li>
+      <li>目的の曖昧な会議ほど、このコストが無駄になりやすい</li>
+    </ul>
+    <div class="metric">
+      <span class="metric-label">1時間会議（5人参加）の実質コスト</span>
+      <div class="metric-bar"><div class="metric-fill" style="width: 100%;"></div></div>
+      <span style="font-size: 0.8rem; color: var(--secondary);">5時間分</span>
+    </div>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>会議のコストは時間ではなく「参加人数×時間」で捉えるべきだという発想の転換を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📣 広告に頼らないマーケティング</h3>
+    <ul>
+      <li>ブログや無料コンテンツを通じて専門知識を発信</li>
+      <li>広告費をかけずに潜在顧客の信頼を獲得</li>
+      <li>「教える」ことがそのままマーケティングになった</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>知識の無償公開が、広告よりも安価で持続的な信頼構築の手段になりうることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧩 「半分の製品」としてのBasecamp</h3>
+    <ul>
+      <li>機能を絞り込んだシンプルなプロジェクト管理ツールとして最初にリリース</li>
+      <li>顧客の実際の使われ方を見ながら後から機能を拡張</li>
+      <li>最初から完璧な全部載せを目指さなかった</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>完成度より先に市場に出して学ぶことの価値を、自社製品自体で証明している。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">会社は小さく。失敗から学ぶな。五時には帰宅。けんかを売れ。（要旨）</p>
+    <p class="quote-why">※原典の一字一句ではなく要旨。日本語版の紹介文にも使われる、本書の思想を凝縮した一節。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">計画とは、しょせん予想にすぎない。（要旨）</p>
+    <p class="quote-why">※要旨（原題の章タイトル "Planning is Guessing" の趣旨）。長期計画への懐疑を示す象徴的な考え方。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">会議は毒だ。多くの場合、実際のモノではなく言葉と抽象的な概念について話しているだけで、得られる情報量は驚くほど少ない。（要旨）</p>
+    <p class="quote-why">※要旨（原題の章タイトル "Meetings Are Toxic" の趣旨）。会議の弊害を端的に表す一節。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">強いチームはオフィスを捨てる。働く場所ではなく、何を生み出したかで評価せよ。（要旨）</p>
+    <p class="quote-why">※要旨。日本語版の紹介文で強調される「働き方革命」のメッセージ。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>🗓️ 定例会議を1つ「本当に必要か」見直す</h4>
+    <p><strong>やること：</strong>今週の定例会議を1つ選び、全員参加が必要かをチェックし、チャットや文書共有に置き換えられないか検討する（15分）。</p>
+    <p><strong>目的：</strong>会議コストへの感度を上げる。</p>
+    <p><strong>期待効果：</strong>会議時間の削減と、意思決定スピードの向上。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>✂️ 今抱えているタスクから「削れる工程」を1つ削る</h4>
+    <p><strong>やること：</strong>進行中のタスクやプロジェクトの中から、なくても本質が変わらない機能・工程を1つ選び、思い切って削る、または後回しにする（20分）。</p>
+    <p><strong>目的：</strong>完璧主義より前進を優先する感覚を体験する。</p>
+    <p><strong>期待効果：</strong>着手のハードルが下がり、実行速度が上がる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>📝 自分のノウハウを1つ、短く発信してみる</h4>
+    <p><strong>やること：</strong>自分の専門知識や仕事のコツを1つ選び、短いメモやSNS投稿としてアウトプットする（30分）。</p>
+    <p><strong>目的：</strong>「教えることがマーケティングになる」という発想を実践する。</p>
+    <p><strong>期待効果：</strong>信頼構築の第一歩になると同時に、自分自身の思考整理にもなる。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 85%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
