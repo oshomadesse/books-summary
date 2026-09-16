@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>セルフ・コンパッション［新訳版］ インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー: #6C63A6 (落ち着いた紫 - 内省・思いやり)
+  セカンダリー: #F2A65A (温かいオレンジ - 自分への優しさ)
+  アクセント:   #4FB0A5 (穏やかな緑青 - 安定・レジリエンス)
+-->
+<style>
+  :root{
+    --primary:#6C63A6;
+    --primary-dark:#4E4780;
+    --secondary:#F2A65A;
+    --accent:#4FB0A5;
+    --bg:#FBF9F6;
+    --card:#FFFFFF;
+    --text:#33303B;
+    --text-soft:#6B6675;
+    --border:#E7E2F0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:linear-gradient(160deg,#FBF9F6 0%,#F1EEFA 100%);
+    color:var(--text);
+    line-height:1.65;
+    padding-bottom:40px;
+  }
+  header{
+    padding:28px 20px 24px;
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    color:#fff;
+    border-radius:0 0 24px 24px;
+  }
+  header .eyebrow{
+    font-size:.78rem;
+    letter-spacing:.08em;
+    opacity:.85;
+  }
+  header h1{
+    margin:6px 0 4px;
+    font-size:1.5rem;
+    line-height:1.4;
+  }
+  header .author{
+    font-size:.9rem;
+    opacity:.9;
+  }
+  .badge-row{
+    display:flex;
+    gap:8px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .badge{
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;
+    padding:5px 12px;
+    font-size:.75rem;
+  }
+  main{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 16px;
+  }
+  .hero{
+    margin-top:-8px;
+    background:var(--card);
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 8px 24px rgba(108,99,166,.12);
+  }
+  .hero h2{
+    font-size:1.02rem;
+    margin:0 0 12px;
+    color:var(--primary-dark);
+  }
+  .qa-block{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .qa-item{
+    background:#F7F5FC;
+    border-left:4px solid var(--primary);
+    border-radius:10px;
+    padding:12px 14px;
+  }
+  .qa-item .q{
+    font-weight:700;
+    font-size:.85rem;
+    color:var(--primary-dark);
+    margin-bottom:4px;
+  }
+  .qa-item .a{
+    font-size:.88rem;
+  }
+  .qa-item.why{
+    border-left-color:var(--accent);
+    background:#EFF9F7;
+  }
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:16px;
+  }
+  .stat{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:10px 6px;
+    text-align:center;
+  }
+  .stat .num{
+    font-size:1.3rem;
+    font-weight:800;
+    color:var(--accent);
+    display:block;
+  }
+  .stat .label{
+    font-size:.68rem;
+    color:var(--text-soft);
+  }
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:22px 0 12px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--text-soft);
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:.8rem;
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+    font-weight:700;
+  }
+  section[role="tabpanel"]{
+    display:none;
+  }
+  section[role="tabpanel"].active{
+    display:block;
+    animation:fade .3s ease;
+  }
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 2px 10px rgba(51,48,59,.04);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:.98rem;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:var(--primary-dark);
+  }
+  .card ul{
+    margin:0 0 8px;
+    padding-left:1.1em;
+    font-size:.86rem;
+  }
+  .card li{margin-bottom:4px;}
+  .why-tag{
+    display:inline-block;
+    margin-top:4px;
+    font-size:.76rem;
+    background:#EFF9F7;
+    color:#2E7C73;
+    border-radius:8px;
+    padding:5px 9px;
+  }
+  .quote-card{
+    border-left:4px solid var(--secondary);
+    background:#FFF7EE;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:12px;
+    font-size:.9rem;
+  }
+  .quote-card .src{
+    display:block;
+    margin-top:6px;
+    font-size:.74rem;
+    color:var(--text-soft);
+  }
+  .action-card{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 auto;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:.85rem;
+  }
+  .bar{
+    height:8px;
+    border-radius:6px;
+    background:#EEE9F8;
+    overflow:hidden;
+    margin:6px 0 2px;
+  }
+  .bar span{
+    display:block;
+    height:100%;
+    background:linear-gradient(90deg,var(--primary),var(--accent));
+  }
+  footer{
+    text-align:center;
+    font-size:.72rem;
+    color:var(--text-soft);
+    margin-top:28px;
+    padding:0 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">📖 TODAY'S BOOK・心理学</div>
+  <h1>セルフ・コンパッション［新訳版］</h1>
+  <div class="author">クリスティン・ネフ 著／石村郁夫・樫村正美 監修</div>
+  <div class="badge-row">
+    <span class="badge">🧠 自分への思いやり</span>
+    <span class="badge">🔬 実証研究に基づく</span>
+    <span class="badge">🌱 心理学・自己受容</span>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <h2>⚡ 要約：問い × 答え × 根拠</h2>
+    <div class="qa-block">
+      <div class="qa-item">
+        <div class="q">Q. 自分を厳しく責めることで成長できないのはなぜ？</div>
+        <div class="a">A. 自己批判は一時的に自分を動かしても、失敗への恐怖と自己防衛を強め、長期的には行動を続ける力を奪うから。</div>
+      </div>
+      <div class="qa-item why">
+        <div class="q">Why. 根拠</div>
+        <div class="a">セルフ・コンパッションの実証研究では、自分に優しくする人ほど不安・抑うつが低く、感情的に立ち直る力（レジリエンス）や人間関係の満足度が高いことが確認されている。</div>
+      </div>
+      <div class="qa-item">
+        <div class="q">How. どうすればいい？</div>
+        <div class="a">「自分への優しさ」「共通の人間性の認識」「マインドフルネス」の3要素を、苦しい瞬間ごとに意識的に自分へ向ける。</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><span class="num">3</span><span class="label">核となる要素</span></div>
+      <div class="stat"><span class="num">13</span><span class="label">章構成</span></div>
+      <div class="stat"><span class="num">1〜3分</span><span class="label">基本エクササイズ</span></div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button class="tab-btn" role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📑 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-examples" aria-controls="panel-examples" aria-selected="false">💡 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">🗨️ 重要な引用</button>
+    <button class="tab-btn" role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+  </nav>
+
+  <section id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts" class="active">
+    <div class="card">
+      <h3>💗 セルフ・コンパッションとは</h3>
+      <ul>
+        <li>失敗・苦しみ・不完全さを感じたとき、自分を厳しく罰する代わりに温かく見守る姿勢。</li>
+        <li>大切な友人にかけるような理解と優しさを、自分自身にも向けること。</li>
+        <li>自己憐憫や甘やかしとは異なり、現実をありのまま受け止めた上での思いやり。</li>
+      </ul>
+      <span class="why-tag">理由: 自己批判の悪循環を断つ土台になるから</span>
+    </div>
+    <div class="card">
+      <h3>🤍 自分への優しさ（Self-Kindness）</h3>
+      <ul>
+        <li>苦しいときに自分を叱るのではなく、励ます態度をとる。</li>
+        <li>「もう十分頑張っている」と自分に言葉をかける練習。</li>
+      </ul>
+      <div class="bar"><span style="width:78%"></span></div>
+      <span class="why-tag">理由: 自己批判より回復が早く、行動を継続できるから</span>
+    </div>
+    <div class="card">
+      <h3>🌍 共通の人間性（Common Humanity）</h3>
+      <ul>
+        <li>失敗や苦しみは自分だけの特殊な経験ではなく、人類に共通するものと認識する。</li>
+        <li>「つらいのは自分だけではない」という視点が孤立感を和らげる。</li>
+      </ul>
+      <div class="bar"><span style="width:70%"></span></div>
+      <span class="why-tag">理由: 孤独感を減らし、感情に飲まれず広い視野を保てるから</span>
+    </div>
+    <div class="card">
+      <h3>🧘 マインドフルネス</h3>
+      <ul>
+        <li>感情や思考を否定も誇張もせず、そのままの状態で観察する意識。</li>
+        <li>良し悪しを判断せずに受容することで、感情との適切な距離をとる。</li>
+      </ul>
+      <div class="bar"><span style="width:74%"></span></div>
+      <span class="why-tag">理由: 感情に振り回されず、適切な対応を選べるようになるから</span>
+    </div>
+    <div class="card">
+      <h3>⚖️ 自尊感情との違い</h3>
+      <ul>
+        <li>自尊感情は他者との比較や成功・失敗の評価に依存しやすい。</li>
+        <li>セルフ・コンパッションは評価と無関係に、常に自分に向けられる安定した土台。</li>
+      </ul>
+      <span class="why-tag">理由: 比較に依存する自己評価は失敗時に脆く、燃え尽きにつながるから</span>
+    </div>
+    <div class="card">
+      <h3>🔥 恐れより愛の動機づけ</h3>
+      <ul>
+        <li>自分を怖がらせて動かす「恐れの動機づけ」は長続きしない。</li>
+        <li>セルフ・コンパッションに基づく「愛の動機づけ」は、失敗しても挑戦を続ける力を支える。</li>
+      </ul>
+      <span class="why-tag">理由: 恐怖に基づく自己批判より、思いやりに基づく動機の方が持続するから</span>
+    </div>
+    <div class="card">
+      <h3>💪 感情的レジリエンス</h3>
+      <ul>
+        <li>セルフ・コンパッションが高い人ほど、逆境からの立ち直りが速いという研究結果。</li>
+        <li>不安・抑うつを和らげ、人間関係の満足度も高める。</li>
+      </ul>
+      <span class="why-tag">理由: 苦しみを否定せず受け止めることで、感情の回復力が育つから</span>
+    </div>
+  </section>
+
+  <section id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>第1部｜なぜセルフ・コンパッションなのか</h3>
+      <ul>
+        <li>第1章：セルフ・コンパッションを見つける。</li>
+        <li>第2章：自己批判という「愚行」をやめる決意をする。</li>
+      </ul>
+      <span class="why-tag">理由: まず自己批判の害を自覚することが変化の出発点だから</span>
+    </div>
+    <div class="card">
+      <h3>第2部｜核となる3要素</h3>
+      <ul>
+        <li>第3章：自分に優しくする。</li>
+        <li>第4章：誰しも経験することだと知る（共通の人間性）。</li>
+        <li>第5章：現実に対してマインドフルでいる。</li>
+      </ul>
+      <span class="why-tag">理由: 3要素それぞれの実践法を分けて学ぶことで再現性が上がるから</span>
+    </div>
+    <div class="card">
+      <h3>第3部｜セルフ・コンパッションがもたらす恩恵</h3>
+      <ul>
+        <li>第6章：感情面のレジリエンス（立ち直る力）。</li>
+        <li>第7章：自尊感情ゲームをやめる。</li>
+        <li>第8章：意欲と自分の成長。</li>
+      </ul>
+      <span class="why-tag">理由: 「優しさは甘やかしでは？」という誤解に、効果の実証データで答えるから</span>
+    </div>
+    <div class="card">
+      <h3>第4部｜人間関係におけるセルフ・コンパッション</h3>
+      <ul>
+        <li>第9章：他者への思いやり。</li>
+        <li>第10章：セルフ・コンパッションを実践する育児。</li>
+        <li>第11章：愛とセックス。</li>
+      </ul>
+      <span class="why-tag">理由: 自分への思いやりは、他者への思いやりの土台にもなるから</span>
+    </div>
+    <div class="card">
+      <h3>第5部｜セルフ・コンパッションの喜び</h3>
+      <ul>
+        <li>第12章：蛹から蝶へ（変化のプロセス）。</li>
+        <li>第13章：自分の真価を認める（セルフ・アプリシエーション）。</li>
+      </ul>
+      <span class="why-tag">理由: 自己批判の解消を、成長の終着点として示すことで実践の動機を高めるから</span>
+    </div>
+  </section>
+
+  <section id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="card">
+      <h3>💼 仕事の失敗を責め続けた例（要旨）</h3>
+      <ul>
+        <li>大きな失敗を「自分はダメだ」と責め続けていた人が、友人にかけるような言葉を自分に向けるようにした。</li>
+        <li>結果、次の挑戦への意欲を取り戻したという臨床上の報告（要旨）。</li>
+      </ul>
+      <span class="why-tag">理由: 自己批判ではなく自己への優しさが再挑戦の力になることを示す例だから</span>
+    </div>
+    <div class="card">
+      <h3>🫱 セルフ・コンパッション・ブレイクの実践例</h3>
+      <ul>
+        <li>ネフが紹介する基本エクササイズ：①「これは苦しみの瞬間だ」（マインドフルネス）②「苦しみは人生の一部だ。私だけじゃない」（共通の人間性）③手を胸に当て「自分に優しくいられますように」（自分への優しさ）。</li>
+        <li>所要時間わずか1〜3分で、3要素をひとつの流れとして体感できる。</li>
+      </ul>
+      <span class="why-tag">理由: 3要素の抽象的な説明を、その場でできる型に落とし込んでいるから</span>
+    </div>
+    <div class="card">
+      <h3>👶 育児中の親の例</h3>
+      <ul>
+        <li>子育てで自分を責めがちな親が、セルフ・コンパッションを実践し、必要な休息を自分に許すようになった。</li>
+        <li>自分への対応が変わることで、子どもへの接し方にも余裕が生まれたという報告。</li>
+      </ul>
+      <span class="why-tag">理由: 自分への思いやりが他者（子ども）への思いやりにも波及することを示す例だから</span>
+    </div>
+  </section>
+
+  <section id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote-card">
+      「自分が苦しんでいるときに、大切な友人を思いやる同様の視点を自分自身にむけること。」
+      <span class="src">— クリスティン・ネフ（要旨）</span>
+    </div>
+    <div class="quote-card">
+      「本当に自分を動機づけたいのであれば、恐れよりも愛のほうが強力だということを忘れないでください。」
+      <span class="src">— クリスティン・ネフ（要旨）</span>
+    </div>
+    <div class="quote-card">
+      「私たちは、共通の人間性を思い出す必要があります。……私たちは孤独ではありません。」
+      <span class="src">— クリスティン・ネフ（要旨）</span>
+    </div>
+  </section>
+
+  <section id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div>
+        <h3 style="margin-top:0;">セルフ・コンパッション・ブレイクを1回やる（約3分）</h3>
+        <p style="font-size:.86rem;margin:4px 0;"><b>目的:</b> 3要素（マインドフルネス／共通の人間性／自分への優しさ）を一連の流れで体感する。</p>
+        <p style="font-size:.86rem;margin:4px 0;"><b>期待効果:</b> 苦しい感情への即時反応が和らぎ、落ち着いた状態を取り戻せる。</p>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div>
+        <h3 style="margin-top:0;">最近自分を責めた出来事を書き直す（約15分）</h3>
+        <p style="font-size:.86rem;margin:4px 0;"><b>目的:</b> 自分を責めた場面を1つ書き出し、友人にかけるような言葉に書き直して自己批判のパターンを可視化する。</p>
+        <p style="font-size:.86rem;margin:4px 0;"><b>期待効果:</b> 自己批判から自分への優しさへ切り替わる感覚を体験できる。</p>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div>
+        <h3 style="margin-top:0;">「今日はこれで十分」と声に出す（1分×3回）</h3>
+        <p style="font-size:.86rem;margin:4px 0;"><b>目的:</b> 成果の評価に依存しない、自尊感情ではなく自己受容の練習をする。</p>
+        <p style="font-size:.86rem;margin:4px 0;"><b>期待効果:</b> 評価に左右されない、安定した自己への態度が少しずつ根付く。</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    📚 books-summary 日次読書サマリー ／ 情報はWeb公開情報に基づき作成。不明点は「不明」と記載しています。
+  </footer>
+</main>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab-btn');
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-examples':'panel-examples',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(b){ b.setAttribute('aria-selected','false'); });
+      Object.values(panels).forEach(function(id){
+        var el = document.getElementById(id);
+        el.classList.remove('active');
+      });
+      btn.setAttribute('aria-selected','true');
+      document.getElementById(panels[btn.id]).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
