@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マーケティング22の法則 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #0f766e / セカンダリー #134e4a / アクセント #f59e0b -->
+<style>
+:root {
+  --primary: #0f766e;
+  --secondary: #134e4a;
+  --accent: #f59e0b;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff8ea, #fff3d6);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eef8f6, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff9e6, #fffbf0);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📣 マーケティング22の法則</h1>
+  <p>製品の戦いではない、顧客の「頭の中」を制する者が勝つ</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>「良い製品」を作っているのに売れないブランドと、そうでないのに勝ち続けるブランドがあるのはなぜか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>マーケティングは製品そのものの優劣を競う戦いではなく、顧客の頭の中に築かれる「知覚」の位置取りを競う戦いである。一番手・カテゴリー・言葉の独占という不変の法則に従うブランドが、知覚のトップに立つ。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>人間の心は情報過多に対処するため、物事を単純化し「梯子（ランキング）」として記憶する。一度できた序列は覆りにくく、市場は最終的に上位2社に絞られる「二極分化」に向かう。だから「一番」以外の立場は記憶に残りにくい。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>既存カテゴリーで一番手になれないなら、自分が一番手になれる新しいカテゴリーを作る。一語（キーワード）を独占し、時には製品ラインや対象顧客を「犠牲」にして焦点を絞り込むことで、知覚の中に確固たる位置を築く。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>👁️ 知覚の法則</h3>
+    <ul>
+      <li>マーケティングは製品の戦いではなく、知覚（perception）の戦いである</li>
+      <li>「絶対的に良い製品」は市場には存在せず、顧客の頭の中の思い込みだけが存在する</li>
+      <li>技術的な優劣よりも「どう認識されているか」が勝敗を決める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書全体を貫く前提であり、この視点を持たないと以降のすべての法則が「小手先のテクニック」にしか見えなくなるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🥇 一番手の法則</h3>
+    <ul>
+      <li>「一番良い」ことより「一番最初」であることの方が強い</li>
+      <li>最初に顧客の心に入り込む方が、後から「自分の方が優れている」と説得するより圧倒的に容易</li>
+      <li>マーケティングの基本課題は「自分が一番手になれる分野」を創造すること</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>人は一度覚えた「最初の1つ」をなかなか入れ替えないため、後発が同じ土俵で優位性を主張しても効果が薄いから。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧭 心の法則</h3>
+    <ul>
+      <li>市場に最初に参入するより、顧客の心の中に最初に入り込む方が重要</li>
+      <li>「一番手の法則」に矛盾するのではなく、それを補正する法則</li>
+      <li>市場参入が早くても、心への浸透が遅ければ意味がない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>実際の発売時期より、顧客の記憶の中の順番の方が購買行動を左右するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 集中の法則</h3>
+    <ul>
+      <li>マーケティングで最も強力な概念は「一語を所有すること」</li>
+      <li>言葉はシンプルで、便益を表し、まだ誰にも使われていないものが望ましい</li>
+      <li>一度その言葉を所有すれば、競合に簡単には奪われない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>情報過多の時代、顧客の頭に残せる情報は極端に少なく、ブランド名と結びつく「一語」だけが記憶に定着しやすいため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔒 独占の法則</h3>
+    <ul>
+      <li>競合がすでに所有している言葉・ポジションを、別のブランドが所有することはできない</li>
+      <li>同じ言葉を奪おうとすると、かえって元の所有者の地位を強化してしまう</li>
+      <li>自分だけの「対極の属性」を探す方が有効</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>顧客の心の中では1つの言葉に1つのブランドしか結びつかず、二番手が同じ言葉で挑むと想起の争いに巻き込まれて負けるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>✂️ 犠牲の法則</h3>
+    <ul>
+      <li>何かを得るためには、何かを手放さなければならない</li>
+      <li>犠牲にすべき対象は「製品ライン」「対象市場」「絶え間ない変化」の3つ</li>
+      <li>「ライン拡張の法則」の逆＝あえて絞り込む戦略</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>すべての人・すべてのニーズに応えようとするほど、顧客の頭の中でのポジションが曖昧になり、誰の記憶にも残らなくなるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ 二極分化の法則</h3>
+    <ul>
+      <li>長期的にはどの市場も「2社の一騎打ち」に収束していく</li>
+      <li>初期は多数のプレイヤーがいても、時間とともに顧客の心が単純化され上位2社に絞られる</li>
+      <li>3位以下は徐々に存在感を失いやすい</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>顧客は選択の負荷を減らすため、記憶の「梯子」の上位2段だけを重視する傾向があるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🙏 正直の法則</h3>
+    <ul>
+      <li>自社の弱み・欠点を先に認めることで、その後の主張の信頼性が高まる</li>
+      <li>ネガティブな告白は意外性があるため、かえって好感を持たれやすい</li>
+      <li>正直に見えることで「次の言葉」も信じてもらいやすくなる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>広告に懐疑的な顧客の心理的ガードを、あえての自己開示によって一時的に下げられるため。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>知覚の法則（前提）</span>
+      <span class="flow-arrow">→</span>
+      <span>一番手・心の法則（地位を取る）</span>
+      <span class="flow-arrow">→</span>
+      <span>集中の法則（言葉で固定）</span>
+    </div>
+    <div class="flow-item">
+      <span>独占の法則（他人の言葉は奪えない）</span>
+      <span class="flow-arrow">→</span>
+      <span>犠牲の法則（絞り込む）</span>
+      <span class="flow-arrow">→</span>
+      <span>独自の一語を確立</span>
+    </div>
+    <div class="flow-item">
+      <span>市場の成熟</span>
+      <span class="flow-arrow">→</span>
+      <span>二極分化の法則</span>
+      <span class="flow-arrow">→</span>
+      <span>1位か2位以外は淘汰されやすい</span>
+    </div>
+    <div class="flow-item">
+      <span>信頼の低下</span>
+      <span class="flow-arrow">→</span>
+      <span>正直の法則（弱みを認める）</span>
+      <span class="flow-arrow">→</span>
+      <span>主張全体の信頼性向上</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約（全22の法則）</h2>
+
+  <div class="chapter-card">
+    <h3>第1グループ：地位を築く法則（第1〜5法則）</h3>
+    <ul>
+      <li>①一番手の法則：最初であることは、優れていることに勝る</li>
+      <li>②カテゴリーの法則：一番手になれないなら、一番手になれる新カテゴリーを作れ</li>
+      <li>③心の法則：市場参入より、顧客の心への参入を優先せよ</li>
+      <li>④知覚の法則：マーケティングは製品の戦いではなく知覚の戦いである</li>
+      <li>⑤集中の法則：一語を所有することが最強の武器になる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>この5法則が本書全体の土台であり、以降のすべての戦術的な法則はこの「知覚上の地位取り」という発想から派生しているため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2グループ：独占と対立の力学（第6〜11法則）</h3>
+    <ul>
+      <li>⑥独占の法則：競合が所有する言葉やポジションを同時に所有することはできない</li>
+      <li>⑦梯子の法則：戦略は顧客の記憶の中の「何段目」にいるかで決まる</li>
+      <li>⑧二極分化の法則：長期的にはどの市場も二強構造になる</li>
+      <li>⑨対極の法則：2位を狙うなら、1位の弱みを突く「逆」を取れ</li>
+      <li>⑩分割の法則：時間とともにカテゴリーは細分化していく</li>
+      <li>⑪遠近関係の法則：短期的な成功が長期的な問題を生むことがある</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>単独のブランドではなく「競合との関係性」の中でポジションが決まることを示す、力学寄りの法則群であるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3グループ：拡大と純化の法則（第12〜16法則）</h3>
+    <ul>
+      <li>⑫ライン拡張の法則：すべての人に応えようとすると、誰にも刺さらなくなる</li>
+      <li>⑬犠牲の法則：何かを手放すことで、何かを得られる</li>
+      <li>⑭属性の法則：どんな属性にも、有効な「対極の属性」が存在する</li>
+      <li>⑮正直の法則：弱みを先に認めると、その後の主張の説得力が増す</li>
+      <li>⑯一撃の法則：大きな成果は、1つの大胆で集中した一手から生まれる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>ブランドを「広げたい欲求」との戦いを扱う法則群で、成功企業が陥りやすい拡張の罠への警鐘であるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4グループ：変化と盛衰の法則（第17〜22法則）</h3>
+    <ul>
+      <li>⑰予測不能の法則：自分で競合の計画を書かない限り、未来は予測できない</li>
+      <li>⑱成功の法則：成功は慢心（エゴ）を生み、慢心はしばしば失敗を招く</li>
+      <li>⑲失敗の法則：失敗は起こりうるものとして受け入れ、早く方向転換せよ</li>
+      <li>⑳誇大の法則：誇大宣伝が大きいほど、実態は悪いことが多い</li>
+      <li>㉑急上昇の法則：一時的な流行ではなく、長期的な潮流に投資せよ</li>
+      <li>㉒財源の法則：どれほど良いアイデアも、資金がなければ育たない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>市場は静的ではなく変化し続けるため、地位を築いた後の「維持・撤退・再投資」の判断基準を示す法則群であるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>🏦 チャールズ・シュワブ：ディスカウント証券の一番手</h3>
+    <ul>
+      <li>証券会社としては後発で、最初の証券会社にはなれなかった</li>
+      <li>そこで「最初のディスカウント（割安）証券会社」という新カテゴリーを創出</li>
+      <li>「証券会社」で一番手になれなくても「ディスカウント証券」で一番手になった</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「カテゴリーの法則」の典型例。既存市場で一番手になれないなら、自分が一番手になれる新しい切り口を作ればよいことを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚗 エイビス「私たちはもっと頑張ります」</h3>
+    <ul>
+      <li>レンタカー市場の1位ハーツに対し、2位であることを隠さず認めた</li>
+      <li>「We Try Harder（私たちはもっと頑張ります）」を掲げ、1位との違いを逆手に取った</li>
+      <li>1位を否定せず、自らを「2位だからこそ努力する挑戦者」と位置づけた</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「対極の法則」と「正直の法則」の組み合わせ。弱み（2位であること）を認めた上で、それを強みに転換した好例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🍔 バーガーキング vs マクドナルド：言葉を奪えなかった失敗</h3>
+    <ul>
+      <li>バーガーキングは「速さ（speedy）」という言葉でマクドナルドに挑もうとした</li>
+      <li>しかし「速さ」はすでにマクドナルドが顧客の心の中で所有していた属性だった</li>
+      <li>同じ言葉を奪おうとする戦いは苦戦し、むしろマクドナルドの地位を再確認させる結果になった</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「独占の法則」に反した失敗例。競合が所有する言葉に真っ向勝負を挑むことのリスクを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔋 デュラセル vs エバレディ：競合の広告が相手を強化する逆説</h3>
+    <ul>
+      <li>エバレディの「うさぎの広告キャンペーン」は非常に有名になった</li>
+      <li>しかし多くの消費者は、その印象的なうさぎのキャラクターを競合デュラセルのものと記憶違いした</li>
+      <li>目立つ広告表現が、結果的に競合ブランドの知覚を強化してしまった</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>知覚が「事実」より強いことを示す象徴的な事例。広告の目立ちやすさだけでは、意図した所有権を確立できないことがある。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">マーケティングは製品の戦いではない。知覚の戦いである。（要旨）</p>
+    <p class="quote-why">※要旨。本書全体を貫く最も中心的なメッセージで、「知覚の法則」の核心を一文に凝縮した表現。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">物事がうまくいっているとき、企業は誇大宣伝を必要としない。誇大宣伝が必要になるときは、たいてい何かがうまくいっていないときである。（要旨）</p>
+    <p class="quote-why">※要旨。「誇大の法則」の核心。声の大きさと実態の良し悪しはしばしば反比例することを表す。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">流行は海の波であり、潮流は海の満ち引きである。波は目立つが目まぐるしく上下し、潮の満ち引きはほとんど目に見えないが、長期的にはるかに強力に働く。（要旨）</p>
+    <p class="quote-why">※要旨。「急上昇の法則」を説明するたとえ。短期的な話題性と長期的な構造変化を区別する視点。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">自分自身が競合の事業計画書を書いていない限り、未来を予測することはできない。（要旨）</p>
+    <p class="quote-why">※要旨。「予測不能の法則」の核心。競合の動きを完全に読み切ることは原理的に不可能だという前提を示す。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>🥇 自分（自社）が「一番手」になれる一言を書き出す</h4>
+    <p><strong>やること：</strong>自分の仕事・商品・専門分野について、「◯◯といえば自分（自社）」と言い切れる言葉を1つ紙に書き出す。すでにあれば磨き、なければ候補を3つ挙げる。</p>
+    <p><strong>目的：</strong>「一番手の法則」「集中の法則」を自分ごとに落とし込み、知覚上のポジションを言語化する。</p>
+    <p><strong>期待効果：</strong>自己紹介や商品説明で使える、記憶に残る一言が手に入る。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🔍 競合3つを書き出し、「対極」を探す</h4>
+    <p><strong>やること：</strong>自分（自社）と比較される競合・同僚・類似サービスを3つ挙げ、それぞれが持つ強み・イメージを1語で書く。その上で、自分が取れる「逆の属性」を1つ考える。</p>
+    <p><strong>目的：</strong>「対極の法則」「独占の法則」の実践練習。同じ土俵で戦わない発想を体得する。</p>
+    <p><strong>期待効果：</strong>差別化ポイントが具体的な言葉として明確になる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>✂️ 「削れるもの」を1つ選んで手放す</h4>
+    <p><strong>やること：</strong>自分の名刺・プロフィール・提供サービスの説明文から、要素を1つ削って焦点を絞る。何を削るか、なぜ削るかを一言メモに残す。</p>
+    <p><strong>目的：</strong>「犠牲の法則」の実践。「全部やる」から「これだけは負けない」への転換を体感する。</p>
+    <p><strong>期待効果：</strong>説明がシンプルになり、相手の記憶に残りやすくなる。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 85%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
