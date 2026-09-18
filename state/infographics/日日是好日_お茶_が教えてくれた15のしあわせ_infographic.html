@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日日是好日 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #5b7553 / セカンダリー #33422c / アクセント #c9973a -->
+<style>
+:root {
+  --primary: #5b7553;
+  --secondary: #33422c;
+  --accent: #c9973a;
+  --bg: #faf8f3;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff8ea, #fff3d6);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eef6ea, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f6, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fdf6e8, #fffbf0);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🍵 日日是好日</h1>
+  <p>「お茶」が25年かけて教えてくれた、頭で分かるより先に「今」を生きるということ</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>意味も理由もわからないまま、ただ型を繰り返すことに、いったい何の価値があるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>意味を先に求めず、型を体で繰り返し、五感で「今この瞬間」を味わい尽くすことこそが、日々の不安や悲しみをやわらげ、どんな一日も「好日」に変えていく。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>人は「いつも忙しい」「いつも同じ」という感覚の中で、目の前の「いま」をぼやけさせてしまう。しかし季節や所作は本来、二度と同じ瞬間がない一回性のものであり、それを味わう感性は頭での理解より先に、体験の積み重ねによってしか育たないから。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>意味や理由を急いで求めず、まず型をそのまま真似て繰り返す。本物に触れ、五感を全開にして目の前の一瞬に集中する。理解は後から、ある日突然「わかる」瞬間としてやってくるのを焦らず待つ。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🌸 日日是好日（禅語）</h3>
+    <ul>
+      <li>雨の日も晴れの日も、調子の良し悪しに関わらず、その日その日をまるごと味わい尽くせばすべてが「良い日」になるという禅の言葉</li>
+      <li>「良い日」とは特別な出来事がある日ではなく、今日という一回性の日をどう味わうかという「姿勢」の問題</li>
+      <li>過去にも未来にも同じ一日はなく、今日という日は生涯に一度しかない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書全体を貫くタイトルであり、以降のすべての気づきがこの一語に集約されているため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🈳 「自分は何も知らない」ということを知る</h3>
+    <ul>
+      <li>お茶を習い始めた当初、著者は形だけを真似ることしかできず、意味は何もわからなかった</li>
+      <li>「知らないことを知る」ことが、すべての学びの出発点になる</li>
+      <li>わからないままの状態を受け入れる謙虚さが、後の気づきを準備する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>頭で理解してから始めようとする現代人の思考の癖に対する、本書からの根本的な問い直しであるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧠 頭で考えようとしない</h3>
+    <ul>
+      <li>茶道の稽古は、理由を説明されないまま、まず型を体に覚え込ませることから始まる</li>
+      <li>理屈を求めず、体の動きとして繰り返すうちに、感覚が先に染み込んでいく</li>
+      <li>「なぜ」を後回しにする学び方があってよい</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>効率と説明を求めがちな現代の学び方に対し、体得型の学びの価値を再提示しているため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏺 たくさんの「本物」を見ること</h3>
+    <ul>
+      <li>茶道具や掛け軸など、本物に繰り返し触れることでしか養われない感覚がある</li>
+      <li>知識としての情報と、実際に見て触れた経験は、まったく別の種類の理解を生む</li>
+      <li>本物の質感やたたずまいは、写真や説明文では伝わらない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>情報が溢れる時代に、実体験でしか得られない感覚の希少さを浮かび上がらせているため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🕊️ 型と自由</h3>
+    <ul>
+      <li>茶道には細かく決められた所作の「型」が無数にある</li>
+      <li>がんじがらめに見える決まりごとを繰り返すうちに、かえって余計な迷いがなくなり自由になる</li>
+      <li>制約は不自由の象徴ではなく、自由に至るための道具になり得る</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「自由」の意味を、制約の欠如ではなく、制約を通じた解放として捉え直しているため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌦️ 「いま」を生きる</h3>
+    <ul>
+      <li>「いつも忙しい」「いつも疲れている」という「いつも」という言葉が、目の前の「いま」をぼやけさせる</li>
+      <li>今日という日は、昨日とも明日とも違う、生涯に一度きりの日である</li>
+      <li>五感を通じて「いま」に意識を向けることで、日常の中に豊かさが見えてくる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書のタイトルである「日日是好日」の実践編にあたる、最も具体的な行動指針であるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👂 五感で自然とつながる</h3>
+    <ul>
+      <li>茶室で味わう季節の変化は、視覚だけでなく香り・音・肌触り・味覚を通じて全身で感じ取るもの</li>
+      <li>雨音、水の音、茶の香り、器の温度など、五感すべてを使うことで季節の移ろいがより鮮明になる</li>
+      <li>頭で「季節が変わった」と知ることと、五感で「季節を感じる」ことは別物</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書終盤のテーマであり、頭での理解から体感への転換という本書全体の到達点を示すため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏳ 遅れてやってくる理解</h3>
+    <ul>
+      <li>稽古を始めた当初はわからなかったことが、何年も経ったある日、突然「そういうことだったのか」と腑に落ちる瞬間が訪れる</li>
+      <li>理解には固有の「熟成期間」があり、急いで得ようとしても得られない</li>
+      <li>「わかる」ことを焦らず待つ姿勢そのものが、一つの学びになる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書に繰り返し登場する構造であり、即効性を求めがちな学び方への対比として機能するため。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>知らないことを知る（出発点）</span>
+      <span class="flow-arrow">→</span>
+      <span>頭で考えず型を繰り返す（体得）</span>
+      <span class="flow-arrow">→</span>
+      <span>本物に触れる（感覚を養う）</span>
+    </div>
+    <div class="flow-item">
+      <span>型を繰り返す</span>
+      <span class="flow-arrow">→</span>
+      <span>型と自由（制約からの解放）</span>
+      <span class="flow-arrow">→</span>
+      <span>「いま」を生きる姿勢</span>
+    </div>
+    <div class="flow-item">
+      <span>「いま」を生きる</span>
+      <span class="flow-arrow">→</span>
+      <span>五感で季節を味わう</span>
+      <span class="flow-arrow">→</span>
+      <span>遅れてやってくる理解（ある日、腑に落ちる）</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約（論点別）</h2>
+
+  <div class="chapter-card">
+    <h3>第1部：出会いと迷いの時期</h3>
+    <ul>
+      <li>母の勧めで20歳のとき、いとこと共に茶道教室の門を叩く</li>
+      <li>就職や進路に迷い、常に自分の居場所を探していた時期だった</li>
+      <li>お茶は最初、意味のわからない決まりごとの連続に感じられた</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書全体の出発点であり、後の変化を際立たせる対比になっているため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2部：繰り返しの中の気づき</h3>
+    <ul>
+      <li>同じ所作を何年も繰り返す中で、少しずつ体が型を覚えていく</li>
+      <li>理由がわからないまま続けるうちに、ある瞬間に意味が「わかる」体験が訪れ始める</li>
+      <li>「わかる」ことは頭でなく体からやってくると気づく</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書の中核である「体得」のプロセスを最も具体的に描く部分であるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3部：悲しみの中の支え</h3>
+    <ul>
+      <li>失恋や父の死という悲しみを経験する中でも、お茶の稽古は変わらずそこにあり続けた</li>
+      <li>決まった所作を淡々と行うことが、心の拠り所になった</li>
+      <li>人生がうまくいかない時期にこそ、変わらない習慣の価値が際立った</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「日日是好日」というテーマが、順調な日々だけでなく苦しい日々にも当てはまることを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4部：五感と季節、そして「いま」</h3>
+    <ul>
+      <li>25年という時間を経て、季節を五感で味わう歓びに気づくようになる</li>
+      <li>「いつも」という感覚が消え、「今日という一日」が唯一無二のものとして感じられるようになる</li>
+      <li>「日日是好日」という言葉の本当の意味が、体験を通じてようやく「わかる」</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書全体の到達点であり、タイトルの意味が最終的に立体的に理解される部分であるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>🚪 就職につまずき、いとこと共に門を叩いた20歳の日</h3>
+    <ul>
+      <li>就職活動がうまくいかず、自分の居場所が見つからない不安な時期だった</li>
+      <li>母に勧められ、特に強い意志もないまま、いとこと二人でお茶の教室に通い始めた</li>
+      <li>最初は意味のわからない決まりごとの連続で、退屈にすら感じていた</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「意味がわからなくても、まず始めてみる」ことが、後の大きな変化の入口になり得ることを示す実例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💔 失恋と父の死、悲しみの中の稽古</h3>
+    <ul>
+      <li>人生の中で最もつらい出来事が重なった時期にも、お茶の稽古だけは変わらず続いていた</li>
+      <li>決められた所作を淡々と行うことが、崩れそうな心を静かに支えていた</li>
+      <li>悲しみそのものは消えなくても、稽古の時間が「今ここ」に戻してくれた</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>習慣や型が持つ「変わらなさ」が、人生の激変期にこそ心の支えになり得ることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏳ 25年目に訪れた「わかる」瞬間</h3>
+    <ul>
+      <li>稽古を始めた当初は意味がわからなかった所作や禅語が、25年という年月を経てある日突然「腑に落ちる」体験をする</li>
+      <li>それは頭で説明されて理解したのではなく、体で繰り返した末にやってきた理解だった</li>
+      <li>「わかる」ことは急いで得るものではなく、時間をかけて熟成するものだと気づく</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「遅れてやってくる理解」という本書のテーマを最も象徴的に体現するエピソード。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">「いつも忙しい」「いつも疲れている」という「いつも」が、目の前の「いま」をぼやけさせてしまう。（要旨）</p>
+    <p class="quote-why">※要旨。今日という日が唯一無二であるという、本書の核心的な気づきを表す一節。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">日日是好日とは、雨の日も晴れの日も、その日その日を味わい尽くせばすべてが「好日」になるという意味である。（要旨）</p>
+    <p class="quote-why">※要旨。禅語としての「日日是好日」の意味を説明した、タイトルの由来にあたる一節。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">お茶の世界は、いまという季節を五感に味わわせてくれる総合芸術である。（要旨）</p>
+    <p class="quote-why">※要旨。著者が茶道を「総合芸術」と表現した発言を要約したもの。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>🍵 一杯の飲み物を「五感」だけで味わう</h4>
+    <p><strong>やること：</strong>お茶でもコーヒーでもよいので一杯を淹れ、香り・湯気・温度・味の変化だけに意識を向けて15分かけてゆっくり飲む。</p>
+    <p><strong>目的：</strong>「頭で考える」から「体で感じる」への切り替えを体験する。</p>
+    <p><strong>期待効果：</strong>普段見過ごしている一杯の飲み物の中に、これまで気づかなかった豊かさを発見できる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🔁 「わからないまま」1つの作業をただ繰り返す</h4>
+    <p><strong>やること：</strong>掃除・料理・片づけなど普段の家事から1つを選び、理由や効率を考えず、丁寧な手順だけに20分間集中して行う。</p>
+    <p><strong>目的：</strong>理屈より先に型を体で覚える、茶道的な学び方を日常で試す。</p>
+    <p><strong>期待効果：</strong>「なぜ」を手放すことで生まれる、集中と落ち着きの感覚を体験できる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>📓 今日一日を「日日是好日」の視点で振り返る</h4>
+    <p><strong>やること：</strong>就寝前に、今日あった出来事を3つ書き出し、それぞれに「良かった点」を1行添える。</p>
+    <p><strong>目的：</strong>どんな日も味わい尽くせば「好日」になるという視点を、実際の一日に当てはめて練習する。</p>
+    <p><strong>期待効果：</strong>平凡に思えた一日の中に、見過ごしていた小さな豊かさを見つけられるようになる。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 90%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
