@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>習慣が10割 ― インフォグラフィック</title>
+<!--
+  カラーパレット
+  プライマリー: #2F6F5E (深緑・落ち着き)
+  セカンダリー: #F2A65A (温かみのあるオレンジ・アクセント)
+  アクセント:   #E8E4D9 (生成り・背景)
+-->
+<style>
+  :root{
+    --primary:#2F6F5E;
+    --primary-dark:#1F4B3F;
+    --secondary:#F2A65A;
+    --accent-bg:#E8E4D9;
+    --card-bg:#FFFFFF;
+    --text:#2B2B26;
+    --text-soft:#5A5A52;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    background:var(--accent-bg);
+    color:var(--text);
+    line-height:1.7;
+  }
+  header{
+    background:linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color:#fff;
+    padding:28px 16px 24px;
+    text-align:center;
+  }
+  header h1{
+    margin:0 0 6px;
+    font-size:1.5rem;
+  }
+  header p{
+    margin:0;
+    font-size:0.85rem;
+    opacity:0.9;
+  }
+  .hero{
+    margin:16px;
+    background:var(--card-bg);
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    border-left:6px solid var(--secondary);
+  }
+  .hero h2{
+    margin-top:0;
+    font-size:1.1rem;
+    color:var(--primary-dark);
+  }
+  .hero .qa{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .qa .q, .qa .a{
+    padding:10px 12px;
+    border-radius:10px;
+  }
+  .qa .q{
+    background:#FBF3E7;
+    font-weight:bold;
+  }
+  .qa .a{
+    background:#EAF4F1;
+  }
+  .badges{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:12px;
+  }
+  .badge{
+    background:var(--secondary);
+    color:#fff;
+    padding:4px 10px;
+    border-radius:999px;
+    font-size:0.75rem;
+    font-weight:bold;
+  }
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:8px 16px;
+    position:sticky;
+    top:0;
+    background:var(--accent-bg);
+    z-index:10;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    border:none;
+    background:#fff;
+    color:var(--primary-dark);
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:0.82rem;
+    font-weight:bold;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+  }
+  main{
+    padding:8px 16px 40px;
+  }
+  section.panel{
+    display:none;
+  }
+  section.panel.active{
+    display:block;
+  }
+  .card{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:0 1px 6px rgba(0,0,0,0.07);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:1rem;
+    color:var(--primary-dark);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{
+    margin:6px 0 0;
+    padding-left:1.1em;
+    font-size:0.9rem;
+  }
+  .card li{
+    margin-bottom:4px;
+  }
+  .why{
+    margin-top:8px;
+    font-size:0.82rem;
+    color:var(--text-soft);
+    background:#F5F1E6;
+    border-radius:8px;
+    padding:8px 10px;
+  }
+  .why b{
+    color:var(--primary-dark);
+  }
+  .quote{
+    font-style:italic;
+    border-left:4px solid var(--secondary);
+    padding:8px 12px;
+    margin:10px 0;
+    background:#FBF3E7;
+    border-radius:6px;
+    font-size:0.92rem;
+  }
+  .quote span{
+    display:block;
+    margin-top:4px;
+    font-style:normal;
+    font-size:0.78rem;
+    color:var(--text-soft);
+  }
+  .action{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .action .num{
+    background:var(--primary);
+    color:#fff;
+    border-radius:50%;
+    width:28px;
+    height:28px;
+    flex:0 0 28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:0.85rem;
+  }
+  .numbadge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--secondary);
+    color:#fff;
+    border-radius:8px;
+    padding:2px 8px;
+    font-size:0.78rem;
+    font-weight:bold;
+    margin-left:6px;
+  }
+  .bar-wrap{
+    margin:10px 0;
+  }
+  .bar-label{
+    font-size:0.8rem;
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:4px;
+  }
+  .bar-bg{
+    background:#EDE8DA;
+    border-radius:8px;
+    height:14px;
+    overflow:hidden;
+  }
+  .bar-fill{
+    height:100%;
+    background:linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius:8px;
+  }
+  footer{
+    text-align:center;
+    font-size:0.75rem;
+    color:var(--text-soft);
+    padding:16px;
+  }
+  @media (min-width:700px){
+    main{max-width:760px;margin:0 auto;}
+    .hero{max-width:760px;margin:16px auto;}
+    nav.tabs{max-width:760px;margin:0 auto;position:static;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 習慣が10割</h1>
+  <p>吉井雅之 ｜ 仕事・お金・人間関係 ― 人生がうまくいく最も強力でシンプルな方法</p>
+</header>
+
+<div class="hero">
+  <h2>📣 要約：問い × 答え × 根拠</h2>
+  <div class="qa">
+    <div class="q">Q. なぜ人によって人生の成果に差がつくのか？</div>
+    <div class="a">A. 能力や意志力の差ではなく、日々の「習慣の差」が結果を分けているから。</div>
+    <div class="q">Q. ではどうすれば習慣は続くのか？</div>
+    <div class="a">A. 脳が抵抗しないレベルまで行動を小さく分解し（ベビーステップ）、既存の習慣に紐づけて（if-thenプランニング）「仕組み」として自動化すれば、意志力に頼らず続けられる。</div>
+  </div>
+  <div class="badges">
+    <span class="badge">🏷️ 自己啓発</span>
+    <span class="badge">⏱️ 読了目安 20分</span>
+    <span class="badge">📖 全5章</span>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">💡 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">🔍 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3>① 習慣の差</h3>
+      <ul>
+        <li>人間の能力にはほとんど差がない</li>
+        <li>結果を分けるのは日々繰り返す「習慣」の違いだけ</li>
+        <li>成功者と平凡な人の分岐点は才能ではなく行動パターン</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>原因を「能力不足」ではなく「習慣不足」と正しく特定できれば、対策は自己否定ではなく行動設計にシフトできる。</div>
+    </div>
+
+    <div class="card">
+      <h3>② ベビーステップ</h3>
+      <ul>
+        <li>挫折しないほど小さい単位まで行動を分解する</li>
+        <li>例：「早起きする」→「布団から出たら水を一口飲む」</li>
+        <li>小さすぎるくらいがちょうど良い</li>
+      </ul>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>継続率の目安</span><span>大きな目標 vs ベビーステップ</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:30%"></div></div>
+        <div class="bar-bg" style="margin-top:6px"><div class="bar-fill" style="width:80%"></div></div>
+      </div>
+      <div class="why"><b>なぜ重要か：</b>脳は急激な変化に抵抗するが、小さな一歩なら「現状維持バイアス」が働きにくいため継続しやすい。</div>
+    </div>
+
+    <div class="card">
+      <h3>③ if-thenプランニング</h3>
+      <ul>
+        <li>「もし〇〇が起きたら、△△をする」と事前に決めておく</li>
+        <li>例：「電車に乗ったら、本を1ページ開く」</li>
+        <li>複合的な行動より単純な行動の方が実行しやすい</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>その場での意思決定を減らすことで、やる気に依存せず自動的に行動できるようになる。</div>
+    </div>
+
+    <div class="card">
+      <h3>④ ハードルを下げる</h3>
+      <ul>
+        <li>「やらなきゃ」という心理的抵抗を最小化する</li>
+        <li>準備物・手順を極限まで単純化する</li>
+        <li>1回1分でもよいので「できた」を作る</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>抵抗が高い行動ほど先延ばしにされやすく、ハードルの高さが継続率を直接左右するから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑤ 「1個前」の習慣（アンカリング）</h3>
+      <ul>
+        <li>すでに定着している習慣の直後に新習慣を紐づける</li>
+        <li>例：「歯を磨いたら、腹筋を1回だけする」</li>
+        <li>既存のルーティンがトリガーになる</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>新しい習慣を覚えておく負担がなくなり、忘れずに実行できる仕組みになるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑥ ゲーム化</h3>
+      <ul>
+        <li>達成を記録・可視化して「楽しさ」に変える</li>
+        <li>脳の報酬系を刺激し、行動そのものを快にする</li>
+        <li>苦痛と結びついた行動は長続きしない</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>意志力は消耗するが、楽しさに基づく行動は消耗しにくく持続可能だから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑦ 自己決定感・小さな実績</h3>
+      <ul>
+        <li>重要なのは「何を続けるか」より「自分で決めたことを守れたか」</li>
+        <li>小さな約束を守る経験の蓄積が自信になる</li>
+        <li>自己肯定感は達成の大きさより頻度で育つ</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>自己決定と実行の一致体験が、次の挑戦への心理的な土台を作るから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑧ 8割の法則</h3>
+      <ul>
+        <li>一発逆転の大事件（2割）ではなく、日常の些細な積み重ね（8割）が自分を作る</li>
+        <li>人生は特別なイベントよりも「いつもの1日」の総和</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>特別な努力より日常設計に目を向けることで、再現性のある成長戦略になるから。</div>
+    </div>
+
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+
+    <div class="card">
+      <h3>第1章：人生は「習慣が10割」<span class="numbadge">導入</span></h3>
+      <ul>
+        <li>能力差はほとんどなく、あるのは習慣の差だけ</li>
+        <li>成功も失敗も日々の繰り返しの結果にすぎない</li>
+      </ul>
+      <div class="why"><b>理由：</b>まず「自分には能力がない」という誤った前提を外さないと、以降の技術も効果を発揮しないため。</div>
+    </div>
+
+    <div class="card">
+      <h3>第2章：なぜ、あなたは続けられないのか？</h3>
+      <ul>
+        <li>続かない原因は意志力不足ではなく脳の仕組みへの無理解</li>
+        <li>脳は変化に対して防衛的に働く（現状維持バイアス）</li>
+      </ul>
+      <div class="why"><b>理由：</b>原因を正しく特定しなければ、精神論に逆戻りしてしまい根本解決にならないため。</div>
+    </div>
+
+    <div class="card">
+      <h3>第3章：意志が弱い人でも続く！「最強の習慣化」スキル</h3>
+      <ul>
+        <li>ベビーステップ・if-thenプランニングなど具体的技術を提示</li>
+        <li>意志力に頼らず「仕組み」で行動を自動化する</li>
+      </ul>
+      <div class="why"><b>理由：</b>仕組みがあれば、モチベーションが低い日でも行動を継続できるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>第4章：「脳の力」で、習慣を超強力にする</h3>
+      <ul>
+        <li>脳の報酬系・ゲーム感覚を利用して習慣を強化</li>
+        <li>「楽しい」と結びつけることで継続率を高める</li>
+      </ul>
+      <div class="why"><b>理由：</b>苦痛と結びついた行動は長続きしないため、脳が快を感じる設計への転換が必要だから。</div>
+    </div>
+
+    <div class="card">
+      <h3>第5章：習慣の力で、「あなたの人生」が動き出す</h3>
+      <ul>
+        <li>小さな習慣の積み重ねが仕事・お金・人間関係にも波及</li>
+        <li>1つの良い習慣が自己効力感を高め、他分野の行動にも好影響を連鎖させる</li>
+      </ul>
+      <div class="why"><b>理由：</b>習慣は単独では終わらず、自己イメージの変化を通じて人生全体に波及するため。</div>
+    </div>
+
+  </section>
+
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+
+    <div class="card">
+      <h3>🔍 ケース1：「早起き」が続かなかった人</h3>
+      <ul>
+        <li>背景：「早起きする」という抽象的な目標は挫折しやすい</li>
+        <li>対策：「布団から出たら水を一口飲む」というベビーステップに変更</li>
+        <li>結果：小さな成功体験の積み重ねで起床習慣が定着</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>目標を測定可能な最小単位まで分解すると、挫折の確率が大きく下がる。</div>
+    </div>
+
+    <div class="card">
+      <h3>🔍 ケース2：通勤時間の読書習慣</h3>
+      <ul>
+        <li>背景：「勉強する」という漠然とした意図は忘れられがち</li>
+        <li>対策：「電車に乗ったら本を1ページだけ開く」というif-thenルールを設定</li>
+        <li>結果：意思決定を挟まず自動的に行動できるようになった</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>トリガーと行動をセットで決めておくと、実行のハードルが劇的に下がる。</div>
+    </div>
+
+    <div class="card">
+      <h3>🔍 ケース3：1分でできる小さな習慣の蓄積</h3>
+      <ul>
+        <li>背景：大きな達成体験がなくても自己肯定感は育てられる</li>
+        <li>対策：靴を脱いだら揃える、目の前のゴミを拾う、自分から挨拶するなど1分習慣を積み重ねる</li>
+        <li>結果：「自分で決めたことを守れた」実績が自信につながった</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>達成の質より頻度の方が自己効力感を大きく左右する。</div>
+    </div>
+
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+
+    <div class="card">
+      <h3>💬 本文からの引用</h3>
+      <div class="quote">
+        人間に能力の差はほとんどない。あるのは「習慣の差」だけである。
+        <span>— 第1章より</span>
+      </div>
+      <div class="quote">
+        どんなに小さいことでもいいから、何か1つ続けてみなさい。
+        <span>— 第3章より</span>
+      </div>
+      <div class="quote">
+        重要なのは、「何を続けるか」より、「自分で決めたことを守ることができた」という実績を作ることです。
+        <span>— 第3章より</span>
+      </div>
+      <div class="quote">
+        一発逆転の大事件（2割）ではなく、日常の些細な積み重ね（8割）が自分を作る。
+        <span>— 要旨（第5章）</span>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+
+    <div class="card">
+      <h3>✅ 今日できるアクション</h3>
+
+      <div class="action">
+        <div class="num">1</div>
+        <div>
+          <b>「1個前の習慣」を書き出す（約15分）</b>
+          <p style="margin:4px 0 0;font-size:0.88rem;">すでに毎日行っている行動（歯磨き・コーヒーを入れる等）を1つ選び、その直後に行う新しい小さな行動をセットで紙に書く。<br>
+          <b>目的：</b>新習慣を既存のルーティンにアンカリングし、忘れずに実行できるようにする。<br>
+          <b>期待効果：</b>初日から実行できる確率が上がり、継続の土台ができる。</p>
+        </div>
+      </div>
+
+      <div class="action" style="margin-top:14px;">
+        <div class="num">2</div>
+        <div>
+          <b>if-thenルールを1つ作って試す（約15分）</b>
+          <p style="margin:4px 0 0;font-size:0.88rem;">「もし〇〇が起きたら、△△をする」という文をノートに1つ書き、今日中に1回実際に行動してみる。<br>
+          <b>目的：</b>意思決定の回数を減らし、迷わず動ける仕組みを作る。<br>
+          <b>期待効果：</b>「やる気が出ないから」という先延ばしの回数が減る。</p>
+        </div>
+      </div>
+
+      <div class="action" style="margin-top:14px;">
+        <div class="num">3</div>
+        <div>
+          <b>今日の「小さな達成」を3つ記録する（約15分）</b>
+          <p style="margin:4px 0 0;font-size:0.88rem;">就寝前に、今日自分で決めて実行できたごく小さな行動（挨拶した、靴を揃えた等）を3つノートに書き出す。<br>
+          <b>目的：</b>「自分で決めたことを守れた」実績を可視化する。<br>
+          <b>期待効果：</b>自己肯定感が高まり、翌日への継続意欲が上がる。</p>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  📚 books-summary Daily Reading ｜ 本インフォグラフィックはWeb公開情報に基づき生成されています
+</footer>
+
+<script>
+  (function(){
+    var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+    var panels = document.querySelectorAll('section.panel');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click', function(){
+        tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+        panels.forEach(function(p){ p.classList.remove('active'); p.setAttribute('hidden',''); });
+        tab.setAttribute('aria-selected','true');
+        var panel = document.getElementById(tab.getAttribute('aria-controls'));
+        panel.classList.add('active');
+        panel.removeAttribute('hidden');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
