@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>その科学が成功を決める｜インフォグラフィック</title>
+<!--
+  カラーパレット
+  primary:   #1F3A5F (紺 — 科学・信頼)
+  secondary: #E8630A (オレンジ — 実験・警鐘)
+  accent:    #2E9E7A (グリーン — 実証・効果あり)
+  グラデーション: linear-gradient(135deg, #1F3A5F 0%, #2E9E7A 100%)
+-->
+<style>
+  :root{
+    --primary:#1F3A5F;
+    --primary-light:#2b4f80;
+    --secondary:#E8630A;
+    --accent:#2E9E7A;
+    --bg:#F7F5F0;
+    --card:#FFFFFF;
+    --text:#20242B;
+    --text-sub:#5B6472;
+    --border:#E4E1D8;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Yu Gothic","Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header.hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color:#fff;
+    padding:28px 20px 24px;
+    border-radius:0 0 24px 24px;
+    box-shadow:0 4px 16px rgba(0,0,0,.15);
+  }
+  header.hero .cat{
+    display:inline-block;
+    background:rgba(255,255,255,.18);
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    letter-spacing:.05em;
+    margin-bottom:10px;
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 6px;
+    line-height:1.4;
+  }
+  header.hero .author{
+    font-size:13px;
+    opacity:.9;
+    margin:0;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px;}
+
+  /* Why & How block */
+  .why-how{
+    margin-top:-14px;
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:0 6px 20px rgba(31,58,95,.12);
+    padding:18px 18px 16px;
+    position:relative;
+    z-index:2;
+  }
+  .why-how h2{
+    font-size:13px;
+    color:var(--secondary);
+    margin:0 0 10px;
+    letter-spacing:.05em;
+  }
+  .qa-row{display:flex;gap:10px;margin-bottom:10px;}
+  .qa-row .tag{
+    flex:0 0 auto;
+    font-size:12px;
+    font-weight:700;
+    color:#fff;
+    background:var(--primary);
+    padding:3px 10px;
+    border-radius:8px;
+    height:fit-content;
+  }
+  .qa-row.answer .tag{background:var(--accent);}
+  .qa-row.evidence .tag{background:var(--secondary);}
+  .qa-row p{margin:0;font-size:14px;}
+  .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+  .badge{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:8px 10px;
+    text-align:center;
+    flex:1;
+    min-width:80px;
+  }
+  .badge .num{font-size:20px;font-weight:800;color:var(--primary);display:block;}
+  .badge .lbl{font-size:11px;color:var(--text-sub);}
+
+  /* Tabs */
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:20px 0 14px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card);
+    color:var(--text-sub);
+    padding:10px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    border:1px solid var(--border);
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card h3 .idx{
+    background:var(--primary);
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    width:22px;height:22px;
+    border-radius:50%;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    flex:0 0 auto;
+  }
+  .card ul{margin:0 0 8px;padding-left:18px;font-size:13.5px;}
+  .card ul li{margin-bottom:4px;}
+  .why{
+    background:#EFF7F3;
+    border-left:3px solid var(--accent);
+    padding:8px 10px;
+    border-radius:8px;
+    font-size:12.5px;
+    color:#1c5c46;
+  }
+  .why b{color:var(--accent);}
+
+  blockquote.quote{
+    background:var(--card);
+    border-left:4px solid var(--secondary);
+    border-radius:8px;
+    padding:14px 16px;
+    margin:0 0 12px;
+    font-size:14px;
+  }
+  blockquote.quote .note{
+    display:block;
+    margin-top:6px;
+    font-size:11.5px;
+    color:var(--text-sub);
+  }
+  .source-tag{
+    display:inline-block;
+    background:var(--bg);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+    font-size:11px;
+    padding:1px 8px;
+    border-radius:6px;
+    margin-bottom:6px;
+  }
+
+  .action-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+    position:relative;
+  }
+  .action-card .num-badge{
+    position:absolute;
+    top:-10px;left:14px;
+    background:var(--secondary);
+    color:#fff;
+    font-size:12px;
+    font-weight:800;
+    padding:4px 10px;
+    border-radius:999px;
+  }
+  .action-card h3{margin:6px 0 8px;font-size:14.5px;}
+  .action-card .meta{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:8px;
+  }
+  .action-card .meta span{
+    font-size:11.5px;
+    background:var(--bg);
+    border-radius:6px;
+    padding:3px 8px;
+    color:var(--text-sub);
+  }
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--text-sub);
+    margin-top:26px;
+    padding:0 20px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="cat">🏷️ 心理学</span>
+    <h1>🧠 その科学が成功を決める</h1>
+    <p class="author">著: リチャード・ワイズマン（訳: 木村博江）／文藝春秋</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="why-how">
+    <h2>⚡ 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row question">
+      <span class="tag">問い</span>
+      <p>成功をイメージする、褒めて育てる、みんなで話し合う——自己啓発の「常識」は本当に効果があるのか？</p>
+    </div>
+    <div class="qa-row answer">
+      <span class="tag">答え</span>
+      <p>多くは効果がないどころか逆効果。本当に効くのは、科学的に検証された小さな行動だけ。</p>
+    </div>
+    <div class="qa-row evidence">
+      <span class="tag">根拠</span>
+      <p>ペンシルヴェニア大学・コロンビア大学・デューク大学・MIT・ワシントン大学など複数の実証実験。</p>
+    </div>
+    <div class="badges">
+      <div class="badge"><span class="num">9</span><span class="lbl">検証された実験</span></div>
+      <div class="badge"><span class="num">8</span><span class="lbl">主要コンセプト</span></div>
+      <div class="badge"><span class="num">3</span><span class="lbl">今日のアクション</span></div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">💡主要概念</button>
+    <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📖各章の要約</button>
+    <button role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">🔬具体例</button>
+    <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬重要な引用</button>
+    <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅今日のアクション</button>
+  </nav>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3><span class="idx">1</span>エビデンスに基づく自己啓発</h3>
+      <ul>
+        <li>体験談や逸話ではなく、査読済みの心理学実験だけを根拠に方法を選ぶ姿勢</li>
+        <li>「みんな言っている」「昔からそう言われている」は根拠にならない</li>
+        <li>効果を測るには対象群・非対象群を分けて比較するしかない</li>
+      </ul>
+      <div class="why"><b>理由：</b>自己啓発業界には検証されていない通説が多く、実は逆効果のものも紛れているため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">2</span>イメージング・パラドックス</h3>
+      <ul>
+        <li>「成功した自分」を思い描くと脳が半ば満足し、努力量が落ちる</li>
+        <li>有効なのは結果ではなく「前進していく過程」をイメージすること</li>
+        <li>しかも自分視点ではなく、第三者として自分を眺める視点が効果的</li>
+      </ul>
+      <div class="why"><b>理由：</b>達成感を先取りしてしまうと、行動に移す動機づけが弱まってしまうから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">3</span>賞賛のジレンマ</h3>
+      <ul>
+        <li>「頭がいい」「才能がある」など能力を褒めると挑戦を避けるようになる</li>
+        <li>「頑張った」「工夫した」など努力・過程を褒めると難題に粘り強く向き合う</li>
+        <li>褒め方ひとつで、その後の行動パターンが変わる</li>
+      </ul>
+      <div class="why"><b>理由：</b>能力への賞賛は「失敗＝能力の否定」という恐れを生み、挑戦を遠ざけるため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">4</span>カタルシス神話</h3>
+      <ul>
+        <li>サンドバッグを叩く・叫ぶ・カラオケなど「発散型」のストレス解消は効果が薄い</li>
+        <li>むしろ怒りや不満を増幅させてしまうケースがある</li>
+        <li>有効なのは出来事の良い面を書き出すこと、ペットと触れ合うこと</li>
+      </ul>
+      <div class="why"><b>理由：</b>発散行動は感情を「表現する練習」になってしまい、鎮める効果を持たないため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">5</span>リスキーシフト（集団極性化）</h3>
+      <ul>
+        <li>集団で話し合って決めた結論は、個人の判断よりも大胆でリスクが高くなりやすい</li>
+        <li>「みんなで決めたから安全」は思い込みにすぎない</li>
+        <li>重要な決断ほど、個人の判断基準を明確にしておく必要がある</li>
+      </ul>
+      <div class="why"><b>理由：</b>集団内で責任が分散し、一人ひとりが大胆な意見に同調しやすくなるため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">6</span>出会いの科学</h3>
+      <ul>
+        <li>万人受けを狙った当たり障りのないプロフィールほど、実は敬遠される</li>
+        <li>はっきりした個性・具体性を打ち出したほうが好感を持たれやすい</li>
+        <li>「誰にでも好かれよう」という戦略自体が誤り</li>
+      </ul>
+      <div class="why"><b>理由：</b>個性のなさは「印象に残らない」ことと同義で、関心を引く力を失うため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">7</span>構造化面接 vs 非構造化面接</h3>
+      <ul>
+        <li>模範解答どおりに完璧に振る舞うより、多少の失敗を見せるほうが好感度が上がることがある</li>
+        <li>台本通りの受け答えは不自然さが伝わり評価を下げる場合がある</li>
+        <li>「面接マニュアル」が必ずしも有効とは限らない</li>
+      </ul>
+      <div class="why"><b>理由：</b>完璧すぎる受け答えは「人間味の欠如」として受け取られやすいため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">8</span>マイクロインターベンション</h3>
+      <ul>
+        <li>原題『59 Seconds』が示すとおり、数十秒〜数分の小さな行動が心理状態を変える</li>
+        <li>大掛かりな自己変革プログラムより、日常に組み込める小さな習慣のほうが持続しやすい</li>
+        <li>本書全体を貫く「小さな行動の積み重ね」という思想</li>
+      </ul>
+      <div class="why"><b>理由：</b>ハードルの低い行動ほど継続でき、継続できる行動だけが実際に効果を生むため。</div>
+    </div>
+
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <div class="card">
+      <h3><span class="idx">1</span>「自己啓発」はあなたを不幸にする</h3>
+      <ul><li>自己啓発書を実践しているグループは、何もしていないグループより幸福度の指標が低かったという調査結果</li>
+      <li>「なりたい自分」との比較が、今の自分への評価を下げてしまう</li></ul>
+      <div class="why"><b>理由：</b>自己啓発の「効果」自体が検証されていない実例として、本書全体の問題提起になっているため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">2</span>「面接マニュアル」は役立たずだった</h3>
+      <ul><li>デューク大学の大規模調査で、台本通りより多少のヘマを見せたほうが好感度が上がるケースが判明</li>
+      <li>完璧な受け答えは不自然さとして伝わることがある</li></ul>
+      <div class="why"><b>理由：</b>「正解を暗記する」対策が通用しない場面があることを示す実例のため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">3</span>イメージトレーニングは逆効果</h3>
+      <ul><li>ペンシルヴェニア大学の研究「プラス思考が人生を暗くする」</li>
+      <li>成功した自分ではなく「前進する自分」を、第三者視点で思い描くことが有効</li></ul>
+      <div class="why"><b>理由：</b>受験・仕事などで広く実践されている手法の落とし穴を示すため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">4</span>まちがいだらけの創造力向上ノウハウ</h3>
+      <ul><li>「批判禁止」の伝統的ブレインストーミングはアイデアの質を下げる</li>
+      <li>建設的な批判・議論を伴うグループのほうが質の高いアイデアを出した</li></ul>
+      <div class="why"><b>理由：</b>会議やチーム開発で広く使われる手法の見直しにつながるため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">5</span>婚活サイトに騙されるな</h3>
+      <ul><li>ノースウェスタン大学の調査：万人受けを狙ったプロフィールの女性ほど敬遠された</li>
+      <li>個性・具体性を打ち出したほうが好感を持たれる</li></ul>
+      <div class="why"><b>理由：</b>「好かれようとする戦略」が裏目に出る典型例として重要なため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">6</span>ストレス解消法のウソ</h3>
+      <ul><li>アイオワ州立大学の研究：カラオケは逆効果と判明</li>
+      <li>サンドバッグを叩く・叫ぶといった発散はストレスを解消しない</li>
+      <li>有効なのは出来事の良い面を書き出すこと、犬など動物と触れ合うこと</li></ul>
+      <div class="why"><b>理由：</b>広く信じられている「発散すれば楽になる」という通説を覆すため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">7</span>離婚の危機に瀕しているあなたに</h3>
+      <ul><li>ワシントン大学の追跡調査：夫婦間で問題そのものを話し合うだけでは関係改善の効果は乏しいとされる</li>
+      <li>具体的にどのような代替策が有効かは出典によって説明が分かれるため、詳細は原著で要確認（不明な点は断定を避ける）</li></ul>
+      <div class="why"><b>理由：</b>「話し合えば分かり合える」という素朴な期待に一石を投じる調査のため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">8</span>決断力の罠</h3>
+      <ul><li>MITの実験：集団での意思決定は個人の判断よりリスクの高い結論に流れやすい（リスキーシフト）</li></ul>
+      <div class="why"><b>理由：</b>「みんなで決めれば安全」という職場での思い込みに警鐘を鳴らすため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="idx">9</span>「ほめる教育」の落とし穴</h3>
+      <ul><li>コロンビア大学の研究：能力（頭の良さ）を褒められた子供は、失敗を恐れ簡単な課題を選びがちになる</li>
+      <li>努力・過程を褒められた子供は、その後も難しい課題に取り組み続ける傾向</li></ul>
+      <div class="why"><b>理由：</b>子育て・部下育成の現場で広く実践される「褒める」行為の質を問い直すため。</div>
+    </div>
+
+  </section>
+
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+
+    <div class="card">
+      <span class="source-tag">ペンシルヴェニア大学</span>
+      <h3>「合格した自分」をイメージした学生たち</h3>
+      <ul>
+        <li><b>背景：</b>試験勉強に取り組む学生を、結果をイメージする群と過程をイメージする群に分けて比較</li>
+        <li><b>示唆：</b>結果を先取りしてイメージした群のほうが、実際の学習行動量が伸び悩んだ</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「達成した自分」を思い描くことが、実は行動へのブレーキになりうることを具体的に示している。</div>
+    </div>
+
+    <div class="card">
+      <span class="source-tag">コロンビア大学</span>
+      <h3>褒め方を変えられた子供たちのパズル課題</h3>
+      <ul>
+        <li><b>背景：</b>子供にパズルを解かせ、「頭がいいね」と能力を褒める群と「よく頑張ったね」と努力を褒める群に分けて追跡</li>
+        <li><b>示唆：</b>能力を褒められた子供は次に簡単な課題を選ぶ傾向、努力を褒められた子供は難しい課題に挑む傾向</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>褒め言葉ひとつで、その後のチャレンジ意欲が変わることを端的に示している。</div>
+    </div>
+
+    <div class="card">
+      <span class="source-tag">デューク大学</span>
+      <h3>模範解答通りに答えなかった応募者</h3>
+      <ul>
+        <li><b>背景：</b>採用面接での受け答えパターンと採用担当者の好感度の関係を大規模調査</li>
+        <li><b>示唆：</b>台本通りに完璧に振る舞うより、多少ヘマを見せた応募者のほうが好感度が上がるケースがあった</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「マニュアル通りの正解」が必ずしも人の心を動かさないことを示している。</div>
+    </div>
+
+    <div class="card">
+      <span class="source-tag">ノースウェスタン大学</span>
+      <h3>「誰からも好かれよう」としたプロフィール</h3>
+      <ul>
+        <li><b>背景：</b>婚活サイトのプロフィール文と反応数・好感度の関係を調査</li>
+        <li><b>示唆：</b>当たり障りのない万人受けプロフィールの女性ほど、実は敬遠される結果に</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>個性を消すことが、必ずしも好印象につながらないことを示している。</div>
+    </div>
+
+    <div class="card">
+      <span class="source-tag">アイオワ州立大学</span>
+      <h3>カラオケでストレス発散を試みたグループ</h3>
+      <ul>
+        <li><b>背景：</b>カラオケなど「発散型」のストレス解消行動の効果を検証</li>
+        <li><b>示唆：</b>気分の改善は見られず、むしろ逆効果になるケースも報告された</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「発散すればスッキリする」という通説が、実は根拠に乏しいことを示している。</div>
+    </div>
+
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <blockquote class="quote">
+      成功した自分をイメージするのではなく、そこに至るまでの「過程」を、しかも第三者の視点から思い描いたほうが、実際の行動につながる。
+      <span class="note">※原典からの直接引用ではなく要旨（実験3：イメージトレーニングは逆効果）</span>
+    </blockquote>
+
+    <blockquote class="quote">
+      子供の「頭の良さ」を褒めることは、一見よい教育に見えて、実は失敗を恐れる子供を育ててしまう。
+      <span class="note">※要旨（実験9：「ほめる教育」の落とし穴、コロンビア大学の研究より）</span>
+    </blockquote>
+
+    <blockquote class="quote">
+      サンドバッグを叩いても、叫んでも、ストレスは消えない。効くのは、出来事の良い面を書き出すことと、犬の力を借りることだ。
+      <span class="note">※要旨（実験6：ストレス解消法のウソ、アイオワ州立大学の研究より）</span>
+    </blockquote>
+
+    <blockquote class="quote">
+      集団で下した決断は、個人の判断よりも大胆でリスクの高い結論に流れやすい。
+      <span class="note">※要旨（実験8：決断力の罠、MITの実験より）</span>
+    </blockquote>
+
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="action-card">
+      <span class="num-badge">ACTION 1</span>
+      <h3>🎯 「前進する自分」を第三者視点でイメージする</h3>
+      <p style="font-size:13.5px;margin:0;">明日取り組む予定のタスクを、成功した瞬間ではなく「取り組んでいる最中の自分」を、まるで他人を見るように10分間イメージする。</p>
+      <div class="meta">
+        <span>⏱️ 10分</span>
+        <span>🎯 目的：達成感の先取りによる努力量の低下を防ぐ</span>
+        <span>📈 期待効果：実行への準備行動が増える</span>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <span class="num-badge">ACTION 2</span>
+      <h3>🎯 「努力・過程」を具体的に褒める</h3>
+      <p style="font-size:13.5px;margin:0;">今日、誰かを褒める場面があれば「才能・結果」ではなく「工夫した点・努力の過程」を具体的な言葉で伝える。</p>
+      <div class="meta">
+        <span>⏱️ 会話の中で数分</span>
+        <span>🎯 目的：失敗を恐れず挑戦し続ける姿勢を育てる</span>
+        <span>📈 期待効果：相手の挑戦意欲が続く</span>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <span class="num-badge">ACTION 3</span>
+      <h3>🎯 発散ではなく「良かった点」を書き出す</h3>
+      <p style="font-size:13.5px;margin:0;">ストレスを感じた出来事について、叫ぶ・物を叩くなどの発散に頼らず、その出来事の良かった点を3つノートに書き出す。</p>
+      <div class="meta">
+        <span>⏱️ 15分</span>
+        <span>🎯 目的：カタルシス神話に頼らない再評価法の実践</span>
+        <span>📈 期待効果：実際にストレスが軽減する</span>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    書誌情報が不明・未確認の細部は本文中に「不明」または要旨として明記しています。<br>
+    出典：文中に記載の各大学の研究・書籍情報（Web検索による確認）
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-cases':'panel-cases',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      Object.values(panels).forEach(function(pid){
+        document.getElementById(pid).classList.remove('active');
+      });
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(panels[tab.id]).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
