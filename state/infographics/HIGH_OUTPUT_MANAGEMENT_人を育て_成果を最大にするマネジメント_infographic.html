@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HIGH OUTPUT MANAGEMENT インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー: #1B3A4B (紺・信頼と生産システムを象徴)
+  セカンダリー: #E67E22 (オレンジ・レバレッジ/行動を象徴)
+  アクセント:   #2E9E6C (グリーン・成長/成果を象徴)
+  グラデーションは プライマリー→#2C5871 を基調に使用
+-->
+<style>
+  :root{
+    --primary:#1B3A4B;
+    --primary-light:#2C5871;
+    --secondary:#E67E22;
+    --accent:#2E9E6C;
+    --bg:#F5F7F8;
+    --card:#FFFFFF;
+    --text:#1F2A30;
+    --text-sub:#5B6B72;
+    --border:#E1E6E8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary),var(--primary-light));
+    color:#fff;
+    padding:28px 16px 24px;
+    text-align:center;
+  }
+  header h1{
+    margin:0 0 6px;
+    font-size:1.4rem;
+    line-height:1.4;
+  }
+  header .sub{
+    font-size:0.85rem;
+    opacity:0.85;
+  }
+  header .meta{
+    margin-top:14px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    font-size:0.75rem;
+  }
+  header .meta span{
+    background:rgba(255,255,255,0.15);
+    padding:4px 10px;
+    border-radius:999px;
+  }
+  main{
+    max-width:760px;
+    margin:0 auto;
+    padding:16px;
+  }
+  .hero{
+    background:var(--card);
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:18px;
+    box-shadow:0 2px 10px rgba(27,58,75,0.08);
+    border-top:4px solid var(--secondary);
+  }
+  .hero h2{
+    font-size:0.95rem;
+    color:var(--secondary);
+    margin:0 0 10px;
+    letter-spacing:0.02em;
+  }
+  .qa-block{margin-bottom:12px;}
+  .qa-label{
+    display:inline-block;
+    font-size:0.72rem;
+    font-weight:bold;
+    color:#fff;
+    background:var(--primary);
+    padding:2px 8px;
+    border-radius:6px;
+    margin-bottom:6px;
+  }
+  .qa-block.why .qa-label{background:var(--secondary);}
+  .qa-block.how .qa-label{background:var(--accent);}
+  .qa-text{font-size:0.92rem;color:var(--text);}
+  .indicators{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .indicator{
+    flex:1 1 140px;
+    background:var(--bg);
+    border-radius:10px;
+    padding:10px 12px;
+    text-align:center;
+  }
+  .indicator .num{
+    font-size:1.3rem;
+    font-weight:bold;
+    color:var(--primary);
+  }
+  .indicator .label{
+    font-size:0.68rem;
+    color:var(--text-sub);
+  }
+  .bar-wrap{margin-top:14px;}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:0.75rem;}
+  .bar-row .name{flex:0 0 92px;color:var(--text-sub);}
+  .bar-track{flex:1;background:var(--border);border-radius:6px;height:14px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin-bottom:14px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:0.78rem;
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .card{
+    background:var(--card);
+    border-radius:12px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 1px 6px rgba(27,58,75,0.06);
+    border-left:4px solid var(--primary);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:0.95rem;
+    color:var(--primary);
+  }
+  .card ul{
+    margin:0 0 10px;
+    padding-left:1.1em;
+    font-size:0.86rem;
+  }
+  .card ul li{margin-bottom:4px;}
+  .why-box{
+    background:#FBF3EA;
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:0.78rem;
+    color:#8A5A22;
+  }
+  .why-box b{color:var(--secondary);}
+  .quote-card{
+    border-left-color:var(--secondary);
+  }
+  .quote-text{
+    font-style:italic;
+    font-size:0.9rem;
+    color:var(--text);
+    border-left:3px solid var(--secondary);
+    padding-left:10px;
+    margin:0 0 8px;
+  }
+  .tag-note{
+    display:inline-block;
+    font-size:0.65rem;
+    background:var(--secondary);
+    color:#fff;
+    padding:1px 6px;
+    border-radius:5px;
+    margin-bottom:6px;
+  }
+  .action-card{border-left-color:var(--accent);}
+  .action-card h3{color:var(--accent);}
+  .action-num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:22px;height:22px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    font-size:0.75rem;
+    margin-right:6px;
+  }
+  footer{
+    text-align:center;
+    font-size:0.7rem;
+    color:var(--text-sub);
+    padding:20px 16px 30px;
+  }
+  @media (min-width:600px){
+    header h1{font-size:1.7rem;}
+    .indicators{flex-wrap:nowrap;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 HIGH OUTPUT MANAGEMENT<br>人を育て、成果を最大にするマネジメント</h1>
+  <div class="sub">アンドリュー・S・グローブ（訳: 小林薫 / 日経BP）</div>
+  <div class="meta">
+    <span>🏷️ ビジネス</span>
+    <span>📅 原著1983年・改訂1995年 / 日本語版2017年</span>
+    <span>👤 元インテルCEO</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h2>📌 要約 = 問い × 答え × 根拠</h2>
+    <div class="qa-block why">
+      <div class="qa-label">Q. 問い</div>
+      <div class="qa-text">なぜ多くの中間管理職は「忙しいのに成果が出ない」のか？</div>
+    </div>
+    <div class="qa-block how">
+      <div class="qa-label">A. 答え</div>
+      <div class="qa-text">マネジャーの成果は「自分の組織＋影響が及ぶ隣接組織のアウトプット」で測るべきで、自ら手を動かした量では測れない。だからこそ、同じ時間でより大きな組織的成果を生む「レバレッジの高い活動」を選び抜くことがマネジャー本来の仕事になる。</div>
+    </div>
+    <div class="qa-block">
+      <div class="qa-label">根拠</div>
+      <div class="qa-text">工場の生産管理理論（制約工程を基準に逆算する発想）をオフィスワークに応用し、1on1ミーティング・意思決定・組織設計といった一見地味な活動こそが最大のてこ（レバレッジ）を生むことを、具体例とともに示している。</div>
+    </div>
+
+    <div class="indicators">
+      <div class="indicator"><div class="num">4部構成</div><div class="label">朝食工場→チームゲーム→組織設計→個人育成</div></div>
+      <div class="indicator"><div class="num">90分</div><div class="label">1on1が2週間分の仕事の質を左右</div></div>
+      <div class="indicator"><div class="num">40年超</div><div class="label">1983年刊行から読み継がれる古典</div></div>
+    </div>
+
+    <div class="bar-wrap">
+      <div class="bar-row"><div class="name">生産理論</div><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div></div>
+      <div class="bar-row"><div class="name">組織マネジメント</div><div class="bar-track"><div class="bar-fill" style="width:95%"></div></div></div>
+      <div class="bar-row"><div class="name">人材育成</div><div class="bar-track"><div class="bar-fill" style="width:85%"></div></div></div>
+      <div class="bar-row"><div class="name">意思決定</div><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div></div>
+    </div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="コンテンツタブ">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">💡 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases" onclick="switchTab('cases')">🔍 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </div>
+
+  <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>① リミッティング・ステップ（制約工程）</h3>
+      <ul>
+        <li>生産ラインの中で最も時間のかかる工程</li>
+        <li>これを基準に他の全工程のタイミングを逆算する</li>
+        <li>オフィスワークの効率化にもそのまま応用できる考え方</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>ボトルネックを起点に設計するという発想が、本書全体の生産性論の土台になっているから。</div>
+    </div>
+    <div class="card">
+      <h3>② マネジャーのアウトプットの公式</h3>
+      <ul>
+        <li>自チームのアウトプット＋影響力が及ぶ隣接組織のアウトプット</li>
+        <li>自分が手を動かした作業量では測れない</li>
+        <li>成果主義に偏りがちな自己評価を正す視点</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「マネジャーは何をもって評価されるべきか」という本書の核心的な問いへの答えだから。</div>
+    </div>
+    <div class="card">
+      <h3>③ レバレッジ（てこの効果）</h3>
+      <ul>
+        <li>同じ時間・労力でより大きな組織的成果を生む活動を選ぶ考え方</li>
+        <li>マネジャーの時間配分の判断基準になる</li>
+        <li>1on1や意思決定支援など、地味に見える活動ほど高レバレッジな場合がある</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「何を優先すべきか」を決める本書の実践的な物差しだから。</div>
+    </div>
+    <div class="card">
+      <h3>④ One-on-Oneミーティング</h3>
+      <ul>
+        <li>部下と定期的に1対1で行う面談</li>
+        <li>90分の投入が2週間分の部下の仕事の質を左右するとされる</li>
+        <li>高レバレッジ活動の典型例として紹介される</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>抽象的な「レバレッジ」概念を、誰でも実践できる具体的な行動に落とし込んでいるから。</div>
+    </div>
+    <div class="card">
+      <h3>⑤ タスク関連成熟度（TRM）</h3>
+      <ul>
+        <li>特定タスクに対する部下の経験・能力・自信の度合い</li>
+        <li>人そのものの成熟度ではなく、タスクごとに変わる</li>
+        <li>達成志向と責任を取る準備度合いの組み合わせ</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「部下全員に同じ接し方」という画一的マネジメントの誤りを正す鍵概念だから。</div>
+    </div>
+    <div class="card">
+      <h3>⑥ 育成スタイルの使い分け</h3>
+      <ul>
+        <li>TRMが低い部下には具体的な指示型（何を・いつ・どう）</li>
+        <li>TRMが高い部下には権限委譲＋情緒的サポート重視型</li>
+        <li>タスクごとにスタイルを段階的に変えるべきとする処方</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>過干渉と放任、両方の失敗を避けるための実践的な指針だから。</div>
+    </div>
+    <div class="card">
+      <h3>⑦ ミッション型×機能別のハイブリッド組織</h3>
+      <ul>
+        <li>現場の実行力を保ちながら専門性も確保する組織設計</li>
+        <li>定例のプロセス中心会議と単発のミッション中心会議を使い分ける</li>
+        <li>ハイブリッド構造にはコストとベネフィットの両面がある</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>個人の生産性だけでなく、組織構造そのものが生産性を左右するという視点を補うから。</div>
+    </div>
+    <div class="card">
+      <h3>⑧ 中間管理職の再定義</h3>
+      <ul>
+        <li>現場監督者とCEOの間に埋もれがちな存在</li>
+        <li>しかし企業の生産性を左右する要である</li>
+        <li>「本当に付加価値を生んでいるか」を自問すべき立場</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>本書が最も語りたい読者像であり、全概念がこの層のために組み立てられているから。</div>
+    </div>
+  </section>
+
+  <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>第1部　朝食工場 ─ 生産の基本原理</h3>
+      <ul>
+        <li>トースト・半熟卵・コーヒーという朝食セットの製造を例に「生産とは何か」を定義</li>
+        <li>最も時間のかかる工程（半熟卵）を基準に、他の工程を逆算して組み立てる</li>
+        <li>トースターが1台しかない場合、行列がそこで新たなボトルネックになるという応用まで提示</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>誰もがイメージできる例で生産管理理論を土台に据え、後続の章すべての比喩の基礎にしているから。</div>
+    </div>
+    <div class="card">
+      <h3>第2部　経営はチームゲームである</h3>
+      <ul>
+        <li>マネジャーのアウトプット＝自組織＋隣接組織のアウトプットという公式</li>
+        <li>マネジャーの仕事は「情報収集」「判断」「レバレッジの高い活動の選択」の3つに集約される</li>
+        <li>One-on-Oneや会議体の設計を、レバレッジという観点から具体的に解説</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「マネジャーは何で評価されるべきか」という本書全体の核心がここに置かれているから。</div>
+    </div>
+    <div class="card">
+      <h3>第3部　チームの中のチーム</h3>
+      <ul>
+        <li>組織構造の設計（ミッション型と機能別のハイブリッド）</li>
+        <li>定例のプロセス中心会議と、単発のミッション中心会議の使い分け</li>
+        <li>ハイブリッド組織のコストとベネフィットを整理</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>個々のマネジャーの生産性だけでなく、組織全体の設計が生産性に与える影響を扱っているから。</div>
+    </div>
+    <div class="card">
+      <h3>第4部　プレーヤーたち</h3>
+      <ul>
+        <li>動機づけ（モチベーション）と業績評価の考え方</li>
+        <li>タスク関連成熟度（TRM）に応じた育成スタイルの切り替え</li>
+        <li>意思決定プロセスにおいて避けるべき失敗の型</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>最終的に成果を生むのは個々の人間であり、その力を引き出す方法を扱う本書の締めくくりだから。</div>
+    </div>
+  </section>
+
+  <section id="panel-cases" class="panel" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3>ケース1：朝食工場のボトルネック設計</h3>
+      <ul>
+        <li>半熟卵の茹で時間を基準にトーストとコーヒーの準備を逆算</li>
+        <li>複数人分を同時に作る場合、トースターが1台だと行列ができ、そこが新たな制約工程になる</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>ボトルネックを特定し、そこを基準に全体を設計する発想は、ソフトウェア開発のスクラムや業務プロセス改善にも直接応用できるから。</div>
+    </div>
+    <div class="card">
+      <h3>ケース2：One-on-Oneの効果測定</h3>
+      <ul>
+        <li>マネジャーが部下1人に90分を投資すると、その後2週間の仕事の質と組織理解が向上すると本書は主張する</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>「レバレッジ」を時間対効果で捉えると、手を動かす作業より部下育成に時間を割く方が組織全体の成果に効くと定量的に説明できるから。</div>
+    </div>
+    <div class="card">
+      <h3>ケース3：TRMに応じた育成スタイルの切り替え</h3>
+      <ul>
+        <li>特定タスクへの習熟度（TRM）が低い部下には「いつ・何を・どうすべきか」を具体的に指示するスタイルを取る</li>
+        <li>習熟が進むにつれて、権限委譲と情緒的サポート重視のスタイルへ段階的に移行させる</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>「部下全員に同じ接し方」がむしろ非効率であり、画一的なマネジメント研修への反証になるから。</div>
+    </div>
+    <div class="card">
+      <h3>ケース4：中間管理職の価値への自己懐疑</h3>
+      <ul>
+        <li>グローブは著書内で「中間管理職は本当に付加価値を生んでいるのか、単に情報を右から左に流しているだけではないか」と自ら問いかける</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>マネジャー自身が自分の存在意義を厳しく問い直す姿勢こそ、本書が中間管理職に求める自己規律だから。</div>
+    </div>
+  </section>
+
+  <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="card quote-card">
+      <span class="tag-note">要旨</span>
+      <p class="quote-text">マネジャーのアウトプットとは、自分がコントロールする組織のアウトプットと、自分の影響力が及ぶ隣接組織のアウトプットの合計である、という趣旨の主張。</p>
+    </div>
+    <div class="card quote-card">
+      <span class="tag-note">要旨</span>
+      <p class="quote-text">部下との1対1のミーティングに投じた90分は、その後2週間の部下の仕事の質を引き上げる、マネジャーにとって最もレバレッジの高い活動の一つである、という趣旨。</p>
+    </div>
+    <div class="card quote-card">
+      <span class="tag-note">要旨</span>
+      <p class="quote-text">序文を書いたベン・ホロウィッツは、本書を「これまで書かれた中で最高の経営書」と評している、という趣旨。</p>
+    </div>
+  </section>
+
+  <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="card action-card">
+      <h3><span class="action-num">1</span>自分の「制約工程」を1つ書き出す</h3>
+      <ul>
+        <li>目的：リミッティング・ステップ思考を自分の仕事に試す</li>
+        <li>今日、自分やチームで一番時間のかかっている工程を1つ特定し、それを基準にタスクの順番を組み替える（15分）</li>
+        <li>期待効果：ボトルネック起点で優先順位を見直す習慣がつく</li>
+      </ul>
+    </div>
+    <div class="card action-card">
+      <h3><span class="action-num">2</span>次回1on1の予定を確保する</h3>
+      <ul>
+        <li>目的：高レバレッジ活動としての1on1を体感する</li>
+        <li>チームメンバー1人を選び、「最近何に困っているか」だけを聞く30分の1on1をカレンダーに入れる（15分）</li>
+        <li>期待効果：部下理解と信頼構築の土台ができる</li>
+      </ul>
+    </div>
+    <div class="card action-card">
+      <h3><span class="action-num">3</span>TRMを自己評価し接し方を決める</h3>
+      <ul>
+        <li>目的：TRMに応じたマネジメントスタイルの使い分けを実践する</li>
+        <li>今週関わっているタスクを1つ選び、相手の経験・能力・自信を簡単に自己評価し、指示の出し方を「具体的指示」寄りか「権限委譲」寄りかを決める（20分）</li>
+        <li>期待効果：過干渉または放任のミスマッチを防げる</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  📚 06_Books ─ 読書サマリー自動生成システム
+</footer>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('.panel');
+    var tabs = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){ p.classList.remove('active'); });
+    tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+    document.getElementById('panel-' + name).classList.add('active');
+    document.getElementById('tab-' + name).setAttribute('aria-selected','true');
+  }
+</script>
+
+</body>
+</html>
