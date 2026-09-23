@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スタンフォード式 疲れない体 | インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー: #0B5FA5 (スタンフォード寄りの深いブルー)
+  セカンダリー: #16A085 (回復・再生を示すグリーン)
+  アクセント: #F2994A (エネルギー・警告を示すオレンジ)
+  グラデーション: linear-gradient(135deg, #0B5FA5, #16A085)
+-->
+<style>
+  :root{
+    --primary:#0B5FA5;
+    --primary-dark:#08406E;
+    --secondary:#16A085;
+    --accent:#F2994A;
+    --bg:#F5F8FA;
+    --card:#FFFFFF;
+    --text:#1F2937;
+    --text-sub:#5B6B7A;
+    --border:#E1E8ED;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+  }
+  .hero{
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#fff;
+    padding:28px 18px 34px;
+    text-align:center;
+  }
+  .hero .kicker{
+    font-size:12px;
+    letter-spacing:.15em;
+    opacity:.85;
+    margin-bottom:8px;
+  }
+  .hero h1{
+    font-size:22px;
+    margin:0 0 6px;
+    font-weight:800;
+  }
+  .hero .meta{
+    font-size:13px;
+    opacity:.9;
+  }
+  .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 14px 40px;
+  }
+  .why-how{
+    background:var(--card);
+    border-radius:14px;
+    margin-top:-18px;
+    padding:18px;
+    box-shadow:0 6px 18px rgba(11,95,165,.12);
+    position:relative;
+    z-index:2;
+  }
+  .why-how h2{
+    font-size:14px;
+    color:var(--primary);
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+    align-items:flex-start;
+  }
+  .qa-row:last-child{margin-bottom:0;}
+  .qa-tag{
+    flex:0 0 auto;
+    font-size:11px;
+    font-weight:700;
+    color:#fff;
+    background:var(--primary);
+    border-radius:6px;
+    padding:3px 8px;
+    white-space:nowrap;
+  }
+  .qa-row.how .qa-tag{background:var(--secondary);}
+  .qa-text{font-size:13.5px;color:var(--text);}
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin:16px 0 4px;
+  }
+  .stat-badge{
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px 6px;
+    text-align:center;
+  }
+  .stat-badge .num{
+    font-size:18px;
+    font-weight:800;
+    color:var(--accent);
+    display:block;
+  }
+  .stat-badge .label{
+    font-size:10.5px;
+    color:var(--text-sub);
+  }
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:22px 0 14px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    font-size:12.5px;
+    font-weight:700;
+    padding:9px 12px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text-sub);
+    cursor:pointer;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+  .panel{display:none;}
+  .panel.active{display:block;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    font-size:14.5px;
+    margin:0 0 8px;
+    color:var(--primary-dark);
+    display:flex;
+    gap:6px;
+    align-items:center;
+  }
+  .card ul{
+    margin:0;
+    padding-left:18px;
+    font-size:13px;
+    color:var(--text);
+  }
+  .card li{margin-bottom:4px;}
+  .why-badge{
+    display:inline-block;
+    margin-top:8px;
+    font-size:11px;
+    color:var(--secondary);
+    background:rgba(22,160,133,.1);
+    border-radius:6px;
+    padding:3px 8px;
+  }
+  .quote-card{
+    border-left:4px solid var(--accent);
+    background:#FFF7EF;
+  }
+  .quote-card blockquote{
+    margin:0 0 6px;
+    font-size:13.5px;
+    font-style:italic;
+  }
+  .quote-card .src{
+    font-size:11px;
+    color:var(--text-sub);
+  }
+  .action-card{
+    border-left:4px solid var(--secondary);
+  }
+  .action-card .goal{
+    font-size:12px;
+    color:var(--text-sub);
+    margin-top:6px;
+  }
+  .related{
+    margin-top:26px;
+    font-size:12.5px;
+    color:var(--text-sub);
+  }
+  .related h2{
+    font-size:13px;
+    color:var(--primary);
+  }
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--text-sub);
+    margin-top:30px;
+  }
+  @media (min-width:600px){
+    .hero h1{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="kicker">📚 今日読むべき本</div>
+  <h1>スタンフォード式 疲れない体</h1>
+  <div class="meta">山田知生 著 ｜ カテゴリー: ライフスタイル</div>
+</div>
+
+<div class="wrap">
+
+  <section class="why-how" aria-label="要約 Why and How">
+    <h2>🎯 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row why">
+      <span class="qa-tag">Why</span>
+      <span class="qa-text">なぜ頑張っているのに疲れが抜けないのか？</span>
+    </div>
+    <div class="qa-row how">
+      <span class="qa-tag">How</span>
+      <span class="qa-text">疲れは筋肉だけでなく「神経」の乱れからも生まれる。スタンフォード大学のスポーツ医局が実践する<b>IAP（体内圧力）呼吸法</b>で体幹と姿勢を整え、日常動作・食事・回復習慣を最適化すれば、疲れを翌日に持ち越さない体になれる。</span>
+    </div>
+    <div class="stat-row">
+      <div class="stat-badge"><span class="num">1/7</span><span class="label">水泳部の腰痛激減</span></div>
+      <div class="stat-badge"><span class="num">4章</span><span class="label">構成（動作/回復/食事/仕事術）</span></div>
+      <div class="stat-badge"><span class="num">1分</span><span class="label">IAP呼吸法の所要時間</span></div>
+    </div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="インフォグラフィック タブ">
+    <button class="tab-btn" role="tab" id="tab-concept" aria-selected="true" aria-controls="panel-concept" onclick="switchTab('concept')">💡 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-chapter" aria-selected="false" aria-controls="panel-chapter" onclick="switchTab('chapter')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-case" aria-selected="false" aria-controls="panel-case" onclick="switchTab('case')">🏆 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-quote" aria-selected="false" aria-controls="panel-quote" onclick="switchTab('quote')">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" id="tab-action" aria-selected="false" aria-controls="panel-action" onclick="switchTab('action')">✅ 今日のアクション</button>
+  </div>
+
+  <div class="panel active" id="panel-concept" role="tabpanel" aria-labelledby="tab-concept">
+
+    <div class="card">
+      <h3>🫁 IAP呼吸法（体内圧力呼吸法）</h3>
+      <ul>
+        <li>息を吸うときも吐くときもお腹の中の圧力を高め、お腹周りを固くしたまま吐ききる呼吸法</li>
+        <li>IAPは Intra-Abdominal Pressure（腹圧）の略</li>
+        <li>5秒吸って5〜7秒吐くを5セット、わずか1分で完了</li>
+        <li>腹式呼吸（お腹をへこませる）とは逆に、お腹をへこませない点が特徴</li>
+      </ul>
+      <div class="why-badge">理由: 腹圧が高いコアは中身の詰まったペットボトルのように潰れにくく、体幹がブレず疲労やケガを防げるから</div>
+    </div>
+
+    <div class="card">
+      <h3>🧠 神経由来の疲労</h3>
+      <ul>
+        <li>最新のスポーツ医学では、疲れは筋肉だけでなく「神経」のコンディション悪化からも起こるとされる</li>
+        <li>つまり疲れは体だけでなく脳からも発生している</li>
+        <li>体の歪みがあると、小さな動作にも必要以上の負担がかかる</li>
+      </ul>
+      <div class="why-badge">理由: 筋肉のケアだけでは疲労は解消しきれず、神経・姿勢からのアプローチが不可欠だから</div>
+    </div>
+
+    <div class="card">
+      <h3>🧍 ベストポジション（疲れない姿勢・動作）</h3>
+      <ul>
+        <li>疲れない立ち方: 軽く左右に揺れながら立つ</li>
+        <li>疲れない座り方: 耳と肩のラインをまっすぐにし、足は組まず肩甲骨を中央に寄せる</li>
+        <li>疲れない歩き方: かかと→足の外側→つま先（親指寄り）の順で地面を踏む</li>
+      </ul>
+      <div class="why-badge">理由: 体の各パーツが本来あるべき位置に収まると中枢神経と体の連携がスムーズになり、無理な動きが消えるから</div>
+    </div>
+
+    <div class="card">
+      <h3>🍽️ 抗疲労体質になる食事術</h3>
+      <ul>
+        <li>朝食は必ず摂る。抜くと空腹後の暴食で血糖値スパイクが起き、糖尿病や心臓病リスクが高まる</li>
+        <li>食事量は腹八分目が鉄則。満腹まで食べると消化に時間がかかり倦怠感を誘発する</li>
+        <li>炭水化物は白いものより茶色いもの（雑穀）を選ぶ。食物繊維とビタミンが血糖値上昇を抑える</li>
+        <li>揚げ物・甘いお菓子・人工的に甘くしたものは避ける</li>
+      </ul>
+      <div class="why-badge">理由: 血糖値の乱高下と消化への過負荷こそが「食後のだるさ」＝疲労の隠れた原因だから</div>
+    </div>
+
+    <div class="card">
+      <h3>💼 ハードワーク・メソッド</h3>
+      <ul>
+        <li>「働いても、働いても、ダメージを最小化する方法」として第4章で解説</li>
+        <li>呼吸・運動・食事・日常動作・入浴・睡眠まで、あらゆる角度から回復を設計する</li>
+        <li>アスリートだけでなく、日々働くビジネスパーソン向けの実践知として提示される</li>
+      </ul>
+      <div class="why-badge">理由: 忙しさそのものをなくせなくても、ダメージの蓄積を減らす工夫は日常に組み込めるから</div>
+    </div>
+
+  </div>
+
+  <div class="panel" id="panel-chapter" role="tabpanel" aria-labelledby="tab-chapter">
+
+    <div class="card">
+      <h3>1章｜1日3万回、疲れないことをする</h3>
+      <ul>
+        <li>人は1日に約3万回、立つ・座る・歩く・持つといった動作を行う</li>
+        <li>その一つひとつの質を変えるだけで、蓄積する疲労量が大きく変わる</li>
+        <li>姿勢と動作の「型」を整えることが疲労予防の出発点</li>
+      </ul>
+      <div class="why-badge">理由: 特別な運動よりも日常動作の回数の多さこそが、疲労蓄積の最大要因だから</div>
+    </div>
+
+    <div class="card">
+      <h3>2章｜疲れを持ち越さない究極のリカバリー法</h3>
+      <ul>
+        <li>IAP呼吸法を中核にしたリカバリー理論を提示</li>
+        <li>呼吸・運動・入浴・睡眠など複数の切り口から回復を積み重ねる</li>
+        <li>「お腹を膨らませる」感覚を保つことが疲れにくさの土台になる</li>
+      </ul>
+      <div class="why-badge">理由: 一つの方法に頼らず複数の回復経路を持つことで、疲労を翌日へ持ち越さずに済むから</div>
+    </div>
+
+    <div class="card">
+      <h3>3章｜抗疲労体質になる一流の食事術</h3>
+      <ul>
+        <li>朝食を軸にした血糖値マネジメントが中心テーマ</li>
+        <li>腹八分・茶色い炭水化物・揚げ物や甘いものの回避を具体的に指南</li>
+        <li>食事が内蔵疲労・倦怠感に直結することを解説</li>
+      </ul>
+      <div class="why-badge">理由: 身体の外側（姿勢）だけでなく内側（食事）を整えて初めて抗疲労体質が完成するから</div>
+    </div>
+
+    <div class="card">
+      <h3>4章｜スタンフォード式 ハードワーク・メソッド</h3>
+      <ul>
+        <li>働き続けてもダメージを最小化するための総合的な実践法</li>
+        <li>ここまでの呼吸・姿勢・食事の知見を、仕事という文脈に落とし込む</li>
+        <li>トップアスリートの知見をビジネスパーソンの日常へ応用する章</li>
+      </ul>
+      <div class="why-badge">理由: アスリートの回復理論も、本質は「働き続ける人」全般に応用できる普遍的な知見だから</div>
+    </div>
+
+  </div>
+
+  <div class="panel" id="panel-case" role="tabpanel" aria-labelledby="tab-case">
+
+    <div class="card">
+      <h3>🏊 水泳チームの腰痛が7分の1に激減</h3>
+      <ul>
+        <li>IAP呼吸法とリカバリー法を導入したスタンフォード大学の水泳チームで、腰痛を抱える選手が大幅に減少</li>
+      </ul>
+      <div class="why-badge">理由（この例が示すこと）: 姿勢と呼吸の改善が、酷使される部位の慢性的な痛みを構造的に減らせることを示す</div>
+    </div>
+
+    <div class="card">
+      <h3>⚾ 野球部から腰痛持ちが消えた</h3>
+      <ul>
+        <li>同様のメソッドを取り入れた野球部で、腰痛を訴える選手がいなくなったと報告されている</li>
+      </ul>
+      <div class="why-badge">理由（この例が示すこと）: 特定の競技に限らず、体幹の使い方を変えるだけで幅広い競技に効果が及ぶことを示す</div>
+    </div>
+
+    <div class="card">
+      <h3>🌊 1万2000メートル泳いでも疲れにくくなった</h3>
+      <ul>
+        <li>導入した選手から「長距離を泳いでも以前より疲労感が少ない」という声が上がっている</li>
+      </ul>
+      <div class="why-badge">理由（この例が示すこと）: 疲労は精神論ではなく、動作の質を変えることで定量的に軽減できることを示す</div>
+    </div>
+
+    <div class="card">
+      <h3>🥇 金メダリスト・全米記録保持者も実践</h3>
+      <ul>
+        <li>著者はスタンフォード大学スポーツ医局のアソシエイト・ディレクターとして、五輪金メダリストや全米記録保持者クラスの選手をサポートしてきた</li>
+      </ul>
+      <div class="why-badge">理由（この例が示すこと）: 世界最高水準のアスリートが実践する回復法であっても、原理は誰にでも使える日常動作に還元できることを示す</div>
+    </div>
+
+  </div>
+
+  <div class="panel" id="panel-quote" role="tabpanel" aria-labelledby="tab-quote">
+
+    <div class="card quote-card">
+      <blockquote>疲れは筋肉だけでなく、神経のコンディションの悪さからも引き起こされる。つまり疲れは体だけでなく脳からも発生している。（要旨）</blockquote>
+      <div class="src">出典: 本書の疲労メカニズムに関する解説より（要旨）</div>
+    </div>
+
+    <div class="card quote-card">
+      <blockquote>腹圧を高めたコアは、中身がパンパンに詰まったペットボトルのようなもので、外から力が加わっても容易には変形しにくい。（要旨）</blockquote>
+      <div class="src">出典: IAP呼吸法の効果に関する解説より（要旨）</div>
+    </div>
+
+    <div class="card quote-card">
+      <blockquote>朝食を抜くと、空腹の反動で大量に食べることになり、血糖値スパイクを引き起こしてしまう。（要旨）</blockquote>
+      <div class="src">出典: 抗疲労体質になる食事術の章より（要旨）</div>
+    </div>
+
+  </div>
+
+  <div class="panel" id="panel-action" role="tabpanel" aria-labelledby="tab-action">
+
+    <div class="card action-card">
+      <h3>① IAP呼吸法を1分間試す</h3>
+      <ul>
+        <li>お腹周りを固くしたまま、5秒で吸って5〜7秒で吐くリズムを5セット行う</li>
+      </ul>
+      <div class="goal">目的: 体幹を安定させ、姿勢と神経の連携を整える／期待効果: その場で体幹のブレにくさを体感でき、疲労予防の第一歩になる</div>
+    </div>
+
+    <div class="card action-card">
+      <h3>② 疲れない座り方に整える</h3>
+      <ul>
+        <li>耳と肩のラインをまっすぐにし、足を組まず、肩甲骨を中央に寄せて座り直す</li>
+      </ul>
+      <div class="goal">目的: デスクワーク中の無意識の負担を減らす／期待効果: 首・肩・腰への蓄積ダメージが軽減し、夕方の疲労感が変わる</div>
+    </div>
+
+    <div class="card action-card">
+      <h3>③ 次の食事を腹八分・茶色い炭水化物にする</h3>
+      <ul>
+        <li>白米やパンの一部を雑穀や玄米に置き換え、満腹の一歩手前で箸を置く</li>
+      </ul>
+      <div class="goal">目的: 血糖値スパイクと消化負荷を抑える／期待効果: 食後の眠気・だるさが減り、午後のパフォーマンスが安定する</div>
+    </div>
+
+  </div>
+
+  <section class="related" aria-label="関連書籍">
+    <h2>📚 関連書籍</h2>
+    <ul>
+      <li>スタンフォード式 最高の睡眠（西野精治）: 同じスタンフォード大学発の回復理論として、睡眠の質から疲労回復を補完する</li>
+      <li>筋トレが最強のソリューションである（Testosterone）: 運動習慣による身体づくりの観点から、疲れにくい体という主題を共有する</li>
+      <li>マインドフルネス 最高の休息法（久賀谷亮）: 脳の疲労回復という切り口が、本書の「神経由来の疲労」という考え方と重なる</li>
+      <li>自分を操る超集中力（メンタリストDaiGo）: 日々のパフォーマンスを最大化するという目的意識が共通する</li>
+      <li>医者が教える食事術 最強の教科書（牧田善二）: 血糖値コントロールを軸にした食事術が、本書の抗疲労食事術と重なる</li>
+    </ul>
+  </section>
+
+</div>
+
+<footer>📚 books-summary daily reading</footer>
+
+<script>
+  var panels = ["concept","chapter","case","quote","action"];
+  function switchTab(name){
+    panels.forEach(function(p){
+      var btn = document.getElementById("tab-"+p);
+      var panel = document.getElementById("panel-"+p);
+      var active = (p === name);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+      if(active){
+        panel.classList.add("active");
+      } else {
+        panel.classList.remove("active");
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
