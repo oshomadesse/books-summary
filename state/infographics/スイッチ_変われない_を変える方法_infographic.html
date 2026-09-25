@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>スイッチ！「変われない」を変える方法 - インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー: #2C5F6F (深いティール / 理性=象使い)
+  セカンダリー: #E8834E (温かいオレンジ / 感情=象)
+  アクセント:   #F2C14E (黄金色 / 道筋=環境)
+  グラデーション: linear-gradient(135deg, #2C5F6F 0%, #1B3F4C 100%)
+-->
+<style>
+  :root{
+    --primary:#2C5F6F;
+    --primary-dark:#1B3F4C;
+    --secondary:#E8834E;
+    --secondary-dark:#C4652F;
+    --accent:#F2C14E;
+    --bg:#F7F5F1;
+    --card-bg:#FFFFFF;
+    --text:#2A2A2A;
+    --text-light:#6B6B6B;
+    --border:#E5E0D8;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic","Meiryo",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-dark) 100%);
+    color:#fff;
+    padding:28px 20px 34px;
+    text-align:center;
+  }
+  header .badge{
+    display:inline-block;
+    background:rgba(255,255,255,0.18);
+    border:1px solid rgba(255,255,255,0.4);
+    border-radius:999px;
+    padding:4px 14px;
+    font-size:12px;
+    letter-spacing:0.05em;
+    margin-bottom:10px;
+  }
+  header h1{
+    font-size:24px;
+    font-weight:800;
+    margin-bottom:6px;
+  }
+  header .author{
+    font-size:14px;
+    opacity:0.85;
+  }
+  main{
+    max-width:720px;
+    margin:0 auto;
+    padding:0 16px;
+  }
+  .hero{
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    margin-top:-20px;
+    padding:20px;
+    position:relative;
+    z-index:2;
+  }
+  .hero-row{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .hero-item{
+    border-left:4px solid var(--primary);
+    padding:10px 14px;
+    background:#F1F7F8;
+    border-radius:8px;
+  }
+  .hero-item.answer{border-left-color:var(--secondary);background:#FDF1E9;}
+  .hero-item.evidence{border-left-color:var(--accent);background:#FFF9E8;}
+  .hero-label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--text-light);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-bottom:4px;
+  }
+  .hero-text{font-size:14.5px;font-weight:500;}
+  .stat-row{
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+    flex-wrap:wrap;
+  }
+  .stat-badge{
+    flex:1;
+    min-width:90px;
+    text-align:center;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:8px 6px;
+  }
+  .stat-badge .num{font-size:20px;font-weight:800;color:var(--secondary-dark);}
+  .stat-badge .label{font-size:10.5px;color:var(--text-light);margin-top:2px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:22px 0 14px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .15s ease;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.04);
+  }
+  .card h3{
+    font-size:15.5px;
+    font-weight:800;
+    color:var(--primary-dark);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{padding-left:18px;margin:6px 0;}
+  .card li{font-size:13.5px;margin-bottom:4px;}
+  .why{
+    margin-top:10px;
+    background:#FFF9E8;
+    border-left:3px solid var(--accent);
+    padding:8px 10px;
+    font-size:12.5px;
+    border-radius:6px;
+    color:#6B5A1F;
+  }
+  .why b{color:var(--secondary-dark);}
+  .part-label{
+    font-size:11px;
+    font-weight:700;
+    color:#fff;
+    background:var(--secondary);
+    display:inline-block;
+    padding:2px 10px;
+    border-radius:999px;
+    margin-bottom:8px;
+    letter-spacing:.03em;
+  }
+  .quote-card{
+    border-left:4px solid var(--primary);
+    background:#F1F7F8;
+    padding:14px 16px;
+    border-radius:10px;
+    margin-bottom:12px;
+    font-style:italic;
+    font-size:14px;
+  }
+  .quote-tag{
+    display:inline-block;
+    margin-top:8px;
+    font-style:normal;
+    font-size:11px;
+    background:var(--accent);
+    color:#5A4600;
+    padding:2px 8px;
+    border-radius:6px;
+    font-weight:700;
+  }
+  .action-card{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 32px;
+    height:32px;
+    border-radius:50%;
+    background:var(--secondary);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:14px;
+  }
+  .bar-wrap{margin:10px 0;}
+  .bar-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;color:var(--text-light);}
+  .bar-bg{background:#EDEAE3;border-radius:6px;height:12px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--secondary),var(--accent));}
+  footer{
+    max-width:720px;
+    margin:24px auto 0;
+    padding:16px;
+    text-align:center;
+    font-size:11.5px;
+    color:var(--text-light);
+  }
+  @media (min-width:600px){
+    header h1{font-size:28px;}
+    .card h3{font-size:17px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">📚 心理学 / 行動変容</div>
+  <h1>スイッチ！「変われない」を変える方法</h1>
+  <div class="author">チップ・ハース、ダン・ハース</div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="hero-row">
+      <div class="hero-item question">
+        <div class="hero-label">❓ 問い</div>
+        <div class="hero-text">なぜ人や組織は、変わろうと決意してもすぐに元に戻ってしまうのか？</div>
+      </div>
+      <div class="hero-item answer">
+        <div class="hero-label">💡 答え（核心メッセージ）</div>
+        <div class="hero-text">変化が失敗するのは意志が弱いからではなく、理性（象使い）と感情（象）という2つの心の力がすれ違っているから。象使いに具体的な「台本」を与え、象に感情的な動機を吹き込み、行動しやすい「道筋」（環境）を整えれば、個人も組織も驚くほど確実に変われる。</div>
+      </div>
+      <div class="hero-item evidence">
+        <div class="hero-label">📊 根拠</div>
+        <div class="hero-text">ベトナムの栄養失調プログラムでは「ブライト・スポット」を真似るだけで半年後に65%の子どもの栄養状態が改善。ウエストバージニア州の牛乳キャンペーンでは低脂肪乳シェアが18%→41%に急伸した。</div>
+        <div class="stat-row">
+          <div class="stat-badge"><div class="num">65%</div><div class="label">栄養改善（ベトナム）</div></div>
+          <div class="stat-badge"><div class="num">18→41%</div><div class="label">低脂肪乳シェア</div></div>
+          <div class="stat-badge"><div class="num">3領域</div><div class="label">象使い・象・道筋</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">🔍 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </nav>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🐘 象と象使い</h3>
+      <ul>
+        <li>理性＝象使い、感情＝象という2つの独立したシステムが心の中にある</li>
+        <li>象使いは方向を示せるが、力の強い象を抑えきれず消耗する</li>
+        <li>象は感情のエネルギー源で、方向づけさえできれば強力な推進力になる</li>
+      </ul>
+      <div class="why"><b>理由：</b>変化を「意志力不足」ではなく「心の構造の問題」として捉え直せるから。</div>
+    </div>
+    <div class="card">
+      <h3>✨ ブライト・スポットを見つける</h3>
+      <ul>
+        <li>問題点ではなく、すでにうまくいっている例外的な成功に注目する</li>
+        <li>その成功の背後にある具体的な行動を分析する</li>
+        <li>見つけた行動を他の人にも真似してもらう</li>
+      </ul>
+      <div class="why"><b>理由：</b>ゼロから解決策を発明するより、既にある成功を真似る方が実行可能で説得力があるから。</div>
+    </div>
+    <div class="card">
+      <h3>📜 台本を明確にする</h3>
+      <ul>
+        <li>「もっと頑張る」のような曖昧な目標を捨てる</li>
+        <li>「次にとる1つの具体的な行動」だけを示す</li>
+        <li>選択肢を絞り、迷いをなくす</li>
+      </ul>
+      <div class="why"><b>理由：</b>象使いは選択肢が多いと分析麻痺に陥り、動けなくなるから。</div>
+    </div>
+    <div class="card">
+      <h3>🖼️ 目的地の絵はがきを見せる</h3>
+      <ul>
+        <li>ゴールを感情に訴える鮮明なイメージとして描く</li>
+        <li>小さくても具体的な成功イメージを共有する</li>
+        <li>進捗を可視化して実感させる</li>
+      </ul>
+      <div class="why"><b>理由：</b>抽象的な目標は感情（象）を動かせず、鮮やかな未来像だけが情熱を生むから。</div>
+    </div>
+    <div class="card">
+      <h3>🔻 変化を細かくする</h3>
+      <ul>
+        <li>大きな変化を、達成可能な小さなステップに分解する</li>
+        <li>最初の一歩のハードルを極限まで下げる</li>
+        <li>小さな勝利を積み重ねて勢いをつくる</li>
+      </ul>
+      <div class="why"><b>理由：</b>大きすぎる目標は象を怖がらせて動けなくするが、小さな成功体験は前進のエネルギーになるから。</div>
+    </div>
+    <div class="card">
+      <h3>🌱 人を育てる</h3>
+      <ul>
+        <li>「固定マインドセット」ではなく「成長マインドセット」を育む</li>
+        <li>失敗を学習の機会として再定義する</li>
+        <li>アイデンティティ（自分はどういう人間か）に訴えかける</li>
+      </ul>
+      <div class="why"><b>理由：</b>「自分は変われる」という信念こそが、困難を乗り越える持続力の源になるから。</div>
+    </div>
+    <div class="card">
+      <h3>🛤️ 環境を変える</h3>
+      <ul>
+        <li>行動を誘発・阻害する物理的/構造的な環境そのものを調整する</li>
+        <li>障害物を取り除き、望ましい選択をデフォルトにする</li>
+      </ul>
+      <div class="why"><b>理由：</b>環境の力は個人の意志力よりもはるかに強く、環境が変われば行動は自然に変わるから。</div>
+    </div>
+    <div class="card">
+      <h3>🐑 仲間を集める</h3>
+      <ul>
+        <li>行動は周囲に伝染することを利用する</li>
+        <li>「みんなやっている」という社会的証明をポジティブに使う</li>
+      </ul>
+      <div class="why"><b>理由：</b>人間は社会的動物であり、周囲の行動規範に強く影響されるから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+    <div class="card">
+      <span class="part-label">PART 1｜象使いに方向を教える</span>
+      <h3>ブライト・スポットを見つける</h3>
+      <ul>
+        <li>何がうまくいっているかに焦点を当てる</li>
+        <li>失敗の分析より成功例の分析を優先する</li>
+        <li>複製可能な行動を抽出して横展開する</li>
+      </ul>
+      <div class="why"><b>理由：</b>問題解決にかかる労力を大幅に減らせるから。</div>
+    </div>
+    <div class="card">
+      <span class="part-label">PART 1｜象使いに方向を教える</span>
+      <h3>台本を明確にする</h3>
+      <ul>
+        <li>曖昧な指示をなくし、次の一歩だけを示す</li>
+        <li>選択肢を絞って決断疲れを防ぐ</li>
+      </ul>
+      <div class="why"><b>理由：</b>分析麻痺を防ぎ、即座の行動につなげるため。</div>
+    </div>
+    <div class="card">
+      <span class="part-label">PART 1｜象使いに方向を教える</span>
+      <h3>目的地の絵はがきを見せる</h3>
+      <ul>
+        <li>ゴールを感情的に鮮明に描く</li>
+        <li>進捗を可視化し、達成感を実感させる</li>
+      </ul>
+      <div class="why"><b>理由：</b>曖昧な目標では人は動かないから。</div>
+    </div>
+    <div class="card">
+      <span class="part-label">PART 2｜象にやる気を与える</span>
+      <h3>感情を芽生えさせる</h3>
+      <ul>
+        <li>知識を伝えるだけでは人は変わらない</li>
+        <li>「知る」ではなく「感じる」体験を作る</li>
+      </ul>
+      <div class="why"><b>理由：</b>象（感情）は理屈ではなく感覚で動くから。</div>
+    </div>
+    <div class="card">
+      <span class="part-label">PART 2｜象にやる気を与える</span>
+      <h3>変化を細かくする</h3>
+      <ul>
+        <li>大きな変化を小さなステップに分割する</li>
+        <li>小さな勝利を積み重ねて勢いを作る</li>
+      </ul>
+      <div class="why"><b>理由：</b>大きすぎる変化は最初から心を折ってしまうから。</div>
+    </div>
+    <div class="card">
+      <span class="part-label">PART 2｜象にやる気を与える</span>
+      <h3>人を育てる</h3>
+      <ul>
+        <li>成長マインドセットを育てる</li>
+        <li>失敗を学習機会として再定義する</li>
+      </ul>
+      <div class="why"><b>理由：</b>「自分は変われる」という信念が持続の原動力になるから。</div>
+    </div>
+    <div class="card">
+      <span class="part-label">PART 3｜道筋を定める</span>
+      <h3>環境を変える</h3>
+      <ul>
+        <li>行動を誘発・阻害する環境を調整する</li>
+        <li>障害物を取り除き、望ましい選択をデフォルトにする</li>
+      </ul>
+      <div class="why"><b>理由：</b>環境の設計次第で、意志力に頼らず行動が変わるから。</div>
+    </div>
+    <div class="card">
+      <span class="part-label">PART 3｜道筋を定める</span>
+      <h3>習慣を生み出す</h3>
+      <ul>
+        <li>判断を要さない自動的な行動トリガーを作る</li>
+        <li>繰り返しやすい仕組みにする</li>
+      </ul>
+      <div class="why"><b>理由：</b>習慣化された行動は象使いのエネルギーを消耗しないから。</div>
+    </div>
+    <div class="card">
+      <span class="part-label">PART 3｜道筋を定める</span>
+      <h3>仲間を集める</h3>
+      <ul>
+        <li>行動が伝染することを利用する</li>
+        <li>「みんなやっている」を集団規範として示す</li>
+      </ul>
+      <div class="why"><b>理由：</b>人間は周囲の行動規範に強く影響される社会的動物だから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+    <div class="card">
+      <h3>🇻🇳 ベトナムの栄養失調プログラム</h3>
+      <p style="font-size:13.5px;">1990年、国際NGOの依頼でベトナムの貧困村を訪れたジェリー・スターニンは「なぜ栄養失調が起きるか」ではなく「同じ貧しい環境でも栄養状態の良い子どもがいるのはなぜか」を調べた。すると一部の母親が、通常は捨てられるサツマイモの葉や小エビを食事に加えていることを発見。この「ブライト・スポット」の行動を他の母親にも実践してもらうプログラムを行った。</p>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>半年後の栄養改善率</span><span>65%</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:65%;"></div></div>
+      </div>
+      <div class="why"><b>理由（この例が示すこと）：</b>問題の原因分析に時間をかけるより、すでにある小さな成功を見つけて広める方が、限られた資源でも確実に変化を生み出せる。</div>
+    </div>
+    <div class="card">
+      <h3>🥛 ウエストバージニア州「1%以下」牛乳キャンペーン</h3>
+      <p style="font-size:13.5px;">公衆衛生団体が1995年、高脂肪乳から低脂肪乳への切り替えを促すため「グラス一杯の全乳にはベーコン5枚分と同じ量の飽和脂肪が含まれる」という具体的なメッセージと、脂肪の量を透明な管に詰めて見せる演出を用いた。</p>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>キャンペーン前</span><span>18%</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:18%;"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>キャンペーン直後</span><span>41%</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:41%;"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>半年後も維持</span><span>35%</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:35%;"></div></div>
+      </div>
+      <div class="why"><b>理由（この例が示すこと）：</b>抽象的な健康教育よりも、感情に訴える具体的で鮮烈なイメージ（目的地の絵はがき）が行動変容を強力に後押しする。</div>
+    </div>
+    <div class="card">
+      <h3>🏫 ジョーンズ先生の「台本」</h3>
+      <p style="font-size:13.5px;">新任の小学1年生担任ジョーンズ先生は、落ち着きのないクラスに「もっと真面目に」という曖昧な指導ではなく、「今年度の終わりまでに、みんなで3年生になりましょう」という具体的で誇らしい目標を掲げた。生徒たちはこの分かりやすい「台本」と自己像を与えられ、クラス運営が大きく改善した。</p>
+      <div class="why"><b>理由（この例が示すこと）：</b>曖昧な精神論ではなく、具体的な行動指示とアイデンティティへの訴えかけを組み合わせることで、集団の行動を大きく変えられる。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+    <div class="quote-card">
+      「変化がうまくいかないとき、たいてい悪いのは人ではなく、状況（環境）である」
+      <div class="quote-tag">要旨</div>
+    </div>
+    <div class="quote-card">
+      「自己コントロールは筋肉のように使うほど疲れる資源であり、無限に湧いてくるものではない」
+      <div class="quote-tag">要旨</div>
+    </div>
+    <div class="quote-card">
+      「大きな変化を起こすには、まず小さな、確実に踏み出せる第一歩を用意しなければならない」
+      <div class="quote-tag">要旨</div>
+    </div>
+    <div class="quote-card">
+      「人は問題点を並べ立てられるより、すでにうまくいっている実例を見せられた方が動きやすい」
+      <div class="quote-tag">要旨</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div>
+        <h3 style="margin-bottom:4px;">「台本」を1つだけ書き出す</h3>
+        <p style="font-size:13.5px;">変えたい行動について、曖昧な目標ではなく「次に取る1つの具体的な行動」を1文で書き出す。</p>
+        <div class="why"><b>目的：</b>分析麻痺を防ぎ、迷わず着手できる状態を作る。<br><b>期待効果：</b>「何をすべきか」が明確になり、行動へのハードルが大きく下がる。</div>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div>
+        <h3 style="margin-bottom:4px;">自分の「ブライト・スポット」を探す</h3>
+        <p style="font-size:13.5px;">自分の生活や仕事の中で「すでにうまくいっている小さな例」を1つ見つけてメモする。</p>
+        <div class="why"><b>目的：</b>失敗ではなく成功パターンに注目する視点を養う。<br><b>期待効果：</b>今ある資源だけで再現可能な解決策が見つかり、変化への自信が高まる。</div>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div>
+        <h3 style="margin-bottom:4px;">環境を1つだけ変える</h3>
+        <p style="font-size:13.5px;">変えたい習慣のきっかけとなる環境を1つ変える（例：誘惑を目に入らない場所に移す、やりたい行動の道具を目立つ場所に置く）。</p>
+        <div class="why"><b>目的：</b>意志力に頼らず行動を誘発する仕組みを作る。<br><b>期待効果：</b>判断や我慢を必要とせず、自然と望ましい行動が選ばれるようになる。</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  📖 読書サマリー自動生成システム｜Web調査に基づくインフォグラフィック
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = document.querySelectorAll('section.panel');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      panels.forEach(function(p){ p.classList.remove('active'); p.setAttribute('hidden',''); });
+      tab.setAttribute('aria-selected','true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      panel.classList.add('active');
+      panel.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+</body>
+</html>
