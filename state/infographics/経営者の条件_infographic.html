@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>経営者の条件 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #1a5276 / セカンダリー #154360 / アクセント #f39c12 -->
+<style>
+:root {
+  --primary: #1a5276;
+  --secondary: #154360;
+  --accent: #f39c12;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff8ec, #fff2d9);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eaf2f8, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff9e6, #fffbf0);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📘 経営者の条件</h1>
+  <p>成果をあげる能力は才能でなく、修得できる習慣である</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>知識労働者はなぜ「頭がいい」だけでは成果をあげられないのか？どうすれば誰でも成果をあげる人（エグゼクティブ）になれるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>時間管理・貢献への集中・強みの活用・優先順位の決定・成果をあげる意思決定という5つの習慣を身につければ、才能に関係なく誰でも成果をあげられる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>知識労働の成果は工場労働のように目に見えず、上司も部下も「何をしているか」ではなく「何に貢献しているか」で評価するしかない。だからこそ自らを管理する力（セルフマネジメント）が成果の分岐点になる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>記録に基づき時間の使い方を可視化してまとめて使う、作業でなく貢献を問う、弱みでなく強みを軸に人を配置する、劣後順位を決めて一つに集中する、満場一致でなく対立する意見から検証可能な意思決定を導く。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>👔 エグゼクティブ（成果責任を負う知識労働者）</h3>
+    <ul>
+      <li>肩書きや部下の数でなく「意思決定が組織の成果にどれだけ影響するか」で定義される</li>
+      <li>管理職だけでなく専門職・個人事業主も含む知識労働者全般が対象</li>
+      <li>誰もが自分の職務範囲で「エグゼクティブ」として機能しうる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>肩書きでなく成果への影響力で捉えることで、本書の教えが管理職以外にも当てはまる普遍的なものになる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📈 成果をあげる能力（Effectiveness）</h3>
+    <ul>
+      <li>知的能力・想像力・知識をそのまま成果に変換する別の能力</li>
+      <li>生まれつきの才能ではなく、訓練によって身につく習慣</li>
+      <li>「頭がいい人ほど成果をあげる」とは限らないことを前提にする</li>
+    </ul>
+    <div class="metric">
+      <span class="metric-label">才能への依存度</span>
+      <div class="metric-bar"><div class="metric-fill" style="width: 20%;"></div></div>
+      <span class="metric-label">習慣の重要度</span>
+      <div class="metric-bar"><div class="metric-fill" style="width: 90%;"></div></div>
+    </div>
+    <div class="reason-box">
+      <strong>理由：</strong>「才能ではなく習慣」と定義することで、誰でも今日から実践して伸ばせる能力になる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏱️ 汝の時間を知れ</h3>
+    <ul>
+      <li>時間は最も希少で、借りることも増やすこともできない資源</li>
+      <li>記憶ではなく記録によって実際の使い方を可視化する</li>
+      <li>記録→整理（浪費の排除）→統合（まとまった時間の確保）の3段階</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>思い込みで時間を管理すると必ず現実とズレる。記録という事実に基づくことが改善の出発点になる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 貢献に焦点を合わせる</h3>
+    <ul>
+      <li>「自分は何をなすべきか」でなく「組織にどのような貢献ができるか」を問う</li>
+      <li>作業ベースの視点から成果ベースの視点への転換</li>
+      <li>知識労働者の仕事は目に見えないため、この問いが評価の軸になる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>視点を内向きの作業から外向きの成果へ変えることで、努力の方向がそのまま成果につながるようになる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💪 強みを生かせ</h3>
+    <ul>
+      <li>人の弱みを克服させることに時間を使うより、強みを軸に仕事を組み立てる</li>
+      <li>上司・部下・自分自身、すべてに同じ原則を適用する</li>
+      <li>強みのない人はいない。強みを生かせていない配置があるだけ</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>弱みの是正は平均点止まりだが、強みの活用は突出した成果を生み、組織全体の生産性を押し上げる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🥇 優先順位と劣後順位</h3>
+    <ul>
+      <li>重要な仕事は同時に複数追わず、一つに集中する</li>
+      <li>「何を先にやるか」だけでなく「何をやめるか（劣後順位）」を決める勇気が必要</li>
+      <li>過去の成功体験にしがみつかず、今の状況で優先度を見直す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>やることを増やすだけでは集中力が分散する。やめることを決めてこそ本当に重要なことに時間が使える。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ 成果をあげる意思決定</h3>
+    <ul>
+      <li>個別の問題を解くのでなく、繰り返し起こる問題を体系的なルールで解決する</li>
+      <li>満場一致ではなく、意見の対立から本質的な論点を引き出す</li>
+      <li>決定は検証可能な「仮説」として扱い、結果をフィードバックする</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>対立を経ない決定は視野が狭く、現実の複雑さを見落としたまま実行されるリスクが高い。
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>第1章｜成果をあげる能力は修得できる</h3>
+    <ul>
+      <li>知的能力や知識があっても、それを成果に変換する「効果性」という別の能力が必要</li>
+      <li>効果性は訓練によって身につく習慣であり、才能の有無を問わない</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>この前提がなければ、本書の残り全体（時間・貢献・強み・優先順位・意思決定）は「才能がある人向けの話」で終わってしまう。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章｜汝の時間を知れ</h3>
+    <ul>
+      <li>時間の使い方を記録し、非生産的な活動（不要な会議・報告）を体系的に削る</li>
+      <li>削った時間を継続してまとめ、意味のある大きな時間のブロックを作る</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>まとまった時間がなければ、考える仕事・重要な仕事は断片化した5分・10分では成立しない。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章｜どのような貢献ができるか</h3>
+    <ul>
+      <li>「何をなすべきか」でなく「組織の成果に何を貢献できるか」を自問する</li>
+      <li>視点が内向き（作業）から外向き（成果・顧客・組織全体）に変わる</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>忙しさと成果は一致しない。貢献を問う習慣がないと、努力が組織の目的から外れたまま積み重なる。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章｜強みを生かせ</h3>
+    <ul>
+      <li>上司・部下・自分自身の強みを最大限に活かす人事・組織設計を行う</li>
+      <li>弱みの克服より、強みを軸にした配置・意思決定を優先する</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>弱みをなくす努力は平均点までしか届かないが、強みを伸ばす努力は突出した成果につながる。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章｜最も重要なことから始めよ</h3>
+    <ul>
+      <li>複数の重要な仕事を同時に追わず、一つに集中する</li>
+      <li>過去にやってきたことでも、今は劣後順位であれば手放す勇気を持つ</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>優先順位だけを決めても、劣後順位（やめること）を決めなければ結局すべてに手を出し、何も終わらない。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章｜意思決定とは何か</h3>
+    <ul>
+      <li>意思決定とは、個々の出来事を解決することではなく、繰り返し起こる問題への原則・ルールを作ること</li>
+      <li>まず問題の種類（一般的か例外的か）を正しく見極めることが出発点</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>その場しのぎの対応を繰り返すエグゼクティブは、同じ問題に何度も時間を奪われ続ける。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第7章｜成果をあげる意思決定とは</h3>
+    <ul>
+      <li>満場一致で決まった案件はむしろ疑い、意図的に対立する意見を引き出す</li>
+      <li>決定は検証可能な仮説として扱い、実行後に結果を確認するフィードバックを組み込む</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>対立のない決定は視野が狭いまま実行され、想定外の事態への備えを欠く。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>終章｜成果をあげることを修得せよ</h3>
+    <ul>
+      <li>時間・貢献・強み・優先順位・意思決定の5つの習慣を日々の実践に組み込む</li>
+      <li>これらは互いに補い合う一つの体系であり、どれか一つだけでは効果が薄い</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>体系として実践することで、才能や役職に関わらず誰もが成果をあげる人になれるという本書の主張が完結する。</div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>🚗 GM社アルフレッド・スローンの「全会一致への警戒」</h3>
+    <ul>
+      <li>スローンは経営会議で全員が異論なく賛成した際、その場で決定せず持ち越した</li>
+      <li>あえて反対意見や別の視点を引き出してから、あらためて議論をやり直した</li>
+      <li>満場一致は「検討が浅い」信号だと捉えていた</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>良い意思決定は合意そのものではなく、対立する視点を経て初めて生まれる、という本書の中核原則を体現している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎖️ トルーマンとアイゼンハワーの「命令とフィードバック」</h3>
+    <ul>
+      <li>トルーマン大統領は、軍人だったアイゼンハワーが大統領に就任した際「これからは命令しても実行されないだろう」と評したという逸話が引かれる</li>
+      <li>軍隊では、決定した本人が現場に出て結果を確認する仕組みが機能の前提になっている</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>決定を下すだけでは不十分で、結果を自分の目で確認するフィードバックの仕組みが意思決定の精度を保つ、という点を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗓️ 会議の「時間泥棒」対策</h3>
+    <ul>
+      <li>関係者の予定を毎回個別調整するのでなく「何月何日この趣旨で会議を開く。関心のある人は参加し、決定事項は後日文書で共有する」という運用に変える</li>
+      <li>個人の意志力ではなく、仕組みの設計によって時間の浪費を減らす</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>時間管理は「頑張って集中する」ことではなく、浪費が起きにくい仕組みを作ることで解決できることを示す実例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👁️ 知識労働者の「見えない成果」</h3>
+    <ul>
+      <li>工場労働者の仕事ぶりは生産数として目に見えるが、知識労働者の仕事ぶりはそうではない</li>
+      <li>そのため上司は部下に「あなたは何に貢献できるか」を問い続ける必要がある</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>知識労働の評価は「貢献に焦点を合わせる」習慣がなければ機能しないことを具体的に示している。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">「成果をあげる能力は、修得できる」（要旨）</p>
+    <p class="quote-why">本書冒頭で示される核となる立場。効果性を才能論から引き離し、訓練可能な習慣として位置づける一文。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">「組織の目的は、凡人をして非凡なことを行わせることにある」（要旨）</p>
+    <p class="quote-why">ドラッカーの経営思想全体を象徴する一節。特別な才能を前提とせず、仕組みと習慣で成果を引き出す姿勢を表す。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">「汝の時間を知れ」</p>
+    <p class="quote-why">第2章の見出し。時間管理の出発点は「記憶」ではなく「記録」であるという主張を凝縮した言葉。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">「満場一致で決まった決定は疑ってみるべきである」（要旨）</p>
+    <p class="quote-why">GM社スローンの逸話とともに語られる原則。異論のなさは検討不足のサインだと捉える発想の転換。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日できるアクション</h2>
+
+  <div class="action-card">
+    <h4>📝 直近1週間の時間の使い方を記録する</h4>
+    <p><strong>やること：</strong>直近の予定表・作業ログを振り返り、実際に時間を使った活動をカテゴリ別（会議／作業／連絡／移動など）に15分で書き出す。</p>
+    <p><strong>目的：</strong>記憶でなく事実で自分の時間の使い方を把握する。</p>
+    <p><strong>期待効果：</strong>「思っていたより会議や雑務に時間を奪われている」ことが可視化され、翌週の時間配分を見直すきっかけになる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🎯 「自分の貢献」を3つ書き出す</h4>
+    <p><strong>やること：</strong>「自分の仕事」ではなく「自分がチーム・会社にどんな貢献ができるか」を3つ、15分で書き出す。</p>
+    <p><strong>目的：</strong>作業視点から貢献視点への転換を体験する。</p>
+    <p><strong>期待効果：</strong>目先のタスクの優先順位が変わり、成果につながる行動が明確になる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🗑️ 「やめること」を1つ決めて宣言する</h4>
+    <p><strong>やること：</strong>今週のタスクリストのうち、劣後順位（やめる・後回しにする）を最低1つ決め、関係者に伝える。10〜20分。</p>
+    <p><strong>目的：</strong>優先順位ではなく劣後順位を決める練習をする。</p>
+    <p><strong>期待効果：</strong>重要な仕事に使える時間が増え、集中の質が上がる。</p>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
