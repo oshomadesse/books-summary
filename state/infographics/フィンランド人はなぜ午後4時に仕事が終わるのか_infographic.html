@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット:
+  --primary:   #1B3A6B (ノルディックブルー / フィンランドの空と湖)
+  --secondary: #4F9DDE (スカイブルー / 明るさ・開放感)
+  --accent:    #F2A93B (サウナ・白夜の温かみ)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>フィンランド人はなぜ午後4時に仕事が終わるのか｜インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#1B3A6B;
+    --primary-light:#2C5187;
+    --secondary:#4F9DDE;
+    --accent:#F2A93B;
+    --bg:#F5F8FC;
+    --card-bg:#FFFFFF;
+    --text:#1E2430;
+    --text-sub:#5B6472;
+    --border:#E1E8F0;
+    --shadow: 0 4px 14px rgba(27,58,107,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--primary-light) 55%, var(--secondary) 100%);
+    color:#fff;
+    padding:28px 18px 22px;
+    text-align:center;
+  }
+  header.hero .eyebrow{
+    font-size:12px;
+    letter-spacing:0.12em;
+    opacity:0.85;
+    margin-bottom:8px;
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 6px;
+    line-height:1.5;
+  }
+  header.hero .author{
+    font-size:13px;
+    opacity:0.9;
+  }
+
+  .whblock{
+    max-width:720px;
+    margin:-18px auto 0;
+    padding:0 14px;
+  }
+  .whcard{
+    background:var(--card-bg);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    padding:18px 16px;
+    border-top:4px solid var(--accent);
+  }
+  .whcard h2{
+    font-size:14px;
+    color:var(--primary);
+    margin:0 0 10px;
+  }
+  .whrow{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+    align-items:flex-start;
+  }
+  .whtag{
+    flex-shrink:0;
+    font-size:11px;
+    font-weight:bold;
+    color:#fff;
+    background:var(--primary);
+    padding:3px 8px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .whrow.answer .whtag{background:var(--accent);}
+  .whrow.why .whtag{background:var(--secondary);}
+  .whtext{font-size:14px;}
+
+  .stats{
+    max-width:720px;
+    margin:16px auto 0;
+    padding:0 14px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+  }
+  .stat{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:14px 10px;
+    text-align:center;
+    box-shadow:var(--shadow);
+  }
+  .stat .num{
+    font-size:22px;
+    font-weight:bold;
+    color:var(--primary);
+  }
+  .stat .num span{color:var(--accent);}
+  .stat .label{
+    font-size:11px;
+    color:var(--text-sub);
+    margin-top:4px;
+  }
+  .barwrap{
+    max-width:720px;
+    margin:12px auto 0;
+    padding:0 14px;
+  }
+  .barcard{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:14px 16px;
+    box-shadow:var(--shadow);
+  }
+  .barcard h3{font-size:12px;color:var(--text-sub);margin:0 0 10px;font-weight:normal;}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px;}
+  .bar-row .bar-label{width:92px;flex-shrink:0;color:var(--text-sub);}
+  .bar-track{flex:1;background:var(--border);border-radius:999px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--secondary),var(--primary));}
+  .bar-fill.accent{background:linear-gradient(90deg,var(--accent),#e08e1f);}
+  .bar-val{width:44px;text-align:right;font-weight:bold;color:var(--primary);}
+
+  nav.tabs{
+    position:sticky;
+    top:0;
+    z-index:10;
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    background:var(--bg);
+    padding:14px 12px 8px;
+    max-width:720px;
+    margin:0 auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--text-sub);
+    font-size:12.5px;
+    padding:9px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+    font-weight:bold;
+  }
+
+  main{
+    max-width:720px;
+    margin:0 auto;
+    padding:6px 14px 40px;
+  }
+  section.tabpanel{display:none;}
+  section.tabpanel.active{display:block;}
+
+  .card{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+    border-left:4px solid var(--secondary);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{margin:0 0 10px;padding-left:1.1em;font-size:13.5px;}
+  .card ul li{margin-bottom:4px;}
+  .why{
+    font-size:12.5px;
+    color:var(--text-sub);
+    background:#F0F5FB;
+    border-radius:8px;
+    padding:8px 10px;
+    margin-top:6px;
+  }
+  .why b{color:var(--primary);}
+
+  .quote{
+    background:#fff;
+    border-radius:14px;
+    padding:16px 16px 14px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+    border-left:4px solid var(--accent);
+  }
+  .quote p.q{
+    font-size:14.5px;
+    font-style:italic;
+    color:var(--text);
+    margin:0 0 8px;
+  }
+  .quote .note{
+    font-size:12px;
+    color:var(--text-sub);
+  }
+  .badge-gist{
+    display:inline-block;
+    font-size:10.5px;
+    color:#8a5a00;
+    background:#FFF2DA;
+    border-radius:6px;
+    padding:1px 6px;
+    margin-right:6px;
+  }
+
+  .action{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+    border-left:4px solid var(--primary);
+  }
+  .action h3{margin:0 0 6px;font-size:15px;color:var(--primary);}
+  .action .meta{font-size:12.5px;color:var(--text-sub);margin-bottom:4px;}
+  .action .meta b{color:var(--text);}
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--text-sub);
+    padding:10px 14px 30px;
+  }
+
+  @media (prefers-color-scheme: dark){
+    body{background:#12161d;color:#E7ECF3;}
+    .card,.quote,.action,.stat,.barcard,.whcard{background:#1A2029;box-shadow:none;border-color:#2A3340;}
+    nav.tabs{background:#12161d;}
+    nav.tabs button{background:#1A2029;color:#9AA6B5;border-color:#2A3340;}
+    .why{background:#202838;}
+    .bar-track{background:#2A3340;}
+    footer{color:#8291A3;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">📖 今日の一冊</div>
+  <h1>フィンランド人はなぜ午後4時に仕事が終わるのか</h1>
+  <div class="author">堀内都喜子（著）｜ポプラ新書</div>
+</header>
+
+<div class="whblock">
+  <div class="whcard">
+    <h2>🔎 要約：問い × 答え × 根拠</h2>
+    <div class="whrow question">
+      <span class="whtag">問い</span>
+      <span class="whtext">なぜフィンランド人は、高い経済成果を保ちながら午後4時には仕事を終えられるのか？</span>
+    </div>
+    <div class="whrow answer">
+      <span class="whtag">答え</span>
+      <span class="whtext">「働く時間」と「休む時間」を明確に分け、定時に帰ることを「できる人の証」とする文化を国全体で共有しているから。休むことは怠けではなく、次の生産性への投資と捉えられている。</span>
+    </div>
+    <div class="whrow why">
+      <span class="whtag">根拠</span>
+      <span class="whtext">幸福度ランキング9年連続世界1位、1人あたりGDPは日本の約1.25倍、有給休暇消化率はほぼ100%、リモートワーク実施率は約3割という実データが裏づける。</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num"><span>9</span>年連続</div><div class="label">世界幸福度ランキング1位</div></div>
+    <div class="stat"><div class="num">GDP <span>1.25</span>倍</div><div class="label">1人あたり・対日本比</div></div>
+    <div class="stat"><div class="num">約<span>100</span>%</div><div class="label">有給休暇消化率</div></div>
+    <div class="stat"><div class="num">約<span>50</span>万軒</div><div class="label">国内のサマーコテージ数</div></div>
+  </div>
+
+  <div class="barwrap">
+    <div class="barcard">
+      <h3>年間の「休み」のボリューム感（目安）</h3>
+      <div class="bar-row">
+        <span class="bar-label">夏休み</span>
+        <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+        <span class="bar-val">約1ヶ月</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">週の労働時間</span>
+        <div class="bar-track"><div class="bar-fill" style="width:60%"></div></div>
+        <span class="bar-val">40h以内</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">在宅勤務率</span>
+        <div class="bar-track"><div class="bar-fill accent" style="width:30%"></div></div>
+        <span class="bar-val">約30%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">土曜サウナ率</span>
+        <div class="bar-track"><div class="bar-fill accent" style="width:90%"></div></div>
+        <span class="bar-val">9割超</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+  <button role="tab" aria-selected="true" aria-controls="panel-concept" id="tab-concept">🧩 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapter" id="tab-chapter">📖 各章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-example" id="tab-example">💡 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quote" id="tab-quote">🗨️ 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-action" id="tab-action">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <section id="panel-concept" class="tabpanel active" role="tabpanel" aria-labelledby="tab-concept">
+
+    <div class="card">
+      <h3>🌿 ウェルビーイング</h3>
+      <ul>
+        <li>身体的・精神的・社会的に「良好な状態」にあることを指す考え方</li>
+        <li>フィンランドでは個人の生き方だけでなく国の政策全体の土台になっている</li>
+        <li>「仕事の成果」と「心身の健康」を対立させず両立させる前提として機能する</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>この思想があるからこそ「休むこと」に罪悪感がなく、休養を正当な投資として扱える。</div>
+    </div>
+
+    <div class="card">
+      <h3>⏰ フレックスタイム制度</h3>
+      <ul>
+        <li>法律上、雇用主の同意があれば就労時間の半分を自分で決められる</li>
+        <li>子どもの送り迎えや通院、趣味の時間に合わせて出退勤を調整できる</li>
+        <li>「何時に来たか」より「何を成果として出したか」が評価される</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>時間の自己決定権があるからこそ、定時退社への後ろめたさが生まれにくい。</div>
+    </div>
+
+    <div class="card">
+      <h3>🤝 フラットな組織文化</h3>
+      <ul>
+        <li>肩書き・年齢・性別に関係なく誰もが意見を言える職場</li>
+        <li>厳密な先輩後輩関係や年功序列がほとんど存在しない</li>
+        <li>肩書きは「序列」ではなく「担当領域」を示すラベルにすぎない</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>上司の顔色や忖度で残業する必要がなく、各自が自分の判断で仕事を終えられる。</div>
+    </div>
+
+    <div class="card">
+      <h3>💰 有給休暇消化率ほぼ100%</h3>
+      <ul>
+        <li>夏季（5〜9月）に12日間の連続休暇取得が法律で義務づけられている</li>
+        <li>有休取得時に休暇手当として日給の50%が上乗せされる制度もある</li>
+        <li>「休むほど得をする」仕組みが行動を後押ししている</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>「休みたいけど休みにくい」という日本的な葛藤を、制度設計そのもので解消している。</div>
+    </div>
+
+    <div class="card">
+      <h3>🏃 タウコユンパ（エクササイズ休憩）</h3>
+      <ul>
+        <li>企業や大学で毎日決まった時間に集まり、軽い運動をする習慣</li>
+        <li>短時間の運動で頭をリセットし、午後の集中力を回復させる</li>
+        <li>個人任せではなく、組織として休憩の質を設計している点が特徴</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>「休憩の取り方」まで文化・制度化されていることが、持続的な生産性を支えている。</div>
+    </div>
+
+    <div class="card">
+      <h3>🗓️ よい会議の8つのルール</h3>
+      <ul>
+        <li>目的・決定事項・終了時刻を事前に共有し、全員を議論に巻き込む</li>
+        <li>「顔合わせのための会議」をほぼ行わない</li>
+        <li>時間厳守を徹底し、だらだらと延長しない</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>会議の無駄を削ることが、そのまま定時退社の物理的な余白を生む。</div>
+    </div>
+
+    <div class="card">
+      <h3>🏡 サマーコテージ文化</h3>
+      <ul>
+        <li>国内に約50万軒あるとされる、休暇専用の別荘・小屋</li>
+        <li>夏はブルーベリー摘みやサウナ、白夜を楽しみながら過ごす</li>
+        <li>「仕事の場所」と完全に切り離された物理的な避難先を持つ</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>空間を切り替えることで、頭も仕事モードから完全にオフに切り替えられる。</div>
+    </div>
+
+    <div class="card">
+      <h3>🙅 残業しない文化</h3>
+      <ul>
+        <li>企業も従業員も残業に否定的で、早く帰ることが文化として定着</li>
+        <li>「大変な仕事を簡単そうに、効率よくこなす人」が評価される</li>
+        <li>周囲がまだ働いていても、先に帰ることに後ろめたさを感じない</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>「頑張っている姿」ではなく「出した成果」で評価する価値観の転換が根底にある。</div>
+    </div>
+
+  </section>
+
+  <section id="panel-chapter" class="tabpanel" role="tabpanel" aria-labelledby="tab-chapter">
+
+    <div class="card">
+      <h3>1章 ゆとりに幸せを感じる</h3>
+      <ul>
+        <li>フィンランドの国としての価値観＝ウェルビーイングの紹介</li>
+        <li>幸福度ランキング上位を支える社会的支援・自由度・信頼の高さ</li>
+        <li>「頑張る」より「満たされる」ことを優先する国民性</li>
+      </ul>
+      <div class="why"><b>理由：</b>この章が本全体の土台となる価値観を提示し、以降の具体策の「なぜ」を説明している。</div>
+    </div>
+
+    <div class="card">
+      <h3>2章 フィンランドの効率のいい働き方</h3>
+      <ul>
+        <li>フレックスタイムと法律に裏づけられた柔軟な働き方</li>
+        <li>「よい会議の8つのルール」による無駄の排除</li>
+        <li>残業しないことが「できる人」の証という価値転換</li>
+      </ul>
+      <div class="why"><b>理由：</b>定時退社を精神論でなく仕組みで支えている点が、日本の職場に応用可能な最大のヒント。</div>
+    </div>
+
+    <div class="card">
+      <h3>3章 心地いい働き方</h3>
+      <ul>
+        <li>肩書き・年齢・性別が関係ないフラットな職場関係</li>
+        <li>タウコユンパなど、組織が設計する休憩の仕組み</li>
+        <li>上司・部下ではなく対等な関係性でのコミュニケーション</li>
+      </ul>
+      <div class="why"><b>理由：</b>働きやすさは制度だけでなく人間関係のフラットさからも生まれることを示している。</div>
+    </div>
+
+    <div class="card">
+      <h3>4章 上手な休み方</h3>
+      <ul>
+        <li>土曜日はサウナの日、9割以上が習慣として実践</li>
+        <li>約50万軒のサマーコテージで過ごす1ヶ月の夏休み</li>
+        <li>有給休暇消化率ほぼ100%を支える制度的インセンティブ</li>
+      </ul>
+      <div class="why"><b>理由：</b>「休み方」自体にも技術と文化があり、それが翌日以降の生産性に直結することを描いている。</div>
+    </div>
+
+  </section>
+
+  <section id="panel-example" class="tabpanel" role="tabpanel" aria-labelledby="tab-example">
+
+    <div class="card">
+      <h3>💼 午後4時半にはオフィスに誰もいなくなる</h3>
+      <ul>
+        <li>背景：業界・企業規模を問わず1日8時間・週40時間以内の勤務が厳格に守られている</li>
+        <li>示唆：時間を守って帰ることが「サボり」ではなく「効率よく成果を出した証」として扱われる</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>時間の使い方に対する評価軸そのものが、日本の一般的な職場と逆転している。</div>
+    </div>
+
+    <div class="card">
+      <h3>🏖️ 有休消化率ほぼ100%を実現する制度</h3>
+      <ul>
+        <li>背景：夏季に12日間の連続休暇取得が法律で義務化されている</li>
+        <li>示唆：休暇手当（日給の50%上乗せ）など、休むこと自体に経済的インセンティブを設計している</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「休みを取ってください」という掛け声だけでなく、制度で行動を変えている好例。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧖 土曜はサウナの日</h3>
+      <ul>
+        <li>背景：9割以上の人が習慣的にサウナを利用し、接待の場としても使われる</li>
+        <li>示唆：仕事と無関係な場で信頼関係を築く文化が、平日の効率的な協働にもつながっている</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>リラックスの時間が単なる娯楽でなく、人間関係の資本を育てる場になっている。</div>
+    </div>
+
+    <div class="card">
+      <h3>🤸 タウコユンパで午後の集中力を回復</h3>
+      <ul>
+        <li>背景：企業や大学の広いスペースに毎日決まった時間に人が集まり、軽い運動をする</li>
+        <li>示唆：個人の意志に頼らず、組織が「休憩の型」を用意することで習慣化に成功している</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>休憩の質を上げる工夫は、大掛かりな制度改革でなくても始められることを示す。</div>
+    </div>
+
+  </section>
+
+  <section id="panel-quote" class="tabpanel" role="tabpanel" aria-labelledby="tab-quote">
+
+    <div class="quote">
+      <span class="badge-gist">要旨</span>
+      <p class="q">「人は人、自分は自分。規定の時間数を働いたら帰るのは当然」――フィンランドでは、この考え方が特別なものではなく、社会全体で共有された当たり前の価値観になっている。</p>
+      <div class="note">原典からの直接引用は確認できなかったため、本の紹介記事群から趣旨を要約したもの。</div>
+    </div>
+
+    <div class="quote">
+      <span class="badge-gist">要旨</span>
+      <p class="q">フィンランド人にとって「1年は11ヶ月」――1ヶ月分の夏休みをあらかじめ差し引いて、年間の仕事や生活の計画を立てるという発想が広く根づいている。</p>
+      <div class="note">原典からの直接引用は確認できなかったため、本の紹介記事群から趣旨を要約したもの。</div>
+    </div>
+
+  </section>
+
+  <section id="panel-action" class="tabpanel" role="tabpanel" aria-labelledby="tab-action">
+
+    <div class="action">
+      <h3>① 「退社時刻」を予定としてブロックする</h3>
+      <div class="meta"><b>目的：</b>定時退社への心理的ハードルを下げる</div>
+      <div class="meta"><b>行動：</b>今日の終業予定時刻をカレンダーに「退社時刻」として登録し、その時間になったら仕事を切り上げる練習をする（15〜20分）</div>
+      <div class="meta"><b>期待効果：</b>「残業しないこと」への後ろめたさを減らす第一歩になる</div>
+    </div>
+
+    <div class="action">
+      <h3>② 次の会議を「よい会議」化する</h3>
+      <div class="meta"><b>目的：</b>会議の無駄を削り、退社時刻までの余白をつくる</div>
+      <div class="meta"><b>行動：</b>直近の会議1つについて、目的・決定事項・終了時刻を1行にまとめた事前メモを作成し共有する（15〜20分）</div>
+      <div class="meta"><b>期待効果：</b>「顔合わせ目的」の会議が減り、意思決定のスピードが上がる</div>
+    </div>
+
+    <div class="action">
+      <h3>③ タウコユンパ式の休憩を1回入れる</h3>
+      <div class="meta"><b>目的：</b>短時間で集中力を回復させる休憩の型を体験する</div>
+      <div class="meta"><b>行動：</b>仕事から完全に離れて20〜30分、軽い散歩やストレッチを行う</div>
+      <div class="meta"><b>期待効果：</b>短時間でも仕事の質が回復することを体感でき、休憩への抵抗感が下がる</div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  本インフォグラフィックはWeb上で確認できた公開情報をもとに要約・再構成したものです。
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){
+        t.setAttribute('aria-selected','false');
+        document.getElementById(t.getAttribute('aria-controls')).classList.remove('active');
+      });
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
