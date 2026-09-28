@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>神・時間術 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #2c3e91 / セカンダリー #1a237e / アクセント #ff6b35 -->
+<style>
+:root {
+  --primary: #2c3e91;
+  --secondary: #1a237e;
+  --accent: #ff6b35;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fff3ec, #ffe8db);
+  border-left: 3px solid var(--accent);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eaecf9, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.metric-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  min-width: 80px;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.cycle-badges {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.6rem;
+}
+.cycle-badge {
+  flex: 1;
+  min-width: 80px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  border-radius: 10px;
+  padding: 0.8rem 0.4rem;
+}
+.cycle-badge .num {
+  font-size: 1.4rem;
+  font-weight: 800;
+  display: block;
+}
+.cycle-badge .label {
+  font-size: 0.75rem;
+  opacity: 0.9;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff3ec, #fff9f5);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⏱️ 神・時間術</h1>
+  <p>脳のパフォーマンスを最大まで引き出す集中力ベースの時間術</p>
+</header>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>同じ24時間しかないのに、なぜ生産性の高い人とそうでない人に差が生まれるのか？どうすれば時間を「増やす」ことができるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>時間は「長さ」ではなく「集中力との掛け算」で決まる。集中力が最も高い脳のゴールデンタイム（起床後2〜3時間）に重い仕事を配置し、集中力の波（15・45・90分サイクル）に合わせて作業と休息を組み替えれば、同じ時間でも生産量は2倍、3倍に増やせる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>精神科医である著者によれば、脳のパフォーマンスは一日を通して一定ではなく、起床後の数時間にピークを迎え、その後は生理的に低下していく。時間の「長さ」だけを見て仕事を割り振ると、集中力の低い時間帯に重要な仕事を置いてしまい、質・スピードともに大きく損をする。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>朝は集中系（思考・執筆・語学）、昼は仮眠と軽い運動でリセット、夜は運動と睡眠で翌日への回復、仕事はシングルタスクの積み重ねとスキマ時間の活用で時間を創出し、生まれた自由時間は浪費せず自己投資とリフレッシュに使う。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>⚖️ 時間×集中力の掛け算</h3>
+    <ul>
+      <li>生産性を「時間の長さ」ではなく「時間×集中力」という掛け算で捉え直す</li>
+      <li>管理すべき対象は時間そのものでなく、アウトプットの質と量</li>
+      <li>同じ1時間でも集中力次第で成果は何倍にも変わる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>時間だけを基準にすると「長時間労働＝頑張っている」という錯覚に陥る。集中力という変数を加えることで、本当に生産的な時間の使い方が見えてくる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌅 脳のゴールデンタイム</h3>
+    <ul>
+      <li>起床後2〜3時間は脳が最も冴えている「ゴールデンタイム」</li>
+      <li>朝の1時間は夜の集中力が落ちた状態の数時間分の価値がある</li>
+      <li>思考・執筆・語学学習など高い集中力を要する仕事はこの時間に配置する</li>
+    </ul>
+    <div class="metric">
+      <span class="metric-label">朝のゴールデンタイム</span>
+      <div class="metric-bar"><div class="metric-fill" style="width: 95%;"></div></div>
+      <span class="metric-label">夜の集中力</span>
+      <div class="metric-bar"><div class="metric-fill" style="width: 25%;"></div></div>
+    </div>
+    <div class="reason-box">
+      <strong>理由：</strong>睡眠によって脳の疲労がリセットされた直後が最も情報処理能力が高く、時間が経つほどノイズ（雑念・疲労）が蓄積して集中力は下がっていく。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔁 15・45・90の集中力サイクル</h3>
+    <ul>
+      <li>人間の集中力には「15分」「45分」「90分」という持続の単位がある</li>
+      <li>作業時間をこの単位に合わせて区切り、区切りごとに小休止を挟む</li>
+      <li>タスクの重さに応じてどのサイクルを使うかを選ぶ</li>
+    </ul>
+    <div class="cycle-badges">
+      <div class="cycle-badge"><span class="num">15分</span><span class="label">短い集中単位</span></div>
+      <div class="cycle-badge"><span class="num">45分</span><span class="label">標準的な集中単位</span></div>
+      <div class="cycle-badge"><span class="num">90分</span><span class="label">深い集中の上限</span></div>
+    </div>
+    <div class="reason-box">
+      <strong>理由：</strong>集中力は無限に持続しないため、限界が来る前に意図的に休むことで、1日トータルの集中の質を高く保てる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>😴 午後のリセット術（仮眠×カフェインナップ）</h3>
+    <ul>
+      <li>午後に訪れる眠気・集中力低下は、20〜30分の仮眠でリセットする</li>
+      <li>仮眠の直前にコーヒーなどカフェインを摂ると、目覚める頃に効果が表れて自然にすっきり起きられる</li>
+      <li>仮眠の代わりに軽い運動（散歩など）でも同様のリセット効果が得られる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>眠気を我慢しながら作業を続けるより、短時間のリセットを挟んだ方がトータルの生産性は高くなる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏃 夜の運動＆睡眠リセット</h3>
+    <ul>
+      <li>夜の軽い有酸素運動が脳の疲労回復と翌日のパフォーマンスに影響する</li>
+      <li>毎日同じ時間に眠り、同じ時間に起きる規則正しいリズムを重視する</li>
+      <li>睡眠の質を上げることが、翌朝のゴールデンタイムの質に直結する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>睡眠は単なる休息でなく翌日の脳の性能を決める「準備時間」であり、ここを整えずに時間術だけを実践しても効果は半減する。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧩 シングルタスク×複数化</h3>
+    <ul>
+      <li>マルチタスク（同時並行）は集中力を分散させ、結果的に効率を落とす</li>
+      <li>一つの作業に集中する「シングルタスク」を、時間で区切って複数個並べる</li>
+      <li>タスク間の切り替えコストを意識し、まとめて処理できる作業はまとめる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>脳は同時に複数のことに深く集中できないため、並行処理のつもりが実際には頻繁な切り替えによる損失を生んでいる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏳ 時間創出仕事術（スキマ時間の活用）</h3>
+    <ul>
+      <li>通勤や待ち時間などの「スキマ時間」を、軽いインプットや準備作業に充てる</li>
+      <li>締め切りをあえて設定し、時間的な制約から集中力を引き出す</li>
+      <li>作業のまとめ処理・仕組み化によって、そもそもの作業時間自体を減らす</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>1日の中に散らばる細切れ時間を意識的に使うことで、まとまった時間を圧迫せずに追加の生産性を積み増せる。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌱 自己投資＆リフレッシュ</h3>
+    <ul>
+      <li>時間術によって生まれた自由時間を、惰性の暇つぶしで消費しない</li>
+      <li>学び・運動・趣味など、将来の自分に返ってくる使い方を優先する</li>
+      <li>リフレッシュも「戦略的な仕事の一部」として位置づける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>時間を効率化する目的は「もっと働くこと」ではなく、人生全体の充実度を高めることにあるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>序章｜「神・時間術」4つの原則</h3>
+    <ul>
+      <li>時間は「長さ」でなく「集中力との掛け算」で管理する、という本書全体の前提を提示</li>
+      <li>集中力を基準に1日を朝・昼・夜・仕事・自由時間の5つの局面に分けて最適化する構成を示す</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>この前提を共有しないと、以降の各章が単なる小手先のテクニック集に見えてしまう。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第1章｜脳の機能を最大に生かす集中力の高め方</h3>
+    <ul>
+      <li>集中力は一日を通して一定でなく、時間帯や生理状態によって変動することを解説</li>
+      <li>15・45・90分の集中力サイクルを軸に、作業と休憩の設計方法を示す</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>集中力の性質を理解しないまま時間管理をしても、限界を超えた無理な作業配分をしてしまう。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章｜朝の時間を最大に生かす脳のゴールデンタイム術</h3>
+    <ul>
+      <li>起床後2〜3時間の「ゴールデンタイム」に最も重要な仕事を配置する</li>
+      <li>朝にメールやSNSなど受動的な作業をしないことの重要性を説く</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>1日で最も貴重な時間帯を雑務で消費してしまうと、その日全体の生産性が大きく損なわれる。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章｜昼の時間を最大に生かす午後のリセット術</h3>
+    <ul>
+      <li>午後に訪れる集中力の低下を、仮眠・カフェインナップ・軽い運動でリセットする方法</li>
+      <li>眠気を我慢して作業を続けることの非効率性を指摘する</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>午後をリセットせずに乗り切ろうとすると、夕方まで低い集中力を引きずり続けてしまう。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章｜夜の時間を最大に生かす運動＆睡眠リセット術</h3>
+    <ul>
+      <li>夜の軽い運動と質の高い睡眠が、翌日のゴールデンタイムの質を決める</li>
+      <li>毎日同じ時刻に眠り、同じ時刻に起きる生活リズムの重要性を説く</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>1日単位の時間術は、睡眠という「翌日への投資」が土台になければ長続きしない。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章｜仕事の時間を最大に生かす時間創出仕事術</h3>
+    <ul>
+      <li>シングルタスク×複数化、スキマ時間の活用、締め切りの設定などで仕事時間そのものを圧縮する</li>
+      <li>マルチタスクによる切り替えコストを避け、作業をまとめて処理する工夫を紹介</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>時間帯ごとの最適化だけでなく、仕事の進め方自体を見直すことで、さらに多くの時間を生み出せる。</div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第6章｜自由時間を最大に生かす自己投資＆リフレッシュ術</h3>
+    <ul>
+      <li>時間術によって創出した自由時間を、成長やリフレッシュに戦略的に使う方法を提示</li>
+      <li>「頑張って時間を作る」ことのゴールが、人生全体の充実であることを再確認する</li>
+    </ul>
+    <div class="reason-box"><strong>理由：</strong>自由時間の使い方まで含めて設計しないと、時間術は「仕事をより詰め込むための技術」に矮小化されてしまう。</div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>✍️ 著者自身の「仕事×趣味」両立の実践</h3>
+    <ul>
+      <li>精神科医としての診療に加え、執筆・メルマガ・YouTube・Facebook・ブログの更新をこなす</li>
+      <li>月に20冊以上の読書と月1回の講演もこなしながら、趣味やリフレッシュの時間も確保している</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「時間×集中力」の発想を徹底すれば、一見不可能に思える量のアウトプットと自由時間の両立が現実に可能であることを著者自身が体現している。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>☕ カフェインナップによる午後の即リセット</h3>
+    <ul>
+      <li>20〜30分の仮眠に入る直前にコーヒーなどのカフェインを摂取する</li>
+      <li>ちょうど仮眠から覚める頃にカフェインが効き始め、すっきりと自然に目が覚める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>仮眠とカフェインという2つの手段を「タイミングをずらして組み合わせる」ことで、単独で使うより強いリセット効果が得られる工夫の好例。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏲️ 45分区切りで進める執筆作業</h3>
+    <ul>
+      <li>1回の執筆セッションを45分の集中単位で区切り、区切りごとに短い休憩を挟む</li>
+      <li>90分を超える連続作業は避け、集中力が落ちる前に意図的に手を止める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>15・45・90分の集中力サイクルという抽象的な理論を、実際の執筆という具体的な作業に落とし込んだ実践例になっている。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🌙 起床・就寝時刻を固定する生活リズム</h3>
+    <ul>
+      <li>平日・休日を問わず、毎日ほぼ同じ時刻に寝て同じ時刻に起きるリズムを維持する</li>
+      <li>生活リズムのブレを減らすことで、翌朝のゴールデンタイムの質を安定させる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>時間術のテクニックがどれだけ優れていても、土台となる生活リズムが乱れていれば効果が発揮されないことを示している。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">「毎日同じ時間に眠って同じ時間に起きて、同じ日課をこなすことが、最も脳のパフォーマンスを上げる」（要旨）</p>
+    <p class="quote-why">生活リズムの一貫性こそが時間術の土台であるという、本書の睡眠・生活習慣に関する立場を凝縮した一文。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">「時間は『長さ』でなく『集中力』との掛け算で決まる」（要旨）</p>
+    <p class="quote-why">本書全体を貫く中核メッセージ。時間管理の焦点を「量」から「集中の質」へ転換させる考え方を表す。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">「朝のゴールデンタイムの1時間は、夜の集中力が落ちた時間の何倍もの価値がある」（要旨）</p>
+    <p class="quote-why">朝の時間帯を最優先で確保すべき理由を端的に示す一節で、第2章の主張と対応する。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">「人間の集中力には15分・45分・90分という3つの単位がある」（要旨）</p>
+    <p class="quote-why">第1章で紹介される集中力サイクル理論の核心。作業設計の実務的な物差しとして機能する。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日できるアクション</h2>
+
+  <div class="action-card">
+    <h4>🌅 起床後2〜3時間を「集中仕事ブロック」にする</h4>
+    <p><strong>やること：</strong>明日の朝、起きてから最初の2〜3時間はメールやSNSのチェックを後回しにし、最も重要な1つの作業だけに取り組む。準備は今日のうちに15〜20分で整える。</p>
+    <p><strong>目的：</strong>1日で最も集中力の高いゴールデンタイムを、受動的な雑務で浪費しないようにする。</p>
+    <p><strong>期待効果：</strong>重要な仕事の処理速度・質が上がり、日中の残り時間に余裕が生まれる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>⏲️ 25〜45分の集中×休憩を1セット試す</h4>
+    <p><strong>やること：</strong>タイマーで25〜45分を計測し、その間は一つの作業だけに取り組む。終わったら5分だけ完全に手を止めて休む。合計30分程度。</p>
+    <p><strong>目的：</strong>15・45・90分の集中力サイクルを実際に体感し、自分に合う単位を見つける。</p>
+    <p><strong>期待効果：</strong>だらだら作業する時間が減り、区切りごとの達成感で集中を維持しやすくなる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🚶 昼食後に15〜20分の軽い散歩を入れる</h4>
+    <p><strong>やること：</strong>昼食後、仮眠が難しい環境であれば代わりに15〜20分の軽い散歩やストレッチを行う。</p>
+    <p><strong>目的：</strong>午後に訪れる集中力低下を、仮眠に頼らない方法でリセットする体験をする。</p>
+    <p><strong>期待効果：</strong>午後の眠気やだるさが和らぎ、夕方までの作業効率が落ちにくくなる。</p>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
