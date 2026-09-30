@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット（プライマリー / セカンダリー / アクセント）
+  Primary:   #1F3A5F → #3A6EA5 (グラデーション, 深い信頼のブルー)
+  Secondary: #F2A65A (温かみのあるオレンジ, 「幸せ」を象徴)
+  Accent:    #4FB6A8 (実験・学習の緑がかったティール)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>予測不能の時代 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary1:#1F3A5F;
+    --primary2:#3A6EA5;
+    --secondary:#F2A65A;
+    --accent:#4FB6A8;
+    --bg:#F7F8FA;
+    --card:#FFFFFF;
+    --text:#1E2430;
+    --sub:#5B6472;
+    --border:#E4E8EE;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Yu Gothic",system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary1),var(--primary2));
+    color:#fff;
+    padding:28px 16px 24px;
+    text-align:center;
+  }
+  header .cat{
+    display:inline-block;
+    background:rgba(255,255,255,0.18);
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    letter-spacing:0.05em;
+    margin-bottom:10px;
+  }
+  header h1{
+    font-size:22px;
+    margin:6px 0;
+    line-height:1.4;
+  }
+  header .author{
+    font-size:13px;
+    opacity:0.85;
+  }
+
+  .container{
+    max-width:720px;
+    margin:0 auto;
+    padding:16px;
+  }
+
+  /* ファーストビュー: Why & How */
+  .why-how{
+    background:var(--card);
+    border-radius:16px;
+    padding:18px;
+    margin:-18px 0 16px;
+    box-shadow:0 6px 20px rgba(31,58,95,0.12);
+    border:1px solid var(--border);
+  }
+  .why-how h2{
+    font-size:14px;
+    color:var(--primary2);
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+    align-items:flex-start;
+  }
+  .qa-row:last-child{margin-bottom:0;}
+  .qa-badge{
+    flex:0 0 auto;
+    width:26px;height:26px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:bold;color:#fff;
+  }
+  .qa-badge.q{background:var(--primary2);}
+  .qa-badge.a{background:var(--secondary);}
+  .qa-badge.g{background:var(--accent);}
+  .qa-text{font-size:13.5px;color:var(--text);}
+  .qa-text b{color:var(--primary1);}
+
+  /* 数値バッジ */
+  .stat-row{
+    display:flex;
+    gap:10px;
+    margin:14px 0 4px;
+    flex-wrap:wrap;
+  }
+  .stat{
+    flex:1 1 30%;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px 8px;
+    text-align:center;
+    min-width:90px;
+  }
+  .stat .num{
+    font-size:19px;
+    font-weight:800;
+    color:var(--primary2);
+    display:block;
+  }
+  .stat .label{
+    font-size:10.5px;
+    color:var(--sub);
+  }
+
+  /* タブ */
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:4px 0 10px;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:5;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--sub);
+    padding:9px 13px;
+    border-radius:999px;
+    font-size:12.5px;
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary2);
+    color:#fff;
+    border-color:var(--primary2);
+    font-weight:bold;
+  }
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    font-size:14.5px;
+    margin:0 0 8px;
+    color:var(--primary1);
+    display:flex;
+    gap:6px;
+    align-items:center;
+  }
+  .card ul{
+    margin:0 0 8px;
+    padding-left:18px;
+    font-size:13px;
+  }
+  .card li{margin-bottom:4px;}
+  .why-tag{
+    display:inline-block;
+    background:rgba(79,182,168,0.14);
+    color:#2d7d71;
+    font-size:11px;
+    padding:3px 8px;
+    border-radius:8px;
+    margin-top:2px;
+  }
+
+  blockquote{
+    margin:0 0 10px;
+    padding:10px 12px;
+    background:#FFF7EC;
+    border-left:4px solid var(--secondary);
+    border-radius:8px;
+    font-size:13px;
+  }
+  blockquote .note{
+    display:block;
+    margin-top:6px;
+    font-size:11px;
+    color:var(--sub);
+  }
+
+  .action-card{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 auto;
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--secondary);
+    color:#fff;
+    font-size:12px;font-weight:bold;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--sub);
+    padding:20px 16px 32px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="cat">📁 ビジネス</span>
+  <h1>予測不能の時代<br>データが明かす新たな生き方、企業、そして幸せ</h1>
+  <div class="author">著者: 矢野和男</div>
+</header>
+
+<div class="container">
+
+  <div class="why-how">
+    <h2>🔎 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-badge q">Q</div>
+      <div class="qa-text">AIやビッグデータの時代なのに、なぜ未来は<b>予測できない</b>ままなのか？</div>
+    </div>
+    <div class="qa-row">
+      <div class="qa-badge a">A</div>
+      <div class="qa-text">過去の延長で未来を読む「計画」や「標準化」は罠になる。唯一の適応策は<b>「実験と学習」を回し続けること</b>、そしてその原動力は<b>「幸せ」</b>である。</div>
+    </div>
+    <div class="qa-row">
+      <div class="qa-badge g">根拠</div>
+      <div class="qa-text">日立と多数の日本企業の実証実験で、のべ<b>1000万日分</b>のウェアラブルセンサーデータを解析。幸福度（ハピネス関係度）の高い組織ほど<b>生産性・1株あたり利益が高い</b>ことをデータで実証した。</div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><span class="num">1000万日+</span><span class="label">解析した行動データ量</span></div>
+      <div class="stat"><span class="num">4つ</span><span class="label">幸せの因子</span></div>
+      <div class="stat"><span class="num">4つ</span><span class="label">変化を妨げる罠</span></div>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="コンテンツ切替">
+    <button class="tab-btn" role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">🔬 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 引用</button>
+    <button class="tab-btn" role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+  </div>
+
+  <!-- 主要概念の詳細 -->
+  <section class="panel active" role="tabpanel" id="panel-concepts" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3>🌀 予測不能性</h3>
+      <ul>
+        <li>過去データの延長線上に未来を置く前提が崩れている</li>
+        <li>環境・市場・技術が同時多発的に変化し続ける</li>
+        <li>「正解」を事前に計算する発想自体が通用しない</li>
+      </ul>
+      <span class="why-tag">理由: この前提を認めないと、次の概念（実験と学習）の必要性が腑に落ちない</span>
+    </div>
+
+    <div class="card">
+      <h3>🧪 実験と学習</h3>
+      <ul>
+        <li>やってみて、結果から学び、すぐ修正するループ</li>
+        <li>目的にはこだわるが、手段には固執しない</li>
+        <li>現場が自己完結的に動ける機動力を持つ</li>
+      </ul>
+      <span class="why-tag">理由: 予測できない以上、動きながら学ぶことでしか正解に近づけないから</span>
+    </div>
+
+    <div class="card">
+      <h3>🚧 変化を妨げる4つの罠</h3>
+      <ul>
+        <li>① ルール：例外的な変化に対応できない</li>
+        <li>② 計画：前提が崩れた瞬間に無意味化する</li>
+        <li>③ 標準化と横展開：現場ごとの違いを潰してしまう</li>
+        <li>④ 内部統制：逸脱を許さず実験の芽を摘む</li>
+      </ul>
+      <span class="why-tag">理由: 多くの企業が「良かれ」と思って導入した仕組みが、実は適応力を奪っている</span>
+    </div>
+
+    <div class="card">
+      <h3>📈 ハピネス関係度</h3>
+      <ul>
+        <li>スマホや加速度センサーが捉える無意識の体の動きから算出</li>
+        <li>のべ1000万日分のデータから幸福のパターンを解析</li>
+        <li>主観的だった「幸せ」を客観的に計測可能にした</li>
+      </ul>
+      <span class="why-tag">理由: 「幸せは測れない」という思い込みを崩すことが本書の科学的な核</span>
+    </div>
+
+    <div class="card">
+      <h3>😊 幸せの4つの因子</h3>
+      <ul>
+        <li>①「やってみよう」因子：自己実現と成長</li>
+        <li>②「ありがとう」因子：つながりと感謝</li>
+        <li>③「なんとかなる」因子：前向きと楽観</li>
+        <li>④「あなたらしく」因子：独立とマイペース</li>
+      </ul>
+      <span class="why-tag">理由: 幸せを「気分」ではなく「行動で鍛えられるスキル」として捉え直すための枠組み</span>
+    </div>
+
+    <div class="card">
+      <h3>💹 幸せと生産性の相関</h3>
+      <ul>
+        <li>幸福度の高い人ほど「面倒だが重要な仕事」に積極的</li>
+        <li>幸福な社員が多い企業ほど生産性・1株あたり利益が高い</li>
+        <li>幸せは福利厚生ではなく経営指標として扱うべきものになる</li>
+      </ul>
+      <span class="why-tag">理由: 「幸せは経営の結果」ではなく「幸せが経営の原因」という逆転の発想が本書最大の主張</span>
+    </div>
+
+    <div class="card">
+      <h3>🎋 易経に学ぶ生き方</h3>
+      <ul>
+        <li>易経は「先が見えない中でどう動くか」を説いた最古の書とされる</li>
+        <li>不確実性を消そうとせず、前提として受け入れる姿勢</li>
+        <li>一歩ごとに状況を読み、進み方を変え続ける</li>
+      </ul>
+      <span class="why-tag">理由: 「予測不能」は現代特有の問題ではなく、人類が古来向き合ってきたテーマだと示すため</span>
+    </div>
+
+  </section>
+
+  <!-- 各章の要約 -->
+  <section class="panel" role="tabpanel" id="panel-chapters" aria-labelledby="tab-chapters">
+
+    <div class="card">
+      <h3>第1章：予測不能な変化と向き合う</h3>
+      <ul>
+        <li>ルール・計画・標準化横展開・内部統制という「4つの罠」を提示</li>
+        <li>従来の生産性向上策が、変化への適応力を奪う逆説を指摘</li>
+      </ul>
+      <span class="why-tag">理由: まず「今のやり方が通用しない理由」を突きつける導入章</span>
+    </div>
+
+    <div class="card">
+      <h3>第2章：幸せの新しい形</h3>
+      <ul>
+        <li>ポジティブ心理学の発展史を概観</li>
+        <li>幸せと生産性の関係についての研究知見を紹介</li>
+      </ul>
+      <span class="why-tag">理由: 「幸せ」を精神論ではなく学問・データの対象として位置づける</span>
+    </div>
+
+    <div class="card">
+      <h3>第3章：幸せは計測できる</h3>
+      <ul>
+        <li>ウェアラブルセンサーによる体の動きの計測技術を解説</li>
+        <li>「ハピネス関係度」という定量指標の誕生</li>
+      </ul>
+      <span class="why-tag">理由: 主観的な幸せを客観的データに変換する方法論が本書の技術的な核</span>
+    </div>
+
+    <div class="card">
+      <h3>第4章：幸せな組織の条件</h3>
+      <ul>
+        <li>人と人のつながり方（ネットワーク構造）が幸福度に影響する</li>
+        <li>組織図ではなく実際の会話・接触のパターンを分析</li>
+      </ul>
+      <span class="why-tag">理由: 個人の幸せだけでなく「組織としての幸せ」を測る視点を提示するため</span>
+    </div>
+
+    <div class="card">
+      <h3>第5章：幸せの4つの因子</h3>
+      <ul>
+        <li>「やってみよう」「ありがとう」「なんとかなる」「あなたらしく」を詳述</li>
+        <li>各因子を高める具体的な行動例を紹介</li>
+      </ul>
+      <span class="why-tag">理由: 幸せを分解し、誰でも鍛えられる要素として提示するため</span>
+    </div>
+
+    <div class="card">
+      <h3>第6章：幸せは小さな行動で変わる</h3>
+      <ul>
+        <li>日々のちょっとした行動データから幸福度の変化を発見</li>
+        <li>大きな環境変化がなくても幸せは変えられると論証</li>
+      </ul>
+      <span class="why-tag">理由: 「幸せは環境次第」という諦めを崩す最重要パート</span>
+    </div>
+
+    <div class="card">
+      <h3>第7章：実験と学習する組織</h3>
+      <ul>
+        <li>幸福な組織ほど実験と学習のサイクルを回せることを説明</li>
+        <li>予測不能な時代に適応する企業のマネジメント論を提示</li>
+      </ul>
+      <span class="why-tag">理由: 個人の幸せ論を組織・経営の適応力論へと接続する章</span>
+    </div>
+
+    <div class="card">
+      <h3>第8章：予測不能な人生を生きる</h3>
+      <ul>
+        <li>「易経」を、不確実性と向き合う人類最古の知恵として紹介</li>
+        <li>個人の生き方への応用で締めくくる</li>
+      </ul>
+      <span class="why-tag">理由: 企業論から個人の人生観へとスケールダウンし、読者自身の行動に落とし込むため</span>
+    </div>
+
+  </section>
+
+  <!-- 具体例 -->
+  <section class="panel" role="tabpanel" id="panel-cases" aria-labelledby="tab-cases">
+
+    <div class="card">
+      <h3>🏢 日立社内での大規模実証実験</h3>
+      <ul>
+        <li>背景: 社員にウェアラブルセンサーを装着してもらい、日々の身体の動きを長期間記録</li>
+        <li>結果: のべ1000万日分のデータから、幸福度と業務行動のパターンの関連を抽出</li>
+      </ul>
+      <span class="why-tag">理由（この例が示すこと）: 「幸せ」という抽象概念が、実は日常の身体データから読み取れることを示す最も直接的な証拠</span>
+    </div>
+
+    <div class="card">
+      <h3>📞 コールセンターにおける幸福度と成果の関係</h3>
+      <ul>
+        <li>背景: 応対業務のチームごとに幸福度データと業績データを比較</li>
+        <li>結果: 幸福度の高いチームほど受注率など業績指標が良好な傾向</li>
+      </ul>
+      <span class="why-tag">理由（この例が示すこと）: 「幸せ」が福利厚生の話ではなく、現場の成果に直結する経営変数であることを示す</span>
+    </div>
+
+    <div class="card">
+      <h3>📊 企業の利益率と社員の幸福度</h3>
+      <ul>
+        <li>背景: 幸福度の高い社員が多い企業と、そうでない企業の財務指標を比較</li>
+        <li>結果: 幸福な社員が多い企業ほど1株あたり利益が高い傾向が見られた</li>
+      </ul>
+      <span class="why-tag">理由（この例が示すこと）: 幸せへの投資が「コスト」ではなく「リターンのある経営判断」であることを裏付ける</span>
+    </div>
+
+    <div class="card">
+      <h3>🚀 ハピネスプラネット社の設立</h3>
+      <ul>
+        <li>背景: 著者の研究成果を社会実装するため、日立発ベンチャーとして設立</li>
+        <li>結果: 幸福度計測・組織支援サービスとして複数企業に導入</li>
+      </ul>
+      <span class="why-tag">理由（この例が示すこと）: 研究室の知見が、実際に企業経営で使えるサービスにまで昇華された実例</span>
+    </div>
+
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="panel" role="tabpanel" id="panel-quotes" aria-labelledby="tab-quotes">
+
+    <blockquote>
+      変化そのものはコントロールできないが、変化への向き合い方は自分たちで選び取れる、という趣旨の主張。
+      <span class="note">※原典引用ではなく要旨（本の主張を要約したもの）</span>
+    </blockquote>
+
+    <blockquote>
+      幸せはどこかにある目的地ではなく、日々の小さな行動の積み重ねによって自ら生み出していくものだ、という趣旨の主張。
+      <span class="note">※原典引用ではなく要旨（本の主張を要約したもの）</span>
+    </blockquote>
+
+    <blockquote>
+      易経は、先が読めない状況でどう行動すべきかを説いた、人類最古の「予測不能の時代」への処方箋だ、という趣旨の主張。
+      <span class="note">※原典引用ではなく要旨（本の主張を要約したもの）</span>
+    </blockquote>
+
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" role="tabpanel" id="panel-actions" aria-labelledby="tab-actions">
+
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div>
+        <h3 style="margin-bottom:4px;">身近な3人に「ありがとう」を伝える</h3>
+        <ul>
+          <li>目的: 「ありがとう」因子（つながりと感謝）を鍛える</li>
+          <li>期待効果: 対人関係の質が上がり、幸福度指標が上向く</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div>
+        <h3 style="margin-bottom:4px;">今日の小さな挑戦を1つ書き出す</h3>
+        <ul>
+          <li>目的: 「やってみよう」因子（自己実現と成長）を鍛える</li>
+          <li>期待効果: 自己効力感が高まり、次の行動への意欲が生まれる</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div>
+        <h3 style="margin-bottom:4px;">明日の予定を1つ「実験」として位置づけ、やり方を変える</h3>
+        <ul>
+          <li>目的: 「実験と学習」のサイクルを小さく体験する</li>
+          <li>期待効果: 変化への適応力が鍛えられ、失敗への抵抗感が下がる</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  📚 読書サマリー自動生成システム — 本インフォグラフィックはWeb調査に基づくAI生成物です
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab-btn');
+  var panels = {
+    'tab-concepts': document.getElementById('panel-concepts'),
+    'tab-chapters': document.getElementById('panel-chapters'),
+    'tab-cases': document.getElementById('panel-cases'),
+    'tab-quotes': document.getElementById('panel-quotes'),
+    'tab-actions': document.getElementById('panel-actions')
+  };
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      Object.keys(panels).forEach(function(id){ panels[id].classList.remove('active'); });
+      tab.setAttribute('aria-selected','true');
+      panels[tab.id].classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
