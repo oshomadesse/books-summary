@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット（プライマリー / セカンダリー / アクセント）
+  Primary:   #0B5E6D → #178C99 (グラデーション, 臨床・医療の深いティールブルー)
+  Secondary: #E8703A (血糖値スパイク・警告を象徴する温かいオレンジ)
+  Accent:    #4CAF7D (「正しい食べ方」を示す健康的なグリーン)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>医者が教える食事術 最強の教科書 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary1:#0B5E6D;
+    --primary2:#178C99;
+    --secondary:#E8703A;
+    --accent:#4CAF7D;
+    --bg:#F7F8FA;
+    --card:#FFFFFF;
+    --text:#1E2430;
+    --sub:#5B6472;
+    --border:#E4E8EE;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Yu Gothic",system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary1),var(--primary2));
+    color:#fff;
+    padding:28px 16px 24px;
+    text-align:center;
+  }
+  header .cat{
+    display:inline-block;
+    background:rgba(255,255,255,0.18);
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:12px;
+    letter-spacing:0.05em;
+    margin-bottom:10px;
+  }
+  header h1{
+    font-size:21px;
+    margin:6px 0;
+    line-height:1.4;
+  }
+  header .sub{
+    font-size:12px;
+    opacity:0.8;
+    margin-top:2px;
+  }
+  header .author{
+    font-size:13px;
+    opacity:0.85;
+    margin-top:4px;
+  }
+
+  .container{
+    max-width:720px;
+    margin:0 auto;
+    padding:16px;
+  }
+
+  /* ファーストビュー: Why & How */
+  .why-how{
+    background:var(--card);
+    border-radius:16px;
+    padding:18px;
+    margin:-18px 0 16px;
+    box-shadow:0 6px 20px rgba(11,94,109,0.14);
+    border:1px solid var(--border);
+  }
+  .why-how h2{
+    font-size:14px;
+    color:var(--primary2);
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+    align-items:flex-start;
+  }
+  .qa-row:last-child{margin-bottom:0;}
+  .qa-badge{
+    flex:0 0 auto;
+    width:26px;height:26px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:bold;color:#fff;
+  }
+  .qa-badge.q{background:var(--primary2);}
+  .qa-badge.a{background:var(--secondary);}
+  .qa-badge.g{background:var(--accent);}
+  .qa-text{font-size:13.5px;color:var(--text);}
+  .qa-text b{color:var(--primary1);}
+
+  /* 数値バッジ */
+  .stat-row{
+    display:flex;
+    gap:10px;
+    margin:14px 0 4px;
+    flex-wrap:wrap;
+  }
+  .stat{
+    flex:1 1 30%;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px 8px;
+    text-align:center;
+    min-width:90px;
+  }
+  .stat .num{
+    font-size:19px;
+    font-weight:800;
+    color:var(--primary2);
+    display:block;
+  }
+  .stat .label{
+    font-size:10.5px;
+    color:var(--sub);
+  }
+
+  /* タブ */
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:4px 0 10px;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:5;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--sub);
+    padding:9px 13px;
+    border-radius:999px;
+    font-size:12.5px;
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary2);
+    color:#fff;
+    border-color:var(--primary2);
+    font-weight:bold;
+  }
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    font-size:14.5px;
+    margin:0 0 8px;
+    color:var(--primary1);
+    display:flex;
+    gap:6px;
+    align-items:center;
+  }
+  .card ul{
+    margin:0 0 8px;
+    padding-left:18px;
+    font-size:13px;
+  }
+  .card li{margin-bottom:4px;}
+  .why-tag{
+    display:inline-block;
+    background:rgba(76,175,125,0.14);
+    color:#2f7a53;
+    font-size:11px;
+    padding:3px 8px;
+    border-radius:8px;
+    margin-top:2px;
+  }
+
+  blockquote{
+    margin:0 0 10px;
+    padding:10px 12px;
+    background:#FFF1E8;
+    border-left:4px solid var(--secondary);
+    border-radius:8px;
+    font-size:13px;
+  }
+  blockquote .note{
+    display:block;
+    margin-top:6px;
+    font-size:11px;
+    color:var(--sub);
+  }
+
+  .action-card{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 auto;
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--secondary);
+    color:#fff;
+    font-size:12px;font-weight:bold;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--sub);
+    padding:20px 16px 32px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="cat">📁 ライフスタイル</span>
+  <h1>医者が教える食事術<br>最強の教科書</h1>
+  <div class="sub">20万人を診てわかった医学的に正しい食べ方68</div>
+  <div class="author">著者: 牧田善二</div>
+</header>
+
+<div class="container">
+
+  <div class="why-how">
+    <h2>🔎 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-badge q">Q</div>
+      <div class="qa-text">カロリーを気にして真面目に食事制限をしているのに、なぜ肥満や不調がなかなか改善しないのか？</div>
+    </div>
+    <div class="qa-row">
+      <div class="qa-badge a">A</div>
+      <div class="qa-text">肥満・老化・不調の本当の原因は<b>カロリーではなく「血糖値の激しい上下動」</b>。血糖値をコントロールする食べ方こそが医学的に正しい食事術である。</div>
+    </div>
+    <div class="qa-row">
+      <div class="qa-badge g">根拠</div>
+      <div class="qa-text">糖尿病専門医として延べ<b>20万人</b>を診てきた臨床データと、米ロックフェラー大学医生化学講座で約5年間行った<b>AGE（糖化最終産物）</b>研究の知見を、<b>68の具体的な食べ方ルール</b>として体系化。</div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><span class="num">20万人+</span><span class="label">診察してきた患者数</span></div>
+      <div class="stat"><span class="num">68</span><span class="label">医学的に正しい食べ方</span></div>
+      <div class="stat"><span class="num">9割</span><span class="label">不調の原因が血糖値</span></div>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="コンテンツ切替">
+    <button class="tab-btn" role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">🔬 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 引用</button>
+    <button class="tab-btn" role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+  </div>
+
+  <!-- 主要概念の詳細 -->
+  <section class="panel active" role="tabpanel" id="panel-concepts" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3>📉 血糖値スパイク</h3>
+      <ul>
+        <li>糖質を摂ると血糖値が急上昇し、インスリンで急降下する</li>
+        <li>急上昇時はセロトニン・ドーパミンで快感を覚えるが、急降下でイライラ・眠気・過食欲求が出る</li>
+        <li>缶コーヒーのような「吸収の速い糖」が特に急激な変動を起こす</li>
+      </ul>
+      <span class="why-tag">理由: この上下動こそが本書の「不調の9割」の正体であり、他の概念すべての出発点だから</span>
+    </div>
+
+    <div class="card">
+      <h3>🚫 カロリー神話の否定</h3>
+      <ul>
+        <li>カロリーの量そのものと肥満は直接の関係がない</li>
+        <li>肥満を決めるのは摂取カロリーではなく血糖値の上がり方</li>
+        <li>脂肪を食べても、血糖値を上げなければ太りにくい</li>
+      </ul>
+      <span class="why-tag">理由: 「カロリーを減らせば健康になる」という従来の常識を覆すことが本書の出発点だから</span>
+    </div>
+
+    <div class="card">
+      <h3>🧬 AGE（糖化最終産物）</h3>
+      <ul>
+        <li>余分な糖がタンパク質や脂質と結びつき、酸化・糖化して生じる老化物質</li>
+        <li>シミ・シワ・たるみから様々な病気、原因不明の疲れまで関与するとされる</li>
+        <li>著者がロックフェラー大学で研究してきた中心テーマ</li>
+      </ul>
+      <span class="why-tag">理由: 血糖値コントロールが「老化を遅らせる」ことに直結する生化学的な根拠だから</span>
+    </div>
+
+    <div class="card">
+      <h3>🥗 食べる順番</h3>
+      <ul>
+        <li>野菜・タンパク質を先に、炭水化物を後にすると血糖値の上がり方が緩やかになる</li>
+        <li>「三角食べ」（ご飯・汁・主菜を均等に交互に食べる作法）は血糖値を上げやすい</li>
+        <li>同じ食事内容でも順番だけで太りやすさが変わる</li>
+      </ul>
+      <span class="why-tag">理由: 食事内容を変えずに今日からできる、最も実践コストの低い改善策だから</span>
+    </div>
+
+    <div class="card">
+      <h3>🥓 加工肉とがんリスク</h3>
+      <ul>
+        <li>WHO傘下のIARC（国際がん研究機関）がハム・ソーセージ等の加工肉を発がん性「グループ1」に分類</li>
+        <li>加工肉を毎日50g食べると大腸がんリスクが約18%上昇するとされる</li>
+        <li>ゆでるなど調理法を変えることでリスクを下げられる</li>
+      </ul>
+      <span class="why-tag">理由: 「おいしいから」で済ませてきた日常食材に、具体的な数値根拠があることを示すため</span>
+    </div>
+
+    <div class="card">
+      <h3>☕ 間食・飲料の選び方</h3>
+      <ul>
+        <li>缶コーヒーのような加糖・急速吸収の飲料は「悪魔の飲み物」と表現される</li>
+        <li>フルーツジュースは糖が液体で一気に入るため、果物そのものより悪影響が大きい</li>
+        <li>辛口の白ワインは血糖値の上昇を抑えるが、ビールは血糖値を上げやすい</li>
+      </ul>
+      <span class="why-tag">理由: 「何を飲むか」が「何を食べるか」と同じくらい血糖値に影響することを強調するため</span>
+    </div>
+
+    <div class="card">
+      <h3>🏃 食後すぐの運動</h3>
+      <ul>
+        <li>食後に体を動かすと、筋肉が糖を使うため血糖値の急上昇が抑えられる</li>
+        <li>激しい運動でなくても、軽い散歩や足踏みで十分効果がある</li>
+        <li>「食後は休む」という従来の習慣とは逆の発想</li>
+      </ul>
+      <span class="why-tag">理由: 食べ方だけでなく「食べた後の行動」まで含めて初めて血糖値対策が完結するから</span>
+    </div>
+
+  </section>
+
+  <!-- 各章の要約 -->
+  <section class="panel" role="tabpanel" id="panel-chapters" aria-labelledby="tab-chapters">
+
+    <div class="card">
+      <h3>序章：人体のメカニズムにそった最強の食事</h3>
+      <ul>
+        <li>血糖値のコントロールが健康における最大のカギであると提示</li>
+        <li>「不調の原因の9割は血糖値である」という本書全体を貫く主張を打ち出す</li>
+      </ul>
+      <span class="why-tag">理由: 以降68個の個別ルールをすべて束ねる土台となる視点を最初に示す章だから</span>
+    </div>
+
+    <div class="card">
+      <h3>第1章：医学的に正しい食べ方20</h3>
+      <ul>
+        <li>「カロリーと肥満は関係ない」「脂肪を食べても太らない」など、従来の常識を覆す知見を列挙</li>
+        <li>加工肉の発がん性など、WHOなど公的機関のデータも引用</li>
+      </ul>
+      <span class="why-tag">理由: まず読者の思い込みを崩し、新常識への入口を作るための章だから</span>
+    </div>
+
+    <div class="card">
+      <h3>第2章：やせる食事術</h3>
+      <ul>
+        <li>糖質制限によって心身のコンディションを整える技術を解説</li>
+        <li>食べる順番や食材選びなど、やせるための実践的な工夫を紹介</li>
+      </ul>
+      <span class="why-tag">理由: 「血糖値理論」を体重管理という最も関心の高いテーマに具体的に応用する章だから</span>
+    </div>
+
+    <div class="card">
+      <h3>第3章：24時間のパフォーマンスを最大化する食事術</h3>
+      <ul>
+        <li>朝・昼・晩それぞれの食事で本来のパワーを高める技術を提示</li>
+        <li>缶コーヒーやフルーツジュースなど、日常的な飲食物の見直しを促す</li>
+      </ul>
+      <span class="why-tag">理由: 「いつ・何を」食べるかで1日の集中力や疲労感が変わることを示す章だから</span>
+    </div>
+
+    <div class="card">
+      <h3>第4章：見た目・気力・体力を衰えさせない</h3>
+      <ul>
+        <li>AGE（糖化最終産物）による老化メカニズムと、その対策としての食べ方を解説</li>
+        <li>見た目の老化だけでなく気力・体力の衰えも血糖値管理で防げると主張</li>
+      </ul>
+      <span class="why-tag">理由: 体重だけでなく「老化」という長期的な視点まで血糖値理論を広げる章だから</span>
+    </div>
+
+  </section>
+
+  <!-- 具体例 -->
+  <section class="panel" role="tabpanel" id="panel-cases" aria-labelledby="tab-cases">
+
+    <div class="card">
+      <h3>📺 「金スマ」出演と常識逆転の数々</h3>
+      <ul>
+        <li>背景: TBS系「金スマ」に著者が複数回出演し、本書の内容を紹介して話題化</li>
+        <li>結果: 「卵は1日何個でもOK」「三角食べはデブのもと」「健康のためのフルーツジュースは逆効果」「肉の脂身を取り除く必要はない」「ヨーグルトは食前より食後がベスト」など常識を覆す食べ方が次々と紹介された</li>
+      </ul>
+      <span class="why-tag">理由（この例が示すこと）: 「体によさそう」という思い込みと医学的事実の間に、いかに大きなズレがあるかを端的に示す</span>
+    </div>
+
+    <div class="card">
+      <h3>🥓 加工肉とIARC発がん性分類</h3>
+      <ul>
+        <li>背景: 2015年、WHO傘下のIARCが加工肉の摂取とがんリスクの関係を調査</li>
+        <li>結果: ハム・ソーセージ等の加工肉が発がん性「グループ1」に分類され、毎日50g摂取で大腸がんリスクが約18%上昇すると発表された</li>
+      </ul>
+      <span class="why-tag">理由（この例が示すこと）: 「好きだから食べる」で済ませている日常食材に、国際機関レベルの数値根拠があることを示す</span>
+    </div>
+
+    <div class="card">
+      <h3>☕ 缶コーヒー「悪魔の飲み物」</h3>
+      <ul>
+        <li>背景: 加糖の缶コーヒーは糖の吸収が非常に速く、血糖値を急激に変動させる</li>
+        <li>結果: 急上昇後の急降下でイライラ・眠気・だるさが生じ、「もう一本」を求める悪循環に陥りやすい</li>
+      </ul>
+      <span class="why-tag">理由（この例が示すこと）: オフィスでの何気ない一杯が、午後の集中力やメンタルに直接影響する典型例として示される</span>
+    </div>
+
+    <div class="card">
+      <h3>🍷 ワインとビールで真逆の効果</h3>
+      <ul>
+        <li>背景: アルコールの種類によって糖質量と血糖値への影響が大きく異なる</li>
+        <li>結果: 辛口の白ワインは血糖値の急上昇を抑える働きがある一方、ビールは糖質が多く血糖値を上げやすい</li>
+      </ul>
+      <span class="why-tag">理由（この例が示すこと）: 「お酒は全部体に悪い」という一括りの発想ではなく、選び方次第で結果が変わることを示す</span>
+    </div>
+
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="panel" role="tabpanel" id="panel-quotes" aria-labelledby="tab-quotes">
+
+    <blockquote>
+      不調の原因の9割は「血糖値」である。
+      <span class="note">※要旨（複数の書評・紹介記事で繰り返し引用される本書の核となる主張）</span>
+    </blockquote>
+
+    <blockquote>
+      缶コーヒーは「悪魔の飲み物」である。
+      <span class="note">※書評・紹介記事で引用される著者の表現の要旨</span>
+    </blockquote>
+
+    <blockquote>
+      カロリーと肥満は関係ない。脂肪を食べても太らない。
+      <span class="note">※原典引用ではなく要旨（本書が提示する新常識のまとめ）</span>
+    </blockquote>
+
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" role="tabpanel" id="panel-actions" aria-labelledby="tab-actions">
+
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div>
+        <h3 style="margin-bottom:4px;">次の食事を「野菜・タンパク質→炭水化物」の順で食べる</h3>
+        <ul>
+          <li>目的: 食事内容を変えずに血糖値の急上昇を抑える</li>
+          <li>期待効果: 食後のだるさ・眠気が減り、食べる量も自然にコントロールしやすくなる</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div>
+        <h3 style="margin-bottom:4px;">今日の間食・飲み物を1つ、無糖のものに置き換える</h3>
+        <ul>
+          <li>目的: 缶コーヒーやジュースなど「速い糖」による血糖値スパイクを避ける</li>
+          <li>期待効果: 午後のイライラ・集中力の低下が和らぐ</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div>
+        <h3 style="margin-bottom:4px;">食後に5〜10分だけ軽く歩く、または足踏みをする</h3>
+        <ul>
+          <li>目的: 筋肉を使うことで食後血糖値の急上昇を穏やかにする</li>
+          <li>期待効果: 短時間でも継続すれば、体重・疲れやすさの改善につながる</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  📚 読書サマリー自動生成システム — 本インフォグラフィックはWeb調査に基づくAI生成物です
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab-btn');
+  var panels = {
+    'tab-concepts': document.getElementById('panel-concepts'),
+    'tab-chapters': document.getElementById('panel-chapters'),
+    'tab-cases': document.getElementById('panel-cases'),
+    'tab-quotes': document.getElementById('panel-quotes'),
+    'tab-actions': document.getElementById('panel-actions')
+  };
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      Object.keys(panels).forEach(function(id){ panels[id].classList.remove('active'); });
+      tab.setAttribute('aria-selected','true');
+      panels[tab.id].classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
