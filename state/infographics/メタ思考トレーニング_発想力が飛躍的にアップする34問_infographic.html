@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>メタ思考トレーニング | インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー:   #1E5B8C (知的・冷静な青)
+  セカンダリー:   #E09F3E (発想のひらめきを示すオレンジ)
+  アクセント:     #9A4C95 (抽象化・類推のパープル)
+  グラデーション: linear-gradient(135deg, #1E5B8C, #2E7CB8)
+-->
+<style>
+  :root{
+    --primary:#1E5B8C;
+    --primary-dark:#123A5A;
+    --secondary:#E09F3E;
+    --accent:#9A4C95;
+    --bg:#F6F7F9;
+    --card:#FFFFFF;
+    --text:#2A2A2A;
+    --muted:#6B6B6B;
+    --border:#E1E4E9;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  header{
+    background:linear-gradient(135deg, var(--primary), #2E7CB8);
+    color:#fff;
+    padding:28px 16px 24px;
+    text-align:center;
+  }
+  header h1{margin:0 0 6px;font-size:1.3rem;font-weight:800;line-height:1.5;}
+  header p{margin:4px 0;font-size:0.85rem;opacity:0.9;}
+  .badges{display:flex;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .badge{
+    background:rgba(255,255,255,0.18);
+    border:1px solid rgba(255,255,255,0.4);
+    border-radius:20px;
+    padding:6px 12px;
+    font-size:0.75rem;
+    font-weight:700;
+  }
+  main{max-width:720px;margin:0 auto;padding:16px;}
+
+  .hero-block{
+    background:var(--card);
+    border-radius:16px;
+    padding:18px;
+    margin:16px 0 20px;
+    border:1px solid var(--border);
+    box-shadow:0 2px 10px rgba(0,0,0,0.04);
+  }
+  .hero-block h2{font-size:1rem;margin:0 0 12px;color:var(--primary-dark);}
+  .qa-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+  .qa-tag{
+    flex:0 0 auto;
+    font-size:0.7rem;
+    font-weight:800;
+    color:#fff;
+    padding:4px 8px;
+    border-radius:8px;
+    white-space:nowrap;
+  }
+  .qa-tag.q{background:var(--accent);}
+  .qa-tag.a{background:var(--secondary);}
+  .qa-tag.w{background:var(--primary);}
+  .qa-text{font-size:0.88rem;}
+
+  .stat-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .stat{
+    flex:1;min-width:90px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px 8px;
+    text-align:center;
+  }
+  .stat b{display:block;font-size:1.3rem;color:var(--primary);}
+  .stat span{font-size:0.68rem;color:var(--muted);}
+
+  nav.tabs{
+    display:flex;overflow-x:auto;gap:6px;padding:4px 0 10px;
+    position:sticky;top:0;background:var(--bg);z-index:10;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    padding:9px 14px;
+    border-radius:20px;
+    font-size:0.78rem;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);color:#fff;border-color:var(--primary);
+  }
+
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    margin:0 0 8px;font-size:0.95rem;color:var(--primary-dark);
+    display:flex;align-items:center;gap:6px;
+  }
+  .card ul{margin:6px 0 8px;padding-left:18px;font-size:0.84rem;}
+  .card li{margin-bottom:4px;}
+  .why{
+    margin-top:8px;
+    background:#F3E8F2;
+    border-left:3px solid var(--accent);
+    padding:7px 10px;
+    font-size:0.78rem;
+    border-radius:6px;
+    color:#5d3159;
+  }
+  .quote{
+    font-size:0.88rem;font-style:italic;
+    border-left:3px solid var(--primary);
+    padding:8px 12px;background:var(--bg);
+    border-radius:6px;margin-bottom:8px;
+  }
+  .quote .note{display:block;font-style:normal;font-size:0.72rem;color:var(--muted);margin-top:4px;}
+  .action-item{display:flex;gap:10px;margin-bottom:12px;}
+  .action-num{
+    flex:0 0 28px;height:28px;border-radius:50%;
+    background:var(--secondary);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:0.85rem;
+  }
+  .action-body b{font-size:0.86rem;}
+  .action-body .meta{font-size:0.74rem;color:var(--muted);display:block;margin-top:2px;}
+
+  .related-list{list-style:none;padding:0;margin:0;font-size:0.84rem;}
+  .related-list li{padding:9px 0;border-bottom:1px solid var(--border);}
+  .related-list li:last-child{border-bottom:none;}
+
+  footer{text-align:center;font-size:0.72rem;color:var(--muted);padding:24px 16px 32px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 メタ思考トレーニング<br>発想力が飛躍的にアップする34問</h1>
+  <p>細谷功（著）</p>
+  <div class="badges">
+    <span class="badge">📚 自己啓発</span>
+    <span class="badge">🧩 演習34問</span>
+    <span class="badge">📖 PHPビジネス新書</span>
+  </div>
+</header>
+
+<main>
+
+  <div class="hero-block">
+    <h2>⚡ 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <span class="qa-tag q">問い</span>
+      <span class="qa-text">同じ事実を見ても、なぜ人によって発想の豊かさに差が出るのか？</span>
+    </div>
+    <div class="qa-row">
+      <span class="qa-tag a">答え</span>
+      <span class="qa-text">物事を「一つ上の視点」から見る＝メタ思考ができているかどうかの差。訓練すれば誰でも身につけられるスキルである。</span>
+    </div>
+    <div class="qa-row">
+      <span class="qa-tag w">根拠</span>
+      <span class="qa-text">「Why型思考」で上位目的を問い直し、「アナロジー思考」で遠い事例同士の共通点を見抜く――本書はこの2つの思考法を34の演習問題で実際に鍛えさせる構成になっている。</span>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>34問</b><span>演習問題数</span></div>
+      <div class="stat"><b>2種</b><span>核となる思考法（Why型／アナロジー）</span></div>
+      <div class="stat"><b>4章</b><span>ウォームアップ〜ビジネス応用</span></div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="セクション切替">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">各章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">今日のアクション</button>
+  </nav>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🪜 メタ思考</h3>
+      <ul>
+        <li>物事を一段高い視点から眺めること。「幽体離脱して自分を上から見る」イメージで説明される</li>
+        <li>目の前の事実そのものではなく、その背後にある構造・目的に目を向ける思考法</li>
+      </ul>
+      <div class="why">理由：本書全体の土台となる概念で、以降の「Why型思考」「アナロジー思考」はこのメタ思考を実践するための具体的な手段にあたる。</div>
+    </div>
+    <div class="card">
+      <h3>❓ Why型思考</h3>
+      <ul>
+        <li>「なぜ？」を繰り返し問い、目の前の手段の背後にある上位目的を掘り出す思考法</li>
+        <li>「What（何を）」「How（どうやって）」止まりの思考から、「Why（何のために）」へ視点を一段上げる</li>
+      </ul>
+      <div class="why">理由：手段に固執せず目的から考え直すことで、より良い別の手段に気づけるようになるため。</div>
+    </div>
+    <div class="card">
+      <h3>🔗 アナロジー思考（類推思考）</h3>
+      <ul>
+        <li>一見まったく異なる2つの事例から、抽象度を上げることで共通の構造を見つけ出す思考法</li>
+        <li>遠い領域の知識・経験を借りてくることで、新しい発想（アイデア）を生み出せる</li>
+      </ul>
+      <div class="why">理由：発想力の飛躍は「似ているものを似ていると気づく」だけでなく「似ていないものの共通点に気づく」ことから生まれるという本書の核心だから。</div>
+    </div>
+    <div class="card">
+      <h3>🎈 抽象化と具体化</h3>
+      <ul>
+        <li>抽象化＝個別の事象から共通する特徴を取り出し、一般化すること</li>
+        <li>具体化＝抽象的な概念を、個別の状況に当てはめて使えるようにすること</li>
+      </ul>
+      <div class="why">理由：アナロジー思考は「具体→抽象→別の具体」という往復運動であり、この型を理解しないと類推がただのこじつけになってしまうため。</div>
+    </div>
+    <div class="card">
+      <h3>👻 幽体離脱思考</h3>
+      <ul>
+        <li>自分自身や自分のいる状況を、当事者ではなく第三者の視点から客観的に眺める比喩</li>
+      </ul>
+      <div class="why">理由：メタ思考という抽象的な概念を、誰もが直感的にイメージできる言葉に変換しているため、実践の入口として重要。</div>
+    </div>
+    <div class="card">
+      <h3>🏋️ トレーニング（問題演習）としての思考力</h3>
+      <ul>
+        <li>思考力は才能ではなく、問題を繰り返し解くことで鍛えられる「スキル」であるという前提</li>
+      </ul>
+      <div class="why">理由：「発想力がある人とない人がいる」という思い込みを崩し、読者に34問へ取り組む動機を与えるため。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>📖 第1章：ウォームアップ編</h3>
+      <ul>
+        <li>メタ思考とは何かを、具体的で易しい問題を通じて体感させる導入章</li>
+      </ul>
+      <div class="why">理由：いきなり抽象的な説明から入らず、問題を解く体験から概念に入ることで、理解の抵抗感を下げている。</div>
+    </div>
+    <div class="card">
+      <h3>📖 第2章：Why型思考のトレーニング</h3>
+      <ul>
+        <li>「なぜ？」を繰り返して上位目的を掘り出す練習問題を、身近な事例で繰り返し解く</li>
+      </ul>
+      <div class="why">理由：手段への固執を外す訓練をまず単独で行い、次章のアナロジー思考の土台を作るため。</div>
+    </div>
+    <div class="card">
+      <h3>📖 第3章：アナロジー思考のトレーニング</h3>
+      <ul>
+        <li>一見無関係な2つの事例（例：信号機と特急停車駅）の共通点を見抜く演習問題が続く</li>
+      </ul>
+      <div class="why">理由：Why型思考で上位目的を抜き出す力がついた上で、別領域への転用を練習する、本書のもう一つの核。</div>
+    </div>
+    <div class="card">
+      <h3>📖 第4章：ビジネスアナロジーのトレーニング</h3>
+      <ul>
+        <li>第3章までの思考法を、マネジメントや組織運営などビジネスの具体的な場面に応用する演習に進む</li>
+      </ul>
+      <div class="why">理由：思考トレーニングを「問題が解けて終わり」にせず、実務での発想転換につなげるための最終章。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3>🚦 事例1：信号機と特急停車駅の共通点</h3>
+      <ul>
+        <li>本書の演習問題の一つ。見た目も用途も異なる「信号機」と「特急の停車駅」に共通する構造を考えさせる</li>
+      </ul>
+      <div class="why">理由（この例が示すこと）：「流れを一時的に止めて、優先順位の高いものを通す」という抽象的な機能の共通性に気づけるかどうかが、アナロジー思考の核心であることを示す。</div>
+    </div>
+    <div class="card">
+      <h3>🏟️ 事例2：マネージャー業務とスポーツの審判の共通点</h3>
+      <ul>
+        <li>「経営者・マネージャーの業務」と「スポーツの審判」という遠い分野同士の共通点を探る演習問題</li>
+      </ul>
+      <div class="why">理由（この例が示すこと）：どちらも「プレイヤー自身にはなれないが、ルールに基づいて場を公正に進行させる役割」という抽象構造を共有しており、立場の違う仕事からもマネジメントの本質を学べることを示す。</div>
+    </div>
+    <div class="card">
+      <h3>💡 事例3：Why型思考による目的の再発見</h3>
+      <ul>
+        <li>「何をすべきか（What）」で止まっている問いに「なぜそれをするのか（Why）」を重ねて、より上位の目的を掘り出す演習が複数提示される</li>
+      </ul>
+      <div class="why">理由（この例が示すこと）：手段に固執していた問題が、目的に立ち返ることで全く別の、より良い解決策に開かれることを具体的に体感させる。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote">
+      メタ思考とは、物事を一つ上の視点から考えることである。
+      <span class="note">※要旨（書籍情報・レビュー記事で紹介されている本書の中心定義。原文の一次確認はできていません）</span>
+    </div>
+    <div class="quote">
+      一見まったく違う2つの事柄から共通点を見つけ出すことで、新しい発想が生まれる。
+      <span class="note">※要旨（アナロジー思考についての紹介記事をもとにした要約）</span>
+    </div>
+    <div class="quote">
+      思考力は才能ではなく、トレーニングによって鍛えられるスキルである。
+      <span class="note">※要旨（本書のコンセプトとして紹介されている考え方）</span>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="action-item">
+      <span class="action-num">1</span>
+      <div class="action-body">
+        <b>今日の「やるべきこと」を1つ選び、「なぜそれをするのか」を3回問い直す（15分）</b>
+        <span class="meta">目的：Why型思考で手段の奥にある上位目的を掘り出す／期待効果：目的に立ち返ることで、もっと良い別の手段に気づける</span>
+      </div>
+    </div>
+    <div class="action-item">
+      <span class="action-num">2</span>
+      <div class="action-body">
+        <b>自分の仕事・役割と、全く違う分野の何か（スポーツ、自然、料理など）の共通点を1つ探してメモする（15分）</b>
+        <span class="meta">目的：アナロジー思考を1回分実践する／期待効果：遠い分野からの借用で新しい視点が得られる</span>
+      </div>
+    </div>
+    <div class="action-item">
+      <span class="action-num">3</span>
+      <div class="action-body">
+        <b>直面している問題を1つ選び、「一段上の視点から見るとどう見えるか」を紙に書き出す（20分）</b>
+        <span class="meta">目的：メタ思考（幽体離脱思考）を意識的に実践する／期待効果：当事者視点では見えなかった解決の糸口に気づける</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="card" style="margin-top:20px;">
+    <h3>📚 関連書籍</h3>
+    <ul class="related-list">
+      <li><b>具体と抽象</b>（細谷功）：同じ著者による「抽象化」概念の本格的な解説書で、本書のアナロジー思考の理論的な土台を補完する</li>
+      <li><b>水平思考の世界</b>（エドワード・デ・ボノ）：既存の枠組みを外して発想するという点で、本書のメタ思考・アナロジー思考と同じ問題意識を共有する</li>
+      <li><b>知の逆転</b>（吉川浩満）：知性のあり方そのものを問い直す視点が、本書の「視点を一段上げる」というメタ思考の姿勢と重なる</li>
+      <li><b>クリティカルシンキング入門</b>（宇佐美寛）：前提を疑い論理的に考え直すという姿勢が、本書のWhy型思考と直結する</li>
+      <li><b>ファスト＆スロー</b>（ダニエル・カーネマン）：直感的な思考（システム1）と熟慮的な思考（システム2）の違いを示し、メタ思考がどちらの働きかを理解する助けになる</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  📚 06_Books 読書サマリー自動生成システム
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){
+        t.setAttribute('aria-selected','false');
+        var p = document.getElementById(t.getAttribute('aria-controls'));
+        if(p) p.classList.remove('active');
+      });
+      tab.setAttribute('aria-selected','true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      if(panel) panel.classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
