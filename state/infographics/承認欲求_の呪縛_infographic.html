@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>「承認欲求」の呪縛 ― 太田肇</title>
+<!--
+  カラーパレット（確定3色・グラデーション可）
+  プライマリー:   #4F46E5 (インディゴ)  ― 承認欲求という「力」そのもの
+  セカンダリー:   #0F766E (ティール)    ― 自己効力感・解決の処方箋
+  アクセント:     #EA580C (オレンジ)    ― 呪縛・危険サイン・警鐘
+-->
+<style>
+  :root{
+    --primary:#4F46E5;
+    --primary-light:#8B81F2;
+    --secondary:#0F766E;
+    --secondary-light:#38BDB0;
+    --accent:#EA580C;
+    --accent-light:#FB923C;
+    --bg:#F7F7FB;
+    --card:#FFFFFF;
+    --text:#1F2430;
+    --text-sub:#5A6072;
+    --border:#E6E6F0;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px;}
+
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--primary-light) 55%, var(--secondary) 120%);
+    color:#fff;
+    padding:28px 16px 32px;
+    border-radius:0 0 28px 28px;
+  }
+  .hero-inner{max-width:720px;margin:0 auto;}
+  .kicker{
+    font-size:12px;letter-spacing:.08em;font-weight:700;
+    background:rgba(255,255,255,.18);
+    display:inline-block;padding:4px 10px;border-radius:999px;
+    margin-bottom:10px;
+  }
+  h1.title{font-size:24px;margin:0 0 6px;font-weight:800;line-height:1.4;}
+  .meta{font-size:13px;opacity:.9;margin:0 0 18px;}
+
+  .whybox{
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:var(--radius);
+    padding:16px;
+    backdrop-filter:blur(2px);
+  }
+  .whybox h2{font-size:13px;margin:0 0 10px;font-weight:700;letter-spacing:.04em;opacity:.95;}
+  .qa{display:flex;flex-direction:column;gap:10px;}
+  .qa .row{display:flex;gap:8px;align-items:flex-start;}
+  .qa .tag{
+    flex:0 0 auto;font-size:11px;font-weight:800;
+    background:#fff;color:var(--primary);
+    border-radius:8px;padding:3px 7px;line-height:1.4;white-space:nowrap;
+  }
+  .qa p{margin:0;font-size:14px;}
+
+  section.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:18px 16px;
+    margin:16px auto;
+    max-width:720px;
+  }
+  .section-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .section-head .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);flex:0 0 auto;}
+  .section-head h2{font-size:16px;margin:0;font-weight:800;}
+
+  /* 数値バッジ：呪縛の定式 */
+  .formula{
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;
+    margin:10px 0 4px;
+    font-size:13px;font-weight:700;
+  }
+  .chip{
+    padding:8px 10px;border-radius:12px;color:#fff;text-align:center;min-width:76px;
+  }
+  .chip small{display:block;font-weight:500;font-size:10px;opacity:.85;margin-top:2px;}
+  .chip.exp{background:var(--accent);}
+  .chip.eff{background:var(--secondary);}
+  .chip.imp{background:var(--primary);}
+  .op{font-size:16px;color:var(--text-sub);}
+  .formula-note{font-size:12px;color:var(--text-sub);text-align:center;margin-top:8px;}
+
+  /* タブ */
+  .tabs{display:flex;overflow-x:auto;gap:6px;margin:0 auto 14px;max-width:720px;padding:0 16px;scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    font-size:13px;font-weight:700;
+    padding:9px 13px;border-radius:999px;border:1px solid var(--border);
+    background:#fff;color:var(--text-sub);
+    cursor:pointer;white-space:nowrap;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary);color:#fff;border-color:var(--primary);
+  }
+  .tabpanel{display:none;}
+  .tabpanel.active{display:block;}
+
+  .kcard{
+    border:1px solid var(--border);border-radius:12px;padding:12px 13px;margin-bottom:10px;
+    background:#FBFBFE;
+  }
+  .kcard h3{margin:0 0 6px;font-size:14.5px;font-weight:800;display:flex;gap:6px;align-items:baseline;}
+  .kcard h3 .num{
+    font-size:11px;background:var(--primary);color:#fff;border-radius:7px;padding:1px 7px;font-weight:800;
+  }
+  .kcard ul{margin:6px 0 0;padding-left:18px;font-size:13.5px;color:var(--text);}
+  .kcard .why{margin-top:8px;font-size:12.5px;color:var(--secondary);background:#EAFBF8;border-radius:8px;padding:6px 8px;}
+  .kcard .why b{color:var(--secondary);}
+
+  .chapter{border-left:4px solid var(--primary);padding:10px 12px;margin-bottom:12px;background:#FBFBFE;border-radius:0 10px 10px 0;}
+  .chapter h3{margin:0 0 6px;font-size:14.5px;font-weight:800;}
+  .chapter ul{margin:4px 0 0;padding-left:18px;font-size:13.5px;}
+  .chapter .why{margin-top:8px;font-size:12.5px;color:var(--secondary);background:#EAFBF8;border-radius:8px;padding:6px 8px;}
+
+  .case{border:1px solid var(--border);border-radius:12px;padding:12px 13px;margin-bottom:12px;}
+  .case h3{margin:0 0 6px;font-size:14px;font-weight:800;color:var(--accent);}
+  .case p{margin:4px 0;font-size:13.5px;}
+  .case .label{font-size:11px;font-weight:800;color:var(--text-sub);}
+  .case .why{margin-top:8px;font-size:12.5px;color:var(--secondary);background:#EAFBF8;border-radius:8px;padding:6px 8px;}
+
+  .quote{
+    border-left:4px solid var(--accent);background:#FFF4EC;border-radius:0 10px 10px 0;
+    padding:10px 12px;margin-bottom:10px;font-size:13.5px;
+  }
+  .quote .label{display:inline-block;font-size:10.5px;font-weight:800;color:var(--accent);background:#FFE3CC;border-radius:6px;padding:2px 6px;margin-bottom:6px;}
+
+  .action{display:flex;gap:10px;border:1px solid var(--border);border-radius:12px;padding:12px 13px;margin-bottom:10px;align-items:flex-start;}
+  .action .num{
+    flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--secondary);color:#fff;
+    font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;
+  }
+  .action h3{margin:0 0 4px;font-size:14px;font-weight:800;}
+  .action p{margin:2px 0;font-size:13px;color:var(--text-sub);}
+  .action p b{color:var(--text);}
+
+  .related{font-size:13.5px;}
+  .related ul{padding-left:18px;margin:0;}
+  .related li{margin-bottom:8px;}
+
+  footer{text-align:center;font-size:11px;color:var(--text-sub);margin-top:24px;padding:0 16px;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="kicker">📚 今日の一冊・心理学</span>
+    <h1 class="title">「承認欲求」の呪縛</h1>
+    <p class="meta">著者：太田肇（新潮新書）</p>
+
+    <div class="whybox">
+      <h2>🔑 要約：問い × 答え × 根拠</h2>
+      <div class="qa">
+        <div class="row"><span class="tag">問い</span><p>なぜ「認められたい」という前向きな気持ちが、人を追い詰め、不正や過労死まで引き起こすのか？</p></div>
+        <div class="row"><span class="tag">答え</span><p>「認められたい」が「認められねば」という強迫に転化した瞬間、承認欲求は人を守る力から人を潰す呪縛に変わる。</p></div>
+        <div class="row"><span class="tag">根拠</span><p>呪縛の強さは「認知された期待−自己効力感」×「問題の重要性」で説明でき、自己効力感を高め組織への依存を減らすことで解ける。</p></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="card" aria-label="呪縛の定式">
+    <div class="section-head"><span class="dot"></span><h2>⚖️ 「呪縛」の強さを決める数式</h2></div>
+    <div class="formula">
+      <div class="chip exp">認知された期待<small>大きいほど危険</small></div>
+      <span class="op">−</span>
+      <div class="chip eff">自己効力感<small>高いほど安全</small></div>
+      <span class="op">）×</span>
+      <div class="chip imp">問題の重要性<small>高いほど増幅</small></div>
+    </div>
+    <p class="formula-note">＝ プレッシャーの大きさ＝「承認欲求の呪縛」の強さ（著者の定式化）</p>
+  </section>
+</div>
+
+<div class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+  <button class="tab-btn" role="tab" id="tab-concept" aria-controls="panel-concept" aria-selected="true">主要概念</button>
+  <button class="tab-btn" role="tab" id="tab-chapter" aria-controls="panel-chapter" aria-selected="false">各章の要約</button>
+  <button class="tab-btn" role="tab" id="tab-case" aria-controls="panel-case" aria-selected="false">具体例</button>
+  <button class="tab-btn" role="tab" id="tab-quote" aria-controls="panel-quote" aria-selected="false">重要な引用</button>
+  <button class="tab-btn" role="tab" id="tab-action" aria-controls="panel-action" aria-selected="false">今日のアクション</button>
+</div>
+
+<div class="wrap">
+
+  <section id="panel-concept" class="tabpanel active" role="tabpanel" aria-labelledby="tab-concept">
+
+    <div class="kcard">
+      <h3><span class="num">1</span>承認欲求</h3>
+      <ul><li>他者から認められたいという、人間の行動を動かす最強クラスの欲求。</li></ul>
+      <div class="why"><b>理由：</b>功罪どちらにも転ぶ強い力だからこそ、まず正体を理解する必要がある。</div>
+    </div>
+
+    <div class="kcard">
+      <h3><span class="num">2</span>「認められたい」→「認められねば」</h3>
+      <ul><li>自発的な意欲が、義務・強迫に転化する分水嶺。</li></ul>
+      <div class="why"><b>理由：</b>この転化が起きた瞬間から「呪縛」が始まる、本書最大のキーポイント。</div>
+    </div>
+
+    <div class="kcard">
+      <h3><span class="num">3</span>認知された期待</h3>
+      <ul><li>本人が「こう期待されている」と認識している度合い。実際の期待そのものより重要。</li></ul>
+      <div class="why"><b>理由：</b>思い込みの期待が本人を縛るため、現実の期待とのズレに気づくことが解決の第一歩。</div>
+    </div>
+
+    <div class="kcard">
+      <h3><span class="num">4</span>自己効力感</h3>
+      <ul><li>「やればできる」という自信。高いほど期待に押し潰されにくい。</li></ul>
+      <div class="why"><b>理由：</b>呪縛の定式の中で唯一、自分の行動で増やせる変数だから。</div>
+    </div>
+
+    <div class="kcard">
+      <h3><span class="num">5</span>消極的な承認欲求</h3>
+      <ul><li>「嫌われたくない」「失望されたくない」という防衛的な承認欲求。</li></ul>
+      <div class="why"><b>理由：</b>積極的な承認欲求より呪縛を生みやすく、見分けることが対策の入口になる。</div>
+    </div>
+
+    <div class="kcard">
+      <h3><span class="num">6</span>共同体への依存</h3>
+      <ul><li>組織や集団を承認の唯一の源泉にしてしまう状態。</li></ul>
+      <div class="why"><b>理由：</b>依存先が一つしかないと、その評価に人生全体が左右されてしまう。</div>
+    </div>
+
+    <div class="kcard">
+      <h3><span class="num">7</span>管理のパラドックス</h3>
+      <ul><li>不正を防ぐための管理強化が、逆に隠蔽や不祥事を助長してしまう逆説。</li></ul>
+      <div class="why"><b>理由：</b>個人の心理と組織設計が地続きであることを示す、本書の社会的な警鐘。</div>
+    </div>
+
+  </section>
+
+  <section id="panel-chapter" class="tabpanel" role="tabpanel" aria-labelledby="tab-chapter" hidden>
+
+    <div class="chapter">
+      <h3>第1章　「承認欲求」最強説</h3>
+      <ul>
+        <li>人は認められることで、意欲・成績・幸福度が驚くほど変わる。</li>
+        <li>承認欲求は数ある動機の中でも最強クラスの力を持つ。</li>
+        <li>その強さの裏側には「病」へ転じる前兆がすでにある。</li>
+      </ul>
+      <div class="why"><b>理由：</b>「効く」仕組みを理解しないまま使うと、同じ力が自分を傷つける刃になる。</div>
+    </div>
+
+    <div class="chapter">
+      <h3>第2章　認められたら危ない</h3>
+      <ul>
+        <li>「認められたい」が「認められねば」に変わる瞬間に注意が必要。</li>
+        <li>認められた人ほど、後に不幸に陥るケースがある。</li>
+        <li>なぜ人は承認にとらわれるのか、心理的なメカニズムを分析。</li>
+      </ul>
+      <div class="why"><b>理由：</b>承認の副作用を知らないと、「もっと認められよう」という努力自体が自分を追い込む。</div>
+    </div>
+
+    <div class="chapter">
+      <h3>第3章　パワハラ、隠蔽、過労死……「呪縛」の不幸な結末</h3>
+      <ul>
+        <li>ブラックバイト・過労死は「認められたいから無理をする」構造から生まれる。</li>
+        <li>エリートを苦しめる3つの不幸と、犯罪に走ってしまうメカニズム。</li>
+        <li>「管理のパラドックス」―組織不祥事はなぜ繰り返されるのか。</li>
+      </ul>
+      <div class="why"><b>理由：</b>個人のメンタルヘルス問題と組織不祥事という社会問題が、同じ根から生まれることを示す。</div>
+    </div>
+
+    <div class="chapter">
+      <h3>第4章　「承認欲求の呪縛」を解くカギは</h3>
+      <ul>
+        <li>日本人は「期待」に特に押し潰されやすい文化的傾向を持つ。</li>
+        <li>期待の重荷を下ろす具体的な方法を提示。</li>
+        <li>自己効力感を高め、組織への依存度を小さくする。</li>
+        <li>問題を相対化する視点を持ち、組織不祥事をなくす仕組みをつくる。</li>
+      </ul>
+      <div class="why"><b>理由：</b>個人の処方箋と組織の処方箋が揃ってはじめて、現実的に呪縛から脱却できる。</div>
+    </div>
+
+  </section>
+
+  <section id="panel-case" class="tabpanel" role="tabpanel" aria-labelledby="tab-case" hidden>
+
+    <div class="case">
+      <h3>① SNSの「いいね」依存</h3>
+      <p><span class="label">背景：</span>SNSで「いいね」の数に全身全霊を傾けてしまう人が増えている。</p>
+      <p><span class="label">示唆：</span>承認欲求が外部評価への依存に転化すると、承認の有無が精神状態を直接左右するようになる。</p>
+      <div class="why"><b>理由（この例が示すこと）：</b>デジタル時代は承認が数値化・可視化されるため、呪縛が加速しやすい。</div>
+    </div>
+
+    <div class="case">
+      <h3>② ブラックバイト・過労死</h3>
+      <p><span class="label">背景：</span>「期待に応えたい」という思いから、若年労働者が自発的に無理な長時間労働を引き受けてしまう。</p>
+      <p><span class="label">示唆：</span>「認められたい」という気持ちは、ブレーキのないまま働き続けることを自分自身に正当化させる。</p>
+      <div class="why"><b>理由（この例が示すこと）：</b>外部の強制ではなく自発的な承認欲求こそが過重労働の引き金になるという、本書の警鐘。</div>
+    </div>
+
+    <div class="case">
+      <h3>③ エリートの挫折と犯罪</h3>
+      <p><span class="label">背景：</span>高学歴・高地位のエリートが周囲の期待に応え続けようとするあまり、プレッシャーに押され不正・犯罪的行為に走る。</p>
+      <p><span class="label">示唆：</span>能力が高いほど期待も高まり、ギャップが生じたときの心理的負荷も大きくなる。</p>
+      <div class="why"><b>理由（この例が示すこと）：</b>「できる人ほど危ない」という逆説を通じて、優秀さと脆さが地続きであることを示す。</div>
+    </div>
+
+    <div class="case">
+      <h3>④ 組織の隠蔽・不祥事（管理のパラドックス）</h3>
+      <p><span class="label">背景：</span>不正防止のための監視・管理強化が、現場に「失敗を認められてはいけない」という過剰な承認欲求を生み、逆に隠蔽を助長する。</p>
+      <p><span class="label">示唆：</span>管理を強めるほど不祥事が減るとは限らず、承認欲求の構造を無視した対策はむしろ逆効果になりうる。</p>
+      <div class="why"><b>理由（この例が示すこと）：</b>個人レベルの心理メカニズムが、組織レベルの構造的問題に直結することを示す代表例。</div>
+    </div>
+
+  </section>
+
+  <section id="panel-quote" class="tabpanel" role="tabpanel" aria-labelledby="tab-quote" hidden>
+
+    <div class="quote">
+      <span class="label">要旨</span>
+      <p>承認欲求は人を動かす最強の力であると同時に、「認められたい」が「認められねば」に変わった瞬間、人を追い詰める呪縛に転じる。</p>
+    </div>
+
+    <div class="quote">
+      <span class="label">要旨</span>
+      <p>呪縛の強さは「認知された期待」から「自己効力感」を引いた差に、問題の重要性を掛けたものとして捉えられる。</p>
+    </div>
+
+    <div class="quote">
+      <span class="label">要旨</span>
+      <p>呪縛から脱するには期待そのものを否定するのではなく、自己効力感を高め、組織など特定の共同体への依存度を下げることが有効である。</p>
+    </div>
+
+    <p style="font-size:12px;color:var(--text-sub);">※本書からの一字一句の引用は確認できなかったため、信頼できる要約情報に基づく要旨として掲載しています。</p>
+
+  </section>
+
+  <section id="panel-action" class="tabpanel" role="tabpanel" aria-labelledby="tab-action" hidden>
+
+    <div class="action">
+      <div class="num">1</div>
+      <div>
+        <h3>「期待」の思い込みを仕分ける</h3>
+        <p>「期待されている」と感じていることを1つ書き出し、それが自分の思い込みか、相手が実際に言ったことかを分けて確認する。</p>
+        <p><b>目的：</b>認知された期待と実際の期待のズレに気づく。</p>
+        <p><b>期待効果：</b>思い込みによる過剰なプレッシャーを客観的に見直せる。</p>
+      </div>
+    </div>
+
+    <div class="action">
+      <div class="num">2</div>
+      <div>
+        <h3>自己効力感の棚卸し</h3>
+        <p>直近でうまくできた小さなことを3つ書き出す。</p>
+        <p><b>目的：</b>「やればできる」という感覚を意図的に強化する。</p>
+        <p><b>期待効果：</b>期待に押し潰されにくい心理的な土台を作れる。</p>
+      </div>
+    </div>
+
+    <div class="action">
+      <div class="num">3</div>
+      <div>
+        <h3>承認欲求を目的意識に言い換える</h3>
+        <p>「認められたいから始めた行動」を1つ選び、それを「誰のため」「何のため」かに言い換えてみる。</p>
+        <p><b>目的：</b>消極的な承認欲求（嫌われたくない）を積極的な目的意識に変換する。</p>
+        <p><b>期待効果：</b>承認欲求に依存せず行動を続けられるようになる。</p>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="card" aria-label="関連書籍">
+    <div class="section-head"><span class="dot" style="background:var(--secondary);"></span><h2>📚 関連書籍</h2></div>
+    <div class="related">
+      <ul>
+        <li><b>嫌われる勇気</b>（岸見一郎・古賀史健）: 他者の承認を求めず自ら歩む生き方を説くアドラー心理学の代表作で、本書とは対照的な「承認を求めない」立場を示す。</li>
+        <li><b>自己肯定感の教科書</b>（中島輝）: 承認欲求の対極にある自己肯定感を育てる実践書で、外部評価に依存しない心の基盤づくりを補強する。</li>
+        <li><b>モチベーション3.0</b>（ダニエル・ピンク）: 外的承認・報酬より内発的動機づけを重視する議論で、本書の自己効力感論と響き合う。</li>
+        <li><b>愛着障害 子ども時代を引きずる人々</b>（岡田尊司）: 承認欲求の根を幼少期の愛着形成に求める視点を提供し、本書の心理的背景を補完する。</li>
+        <li><b>日本人の承認欲求―テレワークがさらした深層―</b>（太田肇）: 同著者による続編的な一冊で、テレワーク時代における承認欲求の変化を論じる。</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>本インフォグラフィックはWeb上で確認できた情報に基づき作成しています。</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab-btn');
+  var panels = {
+    'tab-concept':'panel-concept',
+    'tab-chapter':'panel-chapter',
+    'tab-case':'panel-case',
+    'tab-quote':'panel-quote',
+    'tab-action':'panel-action'
+  };
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(b){ b.setAttribute('aria-selected','false'); });
+      btn.setAttribute('aria-selected','true');
+      Object.keys(panels).forEach(function(tabId){
+        var panel = document.getElementById(panels[tabId]);
+        if(tabId === btn.id){
+          panel.hidden = false;
+          panel.classList.add('active');
+        } else {
+          panel.hidden = true;
+          panel.classList.remove('active');
+        }
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
