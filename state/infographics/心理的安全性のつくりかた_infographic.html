@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心理的安全性のつくりかた インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #3B5BDB / セカンダリー #0CA678 / アクセント #F76707 -->
+<style>
+:root {
+  --primary: #3B5BDB;
+  --secondary: #0CA678;
+  --accent: #F76707;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #e9fcf5, #f0fff8);
+  border-left: 3px solid var(--secondary);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eef4fb, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fff3ea, #fff8f0);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--secondary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--secondary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 心理的安全性のつくりかた</h1>
+  <p>「ヌルい職場」ではなく「健全な衝突」ができるチームを、行動科学でつくる</p>
+</header>
+
+<div class="badge-row">
+  <span class="badge">📈 シリーズ20万部突破</span>
+  <span class="badge">🏆 HRアワード2021優秀賞</span>
+  <span class="badge">📘 全5章構成</span>
+</div>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>「心理的安全性の高いチーム」とは、仲良しでヌルい職場のことなのか？ そうでないなら、それはどうやって意図的につくれるのか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>心理的安全性とは、地位や経験に関わらず誰もが率直な意見・疑問・違和感を言い合え、必要な「健全な衝突（ヘルシー・コンフリクト）」を起こせるチームの状態。精神論ではなく「行動」に着目したマネジメントで、誰でも意図的につくることができる。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>人の性格や心の中は直接変えられないが、「行動」は「きっかけ→行動→みかえり」という仕組み（行動分析）で変えられる。発言・挑戦・質問といった行動に好意的な「みかえり」を与え続けることで、チームの空気そのものが変わっていく。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>日本版の心理的安全性を測る4因子「話しやすさ・助け合い・挑戦・新奇歓迎」を軸に自分のチームを観察し、リーダー自身の「心理的柔軟性」を高めながら、行動分析と「価値とルール」の両輪で望ましい行動を強化していく。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🚫 心理的安全性＝「ヌルい職場」ではない</h3>
+    <ul>
+      <li>外交的・アットホーム・結束が強いこと＝心理的安全性ではない</li>
+      <li>単に妥協し合う「ヌルい職場」とは正反対の概念</li>
+      <li>チームの成果に必要なら、安全に発言・挑戦・試行できる状態を指す</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「仲が良いチーム＝安全なチーム」という誤解のままでは、本来必要な意見対立（健全な衝突）を避けてしまい、成果が上がらないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚔️ 健全な衝突（ヘルシー・コンフリクト）</h3>
+    <ul>
+      <li>目標や大切なことに向かって、率直に意見をぶつけ合える状態</li>
+      <li>心理的安全性がないと、意見の対立がすぐ人間関係の対立に変わる</li>
+      <li>安全性があるからこそ、対立を恐れず本質的な議論ができる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>対立を避ける文化は一時的に平和に見えても、問題や誤りの指摘が遅れ、チームの学習と改善を止めてしまうため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🗣️ 因子①話しやすさ</h3>
+    <ul>
+      <li>地位や経験に関わらず、率直な意見・疑問・違和感を言える状態</li>
+      <li>「分からない」「おかしいと思う」を言える空気がチームの土台になる</li>
+      <li>日本版 心理的安全性4因子の1つ目</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>話しやすさがなければ、他の3因子（助け合い・挑戦・新奇歓迎）に必要な発言そのものが生まれないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 因子②助け合い</h3>
+    <ul>
+      <li>問題やミスが起きたとき、互いに助け合い解決に向かえる</li>
+      <li>「誰が悪いか」ではなく「どう解決するか」に焦点が移る</li>
+      <li>弱さや失敗を見せても攻撃されないという安心感</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>助け合いが機能しないチームでは、問題の報告や相談そのものが遅れ、小さなミスが大きな失敗に発展するため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🚀 因子③挑戦</h3>
+    <ul>
+      <li>前例のないこと・リスクのあることに挑戦できる雰囲気</li>
+      <li>挑戦の結果が失敗でも、挑戦したこと自体が評価される</li>
+      <li>挑戦が罰せられると、チームは現状維持に閉じていく</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>挑戦への罰（叱責・評価低下）が一度でもあると、以後誰も新しいことを言わなくなり、イノベーションが止まるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎨 因子④新奇歓迎</h3>
+    <ul>
+      <li>人それぞれの個性・新しい発想・異質な視点を歓迎する</li>
+      <li>「普通はこうする」から外れた意見も排除しない</li>
+      <li>多様性が議論の質とチームの創造性を高める</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>均質な意見ばかりのチームは健全な衝突が起きず、盲点に気づけないまま意思決定を続けてしまうため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🧘 心理的柔軟性の3要素</h3>
+    <ul>
+      <li>①変えられないものを受け入れる：過去の失敗や他者の性格に抗わない</li>
+      <li>②大切なことに向かう：目先の感情より、本当に大切な目的を優先する</li>
+      <li>③マインドフルに見分ける：今の自分の思考・感情を客観的に観察する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>リーダー自身がこの3要素を持たないと、部下の挑戦や異論を「自分への脅威」と受け取り、無意識に安全性を壊してしまうため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🔁 行動分析（きっかけ→行動→みかえり）</h3>
+    <ul>
+      <li>人の行動は「きっかけ（先行条件）」と「みかえり（結果）」で決まる</li>
+      <li>性格や心の中を変えるより、行動にフォーカスする方が現実的で効果的</li>
+      <li>望ましい行動に好意的な「みかえり」を与えると、その行動は増える</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「もっと積極的になれ」という精神論は再現性がないが、行動のきっかけとみかえりを変える施策は誰でも実践・検証できるため。
+    </div>
+  </div>
+
+  <h3 style="color: var(--secondary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>話しやすさ</span>
+      <span class="flow-arrow">→</span>
+      <span>助け合い・挑戦・新奇歓迎の土台になる</span>
+      <span class="flow-arrow">→</span>
+      <span>4因子が揃う</span>
+    </div>
+    <div class="flow-item">
+      <span>リーダーの心理的柔軟性</span>
+      <span class="flow-arrow">→</span>
+      <span>部下の挑戦を脅威と見なさない</span>
+      <span class="flow-arrow">→</span>
+      <span>挑戦行動へ好意的なみかえりを返せる</span>
+    </div>
+    <div class="flow-item">
+      <span>行動へのきっかけとみかえりの設計</span>
+      <span class="flow-arrow">→</span>
+      <span>望ましい行動が増える</span>
+      <span class="flow-arrow">→</span>
+      <span>4因子が実際に機能する文化になる</span>
+    </div>
+    <div class="flow-item">
+      <span>心理的安全性（話しやすさ等）</span>
+      <span class="flow-arrow">→</span>
+      <span>対立が人間関係の対立にならない</span>
+      <span class="flow-arrow">→</span>
+      <span>健全な衝突が起こせる</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+
+  <div class="chapter-card">
+    <h3>第1章 チームの心理的安全性</h3>
+    <ul>
+      <li>心理的安全性は「ヌルい職場」ではなく、健全な衝突を起こせる機能であると定義</li>
+      <li>日本における4因子「話しやすさ・助け合い・挑戦・新奇歓迎」を提示</li>
+      <li>心理的安全性が組織の生産性・学習・イノベーションの鍵になると説明</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>多くの人が抱く「心理的安全性＝仲良しチーム」という誤解を最初に解いておかないと、以後の施策が的外れになるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第2章 リーダーシップとしての心理的柔軟性</h3>
+    <ul>
+      <li>心理的安全なチームのリーダーに必要な「心理的柔軟性」を解説</li>
+      <li>3要素：変えられないものを受け入れる／大切なことに向かう／マインドフルに見分ける</li>
+      <li>リーダー自身の反応パターンが、チームの安全性に直結することを指摘</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>施策だけでは心理的安全性は根付かず、まずリーダー自身の在り方（柔軟性）が土台になるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第3章 行動分析でつくる心理的安全性</h3>
+    <ul>
+      <li>人の行動を「きっかけ→行動→みかえり」の三項関係で捉える行動分析の枠組み</li>
+      <li>性格や気合いではなく、行動へのきっかけとみかえりの設計を重視</li>
+      <li>望ましい発言・挑戦行動を増やす具体的な介入方法を提示</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>精神論に頼らず、誰でも再現できる「仕組み」として心理的安全性をつくるための中核パートであるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第4章 価値とルールでつくる心理的安全性</h3>
+    <ul>
+      <li>行動分析だけでなく、チームが共有する「価値」と「ルール」の両輪で安全性を支える</li>
+      <li>チームの目的・大切にしたいことを明文化し、行動の指針にする</li>
+      <li>ルールは縛るためでなく、安心して挑戦するための土台として機能させる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>個々の行動への働きかけだけでは不十分で、チーム共通の価値観とルールがあることで安全性が長期的に定着するため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>第5章 心理的安全性導入ガイド</h3>
+    <ul>
+      <li>自分のチームの心理的安全性を測る診断（著者開発のサーベイ）の活用法</li>
+      <li>4因子ごとに現状を把握し、優先して手をつける因子を見極める手順</li>
+      <li>組織への導入ステップを具体的なガイドとして提示</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>理論を理解しただけでは現場は変わらず、実際に自分のチームに適用する手順まで示すことで行動に移しやすくするため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>🔬 Googleの「プロジェクト・アリストテレス」</h3>
+    <ul>
+      <li>Googleが社内の優れたチームの共通点を大規模調査した有名な研究</li>
+      <li>メンバーの能力や経歴より、「心理的安全性」の高さが成果の最重要要因と判明</li>
+      <li>この研究をきっかけに、心理的安全性という概念が世界的に注目された</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>心理的安全性が感覚的な「雰囲気の良さ」ではなく、データで裏付けられた成果要因であることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👶 行動分析のたとえ：きっかけ→行動→みかえり</h3>
+    <ul>
+      <li>子どもが駄々をこねる→おもちゃを買ってもらえる→以後も駄々をこねやすくなる、という強化の仕組み</li>
+      <li>これと同じ三項関係（先行条件・行動・結果）が職場の発言・挑戦行動にも働く</li>
+      <li>発言に無反応・否定で返すと、以後その人は発言しなくなる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「もっと発言してほしい」という抽象的な願いが、日々のリーダーの「みかえり」の与え方次第で実際に増減することを具体的に示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📊 SAFETY ZONE?による組織診断</h3>
+    <ul>
+      <li>著者（データサイエンティスト）が開発した4因子を測定する組織診断サーベイ</li>
+      <li>自分のチームが4因子のどこに課題があるかを数値で可視化できる</li>
+      <li>導入した具体的な企業名はWeb上で確認できず「不明」</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「心理的安全性を高める」という抽象的な目標を、測定可能な指標に落とし込む具体的手段を示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>💬 発言への反応で変わる職場の空気</h3>
+    <ul>
+      <li>新人の疑問や違和感の指摘に「いいね、それ考えてみよう」と返すケース</li>
+      <li>逆に「今それ聞くタイミング？」と返すケースでは、以後その新人は質問しなくなる</li>
+      <li>同じ発言行動でも、周囲の反応（みかえり）の違いでその後の頻度が大きく変わる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「話しやすさ」因子が、個人の性格ではなく日々のリーダー・同僚の対応の積み重ねでつくられることを示す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+
+  <div class="quote-card">
+    <p class="quote-text">心理的安全性は、地位や経験にかかわらず、誰もが率直な意見や素朴な疑問をお互いに言い合えるということです。</p>
+    <p class="quote-why">※本書における心理的安全性の定義を端的に表す一文。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">心理的に安全なチームというのは、外交的であることでも、アットホームな職場のことでも、単に結束したチームのことでも、すぐ妥協するヌルい職場のことでもない。チームのためや成果のために必要なことを、発言したり、試してみたり、挑戦してみたりしても、安全である（罰を与えられたりしない）ということである。</p>
+    <p class="quote-why">※「ヌルい職場」との違いを明確にする、本書で最も誤解を正す一節。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">影響のためには「性格・心の中」のことより「行動」にフォーカスした方が効果的。（要旨）</p>
+    <p class="quote-why">※要旨。精神論ではなく行動分析に重心を置く本書のアプローチを示す。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>🗣️ 自分から小さな「話しやすさ」のきっかけをつくる</h4>
+    <p><strong>やること：</strong>今日のミーティングや会話で、自分から「ここが分からない」「ちょっと違和感がある」と一言口に出してみる（15分）。</p>
+    <p><strong>目的：</strong>話しやすさ因子を自分の行動から起こし、周囲の発言のハードルを下げる。</p>
+    <p><strong>期待効果：</strong>自分の発言が「きっかけ」となり、他の人も率直な意見を出しやすくなる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>🔍 自分の「みかえり」の与え方を1つ書き出す</h4>
+    <p><strong>やること：</strong>直近でチームの誰かが発言・挑戦したときの自分の反応を振り返り、好意的なみかえりを返せていなかった場面を1つ特定する（20分）。</p>
+    <p><strong>目的：</strong>自分が無意識に与えている「みかえり」が、相手の発言行動を増減させていることに気づく。</p>
+    <p><strong>期待効果：</strong>次に同じ場面が来たときに、意識的に好意的な反応を返せるようになる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>📊 4因子セルフチェックで自分のチームを採点する</h4>
+    <p><strong>やること：</strong>「話しやすさ・助け合い・挑戦・新奇歓迎」の4因子それぞれを5点満点で自己採点し、最も低い因子に対する小さな行動プランを1つ立てる（30分）。</p>
+    <p><strong>目的：</strong>感覚的な「雰囲気」を数値化し、どこから手をつけるべきかを明確にする。</p>
+    <p><strong>期待効果：</strong>場当たり的な施策ではなく、最も弱い因子にフォーカスした改善が始められる。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 90%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--secondary);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
