@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>「朝4時起き」で、すべてがうまく回りだす！ インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様）
+  プライマリー: #FF6F3C（夜明けのオレンジ）
+  セカンダリー: #1B263B（夜明け前の紺）
+  アクセント:   #FFC857（朝日の黄金）
+  グラデーション: linear-gradient(135deg, #FF6F3C 0%, #FFC857 100%)
+-->
+<style>
+  :root {
+    --primary: #FF6F3C;
+    --secondary: #1B263B;
+    --accent: #FFC857;
+    --bg: #FFF8F2;
+    --card-bg: #FFFFFF;
+    --text: #1B263B;
+    --text-sub: #5A6478;
+    --border: #F0DCCB;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding-bottom: 40px;
+  }
+  header.hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: #fff;
+    padding: 28px 16px 24px;
+    text-align: center;
+  }
+  header.hero .eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    opacity: 0.9;
+  }
+  header.hero h1 {
+    font-size: 1.5rem;
+    margin: 8px 0 4px;
+    line-height: 1.4;
+  }
+  header.hero .author {
+    font-size: 0.9rem;
+    opacity: 0.95;
+  }
+
+  .why-how {
+    margin: 16px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 4px 14px rgba(27,38,59,0.08);
+    border: 1px solid var(--border);
+  }
+  .why-how h2 {
+    font-size: 1rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+  .why-how .qa {
+    margin-bottom: 10px;
+  }
+  .why-how .q {
+    font-weight: bold;
+    font-size: 0.92rem;
+    color: var(--secondary);
+  }
+  .why-how .a {
+    font-size: 0.92rem;
+    margin-top: 2px;
+  }
+  .why-how .why {
+    font-size: 0.82rem;
+    color: var(--text-sub);
+    margin-top: 2px;
+    border-left: 3px solid var(--accent);
+    padding-left: 8px;
+  }
+
+  .stat-badges {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    margin: 16px;
+    padding-bottom: 4px;
+  }
+  .stat-badge {
+    flex: 0 0 auto;
+    background: var(--secondary);
+    color: #fff;
+    border-radius: 14px;
+    padding: 12px 16px;
+    min-width: 108px;
+    text-align: center;
+  }
+  .stat-badge .num {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--accent);
+  }
+  .stat-badge .label {
+    font-size: 0.72rem;
+    opacity: 0.9;
+    margin-top: 2px;
+  }
+
+  .spiral {
+    margin: 16px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .spiral h3 {
+    font-size: 0.95rem;
+    color: var(--secondary);
+    margin-bottom: 10px;
+  }
+  .spiral-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .spiral-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+  }
+  .spiral-step .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--primary);
+    flex-shrink: 0;
+  }
+  .spiral-step .fill {
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+  }
+
+  nav.tabs {
+    display: flex;
+    overflow-x: auto;
+    margin: 16px 16px 0;
+    border-bottom: 2px solid var(--border);
+  }
+  nav.tabs button {
+    flex: 0 0 auto;
+    background: none;
+    border: none;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    color: var(--text-sub);
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  nav.tabs button[aria-selected="true"] {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    font-weight: bold;
+  }
+
+  .panel {
+    margin: 16px;
+    display: none;
+  }
+  .panel.active {
+    display: block;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(27,38,59,0.05);
+  }
+  .card h3 {
+    font-size: 0.95rem;
+    color: var(--secondary);
+    margin-bottom: 6px;
+  }
+  .card ul {
+    list-style: none;
+    font-size: 0.85rem;
+  }
+  .card li {
+    padding: 3px 0 3px 18px;
+    position: relative;
+  }
+  .card li::before {
+    content: "・";
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+  }
+  .card .reason {
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: var(--text-sub);
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 6px 10px;
+  }
+  .card .reason b {
+    color: var(--primary);
+  }
+
+  .quote-card {
+    background: var(--secondary);
+    color: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .quote-card p.quote {
+    font-size: 0.92rem;
+    font-style: italic;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+    margin-bottom: 8px;
+  }
+  .quote-card p.note {
+    font-size: 0.78rem;
+    opacity: 0.85;
+  }
+  .tag-yoshi {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--secondary);
+    font-size: 0.68rem;
+    border-radius: 6px;
+    padding: 1px 6px;
+    margin-right: 6px;
+  }
+
+  .action-card {
+    border-left: 4px solid var(--primary);
+  }
+  .action-card .meta {
+    font-size: 0.78rem;
+    color: var(--text-sub);
+    margin-top: 6px;
+  }
+  .action-card .meta span.label {
+    color: var(--primary);
+    font-weight: bold;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--text-sub);
+    margin-top: 24px;
+    padding: 0 16px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">📖 今日の一冊</div>
+  <h1>「朝4時起き」で、すべてがうまく回りだす！</h1>
+  <div class="author">著者: 池田千恵</div>
+</header>
+
+<section class="why-how" aria-label="要約：問いと答えと根拠">
+  <h2>🔑 要約（Why &amp; How）</h2>
+  <div class="qa">
+    <div class="q">Q. 朝4時に起きると何が変わるのか？</div>
+    <div class="a">A. 始業前に「自分だけの考える時間」が生まれ、仕事も人生も好転する「最強スパイラル」が動き出す。</div>
+    <div class="why"><b>根拠</b>：著者自身が夜型のダメOLから朝4時起きに切り替えたことで、段取り力がつき、残業が減り、外資系コンサルへの転職も実現した実体験がベースになっている。</div>
+  </div>
+</section>
+
+<div class="stat-badges" aria-label="重要な数字">
+  <div class="stat-badge"><div class="num">4:00</div><div class="label">起床時刻の目標</div></div>
+  <div class="stat-badge"><div class="num">16年+</div><div class="label">朝活手帳の連続発売</div></div>
+  <div class="stat-badge"><div class="num">4色</div><div class="label">タスク分類の色数</div></div>
+  <div class="stat-badge"><div class="num">6項目</div><div class="label">夜＋朝の記入項目</div></div>
+</div>
+
+<section class="spiral" aria-label="最強スパイラル">
+  <h3>🔄 朝4時起きの「最強スパイラル」</h3>
+  <div class="spiral-bar">
+    <div class="spiral-step"><span class="dot"></span>考える時間が増える<div class="fill" style="width:40%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>段取り力が備わる<div class="fill" style="width:55%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>仕事がスムーズになる<div class="fill" style="width:70%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>残業せず定時に帰れる<div class="fill" style="width:85%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>趣味・家族の時間が増える<div class="fill" style="width:100%"></div></div>
+  </div>
+</section>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+  <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">主要概念</button>
+  <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">各章の要約</button>
+  <button role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">具体例</button>
+  <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">重要な引用</button>
+  <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">今日のアクション</button>
+</nav>
+
+<section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+  <div class="card">
+    <h3>① 最強スパイラル</h3>
+    <ul>
+      <li>朝に考える時間ができる</li>
+      <li>段取り力がつく</li>
+      <li>仕事がスムーズに進む</li>
+      <li>残業せず定時に帰れる</li>
+      <li>趣味・家族との時間が増える</li>
+    </ul>
+    <div class="reason"><b>理由</b>：一つの行動（早起き）が複数の好循環を連鎖的に生むため、本書全体の軸になる概念だから。</div>
+  </div>
+  <div class="card">
+    <h3>② 朝活の本質は「始業前の自分時間」</h3>
+    <ul>
+      <li>早起き自体が目的ではない</li>
+      <li>始業までに自分のための時間を確保することが本質</li>
+      <li>通勤時間や休日の朝でも代替可能</li>
+    </ul>
+    <div class="reason"><b>理由</b>：「早起きが苦手」という読者の心理的ハードルを下げ、本質に注目させる著者の狙いだから。</div>
+  </div>
+  <div class="card">
+    <h3>③ ヨジラー</h3>
+    <ul>
+      <li>本書の影響で朝4時に起きる人が急増</li>
+      <li>著者は「朝活ブームの仕掛け人」と呼ばれるように</li>
+      <li>個人の習慣が社会的ムーブメント化した例</li>
+    </ul>
+    <div class="reason"><b>理由</b>：一人の習慣改善が社会に広がった実例として、本書の影響力を測る指標になるから。</div>
+  </div>
+  <div class="card">
+    <h3>④ 段取り力</h3>
+    <ul>
+      <li>朝のうちに一日の流れをシミュレーション</li>
+      <li>不測の事態にも落ち着いて対応できる</li>
+      <li>仕事の抜け漏れを防ぐ</li>
+    </ul>
+    <div class="reason"><b>理由</b>：朝の静かな時間だからこそ冷静に準備できるという、本書の時間活用術の核だから。</div>
+  </div>
+  <div class="card">
+    <h3>⑤ 朝活手帳の4色タスク管理</h3>
+    <ul>
+      <li>赤＝種まき（緊急でない×重要）</li>
+      <li>緑＝収穫（緊急×重要）</li>
+      <li>青＝間引き（緊急×重要でない）</li>
+      <li>黒＝塩漬け（緊急でない×重要でない）</li>
+    </ul>
+    <div class="reason"><b>理由</b>：優先度を色で可視化することで、朝の限られた時間でも判断に迷わず動けるようにする工夫だから。</div>
+  </div>
+  <div class="card">
+    <h3>⑥ 夜と朝の記入3点セット</h3>
+    <ul>
+      <li>夜：朝すること（寝る前ToDo）・目標起床時間・目標睡眠時間</li>
+      <li>朝：終業デッドライン・就寝目標・朝の3行日記</li>
+      <li>一日の始まりと終わりを先に見通しておく</li>
+    </ul>
+    <div class="reason"><b>理由</b>：早起きを「意志の力」だけに頼らず、仕組みとして継続させるための具体策だから。</div>
+  </div>
+  <div class="card">
+    <h3>⑦ Before 9プロジェクト</h3>
+    <ul>
+      <li>著者が主宰する始業前時間活用の活動</li>
+      <li>個人の実践を超えて、朝時間活用を広く発信</li>
+    </ul>
+    <div class="reason"><b>理由</b>：本書のメソッドが著者個人の体験談で終わらず、継続的な活動に発展した背景を示すから。</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+  <div class="card">
+    <h3>プロローグ：朝4時起きで人生が変わる</h3>
+    <ul>
+      <li>著者が夜型のダメOLから早起きへ転換した経験を提示</li>
+      <li>本書全体を通じて語られる視点の土台を示す</li>
+    </ul>
+    <div class="reason"><b>理由</b>：読者に「自分も変われるかもしれない」という入り口を作る章だから。</div>
+  </div>
+  <div class="card">
+    <h3>Chapter1：少しでも楽に朝4時起きをするには？</h3>
+    <ul>
+      <li>無理なく早起きを習慣化する工夫を紹介</li>
+      <li>寝る前の準備や起床目標の設定が中心</li>
+    </ul>
+    <div class="reason"><b>理由</b>：「早起きは根性論ではなく仕組みで続けられる」という本書の実践面の核だから。</div>
+  </div>
+  <div class="card">
+    <h3>Chapter2：そもそも私が早起きを始めた理由</h3>
+    <ul>
+      <li>受験失敗から難関大学合格への逆転劇</li>
+      <li>落ちこぼれOL時代から外資系コンサルへの転職</li>
+    </ul>
+    <div class="reason"><b>理由</b>：著者自身の経歴を通じて、早起きが人生の転機になった過程を具体的に示す章だから。</div>
+  </div>
+  <div class="card">
+    <h3>Chapter3：朝4時起きで得した時間を仕事に活かす</h3>
+    <ul>
+      <li>朝の時間で段取り・整理整頓を行う手法</li>
+      <li>日中の仕事をスムーズに進める実践技術</li>
+    </ul>
+    <div class="reason"><b>理由</b>：早起きの効果を「仕事の成果」に直結させる、本書の実用面の中心だから。</div>
+  </div>
+  <div class="card">
+    <h3>Chapter4：朝4時起きで最適なワーク・ライフ・バランスを！</h3>
+    <ul>
+      <li>残業を減らし趣味の時間を増やす</li>
+      <li>家族や友人との関係を充実させる</li>
+    </ul>
+    <div class="reason"><b>理由</b>：仕事だけでなく生活全体の質を高めることが最終的な目的であると示す章だから。</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+  <div class="card">
+    <h3>① 受験の逆転合格</h3>
+    <ul>
+      <li>受験に一度失敗した著者が、朝型の生活に切り替えて勉強時間を再構築</li>
+      <li>超難関大学への合格を果たす</li>
+    </ul>
+    <div class="reason"><b>理由（この例が示すこと）</b>：早朝の集中時間は、失敗からの逆転を可能にする武器になり得ることを示す。</div>
+  </div>
+  <div class="card">
+    <h3>② 落ちこぼれOLから外資系コンサルへ</h3>
+    <ul>
+      <li>仕事がうまく回らない「ダメOL」だった時期を経験</li>
+      <li>朝4時起きで段取り力を身につけ、外資系コンサルティング会社への転職を実現</li>
+    </ul>
+    <div class="reason"><b>理由（この例が示すこと）</b>：朝の時間で仕事の質を上げれば、キャリアの選択肢そのものが広がることを示す。</div>
+  </div>
+  <div class="card">
+    <h3>③ 「ヨジラー」ムーブメント</h3>
+    <ul>
+      <li>本書の刊行後、朝4時に起きる読者が続出</li>
+      <li>「ヨジラー」という言葉が生まれ、著者は朝活ブームの仕掛け人と呼ばれるようになった</li>
+    </ul>
+    <div class="reason"><b>理由（この例が示すこと）</b>：一人の習慣改善が、社会的なムーブメントまで発展し得ることを示す。</div>
+  </div>
+  <div class="card">
+    <h3>④ 朝活手帳の長期継続</h3>
+    <ul>
+      <li>2010年から16年以上にわたり毎年発売され続けている</li>
+      <li>多くの読者が4時〜9時の時間管理と4色タスク分類を実践</li>
+    </ul>
+    <div class="reason"><b>理由（この例が示すこと）</b>：本書のメソッドが一過性のブームではなく、継続的に使われる実用的な仕組みへ発展したことを示す。</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+  <div class="quote-card">
+    <p class="quote"><span class="tag-yoshi">要旨</span>朝活の本質は、早朝に起きることそのものではなく、始業前に自分だけの時間をつくることにある。</p>
+    <p class="note">本書の核となる主張を要約したもの（原典の直接引用ではなく要旨）。</p>
+  </div>
+  <div class="quote-card">
+    <p class="quote"><span class="tag-yoshi">要旨</span>朝4時に起きることで、考える時間・段取り力・仕事のスムーズさ・定時退社・趣味の時間・家族との時間が好転する「最強スパイラル」が回り出す。</p>
+    <p class="note">本書が繰り返し提示する好循環の構造を要約したもの（要旨）。</p>
+  </div>
+</section>
+
+<section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+  <div class="card action-card">
+    <h3>① 夜のうちに「朝の3点セット」を書く</h3>
+    <ul>
+      <li>「明日の朝すること（寝る前ToDo）」「目標起床時間」「目標睡眠時間」の3つを紙に書く</li>
+    </ul>
+    <div class="meta"><span class="label">所要時間</span> 約15分　|　<span class="label">目的</span> 朝の行動を事前に決めておく　|　<span class="label">期待効果</span> 翌朝の行動のハードルが下がり、早起きが続けやすくなる</div>
+  </div>
+  <div class="card action-card">
+    <h3>② タスクを4色で分類してみる</h3>
+    <ul>
+      <li>今あるタスクを「種まき（緊急でない×重要）」「収穫（緊急×重要）」「間引き（緊急×重要でない）」「塩漬け（緊急でない×重要でない）」の4象限に書き分ける</li>
+    </ul>
+    <div class="meta"><span class="label">所要時間</span> 約20分　|　<span class="label">目的</span> 本当に時間を使うべき仕事を可視化する　|　<span class="label">期待効果</span> 優先順位が明確になり、段取り力が上がる</div>
+  </div>
+  <div class="card action-card">
+    <h3>③ 翌朝「終業までの見通し」を立てる</h3>
+    <ul>
+      <li>起床後すぐに「終業デッドライン」「就寝目標」「朝の3行日記」を書く</li>
+    </ul>
+    <div class="meta"><span class="label">所要時間</span> 約10〜15分　|　<span class="label">目的</span> 一日の始まりと終わりを先に見通す　|　<span class="label">期待効果</span> 時間の使い方にメリハリがつき、残業が減る</div>
+  </div>
+</section>
+
+<footer>
+  本インフォグラフィックは Web 上で確認できた情報に基づき作成。未確認の情報は含めていません。
+</footer>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = document.querySelectorAll('section.panel');
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
+      panels.forEach(function (p) {
+        p.classList.remove('active');
+        p.setAttribute('hidden', '');
+      });
+      tab.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      panel.classList.add('active');
+      panel.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
