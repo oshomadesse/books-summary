@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小さいことにくよくよするな！ インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様）
+  プライマリー: #5B8C72（落ち着いたセージグリーン）
+  セカンダリー: #2F3E34（深い森の緑）
+  アクセント:   #E8B86D（温かみのある砂色）
+  グラデーション: linear-gradient(135deg, #5B8C72 0%, #E8B86D 100%)
+-->
+<style>
+  :root {
+    --primary: #5B8C72;
+    --secondary: #2F3E34;
+    --accent: #E8B86D;
+    --bg: #F6F5EF;
+    --card-bg: #FFFFFF;
+    --text: #2F3E34;
+    --text-sub: #6B7569;
+    --border: #E1DFD2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding-bottom: 40px;
+  }
+  header.hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: #fff;
+    padding: 28px 16px 24px;
+    text-align: center;
+  }
+  header.hero .eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    opacity: 0.9;
+  }
+  header.hero h1 {
+    font-size: 1.4rem;
+    margin: 8px 0 4px;
+    line-height: 1.4;
+  }
+  header.hero .sub {
+    font-size: 0.85rem;
+    opacity: 0.95;
+    margin-bottom: 4px;
+  }
+  header.hero .author {
+    font-size: 0.9rem;
+    opacity: 0.95;
+  }
+
+  .why-how {
+    margin: 16px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 4px 14px rgba(47,62,52,0.08);
+    border: 1px solid var(--border);
+  }
+  .why-how h2 {
+    font-size: 1rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+  .why-how .qa {
+    margin-bottom: 10px;
+  }
+  .why-how .q {
+    font-weight: bold;
+    font-size: 0.92rem;
+    color: var(--secondary);
+  }
+  .why-how .a {
+    font-size: 0.92rem;
+    margin-top: 2px;
+  }
+  .why-how .why {
+    font-size: 0.82rem;
+    color: var(--text-sub);
+    margin-top: 2px;
+    border-left: 3px solid var(--accent);
+    padding-left: 8px;
+  }
+
+  .stat-badges {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    margin: 16px;
+    padding-bottom: 4px;
+  }
+  .stat-badge {
+    flex: 0 0 auto;
+    background: var(--secondary);
+    color: #fff;
+    border-radius: 14px;
+    padding: 12px 16px;
+    min-width: 108px;
+    text-align: center;
+  }
+  .stat-badge .num {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--accent);
+  }
+  .stat-badge .label {
+    font-size: 0.72rem;
+    opacity: 0.9;
+    margin-top: 2px;
+  }
+
+  .spiral {
+    margin: 16px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .spiral h3 {
+    font-size: 0.95rem;
+    color: var(--secondary);
+    margin-bottom: 10px;
+  }
+  .spiral-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .spiral-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+  }
+  .spiral-step .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--primary);
+    flex-shrink: 0;
+  }
+  .spiral-step .fill {
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+  }
+
+  nav.tabs {
+    display: flex;
+    overflow-x: auto;
+    margin: 16px 16px 0;
+    border-bottom: 2px solid var(--border);
+  }
+  nav.tabs button {
+    flex: 0 0 auto;
+    background: none;
+    border: none;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    color: var(--text-sub);
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  nav.tabs button[aria-selected="true"] {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    font-weight: bold;
+  }
+
+  .panel {
+    margin: 16px;
+    display: none;
+  }
+  .panel.active {
+    display: block;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(47,62,52,0.05);
+  }
+  .card h3 {
+    font-size: 0.95rem;
+    color: var(--secondary);
+    margin-bottom: 6px;
+  }
+  .card ul {
+    list-style: none;
+    font-size: 0.85rem;
+  }
+  .card li {
+    padding: 3px 0 3px 18px;
+    position: relative;
+  }
+  .card li::before {
+    content: "・";
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+  }
+  .card .reason {
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: var(--text-sub);
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 6px 10px;
+  }
+  .card .reason b {
+    color: var(--primary);
+  }
+
+  .quote-card {
+    background: var(--secondary);
+    color: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .quote-card p.quote {
+    font-size: 0.92rem;
+    font-style: italic;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+    margin-bottom: 8px;
+  }
+  .quote-card p.note {
+    font-size: 0.78rem;
+    opacity: 0.85;
+  }
+  .tag-yoshi {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--secondary);
+    font-size: 0.68rem;
+    border-radius: 6px;
+    padding: 1px 6px;
+    margin-right: 6px;
+  }
+
+  .action-card {
+    border-left: 4px solid var(--primary);
+  }
+  .action-card .meta {
+    font-size: 0.78rem;
+    color: var(--text-sub);
+    margin-top: 6px;
+  }
+  .action-card .meta span.label {
+    color: var(--primary);
+    font-weight: bold;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--text-sub);
+    margin-top: 24px;
+    padding: 0 16px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">📖 今日の一冊</div>
+  <h1>小さいことにくよくよするな！</h1>
+  <div class="sub">しょせん、すべては小さなこと</div>
+  <div class="author">著者: リチャード・カールソン（訳: 小沢瑞穂）</div>
+</header>
+
+<section class="why-how" aria-label="要約：問いと答えと根拠">
+  <h2>🔑 要約（Why &amp; How）</h2>
+  <div class="qa">
+    <div class="q">Q. なぜ私たちは些細なことでイライラし、心をすり減らすのか？</div>
+    <div class="a">A. ほとんどの悩みは長い目で見れば「小さいこと」。「小さいことにくよくよするな」「すべては小さなこと」という2つのルールを心に刻み、視点を変える習慣を身につければ、穏やかで優雅な人生を送れる。</div>
+    <div class="why"><b>根拠</b>：心理学者である著者が、ストレスと幸福の研究・臨床経験から「些細な出来事への過剰反応」が日々のストレスの大半を生んでいることを見出し、具体的な視点転換のヒント100項目としてまとめた。</div>
+  </div>
+</section>
+
+<div class="stat-badges" aria-label="重要な数字">
+  <div class="stat-badge"><div class="num">100個</div><div class="label">収録されたヒントの数</div></div>
+  <div class="stat-badge"><div class="num">2600万部</div><div class="label">世界累計発行部数</div></div>
+  <div class="stat-badge"><div class="num">230万部+</div><div class="label">日本国内の累計部数</div></div>
+  <div class="stat-badge"><div class="num">45歳</div><div class="label">著者カールソンの没年齢</div></div>
+</div>
+
+<section class="spiral" aria-label="視点転換のステップ">
+  <h3>🔄 心を軽くする視点転換のステップ</h3>
+  <div class="spiral-bar">
+    <div class="spiral-step"><span class="dot"></span>小さな出来事が起きる<div class="fill" style="width:30%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>反射的にイライラ・不安が生まれる<div class="fill" style="width:45%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>「これは本当に大きなことか？」と自問する<div class="fill" style="width:60%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>1年後の視点で見直す<div class="fill" style="width:75%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>反応の仕方を選び直す<div class="fill" style="width:90%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>心が軽くなり、穏やかさが戻る<div class="fill" style="width:100%"></div></div>
+  </div>
+</section>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+  <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">主要概念</button>
+  <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">各章の要約</button>
+  <button role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">具体例</button>
+  <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">重要な引用</button>
+  <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">今日のアクション</button>
+</nav>
+
+<section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+  <div class="card">
+    <h3>① 2つの基本ルール</h3>
+    <ul>
+      <li>ルール1: 小さいことにくよくよするな</li>
+      <li>ルール2: しょせん、すべては小さなこと</li>
+      <li>日々の悩みの多くはこの2行に収まる</li>
+    </ul>
+    <div class="reason"><b>理由</b>：本書全体のタイトルそのものであり、以降100項目のヒントすべてがこの2つのルールの具体的な実践例になっているから。</div>
+  </div>
+  <div class="card">
+    <h3>② 「心のもちよう」が人生の質を決める</h3>
+    <ul>
+      <li>出来事そのものより、それをどう受け止めるかが重要</li>
+      <li>同じ出来事でも解釈次第でストレスの大小が変わる</li>
+    </ul>
+    <div class="reason"><b>理由</b>：外部の出来事は変えられなくても、受け止め方は自分で選べるという本書の一貫した立場だから。</div>
+  </div>
+  <div class="card">
+    <h3>③ 忍耐力は訓練で伸ばせる</h3>
+    <ul>
+      <li>短い時間の我慢から始め、徐々に拡大する自習法</li>
+      <li>忍耐力を才能ではなく筋肉のように鍛えられるものと捉える</li>
+    </ul>
+    <div class="reason"><b>理由</b>：「性格だから仕方ない」という読者の思い込みを外し、実践可能な訓練に落とし込んでいるから。</div>
+  </div>
+  <div class="card">
+    <h3>④ 「今、この瞬間」に集中する</h3>
+    <ul>
+      <li>過去への後悔や将来への不安ではなく「今」に意識を向ける</li>
+      <li>マインドフルネス的な発想の先取り</li>
+    </ul>
+    <div class="reason"><b>理由</b>：些細なことへの不安の多くが「今ここ」ではなく過去や未来への思考から生まれるため、本書の実践の核になるから。</div>
+  </div>
+  <div class="card">
+    <h3>⑤ 人間関係では寛容さを選ぶ</h3>
+    <ul>
+      <li>相手を変えようとせず、自分の受け止め方を変える</li>
+      <li>むかつく相手を「幼児」や「高齢者」と想像してみる</li>
+    </ul>
+    <div class="reason"><b>理由</b>：対人関係のストレスが日常の悩みの大部分を占めるため、本書が最も多くの頁を割くテーマだから。</div>
+  </div>
+  <div class="card">
+    <h3>⑥ 人生を「テスト」として捉え直す</h3>
+    <ul>
+      <li>嫌な出来事を「自分の器を試されている」と再解釈する</li>
+      <li>深刻にならずに淡々と対応する視点を持つ</li>
+    </ul>
+    <div class="reason"><b>理由</b>：出来事の意味づけを変えるだけで反応の強さが変わることを示す、本書らしい発想転換の例だから。</div>
+  </div>
+  <div class="card">
+    <h3>⑦ 感情の波は一時的に「通り過ぎるもの」</h3>
+    <ul>
+      <li>強い感情も時間が経てば必ず収まる</li>
+      <li>「1年たてばすべて過去」という長期的な視点</li>
+    </ul>
+    <div class="reason"><b>理由</b>：感情そのものを否定せず、「いずれ過ぎ去る」と捉えることで過剰な自己抑制なしに冷静さを保てるから。</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+  <div class="card">
+    <h3>疑似章1：心のもちようを変える発想法</h3>
+    <ul>
+      <li>「完璧な人なんてつまらない」など、物事の受け止め方を変えるヒント群</li>
+      <li>出来事ではなく解釈がストレスを生むという前提を繰り返し提示</li>
+    </ul>
+    <div class="reason"><b>理由</b>：本書は目次上の章立てを持たず100の短いヒントの集合だが、冒頭に置かれたヒントの多くが「認知の変え方」というテーマで共通しているため、疑似章として括った。</div>
+  </div>
+  <div class="card">
+    <h3>疑似章2：人間関係で心を軽くする習慣</h3>
+    <ul>
+      <li>「むかつく相手を幼児か百歳の老人だと想像する」などの対人ヒント</li>
+      <li>「毎日少なくとも1人、いいところをほめる」といった積極的な実践</li>
+    </ul>
+    <div class="reason"><b>理由</b>：対人関係のストレス緩和に関するヒントが本書全体の中でも大きな比重を占めるため、独立した疑似章として扱った。</div>
+  </div>
+  <div class="card">
+    <h3>疑似章3：日々の小さな実践</h3>
+    <ul>
+      <li>「自分のための時間をつくる」「頭で悩みごとの雪だるまをつくらない」などの日常習慣</li>
+      <li>小さな行動の積み重ねで心の余裕を確保する</li>
+    </ul>
+    <div class="reason"><b>理由</b>：抽象的な心構えではなく、今日から実践できる具体的な行動を集めたヒントが一群としてまとまっているため。</div>
+  </div>
+  <div class="card">
+    <h3>疑似章4：人生を長い目で見る視点</h3>
+    <ul>
+      <li>「1年たてばすべて過去」「100年後は、すべて新しい人々」など時間軸を広げる視点</li>
+      <li>「人生はテスト。ただのテストにすぎない」という捉え直し</li>
+    </ul>
+    <div class="reason"><b>理由</b>：本書の結論的なメッセージである「すべては小さなこと」を、時間のスケールを広げることで実感させるヒント群のため、最後の疑似章として括った。</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+  <div class="card">
+    <h3>① 「むかつく相手」を幼児・高齢者と想像する</h3>
+    <ul>
+      <li>理不尽な態度を取る相手に対し、「幼児」や「百歳の老人」だと想像してみる</li>
+      <li>怒りの対象を弱く無力な存在として見ると、反応が和らぐ</li>
+    </ul>
+    <div class="reason"><b>理由（この例が示すこと）</b>：相手そのものを変えられなくても、見方を変えるだけで自分の感情反応はコントロールできることを示す。</div>
+  </div>
+  <div class="card">
+    <h3>② 「死んでも『やるべきこと』はなくならない」という気づき</h3>
+    <ul>
+      <li>「やることリスト」は永遠に終わらないという前提に気づく</li>
+      <li>すべてを終わらせてから休もうとする発想自体を見直す</li>
+    </ul>
+    <div class="reason"><b>理由（この例が示すこと）</b>：タスクを「完了させるべきもの」と捉える思い込みが、不要な焦りとストレスを生んでいることを示す。</div>
+  </div>
+  <div class="card">
+    <h3>③ 「1年たてばすべて過去」という時間軸の転換</h3>
+    <ul>
+      <li>今深刻に感じている出来事も、1年後には記憶の片隅になっていることが多い</li>
+      <li>長期的な視点を持つことで、目先の出来事の重みを相対化する</li>
+    </ul>
+    <div class="reason"><b>理由（この例が示すこと）</b>：時間軸をずらして考えるという簡単な工夫だけで、同じ出来事への感じ方が変わることを示す。</div>
+  </div>
+  <div class="card">
+    <h3>④ 忍耐力トレーニング（短時間→徐々に拡大）</h3>
+    <ul>
+      <li>短い待ち時間やイライラする状況を意図的に経験し、少しずつ我慢の範囲を広げる</li>
+      <li>自習的なトレーニングとして日常の中に組み込む</li>
+    </ul>
+    <div class="reason"><b>理由（この例が示すこと）</b>：忍耐力は固定的な性格ではなく、段階的な訓練によって誰でも伸ばせる能力であることを示す。</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+  <div class="quote-card">
+    <p class="quote"><span class="tag-yoshi">要旨</span>私たちが日々くよくよしている出来事のほとんどは、長い目で見れば取るに足らない「小さいこと」にすぎない。</p>
+    <p class="note">本書のタイトルおよび全体の主張を要約したもの（原典の直接引用ではなく要旨）。</p>
+  </div>
+  <div class="quote-card">
+    <p class="quote"><span class="tag-yoshi">要旨</span>忍耐力は生まれつきの性格ではなく、小さな訓練を積み重ねることで誰でも伸ばせる力である。</p>
+    <p class="note">忍耐力トレーニングに関する本書の主張を要約したもの（要旨）。</p>
+  </div>
+</section>
+
+<section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+  <div class="card action-card">
+    <h3>① 「1年後メモ」を書く</h3>
+    <ul>
+      <li>今気になっている小さな悩みを3つ書き出し、それぞれに「1年後にはどう見えるか」を1行添える</li>
+    </ul>
+    <div class="meta"><span class="label">所要時間</span> 約15分　|　<span class="label">目的</span> 悩みを時間軸で相対化する視点を体感する　|　<span class="label">期待効果</span> 感情的な反応と事実を切り分けられるようになる</div>
+  </div>
+  <div class="card action-card">
+    <h3>② 「むかつく相手」エクササイズ</h3>
+    <ul>
+      <li>直近でイライラした相手を1人思い出し、幼児か高齢者だと想像して状況を振り返り、感じ方の変化をメモする</li>
+    </ul>
+    <div class="meta"><span class="label">所要時間</span> 約10〜15分　|　<span class="label">目的</span> 対人ストレスを和らげる視点転換を練習する　|　<span class="label">期待効果</span> 反射的な怒りを客観視できるようになる</div>
+  </div>
+  <div class="card action-card">
+    <h3>③ 5分間「今だけ」呼吸法</h3>
+    <ul>
+      <li>タイマーを5分セットし、過去の後悔や将来の不安を考えず、呼吸・音・体の感覚など「今この瞬間」だけに意識を向ける</li>
+    </ul>
+    <div class="meta"><span class="label">所要時間</span> 約5〜10分　|　<span class="label">目的</span> マインドフルネスの基礎を体感する　|　<span class="label">期待効果</span> 反応的な思考パターンを一時停止するコツをつかむ</div>
+  </div>
+</section>
+
+<footer>
+  本インフォグラフィックは Web 上で確認できた情報に基づき作成。未確認の情報は含めていません。
+</footer>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = document.querySelectorAll('section.panel');
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
+      panels.forEach(function (p) {
+        p.classList.remove('active');
+        p.setAttribute('hidden', '');
+      });
+      tab.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      panel.classList.add('active');
+      panel.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
