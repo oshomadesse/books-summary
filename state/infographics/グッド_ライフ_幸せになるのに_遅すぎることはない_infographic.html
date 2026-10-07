@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>グッド・ライフ インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様）
+  プライマリー: #3D6B8C（信頼感のある青）
+  セカンダリー: #1F3A4D（深い紺）
+  アクセント:   #E8A33D（人のつながりを表す温かいゴールド）
+  グラデーション: linear-gradient(135deg, #3D6B8C 0%, #E8A33D 100%)
+-->
+<style>
+  :root {
+    --primary: #3D6B8C;
+    --secondary: #1F3A4D;
+    --accent: #E8A33D;
+    --bg: #F4F6F7;
+    --card-bg: #FFFFFF;
+    --text: #1F3A4D;
+    --text-sub: #5A6B75;
+    --border: #DDE4E7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding-bottom: 40px;
+  }
+  header.hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: #fff;
+    padding: 28px 16px 24px;
+    text-align: center;
+  }
+  header.hero .eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    opacity: 0.9;
+  }
+  header.hero h1 {
+    font-size: 1.4rem;
+    margin: 8px 0 4px;
+    line-height: 1.4;
+  }
+  header.hero .sub {
+    font-size: 0.85rem;
+    opacity: 0.95;
+    margin-bottom: 4px;
+  }
+  header.hero .author {
+    font-size: 0.9rem;
+    opacity: 0.95;
+  }
+
+  .why-how {
+    margin: 16px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 4px 14px rgba(31,58,77,0.08);
+    border: 1px solid var(--border);
+  }
+  .why-how h2 {
+    font-size: 1rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+  }
+  .why-how .qa {
+    margin-bottom: 10px;
+  }
+  .why-how .q {
+    font-weight: bold;
+    font-size: 0.92rem;
+    color: var(--secondary);
+  }
+  .why-how .a {
+    font-size: 0.92rem;
+    margin-top: 2px;
+  }
+  .why-how .why {
+    font-size: 0.82rem;
+    color: var(--text-sub);
+    margin-top: 2px;
+    border-left: 3px solid var(--accent);
+    padding-left: 8px;
+  }
+
+  .stat-badges {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    margin: 16px;
+    padding-bottom: 4px;
+  }
+  .stat-badge {
+    flex: 0 0 auto;
+    background: var(--secondary);
+    color: #fff;
+    border-radius: 14px;
+    padding: 12px 16px;
+    min-width: 108px;
+    text-align: center;
+  }
+  .stat-badge .num {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--accent);
+  }
+  .stat-badge .label {
+    font-size: 0.72rem;
+    opacity: 0.9;
+    margin-top: 2px;
+  }
+
+  .spiral {
+    margin: 16px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .spiral h3 {
+    font-size: 0.95rem;
+    color: var(--secondary);
+    margin-bottom: 10px;
+  }
+  .spiral-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .spiral-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+  }
+  .spiral-step .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--primary);
+    flex-shrink: 0;
+  }
+  .spiral-step .fill {
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+  }
+
+  nav.tabs {
+    display: flex;
+    overflow-x: auto;
+    margin: 16px 16px 0;
+    border-bottom: 2px solid var(--border);
+  }
+  nav.tabs button {
+    flex: 0 0 auto;
+    background: none;
+    border: none;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    color: var(--text-sub);
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  nav.tabs button[aria-selected="true"] {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    font-weight: bold;
+  }
+
+  .panel {
+    margin: 16px;
+    display: none;
+  }
+  .panel.active {
+    display: block;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(31,58,77,0.05);
+  }
+  .card h3 {
+    font-size: 0.95rem;
+    color: var(--secondary);
+    margin-bottom: 6px;
+  }
+  .card ul {
+    list-style: none;
+    font-size: 0.85rem;
+  }
+  .card li {
+    padding: 3px 0 3px 18px;
+    position: relative;
+  }
+  .card li::before {
+    content: "・";
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+  }
+  .card .reason {
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: var(--text-sub);
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 6px 10px;
+  }
+  .card .reason b {
+    color: var(--primary);
+  }
+
+  .quote-card {
+    background: var(--secondary);
+    color: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .quote-card p.quote {
+    font-size: 0.92rem;
+    font-style: italic;
+    border-left: 3px solid var(--accent);
+    padding-left: 10px;
+    margin-bottom: 8px;
+  }
+  .quote-card p.note {
+    font-size: 0.78rem;
+    opacity: 0.85;
+  }
+  .tag-yoshi {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--secondary);
+    font-size: 0.68rem;
+    border-radius: 6px;
+    padding: 1px 6px;
+    margin-right: 6px;
+  }
+
+  .action-card {
+    border-left: 4px solid var(--primary);
+  }
+  .action-card .meta {
+    font-size: 0.78rem;
+    color: var(--text-sub);
+    margin-top: 6px;
+  }
+  .action-card .meta span.label {
+    color: var(--primary);
+    font-weight: bold;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--text-sub);
+    margin-top: 24px;
+    padding: 0 16px;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">📖 今日の一冊</div>
+  <h1>グッド・ライフ</h1>
+  <div class="sub">幸せになるのに、遅すぎることはない</div>
+  <div class="author">著者: ロバート・ウォールディンガー、マーク・シュルツ（訳: 児島修）</div>
+</header>
+
+<section class="why-how" aria-label="要約：問いと答えと根拠">
+  <h2>🔑 要約（Why &amp; How）</h2>
+  <div class="qa">
+    <div class="q">Q. 何が人を幸福で健康な人生に導くのか？</div>
+    <div class="a">A. 富や名声、社会的成功ではなく「良い人間関係」の質こそが、幸福・健康・長寿を最も強く予測する。関係は筋肉と同じで、意識して鍛え続けなければ衰える「ソーシャル・フィットネス」が必要であり、その再構築は人生のどの時点からでも「遅すぎることはない」。</div>
+    <div class="why"><b>根拠</b>：ハーバード大学が1938年から84年以上にわたり2000人超・3世代の人生を追跡した「ハーバード成人発達研究」の現責任者・副責任者である著者らが、質問票・健康診断データ・対面インタビュー・脳スキャン・血液検査などの長期縦断データをもとにまとめた。</div>
+  </div>
+</section>
+
+<div class="stat-badges" aria-label="重要な数字">
+  <div class="stat-badge"><div class="num">84年+</div><div class="label">研究の追跡期間</div></div>
+  <div class="stat-badge"><div class="num">2000人+</div><div class="label">追跡した参加者数</div></div>
+  <div class="stat-badge"><div class="num">3世代</div><div class="label">追跡している世代数</div></div>
+  <div class="stat-badge"><div class="num">1938年</div><div class="label">研究の開始年</div></div>
+</div>
+
+<section class="spiral" aria-label="ソーシャル・フィットネスのステップ">
+  <h3>🔄 ソーシャル・フィットネスを鍛えるステップ</h3>
+  <div class="spiral-bar">
+    <div class="spiral-step"><span class="dot"></span>大切な人との関係が自然と疎遠になる<div class="fill" style="width:25%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>関係も筋肉と同じで放置すれば衰えると気づく<div class="fill" style="width:45%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>連絡を取る・本音で話すなど小さな働きかけをする<div class="fill" style="width:65%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>関係の「質」を少しずつ積み重ねる<div class="fill" style="width:85%"></div></div>
+    <div class="spiral-step"><span class="dot"></span>幸福・健康・長寿につながる土台ができる<div class="fill" style="width:100%"></div></div>
+  </div>
+</section>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+  <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">主要概念</button>
+  <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">各章の要約</button>
+  <button role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">具体例</button>
+  <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">重要な引用</button>
+  <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">今日のアクション</button>
+</nav>
+
+<section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+  <div class="card">
+    <h3>① ハーバード成人発達研究</h3>
+    <ul>
+      <li>1938年開始、84年以上続く世界最長級の人生追跡研究</li>
+      <li>当初は別々だった2つの調査（恵まれたハーバード大学生群／困難な家庭出身の少年群）を統合</li>
+      <li>現在は3世代・子孫1,300人規模にまで拡大</li>
+    </ul>
+    <div class="reason"><b>理由</b>：本書の全ての主張は、意見や逸話ではなくこの長期縦断データに基づいているため、研究そのものの理解が本書を読む前提になるから。</div>
+  </div>
+  <div class="card">
+    <h3>② 幸福の予測因子としての人間関係</h3>
+    <ul>
+      <li>富・名声・社会的成功より、人間関係の質が幸福・健康・長寿を強く予測</li>
+      <li>関係の満足度は、健康的な老いを予測する上でコレステロール値より重要という指摘もある</li>
+    </ul>
+    <div class="reason"><b>理由</b>：「成功すれば幸せになれる」という一般的な思い込みを、長期データで覆す本書の核心的な発見だから。</div>
+  </div>
+  <div class="card">
+    <h3>③ ソーシャル・フィットネス</h3>
+    <ul>
+      <li>人間関係は筋肉と同じで、使わなければ衰える</li>
+      <li>意識的なメンテナンス（連絡・会話・時間の確保）が必要という比喩</li>
+    </ul>
+    <div class="reason"><b>理由</b>：「良い関係を持つこと」を一度きりの出来事ではなく、継続的な習慣として捉え直させる本書の中心概念だから。</div>
+  </div>
+  <div class="card">
+    <h3>④ 関係の「質」対「量」</h3>
+    <ul>
+      <li>友人・知人の数の多さより、本音で話せる相手が1人でもいるかが重要</li>
+      <li>浅く広い関係より、少数でも深く信頼できる関係の方が幸福に寄与する</li>
+    </ul>
+    <div class="reason"><b>理由</b>：SNS時代に「つながりの数」を幸福の指標と誤解しやすい中で、本書が繰り返し強調する補正点だから。</div>
+  </div>
+  <div class="card">
+    <h3>⑤ 孤独という健康リスク</h3>
+    <ul>
+      <li>孤独感は身体・精神の健康に悪影響を及ぼす</li>
+      <li>年齢を問わず誰にでも起こり得るリスクとして扱われる</li>
+    </ul>
+    <div class="reason"><b>理由</b>：人間関係の重要性を裏側から示す証拠として、本書が健康リスクの文脈で孤独を位置づけているから。</div>
+  </div>
+  <div class="card">
+    <h3>⑥ サンガ（仲間の共同体）</h3>
+    <ul>
+      <li>良い人生は一人では作れず、支え合う共同体によって形作られる</li>
+      <li>著者ウォールディンガーは研究結果を仏教的な「サンガ」の概念で言い換えている</li>
+    </ul>
+    <div class="reason"><b>理由</b>：科学的データと、人類が古くから持ってきた知恵（共同体の大切さ）が一致するという本書の説得力の支えになっているから。</div>
+  </div>
+  <div class="card">
+    <h3>⑦ 「遅すぎることはない」という回復可能性</h3>
+    <ul>
+      <li>人生のどの時点、どんな状態からでも関係を再構築し幸福度を高められる</li>
+      <li>過去の孤立や関係の断絶が、その後の人生を決定づけるわけではない</li>
+    </ul>
+    <div class="reason"><b>理由</b>：書名そのものに込められた本書のメッセージであり、読者に行動を促す前向きな結論だから。</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+  <div class="card">
+    <h3>疑似章1：研究の設計と84年の軌跡</h3>
+    <ul>
+      <li>1938年、ハーバード大学の学生群とグルーク夫妻による困難な家庭出身の少年群という2つの調査から始まる</li>
+      <li>2年ごとの質問票、5年ごとの健康診断データ、15年ごとの対面インタビュー、脳スキャンや血液検査、会話の録画分析まで含む多角的な手法</li>
+    </ul>
+    <div class="reason"><b>理由</b>：目次の詳細が確認できなかったため、本書の論旨の出発点である研究設計の説明を疑似章として括った。</div>
+  </div>
+  <div class="card">
+    <h3>疑似章2：何が幸福を予測するのか</h3>
+    <ul>
+      <li>社会的成功・運動習慣・健康的な食生活も重要だが、人間関係の質がそれらを上回る予測力を持つ</li>
+      <li>人間関係満足度が、健康的な老いの予測において身体的な指標以上に重要という知見</li>
+    </ul>
+    <div class="reason"><b>理由</b>：本書の核心的発見（人間関係こそが最大の予測因子）を独立したまとまりとして扱った。</div>
+  </div>
+  <div class="card">
+    <h3>疑似章3：ソーシャル・フィットネスという考え方</h3>
+    <ul>
+      <li>関係は自然には続かず、意識して「鍛える」必要があるという中心比喩</li>
+      <li>放置すれば関係が衰えていく具体的なパターン</li>
+    </ul>
+    <div class="reason"><b>理由</b>：本書のタイトルの副題「遅すぎることはない」につながる実践的な考え方のまとまりとして括った。</div>
+  </div>
+  <div class="card">
+    <h3>疑似章4：孤独というリスクと向き合う</h3>
+    <ul>
+      <li>孤独の健康への悪影響と、それが年齢を問わず広がりうる問題であること</li>
+      <li>早期に気づき対処する重要性</li>
+    </ul>
+    <div class="reason"><b>理由</b>：人間関係の重要性を裏返しの視点（欠如のリスク）から補強するまとまりのため、独立した疑似章とした。</div>
+  </div>
+  <div class="card">
+    <h3>疑似章5：遅すぎることはない</h3>
+    <ul>
+      <li>人生の後半や困難な状況からでも関係を立て直した参加者たちの軌跡</li>
+      <li>データに基づく前向きな結論から、読者自身の実践への橋渡し</li>
+    </ul>
+    <div class="reason"><b>理由</b>：本書全体の結論であり、本日のアクションにつながる最終的なまとまりとして括った。</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+  <div class="card">
+    <h3>① レオ・デマルコ（高校教師）</h3>
+    <ul>
+      <li>研究参加者の中でも特に幸福な人生を送った一人として紹介される</li>
+      <li>キャリアの成功そのものより、生徒・家族・同僚との人間関係を人生の拠り所とし続けた</li>
+    </ul>
+    <div class="reason"><b>理由（この例が示すこと）</b>：社会的な地位や収入の大小よりも、日々の関係の質を大事にする生き方が長期的な幸福につながることを示す。</div>
+  </div>
+  <div class="card">
+    <h3>② ジョン・マーズデン（弁護士）</h3>
+    <ul>
+      <li>成功したキャリアを持ち、仕事上の成功こそが幸福をもたらすと確信していた参加者として紹介される</li>
+      <li>研究データでは、キャリアの成功だけでは老年期の幸福や満足度を十分に説明できなかった</li>
+    </ul>
+    <div class="reason"><b>理由（この例が示すこと）</b>：「成功すれば幸せになれる」という思い込みが、人間関係への投資を後回しにするリスクを持つことを示す対比例。</div>
+  </div>
+  <div class="card">
+    <h3>③ 出自が異なる2つの研究対象群</h3>
+    <ul>
+      <li>恵まれた環境のハーバード大学生群と、グルーク夫妻が追跡した貧困家庭出身の少年群を統合した調査設計</li>
+      <li>恵まれた出身でも孤独な老後を送った人がいる一方、困難な家庭出身でも良好な関係を築けた人は健全に老いていった</li>
+    </ul>
+    <div class="reason"><b>理由（この例が示すこと）</b>：出発点の社会的・経済的条件よりも、人生の過程で築く関係の質が決定的な差を生むことを示す。</div>
+  </div>
+  <div class="card">
+    <h3>④ 孤独が健康に及ぼす影響の長期データ</h3>
+    <ul>
+      <li>研究全体を通じて、孤独を感じている参加者は身体的・精神的健康が低下しやすい傾向が報告されている</li>
+      <li>孤独の悪影響は、年齢に関わらず観察される</li>
+    </ul>
+    <div class="reason"><b>理由（この例が示すこと）</b>：「一人の時間」自体が問題ではなく、支え合える関係の欠如こそが長期的な健康リスクになることを示す。</div>
+  </div>
+</section>
+
+<section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+  <div class="quote-card">
+    <p class="quote"><span class="tag-yoshi">要旨</span>良い人間関係こそが、人をより幸せに、より健康にし、長生きさせる。</p>
+    <p class="note">本書・原著紹介で繰り返し述べられる中心的な主張の要旨（原文の直接引用ではなく要約）。</p>
+  </div>
+  <div class="quote-card">
+    <p class="quote"><span class="tag-yoshi">要旨</span>良い人生とは、喜びと困難の両方を含み、時間をかけて少しずつ形作られていく複雑な人生である。</p>
+    <p class="note">原著の紹介で言及される本書の人生観の要旨。</p>
+  </div>
+  <div class="quote-card">
+    <p class="quote"><span class="tag-yoshi">要旨</span>良い人生は一人で作るものではなく、支え合う仲間の共同体（サンガ）によって作られる。</p>
+    <p class="note">著者ウォールディンガーが研究結果を仏教的な言葉で言い換えたインタビュー発言の要旨。</p>
+  </div>
+</section>
+
+<section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+  <div class="card action-card">
+    <h3>① 「最近連絡していない人」への一本の連絡</h3>
+    <ul>
+      <li>しばらく連絡を取っていない大切な人を1人思い浮かべ、電話やメッセージで近況を伝える</li>
+    </ul>
+    <div class="meta"><span class="label">所要時間</span> 約15分　|　<span class="label">目的</span> 社会的なつながりの「筋肉」を使う　|　<span class="label">期待効果</span> 関係の再活性化と孤独感の軽減</div>
+  </div>
+  <div class="card action-card">
+    <h3>② 「本音で話せる15分」をつくる</h3>
+    <ul>
+      <li>家族や親しい友人と、今日の調子や小さな悩みを一つ共有する時間を意識的に設ける</li>
+    </ul>
+    <div class="meta"><span class="label">所要時間</span> 約15〜20分　|　<span class="label">目的</span> 関係の「質」を高める　|　<span class="label">期待効果</span> 心理的なつながりの実感とストレスの軽減</div>
+  </div>
+  <div class="card action-card">
+    <h3>③ ソーシャル・フィットネス・チェックリストを書く</h3>
+    <ul>
+      <li>自分にとって大切な人を5人書き出し、それぞれ最後に連絡を取った時期を振り返ってメモする</li>
+    </ul>
+    <div class="meta"><span class="label">所要時間</span> 約20〜30分　|　<span class="label">目的</span> 関係の現状を可視化する　|　<span class="label">期待効果</span> 放置している関係への気づきと改善の第一歩</div>
+  </div>
+</section>
+
+<footer>
+  本インフォグラフィックは Web 上で確認できた情報に基づき作成。未確認の情報は含めていません。
+</footer>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = document.querySelectorAll('section.panel');
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
+      panels.forEach(function (p) {
+        p.classList.remove('active');
+        p.setAttribute('hidden', '');
+      });
+      tab.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      panel.classList.add('active');
+      panel.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
