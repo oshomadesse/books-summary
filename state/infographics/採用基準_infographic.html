@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>採用基準 インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #2B3A67 / セカンダリー #E0A458 / アクセント #BC4749 -->
+<style>
+:root {
+  --primary: #2B3A67;
+  --secondary: #E0A458;
+  --accent: #BC4749;
+  --bg: #fafafa;
+  --card-bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding-bottom: 2rem;
+}
+header {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+header p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+.summary-block {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.summary-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  padding-bottom: 0.5rem;
+}
+.summary-item {
+  margin-bottom: 1rem;
+}
+.summary-item strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+}
+.summary-item p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem;
+}
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 0.5rem;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+}
+.tab-btn:hover {
+  background: #f5f5f5;
+}
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+.tab-content {
+  display: none;
+  padding: 1rem;
+  animation: fadeIn 0.4s;
+}
+.tab-content.active {
+  display: block;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-left: 4px solid var(--primary);
+}
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.card li {
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.9rem;
+}
+.card li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+.reason-box {
+  background: linear-gradient(135deg, #fdf3e7, #fffaf2);
+  border-left: 3px solid var(--secondary);
+  padding: 0.8rem;
+  margin-top: 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.reason-box strong {
+  color: var(--secondary);
+}
+.metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem;
+  background: linear-gradient(90deg, #eef1fb, #fff);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+.metric-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.metric-bar {
+  flex: 1;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin: 0 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.metric-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.quote-card {
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-left: 4px solid var(--secondary);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-style: italic;
+  position: relative;
+}
+.quote-card:before {
+  content: "\201C";
+  font-size: 3rem;
+  color: var(--accent);
+  position: absolute;
+  top: -0.5rem;
+  left: 0.5rem;
+  opacity: 0.3;
+}
+.quote-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+.quote-why {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-style: normal;
+  padding-left: 1rem;
+}
+.action-card {
+  background: linear-gradient(135deg, #fdeee0, #fff8f0);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.action-card h4 {
+  color: var(--primary);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.action-card p {
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+.flow-diagram {
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+.flow-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+.flow-arrow {
+  color: var(--primary);
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+.chapter-card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid var(--secondary);
+}
+.chapter-card h3 {
+  color: var(--primary);
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+@media (min-width: 768px) {
+  .tab-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 採用基準</h1>
+  <p>地頭より論理的思考力より大切なもの — マッキンゼー流「全員リーダーシップ」論</p>
+</header>
+
+<div class="badge-row">
+  <span class="badge">🏆 HRアワード2013 書籍部門最優秀賞</span>
+  <span class="badge">👤 著者：マッキンゼー採用マネジャー歴12年</span>
+  <span class="badge">📘 2012年刊・ロングセラー</span>
+</div>
+
+<div class="summary-block">
+  <h2>🎯 要約：問い×答え×根拠</h2>
+  <div class="summary-item">
+    <strong>❓ 問い</strong>
+    <p>難関企業が本当に見ている「採用基準」とは何か。地頭の良さや論理的思考力の高さなのではないか？</p>
+  </div>
+  <div class="summary-item">
+    <strong>💡 答え</strong>
+    <p>マッキンゼーが最重視してきたのは地頭でも論理的思考力でもなく「リーダーシップ」。役職や立場に関係なく、誰もが目標を掲げ、先頭に立ち、決め、伝える姿勢を指す。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🔬 Why（なぜそうなのか）</strong>
+    <p>正解のない課題に対応するには、指示を正確にこなす力より、自ら問題を見つけ一歩前に出て解決に動く人の「数」が組織の成果を決めるから。日本の課題はカリスマ的リーダーの不在ではなく、この意味でのリーダーシップを発揮できる人の少なさにある。</p>
+  </div>
+  <div class="summary-item">
+    <strong>🛠️ How（そのためには）</strong>
+    <p>役職の有無にかかわらず、日々の会議やタスクの中で「目標を掲げる」「先頭に立つ」「決める」「伝える」の4つを小さく練習し、調整役ではなくリーダーとして振る舞う機会を増やしていく。</p>
+  </div>
+</div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="tab1" data-tab="tab1">主要概念</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab2" data-tab="tab2">各章要約</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab3" data-tab="tab3">具体例</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab4" data-tab="tab4">重要な引用</button>
+  <button class="tab-btn" role="tab" aria-selected="false" aria-controls="tab5" data-tab="tab5">今日のアクション</button>
+</div>
+
+<div id="tab1" class="tab-content active" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">🧠 主要概念の詳細</h2>
+
+  <div class="card">
+    <h3>🚫 誤解される採用基準</h3>
+    <ul>
+      <li>難関企業は「地頭の良さ」や「論理的思考力」で選んでいると思われがち</li>
+      <li>実際にマッキンゼーが最も重視してきたのはリーダーシップ</li>
+      <li>学歴やIQの高さだけでは、入社後の活躍を保証しない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>採用基準の誤解を解かないまま就職活動や人材育成を行うと、本当に必要な資質を見過ごしたまま努力の方向を誤ってしまうため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>👑 リーダーシップ＝役職ではない</h3>
+    <ul>
+      <li>日本では「管理職になる＝リーダーシップがある」と捉えられがち</li>
+      <li>本書のリーダーシップは、役職と無関係な「スキルであり心構え」</li>
+      <li>新人でも現場の誰でも発揮できるものと位置づける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>リーダーシップを役職に紐づけてしまうと、役職のない大多数の人が「自分には関係ない」と考え、組織全体の問題解決力が下がるため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🤝 調整役・マネージャーとの違い</h3>
+    <ul>
+      <li>みんなの意見を聞き、場の和を乱さないよう折衝する「調整役」とは区別する</li>
+      <li>調整役は合意形成が目的、リーダーは成果の最大化が目的</li>
+      <li>日本では調整役がリーダーと誤認されやすい</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>調整役としての振る舞いばかりが評価されると、誰も決断せず課題が放置される「決められない組織」になってしまうため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 タスク①目標を掲げる</h3>
+    <ul>
+      <li>目標は誰かから与えられるのを待つものではなく、自分で掲げるもの</li>
+      <li>チームの成果目標をわかりやすい言葉で示す</li>
+      <li>カリスマ性や特別な話術は必要ない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>目標が曖昧なままでは、メンバー各自が違う方向に努力してしまい、チームとしての成果が積み上がらないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🏃 タスク②先頭を走る</h3>
+    <ul>
+      <li>情報や時間が不十分でも、リスクを取って最初に動く</li>
+      <li>自分の立場に関係なく「自分がやる」と手を挙げる姿勢</li>
+      <li>失敗や恥をかくリスクを許容する素質が求められる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>誰も最初に動かなければ、どれほど良い目標も机上の空論のままで終わってしまうため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ タスク③決める</h3>
+    <ul>
+      <li>最善の判断でなくても、決めることで物事が前に進む</li>
+      <li>決めることで初めて、見えなかった問題点が浮かび上がる</li>
+      <li>決断を先延ばしにする「調整」こそが停滞を生む</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>完璧な正解を待ち続けると、検討している間に状況が変わり、結局何も決められないまま機会を失うため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📣 タスク④伝える</h3>
+    <ul>
+      <li>掲げた目標・決めたことを、メンバーに明確に伝える</li>
+      <li>伝えなければ、目標も決断もチームには存在しないに等しい</li>
+      <li>一方的な指示ではなく、納得を生む伝え方が求められる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>リーダー本人の頭の中で目標や決断が明確でも、メンバーに伝わっていなければ、組織としては何も変わらないため。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🇯🇵 日本の課題は「人数」不足</h3>
+    <ul>
+      <li>日本に必要なのはカリスマ的リーダーの出現ではない</li>
+      <li>必要なのは、リーダーシップを発揮できる「ふつうの人」の数</li>
+      <li>一人の英雄に頼る組織は、その人がいなくなると機能を失う</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>変化が速く課題が多岐にわたる現代では、一人のカリスマでは対応しきれず、現場の多くの人が同時にリーダーシップを発揮できる組織でなければ立ち行かなくなるため。
+    </div>
+  </div>
+
+  <h3 style="color: var(--primary); margin: 2rem 0 1rem;">🔄 概念間の関係性</h3>
+  <div class="flow-diagram">
+    <div class="flow-item">
+      <span>リーダーシップ＝役職ではない</span>
+      <span class="flow-arrow">→</span>
+      <span>誰もが対象になる</span>
+      <span class="flow-arrow">→</span>
+      <span>全員がリーダーシップを発揮する文化</span>
+    </div>
+    <div class="flow-item">
+      <span>目標を掲げる</span>
+      <span class="flow-arrow">→</span>
+      <span>先頭を走る</span>
+      <span class="flow-arrow">→</span>
+      <span>決める</span>
+      <span class="flow-arrow">→</span>
+      <span>伝える</span>
+    </div>
+    <div class="flow-item">
+      <span>調整役との混同を解く</span>
+      <span class="flow-arrow">→</span>
+      <span>成果のための決断を優先できる</span>
+      <span class="flow-arrow">→</span>
+      <span>決められない組織から脱する</span>
+    </div>
+    <div class="flow-item">
+      <span>リーダーシップ人口が増える</span>
+      <span class="flow-arrow">→</span>
+      <span>一人のカリスマ依存から脱する</span>
+      <span class="flow-arrow">→</span>
+      <span>日本社会の課題解決力が上がる</span>
+    </div>
+  </div>
+</div>
+
+<div id="tab2" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">📖 各章の要約</h2>
+  <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">※ Web上で確認できた論点の範囲をもとに疑似章立てとして整理（全章の目次詳細は不明）。</p>
+
+  <div class="chapter-card">
+    <h3>論点1：誤解される採用基準</h3>
+    <ul>
+      <li>難関企業の採用＝地頭・論理的思考力というイメージを検証し解体する</li>
+      <li>著者自身がマッキンゼーで12年、採用マネジャーとして見てきた実感を提示</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書全体の前提を揃えるため、まず世間の思い込みを正す必要がある。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>論点2：採用したいのは将来のリーダー</h3>
+    <ul>
+      <li>マッキンゼーが選考で見ているのは、今の実力ではなく将来リーダーとして活躍できるポテンシャル</li>
+      <li>コンサルタントにとって最も重要な資質としてリーダーシップを位置づける</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>採用の目的が「今すぐ使える人」ではなく「将来成長する人」の見極めにあることを示すため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>論点3：リーダーシップと誤解されがちな要素</h3>
+    <ul>
+      <li>調整力・協調性・経験・カリスマ性など、リーダーシップと混同されやすい要素を整理</li>
+      <li>これらはリーダーシップの一部や結果であって、本質ではないと説く</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>似て見える概念を区別しないと、リーダーシップを育てる努力の方向を誤ってしまうため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>論点4：リーダーの4つのタスク</h3>
+    <ul>
+      <li>①目標を掲げる ②先頭を走る ③決める ④伝える、という具体的な行動として定義</li>
+      <li>抽象的な「人望」ではなく、誰でも練習できる行動のセットとして提示</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>リーダーシップを「センス」ではなく「スキル」として扱うことで、育成・習得が可能になるため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>論点5：日本の課題はリーダー不足ではなく人数不足</h3>
+    <ul>
+      <li>日本に欠けているのはカリスマ的リーダーではなく、リーダーシップを発揮できる人の総数</li>
+      <li>組織・社会全体の課題解決力は、この「人数」に規定される</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>「優れたリーダーが現れれば解決する」という期待自体が、問題の本質を見誤らせているため。
+    </div>
+  </div>
+
+  <div class="chapter-card">
+    <h3>論点6：全員に求められる資質としてのリーダーシップ</h3>
+    <ul>
+      <li>役職・年齢・経験に関係なく、誰もがリーダーシップを発揮すべきだと位置づける</li>
+      <li>マッキンゼーが求める人材像と、日本社会が必要とする人材像は本質的に同じだと主張</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由：</strong>本書の主張を「一企業の採用論」から「日本社会全体への提言」へと広げる締めの論点であるため。
+    </div>
+  </div>
+</div>
+
+<div id="tab3" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💡 具体例・ケーススタディ</h2>
+
+  <div class="card">
+    <h3>🙋 会議で誰も手を挙げない場面</h3>
+    <ul>
+      <li>難しい議題が出たとき、役職の高い人の判断を待って誰も発言しない状況</li>
+      <li>本書が説くリーダーシップとは、立場に関係なく「自分ならこの問題に取り組めるかもしれない」と考え、実際に発言・行動すること</li>
+      <li>発言した人が役職者である必要はない</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>リーダーシップが役職や指名を必要とせず、その場にいる誰でも発揮できる行動であることを具体的に示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⏳ 情報不足でも決断する場面</h3>
+    <ul>
+      <li>十分なデータが揃わない中で、期限までに方向性を決める必要があるケース</li>
+      <li>「もっと情報が集まってから」と決断を遅らせ続けると、検討自体が目的化してしまう</li>
+      <li>仮に最善でなくても決めることで、チームは次の行動に移れ、問題点も見えてくる</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「決める」というタスクが完璧さの追求ではなく、前進を生むための行動であることを示す。
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🪑 調整役がリーダーと誤認される場面</h3>
+    <ul>
+      <li>会議の進行役や、意見の対立を丸く収める人が「リーダー的」と評価されがちな組織文化</li>
+      <li>本書は、こうした調整行動自体はリーダーシップの本質ではないと区別する</li>
+      <li>和を乱さないことより、成果に向けて決断することを重視する</li>
+    </ul>
+    <div class="reason-box">
+      <strong>理由（この例が示すこと）：</strong>「場をまとめる人」と「成果に向けて決断する人」が必ずしも同じではないことを示し、評価基準の誤解を正す。
+    </div>
+  </div>
+</div>
+
+<div id="tab4" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">💬 重要な引用</h2>
+  <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">※ Web上で原文のまま確認できる引用句は見つからなかったため、確認できた論旨を要旨として記載する。</p>
+
+  <div class="quote-card">
+    <p class="quote-text">リーダーシップは役職ではなく、誰もが持つべきスキルであり心構えである。（要旨）</p>
+    <p class="quote-why">※要旨。本書全体を貫く中心的な主張。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">マッキンゼーが求める人材も、日本社会が必要としている人材も、実質的には同じである。（要旨）</p>
+    <p class="quote-why">※要旨。一企業の採用論を日本社会全体への提言へ広げる一文として書評等で紹介されている内容。</p>
+  </div>
+
+  <div class="quote-card">
+    <p class="quote-text">日本の問題はカリスマ的リーダーの不在ではなく、リーダーシップを発揮できる人の少なさにある。（要旨）</p>
+    <p class="quote-why">※要旨。本書が提示する日本社会への診断の核心部分。</p>
+  </div>
+</div>
+
+<div id="tab5" class="tab-content" role="tabpanel">
+  <h2 style="color: var(--primary); margin-bottom: 1rem;">✅ 今日のアクション</h2>
+
+  <div class="action-card">
+    <h4>🙋 会議で「自分ならやれるかも」を声に出す</h4>
+    <p><strong>やること：</strong>今日参加する会議や打ち合わせで、役職や立場を気にせず「自分がこの部分を担当・解決できるかもしれない」と思ったら実際に発言してみる（15分）。</p>
+    <p><strong>目的：</strong>リーダーシップを「役職が与えてくれるもの」ではなく「自分から踏み出す行動」として体験する。</p>
+    <p><strong>期待効果：</strong>発言へのハードルが下がり、次回以降も同様の行動を取りやすくなる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>⚖️ 先延ばしにしていた小さな決断を1つ下す</h4>
+    <p><strong>やること：</strong>自分のタスクの中で「誰かの判断を待っている」状態のものを1つ選び、情報が完全でなくても期限を自分で決めて決断する（20分）。</p>
+    <p><strong>目的：</strong>「決める」というリーダーのタスクを、完璧な正解探しではなく前進のための行動として練習する。</p>
+    <p><strong>期待効果：</strong>決断によって見えてきた課題を早期に把握でき、物事が停滞しなくなる。</p>
+  </div>
+
+  <div class="action-card">
+    <h4>📣 チームの目標を一文で言語化し共有する</h4>
+    <p><strong>やること：</strong>今取り組んでいるチームの仕事の目標を、誰かに与えられる前に自分の言葉で一文にまとめ、関係者に一度共有する準備をする（30分）。</p>
+    <p><strong>目的：</strong>「目標を掲げる」「伝える」という2つのタスクを同時に練習する。</p>
+    <p><strong>期待効果：</strong>チーム内で目標の解釈がずれていた部分に気づき、認識を揃えるきっかけになる。</p>
+  </div>
+
+  <div class="metric">
+    <span class="metric-label">今日から実践できる度</span>
+    <div class="metric-bar"><div class="metric-fill" style="width: 85%;"></div></div>
+    <span style="font-size: 0.8rem; color: var(--accent);">高</span>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-tab');
+
+      tabBtns.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+
+      tabContents.forEach(content => {
+        content.classList.remove('active');
+      });
+
+      this.classList.add('active');
+      this.setAttribute('aria-selected', 'true');
+      document.getElementById(targetTab).classList.add('active');
+    });
+  });
+});
+</script>
+
+</body>
+</html>
