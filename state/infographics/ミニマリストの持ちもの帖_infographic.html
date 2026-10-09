@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ミニマリストの持ちもの帖 インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー: #4A7C68 (セージグリーン、暮らしの落ち着き)
+  セカンダリー: #F5E9DA (ウォームクリーム、紙・布のような温かみ)
+  アクセント: #D98E73 (テラコッタ、手仕事・器のあたたかさ)
+-->
+<style>
+  :root {
+    --primary: #4A7C68;
+    --primary-dark: #35584A;
+    --secondary: #F5E9DA;
+    --accent: #D98E73;
+    --text: #2E2A26;
+    --text-sub: #6B6258;
+    --card-bg: #FFFFFF;
+    --border: #E3D8C8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    background: linear-gradient(180deg, var(--secondary) 0%, #FBF6EE 100%);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #fff;
+    padding: 28px 16px 24px;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 1.4rem;
+  }
+  header p.sub {
+    margin: 0;
+    font-size: 0.85rem;
+    opacity: 0.9;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .hero {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    margin: -8px 0 20px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  }
+  .hero h2 {
+    font-size: 0.95rem;
+    color: var(--primary-dark);
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hero .qa {
+    display: grid;
+    gap: 10px;
+  }
+  .hero .qa .row {
+    background: var(--secondary);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.88rem;
+  }
+  .hero .qa .row b {
+    color: var(--accent);
+  }
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .badge {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+  .badge.alt { background: var(--accent); }
+  nav.tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding-bottom: 4px;
+    margin-bottom: 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  nav.tabs button {
+    flex: 0 0 auto;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-sub);
+    padding: 9px 13px;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  nav.tabs button[aria-selected="true"] {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 0.92rem;
+    color: var(--primary-dark);
+  }
+  .card ul {
+    margin: 0 0 8px;
+    padding-left: 1.1rem;
+    font-size: 0.85rem;
+  }
+  .card li { margin-bottom: 4px; }
+  .why {
+    background: var(--secondary);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    color: var(--text-sub);
+    margin-top: 6px;
+  }
+  .why b { color: var(--accent); }
+  .stat-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+  }
+  .stat {
+    flex: 1 1 100px;
+    background: var(--secondary);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+  }
+  .stat .num {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--primary-dark);
+  }
+  .stat .label {
+    font-size: 0.68rem;
+    color: var(--text-sub);
+  }
+  .bar-wrap { margin: 8px 0; font-size: 0.78rem; }
+  .bar-label { display: flex; justify-content: space-between; margin-bottom: 3px; }
+  .bar-bg { background: var(--secondary); border-radius: 6px; height: 10px; overflow: hidden; }
+  .bar-fill { height: 10px; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+  .quote {
+    font-style: italic;
+    border-left: 3px solid var(--primary);
+    padding: 6px 12px;
+    margin: 0 0 6px;
+    font-size: 0.85rem;
+    color: var(--text);
+    background: var(--secondary);
+    border-radius: 0 8px 8px 0;
+  }
+  .quote-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 6px;
+    padding: 1px 6px;
+    margin-bottom: 4px;
+  }
+  .action-num {
+    display: inline-flex;
+    width: 22px; height: 22px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    font-weight: bold;
+    margin-right: 6px;
+  }
+  footer {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--text-sub);
+    padding: 20px 16px 30px;
+  }
+  @media (min-width: 600px) {
+    .card ul { font-size: 0.88rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>🧠 ミニマリストの持ちもの帖</h1>
+  <p class="sub">家族５人 これだけで暮らしています／尾崎友吏子・著（NHK出版）</p>
+</header>
+<div class="wrap">
+
+  <div class="hero">
+    <h2>📣 要約：問い × 答え × 根拠</h2>
+    <div class="qa">
+      <div class="row"><b>問い：</b>家族5人分の「モノ」をどこまで減らせば心地よく暮らせるのか？</div>
+      <div class="row"><b>答え：</b>「最小限」ではなく「必要十分」。気に入ったものだけを質で選び、数を絞る。</div>
+      <div class="row"><b>根拠：</b>著者一家は巻末に全持ち物（約1,649点）を実名公開し、管理の手間と支出を実際に減らしている。</div>
+    </div>
+    <div class="badges">
+      <span class="badge">🏷️ ライフスタイル</span>
+      <span class="badge alt">👨‍👩‍👦‍👦 家族5人のミニマリズム</span>
+      <span class="badge alt">📋 持ち物公開本</span>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">💡主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖各章</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases" onclick="switchTab('cases')">🔍具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">💬引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅今日の行動</button>
+  </nav>
+
+  <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>① 必要十分（最小限ではない）</h3>
+      <ul>
+        <li>「できるだけゼロに近づける」ミニマリズムではない</li>
+        <li>家族5人が実際に使う量を基準にする</li>
+        <li>巻末の持ち物リスト自体がそれを証明する道具</li>
+      </ul>
+      <div class="why"><b>理由：</b>量を競う減らし方は家族構成が違えば再現できない。「必要十分」は誰にでも当てはめられる基準になる。</div>
+    </div>
+    <div class="card">
+      <h3>② 気に入ったものを長く使う</h3>
+      <ul>
+        <li>食器・服は数が少なくても気に入ったものを選ぶ</li>
+        <li>長く使える・手放す時に譲りやすいものを基準に選定</li>
+      </ul>
+      <div class="why"><b>理由：</b>数を減らすだけでは不満が残る。質を上げることで「少なくても満足」が成立する。</div>
+    </div>
+    <div class="card">
+      <h3>③ 見える化（持ち物リスト化）</h3>
+      <ul>
+        <li>家中の持ち物を書き出し、巻末に約1,649点を掲載</li>
+        <li>製品名も記載され、読者が検索して真似できる</li>
+      </ul>
+      <div class="why"><b>理由：</b>感覚ではなく数で把握することで、増えすぎのサインに早く気づける。</div>
+    </div>
+    <div class="card">
+      <h3>④ 管理の労力を減らす</h3>
+      <ul>
+        <li>多くのモノを管理する負担が、持たない暮らしを決意したきっかけ</li>
+        <li>掃除・収納・買い替えの手間を物量と結びつけて考える</li>
+      </ul>
+      <div class="why"><b>理由：</b>時間や体力という「見えないコスト」を減らすことが、持ち物を減らす本当の目的になる。</div>
+    </div>
+    <div class="card">
+      <h3>⑤ 身軽さ（引っ越し・譲りやすさ）</h3>
+      <ul>
+        <li>物量を抑えた結果、小さな家への引っ越しが実現しやすくなる</li>
+        <li>気に入ったものは他人にも譲りやすく、循環しやすい</li>
+      </ul>
+      <div class="why"><b>理由：</b>持ち物が少ないほど暮らしの変化（引っ越し・家族構成の変化）に対応しやすくなる。</div>
+    </div>
+    <div class="card">
+      <h3>⑥ 家族単位のミニマリズム</h3>
+      <ul>
+        <li>個人の持ち物ではなく、夫婦＋子ども3人の5人分を一括管理</li>
+        <li>一人分の理想論ではなく「家族の現実」に即した基準</li>
+      </ul>
+      <div class="why"><b>理由：</b>単身ミニマリズムの情報は多いが、家族向けの実例は少なく独自の価値がある。</div>
+    </div>
+  </section>
+
+  <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>はじめに</h3>
+      <ul>
+        <li>多くのモノを管理する労力に限界を感じ、持たない暮らしを決意した経緯</li>
+      </ul>
+      <div class="why"><b>理由：</b>「なぜ減らすのか」という動機を最初に示すことで、以降の持ち物紹介が単なる自慢でなく実用情報として読める。</div>
+    </div>
+    <div class="card">
+      <h3>第1章 台所用品</h3>
+      <ul>
+        <li>調理器具・食器・保存容器など、キッチンで実際に使っているものを公開</li>
+        <li>数を絞った上で気に入ったものを選ぶ基準を提示</li>
+      </ul>
+      <div class="why"><b>理由：</b>台所は物が増えやすい場所であり、最初に扱うことで本全体の基準を具体的に示せる。</div>
+    </div>
+    <div class="card">
+      <h3>第2章 住居用品</h3>
+      <ul>
+        <li>家具・寝具・掃除道具など住まい全体の持ち物を紹介</li>
+        <li>収納スペースと物量のバランスを意識した選び方</li>
+      </ul>
+      <div class="why"><b>理由：</b>大型の家具・寝具の選び方は、暮らしの身軽さに最も影響する領域だから。</div>
+    </div>
+    <div class="card">
+      <h3>第3章 衣類</h3>
+      <ul>
+        <li>家族それぞれの服・靴の数と選び方を公開</li>
+        <li>オールシーズンで着られるものを優先</li>
+      </ul>
+      <div class="why"><b>理由：</b>衣類は「数の多さ＝安心」と思いがちな領域であり、少数精鋭の実例が説得力を持つ。</div>
+    </div>
+    <div class="card">
+      <h3>第4章 家族のもの</h3>
+      <ul>
+        <li>子ども3人の学用品・おもちゃなど、家族それぞれの持ち物</li>
+      </ul>
+      <div class="why"><b>理由：</b>子どものモノは親の意志だけで減らせないため、家族全体の合意形成の実例として重要。</div>
+    </div>
+    <div class="card">
+      <h3>第5章 その他／巻末の全持ち物リスト</h3>
+      <ul>
+        <li>上記に当てはまらない雑貨類を紹介</li>
+        <li>巻末に家中の持ち物（約1,649点）を一覧化</li>
+      </ul>
+      <div class="why"><b>理由：</b>総量を最後に提示することで、「必要十分」が感覚ではなく数字で裏付けられる。</div>
+    </div>
+  </section>
+
+  <section id="panel-cases" class="panel" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3>🛏️ ケース1：ベッドから布団へ</h3>
+      <ul>
+        <li>背景：寝具の管理と収納スペースの負担を見直した</li>
+        <li>結果：関連のインタビュー・著作では家計面での大きな節約効果が紹介されている</li>
+      </ul>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>寝具の見直し効果（イメージ）</span><span>★★★★☆</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:80%"></div></div>
+      </div>
+      <div class="why"><b>この例が示すこと：</b>大型家具1つの選び直しが、家計と手間の両方に長期的な影響を及ぼす。</div>
+    </div>
+    <div class="card">
+      <h3>🛋️ ケース2：ソファを手放す</h3>
+      <ul>
+        <li>背景：使用頻度と場所を取る大きさを見直した</li>
+        <li>結果：スペースの確保と手入れの手間削減につながったと紹介されている</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>「当たり前にあるもの」も使用実態を問い直す対象になる。</div>
+    </div>
+    <div class="card">
+      <h3>👕 ケース3：洋服をオールシーズンで絞る</h3>
+      <ul>
+        <li>背景：季節ごとに増えていく衣類の管理負担</li>
+        <li>結果：関連著作では一人あたり少数（オールシーズン14着程度）に絞ったことが紹介されている</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>数を決めてから選ぶと、「気に入っているか」で選ぶ基準が自然と働く。</div>
+    </div>
+    <div class="card">
+      <h3>👟 ケース4：家族5人分の靴を絞る</h3>
+      <ul>
+        <li>背景：個人ごとに増えやすい靴の数を家族全体で見直した</li>
+        <li>結果：関連著作では家族5人分で19足程度に絞ったことが紹介されている</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>家族単位で基準を共有すると、一人だけが我慢する不公平感が出にくい。</div>
+    </div>
+    <div class="card">
+      <h3>📋 ケース5：持ち物の全リスト化</h3>
+      <ul>
+        <li>背景：感覚だけでは物量の増減に気づきにくい</li>
+        <li>結果：本書巻末で家中の持ち物（約1,649点）を一覧公開</li>
+      </ul>
+      <div class="stat-row">
+        <div class="stat"><div class="num">約1,649</div><div class="label">掲載アイテム数</div></div>
+        <div class="stat"><div class="num">5人</div><div class="label">家族構成</div></div>
+        <div class="stat"><div class="num">5章</div><div class="label">本の構成</div></div>
+      </div>
+      <div class="why"><b>この例が示すこと：</b>「見える化」は精神論ではなく、具体的な数字に落とし込むことで初めて機能する。</div>
+    </div>
+  </section>
+
+  <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="card">
+      <h3>💬 本書の考え方（要旨）</h3>
+      <span class="quote-tag">要旨</span>
+      <div class="quote">多くのモノを管理することに限界を感じ、持たない暮らしを決意した。</div>
+      <span class="quote-tag">要旨</span>
+      <div class="quote">食器や服は数が少なくても、気に入ったものを選べば心地よく過ごせる。</div>
+      <span class="quote-tag">要旨</span>
+      <div class="quote">家具は長く使えるか、手放すときに譲りやすいかを基準に選んでいる。</div>
+      <div class="why"><b>補足：</b>原典からの直接引用は確認できなかったため、書評・紹介記事に基づく要旨として記載している。</div>
+    </div>
+  </section>
+
+  <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="card">
+      <h3><span class="action-num">1</span>1カテゴリの持ち物を全部出して数える（15分）</h3>
+      <ul>
+        <li>目的：キッチン用品や衣類など1カテゴリだけ、持っている数を実際に数える</li>
+        <li>期待効果：感覚と実数のズレに気づき、「必要十分」の基準を考え始められる</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="action-num">2</span>お気に入りでない日用品を1つ選ぶ（20分）</h3>
+      <ul>
+        <li>目的：「気に入っているか」という基準で持ち物を見直す練習をする</li>
+        <li>期待効果：手放す・譲る候補が1つ明確になり、選び方の軸が身につく</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="action-num">3</span>持ち物リストを1カテゴリ分だけ書き出す（30分）</h3>
+      <ul>
+        <li>目的：本書の巻末リストのように、自分の持ち物を見える化する第一歩を作る</li>
+        <li>期待効果：家族や自分自身で共有できる「基準」が具体的に残る</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+<footer>
+  📚 読書サマリー自動生成システム — books-summary
+</footer>
+<script>
+  function switchTab(name) {
+    var panels = document.querySelectorAll('.panel');
+    var tabs = document.querySelectorAll('nav.tabs button');
+    panels.forEach(function(p) { p.classList.remove('active'); });
+    tabs.forEach(function(t) { t.setAttribute('aria-selected', 'false'); });
+    document.getElementById('panel-' + name).classList.add('active');
+    document.getElementById('tab-' + name).setAttribute('aria-selected', 'true');
+  }
+</script>
+</body>
+</html>
