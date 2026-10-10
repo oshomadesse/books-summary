@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット:
+  プライマリー:   #2E5266 (深い青) → グラデーション #3A6B8A
+  セカンダリー:   #F2A541 (暖かいオレンジ)
+  アクセント:     #6FB98F (落ち着いたグリーン)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超訳 アドラーの言葉 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#2E5266;
+    --primary-light:#3A6B8A;
+    --secondary:#F2A541;
+    --accent:#6FB98F;
+    --bg:#F7F5F0;
+    --card:#FFFFFF;
+    --text:#2A2A2A;
+    --text-sub:#5B5B5B;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP",system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary),var(--primary-light));
+    color:#fff;
+    padding:28px 16px 24px;
+    text-align:center;
+  }
+  header .eyebrow{
+    font-size:13px;
+    letter-spacing:.1em;
+    opacity:.85;
+    margin-bottom:6px;
+  }
+  header h1{
+    margin:0 0 8px;
+    font-size:24px;
+    line-height:1.4;
+  }
+  header .author{
+    font-size:14px;
+    opacity:.9;
+  }
+  .wrap{
+    max-width:820px;
+    margin:0 auto;
+    padding:16px;
+  }
+  .hero{
+    background:var(--card);
+    border-radius:16px;
+    padding:18px;
+    margin:-12px 0 20px;
+    box-shadow:0 4px 16px rgba(0,0,0,.08);
+    border:1px solid rgba(0,0,0,.04);
+  }
+  .hero h2{
+    margin:0 0 12px;
+    font-size:15px;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .qa-item{
+    background:var(--bg);
+    border-left:4px solid var(--secondary);
+    border-radius:8px;
+    padding:10px 12px;
+  }
+  .qa-item.answer{border-left-color:var(--accent);}
+  .qa-item.why{border-left-color:var(--primary);}
+  .qa-label{
+    font-size:11px;
+    font-weight:700;
+    color:var(--text-sub);
+    margin-bottom:4px;
+  }
+  .qa-text{font-size:14px;}
+  .badge-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .badge{
+    background:var(--primary);
+    color:#fff;
+    font-size:12px;
+    padding:6px 10px;
+    border-radius:20px;
+  }
+  .badge.sec{background:var(--secondary);color:#2A2A2A;}
+  .badge.acc{background:var(--accent);color:#1b3b2a;}
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin-bottom:16px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    border:none;
+    background:#E7E2D8;
+    color:var(--text-sub);
+    padding:10px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+  }
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+  .card{
+    background:var(--card);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:16px;
+    color:var(--primary);
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .card ul{
+    margin:0 0 10px;
+    padding-left:20px;
+    font-size:14px;
+  }
+  .card li{margin-bottom:4px;}
+  .why-box{
+    background:#FFF4E2;
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:13px;
+    color:#6a4a10;
+  }
+  .why-box b{color:var(--secondary-dark,#b5751a);}
+  .quote-card{
+    border-left:5px solid var(--accent);
+    background:var(--card);
+    border-radius:0 14px 14px 0;
+    padding:14px 16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+  }
+  .quote-text{
+    font-size:15px;
+    font-style:italic;
+    color:var(--primary);
+    margin-bottom:6px;
+  }
+  .quote-note{
+    font-size:12px;
+    color:var(--text-sub);
+  }
+  .tag-note{
+    display:inline-block;
+    background:#EDEDED;
+    color:#666;
+    font-size:11px;
+    padding:2px 8px;
+    border-radius:10px;
+    margin-bottom:6px;
+  }
+  .action-card{
+    background:var(--card);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+    position:relative;
+  }
+  .action-num{
+    position:absolute;
+    top:-10px;
+    left:14px;
+    background:var(--secondary);
+    color:#2A2A2A;
+    font-weight:700;
+    font-size:13px;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .action-card h3{margin:10px 0 8px;font-size:15px;color:var(--primary);}
+  .meta-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    font-size:12px;
+    margin-top:8px;
+  }
+  .meta-pill{
+    background:var(--bg);
+    padding:4px 10px;
+    border-radius:12px;
+    color:var(--text-sub);
+  }
+  .stat-row{
+    display:flex;
+    gap:10px;
+    margin:12px 0;
+    flex-wrap:wrap;
+  }
+  .stat{
+    flex:1 1 90px;
+    background:var(--bg);
+    border-radius:10px;
+    padding:10px;
+    text-align:center;
+  }
+  .stat .num{font-size:20px;font-weight:800;color:var(--primary);}
+  .stat .label{font-size:11px;color:var(--text-sub);}
+  .bar-wrap{margin:6px 0 2px;}
+  .bar-label{font-size:12px;color:var(--text-sub);margin-bottom:3px;display:flex;justify-content:space-between;}
+  .bar-bg{background:#E7E2D8;border-radius:6px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+  footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--text-sub);
+    padding:24px 16px 32px;
+  }
+  @media (min-width:700px){
+    header h1{font-size:28px;}
+    .card h3{font-size:18px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">📚 今日の一冊インフォグラフィック</div>
+  <h1>超訳 アドラーの言葉</h1>
+  <div class="author">アルフレッド・アドラー 著 / 岩井俊憲 編訳 — ディスカヴァー・トゥエンティワン（2024年1月刊）</div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h2>🧭 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-item">
+        <div class="qa-label">❓ 問い（Why）</div>
+        <div class="qa-text">劣等感や過去の経験に縛られて「自分はもう変われない」と感じるとき、どう考え方を立て直せばよいのか？</div>
+      </div>
+      <div class="qa-item answer">
+        <div class="qa-label">✅ 答え（What）</div>
+        <div class="qa-text">原因ではなく「目的」に注目し、自分の課題と他人の課題を分離し、結果でなく過程を「勇気づける」。それだけで、今この瞬間から生き方と対人関係を選び直せる。</div>
+      </div>
+      <div class="qa-item why">
+        <div class="qa-label">🔍 根拠（How）</div>
+        <div class="qa-text">アドラーの個人心理学は「人は変えられない過去の“所有物”ではなく、これからの“使用”で生き方を決める」という前提に立つ。本書は168の言葉でその前提を1ページ1エッセンスずつ提示している。</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="num">168</div><div class="label">厳選された言葉</div></div>
+      <div class="stat"><div class="num">2.6万部</div><div class="label">発売2ヶ月の実績</div></div>
+      <div class="stat"><div class="num">40年+</div><div class="label">編訳者の実践歴</div></div>
+    </div>
+    <div class="badge-row">
+      <span class="badge">🏷️ 自己啓発</span>
+      <span class="badge sec">🧠 アドラー心理学</span>
+      <span class="badge acc">📖 2024年刊</span>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切替">
+    <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🧩 主要概念</button>
+    <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📑 各章の要約</button>
+    <button role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">💡 具体例</button>
+    <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 重要な引用</button>
+    <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+  </nav>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>😣 劣等感</h3>
+      <ul>
+        <li>誰もが持つ自然な感覚で、否定すべきものではない</li>
+        <li>向上心・成長の原動力として働く</li>
+        <li>比較対象を「他人」でなく「過去の自分」にすると機能が変わる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>劣等感そのものを敵視すると、成長のきっかけを自ら潰してしまうから。</div>
+    </div>
+    <div class="card">
+      <h3>🎯 目的論</h3>
+      <ul>
+        <li>行動の「原因」でなく「目的」を問う発想</li>
+        <li>過去のトラウマは行動を決定しない</li>
+        <li>「今、何のためにそうしているか」に焦点を当てる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>原因論のままだと「過去のせいで変われない」という思考から出られないから。</div>
+    </div>
+    <div class="card">
+      <h3>✂️ 課題の分離</h3>
+      <ul>
+        <li>自分の課題と他者の課題を切り分ける</li>
+        <li>他人の評価や感情は他人の課題</li>
+        <li>結果に責任を持てるのは本人だけ</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>課題を混同すると、対人関係のストレスが際限なく膨らむから。</div>
+    </div>
+    <div class="card">
+      <h3>🤝 共同体感覚</h3>
+      <ul>
+        <li>自分が社会・共同体の一員だと感じる感覚</li>
+        <li>他者への関心・貢献を通じて育まれる</li>
+        <li>精神的健康のひとつの指標とされる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>孤立感や対立を和らげる土台になるから。</div>
+    </div>
+    <div class="card">
+      <h3>💪 勇気づけ</h3>
+      <ul>
+        <li>結果でなく過程や本人の存在そのものを認める</li>
+        <li>「褒める」とは異なり、上下関係を作らない</li>
+        <li>相手が自分の力で踏み出せるよう支える</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>勇気づけられた人は、他者の評価に依存せず行動できるようになるから。</div>
+    </div>
+    <div class="card">
+      <h3>🛠️ 使用の心理学</h3>
+      <ul>
+        <li>性格・能力は「持っているもの」ではなく「使い方」</li>
+        <li>変えられない過去でなく、これからの使い方に焦点を当てる</li>
+        <li>同じ特性でも使い方次第で結果が変わる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「変えられない」という思い込みを外し、変化の余地を取り戻せるから。</div>
+    </div>
+    <div class="card">
+      <h3>🧬 ライフスタイル（人生の基本的態度）</h3>
+      <ul>
+        <li>幼少期に形成される、物事の受け取り方の癖</li>
+        <li>無自覚に対人関係や選択を左右する</li>
+        <li>自覚すれば書き換えが可能</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「自分は変われる」という希望の根拠になるから。</div>
+    </div>
+    <div class="card">
+      <h3>😠 怒りの背後にある支配欲</h3>
+      <ul>
+        <li>怒りは「目的」を持って選ばれた感情</li>
+        <li>多くの場合「他人を支配したい」という目的が潜む</li>
+        <li>目的に気づけば別の手段を選べる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「怒ってしまう」ではなく「怒りを選んでいる」と気づくことで、対人関係の選択肢が増えるから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>1️⃣ 劣等感と向き合う</h3>
+      <ul>
+        <li>劣等感は誰にでもある自然な感覚</li>
+        <li>劣等感自体は敵ではなく、向き合い方が問題</li>
+        <li>優越を目指す原動力に転換できる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>劣等感を受け止めることが成長の出発点になるから。</div>
+    </div>
+    <div class="card">
+      <h3>2️⃣ 目的論で行動を読み解く</h3>
+      <ul>
+        <li>「なぜそうなったか」でなく「何のためにしているか」を問う</li>
+        <li>過去のトラウマが行動を決定するわけではない</li>
+        <li>今この瞬間の選択に焦点を当てる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>原因論に留まると、変化の余地を自分で封じてしまうから。</div>
+    </div>
+    <div class="card">
+      <h3>3️⃣ 課題を分離する</h3>
+      <ul>
+        <li>自分の課題と他者の課題を分ける</li>
+        <li>他人の評価は他人の課題であり、自分ではコントロールできない</li>
+        <li>結果への責任は本人だけが持てる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>課題の混同が対人関係のストレスを無限に増やすから。</div>
+    </div>
+    <div class="card">
+      <h3>4️⃣ 勇気づけと共同体感覚</h3>
+      <ul>
+        <li>褒めるのではなく勇気づける</li>
+        <li>結果より過程に注目する</li>
+        <li>自分は社会に貢献できる存在だと感じる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>勇気づけと共同体感覚が、孤立や対立を和らげる実践的土台になるから。</div>
+    </div>
+    <div class="card">
+      <h3>5️⃣ 怒りと対人関係の選び直し</h3>
+      <ul>
+        <li>怒りは「支配したい」という目的から生まれる</li>
+        <li>感情も「使われている道具」である</li>
+        <li>選び方を変えれば関係性も変わる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>感情に支配されていると思い込むと、関係を変える主体性を失うから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3>🏢 ケース1：部下のミスに激しく怒る上司</h3>
+      <ul>
+        <li><b>背景：</b>納期直前に部下がミスを報告し、上司が大声で叱責した</li>
+        <li><b>示唆：</b>目的論で見ると、怒りの裏には「部下を支配し、二度と同じミスをさせたくない」という目的がある</li>
+        <li><b>示唆：</b>叱責でなく、改善行動を一緒に考える「勇気づけ」に切り替えると、部下は主体的に動きやすくなる</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>怒りという感情が「目的のための手段」として選ばれていることを示す好例だから。</div>
+    </div>
+    <div class="card">
+      <h3>🏠 ケース2：子どもの宿題を手伝いすぎる親</h3>
+      <ul>
+        <li><b>背景：</b>親が宿題の答えまで教えてしまい、子どもが自分で考える前に解決してしまう</li>
+        <li><b>示唆：</b>宿題は子どもの課題であり親の課題ではない</li>
+        <li><b>示唆：</b>「困ったときに頼れる」というサポート姿勢に留め、結果を本人に委ねると責任感が育つ</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>課題の分離を怠ると、本人の成長機会を奪ってしまうことを示すから。</div>
+    </div>
+    <div class="card">
+      <h3>📱 ケース3：SNSで他人の成功と比較して落ち込む</h3>
+      <ul>
+        <li><b>背景：</b>SNSで友人の活躍を見て劣等感を強めてしまう</li>
+        <li><b>示唆：</b>劣等感そのものは異常ではなく、向上心の原動力になり得る</li>
+        <li><b>示唆：</b>比較の対象を「他人」から「過去の自分」に変えるだけで、同じ劣等感が前進のエネルギーに変わる</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>劣等感の「使い方」次第で結果が正反対になることを具体的に示すから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote-card">
+      <span class="tag-note">要旨（原文確認不可のため意訳・要約）</span>
+      <div class="quote-text">「人が怒るのは、他人を支配したいという目的があるからだ」という趣旨の言葉。</div>
+      <div class="quote-note">💬 感情の裏にある目的を直視させる、本書を象徴する一節。</div>
+    </div>
+    <div class="quote-card">
+      <span class="tag-note">要旨（アドラー心理学で広く知られる考え方の要約）</span>
+      <div class="quote-text">「大切なのは何を持っているかではなく、与えられたものをどう使うかだ」という趣旨の言葉。</div>
+      <div class="quote-note">💬 本書の核にある「使用の心理学」を一言で表す。</div>
+    </div>
+    <div class="quote-card">
+      <span class="tag-note">要旨（アドラー心理学で広く知られる考え方の要約）</span>
+      <div class="quote-text">「勇気とは、困難に打ち勝つ力ではなく、不完全であることを受け入れる勇気だ」という趣旨の言葉。</div>
+      <div class="quote-note">💬 完璧でなくても前に進んでいい、という本書全体のメッセージ。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <h3>😠 今日イラッとした場面を振り返る</h3>
+      <ul>
+        <li><b>目的：</b>怒りの裏にある「支配したい」目的の有無を自問する</li>
+        <li><b>やり方：</b>今日イライラした場面を1つ思い出し、ノートに「本当は相手に何をさせたかったのか」を書く</li>
+      </ul>
+      <div class="meta-row"><span class="meta-pill">⏱ 15分</span><span class="meta-pill">🎯 期待効果：怒りに流されず目的を自覚できる</span></div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <h3>✂️ 悩み事を「自分の課題」と「他者の課題」に分ける</h3>
+      <ul>
+        <li><b>目的：</b>課題の分離を実践し、抱え込んでいる負荷を減らす</li>
+        <li><b>やり方：</b>今抱えている悩みを1つ書き出し、紙に線を引いて「自分にできること」と「相手にしかできないこと」を分ける</li>
+      </ul>
+      <div class="meta-row"><span class="meta-pill">⏱ 20分</span><span class="meta-pill">🎯 期待効果：抱え込みすぎていた負担が整理される</span></div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <h3>💬 身近な人に「勇気づけ」の言葉を伝える</h3>
+      <ul>
+        <li><b>目的：</b>結果でなく過程やその人自身を認める勇気づけを実践する</li>
+        <li><b>やり方：</b>家族や同僚など身近な1人を選び、「結果」ではなく「努力や存在」を認める言葉を考えて実際に伝える</li>
+      </ul>
+      <div class="meta-row"><span class="meta-pill">⏱ 15分</span><span class="meta-pill">🎯 期待効果：相手との関係が上下でなく対等になる</span></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  📚 今日読むべき本 — AIによる自動選定・リサーチ生成<br>
+  本インフォグラフィックは公開情報に基づき作成されています。
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = document.querySelectorAll('section.panel');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      tab.setAttribute('aria-selected','true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      if(panel){ panel.classList.add('active'); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
