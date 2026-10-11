@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット:
+  プライマリー:   #46344E (深いプラム) → グラデーション #5C4769
+  セカンダリー:   #E0954F (暖かいオレンジ)
+  アクセント:     #5B8C7B (落ち着いたセージグリーン)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>他人を攻撃せずにはいられない人 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#46344E;
+    --primary-light:#5C4769;
+    --secondary:#E0954F;
+    --accent:#5B8C7B;
+    --bg:#F7F5F0;
+    --card:#FFFFFF;
+    --text:#2A2A2A;
+    --text-sub:#5B5B5B;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP",system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary),var(--primary-light));
+    color:#fff;
+    padding:28px 16px 24px;
+    text-align:center;
+  }
+  header .eyebrow{
+    font-size:13px;
+    letter-spacing:.1em;
+    opacity:.85;
+    margin-bottom:6px;
+  }
+  header h1{
+    margin:0 0 8px;
+    font-size:24px;
+    line-height:1.4;
+  }
+  header .author{
+    font-size:14px;
+    opacity:.9;
+  }
+  .wrap{
+    max-width:820px;
+    margin:0 auto;
+    padding:16px;
+  }
+  .hero{
+    background:var(--card);
+    border-radius:16px;
+    padding:18px;
+    margin:-12px 0 20px;
+    box-shadow:0 4px 16px rgba(0,0,0,.08);
+    border:1px solid rgba(0,0,0,.04);
+  }
+  .hero h2{
+    margin:0 0 12px;
+    font-size:15px;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .qa-item{
+    background:var(--bg);
+    border-left:4px solid var(--secondary);
+    border-radius:8px;
+    padding:10px 12px;
+  }
+  .qa-item.answer{border-left-color:var(--accent);}
+  .qa-item.why{border-left-color:var(--primary);}
+  .qa-label{
+    font-size:11px;
+    font-weight:700;
+    color:var(--text-sub);
+    margin-bottom:4px;
+  }
+  .qa-text{font-size:14px;}
+  .badge-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .badge{
+    background:var(--primary);
+    color:#fff;
+    font-size:12px;
+    padding:6px 10px;
+    border-radius:20px;
+  }
+  .badge.sec{background:var(--secondary);color:#2A2A2A;}
+  .badge.acc{background:var(--accent);color:#192e26;}
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin-bottom:16px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    border:none;
+    background:#E7E2D8;
+    color:var(--text-sub);
+    padding:10px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+  }
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+  .card{
+    background:var(--card);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:16px;
+    color:var(--primary);
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .card ul{
+    margin:0 0 10px;
+    padding-left:20px;
+    font-size:14px;
+  }
+  .card li{margin-bottom:4px;}
+  .why-box{
+    background:#FBEEE0;
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:13px;
+    color:#6a4420;
+  }
+  .why-box b{color:var(--secondary-dark,#a85e1e);}
+  .quote-card{
+    border-left:5px solid var(--accent);
+    background:var(--card);
+    border-radius:0 14px 14px 0;
+    padding:14px 16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+  }
+  .quote-text{
+    font-size:15px;
+    font-style:italic;
+    color:var(--primary);
+    margin-bottom:6px;
+  }
+  .quote-note{
+    font-size:12px;
+    color:var(--text-sub);
+  }
+  .tag-note{
+    display:inline-block;
+    background:#EDEDED;
+    color:#666;
+    font-size:11px;
+    padding:2px 8px;
+    border-radius:10px;
+    margin-bottom:6px;
+  }
+  .action-card{
+    background:var(--card);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+    position:relative;
+  }
+  .action-num{
+    position:absolute;
+    top:-10px;
+    left:14px;
+    background:var(--secondary);
+    color:#2A2A2A;
+    font-weight:700;
+    font-size:13px;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .action-card h3{margin:10px 0 8px;font-size:15px;color:var(--primary);}
+  .meta-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    font-size:12px;
+    margin-top:8px;
+  }
+  .meta-pill{
+    background:var(--bg);
+    padding:4px 10px;
+    border-radius:12px;
+    color:var(--text-sub);
+  }
+  .stat-row{
+    display:flex;
+    gap:10px;
+    margin:12px 0;
+    flex-wrap:wrap;
+  }
+  .stat{
+    flex:1 1 90px;
+    background:var(--bg);
+    border-radius:10px;
+    padding:10px;
+    text-align:center;
+  }
+  .stat .num{font-size:20px;font-weight:800;color:var(--primary);}
+  .stat .label{font-size:11px;color:var(--text-sub);}
+  footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--text-sub);
+    padding:24px 16px 32px;
+  }
+  @media (min-width:700px){
+    header h1{font-size:28px;}
+    .card h3{font-size:18px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">📚 今日の一冊インフォグラフィック</div>
+  <h1>他人を攻撃せずにはいられない人</h1>
+  <div class="author">片田珠美 著 — PHP新書895（2013年11月刊）</div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h2>🧭 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-item">
+        <div class="qa-label">❓ 問い（Why）</div>
+        <div class="qa-text">職場や家庭に「攻撃せずにはいられない人」がいるとき、なぜ抵抗しにくく、どう向き合えばよいのか？</div>
+      </div>
+      <div class="qa-item answer">
+        <div class="qa-label">✅ 答え（What）</div>
+        <div class="qa-text">攻撃とは、劣等感・嫉妬・自己愛の傷つきを処理できない人が、相手に罪悪感を抱かせて支配する行為。手口を構造として見抜き、感情的に反応せず距離を取ることが最も現実的な自衛策になる。</div>
+      </div>
+      <div class="qa-item why">
+        <div class="qa-label">🔍 根拠（How）</div>
+        <div class="qa-text">精神科医として多数の被害者から話を聞いてきた著者が、怒鳴るような分かりやすい攻撃だけでなく「いい人」の仮面をかぶった水面下の攻撃も含めて分析し、標的にされやすい人の特徴と対処法を整理している。</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="num">2013</div><div class="label">刊行年（11月）</div></div>
+      <div class="stat"><div class="num">208p</div><div class="label">ページ数</div></div>
+      <div class="stat"><div class="num">895</div><div class="label">PHP新書 番号</div></div>
+    </div>
+    <div class="badge-row">
+      <span class="badge">🏷️ 心理学</span>
+      <span class="badge sec">🩺 精神科医の臨床知見</span>
+      <span class="badge acc">📖 2013年刊</span>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切替">
+    <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🧩 主要概念</button>
+    <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📑 各章の要約</button>
+    <button role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">💡 具体例</button>
+    <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 重要な引用</button>
+    <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+  </nav>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🪞 屈折した自己愛</h3>
+      <ul>
+        <li>自分の弱さやコンプレックスの処理先を他者に転嫁する心理</li>
+        <li>相手を貶めることで相対的に自分を優位に置こうとする</li>
+        <li>怒鳴る人だけでなく「いい人」の仮面の下にも潜む</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>攻撃を「個人攻撃」ではなく構造として理解すると、距離を取りやすくなるから。</div>
+    </div>
+    <div class="card">
+      <h3>🤝 フレネミー</h3>
+      <ul>
+        <li>友人や味方を装いながら、密かに相手を妬み攻撃する人</li>
+        <li>分かりやすい悪意ではなく、身近な関係に潜むリスク</li>
+        <li>評判を落とす・孤立させるといった水面下の工作を伴う</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>悪意が見えにくい形で近づいてくるため、早めに見抜く視点が必要になるから。</div>
+    </div>
+    <div class="card">
+      <h3>😓 罪悪感の植え付け</h3>
+      <ul>
+        <li>攻撃者が標的に「自分が悪い」と思わせる典型的な手口</li>
+        <li>標的の抵抗する力を奪い、支配下に置く効果を持つ</li>
+        <li>些細な欠点を執拗に指摘する形でも現れる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>被害者が抵抗できなくなる仕組みの核心であり、気づくだけで対処の第一歩になるから。</div>
+    </div>
+    <div class="card">
+      <h3>🎯 標的にされやすい性質</h3>
+      <ul>
+        <li>誠実で責任感が強く、反論や言い返しをしない人</li>
+        <li>「良い人」であることや遠慮深さが逆にリスクになり得る</li>
+        <li>攻撃者はそうした性質を見抜いて近づいてくる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>自分の性質を理解することで、無自覚なリスクに予防線を張れるから。</div>
+    </div>
+    <div class="card">
+      <h3>🔥 衝動的攻撃と戦略的攻撃</h3>
+      <ul>
+        <li>怒鳴るなど衝動的に表れる攻撃もある</li>
+        <li>一方で、計算して相手を孤立させる戦略的な攻撃もある</li>
+        <li>タイプを見分けることで対応の仕方を変えられる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>同じ対処法が全ての攻撃者に通じるわけではないから。</div>
+    </div>
+    <div class="card">
+      <h3>🚪 距離を取るという結論</h3>
+      <ul>
+        <li>説得や対決では攻撃者の心理構造は変わりにくい</li>
+        <li>物理的・心理的に距離を取ることが現実的な自衛策</li>
+        <li>必要であれば関係そのものを断つ選択も含まれる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>相手を変えようとするより、自分の環境を変える方が再現性が高いから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>1️⃣ 攻撃せずにはいられない人とは</h3>
+      <ul>
+        <li>「攻撃欲の強い人」の定義と行動パターンを紹介</li>
+        <li>怒鳴る人から「いい人」の仮面を被る人まで幅広く含む</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>身の回りの「あの人」を言語化できる土台を作るから。</div>
+    </div>
+    <div class="card">
+      <h3>2️⃣ 攻撃する手口</h3>
+      <ul>
+        <li>罪悪感を抱かせる、些細な欠点を執拗に突く、孤立させる</li>
+        <li>水面下での評判操作や密かな工作も含まれる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>被害の実態を可視化し、違和感への気づきを促すから。</div>
+    </div>
+    <div class="card">
+      <h3>3️⃣ なぜ抵抗しにくいのか</h3>
+      <ul>
+        <li>標的側が罪悪感を抱きやすく、遠慮しがちな心理傾向を分析</li>
+        <li>「自分が悪いのかもしれない」という思い込みが抵抗力を奪う</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>被害者を責めるのではなく、構造として理解させるから。</div>
+    </div>
+    <div class="card">
+      <h3>4️⃣ 攻撃者の動機</h3>
+      <ul>
+        <li>劣等感・嫉妬・自己愛の傷つきという内面を分析</li>
+        <li>攻撃は「屈折した自己愛」の表れとして位置づけられる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>加害者の人間性を理解すると、過剰な自己責任感を避けられるから。</div>
+    </div>
+    <div class="card">
+      <h3>5️⃣ 狙われやすい人の特徴</h3>
+      <ul>
+        <li>誠実、面倒見がよい、反論しない人などの傾向を提示</li>
+        <li>「良い人」であることがリスクになり得る点を指摘</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>自分がターゲットになりやすいかどうかの自己診断になるから。</div>
+    </div>
+    <div class="card">
+      <h3>6️⃣ 対処法</h3>
+      <ul>
+        <li>距離を取る、感情的に反応しない、必要なら関係を断つ</li>
+        <li>説得や対決より「離れる」ことを現実的な結論として示す</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>本書の結論であり、読者が今日から取れる行動指針になるから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3>📢 ケース1：部下に怒鳴る上司</h3>
+      <ul>
+        <li><b>背景：</b>小さなミスに対して大声で叱責し、部下に強い罪悪感を抱かせる</li>
+        <li><b>示唆：</b>怒りが「正義」のように見えても、実際には相手を服従させる支配の手段になっていることが多い</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>分かりやすい攻撃ほど、支配構造が見えにくくなることを示すから。</div>
+    </div>
+    <div class="card">
+      <h3>🙂 ケース2：「いい人」の仮面を被った同僚</h3>
+      <ul>
+        <li><b>背景：</b>表向きは親切だが、陰で評判を落とすような言動を繰り返す</li>
+        <li><b>示唆：</b>攻撃者は必ずしも分かりやすい悪人の顔をしているわけではない</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>身近で信頼している相手ほど見抜きにくいリスクがあることを示すから。</div>
+    </div>
+    <div class="card">
+      <h3>🏠 ケース3：家庭内で欠点を執拗に指摘される</h3>
+      <ul>
+        <li><b>背景：</b>配偶者や親が些細な欠点を繰り返し指摘し、逃げ場のない環境で支配が続く</li>
+        <li><b>示唆：</b>身近な関係ほど逃げにくく、問題が深刻化しやすい</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>攻撃は職場だけでなく家庭という密室でも起こりうることを示すから。</div>
+    </div>
+    <div class="card">
+      <h3>🙇 ケース4：誠実で遠慮深い人が標的になる</h3>
+      <ul>
+        <li><b>背景：</b>反論せず我慢して受け止めるタイプの人が、繰り返し攻撃の対象にされる</li>
+        <li><b>示唆：</b>「良い人」であることが、結果として攻撃を呼び込むリスクになる場合がある</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>性格の良さが無防備さにつながりうることを具体的に示すから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote-card">
+      <span class="tag-note">要旨（原文確認不可のため要約で代替）</span>
+      <div class="quote-text">攻撃する人は、自分の弱さや劣等感の処理先を見つけられず、他者を貶めることでしか自分の存在を保てない、という趣旨。</div>
+      <div class="quote-note">💬 本書全体を貫く、攻撃者の心理を凝縮した一節。</div>
+    </div>
+    <div class="quote-card">
+      <span class="tag-note">要旨（原文確認不可のため要約で代替）</span>
+      <div class="quote-text">攻撃された側が罪悪感を抱くように仕向けるのが、攻撃者の典型的な手口である、という趣旨。</div>
+      <div class="quote-note">💬 被害者が抵抗できなくなる構造を端的に示す一節。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <h3>📝 攻撃パターンのメモ化</h3>
+      <ul>
+        <li><b>目的：</b>感情的な反応ではなく、構造として攻撃を認識する</li>
+        <li><b>やり方：</b>心当たりのある相手の言動を紙に書き出し、「罪悪感を植え付ける」「孤立させる」などの手口に当てはまるか確認する</li>
+      </ul>
+      <div class="meta-row"><span class="meta-pill">⏱ 15分</span><span class="meta-pill">🎯 期待効果：次に同じ言動をされた時、冷静に距離を取れる</span></div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <h3>🛡️ 境界線フレーズを1つ決める</h3>
+      <ul>
+        <li><b>目的：</b>とっさに罪悪感を抱かされないための準備をする</li>
+        <li><b>やり方：</b>攻撃的な言動を受けたときに使う短い返答（例：「そう思う人もいるかもしれませんね」）を事前に考えてメモする</li>
+      </ul>
+      <div class="meta-row"><span class="meta-pill">⏱ 15分</span><span class="meta-pill">🎯 期待効果：感情的に取り込まれにくくなる</span></div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <h3>📋 距離を取れる関係の棚卸し</h3>
+      <ul>
+        <li><b>目的：</b>本書の結論「距離を取る」を実行可能なレベルに落とし込む</li>
+        <li><b>やり方：</b>心理的負担が大きい相手をリストアップし、連絡頻度を減らす・二人きりを避けるなど具体策を1つずつ書き出す</li>
+      </ul>
+      <div class="meta-row"><span class="meta-pill">⏱ 20〜30分</span><span class="meta-pill">🎯 期待効果：漠然とした不快感が具体的な行動計画に変わる</span></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  📚 今日読むべき本 — AIによる自動選定・リサーチ生成<br>
+  本インフォグラフィックは公開情報に基づき作成されています。
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = document.querySelectorAll('section.panel');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      tab.setAttribute('aria-selected','true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      if(panel){ panel.classList.add('active'); }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
