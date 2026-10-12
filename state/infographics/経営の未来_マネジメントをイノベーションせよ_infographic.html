@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>経営の未来 マネジメントをイノベーションせよ | インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様コメント）
+  プライマリー: #1E3A5F（知性・組織の深さ）
+  セカンダリー: #F2A93B（革新・エネルギー）
+  アクセント:   #2EC4B6（進化・成長）
+  グラデーション: linear-gradient(135deg, #1E3A5F, #2EC4B6)
+-->
+<style>
+  :root{
+    --primary:#1E3A5F;
+    --primary-light:#2E5280;
+    --secondary:#F2A93B;
+    --accent:#2EC4B6;
+    --bg:#F7F8FA;
+    --card:#FFFFFF;
+    --text:#1F2630;
+    --text-sub:#5B6472;
+    --border:#E4E8EC;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+  }
+  .hero{
+    background:linear-gradient(135deg,var(--primary),var(--accent));
+    color:#fff;
+    padding:28px 18px 24px;
+  }
+  .hero-eyebrow{
+    font-size:12px;
+    letter-spacing:.08em;
+    opacity:.85;
+    margin-bottom:6px;
+  }
+  .hero h1{
+    font-size:22px;
+    margin:0 0 4px;
+    line-height:1.4;
+  }
+  .hero .author{
+    font-size:13px;
+    opacity:.9;
+    margin-bottom:16px;
+  }
+  .qa-box{
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.3);
+    border-radius:14px;
+    padding:16px;
+    backdrop-filter:blur(2px);
+  }
+  .qa-row{margin-bottom:10px;}
+  .qa-row:last-child{margin-bottom:0;}
+  .qa-label{
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    background:var(--secondary);
+    color:#1F2630;
+    border-radius:6px;
+    padding:2px 8px;
+    margin-bottom:4px;
+  }
+  .qa-text{font-size:14px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:10px 10px 0;
+    background:var(--card);
+    position:sticky;
+    top:0;
+    z-index:10;
+    border-bottom:1px solid var(--border);
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    border:none;
+    background:var(--bg);
+    color:var(--text-sub);
+    font-size:12.5px;
+    font-weight:600;
+    padding:10px 12px;
+    border-radius:10px 10px 0 0;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+  }
+
+  main{padding:16px;max-width:720px;margin:0 auto;}
+  section[role="tabpanel"]{display:none;}
+  section[role="tabpanel"].active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+  h2.section-title{
+    font-size:16px;
+    margin:4px 0 14px;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    box-shadow:0 1px 3px rgba(0,0,0,.04);
+  }
+  .card h3{
+    font-size:14.5px;
+    margin:0 0 8px;
+    color:var(--text);
+    display:flex;
+    gap:6px;
+    align-items:flex-start;
+  }
+  .card ul{margin:0;padding-left:1.1em;font-size:13.5px;color:var(--text-sub);}
+  .card li{margin-bottom:4px;}
+  .why{
+    margin-top:8px;
+    font-size:12.5px;
+    background:#FFF4E2;
+    color:#8A5A12;
+    border-radius:8px;
+    padding:6px 10px;
+  }
+  .why b{color:#8A5A12;}
+
+  .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px;}
+  .badge{
+    background:var(--primary);
+    color:#fff;
+    font-size:11.5px;
+    font-weight:700;
+    border-radius:999px;
+    padding:6px 12px;
+  }
+  .badge.alt{background:var(--accent);}
+  .badge.alt2{background:var(--secondary);color:#1F2630;}
+
+  .bar-wrap{margin:8px 0 14px;}
+  .bar-label{font-size:12px;color:var(--text-sub);margin-bottom:4px;display:flex;justify-content:space-between;}
+  .bar-track{background:var(--border);border-radius:8px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+
+  blockquote{
+    border-left:4px solid var(--secondary);
+    margin:0 0 12px;
+    padding:8px 14px;
+    background:#FFF9EF;
+    border-radius:0 10px 10px 0;
+    font-size:13.5px;
+  }
+  blockquote .note{display:block;margin-top:6px;font-size:11.5px;color:var(--text-sub);}
+  .gist-tag{
+    display:inline-block;
+    font-size:10.5px;
+    background:var(--secondary);
+    color:#1F2630;
+    border-radius:6px;
+    padding:1px 6px;
+    margin-left:6px;
+    font-weight:700;
+  }
+
+  .action-card{border-color:var(--accent);}
+  .action-num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:20px;height:20px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    font-size:11px;
+    font-weight:700;
+    margin-right:6px;
+  }
+  .action-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;font-size:12px;color:var(--text-sub);}
+  .action-meta span b{color:var(--primary);}
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--text-sub);
+    padding:20px 16px 32px;
+  }
+
+  @media (min-width:600px){
+    main{padding:24px;}
+    .hero{padding:36px 28px 30px;}
+    .hero h1{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">📚 今日の一冊インフォグラフィック</div>
+  <h1>経営の未来<br>マネジメントをイノベーションせよ</h1>
+  <div class="author">ゲイリー・ハメル（ビル・ブリーン 共著）</div>
+
+  <div class="qa-box">
+    <div class="qa-row">
+      <span class="qa-label">問い</span>
+      <div class="qa-text">戦略やビジネスモデルは進化し続けているのに、なぜ「経営管理」そのものはテイラー主義以来ほとんど変わっていないのか？</div>
+    </div>
+    <div class="qa-row">
+      <span class="qa-label">答え</span>
+      <div class="qa-text">持続的な競争優位の最後のフロンティアは「マネジメント・イノベーション」。官僚制を解体し、民主主義・市場・生物進化のような自己組織化の仕組みを経営に取り込むことで、社員一人ひとりの創造性と当事者意識を最大限に引き出せる。</div>
+    </div>
+    <div class="qa-row">
+      <span class="qa-label">根拠</span>
+      <div class="qa-text">W.L.ゴアの「格子（ラティス）組織」、ホールフーズ・マーケットの自主経営チーム、グーグルの「イノベーション民主主義」という3つの実例が、階層を減らすほど適応力と創造性が高まることを示している。</div>
+    </div>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">🏢 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <section id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts" class="active">
+    <h2 class="section-title">🧩 主要概念の詳細</h2>
+
+    <div class="badge-row">
+      <span class="badge">マネジメント・イノベーション</span>
+      <span class="badge alt">官僚制のコスト</span>
+      <span class="badge alt2">進化的優位性</span>
+    </div>
+
+    <div class="card">
+      <h3>① マネジメント・イノベーション</h3>
+      <ul>
+        <li>目標設定・計画・動機づけ・人材配置・資源配分など、経営管理の基本プロセス自体を刷新すること</li>
+        <li>オペレーションの卓越性や新技術、新ビジネスモデルより模倣されにくい</li>
+        <li>持続的な競争優位の「最後に残された未開拓領域」と位置づけられる</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>戦略やITは誰でも真似できるが、経営の「仕組み」の革新は時間がかかり模倣されにくいため、長期的な差別化要因になる。</div>
+    </div>
+
+    <div class="card">
+      <h3>② 官僚制のコスト（見えない税金）</h3>
+      <ul>
+        <li>階層構造が生む意思決定の遅さ・硬直性・当事者意識の欠如</li>
+        <li>統制と効率を最大化するために設計された20世紀型の仕組み</li>
+        <li>安定した環境には向くが、変化の速い現代には不向き</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>多くの組織はこのコストを「当たり前」として見過ごしており、気づかないまま創造性を失っている。</div>
+    </div>
+
+    <div class="card">
+      <h3>③ イノベーション民主主義</h3>
+      <ul>
+        <li>誰もがアイデアを提案し、試すことができる権限分散型の仕組み</li>
+        <li>グーグルの「20%ルール」的な自由裁量時間が象徴例</li>
+        <li>トップダウンで決める「イノベーション委員会」とは対照的な発想</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>良いアイデアは組織のどこからでも生まれるため、提案と実験の間口を広げるほどイノベーションの総量が増える。</div>
+    </div>
+
+    <div class="card">
+      <h3>④ 格子（ラティス）組織</h3>
+      <ul>
+        <li>W.L.ゴアに見られる、役職・組織図を持たない組織形態</li>
+        <li>仕事は「割り当て」ではなく「引き受け」によって進む</li>
+        <li>CEOを含め誰も部下に直接指示を出さない</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>階層を取り除いても高い技術力と収益性が両立できることを実証する、最も極端で説得力のある事例。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑤ コミュニティ・オブ・パーパス（目的の共同体）</h3>
+      <ul>
+        <li>従業員を「資源」ではなく「目的を共有する仲間」として捉える発想</li>
+        <li>組織へのエンゲージメントと当事者意識の土台になる</li>
+        <li>統制ではなく「共通の意味」で人をまとめる</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>命令では得られない自発的な努力は、目的への共感からしか生まれないため。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑥ 進化的優位性</h3>
+      <ul>
+        <li>生物進化のように、多様な試行・フィードバック・淘汰によって組織が適応していく力</li>
+        <li>中央集権的な統制者を持たない点が民主主義・市場経済と共通する</li>
+        <li>変化の速い環境ほど「進化する力」そのものが競争力になる</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>将来を正確に予測できない時代には、計画の精度より適応のスピードが生き残りを左右する。</div>
+    </div>
+
+    <div class="bar-wrap">
+      <div class="bar-label"><span>マネジメント技術の進化度（本書の問題提起）</span><span>戦略 90% / 管理 20%</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:20%"></div></div>
+    </div>
+  </section>
+
+  <section id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <h2 class="section-title">📖 各章の要約</h2>
+
+    <div class="card">
+      <h3>1. マネジメントの終わり？</h3>
+      <ul><li>マネジメント技術は停滞しており、変革が急務だと問題提起する</li></ul>
+      <div class="why"><b>理由：</b>本書全体の出発点となる危機意識を示す章。</div>
+    </div>
+    <div class="card">
+      <h3>2. 究極の優位性</h3>
+      <ul><li>マネジメント・イノベーションこそ最後に残された持続的競争優位の源泉だと論じる</li></ul>
+      <div class="why"><b>理由：</b>オペレーションや戦略の優位は模倣されやすいが、経営管理の革新は模倣されにくいため。</div>
+    </div>
+    <div class="card">
+      <h3>3. マネジメント・イノベーションのアジェンダ</h3>
+      <ul><li>何を・どう変えるべきかの具体的な論点を提示する</li></ul>
+      <div class="why"><b>理由：</b>抽象論から実践への橋渡しとなる章。</div>
+    </div>
+    <div class="card">
+      <h3>4. 目的の共同体を創る</h3>
+      <ul><li>組織を「目的を共有する共同体」として再定義する考え方を展開する</li></ul>
+      <div class="why"><b>理由：</b>従業員のエンゲージメントを高める土台となる概念。</div>
+    </div>
+    <div class="card">
+      <h3>5. イノベーション民主主義を築く</h3>
+      <ul><li>グーグルなどを例に、誰もが挑戦できる仕組みづくりを論じる</li></ul>
+      <div class="why"><b>理由：</b>トップダウンのイノベーション管理の限界を示すため。</div>
+    </div>
+    <div class="card">
+      <h3>6. 進化的優位性を目指す</h3>
+      <ul><li>生物進化を手本に、組織の適応力を高める方法を論じる</li></ul>
+      <div class="why"><b>理由：</b>変化の速い環境での生存戦略を提示するため。</div>
+    </div>
+    <div class="card">
+      <h3>7. 束縛から逃れる</h3>
+      <ul><li>従来の経営管理の固定観念をいかに壊すかを論じる</li></ul>
+      <div class="why"><b>理由：</b>変革の最大の壁は制度よりも思考の枠組みであることを示すため。</div>
+    </div>
+    <div class="card">
+      <h3>8. 新しい原則を受け入れる</h3>
+      <ul><li>新しいマネジメント原則の具体像を提示する</li></ul>
+      <div class="why"><b>理由：</b>次の行動指針となる規範を与えるため。</div>
+    </div>
+    <div class="card">
+      <h3>9. フリンジ（周縁）から学ぶ</h3>
+      <ul><li>主流から外れた実践・組織から教訓を引き出す</li></ul>
+      <div class="why"><b>理由：</b>イノベーションは中心ではなく周縁から生まれることが多いという洞察。</div>
+    </div>
+    <div class="card">
+      <h3>10. マネジメント・イノベーターになる</h3>
+      <ul><li>個人・組織がどうすれば実践者になれるかを論じる</li></ul>
+      <div class="why"><b>理由：</b>読者自身の行動指針を与える実践章。</div>
+    </div>
+    <div class="card">
+      <h3>11. 経営管理の未来を築く</h3>
+      <ul><li>本書全体の提言をまとめ、未来像を描く</li></ul>
+      <div class="why"><b>理由：</b>締めくくりとして変革への呼びかけを行うため。</div>
+    </div>
+  </section>
+
+  <section id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+    <h2 class="section-title">🏢 具体例・ケーススタディ</h2>
+
+    <div class="card">
+      <h3>🧵 W.L.ゴア（ゴアテックス）：格子組織</h3>
+      <ul>
+        <li>創業から50年以上、組織図も役職も持たずに運営</li>
+        <li>仕事は上から「割り当て」られるのではなく、自ら「引き受け」る形で進む</li>
+        <li>CEOを含め誰も部下に直接指示を出さない</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>階層を取り除いても高い技術力・収益性・従業員満足を両立できることを、半世紀以上の実績で証明している。</div>
+    </div>
+
+    <div class="card">
+      <h3>🛒 ホールフーズ・マーケット：自主経営チーム</h3>
+      <ul>
+        <li>各店舗が自律的な利益責任単位として運営される</li>
+        <li>1店舗あたり平均10前後の自主経営チームで構成される</li>
+        <li>チームリーダー同士も横のチームを組んで連携する</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>現場への権限移譲が業績と従業員の当事者意識を同時に高めることを示す。</div>
+    </div>
+
+    <div class="card">
+      <h3>🔍 グーグル：イノベーション民主主義</h3>
+      <ul>
+        <li>従業員が自発的に新しいアイデアを試せる自由裁量の仕組みを整備</li>
+        <li>中央集権的な「イノベーション委員会」に依存しない</li>
+        <li>多数の小さな試行から大きな成果が生まれる構造</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>権限を分散させるほどイノベーションの「本数」が増え、結果として質の高いものが残ることを示す。</div>
+    </div>
+
+    <div class="card">
+      <h3>📏 背景：テイラー主義以降の停滞</h3>
+      <ul>
+        <li>20世紀初頭に確立した「科学的管理法」以来、マネジメントの技術自体は大きく進化していないとハメルは指摘する</li>
+        <li>戦略・マーケティング・ITの進歩と対照的</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「戦略」だけでなく「管理の仕組み」自体を見直す必要性を浮き彫りにする、本書全体の出発点。</div>
+    </div>
+  </section>
+
+  <section id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <h2 class="section-title">💬 重要な引用</h2>
+
+    <blockquote>
+      官僚制は多くの組織にとって「見えない税金」であり、従業員の創造性と当事者意識を日々奪っている。
+      <span class="note">要旨（原典の逐語引用は未確認のため、論旨の要約で代替）</span>
+      <span class="gist-tag">要旨</span>
+    </blockquote>
+
+    <blockquote>
+      マネジメントの技術は過去100年ほとんど革新されておらず、オペレーショナル・エクセレンスや新しいビジネスモデルだけでは持続的な優位は得られない。
+      <span class="note">要旨（原典の逐語引用は未確認のため、論旨の要約で代替）</span>
+      <span class="gist-tag">要旨</span>
+    </blockquote>
+
+    <blockquote>
+      持続的な競争優位の最後のフロンティアは「マネジメント・イノベーション」である。
+      <span class="note">要旨（原典の逐語引用は未確認のため、論旨の要約で代替）</span>
+      <span class="gist-tag">要旨</span>
+    </blockquote>
+
+    <blockquote>
+      民主主義・自由市場・生物進化という、中央の統制者を持たない仕組みほど、変化への適応力に優れている。
+      <span class="note">要旨（原典の逐語引用は未確認のため、論旨の要約で代替）</span>
+      <span class="gist-tag">要旨</span>
+    </blockquote>
+  </section>
+
+  <section id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <h2 class="section-title">✅ 今日のアクション</h2>
+
+    <div class="card action-card">
+      <h3><span class="action-num">1</span>「引き受けた仕事」を書き出す</h3>
+      <ul><li>自分の業務のうち「指示された仕事」と「自分から引き受けた仕事」を分けてリスト化する</li></ul>
+      <div class="action-meta">
+        <span>⏱ <b>15分</b></span>
+        <span>🎯 目的：当事者意識の度合いを可視化する</span>
+        <span>📈 効果：裁量を広げられる領域に気づける</span>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <h3><span class="action-num">2</span>「見えないルール」を1つ疑う</h3>
+      <ul><li>職場にある承認プロセスやルールを1つ選び、本当に必要か・誰のためにあるかを書き出す</li></ul>
+      <div class="action-meta">
+        <span>⏱ <b>20分</b></span>
+        <span>🎯 目的：官僚制のコストを具体的に認識する</span>
+        <span>📈 効果：不要な手続きを削減する提案のきっかけになる</span>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <h3><span class="action-num">3</span>「許可不要なら何を変える？」と聞く</h3>
+      <ul><li>同僚やチームメンバーに「もし誰の許可もいらなかったら、何を変えたい？」と質問してみる</li></ul>
+      <div class="action-meta">
+        <span>⏱ <b>15分</b></span>
+        <span>🎯 目的：イノベーション民主主義を小さく実践する</span>
+        <span>📈 効果：現場の声を引き出し、次の一手のヒントを得る</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>📚 Daily Reading Summary — 経営の未来 マネジメントをイノベーションせよ</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = document.querySelectorAll('section[role="tabpanel"]');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
