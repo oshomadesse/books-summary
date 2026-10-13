@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>置かれた場所で咲きなさい ― インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様）:
+  プライマリー: #2D6A4F（深緑・静かな力強さ）
+  セカンダリー: #74C69D（若葉色・成長と柔らかさ）
+  アクセント: #FFB703（陽だまりの黄色・花と希望）
+  グラデーション使用: linear-gradient(135deg, #2D6A4F 0%, #52796F 100%)
+-->
+<style>
+  :root{
+    --primary:#2D6A4F;
+    --primary-dark:#1B4332;
+    --secondary:#74C69D;
+    --accent:#FFB703;
+    --bg:#F7F9F7;
+    --card:#FFFFFF;
+    --text:#1F2A24;
+    --text-sub:#52635A;
+    --border:#DCE8E0;
+    --shadow: 0 4px 16px rgba(27,67,50,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 0 48px;}
+  header.hero{
+    background:linear-gradient(135deg, var(--primary) 0%, #52796F 100%);
+    color:#fff;
+    padding:32px 20px 28px;
+    border-radius:0 0 28px 28px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"🌱";
+    position:absolute;
+    right:-10px;
+    bottom:-20px;
+    font-size:110px;
+    opacity:0.15;
+    transform:rotate(-10deg);
+  }
+  .eyebrow{font-size:13px;letter-spacing:0.08em;opacity:0.85;margin:0 0 6px;}
+  h1{font-size:26px;margin:0 0 10px;line-height:1.4;}
+  .byline{font-size:14px;opacity:0.9;margin:0;}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .badge{
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:999px;
+    padding:5px 12px;
+    font-size:12px;
+  }
+
+  section.first-view{
+    margin:-18px 16px 0;
+    background:var(--card);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    padding:20px 18px;
+    position:relative;
+    z-index:2;
+    border:1px solid var(--border);
+  }
+  .fv-title{
+    display:flex;align-items:center;gap:8px;
+    font-size:14px;font-weight:bold;color:var(--primary);margin-bottom:12px;
+  }
+  .fv-title .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);}
+  .qa-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+  .qa-tag{
+    flex:0 0 auto;
+    font-size:11px;font-weight:bold;color:#fff;
+    background:var(--primary);
+    padding:3px 9px;border-radius:8px;white-space:nowrap;margin-top:2px;
+  }
+  .qa-tag.q{background:var(--text-sub);}
+  .qa-tag.a{background:var(--primary);}
+  .qa-tag.w{background:var(--accent);color:#3a2a00;}
+  .qa-text{font-size:14.5px;color:var(--text);}
+
+  .stat-row{display:flex;gap:10px;margin-top:16px;}
+  .stat{
+    flex:1;background:var(--bg);border:1px solid var(--border);
+    border-radius:14px;padding:10px 6px;text-align:center;
+  }
+  .stat .num{font-size:20px;font-weight:bold;color:var(--primary);}
+  .stat .label{font-size:11px;color:var(--text-sub);margin-top:2px;}
+
+  nav.tabs{
+    display:flex;overflow-x:auto;gap:6px;
+    margin:22px 16px 0;padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text-sub);
+    font-size:13px;
+    padding:9px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all 0.15s;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+    font-weight:bold;
+  }
+
+  main{padding:16px 16px 0;}
+  .panel{display:none;}
+  .panel[aria-hidden="false"]{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+  }
+  .card h3{
+    margin:0 0 8px;font-size:16px;color:var(--primary-dark);
+    display:flex;align-items:center;gap:8px;
+  }
+  .card h3 .num-chip{
+    background:var(--secondary);
+    color:#0b3b25;
+    font-size:12px;font-weight:bold;
+    width:22px;height:22px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;
+  }
+  .card ul{margin:0 0 10px;padding-left:1.2em;font-size:14px;}
+  .card ul li{margin-bottom:4px;}
+  .why{
+    background:#FFF8E6;
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:#5c4400;
+    margin-top:8px;
+  }
+  .why b{color:#8a6a00;}
+
+  .bar-wrap{margin:8px 0 4px;}
+  .bar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--text-sub);margin-bottom:3px;}
+  .bar-track{background:var(--bg);border-radius:999px;height:10px;overflow:hidden;border:1px solid var(--border);}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--secondary),var(--primary));border-radius:999px;}
+
+  blockquote{
+    margin:0 0 10px;
+    padding:12px 14px;
+    background:var(--bg);
+    border-left:4px solid var(--primary);
+    border-radius:0 10px 10px 0;
+    font-size:14.5px;
+  }
+  blockquote .note{display:block;font-size:11px;color:var(--text-sub);margin-top:6px;}
+
+  .action-card{
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .action-chip{
+    flex:0 0 auto;
+    background:var(--accent);
+    color:#3a2a00;
+    font-weight:bold;
+    font-size:13px;
+    width:28px;height:28px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .action-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;font-size:11.5px;color:var(--text-sub);}
+  .action-meta span{background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 9px;}
+
+  footer{
+    margin:24px 16px 0;
+    text-align:center;
+    font-size:12px;
+    color:var(--text-sub);
+  }
+  @media (max-width:360px){
+    h1{font-size:22px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">📖 今日の読書サマリー</p>
+  <h1>置かれた場所で咲きなさい</h1>
+  <p class="byline">著者：渡辺和子 ／ カテゴリー：ライフスタイル</p>
+  <div class="badges">
+    <span class="badge">🌱 ベストセラー 200万部超</span>
+    <span class="badge">🙏 修道女・教育者の随筆</span>
+    <span class="badge">⏱ 読了目安 約25分</span>
+  </div>
+</header>
+
+<section class="first-view" aria-label="要約：問いと答えと根拠">
+  <p class="fv-title"><span class="dot"></span>この本が答えること</p>
+  <div class="qa-row">
+    <span class="qa-tag q">問い</span>
+    <span class="qa-text">思い通りにならない環境に置かれたとき、どう生きればよいのか？</span>
+  </div>
+  <div class="qa-row">
+    <span class="qa-tag a">答え</span>
+    <span class="qa-text">環境のせいにせず、「今いる場所」で笑顔を忘れず精一杯生きる「咲く」努力をすること。</span>
+  </div>
+  <div class="qa-row">
+    <span class="qa-tag w">根拠</span>
+    <span class="qa-text">著者自身が父を2・26事件で殺害される悲劇や、36歳という重圧の中での大学学長就任という逆境を、心の持ち方を変えることで乗り越えてきた実体験。</span>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat"><div class="num">36歳</div><div class="label">学長就任年齢</div></div>
+    <div class="stat"><div class="num">200万部</div><div class="label">累計発行部数</div></div>
+    <div class="stat"><div class="num">89年</div><div class="label">生涯現役の人生</div></div>
+  </div>
+</section>
+
+<nav class="tabs" role="tablist" aria-label="セクション切り替え">
+  <button class="tab-btn" role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🧩 主要概念</button>
+  <button class="tab-btn" role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📑 各章の要約</button>
+  <button class="tab-btn" role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">🔍 具体例</button>
+  <button class="tab-btn" role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+</nav>
+
+<main>
+  <!-- 主要概念 -->
+  <div class="panel" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts" aria-hidden="false">
+
+    <div class="card">
+      <h3><span class="num-chip">1</span>置かれた場所で咲く</h3>
+      <ul>
+        <li>与えられた環境を変えられないときでも、その中で精一杯生きる姿勢</li>
+        <li>英詩 "Bloom where God has planted you" が原点</li>
+        <li>「我慢」ではなく、笑顔で周囲を幸せにする能動的な生き方</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>環境を嘆く思考から、自分の行動に意識を向ける思考への転換点になるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">2</span>根を降ろす時期</h3>
+      <ul>
+        <li>花が咲けない季節は、次の開花への準備期間と捉え直す</li>
+        <li>結果が出ない時期も無駄ではないという視点</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>停滞期の焦りをやわらげ、長期的な視点を持たせてくれるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">3</span>時間の使い方＝いのちの使い方</h3>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>今日という持ち時間</span><span>有限・不可逆</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:92%"></div></div>
+      </div>
+      <ul>
+        <li>限られた時間をどう使うかが、人生の質そのものを決める</li>
+        <li>「今日」の積み重ねしか人生を形づくらないという発想</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>漠然とした将来不安より、「今日1日」に意識を向けさせてくれるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">4</span>環境のせいにしない</h3>
+      <ul>
+        <li>不満の原因を外部に求めず、自分の受け止め方を変える主体性</li>
+        <li>「こんなはずじゃなかった」をどう扱うかが人生の分かれ目</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>他責思考から抜け出す第一歩になる考え方だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">5</span>笑顔という小さな贈り物</h3>
+      <ul>
+        <li>日常の些細な態度が、周囲への最大の奉仕になるという思想</li>
+        <li>特別な行動よりも、日々の表情・態度の積み重ねを重視</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>誰でも今日から実践できる、ハードルの低い行動指針だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">6</span>美しく老いる</h3>
+      <ul>
+        <li>老いや衰えを恐れず、内面の成熟として肯定的に捉える</li>
+        <li>できなくなることより「伝え続けられること」に焦点を当てる</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>誰もが避けられない老いへの向き合い方が、人生後半の幸福を左右するから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">7</span>逆境の中の選択の自由</h3>
+      <ul>
+        <li>状況そのものは選べなくても「どう反応するか」は選べる</li>
+        <li>著者の父は2・26事件で殺害されたが、著者は後年「赦す」境地に至った</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>人生最大級の理不尽にすら適用できる、思想の射程の広さを示すから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">8</span>感謝と赦し</h3>
+      <ul>
+        <li>歴史的悲劇さえも赦しへと昇華させた著者自身の人生体験</li>
+        <li>赦しは忘却ではなく、過去に縛られない生き方の選択</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>怒りや恨みを手放すことが、自分自身を自由にすると示しているから。</div>
+    </div>
+
+  </div>
+
+  <!-- 各章の要約 -->
+  <div class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" aria-hidden="true">
+
+    <div class="card">
+      <h3><span class="num-chip">1</span>自分自身に語りかける</h3>
+      <ul>
+        <li>不平不満の前に、自分の心のありようを見つめ直す</li>
+        <li>置かれた場所を呪うのではなく、受け入れることから全てが始まる</li>
+        <li>人はどんな場所でも幸せを見つけることができる、という前提に立つ</li>
+      </ul>
+      <div class="why"><b>理由：</b>外的環境より先に変えられるのは、自分の受け止め方だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">2</span>明日に向かって生きる</h3>
+      <ul>
+        <li>過去の後悔や将来への不安より「今日」の過ごし方に焦点を当てる</li>
+        <li>小さな親切・日々の感謝の実践を勧める</li>
+      </ul>
+      <div class="why"><b>理由：</b>人生は「今日」の積み重ねでしか形づくられないから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">3</span>美しく老いる</h3>
+      <ul>
+        <li>老いや衰えを恐れるのではなく、内面の成熟・人格の深まりとして捉え直す</li>
+        <li>信仰と祈りを通じた心の平安にも触れる</li>
+        <li>「人に恥じない生き方は心を輝かせる」という視点</li>
+      </ul>
+      <div class="why"><b>理由：</b>誰もが避けられない老いへの向き合い方が、人生後半の幸福を左右するから。</div>
+    </div>
+
+  </div>
+
+  <!-- 具体例 -->
+  <div class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" aria-hidden="true">
+
+    <div class="card">
+      <h3>🩸 2・26事件での父の死</h3>
+      <ul>
+        <li>著者が9歳の時、陸軍大将だった父・渡辺錠太郎が目の前で青年将校らに殺害される</li>
+        <li>この壮絶な体験を経てなお、著者は晩年「赦す」という境地に至ったと語っている</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>人生最大級の理不尽さえも「置かれた場所」として引き受け直す、人間の心の力の大きさ。</div>
+    </div>
+
+    <div class="card">
+      <h3>😔 36歳での学長就任と不調</h3>
+      <ul>
+        <li>若くして大学トップに抜擢され、重圧から自信を失い心身の不調に陥った時期があった</li>
+        <li>宣教師から手渡された英詩 "Bloom where God has planted you" が転機となった</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>誰もが経験しうる「荷が重すぎる」状況からの立ち直り方のモデルケース。</div>
+    </div>
+
+    <div class="card">
+      <h3>🏫 生涯現役の教育者としての姿</h3>
+      <ul>
+        <li>晩年まで教壇に立ち、学生や社会へメッセージを発信し続けた</li>
+        <li>2016年、89歳で学内の修道院にて死去するまで現役であり続けた</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>老いを「できなくなること」ではなく「伝え続けられること」と捉え直す実例。</div>
+    </div>
+
+  </div>
+
+  <!-- 重要な引用 -->
+  <div class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" aria-hidden="true">
+
+    <blockquote>
+      置かれたところこそが、今のあなたの居場所なのです。
+      <span class="note">※要旨（出版社紹介文より）</span>
+    </blockquote>
+
+    <blockquote>
+      大切なものは、目に見えない。
+      <span class="note">※要旨（紹介記事より）</span>
+    </blockquote>
+
+    <blockquote>
+      時間の使い方は、そのまま、いのちの使い方。
+      <span class="note">※要旨</span>
+    </blockquote>
+
+    <blockquote>
+      "Bloom where God has planted you."（神によって置かれた場所で咲きなさい）
+      <span class="note">※本書タイトルの由来となった英詩の一節</span>
+    </blockquote>
+
+  </div>
+
+  <!-- 今日のアクション -->
+  <div class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" aria-hidden="true">
+
+    <div class="card action-card">
+      <span class="action-chip">1</span>
+      <div>
+        <h3 style="margin-bottom:4px;">「環境への不満」を行動に変える</h3>
+        <p style="margin:0;font-size:14px;">今の環境への不満を1つ書き出し、その中で自分にできる小さな一歩を1つ考えて実行する。</p>
+        <div class="action-meta">
+          <span>⏱ 約20分</span>
+          <span>🎯 他責思考から主体的行動への転換</span>
+          <span>📈 「どうせ変わらない」という無力感が和らぐ</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <span class="action-chip">2</span>
+      <div>
+        <h3 style="margin-bottom:4px;">出会う人に意識して笑顔を向ける</h3>
+        <p style="margin:0;font-size:14px;">今日出会った人のうち3人に、意識的に笑顔で接してみる。</p>
+        <div class="action-meta">
+          <span>⏱ 随時・累計15分</span>
+          <span>🎯 「咲く」を実践レベルに落とし込む</span>
+          <span>📈 人間関係のストレスが減り気分も上向く</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <span class="action-chip">3</span>
+      <div>
+        <h3 style="margin-bottom:4px;">寝る前に感謝を3つ書き出す</h3>
+        <p style="margin:0;font-size:14px;">就寝前に、今日という一日で感謝できたことを3つノートに書き出す。</p>
+        <div class="action-meta">
+          <span>⏱ 約10分</span>
+          <span>🎯 「今日」という持ち時間の振り返り習慣化</span>
+          <span>📈 日々の充実感が高まり将来不安が和らぐ</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  🌱 本サマリーは公開情報をもとに作成しています。正確な記述は原典をご確認ください。
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-cases':'panel-cases',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  function select(id){
+    tabs.forEach(function(btn){
+      var selected = (btn.id === id);
+      btn.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+    Object.keys(panels).forEach(function(tabId){
+      var panel = document.getElementById(panels[tabId]);
+      var hidden = tabId !== id;
+      panel.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+    });
+  }
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){ select(btn.id); });
+  });
+})();
+</script>
+</body>
+</html>
