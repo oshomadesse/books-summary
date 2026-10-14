@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1%の努力 ― インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様）:
+  プライマリー: #1D3557（深い紺・冷静な思考）
+  セカンダリー: #457B9D（鋼青・判断と戦略）
+  アクセント: #E63946（朱赤・「1%」の光る一点）
+  グラデーション使用: linear-gradient(135deg, #1D3557 0%, #457B9D 100%)
+-->
+<style>
+  :root{
+    --primary:#1D3557;
+    --primary-dark:#13233B;
+    --secondary:#457B9D;
+    --accent:#E63946;
+    --bg:#F5F7FA;
+    --card:#FFFFFF;
+    --text:#1C2530;
+    --text-sub:#5C6B7A;
+    --border:#DCE3EA;
+    --shadow: 0 4px 16px rgba(29,53,87,0.1);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 0 48px;}
+  header.hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color:#fff;
+    padding:32px 20px 28px;
+    border-radius:0 0 28px 28px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::after{
+    content:"💡";
+    position:absolute;
+    right:-10px;
+    bottom:-20px;
+    font-size:110px;
+    opacity:0.15;
+    transform:rotate(-10deg);
+  }
+  .eyebrow{font-size:13px;letter-spacing:0.08em;opacity:0.85;margin:0 0 6px;}
+  h1{font-size:26px;margin:0 0 10px;line-height:1.4;}
+  .byline{font-size:14px;opacity:0.9;margin:0;}
+  .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .badge{
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:999px;
+    padding:5px 12px;
+    font-size:12px;
+  }
+
+  section.first-view{
+    margin:-18px 16px 0;
+    background:var(--card);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    padding:20px 18px;
+    position:relative;
+    z-index:2;
+    border:1px solid var(--border);
+  }
+  .fv-title{
+    display:flex;align-items:center;gap:8px;
+    font-size:14px;font-weight:bold;color:var(--primary);margin-bottom:12px;
+  }
+  .fv-title .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);}
+  .qa-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+  .qa-tag{
+    flex:0 0 auto;
+    font-size:11px;font-weight:bold;color:#fff;
+    background:var(--primary);
+    padding:3px 9px;border-radius:8px;white-space:nowrap;margin-top:2px;
+  }
+  .qa-tag.q{background:var(--text-sub);}
+  .qa-tag.a{background:var(--primary);}
+  .qa-tag.w{background:var(--accent);}
+  .qa-text{font-size:14.5px;color:var(--text);}
+
+  .stat-row{display:flex;gap:10px;margin-top:16px;}
+  .stat{
+    flex:1;background:var(--bg);border:1px solid var(--border);
+    border-radius:14px;padding:10px 6px;text-align:center;
+  }
+  .stat .num{font-size:20px;font-weight:bold;color:var(--primary);}
+  .stat .label{font-size:11px;color:var(--text-sub);margin-top:2px;}
+
+  nav.tabs{
+    display:flex;overflow-x:auto;gap:6px;
+    margin:22px 16px 0;padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  .tab-btn{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text-sub);
+    font-size:13px;
+    padding:9px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all 0.15s;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+    font-weight:bold;
+  }
+
+  main{padding:16px 16px 0;}
+  .panel{display:none;}
+  .panel[aria-hidden="false"]{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+  }
+  .card h3{
+    margin:0 0 8px;font-size:16px;color:var(--primary-dark);
+    display:flex;align-items:center;gap:8px;
+  }
+  .card h3 .num-chip{
+    background:var(--secondary);
+    color:#fff;
+    font-size:12px;font-weight:bold;
+    width:22px;height:22px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;
+  }
+  .card ul{margin:0 0 10px;padding-left:1.2em;font-size:14px;}
+  .card ul li{margin-bottom:4px;}
+  .why{
+    background:#FDECEE;
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:#7A1F26;
+    margin-top:8px;
+  }
+  .why b{color:#A3242E;}
+
+  .bar-wrap{margin:8px 0 4px;}
+  .bar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--text-sub);margin-bottom:3px;}
+  .bar-track{background:var(--bg);border-radius:999px;height:10px;overflow:hidden;border:1px solid var(--border);}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--secondary),var(--accent));border-radius:999px;}
+
+  blockquote{
+    margin:0 0 10px;
+    padding:12px 14px;
+    background:var(--bg);
+    border-left:4px solid var(--primary);
+    border-radius:0 10px 10px 0;
+    font-size:14.5px;
+  }
+  blockquote .note{display:block;font-size:11px;color:var(--text-sub);margin-top:6px;}
+
+  .action-card{
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .action-chip{
+    flex:0 0 auto;
+    background:var(--accent);
+    color:#fff;
+    font-weight:bold;
+    font-size:13px;
+    width:28px;height:28px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .action-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;font-size:11.5px;color:var(--text-sub);}
+  .action-meta span{background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 9px;}
+
+  .related-books{display:grid;gap:10px;}
+  .book-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px;
+    border-top:4px solid var(--accent);
+  }
+  .book-title{font-weight:bold;color:var(--primary);margin-bottom:3px;font-size:14px;}
+  .book-author{color:var(--text-sub);font-size:12px;margin-bottom:6px;}
+  .book-relation{font-size:13px;}
+
+  footer{
+    margin:24px 16px 0;
+    text-align:center;
+    font-size:12px;
+    color:var(--text-sub);
+  }
+  @media (max-width:360px){
+    h1{font-size:22px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">📖 今日の読書サマリー</p>
+  <h1>1%の努力</h1>
+  <p class="byline">著者：ひろゆき（西村博之） ／ カテゴリー：自己啓発</p>
+  <div class="badges">
+    <span class="badge">💡 累計40万部超のベストセラー</span>
+    <span class="badge">🧵 2ちゃんねる創設者が語る人生論</span>
+    <span class="badge">⏱ 読了目安 約25分</span>
+  </div>
+</header>
+
+<section class="first-view" aria-label="要約：問いと答えと根拠">
+  <p class="fv-title"><span class="dot"></span>この本が答えること</p>
+  <div class="qa-row">
+    <span class="qa-tag q">問い</span>
+    <span class="qa-text">「努力は美徳」という思い込みに縛られず、ラクに、かつ幸福に生きるにはどうすればよいのか？</span>
+  </div>
+  <div class="qa-row">
+    <span class="qa-tag a">答え</span>
+    <span class="qa-text">努力の「量」を追うのではなく、自分が本当に変えられる部分（1%）を見極め、そこにだけ力を注ぐこと。残りの99%は「サボる能力」で手放す。</span>
+  </div>
+  <div class="qa-row">
+    <span class="qa-tag w">根拠</span>
+    <span class="qa-text">著者自身の生い立ちから2ちゃんねる創設、渡仏までの実体験を振り返ると、無理な努力ではなく「競争の少ない場所を選ぶ」「型にして繰り返す」といった工夫の方が結果を生んでいた。</span>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat"><div class="num">7話</div><div class="label">時系列エピソード構成</div></div>
+    <div class="stat"><div class="num">40万部</div><div class="label">累計発行部数</div></div>
+    <div class="stat"><div class="num">2020</div><div class="label">初版刊行年</div></div>
+  </div>
+</section>
+
+<nav class="tabs" role="tablist" aria-label="セクション切り替え">
+  <button class="tab-btn" role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🧩 主要概念</button>
+  <button class="tab-btn" role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📑 各章の要約</button>
+  <button class="tab-btn" role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">🔍 具体例</button>
+  <button class="tab-btn" role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 重要な引用</button>
+  <button class="tab-btn" role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+</nav>
+
+<main>
+  <!-- 主要概念 -->
+  <div class="panel" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts" aria-hidden="false">
+
+    <div class="card">
+      <h3><span class="num-chip">1</span>1%の努力</h3>
+      <ul>
+        <li>エジソンの「天才は1%のひらめきと99%の努力」を逆手に取った再解釈</li>
+        <li>ひらめき（＝的の絞り方）がなければ、残り99%の努力はほぼ無駄になるという立場</li>
+        <li>努力の「量」ではなく、どこに努力を置くかという「的の精度」を重視する</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>本書全体のタイトルであり、以降のすべての概念はこの一点に集約されるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">2</span>前提条件</h3>
+      <ul>
+        <li>生まれた環境・才能・時代など、自分の努力では選べない出発点がある</li>
+        <li>それをまず認めることが、無理な自己責任論から自由になる第一歩</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>「頑張れば誰でも報われる」という思い込みを外さないと、的を外した努力を続けてしまうから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">3</span>優先順位</h3>
+      <ul>
+        <li>何を一番大事にするかを先に決めておくと、他の選択は自動的に絞られる</li>
+        <li>優先順位が曖昧なままだと、あらゆる方向に少しずつ無駄な努力を払う羽目になる</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>努力を「1%」に絞り込むための、最初の判断軸になるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">4</span>ポジション取り</h3>
+      <ul>
+        <li>競争の激しい場所を避け、自分の強みがそのまま活きる場所に身を置く戦略</li>
+        <li>同じ量の努力でも、立つ場所次第で結果の出やすさが大きく変わる</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>2ちゃんねる創設のエピソードが示す通り、努力より「場所選び」が成果を決めることがあるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">5</span>パターン化</h3>
+      <ul>
+        <li>一度うまくいった仕組みを「型」として残し、次からはゼロから頑張らずに再利用する</li>
+        <li>再現性のある型があれば、同じ努力を何度も払う必要がなくなる</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>努力の総量そのものを減らす、最も実務的な工夫だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">6</span>サボる能力</h3>
+      <ul>
+        <li>不要な努力をやめる判断力そのものを、磨くべき「能力」として捉え直す発想</li>
+        <li>「頑張らない」ことを怠惰ではなく、戦略的な選択として位置づける</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>努力信仰のもとでは軽視されがちな「やめる判断」こそが、1%を見極める力の土台になるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">7</span>幸福の総量</h3>
+      <ul>
+        <li>人生の目的を「生きる意味を探す」ことではなく、「幸せの総量を増やす」ことに置き換える価値観</li>
+        <li>意味づけに固執しない分、気楽に日々の選択ができるようになる</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>努力をやめることへの罪悪感を手放し、気楽に生きるための土台になる考え方だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">8</span>努力信仰への批判</h3>
+      <ul>
+        <li>「頑張れば報われる」という社会的な思い込みが、むしろ不幸な人を増やしかねないという指摘</li>
+        <li>努力の量を評価する文化そのものを一歩引いて疑う視点</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>本書全体を貫く問題提起であり、他の概念すべての出発点になっているから。</div>
+    </div>
+
+  </div>
+
+  <!-- 各章の要約 -->
+  <div class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" aria-hidden="true">
+
+    <div class="card">
+      <h3><span class="num-chip">1</span>団地の働かない大人たち――「前提条件」の話</h3>
+      <ul>
+        <li>著者が育った東京・赤羽の団地で見た、定職に就かずのんびり暮らす大人たちの姿</li>
+        <li>「頑張って働くこと」が人生の唯一の正解ではないと気づかされた体験</li>
+      </ul>
+      <div class="why"><b>理由：</b>努力一辺倒の価値観に反論するための出発点として、人には選べない前提条件があるという現実をまず認める必要があるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">2</span>「優先順位」の話</h3>
+      <ul>
+        <li>何を優先するかを先に決めてしまえば、迷いや無駄な努力が自然と減っていく</li>
+      </ul>
+      <div class="why"><b>理由：</b>優先順位が曖昧だと、全方位に無駄な努力を払う羽目になるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">3</span>「ニーズと価値」の話</h3>
+      <ul>
+        <li>自分が得意なことではなく、世の中が求めている（ニーズのある）ことに力を注ぐべきという視点</li>
+      </ul>
+      <div class="why"><b>理由：</b>需要のない場所でどれだけ努力しても、成果には結びつきにくいから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">4</span>「ポジション」の話</h3>
+      <ul>
+        <li>競争の激しい場所を避け、自分の強みが際立つ場所に身を置く戦略</li>
+        <li>既存の巨大掲示板が重く使いにくかった隙間を見つけて生まれた2ちゃんねる創設のエピソードもここに重なる</li>
+      </ul>
+      <div class="why"><b>理由：</b>同じ努力でも、立つ場所次第で結果の出やすさが大きく変わるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">5</span>「努力」の話</h3>
+      <ul>
+        <li>努力そのものを疑い、どこに投じるべきかを選別する考え方の総括</li>
+      </ul>
+      <div class="why"><b>理由：</b>努力は量ではなく、的の精度で評価すべきだから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">6</span>「パターン化」の話</h3>
+      <ul>
+        <li>一度成功した型を仕組み化し、繰り返し使うことで同じ努力をやり直さずに済ませる</li>
+      </ul>
+      <div class="why"><b>理由：</b>再現性のある仕組みがあれば、次からの努力の総量そのものを減らせるから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num-chip">7</span>働かないアリであれ――「余生」の話</h3>
+      <ul>
+        <li>働きアリの集団には一定数の「働かないアリ」が存在し、全員が働くコロニーより環境変化への対応力が高いという知見を引く</li>
+        <li>「サボる」存在にも価値があるという結論へつなげる</li>
+      </ul>
+      <div class="why"><b>理由：</b>効率一辺倒の社会は余白を失い、変化に弱くなってしまうから。</div>
+    </div>
+
+  </div>
+
+  <!-- 具体例 -->
+  <div class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" aria-hidden="true">
+
+    <div class="card">
+      <h3>🏢 赤羽の団地で見た「働かない大人たち」</h3>
+      <ul>
+        <li>著者が子供の頃に住んでいた団地には、定職に就かず悠々と暮らす大人たちがいた</li>
+        <li>その姿を見て、「頑張って働くこと」だけが人生の正解ではないと気づいた</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>社会に広く浸透している「努力すべき」という前提そのものを疑う視点を与えてくれる。</div>
+    </div>
+
+    <div class="card">
+      <h3>💻 2ちゃんねるの創設</h3>
+      <ul>
+        <li>大学生だった著者は、当時の巨大掲示板が重く使いにくいことに着目した</li>
+        <li>競合の少ないニッチな領域で、軽量な匿名掲示板を立ち上げた</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>激戦区を避け、自分がすぐに優位を取れる「ポジション」を選ぶことの威力を示す具体例。</div>
+    </div>
+
+    <div class="card">
+      <h3>🐜 「働かないアリ」の生態学的知見</h3>
+      <ul>
+        <li>働きアリの集団には、常に一定数の「働かないアリ」が存在する</li>
+        <li>全員が働くコロニーより、環境変化への対応力が高いとされる研究が紹介されている</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>個人も組織も、常に全力であることが最適解とは限らないという比喩になっている。</div>
+    </div>
+
+  </div>
+
+  <!-- 重要な引用 -->
+  <div class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" aria-hidden="true">
+
+    <blockquote>
+      努力はしてこなかったが、僕は食いっぱぐれているわけではない。つまり、「1%の努力」はしてきたわけだ。
+      <span class="note">※要旨（ダイヤモンド・オンライン記事より）</span>
+    </blockquote>
+
+    <blockquote>
+      世の中、努力信仰で蔓延している。それを企業のトップが平気で口にする。ムダな努力は、不幸な人を増やしかねないので、あまりよくない。
+      <span class="note">※要旨</span>
+    </blockquote>
+
+    <blockquote>
+      一歩引いてみて、自分だけのせいにせず、「1%の努力」で変えられる部分はどこなのかを考えてみるのだ。
+      <span class="note">※要旨</span>
+    </blockquote>
+
+  </div>
+
+  <!-- 今日のアクション -->
+  <div class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" aria-hidden="true">
+
+    <div class="card action-card">
+      <span class="action-chip">1</span>
+      <div>
+        <h3 style="margin-bottom:4px;">「前提条件」と「1%」を書き分ける</h3>
+        <p style="margin:0;font-size:14px;">今取り組んでいる課題について、「自分では変えられない前提条件」と「自分の努力で変えられる1%」を紙に書き分けてみる。</p>
+        <div class="action-meta">
+          <span>⏱ 約15分</span>
+          <span>🎯 無駄な努力の対象を減らす</span>
+          <span>📈 本当に注力すべき課題が明確になり、心理的負担も軽くなる</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <span class="action-chip">2</span>
+      <div>
+        <h3 style="margin-bottom:4px;">自分の「ポジション」を15分で棚卸しする</h3>
+        <p style="margin:0;font-size:14px;">今いる場所（職場・プロジェクト・市場）が、競争が少なく自分の強みが活きる場所かどうかを確認する。</p>
+        <div class="action-meta">
+          <span>⏱ 約15分</span>
+          <span>🎯 努力の的を外していないか確認する</span>
+          <span>📈 より少ない努力で成果が出る場所への調整の判断材料が得られる</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <span class="action-chip">3</span>
+      <div>
+        <h3 style="margin-bottom:4px;">うまくいったやり方を「型」としてメモする</h3>
+        <p style="margin:0;font-size:14px;">直近でうまくいった仕事のやり方を1つ選び、次回そのまま再利用できる「型」として書き出す。</p>
+        <div class="action-meta">
+          <span>⏱ 約10分</span>
+          <span>🎯 同じ努力を毎回ゼロから払わないようにする</span>
+          <span>📈 次回以降の作業時間・労力が削減される</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="related-books">
+      <div class="book-card">
+        <div class="book-title">多動力</div>
+        <div class="book-author">堀江貴文</div>
+        <div class="book-relation">一つのことに固執せず、興味の持続する場所へ身軽に移動する発想が、本書の「ポジション取り」の思想と共通する。</div>
+      </div>
+      <div class="book-card">
+        <div class="book-title">がんばらない戦略 99%のムダな努力を捨てて、大切な1%に集中する方法</div>
+        <div class="book-author">川下和彦・たむらようこ</div>
+        <div class="book-relation">タイトルからして本書と同じ「1%に集中する」構造を共有し、努力の的を絞る具体的な実践法を補完する。</div>
+      </div>
+      <div class="book-card">
+        <div class="book-title">超一流になるのは才能か努力か？</div>
+        <div class="book-author">アンダーズ・エリクソン、ロバート・プール</div>
+        <div class="book-relation">「努力の量」より「努力の質・方向性」が成果を左右するという点で、本書の主張を実証研究の側から裏付ける。</div>
+      </div>
+      <div class="book-card">
+        <div class="book-title">自分を操る超集中力</div>
+        <div class="book-author">メンタリストDaiGo</div>
+        <div class="book-relation">限られた意志力・集中力をどこに配分するかという視点が、本書の「1%の努力」を選ぶ発想と重なる。</div>
+      </div>
+      <div class="book-card">
+        <div class="book-title">鈍感力</div>
+        <div class="book-author">渡辺淳一</div>
+        <div class="book-relation">周囲の評価や「頑張るべき」という社会的圧力を気にしすぎない態度が、本書の努力信仰批判と通じる。</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  💡 本サマリーは公開情報をもとに作成しています。正確な記述は原典をご確認ください。
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-cases':'panel-cases',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  function select(id){
+    tabs.forEach(function(btn){
+      var selected = (btn.id === id);
+      btn.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+    Object.keys(panels).forEach(function(tabId){
+      var panel = document.getElementById(panels[tabId]);
+      var hidden = tabId !== id;
+      panel.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+    });
+  }
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){ select(btn.id); });
+  });
+})();
+</script>
+</body>
+</html>
