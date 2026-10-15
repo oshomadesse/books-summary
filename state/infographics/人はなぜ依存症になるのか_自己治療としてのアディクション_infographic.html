@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人はなぜ依存症になるのか － 自己治療としてのアディクション</title>
+<!--
+  カラーパレット（本インフォグラフィック専用）
+  プライマリー: #2E5C6E（深い青緑・落ち着き）
+  セカンダリー: #E8A33D（温かいオレンジ・気づき）
+  アクセント:   #C84B4B（抑えた赤・苦痛/警告）
+  グラデーション: linear-gradient(135deg, #2E5C6E, #1B3A47)
+-->
+<style>
+  :root{
+    --primary:#2E5C6E;
+    --primary-dark:#1B3A47;
+    --secondary:#E8A33D;
+    --accent:#C84B4B;
+    --bg:#F7F5F1;
+    --card:#FFFFFF;
+    --text:#2A2A2A;
+    --text-sub:#5A5A5A;
+    --border:#E2DED6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+  }
+  .hero{
+    background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+    color:#fff;
+    padding:28px 18px 24px;
+  }
+  .hero h1{
+    font-size:1.35rem;
+    margin:0 0 6px;
+    font-weight:700;
+  }
+  .hero .sub{
+    font-size:0.85rem;
+    opacity:0.85;
+    margin-bottom:16px;
+  }
+  .why-how{
+    background:rgba(255,255,255,0.1);
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-top:10px;
+  }
+  .why-how .row{margin-bottom:10px;}
+  .why-how .row:last-child{margin-bottom:0;}
+  .why-how .label{
+    display:inline-block;
+    font-size:0.7rem;
+    font-weight:700;
+    background:var(--secondary);
+    color:#2A2A2A;
+    border-radius:6px;
+    padding:2px 8px;
+    margin-bottom:4px;
+  }
+  .why-how .val{font-size:0.88rem;}
+  .badges{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .badge{
+    background:rgba(255,255,255,0.15);
+    border-radius:20px;
+    padding:6px 12px;
+    font-size:0.72rem;
+  }
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    background:var(--card);
+    border-bottom:1px solid var(--border);
+    position:sticky;
+    top:0;
+    z-index:10;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:none;
+    border:none;
+    padding:12px 14px;
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--text-sub);
+    border-bottom:3px solid transparent;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    color:var(--primary);
+    border-bottom-color:var(--secondary);
+  }
+  main{padding:16px;max-width:720px;margin:0 auto;}
+  section[role="tabpanel"]{display:none;}
+  section[role="tabpanel"].active{display:block;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.04);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:0.95rem;
+    color:var(--primary-dark);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{margin:0;padding-left:1.1em;font-size:0.85rem;}
+  .card li{margin-bottom:4px;}
+  .why-box{
+    margin-top:8px;
+    background:#FBF2E4;
+    border-left:3px solid var(--secondary);
+    padding:6px 10px;
+    font-size:0.78rem;
+    color:var(--text-sub);
+    border-radius:0 6px 6px 0;
+  }
+  .quote-card{
+    border-left:4px solid var(--accent);
+  }
+  .quote-card blockquote{
+    margin:0 0 6px;
+    font-size:0.88rem;
+    font-style:italic;
+    color:var(--text);
+  }
+  .tag{
+    display:inline-block;
+    background:var(--accent);
+    color:#fff;
+    font-size:0.65rem;
+    border-radius:4px;
+    padding:1px 6px;
+    margin-bottom:6px;
+  }
+  .action-card{
+    display:flex;
+    gap:10px;
+  }
+  .action-num{
+    flex:0 0 28px;
+    height:28px;
+    border-radius:50%;
+    background:var(--secondary);
+    color:#2A2A2A;
+    font-weight:700;
+    font-size:0.85rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .meter{
+    margin-top:10px;
+  }
+  .meter .bar-label{
+    font-size:0.72rem;
+    color:var(--text-sub);
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:3px;
+  }
+  .bar-track{
+    background:var(--border);
+    border-radius:6px;
+    height:8px;
+    overflow:hidden;
+  }
+  .bar-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--secondary),var(--accent));
+    border-radius:6px;
+  }
+  footer{
+    text-align:center;
+    font-size:0.68rem;
+    color:var(--text-sub);
+    padding:18px 10px 28px;
+  }
+  @media(min-width:600px){
+    .hero h1{font-size:1.6rem;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🧠 人はなぜ依存症になるのか</h1>
+  <div class="sub">自己治療としてのアディクション ／ E・J・カンツィアン, M・J・アルバニーズ（訳：松本俊彦）</div>
+
+  <div class="why-how">
+    <div class="row">
+      <span class="label">問い（Why）</span>
+      <div class="val">依存症は「快楽の追求」なのか、それとも別の何かなのか？</div>
+    </div>
+    <div class="row">
+      <span class="label">答え（How）</span>
+      <div class="val">依存は、自分一人では抱えきれない心理的苦痛を一時的に和らげる「自己治療」の試みである（自己治療仮説）。</div>
+    </div>
+    <div class="row">
+      <span class="label">根拠</span>
+      <div class="val">1985年にハーバード大の精神科医E・J・カンツィアンが提唱。臨床観察・実証研究・併存疾患データに基づく理論。</div>
+    </div>
+  </div>
+
+  <div class="badges">
+    <span class="badge">📅 提唱 1985年</span>
+    <span class="badge">📖 星和書店 / 2013年 / 232頁</span>
+    <span class="badge">🏷️ 心理学</span>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">各章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">今日のアクション</button>
+</nav>
+
+<main>
+
+  <section id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts" class="active">
+
+    <div class="card">
+      <h3>💊 自己治療仮説（Self-Medication Hypothesis）</h3>
+      <ul>
+        <li>依存は快楽目的ではなく、苦痛を和らげる試みだとする理論</li>
+        <li>1985年、精神科医E・J・カンツィアンが提唱</li>
+        <li>臨床現場での違和感（快楽追求モデルでは説明がつかない症例）が出発点</li>
+      </ul>
+      <div class="why-box">理由: 依存症者への見方を「弱さ」から「苦痛への対処」へ転換させる中心概念だから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🌊 感情調節の失敗（Affect Dysregulation）</h3>
+      <ul>
+        <li>自分の感情を自力で整える力が弱いと、外部の物質・行動に頼りやすい</li>
+        <li>不安・抑うつ・空虚感など、調節しきれない感情が引き金になる</li>
+      </ul>
+      <div class="why-box">理由: 依存の"引き金"が物質そのものではなく感情の扱い方にあることを示すから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 物質選択の心理的特異性（Drug of Choice）</h3>
+      <ul>
+        <li>「何に」依存するかは、苦痛の性質との対応関係で決まる</li>
+        <li>例: 対人不安にはアルコール、空虚感には過食、など個人差が大きい</li>
+      </ul>
+      <div class="why-box">理由: 一律の対処でなく、個別の苦痛理解が支援に必要だと分かるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ 病気モデル vs 障害モデル</h3>
+      <ul>
+        <li>依存症を脳の病気と見る立場と、生き方への不適応な対処と見る立場</li>
+        <li>本書は両者を対立させず、補完的に理解すべきと主張</li>
+      </ul>
+      <div class="why-box">理由: どちらか一方に偏ると、治療・支援の幅が狭まってしまうから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🤝 信頼障害仮説（小林桜児による発展）</h3>
+      <ul>
+        <li>他者を信頼できないことが、孤独な自己治療に向かわせるという視点</li>
+        <li>自己治療仮説を日本の臨床現場で拡張した理論</li>
+      </ul>
+      <div class="why-box">理由: 依存の背景にある対人関係の傷に光を当てる視点だから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⚡ トラウマ・PTSDとの関連</h3>
+      <ul>
+        <li>PTSD症状を持つ人の一部は、症状緩和を目的に物質を使用する</li>
+      </ul>
+      <div class="meter">
+        <div class="bar-label"><span>PTSD患者のうち自己治療目的で物質使用</span><span>約20%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:20%"></div></div>
+      </div>
+      <div class="why-box">理由: 依存治療にトラウマケアが不可欠なことを示す数字だから（米国の調査より）。</div>
+    </div>
+
+    <div class="card">
+      <h3>🚫 快楽追求説への反論</h3>
+      <ul>
+        <li>依存は単純な「気持ちよさの追求」ではなく「苦痛からの逃避」の側面が強い</li>
+      </ul>
+      <div class="why-box">理由: 依存症への偏見（だらしない、意志が弱い）を見直す根拠になるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧩 発達的・統合的視点</h3>
+      <ul>
+        <li>生得的な脆弱性 × 心理的苦悩 × ライフイベントを合わせて捉える</li>
+      </ul>
+      <div class="why-box">理由: 依存を単一要因でなく、人生全体の文脈で理解する必要があるから。</div>
+    </div>
+
+  </section>
+
+  <section id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <div class="card">
+      <h3>第1章：なぜ今、自己治療仮説なのか</h3>
+      <ul>
+        <li>快楽追求モデルの限界</li>
+        <li>臨床現場での違和感から仮説が生まれた経緯</li>
+      </ul>
+      <div class="why-box">理由: 時代背景を知ることで、仮説が生まれた必然性が分かる。</div>
+    </div>
+
+    <div class="card">
+      <h3>第2章：依存症は病気なのか、障害なのか</h3>
+      <ul>
+        <li>脳疾患モデルと「生き方の不適応」モデルを対比</li>
+      </ul>
+      <div class="why-box">理由: どちらの立場を取るかが、治療方針の違いに直結する。</div>
+    </div>
+
+    <div class="card">
+      <h3>中盤①：自己調節の問題としての依存症</h3>
+      <ul>
+        <li>感情・自尊心・対人関係・自己管理という4領域の調節不全</li>
+      </ul>
+      <div class="why-box">理由: 依存を多面的な「調整の失敗」として理解できる。</div>
+    </div>
+
+    <div class="card">
+      <h3>中盤②：感情調節と薬物選択の実証研究</h3>
+      <ul>
+        <li>どの精神状態にどの物質が結びつきやすいかを調べた研究群</li>
+      </ul>
+      <div class="why-box">理由: 「なぜその物質なのか」という問いに実証的な根拠を与える。</div>
+    </div>
+
+    <div class="card">
+      <h3>中盤③：苦痛と自己治療</h3>
+      <ul>
+        <li>苦痛の経験そのものが依存の核だと主張</li>
+      </ul>
+      <div class="why-box">理由: 「意志の弱さ」という誤解を正す、本書の中心的論点。</div>
+    </div>
+
+    <div class="card">
+      <h3>中盤④：精神障害・感情的苦痛との関係</h3>
+      <ul>
+        <li>PTSD、パーソナリティ障害、気分障害との併存を検討</li>
+      </ul>
+      <div class="why-box">理由: 併存疾患への対応なしに依存のみを治療する限界を示す。</div>
+    </div>
+
+    <div class="card">
+      <h3>第14章：結論</h3>
+      <ul>
+        <li>自己治療仮説を踏まえた臨床・社会的対応の方向性をまとめる</li>
+      </ul>
+      <div class="why-box">理由: 理論を実践にどう橋渡しするかの指針を示す章だから。</div>
+    </div>
+
+  </section>
+
+  <section id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+
+    <div class="card">
+      <h3>① PTSDと物質使用（米国調査）</h3>
+      <ul>
+        <li>背景: PTSDを抱える人の約20%が、症状緩和目的で薬物・アルコールを使用</li>
+        <li>示唆: 症状の重さに比例して依存リスクが上がりうる</li>
+      </ul>
+      <div class="why-box">理由（この例が示すこと）: 自己治療仮説が臨床データによって支持される具体例。</div>
+    </div>
+
+    <div class="card">
+      <h3>② 境界性パーソナリティ障害とアルコール・薬物問題</h3>
+      <ul>
+        <li>背景: 他者への信頼感が育ちにくい人が、孤独に苦痛を抱え込み物質に頼る臨床像（小林桜児らの報告）</li>
+        <li>示唆: 「信頼障害」という対人関係の視点が依存理解に不可欠</li>
+      </ul>
+      <div class="why-box">理由: 自己治療仮説が日本の臨床現場でどう発展したかを示す。</div>
+    </div>
+
+    <div class="card">
+      <h3>③ ニコチン・マリファナと精神症状の緩和</h3>
+      <ul>
+        <li>背景: 使用者数の多いニコチンやマリファナにも自己治療仮説を適用し、精神症状緩和目的の使用を考察</li>
+        <li>示唆: 「合法/準合法」の物質でも自己治療的な機能を持ちうる</li>
+      </ul>
+      <div class="why-box">理由: 依存を「違法薬物だけの問題」と狭く捉える誤解を正す。</div>
+    </div>
+
+    <div class="card">
+      <h3>④ 物質以外の嗜癖行動への拡張（ギャンブル・性行動など）</h3>
+      <ul>
+        <li>背景: 物質依存だけでなく行動嗜癖にも自己治療仮説が適用できると考察</li>
+        <li>示唆: 「やめられない」行動全般を同じ枠組みで理解できる</li>
+      </ul>
+      <div class="why-box">理由: 依存を「薬物」に限定しない視点の広がりを示す。</div>
+    </div>
+
+  </section>
+
+  <section id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <div class="card quote-card">
+      <span class="tag">要旨</span>
+      <blockquote>「依存症者は、おそらく無意識のうちに自分たちの抱える困難や苦痛を一時的に緩和するのに役立つ物質を選択し、その結果、依存症に陥る」</blockquote>
+      <div class="why-box">補足: 原典からの直接引用ではなく、出版社・書店掲載の内容紹介文を要約した要旨です。</div>
+    </div>
+
+    <div class="card quote-card">
+      <span class="tag">要旨</span>
+      <blockquote>自己治療仮説は、生得的な脆弱性・心理的苦悩・ライフイベントを発達的な視点から統合的に捉える理論である。</blockquote>
+      <div class="why-box">補足: 書誌紹介に基づく要旨。原文の章立て解説から趣旨をまとめたもの。</div>
+    </div>
+
+  </section>
+
+  <section id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div>
+        <h3 style="margin-bottom:4px;">「つい頼ってしまう行動」の直前の感情を記録する</h3>
+        <ul>
+          <li>お酒・スマホ・甘いものなど1つ選び、使う直前の感情を15分メモする</li>
+        </ul>
+        <div class="why-box">目的: 自分の"自己治療"のパターンに気づく／期待効果: 行動の前に一呼吸置く選択肢が生まれる。</div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div>
+        <h3 style="margin-bottom:4px;">「なぜ？」ではなく「何がつらいの？」と問い直す練習</h3>
+        <ul>
+          <li>依存的な行動をしている身近な人を想定し、20分間この問い方を練習する</li>
+        </ul>
+        <div class="why-box">目的: 批判でなく苦痛への理解に視点を切り替える／期待効果: 関係の中での孤立感を減らす。</div>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div>
+        <h3 style="margin-bottom:4px;">自己治療仮説の専門的な解説を1本読む</h3>
+        <ul>
+          <li>松本俊彦または小林桜児による依存症の解説記事を20〜30分読む</li>
+        </ul>
+        <div class="why-box">目的: 自己治療仮説の専門的裏付けを得る／期待効果: 自分や周囲への理解が一段深まる。</div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  📚 books-summary daily-reading · 2026-10-16
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = document.querySelectorAll('section[role="tabpanel"]');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      panels.forEach(function(p){ p.classList.remove('active'); });
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
