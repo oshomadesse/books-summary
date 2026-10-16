@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マネジメント［エッセンシャル版］— インフォグラフィック</title>
+<!--
+  カラーパレット:
+  - プライマリー: #1B4F72 (深い紺 — 経営・信頼)
+  - セカンダリー: #D4A017 (アンバー/ゴールド — 強調)
+  - アクセント:   #16A085 (ティール — 行動・成長)
+  グラデーション: linear-gradient(135deg, #1B4F72, #16A085)
+-->
+<style>
+  :root {
+    --primary: #1B4F72;
+    --primary-light: #2E6DA4;
+    --secondary: #D4A017;
+    --accent: #16A085;
+    --bg: #F7F9FB;
+    --card-bg: #FFFFFF;
+    --text: #1E2A32;
+    --text-soft: #51606A;
+    --border: #E1E8ED;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  header {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    padding: 28px 16px 22px;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+  }
+  header p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.9rem;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .hero {
+    background: var(--card-bg);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 18px;
+    margin: -14px 0 18px;
+    box-shadow: 0 4px 14px rgba(27,79,114,0.12);
+  }
+  .hero h2 {
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+    color: var(--primary);
+  }
+  .qa-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  @media (min-width: 640px) {
+    .qa-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  .qa-item {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 10px 12px;
+    border-left: 4px solid var(--secondary);
+  }
+  .qa-item b { color: var(--primary); display: block; margin-bottom: 4px; font-size: 0.82rem; }
+  .qa-item span { font-size: 0.88rem; color: var(--text-soft); }
+
+  .stat-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .stat-badge {
+    flex: 1 1 110px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+  }
+  .stat-badge .num { font-size: 1.3rem; font-weight: 700; color: var(--secondary); display: block; }
+  .stat-badge .label { font-size: 0.72rem; opacity: 0.9; }
+
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    margin-bottom: 14px;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+  }
+  .tab-btn {
+    flex: 0 0 auto;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .tab-btn[aria-selected="true"] {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 0.98rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card ul { margin: 6px 0; padding-left: 1.2em; font-size: 0.88rem; }
+  .card li { margin-bottom: 4px; }
+  .why {
+    margin-top: 8px;
+    background: #FFF8E7;
+    border-left: 3px solid var(--secondary);
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    color: #7a5c00;
+    border-radius: 6px;
+  }
+  .quote-card {
+    background: var(--card-bg);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .quote-card p.quote {
+    font-size: 0.95rem;
+    font-style: italic;
+    margin: 0 0 6px;
+    color: var(--primary);
+  }
+  .quote-card p.note {
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    margin: 0;
+  }
+  .action-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 14px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .action-card .time {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.72rem;
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+  .action-card h3 { margin: 0 0 6px; color: var(--primary); font-size: 0.95rem; padding-right: 60px; }
+  .action-card .meta { font-size: 0.82rem; color: var(--text-soft); margin: 4px 0; }
+  footer {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--text-soft);
+    padding: 20px 16px 30px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>📘 マネジメント［エッセンシャル版］</h1>
+  <p>P・F・ドラッカー（編訳: 上田惇生） / ビジネス</p>
+</header>
+
+<div class="container">
+  <div class="hero">
+    <h2>🧭 要約：Why &amp; How</h2>
+    <div class="qa-grid">
+      <div class="qa-item">
+        <b>❓ 問い</b>
+        <span>組織が社会に貢献しながら成果を上げ続けるには、何を問い続けるべきか？</span>
+      </div>
+      <div class="qa-item">
+        <b>💡 答え</b>
+        <span>「われわれの事業は何か」を問い、顧客の創造をマーケティングとイノベーションで実現すること。</span>
+      </div>
+      <div class="qa-item">
+        <b>📌 根拠</b>
+        <span>企業の目的は利益ではなく顧客。目標は上から課すのではなく自己管理（セルフコントロール）で機能する。</span>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-badge"><span class="num">2</span><span class="label">企業の基本機能<br>(マーケティング/イノベーション)</span></div>
+      <div class="stat-badge"><span class="num">5</span><span class="label">マネジャーの仕事</span></div>
+      <div class="stat-badge"><span class="num">8</span><span class="label">主要概念</span></div>
+      <div class="stat-badge"><span class="num">約50%</span><span class="label">看護師が本業に使える時間<br>(事例より)</span></div>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button class="tab-btn" role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">🔍 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+  </div>
+
+  <div class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>1️⃣ 事業の定義（われわれの事業は何か）</h3>
+      <ul>
+        <li>企業が自らの存在理由を定義し続ける作業</li>
+        <li>定義は陳腐化しやすく、継続的な見直しが必須</li>
+        <li>答えは論理だけでなく勇気を要する意思決定</li>
+      </ul>
+      <div class="why">理由（なぜ重要か）: この問いを欠くことが企業衰退の最大原因とされるから</div>
+    </div>
+    <div class="card">
+      <h3>2️⃣ 顧客の創造</h3>
+      <ul>
+        <li>企業の目的として有効な定義はひとつだけ＝顧客を創造すること</li>
+        <li>利益は目的ではなく、正しい経営の結果として生まれるもの</li>
+        <li>事業は企業自身ではなく顧客が定義する</li>
+      </ul>
+      <div class="why">理由: 「何を売るか」より「誰のどんな問題を解くか」を軸に判断を変えるから</div>
+    </div>
+    <div class="card">
+      <h3>3️⃣ マーケティング</h3>
+      <ul>
+        <li>顧客の視点から事業全体を眺めること</li>
+        <li>理想は「販売を不要にする」ほど顧客を理解すること</li>
+      </ul>
+      <div class="why">理由: 顧客創造を実現する2大機能のひとつだから</div>
+    </div>
+    <div class="card">
+      <h3>4️⃣ イノベーション</h3>
+      <ul>
+        <li>既存の資源からより大きな価値を生み出す新しい満足の創造</li>
+        <li>マーケティングと並ぶ、企業のもう一つの基本機能</li>
+      </ul>
+      <div class="why">理由: 変化し続ける市場の中で顧客創造を持続させる手段だから</div>
+    </div>
+    <div class="card">
+      <h3>5️⃣ 目標による管理とセルフコントロール</h3>
+      <ul>
+        <li>目標は上から押し付けるノルマではない</li>
+        <li>各人が自らの目標を設定し、自己管理すること（セルフコントロール）が本質</li>
+      </ul>
+      <div class="why">理由: セルフコントロールを欠くと目標管理は形骸化し現場が疲弊するから</div>
+    </div>
+    <div class="card">
+      <h3>6️⃣ マネジャーの5つの仕事</h3>
+      <ul>
+        <li>目標を設定する / 組織する / 動機づけとコミュニケーションを行う</li>
+        <li>評価する / 人材を育成する</li>
+        <li>いずれも才能ではなく訓練で習得できる技能</li>
+      </ul>
+      <div class="why">理由: マネジメントを「特別な資質」ではなく「鍛えられる実践」に変えるから</div>
+    </div>
+    <div class="card">
+      <h3>7️⃣ 知識労働者</h3>
+      <ul>
+        <li>知識をもとに働く人材。工業社会の労働者とは異なるマネジメントが必要</li>
+        <li>生産性の鍵は「強みを生かすこと」</li>
+      </ul>
+      <div class="why">理由: 弱みの補正より強みの活用の方が成果への寄与が大きいから</div>
+    </div>
+    <div class="card">
+      <h3>8️⃣ 社会的責任</h3>
+      <ul>
+        <li>企業は自らが社会に与える影響を処理する責任を持つ</li>
+        <li>社会の問題の解決そのものを事業機会として捉える視点</li>
+      </ul>
+      <div class="why">理由: 企業は社会の中の一機関であり、成果は社会的文脈の中でしか測れないから</div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>📖 疑似第1章：マネジメントの使命</h3>
+      <ul>
+        <li>マネジメントは「管理」ではなく成果を上げるための実践</li>
+        <li>企業・NPO・政府機関など、すべての組織に共通する普遍的な機能</li>
+      </ul>
+      <div class="why">理由: 以降すべての議論の前提となる定義だから</div>
+    </div>
+    <div class="card">
+      <h3>📖 疑似第2章：事業は何か、顧客の創造</h3>
+      <ul>
+        <li>企業の目的は顧客の創造であり、利益はその結果</li>
+        <li>「われわれの事業は何か」を問い続けることがトップの最重要責任</li>
+      </ul>
+      <div class="why">理由: 目的を取り違えると、以降の戦略すべてが的を外すから</div>
+    </div>
+    <div class="card">
+      <h3>📖 疑似第3章：マネジャーの仕事</h3>
+      <ul>
+        <li>目標設定・組織化・動機づけ・評価・人材育成の5つを順に解説</li>
+        <li>組織化とは、人的資源の強みを生かし弱みを抑える力</li>
+      </ul>
+      <div class="why">理由: 「何をすべきか」を具体的な行動レベルに落とすから</div>
+    </div>
+    <div class="card">
+      <h3>📖 疑似第4章：目標管理とセルフコントロール</h3>
+      <ul>
+        <li>目標による管理（MBO）は1954年の『現代の経営』で提示された考え方</li>
+        <li>組織の方向づけ（Objectives）と個人の貢献（Subjectives）の統合が本来の姿</li>
+      </ul>
+      <div class="why">理由: 運用を誤るとノルマ管理に堕落するという失敗パターンを知るため</div>
+    </div>
+    <div class="card">
+      <h3>📖 疑似第5章：知識労働者の強みを生かす</h3>
+      <ul>
+        <li>知識社会では、知識労働者の専門性をどう守り活かすかが生産性を決める</li>
+        <li>雑務に専門時間が奪われる問題への対処が課題</li>
+      </ul>
+      <div class="why">理由: 知識労働の生産性は工業労働と測り方が根本的に異なるから</div>
+    </div>
+    <div class="card">
+      <h3>📖 疑似第6章：マネジメントの社会的責任</h3>
+      <ul>
+        <li>企業は社会に与える影響を自覚し、処理する責任を負う</li>
+        <li>社会課題への対応を、事業機会として再定義する視点</li>
+      </ul>
+      <div class="why">理由: 企業の存続自体が社会からの信頼に依存しているから</div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3>🏭 事例1：GM（ゼネラル・モーターズ）の分権制</h3>
+      <ul>
+        <li>背景: ドラッカーはGMの戦時生産期の経営を観察し、巨大企業を単一の中央集権で管理する限界を見出した</li>
+        <li>示唆: 各事業部に権限を委譲する分権的組織が、大企業でも機能することを実証した</li>
+      </ul>
+      <div class="why">理由（この例が示すこと）: 「事業の定義」は組織構造の設計そのものに直結する</div>
+    </div>
+    <div class="card">
+      <h3>🏥 事例2：看護師の時間配分問題</h3>
+      <ul>
+        <li>背景: ある調査では、看護師が本来の看護業務に使える時間は全体のおよそ半分にすぎず、残りは書類仕事に費やされていた</li>
+        <li>示唆: 知識労働者の専門性は、雑務の侵食によって容易に奪われる</li>
+      </ul>
+      <div class="why">理由: 知識労働者マネジメントの本質（強みを守る仕組みづくり）を具体的に示す</div>
+    </div>
+    <div class="card">
+      <h3>📉 事例3：目標管理（MBO）の形骸化と再生</h3>
+      <ul>
+        <li>背景: 日本企業の現場で、目標管理が「上から降りてくるノルマの割り振り」になり形骸化・現場疲弊を招いた例がある</li>
+        <li>示唆: 社員自身が目標設定に参加する運用に変えると、当事者意識と内発的な意欲が高まったという報告がある</li>
+      </ul>
+      <div class="why">理由: セルフコントロールの有無がMBOの成否を分けることを対比で明確にする</div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote-card">
+      <p class="quote">「企業の目的として有効な定義はひとつしかない。それは顧客を創造することである」</p>
+      <p class="note">※要旨（『マネジメント』／『現代の経営』における企業の目的の議論より。原文の逐語引用は未確認）</p>
+    </div>
+    <div class="quote-card">
+      <p class="quote">「『われわれの事業は何か』を問わないことこそ、企業が衰退する最大の原因である」</p>
+      <p class="note">※要旨</p>
+    </div>
+    <div class="quote-card">
+      <p class="quote">「マネジャーの仕事とは、目標を設定し、組織し、動機づけとコミュニケーションを行い、評価し、人材を育成することである」</p>
+      <p class="note">※要旨（マネジャーの5つの仕事の要約）</p>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="action-card">
+      <span class="time">⏱ 10分</span>
+      <h3>✅ 「われわれの事業は何か」を書き出す</h3>
+      <p class="meta">🎯 目的: 自分の仕事・チームの前提を問い直す</p>
+      <p class="meta">📈 期待効果: 顧客は誰か、何に価値を感じているかが明確になり、優先順位が整理される</p>
+    </div>
+    <div class="action-card">
+      <span class="time">⏱ 20分</span>
+      <h3>✅ 今週の目標を自分の言葉で再設定する</h3>
+      <p class="meta">🎯 目的: 上から与えられた目標をセルフコントロールの感覚で捉え直す</p>
+      <p class="meta">📈 期待効果: 目標への当事者意識が高まり、行動が自発的になる</p>
+    </div>
+    <div class="action-card">
+      <span class="time">⏱ 10分</span>
+      <h3>✅ チームメンバー1人の「強み」をメモする</h3>
+      <p class="meta">🎯 目的: 知識労働者の強みを生かすマネジメントの第一歩を実践する</p>
+      <p class="meta">📈 期待効果: 次の1on1で伝える準備が整い、適材適所と生産性向上につながる</p>
+    </div>
+  </div>
+</div>
+
+<footer>📚 books-summary 日次読書サマリー自動生成システム</footer>
+
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.tab-panel'));
+  function activate(tab) {
+    tabs.forEach(function (t) {
+      var selected = t === tab;
+      t.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+    panels.forEach(function (p) {
+      var show = p.id === tab.getAttribute('aria-controls');
+      p.classList.toggle('active', show);
+    });
+  }
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { activate(tab); });
+  });
+})();
+</script>
+</body>
+</html>
