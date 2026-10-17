@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家事か地獄か ― 最期まですっくと生き抜く唯一の選択｜インフォグラフィック</title>
+<!--
+  カラーパレット（最終版）
+  プライマリー: #2E7D6B（深い抹茶緑 → グラデーション #2E7D6B → #3FA890）
+  セカンダリー: #F4A259（手ぬぐい色の橙 → グラデーション #F4A259 → #E8833B）
+  アクセント:   #C9594F（赤土色・警告/強調用）
+-->
+<style>
+  :root{
+    --primary:#2E7D6B; --primary2:#3FA890;
+    --secondary:#F4A259; --secondary2:#E8833B;
+    --accent:#C9594F;
+    --bg:#FAF6F0; --card:#FFFFFF; --ink:#2B2520; --sub:#6B6258;
+    --line:#E7DED2;
+    --radius:16px;
+    --shadow:0 4px 16px rgba(43,37,32,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.7; padding-bottom:40px;
+  }
+  .wrap{max-width:720px; margin:0 auto; padding:0 16px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary),var(--primary2));
+    color:#fff; padding:28px 16px 32px; text-align:center;
+    border-radius:0 0 28px 28px;
+  }
+  header.hero .kicker{font-size:13px; opacity:.85; letter-spacing:.08em;}
+  header.hero h1{font-size:24px; margin:10px 0 6px; line-height:1.45;}
+  header.hero .author{font-size:14px; opacity:.9;}
+  .why-how{
+    margin:-20px 16px 0; background:var(--card); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:18px 18px 14px; position:relative; z-index:2;
+  }
+  .why-how h2{font-size:14px; color:var(--primary); margin:0 0 10px; letter-spacing:.05em;}
+  .qa-row{display:flex; gap:10px; margin-bottom:10px;}
+  .qa-badge{
+    flex:0 0 auto; width:34px; height:34px; border-radius:50%; display:flex; align-items:center;
+    justify-content:center; font-weight:700; color:#fff; font-size:13px;
+  }
+  .qa-badge.q{background:var(--secondary);}
+  .qa-badge.a{background:var(--primary);}
+  .qa-badge.w{background:var(--accent);}
+  .qa-text{font-size:14px; flex:1;}
+  .qa-text b{display:block; font-size:12px; color:var(--sub); margin-bottom:2px; font-weight:600;}
+
+  nav.tabs{
+    display:flex; overflow-x:auto; gap:6px; margin:20px 16px 0; padding-bottom:2px;
+    -ms-overflow-style:none; scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto; border:none; background:var(--card); color:var(--sub); font-size:13px;
+    padding:10px 14px; border-radius:999px; box-shadow:var(--shadow); cursor:pointer;
+    font-weight:600; white-space:nowrap; transition:.15s;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:linear-gradient(135deg,var(--primary),var(--primary2)); color:#fff;
+  }
+  main{margin:14px 16px 0;}
+  section[role="tabpanel"]{display:none;}
+  section[role="tabpanel"].active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  .card{
+    background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:16px 16px 14px; margin-bottom:14px; border-left:5px solid var(--primary);
+  }
+  .card.alt{border-left-color:var(--secondary);}
+  .card.quote{border-left-color:var(--accent);}
+  .card h3{margin:0 0 8px; font-size:15px; color:var(--ink); display:flex; align-items:center; gap:6px;}
+  .card ul{margin:0 0 10px; padding-left:20px; font-size:14px;}
+  .card li{margin-bottom:4px;}
+  .why{
+    background:#F1F7F4; border-radius:10px; padding:8px 12px; font-size:12.5px; color:var(--primary);
+    margin-top:6px;
+  }
+  .why b{color:var(--primary);}
+
+  .badge-row{display:flex; gap:8px; margin:8px 0 10px; flex-wrap:wrap;}
+  .num-badge{
+    background:var(--secondary); color:#fff; font-size:12px; font-weight:700;
+    padding:5px 10px; border-radius:999px;
+  }
+  .bar-wrap{margin:6px 0 10px;}
+  .bar-label{display:flex; justify-content:space-between; font-size:12px; color:var(--sub); margin-bottom:3px;}
+  .bar-bg{background:var(--line); border-radius:999px; height:10px; overflow:hidden;}
+  .bar-fill{height:100%; border-radius:999px; background:linear-gradient(90deg,var(--primary),var(--primary2));}
+
+  .quote-text{
+    font-size:14.5px; font-style:italic; color:var(--ink); border-left:3px solid var(--accent);
+    padding-left:10px; margin:0 0 6px;
+  }
+  .quote-note{font-size:12px; color:var(--sub);}
+  .tag{
+    display:inline-block; font-size:11px; background:var(--accent); color:#fff; padding:2px 8px;
+    border-radius:999px; margin-bottom:6px;
+  }
+
+  .action-card{border-left-color:var(--primary);}
+  .action-head{display:flex; align-items:center; gap:8px; margin-bottom:6px;}
+  .action-num{
+    width:26px; height:26px; border-radius:50%; background:var(--primary); color:#fff; font-size:13px;
+    display:flex; align-items:center; justify-content:center; font-weight:700; flex:0 0 auto;
+  }
+  .action-time{font-size:11px; color:#fff; background:var(--secondary); padding:2px 8px; border-radius:999px;}
+
+  footer{text-align:center; font-size:12px; color:var(--sub); margin-top:28px; padding:0 16px;}
+  .disclaimer{font-size:11.5px; color:var(--sub); background:#F1ECE3; border-radius:10px; padding:8px 12px; margin:16px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">📚 今日の一冊</div>
+    <h1>家事か地獄か<br>最期まですっくと生き抜く唯一の選択</h1>
+    <div class="author">著者：稲垣えみ子 / マガジンハウス（2023年）</div>
+  </header>
+
+  <div class="why-how">
+    <h2>🔑 要約 = 問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-badge q">問</div>
+      <div class="qa-text"><b>何に備えれば老後やこの先の不安を乗り越えられるのか？</b>多くの人は「お金を貯める」ことで備えようとするが、それは本当に確かな備えなのか。</div>
+    </div>
+    <div class="qa-row">
+      <div class="qa-badge a">答</div>
+      <div class="qa-text"><b>必要なのはお金ではなく「家事力」である。</b>便利や分担に頼らず、自分の身の回りのことを最期まで自分の手でできることが、何があっても生き抜ける唯一の確かな備えになる。</div>
+    </div>
+    <div class="qa-row">
+      <div class="qa-badge w">根</div>
+      <div class="qa-text"><b>著者自身の実践が根拠。</b>50歳で会社を退職し、冷蔵庫もガス契約も持たず、家電を手放すほど暮らしが自由になった体験から「一人一家事」という生き方を提示する。</div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツタブ">
+    <button role="tab" id="tab-concept" aria-controls="panel-concept" aria-selected="true">🧩 主要概念</button>
+    <button role="tab" id="tab-chapter" aria-controls="panel-chapter" aria-selected="false">📖 章の要約</button>
+    <button role="tab" id="tab-case" aria-controls="panel-case" aria-selected="false">🔍 具体例</button>
+    <button role="tab" id="tab-quote" aria-controls="panel-quote" aria-selected="false">💬 引用</button>
+    <button role="tab" id="tab-action" aria-controls="panel-action" aria-selected="false">✅ 今日の行動</button>
+  </nav>
+
+  <main>
+    <section id="panel-concept" role="tabpanel" aria-labelledby="tab-concept" class="active">
+      <div class="card">
+        <h3>👤 一人一家事</h3>
+        <ul>
+          <li>家事を家族内や外部サービスに「分担」するのではなく、自分の身の回りは自分で担う考え方</li>
+          <li>「誰かがやってくれる」への依存を前提にしない暮らし方の提案</li>
+          <li>家族関係においても各人の自立を促す</li>
+        </ul>
+        <div class="why"><b>理由：</b>依存を断つことで、環境や他者の都合に左右されない自立した生き方の土台になるから。</div>
+      </div>
+      <div class="card alt">
+        <h3>💪 家事力</h3>
+        <ul>
+          <li>老後の安心を支えるのは貯蓄額ではなく、自分で生活を回せる技術そのもの</li>
+          <li>お金は増減が不確実だが、身体で覚えた家事の技術は失われにくい</li>
+        </ul>
+        <div class="why"><b>理由：</b>お金は運や経済状況に左右されるが、家事力は自分の中に積み立てられ続けるから。</div>
+      </div>
+      <div class="card">
+        <h3>🔌 便利に頼らない</h3>
+        <ul>
+          <li>家電や便利なサービスに依存しすぎない暮らしの選択</li>
+          <li>著者は洗濯機・冷蔵庫・ガス契約などを手放していく実践を重ねた</li>
+        </ul>
+        <div class="why"><b>理由：</b>便利さへの依存は「自分でできること」を少しずつ減らし、結果的に不安の種を増やすから。</div>
+      </div>
+      <div class="card alt">
+        <h3>🌱 足元の幸せ（可能性を広げない）</h3>
+        <ul>
+          <li>「もっと便利に、もっと豊かに」を追い求めず、今ある環境の中で満足を見出す発想</li>
+          <li>不足を数えるのではなく、手元にあるものを使いこなす視点への転換</li>
+        </ul>
+        <div class="why"><b>理由：</b>「もっと」を求め続ける限り不安は消えず、今に目を向けることでしか安心は得られないから。</div>
+      </div>
+      <div class="card">
+        <h3>🙅 分担をやめる</h3>
+        <ul>
+          <li>家事を他人（家族・外部）に押し付ける発想そのものを見直す</li>
+          <li>「やってもらって当然」という関係性を疑い、自分の分は自分で引き受ける</li>
+        </ul>
+        <div class="why"><b>理由：</b>分担への期待が崩れたときに生活が立ちゆかなくなるリスクを、自ら抱え込まないようにするため。</div>
+      </div>
+      <div class="card alt">
+        <h3>🎁 家事はおもてなし</h3>
+        <ul>
+          <li>家事を「面倒な雑用」ではなく、自分自身への思いやりの行為として捉え直す</li>
+          <li>同じ作業でも意味づけを変えるだけで、苦痛から喜びに転じうる</li>
+        </ul>
+        <div class="why"><b>理由：</b>日々の家事の多くは避けられない以上、意味づけを変えることが唯一コントロールできる部分だから。</div>
+      </div>
+      <div class="card">
+        <h3>➖ 減らす技術</h3>
+        <ul>
+          <li>「増やす」ことは努力してもコントロールが難しいが、「減らす」ことは誰にでも今すぐ実行できる</li>
+          <li>持ち物・家電・頼るものを減らすほど、身軽で自由な暮らしに近づく</li>
+        </ul>
+        <div class="why"><b>理由：</b>不安への対処を、外部要因（お金・運）ではなく自分の手の中にある選択に移せるから。</div>
+      </div>
+    </section>
+
+    <section id="panel-chapter" role="tabpanel" aria-labelledby="tab-chapter" class="active">
+      <div class="disclaimer" style="margin:0 0 14px;">※ 公開情報からは目次の全章タイトルを確認できなかったため、確認できた範囲（第1章・第2章）以外は本書で語られる主要な論点を疑似章として整理しています。</div>
+      <div class="card">
+        <h3>1️⃣ 手ぬぐい一本から始まる家事の話<span class="tag" style="margin-left:6px;">確認済み</span></h3>
+        <ul>
+          <li>持ち物を極限まで減らしたところから、家事そのものの手間を見直す発想が始まる</li>
+          <li>道具を増やすより減らす方が、結果的に家事がラクになる場合がある</li>
+        </ul>
+        <div class="why"><b>理由：</b>最小限の道具で暮らせることを知ると、家事への恐れそのものが小さくなるから。</div>
+      </div>
+      <div class="card alt">
+        <h3>2️⃣ 家事がラクにならない理由<span class="tag" style="margin-left:6px;">確認済み</span></h3>
+        <ul>
+          <li>便利な家電やサービスに頼るほど、却って家事への苦手意識が解消されない仕組みを指摘</li>
+          <li>「分担」に期待し続けることも、ラクにならない一因として挙げられる</li>
+        </ul>
+        <div class="why"><b>理由：</b>原因を正しく捉えないと、便利さを追加するほど逆に不自由になる悪循環から出られないから。</div>
+      </div>
+      <div class="card">
+        <h3>3️⃣ 洗濯機を手放す（疑似章）</h3>
+        <ul>
+          <li>タライと手洗いに切り替えた経験から、不便さの中にある発見を語る</li>
+          <li>洗濯という行為への捉え方そのものが変わっていく過程</li>
+        </ul>
+        <div class="why"><b>理由：</b>「不便＝不幸」という思い込みを疑うことが、本書全体の思考法の核になっているから。</div>
+      </div>
+      <div class="card alt">
+        <h3>4️⃣ 冷蔵庫・ガスのない暮らし（疑似章）</h3>
+        <ul>
+          <li>「ないと困る」と思い込んでいたものが、実はなくても暮らせることを実体験で示す</li>
+        </ul>
+        <div class="why"><b>理由：</b>思い込みを一つ外すたびに、生活の自由度が広がることを示す具体例になっているから。</div>
+      </div>
+      <div class="card">
+        <h3>5️⃣ 家事は雑用か、おもてなしか（疑似章）</h3>
+        <ul>
+          <li>家事を「自分への思いやり」として再定義する視点の転換を描く</li>
+        </ul>
+        <div class="why"><b>理由：</b>意味づけの転換こそが、本書が提示する最も実践しやすい変化だから。</div>
+      </div>
+      <div class="card alt">
+        <h3>6️⃣ お金より家事力（疑似章）</h3>
+        <ul>
+          <li>老後の安心をどこに託すか、という本書全体を貫く問いへの著者の答え</li>
+        </ul>
+        <div class="why"><b>理由：</b>本書のサブタイトル「最期まですっくと生き抜く」の中心的な主張がここに集約されているから。</div>
+      </div>
+    </section>
+
+    <section id="panel-case" role="tabpanel" aria-labelledby="tab-case" class="active">
+      <div class="card">
+        <h3>🧺 洗濯機を手放し、タライ手洗いに切り替えた経験</h3>
+        <ul>
+          <li><b>背景：</b>便利な家電を減らす実践の一環として洗濯機をやめた</li>
+          <li><b>内容：</b>タライ1個での手洗い生活に変え、洗濯という行為への向き合い方が変化した</li>
+        </ul>
+        <div class="why"><b>理由（この例が示すこと）：</b>不便さは必ずしも苦痛ではなく、工夫や丁寧さを引き出すきっかけになりうる。</div>
+      </div>
+      <div class="card alt">
+        <h3>🧊 冷蔵庫もガス契約も持たない一人暮らし</h3>
+        <ul>
+          <li><b>背景：</b>家電を手放す生活実験を重ねる中で、冷蔵庫とガスも持たない選択に至った</li>
+          <li><b>内容：</b>買い物や調理の仕方を工夫する必要が生まれ、生活全体がかえってシンプルになった</li>
+        </ul>
+        <div class="why"><b>理由（この例が示すこと）：</b>「なくても大丈夫」という発見の積み重ねが、不安を小さくしていく。</div>
+      </div>
+      <div class="card">
+        <h3>🧵 手ぬぐい一本からの家事見直し</h3>
+        <ul>
+          <li><b>背景：</b>持ち物の最小化を家事そのものの再設計につなげた第1章のエピソード</li>
+          <li><b>内容：</b>タオルや手ぬぐいなど基本の道具から、本当に必要なものだけを選び直す</li>
+        </ul>
+        <div class="why"><b>理由（この例が示すこと）：</b>道具を増やすより減らす方が、結果的に家事がラクになる場合がある。</div>
+      </div>
+      <div class="card alt">
+        <h3>🏢 50歳での退社というキャリアの転換</h3>
+        <ul>
+          <li><b>背景：</b>新聞社編集委員という職を自ら離れ、ミニマルな一人暮らしへ移行した著者自身の経歴</li>
+          <li><b>内容：</b>前作『魂の退社』『寂しい生活』で描かれた生き方の延長として本書が書かれている</li>
+        </ul>
+        <div class="why"><b>理由（この例が示すこと）：</b>生活をダウンサイズする決断が、人生の選択の自由度を広げうることを示す。</div>
+      </div>
+    </section>
+
+    <section id="panel-quote" role="tabpanel" aria-labelledby="tab-quote" class="active">
+      <div class="card quote">
+        <span class="tag">要旨</span>
+        <p class="quote-text">老後の安心のために本当に必要なのは、お金ではなく自分の身の回りを自分で回せる「家事力」だ。</p>
+        <p class="quote-note">※ 原典の逐語引用は確認できなかったため、紹介記事に基づく要旨です。</p>
+      </div>
+      <div class="card quote">
+        <span class="tag">要旨</span>
+        <p class="quote-text">増やすことは努力してもコントロールできないが、減らすことなら誰にでも今すぐ実現できる。</p>
+        <p class="quote-note">※ 要旨。書籍紹介文・関連記事からの要約。</p>
+      </div>
+      <div class="card quote">
+        <span class="tag">要旨</span>
+        <p class="quote-text">便利な家電を一つ手放すたびに、家事はむしろ楽になっていった。</p>
+        <p class="quote-note">※ 要旨。著者の体験を紹介した記事に基づく。</p>
+      </div>
+    </section>
+
+    <section id="panel-action" role="tabpanel" aria-labelledby="tab-action" class="active">
+      <div class="card action-card">
+        <div class="action-head">
+          <div class="action-num">1</div>
+          <h3 style="margin:0;">家電を1つ「使わずに」過ごしてみる</h3>
+          <span class="action-time">15分</span>
+        </div>
+        <ul>
+          <li><b>やること：</b>家にある家電・便利グッズを1つ選び、15分間それを使わずに同じことをやってみる</li>
+          <li><b>目的：</b>便利さへの依存度を体感する</li>
+          <li><b>期待効果：</b>本当に必要なものと、そうでないものの区別がつき始める</li>
+        </ul>
+      </div>
+      <div class="card action-card">
+        <div class="action-head">
+          <div class="action-num">2</div>
+          <h3 style="margin:0;">人に任せている家事を1つ、自分でやる</h3>
+          <span class="action-time">20分</span>
+        </div>
+        <ul>
+          <li><b>やること：</b>家族や他人に任せている家事を1つ書き出し、今日は自分の手でやってみる</li>
+          <li><b>目的：</b>「分担」への依存を見直すきっかけを作る</li>
+          <li><b>期待効果：</b>自立感が高まり、家事を"おもてなし"として捉え直す感覚が得られる</li>
+        </ul>
+      </div>
+      <div class="card action-card">
+        <div class="action-head">
+          <div class="action-num">3</div>
+          <h3 style="margin:0;">今日、手放せるものを1つ片付ける</h3>
+          <span class="action-time">15分</span>
+        </div>
+        <ul>
+          <li><b>やること：</b>持ち物の中から「今日、手放せそうなもの」を1つ選んで片付ける</li>
+          <li><b>目的：</b>「増やす」ではなく「減らす」発想を体験する</li>
+          <li><b>期待効果：</b>身の回りが整理され、小さな安心感が得られる</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <div class="disclaimer">
+    本インフォグラフィックはWeb上で確認できた書籍紹介・書評記事をもとに作成しています。原典からの逐語引用は未確認のため「要旨」として記載し、目次の詳細も一部は論点整理（疑似章）で代替しています。
+  </div>
+
+  <footer>📚 daily-reading-summary · books-summary</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs [role="tab"]');
+  var panels = document.querySelectorAll('[role="tabpanel"]');
+  function activate(id){
+    tabs.forEach(function(t){
+      var selected = t.id === id;
+      t.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+    panels.forEach(function(p){
+      var show = p.getAttribute('aria-labelledby') === id;
+      p.classList.toggle('active', show);
+    });
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ activate(t.id); });
+  });
+  panels.forEach(function(p, i){ if(i>0) p.classList.remove('active'); });
+})();
+</script>
+</body>
+</html>
