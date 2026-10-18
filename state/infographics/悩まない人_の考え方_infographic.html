@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>「悩まない人」の考え方 ― インフォグラフィック</title>
+<!--
+  カラーパレット（本ページ固有のCSSカスタムプロパティとして定義）
+  プライマリー: #2563EB → #1E3A8A（ブルー系グラデーション／冷静・論理を象徴）
+  セカンダリー: #F59E0B（アンバー／行動・気づきを象徴）
+  アクセント:   #10B981（エメラルド／解消・解決後の軽さを象徴）
+-->
+<style>
+  :root{
+    --primary-1:#2563EB;
+    --primary-2:#1E3A8A;
+    --secondary:#F59E0B;
+    --accent:#10B981;
+    --bg:#F8FAFC;
+    --card-bg:#FFFFFF;
+    --text-main:#1E293B;
+    --text-sub:#64748B;
+    --border:#E2E8F0;
+    --shadow:0 2px 8px rgba(30,41,59,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    background:var(--bg);
+    color:var(--text-main);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:16px;}
+
+  /* ===== ヘッダー ===== */
+  header{
+    background:linear-gradient(135deg,var(--primary-1),var(--primary-2));
+    color:#fff;
+    padding:28px 20px 24px;
+    border-radius:0 0 20px 20px;
+    text-align:center;
+  }
+  header .eyebrow{
+    font-size:0.75rem;
+    letter-spacing:0.08em;
+    opacity:0.85;
+    margin-bottom:6px;
+  }
+  header h1{
+    font-size:1.5rem;
+    margin:0 0 8px;
+    font-weight:800;
+    line-height:1.4;
+  }
+  header .author{font-size:0.9rem;opacity:0.9;}
+  .badges{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-top:16px;
+  }
+  .badge{
+    background:rgba(255,255,255,0.18);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:999px;
+    padding:6px 12px;
+    font-size:0.78rem;
+    font-weight:700;
+  }
+
+  /* ===== ファーストビュー: Why & How ===== */
+  .hero-block{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    margin:16px 0 20px;
+    padding:18px;
+  }
+  .hero-block h2{
+    font-size:0.95rem;
+    color:var(--primary-2);
+    margin:0 0 12px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .qa-item{
+    border-left:4px solid var(--secondary);
+    background:#FFFBEB;
+    border-radius:8px;
+    padding:10px 12px;
+  }
+  .qa-item.answer{border-left-color:var(--primary-1);background:#EFF6FF;}
+  .qa-item.why{border-left-color:var(--accent);background:#ECFDF5;}
+  .qa-label{font-size:0.72rem;font-weight:800;color:var(--text-sub);margin-bottom:4px;}
+  .qa-text{font-size:0.92rem;font-weight:600;}
+
+  /* ===== タブ ===== */
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:4px;
+    background:var(--card-bg);
+    border-radius:12px;
+    box-shadow:var(--shadow);
+    position:sticky;
+    top:0;
+    z-index:10;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    border:none;
+    background:transparent;
+    color:var(--text-sub);
+    font-size:0.78rem;
+    font-weight:700;
+    padding:10px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:linear-gradient(135deg,var(--primary-1),var(--primary-2));
+    color:#fff;
+  }
+  .panel{display:none;padding:18px 2px 40px;}
+  .panel.active{display:block;}
+  .panel h2{
+    font-size:1.05rem;
+    color:var(--primary-2);
+    border-bottom:3px solid var(--secondary);
+    display:inline-block;
+    padding-bottom:4px;
+    margin:18px 0 14px;
+  }
+
+  /* ===== カード ===== */
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:14px 16px;
+    margin-bottom:14px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:0.98rem;
+    color:var(--text-main);
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .card ul{margin:6px 0 0;padding-left:1.2em;}
+  .card li{font-size:0.88rem;margin-bottom:4px;}
+  .why-box{
+    margin-top:10px;
+    background:#ECFDF5;
+    border:1px dashed var(--accent);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:0.82rem;
+    color:#065F46;
+  }
+  .why-box b{color:var(--accent);}
+
+  /* ===== 数値バッジ・可視化 ===== */
+  .stat-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:14px 0;
+  }
+  .stat{
+    flex:1 1 90px;
+    background:linear-gradient(135deg,var(--primary-1),var(--primary-2));
+    color:#fff;
+    border-radius:12px;
+    padding:12px 10px;
+    text-align:center;
+  }
+  .stat .num{font-size:1.4rem;font-weight:800;display:block;}
+  .stat .label{font-size:0.68rem;opacity:0.9;}
+
+  .bar-wrap{margin:10px 0;}
+  .bar-label{font-size:0.78rem;font-weight:700;margin-bottom:4px;display:flex;justify-content:space-between;}
+  .bar-track{background:#E2E8F0;border-radius:999px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary-1),var(--accent));}
+
+  /* ===== 引用 ===== */
+  .quote{
+    border-left:5px solid var(--primary-1);
+    background:#EFF6FF;
+    border-radius:0 10px 10px 0;
+    padding:12px 14px;
+    margin-bottom:12px;
+    font-size:0.92rem;
+  }
+  .quote .tag{
+    display:inline-block;
+    font-size:0.68rem;
+    font-weight:800;
+    color:#fff;
+    background:var(--secondary);
+    border-radius:999px;
+    padding:2px 8px;
+    margin-bottom:6px;
+  }
+
+  /* ===== アクション ===== */
+  .action-card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:14px 16px;
+    margin-bottom:12px;
+    display:flex;
+    gap:12px;
+  }
+  .action-num{
+    flex:0 0 32px;
+    height:32px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+  }
+  .action-body h3{margin:0 0 4px;font-size:0.95rem;}
+  .action-meta{font-size:0.78rem;color:var(--text-sub);}
+  .action-meta b{color:var(--primary-2);}
+
+  footer{
+    text-align:center;
+    font-size:0.72rem;
+    color:var(--text-sub);
+    padding:20px 10px 30px;
+  }
+
+  @media (min-width:700px){
+    .panel{padding:22px 4px 50px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">📚 今日読むべき本</div>
+    <h1>🧠「悩まない人」の考え方</h1>
+    <div class="author">木下勝寿／ダイヤモンド社</div>
+    <div class="badges">
+      <span class="badge">🏷️ 自己啓発</span>
+      <span class="badge">🧩 思考アルゴリズム30</span>
+      <span class="badge">📖 全2部構成</span>
+    </div>
+  </header>
+
+  <!-- ===== ファーストビュー: Why & How ===== -->
+  <section class="hero-block">
+    <h2>⚡ 要約＝問い×答え×根拠</h2>
+    <div class="qa-row">
+      <div class="qa-item">
+        <div class="qa-label">❓ 問い（Why読むか）</div>
+        <div class="qa-text">なぜ同じ出来事でも、悩む人と悩まない人がいるのか？</div>
+      </div>
+      <div class="qa-item answer">
+        <div class="qa-label">✅ 答え（How）</div>
+        <div class="qa-text">悩まない人は精神力が強いのではなく、出来事を「解釈」し「行動」に変換する思考の手順（アルゴリズム）を持っているだけ。</div>
+      </div>
+      <div class="qa-item why">
+        <div class="qa-label">🔍 根拠</div>
+        <div class="qa-text">東証プライム上場企業を創業した著者が、詐欺で全財産を失っても20年以上まともに悩んだことがないと語る自身の実例と、30の思考アルゴリズムとして体系化。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== タブ ===== -->
+  <div class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🔑 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">💡 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </div>
+
+  <!-- ===== 主要概念 ===== -->
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <h2>🔑 主要概念の詳細</h2>
+
+    <div class="stat-row">
+      <div class="stat"><span class="num">30</span><span class="label">思考アルゴリズム</span></div>
+      <div class="stat"><span class="num">2部</span><span class="label">世界の見方／変え方</span></div>
+      <div class="stat"><span class="num">3分類</span><span class="label">出来事・仕事・他者</span></div>
+    </div>
+
+    <div class="card">
+      <h3>🧩 ① 思考アルゴリズム思考</h3>
+      <ul>
+        <li>「悩まない人」は性格や精神力ではなく、出来事を処理する「手順（アルゴリズム）」を持っているだけ</li>
+        <li>手順は後から誰でもインストールできる、という前提が本書全体の土台</li>
+        <li>1日1つずつ身につける形式で、30個が提示される</li>
+      </ul>
+      <div class="why-box"><b>理由（なぜ重要か）：</b>「悩まない」が才能ではなく技術だと分かれば、誰にでも再現可能になる。</div>
+    </div>
+
+    <div class="card">
+      <h3>🔀 ② 「思い通りにいかない」と「うまくいかない」の分離</h3>
+      <ul>
+        <li>電車が止まった、予定が崩れた＝「思い通りにいかない」</li>
+        <li>目標そのものが達成不能になったかどうかは別問題</li>
+        <li>代替手段があるかを先に確認すれば、悩みの大部分が消える</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>この2つを混同すると、小さな予定変更まで「失敗」として悩んでしまう。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧯 ③ 「解決」より「解消」</h3>
+      <ul>
+        <li>問題を完全に片付ける「解決」にこだわらない</li>
+        <li>悩みという感情そのものを消す「解消」を優先する</li>
+        <li>別の道・別の手段が見つかった時点で悩む必要はなくなる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>解決不能な問題は現実に存在するが、悩み続ける必要は本来ない。</div>
+    </div>
+
+    <div class="card">
+      <h3>🙋 ④ 全部自責思考 vs 他自責混在思考</h3>
+      <ul>
+        <li>出来事の責任の一部を他者や環境に置く「他自責混在思考」は感情を乱されやすい</li>
+        <li>「全部自責」は自分の責任にすべてを置くことで、他者の行動に心を乱されなくなる</li>
+        <li>「責任がある」こと＝「責任を取る」こととは別、という整理も提示される</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>責任の所在を自分に固定すると、他人や環境のせいにする分の悩みが構造的に消える。</div>
+    </div>
+
+    <div class="card">
+      <h3>🚫 ⑤ 「できない」ではなく「やらない」を自覚する</h3>
+      <ul>
+        <li>やり方を知っていて選ばないのは「できない」ではなく「やらない」という意思決定</li>
+        <li>この言い換えだけで、悩みが「選択の結果」として納得感を持つ</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>無力感の多くは「できない」という誤った認識から生まれる。</div>
+    </div>
+
+    <div class="card">
+      <h3>✍️ ⑥ 書きながら1時間だけ考える</h3>
+      <ul>
+        <li>脳内だけでダラダラ悩み続けると思考が循環し、終わらない</li>
+        <li>紙やメモに書き出し、時間を1時間など区切って考える</li>
+        <li>情報を事前に集めて短時間で向き合う方が解消が早い</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>悩みの多くは「時間無制限」であることそのものが長引く原因になっている。</div>
+    </div>
+
+    <div class="card">
+      <h3>🎲 ⑦ リスクを「確率論的」に考える</h3>
+      <ul>
+        <li>リスクに怯えない人は、起こりうる確率と影響度を数字で捉えている</li>
+        <li>「絶対に失敗したくない」という0か100かの発想から距離を取る</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>確率で考えると、過度な恐怖が妥当な警戒心にまで小さくなる。</div>
+    </div>
+
+    <div class="card">
+      <h3>🎭 ⑧ 「第二印象」で勝負する</h3>
+      <ul>
+        <li>第一印象の失敗にこだわらず、その後の振る舞いで評価を作り直す発想</li>
+        <li>根拠のないポジティブ思考は、裏付けがないぶん崩れやすいと指摘</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>最初の失敗を悩み続けるより、次の印象をどう作るかに集中できる。</div>
+    </div>
+  </section>
+
+  <!-- ===== 各章要約 ===== -->
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <h2>📖 各章の要約（疑似章立て）</h2>
+    <p style="font-size:0.8rem;color:var(--text-sub);">※ Web上で確認できた目次情報をもとに、論点ごとに疑似章として整理（詳細な全目次は未確認のため一部「不明」）。</p>
+
+    <div class="card">
+      <h3>🔰 プロローグ：「行動がすべてを解決する」を疑う</h3>
+      <ul>
+        <li>「とにかく動けば解決する」という一般的な自己啓発の前提をまず問い直す</li>
+        <li>行動の前に「考え方（思考アルゴリズム）」を変えることが先だと主張</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>行動量だけを増やす方法論は、間違った悩み方のまま空回りしやすいため。</div>
+    </div>
+
+    <div class="card">
+      <h3>🌍 第1部：「悩まない人」は世界をどう見ているか</h3>
+      <ul>
+        <li>副題：問題を問題でなくする思考アルゴリズム</li>
+        <li>出来事の受け止め方・解釈の仕方を変える技術を中心に展開</li>
+        <li>「思い通り／うまくいく」の分離、「解決／解消」の違いなどが含まれる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>悩みの発生源は出来事そのものでなく「解釈」にあるという本書の軸。</div>
+    </div>
+
+    <div class="card">
+      <h3>🔧 第2部：「悩まない人」は世界をどう変えているか</h3>
+      <ul>
+        <li>副題：問題を「具体的な課題」に昇華させる思考アルゴリズム</li>
+        <li>解釈を変えるだけでなく、悩みを行動可能な「課題」に変換する手順を扱う</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>解釈の変化だけでは終わらず、現実を動かす段階まで接続している。</div>
+    </div>
+
+    <div class="card">
+      <h3>📝 スキル23：脳内でダラダラ考えない。書きながら1時間考える。</h3>
+      <ul><li>悩みを可視化し、時間を区切って向き合う具体手順を提示</li></ul>
+      <div class="why-box"><b>理由：</b>無制限の反復思考を止める、最も実践しやすい技術の一つ。</div>
+    </div>
+
+    <div class="card">
+      <h3>🔥 スキル24：大きなピンチのときこそ「できていない自分」をまず疑う</h3>
+      <ul><li>環境や他者を疑う前に、自分の準備不足を点検する順序を提案</li></ul>
+      <div class="why-box"><b>理由：</b>自責から始めると、打てる対策が早く見つかる。</div>
+    </div>
+
+    <div class="card">
+      <h3>🌱 スキル25〜29：成長・非合理・第二印象・確率論・ポジティブの落とし穴</h3>
+      <ul>
+        <li>25「成長が止まらないベテラン」がずっと続けていること</li>
+        <li>26「非合理な自分」を受け入れる</li>
+        <li>27「第二印象」で勝負する</li>
+        <li>28 リスクに怯えない人は「確率論的」に考えている</li>
+        <li>29 ポジティブシンカーはなぜ、いきなり「心が折れる」のか</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>終盤は、長期的な成長と心の折れにくさを両立させる視点に発展している。</div>
+    </div>
+  </section>
+
+  <!-- ===== 具体例 ===== -->
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+    <h2>💡 具体例・ケーススタディ</h2>
+
+    <div class="card">
+      <h3>🥵 ケース1：猛暑でエアコンが壊れた</h3>
+      <ul>
+        <li>買い物で判断に迷う場面として紹介される具体例</li>
+        <li>「悩まない人」は、壊れた事実に動揺する前に、代替手段（応急処置・買い替え・レンタル等）の選択肢をまず並べて検討する</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>目の前の不便と「本当に困る事態か」を分けて考える訓練になる。</div>
+    </div>
+
+    <div class="card">
+      <h3>🚃 ケース2：電車が止まって予定が崩れる</h3>
+      <ul>
+        <li>電車の運休＝「思い通りにいかない」出来事</li>
+        <li>目的地に着けるかどうか＝「うまくいく／いかない」の本質的な問い</li>
+        <li>代替ルートがあれば、悩む要素はほぼ残らないという整理</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>日常の小さな混乱で悩みがちな典型パターンをそのまま分解できる。</div>
+    </div>
+
+    <div class="card">
+      <h3>💸 ケース3：詐欺で全財産を失った経験（著者自身）</h3>
+      <ul>
+        <li>著者は過去に詐欺被害で全財産を失ったと紹介されている</li>
+        <li>それでもここ20年以上「まともに悩んだことがない」と語っている、と複数の書評で紹介されている（要旨）</li>
+        <li>出来事を自分の責任として引き受け、次に取れる行動へすぐ意識を移す「全部自責思考」の実例として読まれている</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>最大級の逆境でも思考アルゴリズムが機能する、という説得力の核になっている。</div>
+    </div>
+
+    <div class="card">
+      <h3>🪞 ケース4：「できている人」の真似をする3ステップ</h3>
+      <ul>
+        <li>①できている人を見つける　②その人ができている理由を明らかにする　③わかった方法をそのまま実行する</li>
+        <li>悩む人は、理由を調べずに「自分には無理」で終わらせてしまう対比が示される</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>悩みを「調査→実行」という具体的な課題に変換する第2部の思考がよく表れている。</div>
+    </div>
+  </section>
+
+  <!-- ===== 引用 ===== -->
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <h2>💬 重要な引用</h2>
+    <p style="font-size:0.8rem;color:var(--text-sub);">※ 原典の該当ページを直接確認できなかったため、複数の書評・紹介記事で共通して紹介されている内容を「要旨」として記載する。</p>
+
+    <div class="quote">
+      <span class="tag">要旨</span>
+      <div>悩みやすい人と悩まない人の違いは、性格や精神力の強さではなく、「悩まないスキル」を持っているかどうかだけである。</div>
+    </div>
+
+    <div class="quote">
+      <span class="tag">要旨</span>
+      <div>根拠のないポジティブ思考は、裏付けがないぶん崩れやすく、現実逃避に近いものになりかねない。</div>
+    </div>
+
+    <div class="quote">
+      <span class="tag">要旨</span>
+      <div>「思い通りにいかない」ことと「うまくいかない」ことは別物であり、この2つを分けて考えるだけで悩みの多くは消える。</div>
+    </div>
+
+    <div class="quote">
+      <span class="tag">要旨</span>
+      <div>責任が「ある」ことと、責任を「取る」ことは違う。成長とは、自分が責任を取る範囲を少しずつ広げていくことである。</div>
+    </div>
+  </section>
+
+  <!-- ===== 今日のアクション ===== -->
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <h2>✅ 今日できるアクション</h2>
+
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <h3>今の悩みを「思い通り」か「うまくいかない」かに分けて書く</h3>
+        <ul>
+          <li>今気になっていることを1つ選び、紙に「思い通りにいかないだけ」か「本当に目標達成が無理」かを分けて書き出す</li>
+        </ul>
+        <div class="action-meta"><b>目的：</b>悩みの正体を切り分ける習慣をつける ／ <b>期待効果：</b>15分で、悩みの大きさが実際より誇張されていたことに気づける</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <h3>「解決できない問題」を「解消できる道」に言い換える</h3>
+        <ul>
+          <li>直近で引っかかっている小さな問題について、完全に解決する必要がない「別の道」を1つ考える</li>
+        </ul>
+        <div class="action-meta"><b>目的：</b>「解決」への執着を減らす思考の切り替え練習 ／ <b>期待効果：</b>20分で、問題への固執から距離を取れる</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <h3>今日のモヤモヤを「全部自責」で書き直す</h3>
+        <ul>
+          <li>他人や環境のせいにする言い回しを一切使わず、出来事を全て自分の責任として一文で書き直す</li>
+        </ul>
+        <div class="action-meta"><b>目的：</b>全部自責思考を体感する ／ <b>期待効果：</b>15分で、他者に心を乱されにくい感覚を実際に体験できる</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    📚 books-summary daily reading digest ／ 内容はWeb上の書評・紹介記事に基づく要約です。詳細は原著をご確認ください。
+  </footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab-btn');
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-cases':'panel-cases',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(b){ b.setAttribute('aria-selected','false'); });
+      Object.values(panels).forEach(function(id){
+        document.getElementById(id).classList.remove('active');
+      });
+      btn.setAttribute('aria-selected','true');
+      document.getElementById(panels[btn.id]).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
