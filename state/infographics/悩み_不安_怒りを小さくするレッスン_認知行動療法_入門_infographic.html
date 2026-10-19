@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>悩み・不安・怒りを小さくするレッスン ― インフォグラフィック</title>
+<!--
+  カラーパレット（本ページ固有のCSSカスタムプロパティとして定義）
+  プライマリー: #0D9488 → #115E59（ティール系グラデーション／冷静な分析・臨床を象徴）
+  セカンダリー: #F59E0B（アンバー／怒り・感情の熱を象徴）
+  アクセント:   #6366F1（インディゴ／気づき・洞察を象徴）
+-->
+<style>
+  :root{
+    --primary-1:#0D9488;
+    --primary-2:#115E59;
+    --secondary:#F59E0B;
+    --accent:#6366F1;
+    --bg:#F8FAFC;
+    --card-bg:#FFFFFF;
+    --text-main:#1E293B;
+    --text-sub:#64748B;
+    --border:#E2E8F0;
+    --shadow:0 2px 8px rgba(30,41,59,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    background:var(--bg);
+    color:var(--text-main);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:16px;}
+
+  /* ===== ヘッダー ===== */
+  header{
+    background:linear-gradient(135deg,var(--primary-1),var(--primary-2));
+    color:#fff;
+    padding:28px 20px 24px;
+    border-radius:0 0 20px 20px;
+    text-align:center;
+  }
+  header .eyebrow{
+    font-size:0.75rem;
+    letter-spacing:0.08em;
+    opacity:0.85;
+    margin-bottom:6px;
+  }
+  header h1{
+    font-size:1.4rem;
+    margin:0 0 8px;
+    font-weight:800;
+    line-height:1.4;
+  }
+  header .author{font-size:0.9rem;opacity:0.9;}
+  .badges{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-top:16px;
+  }
+  .badge{
+    background:rgba(255,255,255,0.18);
+    border:1px solid rgba(255,255,255,0.35);
+    border-radius:999px;
+    padding:6px 12px;
+    font-size:0.78rem;
+    font-weight:700;
+  }
+
+  /* ===== ファーストビュー: Why & How ===== */
+  .hero-block{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    margin:16px 0 20px;
+    padding:18px;
+  }
+  .hero-block h2{
+    font-size:0.95rem;
+    color:var(--primary-2);
+    margin:0 0 12px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .qa-item{
+    border-left:4px solid var(--secondary);
+    background:#FFFBEB;
+    border-radius:8px;
+    padding:10px 12px;
+  }
+  .qa-item.answer{border-left-color:var(--primary-1);background:#F0FDFA;}
+  .qa-item.why{border-left-color:var(--accent);background:#EEF2FF;}
+  .qa-label{font-size:0.72rem;font-weight:800;color:var(--text-sub);margin-bottom:4px;}
+  .qa-text{font-size:0.92rem;font-weight:600;}
+
+  /* ===== タブ ===== */
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:4px;
+    background:var(--card-bg);
+    border-radius:12px;
+    box-shadow:var(--shadow);
+    position:sticky;
+    top:0;
+    z-index:10;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    border:none;
+    background:transparent;
+    color:var(--text-sub);
+    font-size:0.78rem;
+    font-weight:700;
+    padding:10px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:linear-gradient(135deg,var(--primary-1),var(--primary-2));
+    color:#fff;
+  }
+  .panel{display:none;padding:18px 2px 40px;}
+  .panel.active{display:block;}
+  .panel h2{
+    font-size:1.05rem;
+    color:var(--primary-2);
+    border-bottom:3px solid var(--secondary);
+    display:inline-block;
+    padding-bottom:4px;
+    margin:18px 0 14px;
+  }
+
+  /* ===== カード ===== */
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:14px 16px;
+    margin-bottom:14px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:0.98rem;
+    color:var(--text-main);
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .card ul{margin:6px 0 0;padding-left:1.2em;}
+  .card li{font-size:0.88rem;margin-bottom:4px;}
+  .why-box{
+    margin-top:10px;
+    background:#EEF2FF;
+    border:1px dashed var(--accent);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:0.82rem;
+    color:#3730A3;
+  }
+  .why-box b{color:var(--accent);}
+
+  /* ===== 数値バッジ・可視化 ===== */
+  .stat-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:14px 0;
+  }
+  .stat{
+    flex:1 1 90px;
+    background:linear-gradient(135deg,var(--primary-1),var(--primary-2));
+    color:#fff;
+    border-radius:12px;
+    padding:12px 10px;
+    text-align:center;
+  }
+  .stat .num{font-size:1.4rem;font-weight:800;display:block;}
+  .stat .label{font-size:0.68rem;opacity:0.9;}
+
+  .bar-wrap{margin:10px 0;}
+  .bar-label{font-size:0.78rem;font-weight:700;margin-bottom:4px;display:flex;justify-content:space-between;}
+  .bar-track{background:#E2E8F0;border-radius:999px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary-1),var(--accent));}
+
+  /* ===== 引用 ===== */
+  .quote{
+    border-left:5px solid var(--primary-1);
+    background:#F0FDFA;
+    border-radius:0 10px 10px 0;
+    padding:12px 14px;
+    margin-bottom:12px;
+    font-size:0.92rem;
+  }
+  .quote .tag{
+    display:inline-block;
+    font-size:0.68rem;
+    font-weight:800;
+    color:#fff;
+    background:var(--secondary);
+    border-radius:999px;
+    padding:2px 8px;
+    margin-bottom:6px;
+  }
+
+  /* ===== アクション ===== */
+  .action-card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:14px 16px;
+    margin-bottom:12px;
+    display:flex;
+    gap:12px;
+  }
+  .action-num{
+    flex:0 0 32px;
+    height:32px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+  }
+  .action-body h3{margin:0 0 4px;font-size:0.95rem;}
+  .action-meta{font-size:0.78rem;color:var(--text-sub);}
+  .action-meta b{color:var(--primary-2);}
+
+  footer{
+    text-align:center;
+    font-size:0.72rem;
+    color:var(--text-sub);
+    padding:20px 10px 30px;
+  }
+
+  @media (min-width:700px){
+    .panel{padding:22px 4px 50px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">📚 今日読むべき本</div>
+    <h1>🧠 悩み・不安・怒りを小さくするレッスン<br>―「認知行動療法」入門</h1>
+    <div class="author">中島美鈴／光文社新書</div>
+    <div class="badges">
+      <span class="badge">🏷️ 心理学</span>
+      <span class="badge">🧪 認知行動療法（CBT）</span>
+      <span class="badge">📖 序章＋全章</span>
+    </div>
+  </header>
+
+  <!-- ===== ファーストビュー: Why & How ===== -->
+  <section class="hero-block">
+    <h2>⚡ 要約＝問い×答え×根拠</h2>
+    <div class="qa-row">
+      <div class="qa-item">
+        <div class="qa-label">❓ 問い（Why読むか）</div>
+        <div class="qa-text">メールの返信がない、ミスを指摘された――なぜ些細なことで、いつもクヨクヨ・ビクビク・イライラしてしまうのか？</div>
+      </div>
+      <div class="qa-item answer">
+        <div class="qa-label">✅ 答え（How）</div>
+        <div class="qa-text">それは性格や精神力の弱さではなく、「認知の歪み」と「無意識的な学習メカニズム」のせい。気づいて記録し、検証すれば誰でも変えられる。</div>
+      </div>
+      <div class="qa-item why">
+        <div class="qa-label">🔍 根拠</div>
+        <div class="qa-text">臨床心理士である著者が、保護観察所などでの矯正臨床の経験も踏まえ、アーロン・ベックの認知モデルから下向き矢印法・推論の誤り・アンガーマネジメント・マインドフルネスまでを体系的に提示。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== タブ ===== -->
+  <div class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🔑 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">💡 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </div>
+
+  <!-- ===== 主要概念 ===== -->
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <h2>🔑 主要概念の詳細</h2>
+
+    <div class="stat-row">
+      <div class="stat"><span class="num">264</span><span class="label">ページ</span></div>
+      <div class="stat"><span class="num">2016</span><span class="label">年12月刊</span></div>
+      <div class="stat"><span class="num">8</span><span class="label">主要キーワード</span></div>
+    </div>
+
+    <div class="card">
+      <h3>🧠 ① 認知モデル（アーロン・ベック）</h3>
+      <ul>
+        <li>出来事そのものではなく、出来事と感情の間に挟まる「認知（自動思考）」が感情を生み出すという理論</li>
+        <li>認知行動療法（CBT）全体の理論的な出発点</li>
+      </ul>
+      <div class="why-box"><b>理由（なぜ重要か）：</b>感情を直接コントロールしようとせず、間にある「考え方」という観察・修正可能な対象に注目する発想の根拠になっているから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🌀 ② 認知の歪み</h3>
+      <ul>
+        <li>白黒思考、過度の一般化、恣意的推論など、出来事の受け取り方に生じる偏ったパターン</li>
+        <li>誰にでも起こる、普遍的な思考のクセとして紹介される</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>自分がどの歪みに陥りやすいかを知ることが、感情的な反応を客観視する第一歩になるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⬇️ ③ 下向き矢印法</h3>
+      <ul>
+        <li>表面的な悩みに対して「それだと何が嫌なのか」を繰り返し問い、根底にある信念（スキーマ）を掘り出す技法</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>同じパターンの悩みを繰り返す人は、表面の出来事ではなく奥にある信念自体に働きかける必要があるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🔬 ④ 行動分析</h3>
+      <ul>
+        <li>行動の「きっかけ」と「結果」を分析し、その行動がなぜ維持されているのかを理解する手法</li>
+        <li>古典的条件付け・オペラント条件付けという学習理論が土台にある</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>感情や行動の変化には、考え方だけでなく「何が行動を引き起こし、何がそれを強化しているか」という環境要因の視点も必要だから。</div>
+    </div>
+
+    <div class="card">
+      <h3>❓ ⑤ 推論の誤り</h3>
+      <ul>
+        <li>恣意的推論（証拠なく悪い結論に飛びつく）、拡大解釈など、典型的な思考の誤り方のパターン</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>自分の悩みが「事実」ではなく「推論」にすぎない可能性に気づくだけで、過剰な反応を防げるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🚪 ⑥ エクスポージャー（段階的露出）</h3>
+      <ul>
+        <li>不安な状況に段階的・計画的に身を置き、不安が時間とともに自然に下がることを体験する技法</li>
+        <li>パニック障害・社交不安障害へのアプローチとして紹介される</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>回避は一時的に不安を下げても長期的には不安を強化してしまうため、あえて向き合う練習が必要だから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🔥 ⑦ アンガーマネジメント</h3>
+      <ul>
+        <li>怒りという感情そのものをなくすのではなく、怒りの「表現方法」をコントロールする技術</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>怒りを溜め込むことも爆発させることも関係や健康を損なうため、「上手に表現する」という第三の道が必要だから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🗣️ ⑧ アサーティブ・コミュニケーション＋マインドフルネス</h3>
+      <ul>
+        <li>自分の意見を、相手を攻撃せず卑屈にもならずに伝える対人技術</li>
+        <li>終盤にマインドフルネスも応用技術の一つとして取り上げられる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>怒りや不満を溜め込む悪習慣の多くは、自己主張の技術不足に起因しているから。</div>
+    </div>
+  </section>
+
+  <!-- ===== 各章要約 ===== -->
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <h2>📖 各章の要約</h2>
+    <p style="font-size:0.8rem;color:var(--text-sub);">※ 序章〜第3章はWeb上の書誌情報で章題が確認できたためそのまま記載。第4章以降は複数の紹介ページで表記が揺れ、正確な章区切りが不明なため「応用技術編」として疑似章にまとめている。</p>
+
+    <div class="card">
+      <h3>🔰 序章：複雑に悩むよりシンプルに考える</h3>
+      <ul>
+        <li>日常の悩みを、性格や精神力の問題ではなく「考え方の手順」の問題として捉え直す視点を提示</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>この視点の転換なしには、以降の技法がただのテクニック集に終わってしまうため。</div>
+    </div>
+
+    <div class="card">
+      <h3>1️⃣ 第1章：認知が感情を生み出す、アーロン・ベックの「認知モデル」</h3>
+      <ul>
+        <li>出来事→認知（自動思考）→感情という、CBTの基本的な流れを導入</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>感情ではなく「自動思考」に注目するという、本書全体の基本操作を最初に理解する必要があるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>2️⃣ 第2章：信念に振り回されないための「下向き矢印法」と「行動分析」</h3>
+      <ul>
+        <li>表面的な悩みの奥にある信念を掘り出す方法と、行動が維持される仕組みを分析する方法を解説</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>同じパターンの悩みを繰り返す人には、表面的な対処だけでなく根本の信念・環境要因への働きかけが必要なため。</div>
+    </div>
+
+    <div class="card">
+      <h3>3️⃣ 第3章：考え方のクセを直す、典型的な「推論の誤り」</h3>
+      <ul>
+        <li>白黒思考、恣意的推論など典型的な思考の誤りパターンを整理し、自分で気づく練習を促す</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>自分がどの歪みに陥りやすいかを知ることが、感情的な反応を客観視する実践的な足がかりになるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>4️⃣ 第4章以降（応用技術編）：エクスポージャー・パニック症／社交不安症へのアプローチ・アンガーマネジメント・アサーティブ・コミュニケーション・マインドフルネス</h3>
+      <ul>
+        <li>古典的条件付け・オペラント条件付けなどの学習理論を踏まえ、不安への段階的露出や、怒り・対人関係・マインドフルネスへの応用技術を扱う</li>
+        <li>正確な章区切りは複数の書誌情報で表記が一致せず「不明」。応用技術編として合算して整理した</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>理論だけでは変化は起きず、具体的な技術に落とし込むことで初めて日常で再現可能になるため。</div>
+    </div>
+  </section>
+
+  <!-- ===== 具体例 ===== -->
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+    <h2>💡 具体例・ケーススタディ</h2>
+
+    <div class="card">
+      <h3>📧 ケース1：メールの返信が来ないと不安になる</h3>
+      <ul>
+        <li>出版社の内容紹介で挙げられている、本書の出発点となる典型例</li>
+        <li>相手が忙しい・見落としただけという他の可能性を無視し、「嫌われたのでは」という一つの解釈に飛びつく「恣意的推論」の典型として読める</li>
+      </ul>
+      <div class="why-box"><b>理由（この例が示すこと）：</b>誰もが日常的に経験する些細な出来事こそ、認知の歪みを観察する一番手軽な練習材料になることを示している。</div>
+    </div>
+
+    <div class="card">
+      <h3>😳 ケース2：上司や同僚にミスを指摘されて必要以上に動揺する</h3>
+      <ul>
+        <li>同じく出版社の内容紹介で挙げられている典型例</li>
+        <li>「ミスを指摘された」という事実と、「自分はダメな人間だ」という評価を混同してしまう思考の癖を浮かび上がらせる</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>出来事の大きさと感情的反応の大きさが必ずしも一致しないことを実感させ、間にある「解釈」の存在に気づかせる。</div>
+    </div>
+
+    <div class="card">
+      <h3>⚖️ ケース3：著者の矯正臨床の経験（薬物依存・性犯罪加害者への集団認知行動療法）</h3>
+      <ul>
+        <li>著者プロフィールで確認できる臨床経歴。福岡保護観察所などで薬物依存や性犯罪加害者への集団認知行動療法のスーパーバイザーを務めた</li>
+        <li>強く固定化された「無意識的な学習メカニズム」であっても、CBTの技法によって変化を起こせることの裏付けとなっている</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>本書が一般読者の些細な悩みに使う技法が、臨床現場で深刻な行動パターンの変化にも用いられてきた、再現性のある手法であることを示している。</div>
+    </div>
+  </section>
+
+  <!-- ===== 引用 ===== -->
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <h2>💬 重要な引用</h2>
+    <p style="font-size:0.8rem;color:var(--text-sub);">※ 原典の該当ページを直接確認できなかったため、出版社の内容紹介・読者レビューで共通して紹介されている内容を「要旨」として記載する。</p>
+
+    <div class="quote">
+      <span class="tag">要旨</span>
+      <div>「メールの返信がない」「ミスを指摘される」といった些細な出来事に繰り返しクヨクヨ、ビクビク、イライラしてしまうのは、性格や精神力の弱さのせいではなく、「認知の歪み」と「無意識的な学習メカニズム」が働いているからだ。</div>
+    </div>
+
+    <div class="quote">
+      <span class="tag">要旨</span>
+      <div>マインドフルネスは本書の終盤でわずかに触れられる位置づけであり、本書全体としては認知再構成や行動分析を軸とするオーソドックスな認知行動療法の体系に重心が置かれている（読者レビューに基づく）。</div>
+    </div>
+  </section>
+
+  <!-- ===== 今日のアクション ===== -->
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <h2>✅ 今日できるアクション</h2>
+
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <h3>「思考記録」を1件つけてみる</h3>
+        <ul>
+          <li>今日イラッとした・不安になった出来事を1つ選び、「状況→そのとき頭に浮かんだ考え（自動思考）→感情→その考えの根拠→反対の根拠→もっと現実的な考え」の順にノートへ書き出す</li>
+        </ul>
+        <div class="action-meta"><b>目的：</b>自動思考と事実を切り分けて見る練習をする ／ <b>期待効果：</b>20分で、次に同じ場面に出会った時、感情に流される前に一歩止まって考え直せるようになる</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <h3>自分の「推論の誤り」のパターンを2つ書き出す</h3>
+        <ul>
+          <li>白黒思考・恣意的推論・過度の一般化など、自分が繰り返しやすい思考のクセを2つ選び、直近で実際にそれをしてしまった場面を思い出して書く</li>
+        </ul>
+        <div class="action-meta"><b>目的：</b>自分がどの歪みに陥りやすいかを事前に把握する ／ <b>期待効果：</b>15分で、同じ歪みが出た瞬間に「これはいつものパターンだ」と気づけるようになる</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <h3>怒りを感じた場面で「6秒待つ」を1回実践する</h3>
+        <ul>
+          <li>今日イラッとする出来事があれば、反応する前に6秒数えてから言葉を発してみる。実践後、怒りの強さが前後でどう変わったかを一言メモする</li>
+        </ul>
+        <div class="action-meta"><b>目的：</b>怒りの衝動と実際の言動の間に、選択の余地を作る ／ <b>期待効果：</b>準備・記録を含め20分で、後で後悔するような言動を減らせる</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    📚 books-summary daily reading digest ／ 内容はWeb上の書誌情報・書評・紹介記事に基づく要約です。詳細は原著をご確認ください。
+  </footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab-btn');
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-cases':'panel-cases',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(b){ b.setAttribute('aria-selected','false'); });
+      Object.values(panels).forEach(function(id){
+        document.getElementById(id).classList.remove('active');
+      });
+      btn.setAttribute('aria-selected','true');
+      document.getElementById(panels[btn.id]).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
