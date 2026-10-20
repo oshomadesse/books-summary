@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>多様性の科学 ― インフォグラフィック</title>
+<!--
+  カラーパレット
+  プライマリー: #2D3250 (濃紺・信頼と知性)
+  セカンダリー: #7077A1 (藤鼠・多様な視点)
+  アクセント:   #F6B17A (珊瑚オレンジ・反逆者/気づきのひらめき)
+  グラデーション: linear-gradient(135deg, #2D3250 0%, #7077A1 100%)
+-->
+<style>
+  :root{
+    --primary:#2D3250;
+    --secondary:#7077A1;
+    --accent:#F6B17A;
+    --bg:#F6F6F9;
+    --card:#FFFFFF;
+    --text:#232336;
+    --text-sub:#5A5C72;
+    --border:#E3E3F0;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 0 48px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--secondary) 100%);
+    color:#fff;
+    padding:28px 20px 32px;
+    border-radius:0 0 28px 28px;
+  }
+  .kicker{font-size:13px;letter-spacing:.08em;opacity:.85;margin:0 0 6px;}
+  h1.title{font-size:22px;margin:0 0 10px;font-weight:800;line-height:1.4;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;font-size:13px;opacity:.95;margin-bottom:18px;}
+  .meta span{background:rgba(255,255,255,.16);padding:4px 10px;border-radius:999px;}
+  .why-how{
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:var(--radius);
+    padding:16px;
+    font-size:14px;
+  }
+  .why-how .row{margin-bottom:10px;}
+  .why-how .row:last-child{margin-bottom:0;}
+  .why-how b{display:inline-block;background:var(--accent);color:#2D2208;padding:2px 8px;border-radius:6px;font-size:12px;margin-right:6px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:14px 16px 0;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:5;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card);
+    color:var(--text-sub);
+    font-size:13px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+
+  main{padding:16px;}
+  section.panel{display:none;animation:fade .25s ease;}
+  section.panel.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  h2.panel-title{font-size:16px;margin:4px 0 14px;color:var(--primary);display:flex;align-items:center;gap:6px;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 1px 2px rgba(45,50,80,.04);
+  }
+  .card h3{font-size:15px;margin:0 0 8px;color:var(--primary);display:flex;gap:8px;align-items:flex-start;}
+  .card h3 .num{
+    flex:0 0 auto;
+    background:var(--accent);
+    color:#2D2208;
+    font-size:12px;
+    font-weight:800;
+    width:22px;height:22px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card ul{margin:0 0 8px;padding-left:18px;font-size:13.5px;color:var(--text);}
+  .card ul li{margin-bottom:4px;}
+  .why{
+    font-size:12.5px;
+    color:var(--text-sub);
+    background:#F1F1FA;
+    border-left:3px solid var(--secondary);
+    padding:8px 10px;
+    border-radius:8px;
+  }
+  .why b{color:var(--primary);}
+
+  .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px;}
+  .badge{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px 12px;
+    flex:1 1 90px;
+    text-align:center;
+  }
+  .badge .num{font-size:20px;font-weight:800;color:var(--primary);display:block;}
+  .badge .lbl{font-size:11px;color:var(--text-sub);}
+
+  .quote-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .quote-card blockquote{margin:0 0 8px;font-size:14.5px;font-style:italic;color:var(--text);}
+  .quote-card .note{font-size:12px;color:var(--text-sub);}
+  .quote-card .tag{
+    display:inline-block;
+    font-size:10.5px;
+    background:#F1F1FA;
+    color:var(--secondary);
+    padding:2px 8px;
+    border-radius:999px;
+    margin-bottom:8px;
+  }
+
+  .action-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+    display:flex;
+    gap:12px;
+  }
+  .action-card .time{
+    flex:0 0 auto;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#fff;
+    font-size:12px;
+    font-weight:800;
+    border-radius:10px;
+    padding:8px 10px;
+    text-align:center;
+    min-width:54px;
+  }
+  .action-card .time span{display:block;font-size:15px;}
+  .action-card h3{font-size:14.5px;margin:0 0 6px;color:var(--primary);}
+  .action-card p{font-size:13px;margin:0 0 6px;color:var(--text);}
+  .action-card .effect{font-size:12px;color:var(--secondary);font-weight:700;}
+
+  .related{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin:0 16px 24px;
+  }
+  .related h2{font-size:15px;margin:0 0 10px;color:var(--primary);}
+  .related ul{margin:0;padding-left:18px;font-size:13px;}
+  .related li{margin-bottom:6px;}
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--text-sub);
+    padding:12px 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="kicker">📚 今日の一冊｜ビジネス</p>
+    <h1 class="title">多様性の科学<br>画一的で凋落する組織、複数の視点で問題を解決する組織</h1>
+    <div class="meta">
+      <span>👤 マシュー・サイド</span>
+      <span>🏢 ディスカヴァー・トゥエンティワン</span>
+      <span>🏷️ ビジネス</span>
+    </div>
+    <div class="why-how">
+      <div class="row"><b>問い</b>なぜ「優秀な人」だけを集めた組織が、驚くほど愚かな意思決定をしてしまうのか？</div>
+      <div class="row"><b>答え</b>属性（性別・人種など）の多様性だけでなく、ものの見方そのものが異なる「認知的多様性」を欠いているから。似た考え方の人（クローン）ばかりの集団は、互いの死角を補い合えない。</div>
+      <div class="row"><b>根拠</b>9.11を防げなかったCIAの人員構成、1996年エベレスト大量遭難、情報の組み合わせで生まれるイノベーション事例など、実在の失敗・成功ケースが繰り返しこの構図を裏付けている。</div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">🧪 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+
+    <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+      <h2 class="panel-title">🧩 主要概念の詳細</h2>
+
+      <div class="badge-row">
+        <div class="badge"><span class="num">7</span><span class="lbl">章構成</span></div>
+        <div class="badge"><span class="num">2019</span><span class="lbl">原著刊行年</span></div>
+        <div class="badge"><span class="num">10万部+</span><span class="lbl">シリーズ累計</span></div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">1</span>認知的多様性</h3>
+        <ul>
+          <li>知識・経験・視点・問題の捉え方そのものの違いを指す</li>
+          <li>性別や人種など「見た目の属性」の多様性（人口統計学的多様性）とは別物</li>
+          <li>同じ学校・同じ理論を学んだ人だけを集めると、見た目が多様でも「認知的にはクローン」になりうる</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>集団が賢くなるかどうかを決めるのは、属性の見た目の多様性以上に、物事をどう見るかの違いだから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">2</span>クローン対反逆者</h3>
+        <ul>
+          <li>同質な人材ばかりの「クローン集団」は居心地は良いが死角を共有してしまう</li>
+          <li>「反逆者（Rebel）」＝異なる前提で物事を見る人材が死角を照らす</li>
+          <li>優秀さの基準を一つに揃えるほど、見落としの範囲も揃ってしまう</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>採用・人事で「自社らしさ」を優先しすぎると、組織全体の死角が強化されてしまうため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">3</span>死角（ブラインドスポット）</h3>
+        <ul>
+          <li>個人にもチームにも「気づけないこと」が必ず存在するという前提に立つ</li>
+          <li>死角は能力不足ではなく構成の画一性から生まれる</li>
+          <li>死角を減らす方法は個人の努力ではなく「異なる視点の追加」</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>「もっと頑張れば気づけた」という個人責任論では再発を防げないから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">4</span>不均衡なコミュニケーション（権威勾配）</h3>
+        <ul>
+          <li>上下関係が強いほど、下位者は上位者の判断に異議を唱えにくくなる</li>
+          <li>航空業界・登山隊など「命に関わる現場」で繰り返し問題になってきた構造</li>
+          <li>多様な視点があっても、発言できなければ組織の意思決定には反映されない</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>多様性は「持っていること」だけでなく「発言され、活かされること」が条件だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">5</span>イノベーションの組み合わせ理論</h3>
+        <ul>
+          <li>画期的なアイデアの多くは、既存の異分野の知識同士の新しい組み合わせから生まれる</li>
+          <li>似た経歴のメンバーだけでは組み合わせの引き出しが少ない</li>
+          <li>チーム内に異なる専門性・経験を持つ人がいるほど組み合わせの可能性が増える</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>「天才のひらめき」ではなく「視点の掛け合わせ」こそが再現可能な革新のメカニズムだから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">6</span>エコーチェンバー現象</h3>
+        <ul>
+          <li>似た意見同士が反響し合い、異なる意見が届いても信じられなくなる状態</li>
+          <li>SNS時代に加速しやすく、組織内でも「社内の空気」として同様に発生する</li>
+          <li>外部の声が「聞こえているのに届かない」状態は、多様性の欠如よりもさらに気づきにくい</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>多様なメンバーを集めても、内輪の同調が強いと声が実質的に無力化されるため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">7</span>大局を見る（集合知の設計）</h3>
+        <ul>
+          <li>個々の優秀さの総和ではなく、視点の組み合わせ方が集団の知性を決める</li>
+          <li>多様性は「あれば良い」ものではなく、意図的に設計・運用すべき仕組み</li>
+          <li>意思決定の場・採用基準・評価制度のすべてに認知的多様性の視点を組み込む必要がある</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>本書全体の結論として、多様性を属性の帳尻合わせで終わらせず、組織運営そのものの設計原理にするため。</div>
+      </div>
+    </section>
+
+    <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+      <h2 class="panel-title">📖 各章の要約</h2>
+
+      <div class="card">
+        <h3><span class="num">1</span>画一的集団の「死角」</h3>
+        <ul>
+          <li>9.11テロをCIAが未然に防げなかった経緯を分析</li>
+          <li>当時のCIA職員は中上流階級の白人男性に偏り、テロ組織側の文化的背景への理解が不足していたとされる</li>
+          <li>個々の職員が無能だったのではなく、組織構成の画一性が死角を生んだという立場</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>本書全体の問題提起であり、以降の章すべての土台となる事例だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">2</span>クローン対反逆者</h3>
+        <ul>
+          <li>人口統計学的多様性と認知的多様性を区別する概念整理の章</li>
+          <li>属性だけ多様でも思考が均質なら「クローン」になりうると指摘</li>
+          <li>採用基準そのものを見直す必要性を提起</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>「多様性＝属性の多様性」という誤解を正す本書のキー概念が置かれているため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">3</span>不均衡なコミュニケーション</h3>
+        <ul>
+          <li>1996年のエベレスト大量遭難事故を題材に、権威への異議申し立ての難しさを描く</li>
+          <li>1978年のユナイテッド航空173便の事故事例も合わせて紹介されている</li>
+          <li>「正しい情報を持つ人が黙ってしまう」構造的リスクを扱う</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>多様な視点があっても、発言されなければ意思決定に反映されないことを示す章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">4</span>イノベーション</h3>
+        <ul>
+          <li>画期的なアイデアは異分野の知見の新結合から生まれるという立場を展開</li>
+          <li>似た専門性のメンバーだけのチームでは組み合わせの幅が狭まると指摘</li>
+          <li>イノベーションを「天才の閃き」ではなく仕組みとして捉え直す</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>多様性を人事上の建前ではなく、競争力の源泉として位置づける章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">5</span>エコーチェンバー現象</h3>
+        <ul>
+          <li>似た意見同士が反響し合い、外部の声を「聞こえても信じない」状態に陥る構造を解説</li>
+          <li>極端な立場に染まった人物が、異なる視点との接触によって考えを改めた事例が紹介されている</li>
+          <li>情報環境そのものの多様性も集合知に影響することを示す</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>SNS時代における多様性の欠如は、組織の中だけでなく情報環境全体の問題であることを示すため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">6</span>平均値の落とし穴</h3>
+        <ul>
+          <li>「平均的な人物像」を基準に設計・評価すると、実際には誰にも最適化されない結果になりうるという論点を扱う章</li>
+          <li>個々の差異を切り捨てて単一の基準に合わせることのリスクを指摘</li>
+          <li>本書内で用いられている具体的な統計・事例の詳細は検索範囲内では確認できず、不明</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>「標準」「平均」という一見中立な基準自体が、画一性を生む罠になりうることを示す章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">7</span>大局を見る</h3>
+        <ul>
+          <li>これまでの議論を集合知の設計という観点で総括する最終章</li>
+          <li>多様性を偶然の産物ではなく、意図的に設計すべき仕組みとして位置づける</li>
+          <li>採用・評価・意思決定プロセス全体への示唆としてまとめられている</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>読者が自分の組織に持ち帰って実践するための結論部だから。</div>
+      </div>
+    </section>
+
+    <section id="panel-examples" class="panel" role="tabpanel" aria-labelledby="tab-examples" hidden>
+      <h2 class="panel-title">🧪 具体例・ケーススタディ</h2>
+
+      <div class="card">
+        <h3><span class="num">1</span>CIAと9.11</h3>
+        <ul>
+          <li><b>背景：</b>2001年9月11日の同時多発テロを、CIAは事前に防げなかった</li>
+          <li><b>示唆：</b>職員の属性（人種・民族・性別・社会階級）が画一的だったことが、テロ組織の思考様式への理解不足につながったという分析</li>
+        </ul>
+        <div class="why"><b>この例が示すこと：</b>優秀な個人の集まりでも、構成が画一的だと組織全体として「見えない」領域が生まれる。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">2</span>1996年エベレスト大量遭難 / 1978年UA173便事故</h3>
+        <ul>
+          <li><b>背景：</b>経験豊富な登山隊・乗務員チームでありながら、リーダーの判断に異を唱えられず被害が拡大した事例</li>
+          <li><b>示唆：</b>権威勾配が強い現場ほど、正しい情報を持つ人が沈黙してしまうリスクが高い</li>
+        </ul>
+        <div class="why"><b>この例が示すこと：</b>多様な知識・懸念があっても、それを言える心理的安全性がなければ活かされない。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">3</span>エコーチェンバーからの離脱事例</h3>
+        <ul>
+          <li><b>背景：</b>極端な思想を持っていた人物が、立場の異なる人との直接の対話を通じて考えを改めた事例が紹介されている</li>
+          <li><b>示唆：</b>閉じた情報環境では外部の声が「聞こえているのに信じられない」状態になる</li>
+        </ul>
+        <div class="why"><b>この例が示すこと：</b>多様性の欠如は人員構成だけでなく、日々接する情報環境そのものにも及ぶ。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">4</span>「クローン採用」の罠（一般論としての整理）</h3>
+        <ul>
+          <li><b>背景：</b>自社文化に合う人材を優先する採用慣行が、結果として似た思考の人材ばかりを集めてしまう構造</li>
+          <li><b>示唆：</b>「優秀さ」の定義自体が画一的だと、多様な人材を採用しても認知的多様性は増えない</li>
+        </ul>
+        <div class="why"><b>この例が示すこと：</b>多様性は属性の数合わせではなく、採用基準そのものの設計から見直す必要がある。</div>
+      </div>
+    </section>
+
+    <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+      <h2 class="panel-title">💬 重要な引用</h2>
+
+      <div class="quote-card">
+        <span class="tag">要旨</span>
+        <blockquote>優秀な個人をどれだけ集めても、全員が同じようにものを見ているなら、集団としての死角は消えない。</blockquote>
+        <div class="note">本書第1〜2章の主張の要旨（原文の引用は検索範囲内では確認できなかったため要旨で代替）</div>
+      </div>
+
+      <div class="quote-card">
+        <span class="tag">要旨</span>
+        <blockquote>多様性とは、見た目の違いではなく、ものの見方の違いである。</blockquote>
+        <div class="note">「認知的多様性」概念の要旨（第2章）</div>
+      </div>
+
+      <div class="quote-card">
+        <span class="tag">要旨</span>
+        <blockquote>画期的なアイデアの多くは、まったく新しい発明ではなく、既存の知の新しい組み合わせから生まれる。</blockquote>
+        <div class="note">イノベーションに関する主張の要旨（第4章）</div>
+      </div>
+    </section>
+
+    <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions" hidden>
+      <h2 class="panel-title">✅ 今日できるアクション</h2>
+
+      <div class="action-card">
+        <div class="time">15<span>分</span></div>
+        <div>
+          <h3>異なる意見の人に1つ質問する</h3>
+          <p>仕事やプライベートで、自分と普段意見が合わない人を1人思い浮かべ、その人の立場から見た今の課題について質問してみる。</p>
+          <div class="effect">目的：認知的多様性を体感し、自分の死角に気づく一歩にする</div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="time">20<span>分</span></div>
+        <div>
+          <h3>会議で「最後に発言する」実験をする</h3>
+          <p>次に参加する会議やミーティングで、自分の立場に関わらず最初には意見を言わず、他の人の発言を聞いてから最後に話してみる。</p>
+          <div class="effect">目的：権威勾配による沈黙の構造を体感し、発言しやすい場づくりを考える</div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="time">25<span>分</span></div>
+        <div>
+          <h3>普段読まない立場の記事を1本読む</h3>
+          <p>自分の考えと異なる立場・専門分野の記事やニュースを1本選び、反論ではなく「なぜそう考えるのか」を理解する姿勢で読む。</p>
+          <div class="effect">目的：エコーチェンバーから意図的に抜け出し、情報環境の多様性を確保する</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="related">
+    <h2>📚 関連書籍</h2>
+    <ul>
+      <li>失敗の科学 失敗から学習する組織、学習できない組織（マシュー・サイド）: 同一著者による姉妹編。組織の失敗学と多様性論が対をなす。</li>
+      <li>ティール組織（フレデリック・ラルー）: 画一的なヒエラルキーから脱却し、多様な意思決定を許容する組織モデルという点で共通する。</li>
+      <li>学習する組織（ピーター・M・センゲ）: 集合知を活かすシステム思考という観点で本書の主張と響き合う。</li>
+      <li>心理的安全性のつくりかた（石井遼介）: 異なる意見・反逆者の声を安全に言えるチーム文化という切り口でつながる。</li>
+      <li>世界標準の経営理論（入山章栄）: 認知的多様性やイノベーション理論の学術的背景を補強する一冊。</li>
+    </ul>
+  </div>
+
+  <footer>📚 06_Books ｜ Daily Reading Summary</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = {
+    'tab-concepts': document.getElementById('panel-concepts'),
+    'tab-chapters': document.getElementById('panel-chapters'),
+    'tab-examples': document.getElementById('panel-examples'),
+    'tab-quotes': document.getElementById('panel-quotes'),
+    'tab-actions': document.getElementById('panel-actions')
+  };
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){
+        t.setAttribute('aria-selected','false');
+        var p = panels[t.id];
+        p.classList.remove('active');
+        p.setAttribute('hidden','');
+      });
+      tab.setAttribute('aria-selected','true');
+      var activePanel = panels[tab.id];
+      activePanel.classList.add('active');
+      activePanel.removeAttribute('hidden');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+})();
+</script>
+</body>
+</html>
