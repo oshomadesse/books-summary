@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>捨てればいいってもんじゃない ― インフォグラフィック</title>
+<!--
+  カラーパレット
+  プライマリー: #3E4A3D (深緑・落ち着いた暮らし)
+  セカンダリー: #8FA888 (セージグリーン・余白と呼吸感)
+  アクセント:   #E0A458 (テラコッタ・温かみのある暮らしの手触り)
+  グラデーション: linear-gradient(135deg, #3E4A3D 0%, #8FA888 100%)
+-->
+<style>
+  :root{
+    --primary:#3E4A3D;
+    --secondary:#8FA888;
+    --accent:#E0A458;
+    --bg:#F7F6F1;
+    --card:#FFFFFF;
+    --text:#2B2F27;
+    --text-sub:#6A6F62;
+    --border:#E6E3D8;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 0 48px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--secondary) 100%);
+    color:#fff;
+    padding:28px 20px 32px;
+    border-radius:0 0 28px 28px;
+  }
+  .kicker{font-size:13px;letter-spacing:.08em;opacity:.85;margin:0 0 6px;}
+  h1.title{font-size:21px;margin:0 0 10px;font-weight:800;line-height:1.4;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;font-size:13px;opacity:.95;margin-bottom:18px;}
+  .meta span{background:rgba(255,255,255,.16);padding:4px 10px;border-radius:999px;}
+  .why-how{
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:var(--radius);
+    padding:16px;
+    font-size:14px;
+  }
+  .why-how .row{margin-bottom:10px;}
+  .why-how .row:last-child{margin-bottom:0;}
+  .why-how b{display:inline-block;background:var(--accent);color:#2D2208;padding:2px 8px;border-radius:6px;font-size:12px;margin-right:6px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:14px 16px 0;
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:5;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card);
+    color:var(--text-sub);
+    font-size:13px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    border:1px solid var(--border);
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+
+  main{padding:16px;}
+  section.panel{display:none;animation:fade .25s ease;}
+  section.panel.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  h2.panel-title{font-size:16px;margin:4px 0 14px;color:var(--primary);display:flex;align-items:center;gap:6px;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow:0 1px 2px rgba(45,50,80,.04);
+  }
+  .card h3{font-size:15px;margin:0 0 8px;color:var(--primary);display:flex;gap:8px;align-items:flex-start;}
+  .card h3 .num{
+    flex:0 0 auto;
+    background:var(--accent);
+    color:#2D2208;
+    font-size:12px;
+    font-weight:800;
+    width:22px;height:22px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card ul{margin:0 0 8px;padding-left:18px;font-size:13.5px;color:var(--text);}
+  .card ul li{margin-bottom:4px;}
+  .why{
+    font-size:12.5px;
+    color:var(--text-sub);
+    background:#EFEEE4;
+    border-left:3px solid var(--secondary);
+    padding:8px 10px;
+    border-radius:8px;
+  }
+  .why b{color:var(--primary);}
+
+  .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px;}
+  .badge{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px 12px;
+    flex:1 1 90px;
+    text-align:center;
+  }
+  .badge .num{font-size:20px;font-weight:800;color:var(--primary);display:block;}
+  .badge .lbl{font-size:11px;color:var(--text-sub);}
+
+  .quote-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .quote-card blockquote{margin:0 0 8px;font-size:14.5px;font-style:italic;color:var(--text);}
+  .quote-card .note{font-size:12px;color:var(--text-sub);}
+  .quote-card .tag{
+    display:inline-block;
+    font-size:10.5px;
+    background:#EFEEE4;
+    color:var(--secondary);
+    padding:2px 8px;
+    border-radius:999px;
+    margin-bottom:8px;
+  }
+
+  .action-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+    display:flex;
+    gap:12px;
+  }
+  .action-card .time{
+    flex:0 0 auto;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#fff;
+    font-size:12px;
+    font-weight:800;
+    border-radius:10px;
+    padding:8px 10px;
+    text-align:center;
+    min-width:54px;
+  }
+  .action-card .time span{display:block;font-size:15px;}
+  .action-card h3{font-size:14.5px;margin:0 0 6px;color:var(--primary);}
+  .action-card p{font-size:13px;margin:0 0 6px;color:var(--text);}
+  .action-card .effect{font-size:12px;color:var(--secondary);font-weight:700;}
+
+  .related{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin:0 16px 24px;
+  }
+  .related h2{font-size:15px;margin:0 0 10px;color:var(--primary);}
+  .related ul{margin:0;padding-left:18px;font-size:13px;}
+  .related li{margin-bottom:6px;}
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--text-sub);
+    padding:12px 16px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="kicker">📚 今日の一冊｜ライフスタイル</p>
+    <h1 class="title">捨てればいいってもんじゃない<br>暮らしと生き方を簡素化して人生が変わった僕のシンプリストライフ</h1>
+    <div class="meta">
+      <span>👤 エヌケン</span>
+      <span>🏢 KADOKAWA</span>
+      <span>🏷️ ライフスタイル</span>
+    </div>
+    <div class="why-how">
+      <div class="row"><b>問い</b>「ミニマリスト」に憧れて物を捨てようとしても、どこかで苦しくなって続かないのはなぜか？</div>
+      <div class="row"><b>答え</b>物の数そのものを正解にすると苦しくなる。数にこだわらず好きなものに囲まれながら暮らしを単純化していく「シンプリスト」という第三の道がある。</div>
+      <div class="row"><b>根拠</b>著者自身がミニマリストを目指して挫折した経験、部屋づくりで「余白」を大切にする実践、駅近・独立洗面台など自分の軸で住まいを選んだ実例が、数ではなく基準の持ち方が鍵であることを裏付けている。</div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">🧪 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </nav>
+
+  <main>
+
+    <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+      <h2 class="panel-title">🧩 主要概念の詳細</h2>
+
+      <div class="badge-row">
+        <div class="badge"><span class="num">5+1</span><span class="lbl">PROLOGUE＋5章構成</span></div>
+        <div class="badge"><span class="num">2020</span><span class="lbl">刊行年（12月）</span></div>
+        <div class="badge"><span class="num">192</span><span class="lbl">ページ数（版による差あり）</span></div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">1</span>シンプリスト</h3>
+        <ul>
+          <li>物の数そのものにこだわらず、好きなものに囲まれて暮らす生き方</li>
+          <li>徹底的に物を減らす「ミニマリスト」とは別の立ち位置として著者が提示</li>
+          <li>著者自身はミニマリストを目指して一度挫折した経験から、この考え方にたどり着いた</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>「正解は物を極限まで減らすこと」という思い込みから自分を解放する、本書全体の出発点となる概念だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">2</span>余白</h3>
+        <ul>
+          <li>部屋づくりの方針として著者が大切にしている「殺風景で余白があること」という発想</li>
+          <li>物で埋めるのではなく、意図的に「何も置かない状態」を残す</li>
+          <li>視界の情報量を減らすことが、気持ちの余裕にもつながるという考え方</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>「物を減らす」ことの最終的なねらいが、空間そのものより心の状態にあることを示すから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">3</span>「捨てなきゃ」からの解放</h3>
+        <ul>
+          <li>捨てることを目的化し、突き詰めすぎると暮らしも気持ちも苦しくなるという指摘</li>
+          <li>完璧な整理・完璧な手放し方を目指さない姿勢</li>
+          <li>「捨てる／持つ」の二択ではなく、自分にとっての「ちょうどいい量」を探す</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>多くの片付け本が陥りがちな「もっと減らさなければ」というプレッシャーから読者を解放する視点だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">4</span>自分の軸で選ぶ暮らし方</h3>
+        <ul>
+          <li>住まい選びでは「駅近」「独立洗面台」など自分が譲れない条件を明確にしていた</li>
+          <li>一般的な正解（家賃の安さなど）より、自分の暮らしやすさの基準を優先する</li>
+          <li>物だけでなく住環境の選択にも同じ「自分基準」の考え方を適用している</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>シンプルな暮らしが「我慢」ではなく「自分に合った基準づくり」であることを具体的に示す例だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">5</span>発信を通じた暮らしの言語化</h3>
+        <ul>
+          <li>著者はIT関連企業の会社員でありながらInstagramでシンプルな暮らしを発信</li>
+          <li>刊行当時、1年ほどでフォロワー数20万人超を集めたとされる</li>
+          <li>発信を続ける中で自分の暮らし方・考え方を見直し、言語化していった経緯がある</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>暮らしを記録し言葉にする行為そのものが、思考の整理につながることを示すから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">6</span>思考・問題解決への拡張</h3>
+        <ul>
+          <li>物を減らす過程で身についた「単純化する視点」を、仕事や人生の選択にも広げていく</li>
+          <li>片付けのテクニック論に留まらず、考え方や生き方の章へと展開する構成</li>
+          <li>本書後半（第4・5章）の具体的な記述内容は検索範囲内では確認できず、章タイトルからの位置づけに留まる点は不明</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>本書が「片付け本」ではなく「生き方の本」として設計されていることを示す構成上の要点だから。</div>
+      </div>
+    </section>
+
+    <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+      <h2 class="panel-title">📖 各章の要約</h2>
+
+      <div class="card">
+        <h3><span class="num">0</span>PROLOGUE「シンプリスト」である理由</h3>
+        <ul>
+          <li>物の多さが時間・お金・心の無駄につながると感じたのが出発点</li>
+          <li>徹底して物を減らす「ミニマリスト」を目指すも、ストイックさに馴染めず挫折</li>
+          <li>数にこだわらず好きなものに囲まれて暮らす「シンプリスト」という立場を宣言する章</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>本書全体の立ち位置と、他のミニマリスト本との違いを最初に示す章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">1</span>シンプルな捨て方</h3>
+        <ul>
+          <li>物を手放す際の考え方・進め方を扱う章</li>
+          <li>完璧に減らし切ることを目指さず、無理のない範囲で手放す発想が土台にある</li>
+          <li>章内の具体的な手順・基準の詳細は検索範囲内では確認できず不明</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>「まず何から手を付けるか」という片付けの入り口を扱う実践的な章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">2</span>シンプルな「もの」との付き合い方</h3>
+        <ul>
+          <li>手放した後、残す物・新しく持つ物との向き合い方を扱う章</li>
+          <li>数を正解にせず、好きなものに囲まれるという本書の立場が反映される章と位置づけられる</li>
+          <li>具体的な分類基準や事例の詳細は検索範囲内では確認できず不明</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>「減らす」で終わらせず、残った物との関係性を見直す視点を加える章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">3</span>シンプルな暮らし方</h3>
+        <ul>
+          <li>住まい選び・部屋づくりなど、暮らし全体の仕組みを扱う章</li>
+          <li>「殺風景で余白があること」を大切にする部屋づくりの方針はこの章の考え方に対応すると位置づけられる</li>
+          <li>家事・自炊・掃除など日々のルーティンに関する具体的な記述は検索範囲内では確認できず不明</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>片付けた後の暮らし方そのものを設計する、本書の中心的な章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">4</span>シンプルな思考と問題解決力</h3>
+        <ul>
+          <li>物の整理で身につけた考え方を、思考や問題解決の場面に広げる章</li>
+          <li>片付け論から生き方論への橋渡しとなる位置づけ</li>
+          <li>章内の具体的な思考法・事例の詳細は検索範囲内では確認できず不明</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>本書が単なる片付けテクニック集ではないことを示す転換点の章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">5</span>シンプルで幸せな生き方とこれから</h3>
+        <ul>
+          <li>これまでの議論を、幸せな生き方という観点でまとめる最終章</li>
+          <li>著者自身のこれからの展望にも触れると位置づけられる</li>
+          <li>章内の具体的な記述の詳細は検索範囲内では確認できず不明</li>
+        </ul>
+        <div class="why"><b>なぜ重要か：</b>読者が自分の暮らしに持ち帰るための総括の章だから。</div>
+      </div>
+    </section>
+
+    <section id="panel-examples" class="panel" role="tabpanel" aria-labelledby="tab-examples" hidden>
+      <h2 class="panel-title">🧪 具体例・ケーススタディ</h2>
+
+      <div class="card">
+        <h3><span class="num">1</span>ミニマリストへの挑戦と挫折</h3>
+        <ul>
+          <li><b>背景：</b>物の多さに無駄を感じ、物を極限まで減らす「ミニマリスト」を目指した</li>
+          <li><b>示唆：</b>ストイックに数を減らすことに馴染めず、途中で挫折した経験が「シンプリスト」という立場の出発点になっている</li>
+        </ul>
+        <div class="why"><b>この例が示すこと：</b>「正解の物の数」を追い求めること自体が、暮らしを苦しくする原因になりうる。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">2</span>「殺風景で余白がある」部屋づくり</h3>
+        <ul>
+          <li><b>背景：</b>部屋のインテリアを紹介する記事の中で、著者が部屋づくりの方針として語った考え方</li>
+          <li><b>示唆：</b>物を置いて埋めるのではなく、意図的に何もない空間を残すことを大切にしている</li>
+        </ul>
+        <div class="why"><b>この例が示すこと：</b>「物を減らす」のゴールは空間の見た目だけでなく、視覚的・心理的な余裕をつくることにある。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">3</span>駅近・独立洗面台を軸にした住まい選び</h3>
+        <ul>
+          <li><b>背景：</b>引っ越し先を選ぶ際、家賃を抑えたい気持ちもありながら、駅近であることと独立洗面台があることを重視した</li>
+          <li><b>示唆：</b>一般的に優先されやすい「安さ」よりも、自分が心地よく暮らせる条件を明確に持っていた</li>
+        </ul>
+        <div class="why"><b>この例が示すこと：</b>シンプルな暮らしとは何でも切り詰めることではなく、自分にとって譲れない条件を見極めることである。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">4</span>Instagramでの発信とフォロワーの広がり</h3>
+        <ul>
+          <li><b>背景：</b>会社員でありながらInstagramでシンプルな暮らしを発信し、刊行当時1年ほどでフォロワー数20万人超に達した</li>
+          <li><b>示唆：</b>特別な専門家ではない個人の実践記録が、多くの読者の共感を集めた</li>
+        </ul>
+        <div class="why"><b>この例が示すこと：</b>シンプルな暮らしは特別な才能ではなく、誰でも自分のペースで実践・発信できるものである。</div>
+      </div>
+    </section>
+
+    <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+      <h2 class="panel-title">💬 重要な引用</h2>
+
+      <div class="quote-card">
+        <blockquote>殺風景で余白があること</blockquote>
+        <div class="note">著者が部屋づくりの方針として語った言葉（CHINTAI情報局のインタビュー記事より）</div>
+      </div>
+
+      <div class="quote-card">
+        <span class="tag">要旨</span>
+        <blockquote>「捨てなきゃ」と自分を追い込みすぎると、暮らしも気持ちも苦しくなる。</blockquote>
+        <div class="note">著者の考え方の要旨（原文の引用は検索範囲内では確認できなかったため要旨で代替）</div>
+      </div>
+
+      <div class="quote-card">
+        <span class="tag">要旨</span>
+        <blockquote>物の数にとらわれず、好きなものに囲まれて暮らすのが「シンプリスト」である。</blockquote>
+        <div class="note">PROLOGUE「シンプリストである理由」の主張の要旨（原文の引用は検索範囲内では確認できなかったため要旨で代替）</div>
+      </div>
+    </section>
+
+    <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions" hidden>
+      <h2 class="panel-title">✅ 今日できるアクション</h2>
+
+      <div class="action-card">
+        <div class="time">15<span>分</span></div>
+        <div>
+          <h3>「今週着ていない服」を3着選び出す</h3>
+          <p>クローゼットを開き、今週一度も着ていない服を3着選んで、保管場所を1か所にまとめる。捨てるかどうかはまだ決めなくてよい。</p>
+          <div class="effect">目的：物の量より「使っているか」を可視化し、捨てることを目的化しないシンプリストの視点を体感する</div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="time">20<span>分</span></div>
+        <div>
+          <h3>部屋に「余白スペース」を1か所つくる</h3>
+          <p>デスクの上や棚の一段など、部屋の一角を選び、そこに置いてある物を一度すべて別の場所へ移して「何も置かない」状態をつくってみる。</p>
+          <div class="effect">目的：「殺風景で余白があること」という部屋づくりの方針を実際に体験し、視界のノイズが減る感覚を確かめる</div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="time">15<span>分</span></div>
+        <div>
+          <h3>「捨てたいけど迷っている物」を1つ書き出す</h3>
+          <p>家の中で捨てるかどうか迷っている物を1つ選び、迷っている理由をメモに書き出してみる。結論は出さなくてよい。</p>
+          <div class="effect">目的：完璧な判断を急がず、自分の基準を少しずつ言語化する練習にする</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="related">
+    <h2>📚 関連書籍</h2>
+    <ul>
+      <li>90日で手に入れる「余白」のある暮らしのつくり方（みしぇる）: 「余白」を暮らしの核に据える発想が本書の部屋づくり方針と直接重なる</li>
+      <li>持たない暮らし（下重暁子）: 物を減らすことで心の自由を得るという視点が共通する</li>
+      <li>半分、減らす。（川野泰周）: 完全に捨て切るのではなく無理なく手放す「中道」のアプローチが「シンプリスト」思想と通じる</li>
+      <li>より少ない生き方 ものを手放して豊かになる（ジョシュア・ベッカー）: ミニマリズムを目指しつつ厳格になりすぎない姿勢が共通する</li>
+      <li>減速して自由に生きる ダウンシフターズ（高坂勝）: 無理のない範囲で生き方自体をシンプルにしていく方向性が共通する</li>
+    </ul>
+  </div>
+
+  <footer>📚 06_Books ｜ Daily Reading Summary</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  var panels = {
+    'tab-concepts': document.getElementById('panel-concepts'),
+    'tab-chapters': document.getElementById('panel-chapters'),
+    'tab-examples': document.getElementById('panel-examples'),
+    'tab-quotes': document.getElementById('panel-quotes'),
+    'tab-actions': document.getElementById('panel-actions')
+  };
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){
+        t.setAttribute('aria-selected','false');
+        var p = panels[t.id];
+        p.classList.remove('active');
+        p.setAttribute('hidden','');
+      });
+      tab.setAttribute('aria-selected','true');
+      var activePanel = panels[tab.id];
+      activePanel.classList.add('active');
+      activePanel.removeAttribute('hidden');
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  });
+})();
+</script>
+</body>
+</html>
