@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自分の意見で生きていこう | インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー: #4338CA (インディゴ)
+  セカンダリー: #0EA5E9 (スカイブルー)
+  アクセント: #F59E0B (アンバー)
+  背景グラデーション: #EEF2FF → #F8FAFC
+-->
+<style>
+  :root{
+    --primary:#4338CA;
+    --primary-light:#6366F1;
+    --secondary:#0EA5E9;
+    --accent:#F59E0B;
+    --bg:#F8FAFC;
+    --card:#FFFFFF;
+    --text:#1E293B;
+    --muted:#64748B;
+    --border:#E2E8F0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP",system-ui,-apple-system,sans-serif;
+    background:linear-gradient(180deg,#EEF2FF 0%,#F8FAFC 400px);
+    color:var(--text);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:20px 16px 60px;}
+  header{text-align:center;padding:24px 0 16px;}
+  .kicker{font-size:13px;color:var(--secondary);font-weight:700;letter-spacing:.05em;}
+  h1{
+    font-size:26px;
+    margin:8px 0 4px;
+    color:var(--primary);
+    font-weight:800;
+    line-height:1.4;
+  }
+  .subtitle{font-size:14px;color:var(--muted);}
+  .meta{
+    display:flex;justify-content:center;gap:10px;margin-top:12px;flex-wrap:wrap;
+  }
+  .pill{
+    background:var(--card);border:1px solid var(--border);
+    border-radius:999px;padding:5px 12px;font-size:12px;color:var(--muted);
+  }
+
+  /* ファーストビュー: 要約ブロック */
+  .hero{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);
+    border-radius:20px;color:#fff;padding:22px 20px;margin:20px 0;
+    box-shadow:0 10px 30px -10px rgba(67,56,202,.5);
+  }
+  .hero h2{font-size:15px;margin:0 0 14px;opacity:.9;font-weight:700;}
+  .qa-row{display:flex;flex-direction:column;gap:12px;}
+  .qa-item{background:rgba(255,255,255,.12);border-radius:14px;padding:12px 14px;}
+  .qa-label{font-size:11px;opacity:.85;font-weight:700;margin-bottom:4px;}
+  .qa-text{font-size:14px;font-weight:500;}
+
+  /* タブ */
+  .tabs{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
+    margin:24px 0 16px;position:sticky;top:0;background:var(--bg);
+    padding:8px 0;z-index:10;
+  }
+  .tab-btn{
+    border:1px solid var(--border);background:var(--card);border-radius:10px;
+    padding:8px 4px;font-size:11px;color:var(--muted);cursor:pointer;
+    font-weight:700;text-align:center;line-height:1.3;
+  }
+  .tab-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+  .panel{display:none;}
+  .panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:16px 16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04);
+  }
+  .card h3{margin:0 0 8px;font-size:15px;color:var(--primary);display:flex;gap:6px;align-items:center;}
+  .card ul{margin:8px 0 0;padding-left:18px;font-size:13px;}
+  .card li{margin-bottom:4px;}
+  .why{
+    margin-top:10px;background:#FFF7ED;border-left:3px solid var(--accent);
+    padding:8px 10px;border-radius:8px;font-size:12px;color:#92400E;
+  }
+  .why b{color:#B45309;}
+
+  .badge-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:22px;height:22px;border-radius:50%;background:var(--secondary);
+    color:#fff;font-size:12px;font-weight:800;flex-shrink:0;
+  }
+
+  .bar-wrap{margin:10px 0;}
+  .bar-label{font-size:12px;display:flex;justify-content:space-between;margin-bottom:3px;color:var(--muted);}
+  .bar-bg{background:#E2E8F0;border-radius:6px;height:10px;overflow:hidden;}
+  .bar-fill{height:10px;border-radius:6px;background:linear-gradient(90deg,var(--secondary),var(--primary));}
+
+  .quote{
+    border-left:4px solid var(--primary);background:#EEF2FF;
+    padding:12px 14px;border-radius:0 10px 10px 0;font-size:13px;margin-bottom:12px;
+  }
+  .quote .tag{font-size:10px;color:var(--secondary);font-weight:700;margin-top:6px;display:block;}
+
+  .action-card{display:flex;gap:10px;align-items:flex-start;}
+  .action-time{
+    font-size:11px;background:var(--accent);color:#fff;border-radius:999px;
+    padding:2px 8px;margin-left:auto;flex-shrink:0;white-space:nowrap;
+  }
+
+  .related{font-size:13px;}
+  .related li{margin-bottom:8px;}
+
+  footer{text-align:center;font-size:11px;color:var(--muted);margin-top:30px;}
+
+  @media (min-width:600px){
+    .qa-row{flex-direction:row;}
+    .qa-item{flex:1;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">📚 今日の一冊</div>
+    <h1>自分の意見で生きていこう</h1>
+    <div class="subtitle">「正解のない問題」に答えを出せる4つのステップ</div>
+    <div class="meta">
+      <span class="pill">👤 著者: ちきりん</span>
+      <span class="pill">🏷️ カテゴリ: 自己啓発</span>
+    </div>
+  </header>
+
+  <!-- ファーストビュー: 要約=問い×答え×根拠 -->
+  <div class="hero">
+    <h2>⚡ 30秒でわかるこの本</h2>
+    <div class="qa-row">
+      <div class="qa-item">
+        <div class="qa-label">❓ 問い</div>
+        <div class="qa-text">正解のない時代に、どうすれば自分らしく生きられる？</div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-label">💡 答え</div>
+        <div class="qa-text">他人への「反応」をやめ、自分だけの「意見」を持つこと。</div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-label">📊 根拠</div>
+        <div class="qa-text">仕事・結婚・医療など人生の重要な問題の多くは、そもそも唯一の正解が存在しないから。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- タブ -->
+  <div class="tabs" role="tablist" aria-label="コンテンツタブ">
+    <div class="tab-btn active" role="tab" aria-selected="true" tabindex="0" data-target="t1">主要概念</div>
+    <div class="tab-btn" role="tab" aria-selected="false" tabindex="0" data-target="t2">各章要約</div>
+    <div class="tab-btn" role="tab" aria-selected="false" tabindex="0" data-target="t3">具体例</div>
+    <div class="tab-btn" role="tab" aria-selected="false" tabindex="0" data-target="t4">引用</div>
+    <div class="tab-btn" role="tab" aria-selected="false" tabindex="0" data-target="t5">今日のアクション</div>
+  </div>
+
+  <!-- 主要概念 -->
+  <section class="panel active" id="t1">
+    <div class="card">
+      <h3><span class="badge-num">1</span> 「意見」vs「反応」</h3>
+      <ul>
+        <li>意見＝賛成/反対の立場を自分で明確にしたもの</li>
+        <li>反応＝疑問や批判はするが、自分の立場を明かさないもの</li>
+        <li>SNSでは「反応」だけが量産されがち</li>
+      </ul>
+      <div class="why"><b>理由：</b>発言量の多さと「意見を持っていること」は別物だと見抜く軸になる。</div>
+    </div>
+    <div class="card">
+      <h3><span class="badge-num">2</span> 正解のない問題</h3>
+      <ul>
+        <li>仕事・結婚・医療・介護など人生を左右する問題の多くに「唯一の正解」はない</li>
+        <li>専門家や業界の常識も「正解」ではない</li>
+      </ul>
+      <div class="why"><b>理由：</b>「正解探し」をやめ、自分で答えを作る発想へ転換する出発点になる。</div>
+    </div>
+    <div class="card">
+      <h3><span class="badge-num">3</span> 学校的価値観の呪縛</h3>
+      <ul>
+        <li>「正しい答えが必ずあり、それを見つけるのが偉い」という思考様式</li>
+        <li>大人になっても抜けずに生きづらさの一因になる</li>
+      </ul>
+      <div class="why"><b>理由：</b>自分を縛っている前提そのものに気づかせてくれる。</div>
+    </div>
+    <div class="card">
+      <h3><span class="badge-num">4</span>「強い他者」への依存リスク</h3>
+      <ul>
+        <li>専門家・権威・多数派など「強い他者」に判断を委ねすぎる態度</li>
+        <li>一時的に楽だが、思考停止と自己決定の放棄につながる</li>
+      </ul>
+      <div class="why"><b>理由：</b>「正解を知っている誰かに従えば安心」という発想の落とし穴を示す。</div>
+    </div>
+    <div class="card">
+      <h3><span class="badge-num">5</span> 意見の束が人格を作る</h3>
+      <ul>
+        <li>日々の小さな意見の積み重ねが、その人らしさ自体を形成する</li>
+        <li>特別な自己分析なしに、日常の中で自分を育てられる</li>
+      </ul>
+      <div class="why"><b>理由：</b>「自分とは何か」という問いに実践的な答え方を与える。</div>
+    </div>
+    <div class="card">
+      <h3><span class="badge-num">6</span> 意見形成の4ステップ</h3>
+      <ul>
+        <li>①レベルをチェックする → ②ムリにでも言い切る → ③自分で自分に突っ込む → ④言語化する</li>
+      </ul>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>① 情報のレベルを把握</span><span>25%</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:25%"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>② 仮でも結論を言い切る</span><span>50%</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:50%"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>③ 自分へ反論してみる</span><span>75%</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:75%"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>④ 言葉にして固定する</span><span>100%</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="why"><b>理由：</b>「意見を持て」という抽象的な助言を、誰でも実践できる手順に落とし込んでいる。</div>
+    </div>
+  </section>
+
+  <!-- 各章要約 -->
+  <section class="panel" id="t2">
+    <div class="card">
+      <h3>第1章｜「意見」とは何か、なぜ必要なのか</h3>
+      <ul><li>調べるべき問題と考えるべき問題の違い</li><li>専門家や業界の常識も「正解」ではない</li></ul>
+      <div class="why"><b>理由：</b>本書全体の土台となる「意見」の定義を提示する。</div>
+    </div>
+    <div class="card">
+      <h3>第2章｜「反応」だけではダメな理由</h3>
+      <ul><li>SNSでの「反応」は立場を明らかにしないまま消費される</li></ul>
+      <div class="why"><b>理由：</b>現代人が意見を持ちにくくなっている構造的要因を示す。</div>
+    </div>
+    <div class="card">
+      <h3>第3章｜SNS時代に「自分」を創る</h3>
+      <ul><li>発信が増えた時代こそ、自分独自の視点を育てる必要がある</li></ul>
+      <div class="why"><b>理由：</b>情報過多の時代における自己確立の方法を提示する。</div>
+    </div>
+    <div class="card">
+      <h3>第4章｜生きづらさから脱却しよう</h3>
+      <ul><li>学校的価値観や「強い他者」への依存から離れる重要性</li></ul>
+      <div class="why"><b>理由：</b>意見の欠如がもたらす心理的な苦しさを言語化する。</div>
+    </div>
+    <div class="card">
+      <h3>第5章｜リーダーシップの最初の一歩</h3>
+      <ul><li>自分の意見を明確に持つことが、周囲を導く力の出発点になる</li></ul>
+      <div class="why"><b>理由：</b>「意見を持つ」ことを対人関係・組織行動にも接続する。</div>
+    </div>
+    <div class="card">
+      <h3>第6章｜オリジナルの人生へ</h3>
+      <ul><li>意見の積み重ねが、他人と比較しない独自の人生観につながる</li></ul>
+      <div class="why"><b>理由：</b>「自分の意見」が人生の自由度を広げるという結論を示す。</div>
+    </div>
+    <div class="card">
+      <h3>練習編｜意見をもてるようになる4つのステップ</h3>
+      <ul><li>レベルチェック→言い切る→自分へ突っ込む→言語化、の具体的トレーニング</li></ul>
+      <div class="why"><b>理由：</b>心構えを今日から実践できる技術に変換している。</div>
+    </div>
+  </section>
+
+  <!-- 具体例 -->
+  <section class="panel" id="t3">
+    <div class="card">
+      <h3>📍 事例1：SNSでの「反応」の蔓延</h3>
+      <ul>
+        <li><b>背景：</b>SNS普及で誰もが発言しやすくなった一方、疑問・批判・ツッコミ（反応）は増えても、賛成/反対の立場（意見）を明示する人は少ない</li>
+        <li><b>示唆：</b>発言の多さと「意見を持っていること」は全く別物</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「発信している＝考えている」という思い込みを崩す。</div>
+    </div>
+    <div class="card">
+      <h3>📍 事例2：承認欲求と自我の確立</h3>
+      <ul>
+        <li><b>背景：</b>著者自身、周囲から高く評価され「順調」に見える人生でも、自分で自分を理解できていなければ満たされないと経験的に語る</li>
+        <li><b>示唆：</b>承認欲求は他者評価だけでは満たされず、自分の意見を通じた自己理解が必要</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「意見を持つこと」は単なる発言術ではなく自己肯定感の土台になる。</div>
+    </div>
+    <div class="card">
+      <h3>📍 事例3：「強い他者」への依存リスク</h3>
+      <ul>
+        <li><b>背景：</b>専門家の見解や多数派の意見、権威ある立場の発言をそのまま自分の結論として採用してしまう態度</li>
+        <li><b>示唆：</b>強い他者に判断を委ねるのは一時的に楽だが、人生の重要な選択を他人任せにするリスクを伴う</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「正解を知っている誰かに従えば安心」という発想の落とし穴を示す。</div>
+    </div>
+  </section>
+
+  <!-- 引用 -->
+  <section class="panel" id="t4">
+    <div class="quote">
+      人生を左右するような問題には、いずれも唯一の正解などない。
+      <span class="tag">要旨（原典の直接引用は未確認）</span>
+    </div>
+    <div class="quote">
+      「自分の意見をもつ」スキルは、履歴書に書いて評価されたり資格のように証明できるものではなく、自分自身が感じる幸福度を高めるためのものである。
+      <span class="tag">要旨（原典の直接引用は未確認）</span>
+    </div>
+    <div class="quote">
+      日々の小さな意見の積み重ね（意見の束）こそが、その人の人格を形づくっていく。
+      <span class="tag">要旨（原典の直接引用は未確認）</span>
+    </div>
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" id="t5">
+    <div class="card action-card" style="flex-direction:column;">
+      <h3 style="display:flex;width:100%;"><span class="badge-num">1</span>&nbsp;今日気になった出来事に「意見」を1つ書く<span class="action-time">15分</span></h3>
+      <ul>
+        <li><b>やり方：</b>ニュースやSNSで見た話題について、賛成/反対の立場を明確にした1〜2文を書く</li>
+        <li><b>目的：</b>「反応」ではなく「意見」を持つ練習を始める</li>
+        <li><b>期待効果：</b>自分の立場を明確にする感覚をつかみ、意見形成のハードルを下げる</li>
+      </ul>
+    </div>
+    <div class="card action-card" style="flex-direction:column;">
+      <h3 style="display:flex;width:100%;"><span class="badge-num">2</span>&nbsp;「ムリにでも言い切る」を1テーマで試す<span class="action-time">15-20分</span></h3>
+      <ul>
+        <li><b>やり方：</b>白黒つけにくいテーマを1つ選び、仮でもいいので結論を一文で言い切る</li>
+        <li><b>目的：</b>練習編ステップ2を実践し、中立に逃げる癖を自覚する</li>
+        <li><b>期待効果：</b>「正解がない問題」でも自分なりの結論を出す感覚が身につく</li>
+      </ul>
+    </div>
+    <div class="card action-card" style="flex-direction:column;">
+      <h3 style="display:flex;width:100%;"><span class="badge-num">3</span>&nbsp;直近の判断を「強い他者」依存で振り返る<span class="action-time">15分</span></h3>
+      <ul>
+        <li><b>やり方：</b>最近の決断（買い物・仕事の方針など）を1つ選び、専門家や多数意見にそのまま従っていないか書き出す</li>
+        <li><b>目的：</b>自分の意思決定プロセスにおける依存度を可視化する</li>
+        <li><b>期待効果：</b>情報は参考にしつつ最終判断を自分の意見に基づいて行う意識が強まる</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 関連書籍 -->
+  <div class="card related">
+    <h3>📚 関連書籍</h3>
+    <ul>
+      <li>「承認欲求」の呪縛（太田肇）: 承認欲求が自己肯定感を奪う構造を扱い、本書の「強い他者への依存」論と直結する</li>
+      <li>嫌われる勇気（岸見一郎、古賀史健）: 他者の評価軸ではなく自分の人生を生きるという共通テーマ（アドラー心理学）</li>
+      <li>クリティカルシンキング入門（宇佐美寛）: 自分の頭で考え、意見を形成する思考法という共通点</li>
+      <li>自己肯定感の教科書（中島輝）: 外部評価に依存しない自己肯定感の育て方という共通テーマ</li>
+      <li>THINK AGAIN 発想を変える、常識を疑う（アダム・グラント）: 自分の意見を持ちつつ柔軟に更新する姿勢という接続点</li>
+    </ul>
+  </div>
+
+  <footer>📖 読書サマリー自動生成システム / Generated by Claude</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.panel');
+  function activate(tab){
+    tabs.forEach(function(t){
+      t.classList.remove('active');
+      t.setAttribute('aria-selected','false');
+    });
+    panels.forEach(function(p){ p.classList.remove('active'); });
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected','true');
+    document.getElementById(tab.getAttribute('data-target')).classList.add('active');
+  }
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){ activate(tab); });
+    tab.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); activate(tab); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
