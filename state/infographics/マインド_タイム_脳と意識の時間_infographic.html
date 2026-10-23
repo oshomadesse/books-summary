@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マインド・タイム 脳と意識の時間 | インフォグラフィック</title>
+<!--
+  カラーパレット:
+  primary:   #1e3a5f (ディープネイビー・脳)
+  secondary: #00b8a9 (ティール・時間の流れ)
+  accent:    #f08a5d (オレンジ・意識の光)
+  gradient:  linear-gradient(135deg, #1e3a5f 0%, #00b8a9 100%)
+-->
+<style>
+  :root{
+    --primary:#1e3a5f;
+    --primary-light:#2f5280;
+    --secondary:#00b8a9;
+    --accent:#f08a5d;
+    --bg:#0f1b2b;
+    --card:#17283e;
+    --card2:#1c3147;
+    --text:#eaf2f7;
+    --text-dim:#a9bdce;
+    --border:rgba(255,255,255,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px 48px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--secondary) 100%);
+    padding:28px 16px 32px;
+    text-align:center;
+    color:#fff;
+  }
+  header.hero .eyebrow{
+    font-size:12px;letter-spacing:.12em;opacity:.85;text-transform:uppercase;
+  }
+  header.hero h1{
+    font-size:22px;margin:8px 0 4px;line-height:1.4;font-weight:800;
+  }
+  header.hero .author{font-size:14px;opacity:.9;}
+  .badges{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap;}
+  .badge{
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;
+    padding:4px 12px;
+    font-size:12px;
+  }
+
+  .why-how{
+    margin:-20px 16px 24px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    position:relative;
+    z-index:2;
+  }
+  .why-how h2{
+    font-size:14px;color:var(--accent);margin:0 0 10px;letter-spacing:.06em;
+  }
+  .qa-row{display:flex;gap:10px;margin-bottom:10px;}
+  .qa-row .tag{
+    flex:0 0 auto;
+    font-size:11px;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:6px;
+    color:#0f1b2b;
+    height:fit-content;
+  }
+  .tag.q{background:var(--secondary);}
+  .tag.a{background:var(--accent);}
+  .tag.w{background:#d0d9e3;}
+  .qa-row p{margin:0;font-size:14px;color:var(--text);}
+
+  main{margin-top:8px;}
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding:4px;
+    margin:0 0 16px;
+    background:var(--card2);
+    border-radius:12px;
+    position:sticky;
+    top:0;
+    z-index:5;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-btn{
+    flex:1 0 auto;
+    white-space:nowrap;
+    background:transparent;
+    border:none;
+    color:var(--text-dim);
+    font-size:12.5px;
+    font-weight:700;
+    padding:10px 10px;
+    border-radius:9px;
+    cursor:pointer;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary-light);
+    color:#fff;
+  }
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card h3 .num{
+    background:var(--secondary);color:#07201d;border-radius:8px;font-size:12px;
+    width:22px;height:22px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--text-dim);}
+  .card ul li{margin-bottom:4px;}
+  .why{
+    margin-top:10px;
+    background:rgba(240,138,93,.12);
+    border-left:3px solid var(--accent);
+    padding:8px 10px;
+    font-size:12.5px;
+    border-radius:0 8px 8px 0;
+    color:#fcd9c3;
+  }
+  .why b{color:var(--accent);}
+
+  .viz{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:10px 0;
+    font-size:12px;
+    color:var(--text-dim);
+  }
+  .bar-wrap{flex:1;background:rgba(255,255,255,.08);border-radius:6px;height:10px;overflow:hidden;}
+  .bar{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--secondary),var(--accent));}
+
+  .timeline{
+    position:relative;
+    margin:14px 0 6px;
+    padding-left:20px;
+    border-left:2px dashed rgba(255,255,255,.25);
+  }
+  .timeline .pt{
+    position:relative;margin-bottom:16px;
+  }
+  .timeline .pt::before{
+    content:"";
+    position:absolute;left:-26px;top:3px;
+    width:10px;height:10px;border-radius:50%;
+    background:var(--secondary);
+    box-shadow:0 0 0 3px rgba(0,184,169,.25);
+  }
+  .timeline .pt .ms{
+    display:inline-block;background:var(--primary-light);color:#fff;
+    font-size:11px;padding:2px 8px;border-radius:999px;margin-bottom:4px;font-weight:700;
+  }
+  .timeline .pt p{margin:0;font-size:13px;color:var(--text-dim);}
+
+  .quote-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--secondary);
+    border-radius:0 14px 14px 0;
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .quote-card p.q{
+    font-size:14px;font-style:italic;color:#fff;margin:0 0 8px;
+  }
+  .quote-card .note{font-size:12px;color:var(--text-dim);}
+  .pill{
+    display:inline-block;font-size:10.5px;background:rgba(0,184,169,.2);color:var(--secondary);
+    border-radius:999px;padding:2px 8px;margin-bottom:6px;font-weight:700;
+  }
+
+  .action-card{
+    display:flex;gap:12px;background:var(--card);border:1px solid var(--border);
+    border-radius:14px;padding:16px;margin-bottom:12px;
+  }
+  .action-num{
+    flex:0 0 auto;width:34px;height:34px;border-radius:10px;
+    background:linear-gradient(135deg,var(--secondary),var(--accent));
+    color:#0f1b2b;font-weight:800;display:flex;align-items:center;justify-content:center;
+  }
+  .action-card .body h3{margin:0 0 6px;font-size:14.5px;color:#fff;}
+  .action-card .body p{margin:2px 0;font-size:13px;color:var(--text-dim);}
+  .action-card .meta{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;}
+  .action-card .meta span{font-size:11px;background:rgba(255,255,255,.08);padding:2px 8px;border-radius:999px;color:var(--text-dim);}
+
+  footer{
+    text-align:center;font-size:11px;color:var(--text-dim);margin-top:24px;opacity:.7;
+  }
+  @media (min-width:600px){
+    header.hero h1{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">📚 今日の一冊 ・ 心理学 / 脳科学</div>
+    <h1>🧠 マインド・タイム 脳と意識の時間</h1>
+    <div class="author">ベンジャミン・リベット（訳：下條信輔・安納令奈）／岩波書店</div>
+    <div class="badges">
+      <span class="badge">⏱️ 準備電位</span>
+      <span class="badge">🙅 自由な拒否権</span>
+      <span class="badge">🧩 心脳問題</span>
+    </div>
+  </header>
+
+  <section class="why-how" aria-label="要約">
+    <h2>⚡ 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <span class="tag q">問い</span>
+      <p>「これをやろう」と決めるのは、本当に〈自分〉なのか？</p>
+    </div>
+    <div class="qa-row">
+      <span class="tag a">答え</span>
+      <p>脳の無意識的な準備は意識の自覚より先に始まる。しかし意識には、動き出した計画を最後の瞬間に「止める」拒否権がある。</p>
+    </div>
+    <div class="qa-row">
+      <span class="tag w">根拠</span>
+      <p>自発的な指の動きを調べた脳波実験で、脳の「準備電位」は動作の約550ミリ秒前に始まるが、本人が「動かそう」と自覚するのは動作の約200ミリ秒前。意識は約350ミリ秒、後れて立ち上がる。</p>
+    </div>
+  </section>
+
+  <main>
+    <div class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+      <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">🧩 主要概念</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 章の要約</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases" onclick="switchTab('cases')">🔬 具体例</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">💬 引用</button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日の行動</button>
+    </div>
+
+    <!-- 主要概念の詳細 -->
+    <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+
+      <div class="card">
+        <h3><span class="num">1</span>準備電位（Readiness Potential）</h3>
+        <ul>
+          <li>自発的な動作の直前、大脳の運動関連領域に現れる緩やかな電位の立ち上がり</li>
+          <li>脳波（EEG）で記録され、動作開始の平均約550ミリ秒前から始まる</li>
+          <li>本人はこの時点ではまだ「動かそう」と自覚していない</li>
+        </ul>
+        <div class="viz">
+          <span>無意識の準備</span>
+          <div class="bar-wrap"><div class="bar" style="width:92%"></div></div>
+          <span>550ms前</span>
+        </div>
+        <div class="why"><b>理由：</b>この電位こそが、意識が決定の「発端」ではないことを示す本書最大の実証データだから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">2</span>意識的意図の自覚（W時間）</h3>
+        <ul>
+          <li>被験者は回転する光点の時計を見ながら「動かそうと思った瞬間」を事後に報告する</li>
+          <li>自覚のタイミングは動作の平均約200ミリ秒前</li>
+          <li>準備電位の開始から見ると、意識は約350ミリ秒遅れて追いついてくる</li>
+        </ul>
+        <div class="why"><b>理由：</b>意識の「出現タイミング」を客観的に測定するという、哲学的問いを実験可能にした発想の核。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">3</span>自由な拒否権（Free Won't）</h3>
+        <ul>
+          <li>準備電位が始まった後でも、動作直前の100〜200ミリ秒の間に意識は計画を中止できる</li>
+          <li>リベットは「意識は行動を始めないが、止めることはできる」と主張</li>
+          <li>自由意志を全否定せず、「拒否する自由」として再定義した</li>
+        </ul>
+        <div class="why"><b>理由：</b>本書が自由意志の否定論に回収されず、独自の結論に至る分岐点だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">4</span>意識に要する最小持続時間（Time-on理論）</h3>
+        <ul>
+          <li>皮質への刺激が意識される感覚になるには、約500ミリ秒の継続的な神経活動が必要</li>
+          <li>皮膚刺激・脳への直接刺激いずれでも、この「時間のしきい値」は共通して観察された</li>
+          <li>ごく短い刺激は脳に記録されても、本人には意識されない場合がある</li>
+        </ul>
+        <div class="why"><b>理由：</b>「意識とは何か」を時間という測定可能な軸で捉え直した、本書の方法論の土台。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">5</span>主観的な逆向き時間修正（Backward Referral in Time）</h3>
+        <ul>
+          <li>意識が約500ミリ秒遅れて生じるのに、日常では刺激と知覚の間に遅れを感じない</li>
+          <li>リベットは、意識が感覚の「発生時刻」を実際より早い時点へ遡らせて経験させると仮説立てた</li>
+          <li>この主観的な時間修正が、脳の処理遅延を私たちから隠している</li>
+        </ul>
+        <div class="why"><b>理由：</b>最も議論を呼んだ仮説であり、脳の客観的タイミングと主観的体験のズレを説明しようとする試みだから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">6</span>無意識的な精神機能</h3>
+        <ul>
+          <li>知覚・判断・記憶の多くの処理は意識にのぼらないまま進行する</li>
+          <li>意識は、脳の情報処理全体のごく一部にしか関与していない</li>
+          <li>「気づいていない自分」が常に先に動いているという前提を本書全体で据える</li>
+        </ul>
+        <div class="why"><b>理由：</b>準備電位の議論を、意識全般の性質という広い文脈に位置づけるための橋渡しの概念。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">7</span>心脳問題（Mind-Brain Problem）と意識の場</h3>
+        <ul>
+          <li>意識（心）と脳（物質）がどう相互作用するかという古典的な哲学問題を実証研究から再考する</li>
+          <li>リベットは晩年、脳活動から生じる非物理的な「意識の場」という仮説的な立場も論じた</li>
+          <li>唯物論一辺倒ではない、留保を含んだ立場が本書の特徴</li>
+        </ul>
+        <div class="why"><b>理由：</b>本書を単なる脳科学の実験報告ではなく、哲学的考察の書として位置づける視点だから。</div>
+      </div>
+
+    </section>
+
+    <!-- 各章の要約 -->
+    <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters">
+      <p style="font-size:12px;color:var(--text-dim);margin:0 0 12px;">※原書の章立てが明確でない箇所は、論点ごとの疑似章として整理</p>
+
+      <div class="card">
+        <h3><span class="num">1</span>意識と脳 — 心脳問題への入り口</h3>
+        <ul>
+          <li>心（意識）と脳（物質）の関係という古典的難問を、哲学だけでなく実験神経科学の土俵に引き出す</li>
+          <li>リベット自身の研究歴（脳外科手術中の患者を対象にした実験）が導入される</li>
+        </ul>
+        <div class="why"><b>理由：</b>以降の全実験が答えようとする「問い」をここで明確にしているため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">2</span>意識に要する時間 — 500ミリ秒のしきい値</h3>
+        <ul>
+          <li>皮膚への刺激・脳への直接刺激を比較し、意識される感覚には一定の持続時間が必要だと示す</li>
+          <li>「刺激があった」と脳が記録することと、「それを意識する」ことは別の現象だと区別する</li>
+        </ul>
+        <div class="why"><b>理由：</b>意識を時間軸で定量的に扱うという本書の方法論が確立される章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">3</span>自発的行為のタイミング — 準備電位とW判断</h3>
+        <ul>
+          <li>最も有名な「クロック実験」を詳述。自発的な指の動きに先行する準備電位と、本人の自覚時刻を比較する</li>
+          <li>意識的な決定は、脳の無意識的な準備に約350ミリ秒遅れることが示される</li>
+        </ul>
+        <div class="why"><b>理由：</b>本書の核心データであり、自由意志論争の出発点となった実験だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">4</span>意識は過去を遡る? — 逆向き時間修正</h3>
+        <ul>
+          <li>処理に時間がかかるにもかかわらず、日常でタイムラグを感じない理由を主観的な時間修正仮説で説明する</li>
+          <li>神経科学者の間でも評価が分かれる、最も挑戦的な章</li>
+        </ul>
+        <div class="why"><b>理由：</b>客観的なデータと主観的な体験のギャップという、意識研究特有の難しさを浮き立たせるため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">5</span>自由意志の問題 — 「始めない」が「止める」はできる</h3>
+        <ul>
+          <li>準備電位の発見が「自由意志は幻想」という結論に直結しない理由を論じる</li>
+          <li>「自由な拒否権（Free Won't）」という独自の概念を提示し、倫理・責任論への含意を扱う</li>
+        </ul>
+        <div class="why"><b>理由：</b>実験結果の解釈として、リベット自身の立場が最も明確に表れる章だから。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">6</span>無意識の心の働き</h3>
+        <ul>
+          <li>知覚・判断の多くが無意識下で処理されている例を広く紹介する</li>
+          <li>意識は脳機能の「氷山の一角」にすぎないという立場を補強する</li>
+        </ul>
+        <div class="why"><b>理由：</b>自由意志の章で示した「意識は後からやってくる」という構図を、より一般化して示すため。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">7</span>心と脳はどう相互作用するか — 終章の考察</h3>
+        <ul>
+          <li>唯物論・二元論いずれにも偏らない、留保つきの仮説的立場を示す</li>
+          <li>意識研究が科学として今後どこへ向かうべきかを展望する</li>
+        </ul>
+        <div class="why"><b>理由：</b>実証研究の書でありながら、最終的に哲学的な問いへ戻ってくる本書の構成を締めるため。</div>
+      </div>
+    </section>
+
+    <!-- 具体例・ケーススタディ -->
+    <section id="panel-cases" class="panel" role="tabpanel" aria-labelledby="tab-cases">
+
+      <div class="card">
+        <h3><span class="num">1</span>クロック実験（自発的動作のタイミング測定）</h3>
+        <p style="font-size:13px;color:var(--text-dim);margin:0 0 8px;">被験者はオシロスコープ上を回転する光点の「時計」を見ながら、自由なタイミングで手首を動かし、「動かそうと思った瞬間」の時計の位置を事後に報告する。</p>
+        <div class="timeline">
+          <div class="pt"><span class="ms">動作の-550ms</span><p>脳波に準備電位が現れ始める（本人は無自覚）</p></div>
+          <div class="pt"><span class="ms">動作の-200ms</span><p>本人が「動かそう」と意識的に自覚する</p></div>
+          <div class="pt"><span class="ms">動作の0ms</span><p>実際に手首が動く</p></div>
+        </div>
+        <div class="why"><b>この例が示すこと：</b>意識的な「決定」は、脳の無意識的な準備のあとを追いかける現象であること。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">2</span>脳外科手術中の皮質直接刺激実験</h3>
+        <p style="font-size:13px;color:var(--text-dim);margin:0 0 8px;">てんかん治療のための脳外科手術中、同意を得た患者の体性感覚皮質に直接電気刺激を与え、皮膚刺激の場合と意識される時間を比較した。</p>
+        <ul>
+          <li>皮膚への刺激・皮質への直接刺激いずれも、意識されるには一定の持続時間が必要だった</li>
+          <li>手術という特殊な状況でしか得られない、極めて貴重な一次データ</li>
+        </ul>
+        <div class="why"><b>この例が示すこと：</b>「意識に要する時間」という仮説が、動物実験ではなくヒトの脳で直接検証された稀有な例であること。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">3</span>「拒否権」の臨床的な意味合い（怒り・依存の自己制御）</h3>
+        <p style="font-size:13px;color:var(--text-dim);margin:0 0 8px;">本書の議論は臨床現場にも応用されている。衝動的な怒りや依存症的な行動の多くは、無意識的な準備（渇望や苛立ちの立ち上がり）が先行するが、その後の短い window で「止める」判断が可能だという考え方が、自己制御トレーニングの理論的根拠の一つとして引用される。</p>
+        <div class="why"><b>この例が示すこと：</b>「準備電位は止められないが、行動そのものは止められる」という構図が、意志力の使い方に具体的な指針を与えること。</div>
+      </div>
+
+      <div class="card">
+        <h3><span class="num">4</span>仮想ノーベル心理学賞（2003年）</h3>
+        <p style="font-size:13px;color:var(--text-dim);margin:0 0 8px;">心理学分野にはノーベル賞が存在しないため、Klaus G. Grawe財団などが「仮にノーベル心理学賞があれば」という趣旨で贈る賞をリベットが受賞。自由意志と意識の研究への貢献が評価された。</p>
+        <div class="why"><b>この例が示すこと：</b>一実験に留まらず、意識研究という学問領域そのものを前進させた貢献として学界に位置づけられていること。</div>
+      </div>
+
+    </section>
+
+    <!-- 重要な引用 -->
+    <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes">
+
+      <div class="quote-card">
+        <span class="pill">要旨</span>
+        <p class="q">意識的な意志は、行動を「始動させる」ものではなく、無意識的に始まった行動計画を最後の瞬間に「拒否する」ことができる、という形で自由に関与している。</p>
+        <div class="note">リベットの「自由な拒否権（Free Won't）」論の核を要約したもの。原文の逐語引用はWeb上で確認できなかったため要旨として記載。</div>
+      </div>
+
+      <div class="quote-card">
+        <span class="pill">要旨</span>
+        <p class="q">自発的な運動に先行する脳の準備電位は、動作が生じる平均500〜550ミリ秒前に始まるが、本人がその意図を自覚するのは動作の約200ミリ秒前である。</p>
+        <div class="note">本書の中心的な実験結果の要旨。具体的な数値は複数の二次資料・解説記事で一致して紹介されている。</div>
+      </div>
+
+      <div class="quote-card">
+        <span class="pill">要旨</span>
+        <p class="q">意識されるためには、刺激によって引き起こされた脳活動がある程度の時間（約500ミリ秒）持続する必要がある。</p>
+        <div class="note">「Time-on理論」の要旨。原典の逐語引用は確認できていないため要旨として記載。</div>
+      </div>
+
+    </section>
+
+    <!-- 今日のアクション -->
+    <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions">
+
+      <div class="action-card">
+        <div class="action-num">1</div>
+        <div class="body">
+          <h3>「やりたい」が湧いた瞬間に3秒数える</h3>
+          <p>衝動的にメールを送りたくなった時、お菓子に手が伸びそうな時など、「やろう」という衝動を自覚した直後に3秒だけ数えてから動く、を1日試す。</p>
+          <div class="meta"><span>⏱ 15分</span><span>🎯 目的：拒否権の window を体感する</span><span>📈 効果：衝動的な後悔の減少</span></div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-num">2</div>
+        <div class="body">
+          <h3>今日の「無意識の決定」を3つメモする</h3>
+          <p>今日気づいた「よく考える前に動いていた」場面（SNSを開いた、返信を即した、など）を3つ書き出し、どこで「止める」余地があったかを振り返る。</p>
+          <div class="meta"><span>⏱ 20分</span><span>🎯 目的：無意識的な行動パターンの可視化</span><span>📈 効果：自己観察力の向上</span></div>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-num">3</div>
+        <div class="body">
+          <h3>1分間、自分の「意図が生まれる瞬間」を観察する</h3>
+          <p>椅子に座ったまま、ふと手足を動かしたくなる瞬間を待ち、「動かそう」という感覚がいつ・どのように意識に現れるかをただ観察する。リベットの実験を自分の内側で再現するミニ瞑想。</p>
+          <div class="meta"><span>⏱ 5分</span><span>🎯 目的：意識と無意識の境目への気づき</span><span>📈 効果：マインドフルネス的な自己認識の向上</span></div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>📚 books-summary daily-reading ・ 情報はWeb検索で確認できた範囲に基づき作成</footer>
+</div>
+
+<script>
+function switchTab(name){
+  var panels = document.querySelectorAll('.panel');
+  var tabs = document.querySelectorAll('.tab-btn');
+  panels.forEach(function(p){ p.classList.remove('active'); });
+  tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('tab-'+name).setAttribute('aria-selected','true');
+}
+</script>
+</body>
+</html>
