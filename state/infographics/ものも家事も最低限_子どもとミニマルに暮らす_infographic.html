@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ものも家事も最低限。子どもとミニマルに暮らす｜Nozomi</title>
+<!--
+  カラーパレット（3色・グラデーション可）
+  Primary:   #4a6b57（セージグリーン・暮らしの落ち着き）
+  Secondary: #d9a566（温かみのあるテラコッタ・家の中の木質感）
+  Accent:    #c1554a（レンガ色・強調・アクション）
+-->
+<style>
+  :root{
+    --primary:#4a6b57;
+    --primary-light:#6a8c76;
+    --secondary:#d9a566;
+    --secondary-light:#ecc693;
+    --accent:#c1554a;
+    --bg:#f7f3ec;
+    --card:#ffffff;
+    --text:#2b2b26;
+    --sub:#6b6b60;
+    --border:#e6ddc9;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+  }
+  .hero{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--primary-light) 60%, var(--secondary) 130%);
+    color:#fff;
+    padding:28px 18px 32px;
+    text-align:center;
+  }
+  .hero .label{
+    font-size:12px;
+    letter-spacing:.15em;
+    opacity:.85;
+    margin-bottom:6px;
+  }
+  .hero h1{
+    font-size:24px;
+    margin:4px 0 6px;
+    font-weight:800;
+  }
+  .hero .author{
+    font-size:14px;
+    opacity:.9;
+  }
+  .badge-row{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .badge{
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.4);
+    border-radius:999px;
+    padding:4px 12px;
+    font-size:12px;
+  }
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:16px;
+  }
+  .why-how{
+    background:var(--card);
+    border-radius:16px;
+    padding:18px;
+    margin-top:-18px;
+    box-shadow:0 6px 20px rgba(0,0,0,.08);
+    border:1px solid var(--border);
+  }
+  .why-how h2{
+    font-size:14px;
+    color:var(--primary);
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-block{margin-bottom:12px;}
+  .qa-block:last-child{margin-bottom:0;}
+  .qa-label{
+    font-size:11px;
+    font-weight:700;
+    color:#fff;
+    background:var(--primary);
+    border-radius:6px;
+    padding:2px 8px;
+    display:inline-block;
+    margin-bottom:5px;
+  }
+  .qa-label.answer{background:var(--accent);}
+  .qa-label.why{background:var(--secondary);color:#2b2200;}
+  .qa-text{font-size:14.5px;color:var(--text);}
+  .core-number-row{
+    display:flex;
+    gap:10px;
+    margin:16px 0 4px;
+    flex-wrap:wrap;
+  }
+  .num-badge{
+    flex:1 1 90px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:12px;
+    text-align:center;
+    padding:10px 6px;
+  }
+  .num-badge .n{
+    font-size:20px;
+    font-weight:800;
+    color:var(--accent);
+  }
+  .num-badge .l{
+    font-size:11px;
+    color:var(--sub);
+  }
+  /* タブ */
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin-top:18px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-btn{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--primary);
+    padding:9px 13px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+  .tab-panel{
+    display:none;
+    margin-top:14px;
+  }
+  .tab-panel.active{display:block;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15.5px;
+    color:var(--primary);
+    display:flex;
+    gap:6px;
+    align-items:flex-start;
+  }
+  .card ul{
+    margin:0 0 8px;
+    padding-left:20px;
+    font-size:13.8px;
+  }
+  .card li{margin-bottom:4px;}
+  .why-note{
+    font-size:12.5px;
+    color:var(--sub);
+    background:var(--bg);
+    border-left:3px solid var(--secondary);
+    padding:6px 10px;
+    border-radius:0 8px 8px 0;
+    margin-top:6px;
+  }
+  .why-note b{color:var(--accent);}
+  .quote-card{
+    border-left:4px solid var(--accent);
+    background:linear-gradient(90deg, rgba(193,85,74,.06), transparent);
+  }
+  .quote-text{
+    font-size:14.5px;
+    font-style:italic;
+    color:var(--primary);
+    margin-bottom:6px;
+  }
+  .quote-tag{
+    font-size:11px;
+    background:var(--secondary);
+    color:#2b2200;
+    border-radius:6px;
+    padding:1px 7px;
+    margin-right:6px;
+  }
+  .action-card{
+    border-left:4px solid var(--secondary);
+  }
+  .action-step{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+    margin-bottom:4px;
+  }
+  .action-step .num{
+    flex:0 0 36px;
+    height:22px;
+    border-radius:11px;
+    background:var(--primary);
+    color:#fff;
+    font-size:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .related-list{
+    font-size:13.5px;
+    padding-left:18px;
+  }
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--sub);
+    padding:24px 16px 32px;
+  }
+  @media (min-width:600px){
+    .hero h1{font-size:28px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="label">📚 今日の一冊</div>
+  <h1>ものも家事も最低限。<br>子どもとミニマルに暮らす</h1>
+  <div class="author">Nozomi（2024年刊・集英社クリエイティブ）</div>
+  <div class="badge-row">
+    <span class="badge">カテゴリ：ライフスタイル</span>
+    <span class="badge">持ち物40点</span>
+    <span class="badge">家事1日37分</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="why-how">
+    <h2>🔑 要約：問い × 答え × 根拠</h2>
+    <div class="qa-block">
+      <span class="qa-label">問い</span>
+      <div class="qa-text">物が多く家事に追われる暮らしは、子育て中には変えられないものなのか？</div>
+    </div>
+    <div class="qa-block">
+      <span class="qa-label answer">答え</span>
+      <div class="qa-text">変えられる。持ち物と家事を「本当に必要な分だけ」に絞り込めば、浮いた時間と心の余裕を子育てや自分自身に向けられる。</div>
+    </div>
+    <div class="qa-block">
+      <span class="qa-label why">根拠</span>
+      <div class="qa-text">著者自身が持ち物40点・家事1日37分という暮らしを、乳幼児2人を育てながら実践し、寝かしつけ後にまとまった自分の時間を確保できているため。</div>
+    </div>
+    <div class="core-number-row">
+      <div class="num-badge"><div class="n">40点</div><div class="l">著者の持ち物</div></div>
+      <div class="num-badge"><div class="n">37分</div><div class="l">1日の家事時間</div></div>
+      <div class="num-badge"><div class="n">4章</div><div class="l">本書の構成</div></div>
+      <div class="num-badge"><div class="n">2024</div><div class="l">刊行年</div></div>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="コンテンツタブ">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts" onclick="switchTab('concepts')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters" onclick="switchTab('chapters')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases" onclick="switchTab('cases')">🏠 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes" onclick="switchTab('quotes')">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions" onclick="switchTab('actions')">✅ 今日のアクション</button>
+  </div>
+
+  <!-- 主要概念 -->
+  <div class="tab-panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3>🎒 持ち物40点ミニマリズム</h3>
+      <ul>
+        <li>著者自身の持ち物は40点ほどとされる</li>
+        <li>ワンピース1枚で日々を過ごすなど徹底した絞り込み</li>
+        <li>「量」ではなく「本当に必要かどうか」を基準に選ぶ</li>
+      </ul>
+      <div class="why-note"><b>理由：</b>持ち物が少ないほど管理・選択・掃除の手間自体が減り、他のことに使える時間が増えるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>🔁 家事のルーティン化</h3>
+      <ul>
+        <li>掃除・洗濯・片付けを毎日同じ流れに組み込む</li>
+        <li>「やるかどうか」「どうやるか」を毎回考えない</li>
+        <li>結果として家事時間は1日37分とされる</li>
+      </ul>
+      <div class="why-note"><b>理由：</b>家事そのものの作業時間よりも、何をどうするか迷う時間の方が積み重なって重くなるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>🚪 部屋別「ある・ない」の基準</h3>
+      <ul>
+        <li>玄関・キッチン・リビング・洗面所・浴室などを部屋ごとに整理</li>
+        <li>各部屋に「置くもの」の基準を事前に決めておく</li>
+        <li>基準があるので物が増えても判断に迷わない</li>
+      </ul>
+      <div class="why-note"><b>理由：</b>部屋ごとにルールを明文化しておくと、物を買う・置く場面での判断が速くなり、物が自然と増えにくくなるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧸 子育てもミニマルに</h3>
+      <ul>
+        <li>おもちゃ・子ども服・日用品のストックを最小限に保つ</li>
+        <li>子どもに安心用品は用意しつつ、量は絞り込む</li>
+        <li>子育てこそ物が増えやすい局面だからこそ意識する</li>
+      </ul>
+      <div class="why-note"><b>理由：</b>子育て中は物が増えやすく、放っておくと管理の手間が家事の負担をさらに重くしてしまうため。</div>
+    </div>
+
+    <div class="card">
+      <h3>🆘 危機管理も家事の1つ</h3>
+      <ul>
+        <li>備蓄・防災を特別な対策ではなく日常の仕組みに組み込む</li>
+        <li>家事の延長として無理なく続けられる形にする</li>
+        <li>最低限の備えと持ち物の少なさを両立させる</li>
+      </ul>
+      <div class="why-note"><b>理由：</b>物を減らす発想と防災の備えは一見矛盾するようだが、仕組み化すれば両方を無理なく保てることを示すため。</div>
+    </div>
+
+    <div class="card">
+      <h3>🌙 自分時間の確保</h3>
+      <ul>
+        <li>子ども2人の就寝時間を19時台に整えるナイトルーティン</li>
+        <li>寝かしつけ後にまとまった自分の時間を確保</li>
+        <li>育児中の精神面にとって大きな意味を持つとされる</li>
+      </ul>
+      <div class="why-note"><b>理由：</b>家事・育児の時間を圧縮する目的は、効率そのものではなく「自分のための時間」を取り戻すことにあるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧭 ミニマリスト思考</h3>
+      <ul>
+        <li>他人の持ち物の多さ・家事の完璧さと比較しない</li>
+        <li>自分と家族にとっての「最低限」を自分で決める</li>
+        <li>節約や効率化ではなく、生き方そのものの指針として位置づける</li>
+      </ul>
+      <div class="why-note"><b>理由：</b>基準を他人に置くと物も家事も減らしきれず、本書全体の実践が長続きしなくなるため。</div>
+    </div>
+
+  </div>
+
+  <!-- 各章の要約 -->
+  <div class="tab-panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <div class="card">
+      <h3>第1章 部屋別「わが家にあるもの・ないもの」</h3>
+      <ul>
+        <li>玄関・キッチン・リビング・洗面所・浴室・トイレ・クローゼット・寝室・ベランダを部屋ごとに検証</li>
+        <li>各部屋で「本当に置くべきもの」だけを残す具体的な基準を示す</li>
+      </ul>
+      <div class="why-note"><b>理由：</b>抽象的な「物を減らそう」ではなく、部屋単位の具体例から入ることで誰でも真似しやすくするため。</div>
+    </div>
+
+    <div class="card">
+      <h3>第2章 家事を減らして時間を生み出す方法</h3>
+      <ul>
+        <li>掃除・洗濯・片付けをルーティン化して迷う時間をなくす</li>
+        <li>危機管理（備蓄・防災）も家事の仕組みの一部として組み込む</li>
+      </ul>
+      <div class="why-note"><b>理由：</b>物を減らすだけでは家事は減らず、家事そのものの「進め方」を変える必要があることを示すため。</div>
+    </div>
+
+    <div class="card">
+      <h3>第3章 子育てこそミニマルに</h3>
+      <ul>
+        <li>おもちゃ・子ども服・日用品のストック管理の工夫</li>
+        <li>子どもの就寝時間を整え、自分の時間を確保する</li>
+      </ul>
+      <div class="why-note"><b>理由：</b>子育て中は最も物が増えやすい局面であり、そこにミニマリズムを応用することが本書の核心的な提案であるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>第4章 ミニマリスト思考で自分らしく生きていく</h3>
+      <ul>
+        <li>物の少なさや家事の完璧さを他人と比較しない生き方</li>
+        <li>自分と家族にとっての「最低限」を自分で決める</li>
+      </ul>
+      <div class="why-note"><b>理由：</b>テクニック論で終わらせず、考え方そのものの転換として本書を締めるため。</div>
+    </div>
+
+  </div>
+
+  <!-- 具体例 -->
+  <div class="tab-panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+
+    <div class="card">
+      <h3>☂️ 玄関の傘の見直し</h3>
+      <p style="font-size:13.8px;margin:0 0 6px;"><b>背景：</b>以前はビニール傘を何本も常備していたが、結局出先で買い足すことが続いていた。</p>
+      <p style="font-size:13.8px;margin:0 0 6px;"><b>示唆：</b>大人用は晴雨兼用の折りたたみ傘のみにし、子ども用も1本ずつに絞ることで、「人数分＋少し」という明確な基準を作った。</p>
+      <div class="why-note"><b>理由：</b>基準がないまま物を増やすと、結局また買い足してしまうという悪循環を断つ実例になっている。</div>
+    </div>
+
+    <div class="card">
+      <h3>🍳 キッチンの調理台と収納</h3>
+      <p style="font-size:13.8px;margin:0 0 6px;"><b>背景：</b>調理台の上に物が多いと、料理も掃除も億劫になりやすい。</p>
+      <p style="font-size:13.8px;margin:0 0 6px;"><b>示唆：</b>調理台にはペーパータオルしか置かず、家族4人分の食器もコンロ側の収納スペースだけで収まる量に絞っているとされる。</p>
+      <div class="why-note"><b>理由：</b>「置かない」という選択自体が、毎日の調理と片付けの手間を自動的に減らすことを示す。</div>
+    </div>
+
+    <div class="card">
+      <h3>🛁 バスタオルを置かない暮らし</h3>
+      <p style="font-size:13.8px;margin:0 0 6px;"><b>背景：</b>バスタオルは洗濯物が増えやすいアイテムの一つ。</p>
+      <p style="font-size:13.8px;margin:0 0 6px;"><b>示唆：</b>バスタオルを持たず、フェイスタオルで体を拭くことで洗濯物の量と乾かす手間そのものを減らしている。</p>
+      <div class="why-note"><b>理由：</b>物を1つ手放すだけで、それにまつわる一連の家事（洗う・干す・しまう）がまとめて減ることを示す例。</div>
+    </div>
+
+    <div class="card">
+      <h3>🌙 19時就寝のナイトルーティン</h3>
+      <p style="font-size:13.8px;margin:0 0 6px;"><b>背景：</b>乳幼児2人を育てながら、自分のための時間が取れないという悩みがあった。</p>
+      <p style="font-size:13.8px;margin:0 0 6px;"><b>示唆：</b>4歳・2歳の子どもを19時台に寝かせるナイトルーティンを確立し、寝かしつけ後にまとまった自分の時間を確保できるようになったと振り返っている。</p>
+      <div class="why-note"><b>理由：</b>物を減らす工夫だけでなく、生活全体の「仕組み化」が自分時間の確保につながることを示す象徴的な例。</div>
+    </div>
+
+  </div>
+
+  <!-- 重要な引用 -->
+  <div class="tab-panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <div class="quote-text">家事は「やるかどうか」「どうやるか」を毎回考えないよう、同じ流れのルーティンに組み込んでしまう。</div>
+      <div style="font-size:13px;color:var(--sub);">家事の負担は作業そのものより、都度の判断・迷いの積み重ねから生まれるという考え方。</div>
+    </div>
+
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <div class="quote-text">本当に自分（家族）にとって必要なものかを問い直すことで、持ち物は自然と最低限に近づいていく。</div>
+      <div style="font-size:13px;color:var(--sub);">物を減らす行為そのものを目的にせず、問い直しのプロセスを重視する姿勢。</div>
+    </div>
+
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <div class="quote-text">子どものための安心用品には理解を示しつつ、自分自身の持ち物は徹底して絞り込む。</div>
+      <div style="font-size:13px;color:var(--sub);">家族全員に同じミニマリズムを強制するのではなく、対象を分けて考える柔軟さ。</div>
+    </div>
+
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <div class="quote-text">収納スペースが前の家より小さくなっても、持ち物を絞り込んでいれば物があふれることはない。</div>
+      <div style="font-size:13px;color:var(--sub);">住環境の制約を言い訳にせず、持ち物の量そのものを調整する発想。</div>
+    </div>
+
+  </div>
+
+  <!-- 今日のアクション -->
+  <div class="tab-panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="card action-card">
+      <h3>① 玄関の傘を数えて「人数分＋1本」までに減らす（15分）</h3>
+      <div class="action-step"><div class="num">目的</div><div style="font-size:13.8px;">基準のない「物の増殖」を1カ所で体感的に止める。</div></div>
+      <div class="action-step"><div class="num">効果</div><div style="font-size:13.8px;">玄関がすっきりし、「基準を決めれば物は増え続けない」という実感が得られる。</div></div>
+    </div>
+
+    <div class="card action-card">
+      <h3>② キッチンの調理台の上を一度すべて片付け、本当に必要なものだけ戻す（20分）</h3>
+      <div class="action-step"><div class="num">目的</div><div style="font-size:13.8px;">「置かない」選択がもたらす掃除・調理の負担軽減を体験する。</div></div>
+      <div class="action-step"><div class="num">効果</div><div style="font-size:13.8px;">翌日以降の調理・片付けの手数が減り、効果を実感しやすい。</div></div>
+    </div>
+
+    <div class="card action-card">
+      <h3>③ 寝る前（または寝かしつけ後）の30分を「自分時間」として予定に書き込む（5分）</h3>
+      <div class="action-step"><div class="num">目的</div><div style="font-size:13.8px;">物や家事を減らす目的を「効率化」で終わらせず、自分のための時間に結びつける。</div></div>
+      <div class="action-step"><div class="num">効果</div><div style="font-size:13.8px;">毎晩の小さな習慣として続けやすく、心の余裕を取り戻す第一歩になる。</div></div>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:20px;">
+    <h3>📚 関連書籍</h3>
+    <ul class="related-list">
+      <li>持たない暮らし（下重暁子）: 物を減らす暮らし方という発想の源流にある一冊。</li>
+      <li>より少ない生き方 ものを手放して豊かになる（ジョシュア・ベッカー）: 物を減らすことで本当に大切なものに集中するという考え方の土台。</li>
+      <li>ミニマリストの持ちもの帖（尾崎友吏子）: 持ち物を最小限にする具体的な実践リストが参考になる。</li>
+      <li>家事か地獄か 最期まですっくと生き抜く唯一の選択（稲垣えみ子）: 家事を手放してシンプルに生きるという発想の共通点。</li>
+      <li>無印良品とはじめるミニマリスト生活（やまぐちせいこ）: 家族がいても実践できるミニマリスト生活の指南書として関連性が高い。</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>📖 books-summary daily infographic</footer>
+
+<script>
+  function switchTab(name){
+    var panels = document.querySelectorAll('.tab-panel');
+    var tabs = document.querySelectorAll('.tab-btn');
+    panels.forEach(function(p){ p.classList.remove('active'); });
+    tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+    document.getElementById('panel-' + name).classList.add('active');
+    document.getElementById('tab-' + name).setAttribute('aria-selected','true');
+  }
+</script>
+
+</body>
+</html>
