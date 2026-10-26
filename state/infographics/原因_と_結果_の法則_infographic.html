@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>「原因」と「結果」の法則 ― インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様）
+  プライマリー: #2E4057 (濃紺・思考の静けさ)
+  セカンダリー: #D4A373 (琥珀・果実としての結果)
+  アクセント: #E07A5F (テラコッタ・行動のきっかけ)
+  グラデーション: linear-gradient(135deg, #2E4057 0%, #4A6B8A 100%)
+-->
+<style>
+  :root{
+    --primary:#2E4057;
+    --primary-light:#4A6B8A;
+    --secondary:#D4A373;
+    --accent:#E07A5F;
+    --bg:#F7F4EF;
+    --card:#FFFFFF;
+    --text:#2A2A2A;
+    --muted:#6B6B6B;
+    --border:#E4DDD1;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px 48px;}
+  header{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color:#fff;
+    padding:28px 16px 32px;
+    text-align:center;
+  }
+  header .kicker{font-size:13px;letter-spacing:.1em;opacity:.85;margin-bottom:6px;}
+  header h1{font-size:22px;margin:0 0 6px;line-height:1.4;}
+  header .author{font-size:14px;opacity:.9;}
+
+  .hero{
+    margin:-20px 16px 20px;
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:0 6px 20px rgba(46,64,87,.15);
+    padding:18px 18px 20px;
+    position:relative;
+    z-index:2;
+  }
+  .hero h2{font-size:14px;color:var(--primary);margin:0 0 10px;display:flex;align-items:center;gap:6px;}
+  .hero .qa{margin-bottom:10px;}
+  .hero .q{font-weight:700;font-size:15px;color:var(--accent);}
+  .hero .a{font-size:14px;margin-top:4px;}
+  .hero .why{
+    margin-top:10px;
+    background:var(--bg);
+    border-left:3px solid var(--secondary);
+    padding:8px 10px;
+    font-size:13px;
+    color:var(--muted);
+    border-radius:0 8px 8px 0;
+  }
+
+  .badges{display:flex;gap:8px;flex-wrap:wrap;margin:14px 16px;}
+  .badge{
+    flex:1 1 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px 12px;
+    text-align:center;
+    min-width:90px;
+  }
+  .badge .num{font-size:20px;font-weight:800;color:var(--primary);}
+  .badge .label{font-size:11px;color:var(--muted);margin-top:2px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:0 16px 14px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--muted);
+    font-size:13px;
+    padding:9px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+    font-weight:700;
+  }
+
+  .panels{margin:0 16px;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;}
+  .card li{margin-bottom:4px;}
+  .card .why-tag{
+    display:inline-block;
+    margin-top:8px;
+    font-size:12px;
+    background:#FBEEE6;
+    color:var(--accent);
+    padding:4px 8px;
+    border-radius:6px;
+  }
+
+  .bar-row{display:flex;align-items:center;gap:8px;margin:6px 0;}
+  .bar-row .bar-label{font-size:12px;width:92px;flex:0 0 auto;color:var(--muted);}
+  .bar-track{flex:1;background:var(--bg);border-radius:6px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg, var(--secondary), var(--accent));}
+
+  .quote-card{
+    border-left:4px solid var(--secondary);
+    background:#FFFDF8;
+  }
+  .quote-card blockquote{
+    margin:0 0 6px;
+    font-size:14px;
+    font-style:italic;
+    color:var(--primary);
+  }
+  .quote-card .note{font-size:12px;color:var(--muted);}
+
+  .action-card{border-left:4px solid var(--accent);}
+  .action-card .purpose{font-size:12px;color:var(--muted);margin-top:4px;}
+
+  footer{text-align:center;font-size:11px;color:var(--muted);margin-top:24px;}
+
+  @media (max-width:380px){
+    header h1{font-size:19px;}
+    .hero{margin:-16px 8px 16px;}
+    .badges{margin:14px 8px;}
+    .panels, nav.tabs{margin-left:8px;margin-right:8px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">📚 今日の一冊</div>
+    <h1>🧠 「原因」と「結果」の法則</h1>
+    <div class="author">ジェームズ・アレン（訳：坂本貢一／サンマーク出版）</div>
+  </header>
+
+  <section class="hero">
+    <h2>⚡ 要約：問い × 答え × 根拠</h2>
+    <div class="qa">
+      <div class="q">Q. なぜ人生は思うようにならないのか？</div>
+      <div class="a">A. 環境や運命は偶然ではなく、自分が心の中で繰り返してきた「思考」が生み出した直接の結果だから。</div>
+    </div>
+    <div class="why">
+      <strong>Why &amp; How：</strong> 性格・健康・成功・失敗はすべて「思考 → 行動 → 結果」という因果の連鎖でつながっている（原著 <em>As a Man Thinketh</em>, 1903年）。だからこそ、思考そのものを選び直すことが、人生を変える唯一にして最も確実な方法になる。
+    </div>
+  </section>
+
+  <div class="badges">
+    <div class="badge"><div class="num">7</div><div class="label">原著の章構成</div></div>
+    <div class="badge"><div class="num">1903</div><div class="label">原著刊行年</div></div>
+    <div class="badge"><div class="num">3冊+</div><div class="label">既読本との思想的つながり</div></div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切替">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">主要概念の詳細</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">各章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">今日のアクション</button>
+  </nav>
+
+  <div class="panels">
+
+    <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+      <div class="card">
+        <h3>① 思考と人格</h3>
+        <ul>
+          <li>人格は一夜にしてできるものではなく、思考を繰り返した「積み重ね」の結果である</li>
+          <li>善い思考・悪い思考のどちらを選ぶかが、長期的に人格そのものを形づくる</li>
+          <li>植物が種から育つように、人格も思考という種から育つ</li>
+        </ul>
+        <span class="why-tag">理由：人格を変えたいなら、まず日々の思考パターンを変える必要があるから</span>
+      </div>
+      <div class="card">
+        <h3>② 思考が環境をつくる</h3>
+        <ul>
+          <li>置かれている環境・境遇は、過去の思考が結晶化した「結果」である</li>
+          <li>環境を呪っても変わらないが、思考を変えると環境への向き合い方・選択が変わる</li>
+          <li>「運が悪い」と感じる状況も、思考の習慣の反映として捉え直せる</li>
+        </ul>
+        <span class="why-tag">理由：環境を他責にしている限り、同じ結果が再生産され続けるから</span>
+      </div>
+      <div class="card">
+        <h3>③ 思考と健康・身体</h3>
+        <ul>
+          <li>不安・怒り・嫉妬などの思考は身体の不調として現れやすいとされる</li>
+          <li>穏やかで肯定的な思考は、心身の安定につながると説く</li>
+          <li>（医学的な実証ではなく、著者の経験的な洞察として提示されている点に注意）</li>
+        </ul>
+        <span class="why-tag">理由：心と体を分けて考えず、思考の質を健康管理の一部として扱えるから</span>
+      </div>
+      <div class="card">
+        <h3>④ 思考と目的</h3>
+        <ul>
+          <li>目的のない思考は漂流し、成果につながりにくい</li>
+          <li>明確な目的を持つことで、思考が集中し行動が一貫する</li>
+          <li>目的を持たない生き方は「船の舵を持たない航海」に例えられる</li>
+        </ul>
+        <span class="why-tag">理由：努力の量より「方向」が結果を大きく左右するから</span>
+      </div>
+      <div class="card">
+        <h3>⑤ 達成における思考という要因</h3>
+        <ul>
+          <li>成功は偶然ではなく、努力の結果であり、努力の大きさが結果の大小を決める</li>
+          <li>「自分は達成できる」という信念が、目標に向かう原動力になる</li>
+          <li>失敗もまた、それまでの思考の結果として説明される</li>
+        </ul>
+        <span class="why-tag">理由：結果を運のせいにせず、再現可能な行動として捉え直せるから</span>
+      </div>
+      <div class="card">
+        <h3>⑥ ビジョンと理想</h3>
+        <ul>
+          <li>理想を強く思い描く力が、行動の方向と粘り強さを支える</li>
+          <li>現状とのギャップに耐えながら理想を保ち続けることが成長の条件とされる</li>
+          <li>夢想と「目的を持った理想」は区別される</li>
+        </ul>
+        <span class="why-tag">理由：理想がなければ、思考を良い方向に集中させる的が無くなるから</span>
+      </div>
+      <div class="card">
+        <h3>⑦ 平静（穏やかな心）</h3>
+        <ul>
+          <li>思考を制御できた先にある最終的な状態として「穏やかな心」が位置づけられる</li>
+          <li>穏やかさは諦めではなく、因果の法則を理解した上での落ち着きとされる</li>
+          <li>感情に振られない心が、長期的な判断力の土台になる</li>
+        </ul>
+        <span class="why-tag">理由：穏やかさこそが、良い思考を安定して選び続けるための前提条件だから</span>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+      <p style="font-size:12.5px;color:var(--muted);margin:0 0 10px;">※ 原著 <em>As a Man Thinketh</em>（1903年）の7章構成に基づく整理。日本語版の章タイトル表記は版により異同があるため、内容ベースで要約する。</p>
+      <div class="card">
+        <h3>第1章：思考と人格</h3>
+        <ul><li>人格は思考の総和であり、変化は思考の変化から始まる</li></ul>
+        <span class="why-tag">理由：本全体の土台となる命題がここで提示される</span>
+      </div>
+      <div class="card">
+        <h3>第2章：思考が環境に与える影響</h3>
+        <ul><li>境遇は思考の反映であり、環境批判より思考の見直しが先</li></ul>
+        <span class="why-tag">理由：「環境のせい」思考からの脱却を促す章</span>
+      </div>
+      <div class="card">
+        <h3>第3章：思考が健康と身体に与える影響</h3>
+        <ul><li>心の状態が体調にも影響するという経験的な洞察</li></ul>
+        <span class="why-tag">理由：思考の影響範囲を身体にまで広げる章</span>
+      </div>
+      <div class="card">
+        <h3>第4章：思考と目的</h3>
+        <ul><li>目的を定めることで思考が力を持つ</li></ul>
+        <span class="why-tag">理由：漠然とした思考から「方向づけられた思考」への転換点</span>
+      </div>
+      <div class="card">
+        <h3>第5章：達成における思考という要因</h3>
+        <ul><li>信念と努力が結果の大きさを決める</li></ul>
+        <span class="why-tag">理由：目的（第4章）を現実の成果に結びつける章</span>
+      </div>
+      <div class="card">
+        <h3>第6章：ビジョンと理想</h3>
+        <ul><li>理想を思い描き続ける力が成長を支える</li></ul>
+        <span class="why-tag">理由：短期の達成だけでなく長期的な自己実現を扱う章</span>
+      </div>
+      <div class="card">
+        <h3>第7章：平静</h3>
+        <ul><li>因果の法則を理解した先にある、穏やかな心という到達点</li></ul>
+        <span class="why-tag">理由：全章の締めくくりとして、思考を制御した結果の心の状態を示す</span>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples" hidden>
+      <div class="card">
+        <h3>🌱 例1：成功哲学の系譜への影響</h3>
+        <ul>
+          <li>ナポレオン・ヒルやデール・カーネギーなど、後世の成功哲学の著者たちがアレンの思想の影響を受けたとされる</li>
+          <li>「思考が現実をつくる」という骨格が、100年以上にわたり自己啓発書の基本構造として反復されている</li>
+        </ul>
+        <span class="why-tag">理由（この例が示すこと）：この本が自己啓発という分野そのものの「原型」に近い位置にあることがわかる</span>
+      </div>
+      <div class="card">
+        <h3>🏰 例2：「不落の要塞」というメタファー</h3>
+        <ul>
+          <li>出版社の紹介文には「あなたの内側には、善の無敵のパワーで守られた不落の要塞がある」という一節が引用されている</li>
+          <li>外側の状況がどう荒れても、内側の思考は自分で守り選べるという比喩として提示されている</li>
+        </ul>
+        <span class="why-tag">理由（この例が示すこと）：環境に左右されない「内側の主体性」という本書の核を象徴的に伝えている</span>
+      </div>
+      <div class="card">
+        <h3>🔄 例3：思考→行動→結果の因果ループ</h3>
+        <ul>
+          <li>同じ出来事でも、「不運だ」と捉える思考と「学びだ」と捉える思考では、その後の行動（諦める／改善する）が変わり、結果も分岐する</li>
+          <li>本書はこの分岐点こそが「思考」であると位置づけている</li>
+        </ul>
+        <span class="why-tag">理由（この例が示すこと）：抽象的な「法則」を、日常のどの場面にも当てはめて考えられる具体的な型に翻訳している</span>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+      <div class="card quote-card">
+        <blockquote>「あなたの内側には、善の無敵のパワーで守られた不落の要塞がある」（要旨）</blockquote>
+        <div class="note">出典：日本語版（サンマーク出版）の紹介文より。正確な原文該当箇所は未確認のため要旨として扱う。</div>
+      </div>
+      <div class="card quote-card">
+        <blockquote>人が成し遂げること、そして成し遂げられないことのすべては、自分自身の思考の直接の結果である（要旨）</blockquote>
+        <div class="note">出典：原著 <em>As a Man Thinketh</em> の中心命題として各種書評・解説サイトで繰り返し紹介されている考え方の要旨訳。逐語訳の確認はできなかったため要旨とする。</div>
+      </div>
+      <div class="card quote-card">
+        <blockquote>原因と結果の間には偶然性が存在しない（要旨）</blockquote>
+        <div class="note">出典：複数の書評サイトで紹介されている本書の中心主張。「思い続ければ叶う」という単純な意味ではなく、目標に思考を集中させることの重要性を説いたものと解説されている。</div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+      <div class="card action-card">
+        <h3>✅ アクション1：今の思考パターンを書き出す（約10分）</h3>
+        <ul><li>今日、繰り返し頭に浮かんだ考えを3つ、そのまま紙やメモに書き出す</li></ul>
+        <div class="purpose">目的：無意識の思考の偏りを「見える化」する／期待効果：原因側（思考）への自覚が生まれ、結果を他責にしにくくなる</div>
+      </div>
+      <div class="card action-card">
+        <h3>✅ アクション2：理想の1日を3行で描く（約15分）</h3>
+        <ul><li>1年後、理想通りに過ごせている「ある1日」を具体的に3行で書く</li></ul>
+        <div class="purpose">目的：目的・ビジョンを言語化して思考の的を定める／期待効果：日々の行動の優先順位が決めやすくなる</div>
+      </div>
+      <div class="card action-card">
+        <h3>✅ アクション3：ネガティブ思考の言い換え練習（約10分）</h3>
+        <ul><li>今日感じたネガティブな考えを1つ選び、「これは原因であり次の結果を生む」という視点で3パターン言い換えてみる</li></ul>
+        <div class="purpose">目的：思考を選び直す練習を小さく積む／期待効果：感情的な反応に飲まれにくくなり、穏やかな心に近づく</div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>本インフォグラフィックはWeb上で確認できた情報に基づき作成。原文の逐語確認ができない引用は「要旨」として明記しています。</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){
+        t.setAttribute('aria-selected', 'false');
+        var panel = document.getElementById(t.getAttribute('aria-controls'));
+        if(panel){ panel.classList.remove('active'); panel.setAttribute('hidden',''); }
+      });
+      tab.setAttribute('aria-selected', 'true');
+      var activePanel = document.getElementById(tab.getAttribute('aria-controls'));
+      if(activePanel){ activePanel.classList.add('active'); activePanel.removeAttribute('hidden'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
