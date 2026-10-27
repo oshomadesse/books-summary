@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>空気を読む脳 | インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様）
+  プライマリー: #2B2D6E （深い藍色 = 読めない「空気」そのもの）
+  セカンダリー: #FF6F59 （珊瑚色 = 人と人の間に生まれる緊張・体温）
+  アクセント:   #3DDC97 （ミントグリーン = 脳科学が照らす気づき）
+  グラデーション: linear-gradient(135deg, #2B2D6E 0%, #4A4F9E 100%)
+-->
+<style>
+  :root{
+    --primary:#2B2D6E;
+    --primary-dark:#1C1D49;
+    --secondary:#FF6F59;
+    --accent:#3DDC97;
+    --bg:#F6F5FB;
+    --card:#FFFFFF;
+    --text:#232336;
+    --text-sub:#5B5B72;
+    --border:#E4E2F1;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px 48px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%, #4A4F9E 100%);
+    color:#fff;
+    padding:36px 20px 28px;
+    border-radius:0 0 28px 28px;
+    margin-bottom:20px;
+  }
+  .eyebrow{
+    font-size:13px;
+    letter-spacing:.08em;
+    opacity:.85;
+    margin:0 0 8px;
+  }
+  h1{
+    font-size:26px;
+    margin:0 0 10px;
+    line-height:1.4;
+  }
+  .meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:14px;
+    font-size:12.5px;
+  }
+  .badge{
+    background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;
+    padding:4px 11px;
+  }
+  section.card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:18px 18px 16px;
+    margin-bottom:16px;
+    box-shadow:0 2px 10px rgba(43,45,110,.05);
+  }
+  .why-how{
+    background:var(--primary-dark);
+    color:#fff;
+    border-radius:18px;
+    padding:20px 18px;
+    margin-bottom:20px;
+  }
+  .why-how h2{font-size:15px;margin:0 0 12px;opacity:.9;letter-spacing:.04em;}
+  .qa-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+  .qa-tag{
+    flex:none;
+    font-size:11px;
+    font-weight:700;
+    padding:3px 9px;
+    border-radius:8px;
+    margin-top:2px;
+  }
+  .qa-tag.q{background:var(--secondary);color:#fff;}
+  .qa-tag.a{background:var(--accent);color:#102a1f;}
+  .qa-tag.g{background:#fff;color:var(--primary-dark);}
+  .qa-text{font-size:14.5px;}
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin-bottom:16px;
+    -ms-overflow-style:none;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:none;
+    font-size:13px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--text-sub);
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+  [role="tabpanel"][hidden]{display:none;}
+  h3.card-title{
+    font-size:16px;
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3.card-title .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--secondary);
+    flex:none;
+  }
+  ul.points{margin:0 0 10px;padding-left:20px;font-size:14px;}
+  ul.points li{margin-bottom:5px;}
+  .why{
+    background:#F0F8F4;
+    border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0;
+    padding:8px 12px;
+    font-size:12.5px;
+    color:#1E5A42;
+  }
+  .why b{color:#13472F;}
+  .numbadges{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px;}
+  .numbadge{
+    flex:1 1 100px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:10px 12px;
+    text-align:center;
+  }
+  .numbadge .n{font-size:20px;font-weight:800;color:var(--primary);}
+  .numbadge .l{font-size:11px;color:var(--text-sub);margin-top:2px;}
+  .barchart{margin:16px 0 6px;}
+  .barrow{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12.5px;}
+  .barrow .label{flex:0 0 118px;color:var(--text-sub);}
+  .barrow .track{flex:1;background:var(--border);border-radius:6px;height:14px;overflow:hidden;}
+  .barrow .fill{height:100%;border-radius:6px;}
+  .barrow .fill.p{background:var(--secondary);}
+  .barrow .fill.s{background:var(--accent);}
+  .barnote{font-size:11px;color:var(--text-sub);margin-top:2px;}
+  blockquote.quote{
+    margin:0 0 14px;
+    padding:14px 16px;
+    background:var(--bg);
+    border-left:4px solid var(--secondary);
+    border-radius:0 10px 10px 0;
+    font-size:14px;
+  }
+  blockquote.quote .tag{
+    display:inline-block;
+    font-size:10.5px;
+    font-weight:700;
+    background:var(--secondary);
+    color:#fff;
+    padding:2px 7px;
+    border-radius:6px;
+    margin-bottom:6px;
+  }
+  blockquote.quote .note{font-size:12px;color:var(--text-sub);margin-top:6px;}
+  .action{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    padding:12px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .action:last-child{border-bottom:none;}
+  .action .num{
+    flex:none;
+    width:28px;height:28px;border-radius:50%;
+    background:var(--primary);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:800;
+  }
+  .action .body p{margin:4px 0 0;font-size:12.5px;color:var(--text-sub);}
+  .action .body .t{font-size:14.5px;font-weight:700;}
+  footer{
+    text-align:center;
+    font-size:11.5px;
+    color:var(--text-sub);
+    margin-top:12px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">📚 今日の一冊 ｜ 心理学</p>
+  <h1>🧠 空気を読む脳</h1>
+  <p style="margin:0;font-size:13.5px;opacity:.9;">中野信子（著）・講談社+α新書</p>
+  <div class="meta">
+    <span class="badge">📅 2020年2月刊</span>
+    <span class="badge">📖 216頁</span>
+    <span class="badge">🧬 脳科学 × 日本人論</span>
+    <span class="badge">🗂️ 全4章構成</span>
+  </div>
+</header>
+
+<div class="why-how">
+  <h2>⚡ 要約＝問い × 答え × 根拠</h2>
+  <div class="qa-row">
+    <span class="qa-tag q">問い</span>
+    <span class="qa-text">なぜ日本人はこれほど「空気」を読み、同調圧力に敏感なのか？</span>
+  </div>
+  <div class="qa-row">
+    <span class="qa-tag a">答え</span>
+    <span class="qa-text">それは教育やしつけの問題だけでなく、不安を感じやすい脳の仕組み（遺伝子レベルの個人差・集団差）が、集団への同調と気遣いを強く駆動しているから。</span>
+  </div>
+  <div class="qa-row">
+    <span class="qa-tag g">根拠</span>
+    <span class="qa-text">セロトニンの働きを調整する「セロトニントランスポーター」の遺伝子型には複数のタイプがあり、トランスポーター量が少なく不安を感じやすいタイプを持つ人の割合が、日本人では世界的に見て高いグループに属するとされる（具体的な保有率は文献により差があり、正確な数値は不明）。</span>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="空気を読む脳の解説タブ">
+  <button role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true">主要概念</button>
+  <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false" tabindex="-1">各章の要約</button>
+  <button role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false" tabindex="-1">具体例</button>
+  <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false" tabindex="-1">重要な引用</button>
+  <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false" tabindex="-1">今日のアクション</button>
+</nav>
+
+<!-- 主要概念の詳細 -->
+<div id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>セロトニントランスポーター遺伝子</h3>
+    <ul class="points">
+      <li>精神を安定させる神経伝達物質セロトニンを、使った後に再び取り込んで調整する「運び役」のタンパク質。</li>
+      <li>これを作る遺伝子には、量が多いタイプ（L型）と少ないタイプ（S型）がある。</li>
+      <li>量が少ないタイプの人ほど不安や緊張を感じやすいとされる。</li>
+    </ul>
+    <div class="numbadges">
+      <div class="numbadge"><div class="n">2</div><div class="l">主な遺伝子型（L/S）</div></div>
+      <div class="numbadge"><div class="n">1</div><div class="l">調整対象の物質（セロトニン）</div></div>
+    </div>
+    <div class="why"><b>理由（なぜ重要か）:</b> 本書全体の土台となる発想で、「空気を読む」という行動を文化や教育だけでなく脳の生物学的な個人差から説明する鍵になる。</div>
+  </section>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>いわゆる「不安遺伝子」</h3>
+    <ul class="points">
+      <li>トランスポーターが少ないS型は、俗に「不安遺伝子」「カミカゼ遺伝子」と呼ばれることがある。</li>
+      <li>日本人はこのタイプを持つ人の割合が、世界的に見て高いグループに属するとされる。</li>
+      <li>著者はこの特性を、勤勉さや集団への献身性につながる面もあると位置づける。</li>
+    </ul>
+    <div class="barchart">
+      <div class="barrow">
+        <span class="label">S型の多さ（目安）</span>
+        <div class="track"><div class="fill p" style="width:82%"></div></div>
+      </div>
+      <div class="barrow">
+        <span class="label">L型の多さ（目安）</span>
+        <div class="track"><div class="fill s" style="width:35%"></div></div>
+      </div>
+      <p class="barnote">※ 具体的な保有率（%）は出典により差があり本記事では不明とし、相対的な傾向のみを図示。</p>
+    </div>
+    <div class="why"><b>理由（なぜ重要か）:</b> 「不安を感じやすい」という特性が弱点であると同時に、勤勉さ・協調性という強みの裏返しでもあるという本書の核心的な視点につながる。</div>
+  </section>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>同調圧力と「制裁感情」</h3>
+    <ul class="points">
+      <li>不安を感じやすい脳は、集団のルールから外れることへの警戒心も強くしやすい。</li>
+      <li>ルールを守らない人・ズルをする人に対して、仕返しをしたくなる感情（制裁感情）が強く働く。</li>
+      <li>この感情が、同調圧力をさらに強める方向に作用する。</li>
+    </ul>
+    <div class="why"><b>理由（なぜ重要か）:</b> 「空気を読む」ことの裏側に、他者への監視・制裁という攻撃的な側面があることを理解すると、同調圧力の生きづらさの正体が見えてくる。</div>
+  </section>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>容姿・性にまつわる心理的ペナルティ</h3>
+    <ul class="points">
+      <li>容姿に関する心理実験は、見た目が社会的評価に与える影響の大きさを映し出すとされる。</li>
+      <li>「婚活」のような場での同調圧力は、特に女性にのしかかりやすいと論じられる。</li>
+      <li>子どもの進路を縛る「毒親」や、同性愛と「生産性」をめぐる議論も同じ同調圧力の一面として扱われる。</li>
+    </ul>
+    <div class="why"><b>理由（なぜ重要か）:</b> 「空気」の圧力は抽象的な話ではなく、容姿・結婚・子育て・性のあり方といった具体的な生きづらさとして現れることを示している。</div>
+  </section>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>褒め方のパラドックス</h3>
+    <ul class="points">
+      <li>能力そのものを褒めて育てると、失敗を恐れる脳が形成されやすい。</li>
+      <li>その結果、新しい挑戦を避けるようになりやすいとされる。</li>
+      <li>有効なのは、結果ではなく努力や過程を褒めること。</li>
+    </ul>
+    <div class="why"><b>理由（なぜ重要か）:</b> 良かれと思ってしている「褒める」という行為が、挑戦を避ける空気を家庭や職場にまで広げてしまう可能性を示す、実用性の高い知見。</div>
+  </section>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>報酬と創造性のトレードオフ</h3>
+    <ul class="points">
+      <li>報酬は、単純な作業への反応速度を上げる場面では効果を発揮する。</li>
+      <li>一方で、創造性が求められる場面では報酬がマイナスに働くことがある。</li>
+      <li>課題の種類に応じて褒め方・報酬の設計を変える必要がある。</li>
+    </ul>
+    <div class="why"><b>理由（なぜ重要か）:</b> 「褒めればいい」「報酬を与えればいい」という単純化を避け、場面に応じた動機づけの設計が必要だという実践的な示唆を与える。</div>
+  </section>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>幸福度の低さと生存戦略としての不安</h3>
+    <ul class="points">
+      <li>セロトニン濃度が低めで不安を感じやすい性質は、人類進化の初期には生存に有利だったという考え方が紹介される。</li>
+      <li>不安型・楽観型のどちらも、環境に適応して生き延びる力を持っていたと著者は位置づける。</li>
+      <li>日本人の幸福度の低さを「欠点」ではなく脳の生存戦略の一つとして捉え直す。</li>
+    </ul>
+    <div class="why"><b>理由（なぜ重要か）:</b> 「幸福度が低い」というネガティブな国際比較の結果を、進化的な多様性という視点から再解釈し、自己否定に陥らないための見方を提供する。</div>
+  </section>
+
+</div>
+
+<!-- 各章の要約 -->
+<div id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>第1章　犯人は脳の中にいる〜空気が人生に与える影響とは？</h3>
+    <ul class="points">
+      <li>「空気を読む」行動の原因を、教育や文化だけでなく脳の仕組みに求める。</li>
+      <li>セロトニントランスポーターの遺伝子型（L型／S型）を軸に、不安の感じやすさの個人差・集団差を説明する。</li>
+      <li>S型（いわゆる「不安遺伝子」）を持つ人が多い集団では、ルール違反者への制裁感情が強まりやすい。</li>
+    </ul>
+    <div class="why"><b>理由:</b> 本全体の理論的な土台を提示する章であり、以降の各章で論じる現象（容姿・褒め方・幸福度）すべてがこの脳の仕組みの応用として語られる。</div>
+  </section>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>第2章　容姿や性へのペナルティ〜呪いに縛られない生き方</h3>
+    <ul class="points">
+      <li>女性の容姿を扱う心理実験を通じて、見た目にまつわる社会的な「残酷さ」を示す。</li>
+      <li>「婚活」に苦しむ日本人女性の心理的プレッシャーを取り上げる。</li>
+      <li>子どもの人生を縛る「毒親」の問題と、同性愛を「生産性」で論じる言説の危うさを扱う。</li>
+    </ul>
+    <div class="why"><b>理由:</b> 「空気」の圧力が最も個人の尊厳を傷つけやすい領域（容姿・結婚・親子関係・性のあり方）に焦点を当て、問題を自分の生き方に引き寄せて考えさせる章。</div>
+  </section>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>第3章　「褒める」は危険〜日本人の才能を伸ばす方法とは？</h3>
+    <ul class="points">
+      <li>能力を褒めて育てることが「失敗を恐れる脳」を形成し、挑戦を避けさせる仕組みを説明する。</li>
+      <li>努力や過程を褒めることの方が、挑戦心を保つうえで有効だとする。</li>
+      <li>報酬が単純作業の速度を高める一方、創造性を要する課題にはマイナスに働く場合があるとする。</li>
+    </ul>
+    <div class="why"><b>理由:</b> 教育・子育て・職場マネジメントにすぐ応用できる実践的な章で、日本人が「挑戦を避ける空気」を生み出す心理メカニズムを明らかにする。</div>
+  </section>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>第4章　「幸福度が低い」わけがある〜脳の多様すぎる生存戦略</h3>
+    <ul class="points">
+      <li>日本人の幸福度が国際比較で低く出やすい背景を、セロトニン系の個人差から読み解く。</li>
+      <li>不安を感じやすい性質が、進化的には生存に有利に働いた場面があるとする見方を紹介する。</li>
+      <li>不安型・楽観型のどちらも社会にとって必要な多様性であると位置づけ直す。</li>
+    </ul>
+    <div class="why"><b>理由:</b> 本書全体の結論にあたる章で、「空気を読みすぎる」「幸福度が低い」という弱点に見える特性を、多様性という前向きな枠組みで締めくくる。</div>
+  </section>
+
+</div>
+
+<!-- 具体例 -->
+<div id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>セロトニントランスポーター型の国際比較</h3>
+    <ul class="points">
+      <li>セロトニントランスポーターの量が少ないS型を持つ人の割合は、地域・集団によって差があるとされる。</li>
+      <li>日本人はこのS型保有者の割合が世界的に見て高いグループに属するとされる。</li>
+      <li>一方で、具体的な保有率（%）を裏付ける一次資料は今回の調査では確認できず、不明とする。</li>
+    </ul>
+    <div class="why"><b>理由（この例が示すこと）:</b> 「日本人は空気を読む」という印象論を、遺伝子レベルの集団差という科学的な切り口に置き換えて考えるきっかけになる。</div>
+  </section>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>容姿をめぐる心理実験</h3>
+    <ul class="points">
+      <li>女性の容姿に関する心理実験が、社会的評価や扱いの違いを浮き彫りにするとして紹介される。</li>
+      <li>実験の詳細な設計や数値までは今回の調査で確認できていない。</li>
+    </ul>
+    <div class="why"><b>理由（この例が示すこと）:</b> 「空気」の圧力が抽象的な同調ではなく、見た目という具体的な基準で人を評価する現実の仕組みとして働くことを示す。</div>
+  </section>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>褒めて育った子どもが挑戦を避ける現象</h3>
+    <ul class="points">
+      <li>能力を褒められて育った子どもは、失敗への恐れが強くなりやすいとされる。</li>
+      <li>結果として、難しい課題や新しい挑戦を避ける傾向が生まれるとされる。</li>
+    </ul>
+    <div class="why"><b>理由（この例が示すこと）:</b> 良い意図で行われる「褒める」という日常的な行為が、知らないうちに挑戦を避ける空気を作ってしまうという、身近で実践的な教訓になる。</div>
+  </section>
+
+  <section class="card">
+    <h3 class="card-title"><span class="dot"></span>コロナ禍の「自粛警察」</h3>
+    <ul class="points">
+      <li>新型コロナウイルス流行期に見られた「自粛警察」的な行動が、本書と関連づけて論じられることがある。</li>
+      <li>ルールを守らない（と見える）他者への強い制裁感情が、同調圧力の一形態として現れた例とされる。</li>
+    </ul>
+    <div class="why"><b>理由（この例が示すこと）:</b> 本書が説明する「不安の強さ→制裁感情→同調圧力」という構図が、歴史的な話ではなく現代の社会現象にも当てはまることを示す。</div>
+  </section>
+
+</div>
+
+<!-- 重要な引用 -->
+<div id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+
+  <blockquote class="quote">
+    <span class="tag">要旨</span>
+    日本人が「空気」を読むのは、しつけや文化だけの問題ではなく、不安を感じやすい脳の個人差・集団差が背景にあるという考え方が、本書全体を通じて示されている。
+    <p class="note">※ 原典からの逐語引用は今回の調査で確認できなかったため、内容の要旨として記載。</p>
+  </blockquote>
+
+  <blockquote class="quote">
+    <span class="tag">要旨</span>
+    セロトニントランスポーターの量が少ないタイプ（S型）は「不安遺伝子」と呼ばれることがあり、日本人はこのタイプを持つ人の割合が世界的に見て高いグループに属するとされる。
+    <p class="note">※ 要旨。正確な保有率の数値は出典により差があり不明。</p>
+  </blockquote>
+
+  <blockquote class="quote">
+    <span class="tag">要旨</span>
+    能力を褒めて育てると「失敗を恐れる脳」が形成され、挑戦を避けるようになるという指摘がある。褒めるときは能力そのものではなく、努力や過程に注目するほうが有効とされる。
+    <p class="note">※ 要旨。</p>
+  </blockquote>
+
+  <blockquote class="quote">
+    <span class="tag">要旨</span>
+    不安を感じやすい性質は、人類進化の初期においては生存に有利に働いた場合があるとされ、不安型・楽観型のどちらも環境に適応して生き延びる力を持っていたという見方が示される。
+    <p class="note">※ 要旨。</p>
+  </blockquote>
+
+</div>
+
+<!-- 今日のアクション -->
+<div id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+
+  <section class="card">
+    <div class="action">
+      <span class="num">1</span>
+      <div class="body">
+        <p class="t">自分が「不安型」か「楽観型」かをメモしてみる（15分）</p>
+        <p><b>目的:</b> 空気を読みすぎてしまう自分の傾向を、短所ではなく脳の特性として客観的に捉える。</p>
+        <p><b>期待効果:</b> 同調圧力を感じたときに自分を責めすぎず、「これは脳の仕組みの反応だ」と一歩引いて見られるようになる。</p>
+      </div>
+    </div>
+    <div class="action">
+      <span class="num">2</span>
+      <div class="body">
+        <p class="t">今日、誰かを褒めるときは「過程・努力」に一言触れる（15分）</p>
+        <p><b>目的:</b> 「能力を褒める→挑戦を避ける」というパラドックスを、身近な場面で実践的に回避する。</p>
+        <p><b>期待効果:</b> 相手（同僚・家族・子どもなど）が、結果が出なかった場面でも挑戦し続けやすくなる。</p>
+      </div>
+    </div>
+    <div class="action">
+      <span class="num">3</span>
+      <div class="body">
+        <p class="t">同調圧力を感じた場面を1つ書き出し、「不安反応」か「社会的な正しさ」かを分けて考える（20〜30分）</p>
+        <p><b>目的:</b> 「空気を読む」行動の中身を、脳の不安反応と、本当に大切にしたい価値観とに切り分ける。</p>
+        <p><b>期待効果:</b> 次に同じ場面に出会ったとき、反射的に空気に従う前に、一歩立ち止まって判断できるようになる。</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>📖 空気を読む脳（中野信子・講談社+α新書）をもとに自動生成</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('[role="tab"]');
+  var panels = {
+    'tab-concepts': document.getElementById('panel-concepts'),
+    'tab-chapters': document.getElementById('panel-chapters'),
+    'tab-cases': document.getElementById('panel-cases'),
+    'tab-quotes': document.getElementById('panel-quotes'),
+    'tab-actions': document.getElementById('panel-actions')
+  };
+  function activate(id){
+    tabs.forEach(function(t){
+      var selected = (t.id === id);
+      t.setAttribute('aria-selected', selected ? 'true' : 'false');
+      t.setAttribute('tabindex', selected ? '0' : '-1');
+    });
+    Object.keys(panels).forEach(function(k){
+      if(k === id){
+        panels[k].removeAttribute('hidden');
+      } else {
+        panels[k].setAttribute('hidden','');
+      }
+    });
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ activate(t.id); });
+  });
+})();
+</script>
+</body>
+</html>
