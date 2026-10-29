@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家族が笑顔になる 北欧流の暮らし方｜インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様コメント）
+  プライマリー: #5B8C9E → #2E5F6E（北欧の空と海を思わせるブルー系グラデーション）
+  セカンダリー: #3E4A5E（ネイビーグレー）
+  アクセント: #F2B84B（木のぬくもり・キャンドルを思わせるイエロー）
+-->
+<style>
+  :root{
+    --primary-1:#5B8C9E;
+    --primary-2:#2E5F6E;
+    --secondary:#3E4A5E;
+    --accent:#F2B84B;
+    --bg:#F4F8F7;
+    --card-bg:#FFFFFF;
+    --text:#2c333d;
+    --sub:#73808c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary-1),var(--primary-2));
+    color:#fff;
+    padding:28px 16px 32px;
+    text-align:center;
+  }
+  header h1{font-size:1.45rem;font-weight:800;margin-bottom:6px;}
+  header p.author{font-size:0.9rem;opacity:0.92;}
+  .badge-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px;}
+  .badge{background:rgba(255,255,255,0.22);border-radius:20px;padding:5px 12px;font-size:0.75rem;font-weight:600;}
+  main{max-width:720px;margin:0 auto;padding:0 14px;}
+
+  .hero-block{
+    background:var(--card-bg);
+    border-radius:16px;
+    margin:-20px auto 20px;
+    padding:18px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+  }
+  .hero-block h2{font-size:0.95rem;color:var(--primary-2);margin-bottom:10px;}
+  .hero-row{display:flex;flex-direction:column;gap:10px;}
+  .hero-item{border-left:4px solid var(--primary-1);padding:8px 12px;background:#EEF6F7;border-radius:8px;}
+  .hero-item .label{font-size:0.7rem;font-weight:700;color:var(--primary-2);}
+  .hero-item .val{font-size:0.88rem;margin-top:3px;}
+
+  .stats-row{display:flex;gap:10px;margin:16px 0;flex-wrap:wrap;}
+  .stat{flex:1;min-width:95px;background:var(--card-bg);border-radius:12px;text-align:center;padding:12px 6px;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+  .stat .num{font-size:1.25rem;font-weight:800;color:var(--primary-2);}
+  .stat .num small{font-size:0.62rem;font-weight:600;}
+  .stat .cap{font-size:0.64rem;color:var(--sub);margin-top:2px;}
+
+  .tabs{display:flex;overflow-x:auto;gap:6px;margin:18px 0 10px;padding-bottom:4px;-webkit-overflow-scrolling:touch;}
+  .tab-btn{
+    flex:0 0 auto;
+    background:#fff;
+    border:2px solid var(--primary-1);
+    color:var(--primary-2);
+    border-radius:20px;
+    padding:8px 14px;
+    font-size:0.78rem;
+    font-weight:700;
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  .tab-btn[aria-selected="true"]{background:linear-gradient(135deg,var(--primary-1),var(--primary-2));color:#fff;border-color:transparent;}
+
+  .panel{display:none;}
+  .panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.06);
+  }
+  .card h3{font-size:0.98rem;color:var(--secondary);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  .card ul{margin-left:4px;}
+  .card li{font-size:0.85rem;margin-bottom:5px;list-style:none;padding-left:16px;position:relative;}
+  .card li::before{content:"▸";position:absolute;left:0;color:var(--primary-1);font-weight:700;}
+  .why{
+    margin-top:10px;
+    background:#FFF6E4;
+    border-radius:10px;
+    padding:8px 10px;
+    font-size:0.78rem;
+    color:#8a6a1a;
+  }
+  .why b{color:#b8860b;}
+
+  .quote-card{
+    background:linear-gradient(135deg,#3E4A5E,#262d38);
+    color:#fff;
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .quote-card p.quote{font-size:0.92rem;font-style:italic;margin-bottom:8px;}
+  .quote-card p.note{font-size:0.72rem;color:var(--accent);}
+
+  .action-card{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+    border:2px dashed var(--primary-1);
+  }
+  .action-card h3{color:var(--primary-2);font-size:0.95rem;margin-bottom:6px;}
+  .action-meta{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;}
+  .pill{background:#EEF6F7;color:var(--primary-2);border-radius:14px;padding:3px 10px;font-size:0.7rem;font-weight:700;}
+
+  .bar-wrap{margin:6px 0;}
+  .bar-label{font-size:0.72rem;color:var(--sub);display:flex;justify-content:space-between;}
+  .bar-track{background:#eee;border-radius:8px;height:10px;overflow:hidden;margin-top:3px;}
+  .bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--primary-1),var(--primary-2));}
+
+  footer{text-align:center;font-size:0.7rem;color:var(--sub);margin-top:24px;padding:0 20px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧠 家族が笑顔になる 北欧流の暮らし方</h1>
+  <p class="author">著者: 桑原さやか＋夫オリバー（監修・編集: オレンジページ）</p>
+  <div class="badge-row">
+    <span class="badge">🏷️ ライフスタイル</span>
+    <span class="badge">🇸🇪 日本×スウェーデン夫婦</span>
+    <span class="badge">📖 雑誌連載1年分を書籍化</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero-block" aria-label="要約：問いと答えと根拠">
+    <h2>⚡ 要約（Why &amp; How）</h2>
+    <div class="hero-row">
+      <div class="hero-item">
+        <div class="label">❓ 問い</div>
+        <div class="val">完璧な家事・育児を目指すと、なぜ家族の笑顔が減ってしまうのか？</div>
+      </div>
+      <div class="hero-item">
+        <div class="label">✅ 答え</div>
+        <div class="val">「ちょうどいい」を選び、小さな決めごとで迷いを減らし、家族それぞれに「自分で決める」余地を残すから、無理をせず笑顔でいられる</div>
+      </div>
+      <div class="hero-item">
+        <div class="label">📐 根拠（How）</div>
+        <div class="val">①日々のルーティンを手の抜ける形に整える ②北欧を参考に住まいを心地よく整える ③受け身ではなく自分から楽しみを見つける姿勢を持つ、という3段構えで暮らしを見直す</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-row" aria-label="主要数値">
+    <div class="stat"><div class="num">3<small>章</small></div><div class="cap">書籍の構成</div></div>
+    <div class="stat"><div class="num">1<small>年分</small></div><div class="cap">雑誌連載の集成</div></div>
+    <div class="stat"><div class="num">2022<small>年</small></div><div class="cap">刊行（オレンジページ）</div></div>
+    <div class="stat"><div class="num">2<small>カ国</small></div><div class="cap">日本×スウェーデンの視点</div></div>
+  </section>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+    <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">💡 主要概念</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">🧩 具体例</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </nav>
+
+  <section id="panel-concepts" class="panel active" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🌅 小さな決めごとで迷いを減らす</h3>
+      <ul>
+        <li>朝の行動パターンをあらかじめ決めておき、毎回考える手間を減らす</li>
+        <li>日用品の買い出しも「仕組み」にして負担を減らす</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>決めごとがあると、毎日の小さな判断に使う気力を節約でき、その分を家族との時間に回せる。</div>
+    </div>
+    <div class="card">
+      <h3>🍽️ 無理せず手を抜く食事づくり</h3>
+      <ul>
+        <li>3食すべてを完璧に自炊しようとせず、楽をする日を意識的につくる</li>
+        <li>「楽をすること」を罪悪感なく選択肢の一つとして位置づける</li>
+      </ul>
+      <div class="why"><b>理由：</b>食事づくりへの負担が減ることで、食卓の時間そのものを楽しめるようになる。</div>
+    </div>
+    <div class="card">
+      <h3>🏠 北欧を参考にした住まいの工夫</h3>
+      <ul>
+        <li>玄関収納・壁の使い方・照明・テキスタイルなど、北欧のスタイルを部分的に取り入れる</li>
+        <li>大規模なリフォームではなく、できる範囲の工夫を積み重ねる</li>
+      </ul>
+      <div class="why"><b>理由：</b>住環境が心地よいと、家にいる時間そのものがリラックスできる時間になる。</div>
+    </div>
+    <div class="card">
+      <h3>🗣️ 子どもに「どうしたい？」と問いかける</h3>
+      <ul>
+        <li>親が一方的に決めるのではなく、子どもの意思を確認する場面を増やす</li>
+        <li>食事や行動の選択を、子ども自身に委ねる機会を作る</li>
+      </ul>
+      <div class="why"><b>理由：</b>自分で選ぶ経験の積み重ねが、子どもの自信や納得感につながる。</div>
+    </div>
+    <div class="card">
+      <h3>🌱 自分で決める経験を積ませる</h3>
+      <ul>
+        <li>「意志が強いこと」をわがままではなく長所として受け止める</li>
+        <li>結果より、自分で考えて選んだという過程を大切にする</li>
+      </ul>
+      <div class="why"><b>理由：</b>意志の強さを否定せず活かす姿勢が、家庭内の対立を減らし、家族関係を穏やかにする。</div>
+    </div>
+    <div class="card">
+      <h3>🎨 受け身ではなく自分から楽しみを見つける</h3>
+      <ul>
+        <li>与えられた環境を待つのではなく、自分で暮らしを楽しくする工夫を探す</li>
+        <li>この姿勢を、著者自身が北欧生活から持ち帰った価値観として紹介している</li>
+      </ul>
+      <div class="why"><b>理由：</b>環境や条件のせいにせず、自分で楽しみを作る姿勢が、暮らし全体の満足度を上げる。</div>
+    </div>
+    <div class="card">
+      <h3>♻️ 北欧流エコの取り組み</h3>
+      <ul>
+        <li>北欧で身につけた省エネ・リユースなどの習慣を、日本の生活に取り入れる</li>
+      </ul>
+      <div class="why"><b>理由：</b>環境への配慮を暮らしの延長として取り入れることで、無理なく継続できる。</div>
+    </div>
+    <div class="card">
+      <h3>⚖️ 「ちょうどいい」を選ぶ暮らしの基準</h3>
+      <ul>
+        <li>「完璧」ではなく「ちょうどいい」を基準に、家事・住まい・子育てを選択する</li>
+      </ul>
+      <div class="why"><b>理由：</b>基準を下げるのではなく、持続可能な基準に置き直すことが、笑顔を保つ鍵になる。</div>
+    </div>
+  </section>
+
+  <section id="panel-chapters" class="panel" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>第1章 日々の暮らしのルーティン</h3>
+      <ul>
+        <li>朝の小さな決めごとで、毎朝の判断の手間を減らす</li>
+        <li>日用品の買い出しの工夫で、買い物の負担を軽くする</li>
+        <li>無理をしすぎず楽をしながら、食事の時間を楽しむ方法を紹介</li>
+      </ul>
+      <div class="why"><b>理由：</b>最も日常的で変化を実感しやすい「毎日の行動」から整えることで、読者がすぐ実践しやすい入り口になっている。</div>
+    </div>
+    <div class="card">
+      <h3>第2章 北欧を参考にした住まいづくり</h3>
+      <ul>
+        <li>玄関収納、壁の使い方、照明、テキスタイルなど住まいを心地よくする工夫を紹介</li>
+        <li>北欧スタイルを部分的に取り入れる具体的な手法が中心</li>
+      </ul>
+      <div class="why"><b>理由：</b>行動の工夫（第1章）の次に、過ごす空間そのものを整えることで、暮らし全体の心地よさを積み上げる構成になっている。</div>
+    </div>
+    <div class="card">
+      <h3>第3章 北欧の暮らしから考えたこと</h3>
+      <ul>
+        <li>北欧での経験を生かしたエコの取り組みを紹介</li>
+        <li>受け身ではなく自分から楽しみを見つける姿勢について書かれている</li>
+      </ul>
+      <div class="why"><b>理由：</b>具体的な工夫（第1・2章）を踏まえ、最後にその土台となる考え方・価値観に話を広げることで、単なるテクニック集で終わらない構成にしている。</div>
+    </div>
+  </section>
+
+  <section id="panel-cases" class="panel" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3>🍕 「今日は何が食べたい？」の問いかけ</h3>
+      <ul>
+        <li>夫オリバー氏は、子どもたちに夕食の希望をその都度必ず尋ねる習慣を持つ</li>
+        <li>ある日、息子が「前回は僕の希望でピザだったから、今日はパパとママが決めていいよ」と答えたエピソードが、著者夫婦の子育て連載で紹介されている</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「決めさせる」を繰り返すと、子ども自身が譲り合いまで考えられるようになることを示す一例。</div>
+    </div>
+    <div class="card">
+      <h3>👴 義理の父の言葉「意志が強いのはいいことだよ」</h3>
+      <ul>
+        <li>子どもの意志の強さに悩んだ際、スウェーデン人の義理の父から「意志が強いのは自分を助けてくれるからいいことだ」と言われたエピソードが紹介されている</li>
+      </ul>
+      <div class="why"><b>理由：</b>短所に見える性質を長所として言い換える視点の転換が、家庭内の受け止め方を変える力になることを示す。</div>
+    </div>
+    <div class="card">
+      <h3>🇳🇴 ノルウェーへの移住と帰国の経験</h3>
+      <ul>
+        <li>著者はイケア勤務、「北欧、暮らしの道具店」初期スタッフとしての勤務を経て、夫とノルウェー・トロムソへ移住</li>
+        <li>1年半の滞在後に帰国し、現在は長野県松本市在住</li>
+      </ul>
+      <div class="why"><b>理由：</b>北欧での実生活経験があるからこそ、憧れではなく実践的な工夫として紹介できることの裏付けになっている。</div>
+    </div>
+    <div class="card">
+      <h3>📰 雑誌連載1年分の書籍化</h3>
+      <ul>
+        <li>本書は雑誌『オレンジページ』での1年間の連載をまとめたもの</li>
+        <li>写真を多く使い、雑誌感覚で読める実践編として書評で紹介されている</li>
+      </ul>
+      <div class="why"><b>理由：</b>1年を通じた連載だからこそ、季節ごとの暮らしの工夫が蓄積され、通年で使える内容になっている。</div>
+    </div>
+  </section>
+
+  <section id="panel-quotes" class="panel" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote-card">
+      <p class="quote">「意志が強いのはいいことだよ。自分を助けてくれるから」</p>
+      <p class="note">※要旨（著者夫婦の子育て連載で紹介されている義理の父の言葉の要約。書籍本文からの直接引用は確認できず）</p>
+    </div>
+    <div class="quote-card">
+      <p class="quote">「居心地のいい場所は、与えられるものではなく、自分でつくるもの」</p>
+      <p class="note">※要旨（著者の関連著作で紹介されている考え方の要約。本書内の直接引用箇所は確認できず）</p>
+    </div>
+  </section>
+
+  <section id="panel-actions" class="panel" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="action-card">
+      <h3>1️⃣ 朝に1つだけ「今日はこれをする」と決めておく</h3>
+      <p style="font-size:0.85rem;">服・朝食・持ち物など、迷いがちな1項目だけ前夜か朝一番に決めてしまう。</p>
+      <div class="action-meta">
+        <span class="pill">⏱ 15分</span>
+        <span class="pill">🎯 目的: 朝の判断疲れを減らす</span>
+        <span class="pill">📈 効果: 朝の時間にゆとりが生まれる</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>2️⃣ 夕食を1食、堂々と手を抜く</h3>
+      <p style="font-size:0.85rem;">「今日は楽をする日」と決めて、総菜や簡単な調理で済ませてよいと自分に許可する。</p>
+      <div class="action-meta">
+        <span class="pill">⏱ 20分</span>
+        <span class="pill">🎯 目的: 家事の完璧主義を緩める</span>
+        <span class="pill">📈 効果: 食卓の時間に気持ちの余裕が生まれる</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <h3>3️⃣ 家族に「今日は何がしたい？」と聞いてみる</h3>
+      <p style="font-size:0.85rem;">子どもやパートナーに、その日の希望を一つ尋ねて、できる範囲でその希望を取り入れる。</p>
+      <div class="action-meta">
+        <span class="pill">⏱ 15分</span>
+        <span class="pill">🎯 目的: 家族それぞれの意思を確認する習慣づけ</span>
+        <span class="pill">📈 効果: 家族内の納得感・会話が増える</span>
+      </div>
+    </div>
+    <div class="card" style="margin-top:4px;">
+      <h3>📊 3章構成のバランス</h3>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>第1章 日々のルーティン</span><span>実践度 高</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:85%;"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>第2章 住まいづくり</span><span>実践度 高</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:75%;"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>第3章 暮らしの考え方</span><span>マインド中心</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:50%;"></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  📚 books-summary 日次読書サマリー自動生成システム<br>
+  本インフォグラフィックはWeb公開情報に基づく要約であり、原典の正確な記述は書籍本体でご確認ください。
+</footer>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab-btn');
+  var panels = {
+    'tab-concepts':'panel-concepts',
+    'tab-chapters':'panel-chapters',
+    'tab-cases':'panel-cases',
+    'tab-quotes':'panel-quotes',
+    'tab-actions':'panel-actions'
+  };
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      Object.values(panels).forEach(function(pid){
+        document.getElementById(pid).classList.remove('active');
+      });
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(panels[tab.id]).classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
