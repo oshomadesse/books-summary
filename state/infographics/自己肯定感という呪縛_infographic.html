@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自己肯定感という呪縛 | インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー:   #2D3250 (濃紺 - 信頼・内省)
+  セカンダリー:   #7077A1 (薄紫紺 - 心理・思考)
+  アクセント:     #F6B17A (暖色オレンジ - 気づき・行動)
+  背景グラデーション: linear-gradient(135deg, #2D3250 0%, #424769 100%)
+-->
+<style>
+  :root {
+    --primary: #2D3250;
+    --secondary: #7077A1;
+    --accent: #F6B17A;
+    --bg: #F7F6FB;
+    --card-bg: #FFFFFF;
+    --text: #22223B;
+    --text-light: #6B6B8A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, #424769 100%);
+    color: #fff;
+    padding: 28px 16px 24px;
+    text-align: center;
+  }
+  header .kicker {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: bold;
+  }
+  header h1 {
+    font-size: 24px;
+    margin: 8px 0 4px;
+  }
+  header .author {
+    font-size: 14px;
+    color: #D8D8F0;
+  }
+  .hero {
+    margin: -14px 12px 16px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(45,50,80,0.18);
+  }
+  .hero h2 {
+    font-size: 15px;
+    color: var(--secondary);
+    margin: 0 0 10px;
+  }
+  .qa-block { display: flex; flex-direction: column; gap: 10px; }
+  .qa-item {
+    border-left: 4px solid var(--accent);
+    padding: 6px 10px;
+    background: #FBF4EC;
+    border-radius: 0 8px 8px 0;
+    font-size: 13.5px;
+  }
+  .qa-item b { color: var(--primary); display: block; margin-bottom: 2px; font-size: 12px; }
+  nav.tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 0 12px 10px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+  nav.tabs button {
+    flex: 0 0 auto;
+    border: none;
+    background: #E7E6F2;
+    color: var(--primary);
+    padding: 9px 12px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  nav.tabs button[aria-selected="true"] {
+    background: var(--primary);
+    color: #fff;
+  }
+  main { padding: 4px 12px 40px; }
+  section.panel { display: none; }
+  section.panel.active { display: block; }
+  .card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(45,50,80,0.08);
+  }
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card ul { margin: 0; padding-left: 18px; font-size: 13.5px; }
+  .card ul li { margin-bottom: 4px; }
+  .why {
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: var(--text-light);
+    background: #F1F0F8;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .why b { color: var(--secondary); }
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+  .badge {
+    background: var(--secondary);
+    color: #fff;
+    font-size: 11.5px;
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+  .bar-wrap { margin: 10px 0; }
+  .bar-label { font-size: 12px; color: var(--text-light); margin-bottom: 3px; display:flex; justify-content: space-between;}
+  .bar-bg { background: #E7E6F2; border-radius: 6px; height: 10px; overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, var(--secondary), var(--accent)); }
+  blockquote {
+    border-left: 4px solid var(--secondary);
+    margin: 0 0 12px;
+    padding: 6px 12px;
+    font-size: 13.5px;
+    color: var(--text);
+    background: #F7F6FB;
+    border-radius: 0 8px 8px 0;
+  }
+  blockquote .note { display: block; font-size: 11px; color: var(--text-light); margin-top: 4px; }
+  .action-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; }
+  .action-num {
+    flex: 0 0 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: #fff; display: flex;
+    align-items: center; justify-content: center; font-size: 13px; font-weight: bold;
+  }
+  .action-body { font-size: 13.5px; }
+  .action-body .goal { color: var(--secondary); font-size: 12px; margin-top: 2px; }
+  footer { text-align:center; font-size: 11px; color: var(--text-light); padding: 10px 0 24px; }
+  @media (min-width: 700px) {
+    main { max-width: 760px; margin: 0 auto; }
+    .hero { max-width: 760px; margin: -14px auto 16px; }
+    nav.tabs { max-width: 760px; margin: 0 auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">📖 今日の一冊</div>
+  <h1>🧠 自己肯定感という呪縛</h1>
+  <div class="author">榎本博明（著）/ 青春新書INTELLIGENCE</div>
+</header>
+
+<div class="hero">
+  <h2>⚡ 要約：問い × 答え × 根拠</h2>
+  <div class="qa-block">
+    <div class="qa-item">
+      <b>❓ 問い</b>「自己肯定感を高めよう」という風潮は、本当に人を幸せにしているのか？
+    </div>
+    <div class="qa-item">
+      <b>✅ 答え</b>いいえ。一時的な気分の高揚を自己肯定感と誤解したまま追い求めると、むしろ評価不安や対人摩擦を招く新たな"呪縛"になる。
+    </div>
+    <div class="qa-item">
+      <b>📊 根拠</b>実力が伴わないまま自己評価だけが肥大化する「自己肯定感インフレ」、SNSの"いいね"に依存する評価不安、文化差を無視した国際比較の誤用が、その構造的な理由。
+    </div>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🔑 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">💡 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">🗣️ 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>① 自己肯定感の誤解</h3>
+      <ul>
+        <li>褒められて上がる「一時的な気分の高揚」を自己肯定感と誤認</li>
+        <li>この混同が混乱の出発点になっている</li>
+        <li>本来は持続的・安定的なものであるはず</li>
+      </ul>
+      <div class="why"><b>理由：</b>誤解があるために、褒める・甘やかすといった場当たり的な手法が広まり、本質的な自信とは別物の脆い満足感が積み重なってしまう。</div>
+    </div>
+
+    <div class="card">
+      <h3>② 自己肯定感インフレ</h3>
+      <ul>
+        <li>実力・成果が伴わないのに自己評価だけが高い状態</li>
+        <li>自己評価と実態のギャップが大きいほどリスクも大きい</li>
+      </ul>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>自己評価</span><span>高</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:85%"></div></div>
+      </div>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>実力・成果</span><span>低〜中</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:40%"></div></div>
+      </div>
+      <div class="why"><b>理由：</b>ギャップに気づいた時の衝撃が大きく、対人関係や仕事上の摩擦を招きやすいから。</div>
+    </div>
+
+    <div class="card">
+      <h3>③ 承認欲求の"呪縛"</h3>
+      <ul>
+        <li>認められたい気持ちに無意識にとらわれる心理</li>
+        <li>他者の期待に応え続けようとする振る舞いを誘発</li>
+      </ul>
+      <div class="why"><b>理由：</b>自覚しにくい"呪縛"であり、メンタル不調や組織内の過剰な同調行動の温床になるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>④ SNSと評価不安</h3>
+      <ul>
+        <li>「いいね」の数など外部の可視化された反応に評価の軸を置く</li>
+        <li>本人がコントロールできない不安定な変数に依存</li>
+      </ul>
+      <div class="badge-row">
+        <span class="badge">📱 SNS依存</span>
+        <span class="badge">😰 評価不安</span>
+      </div>
+      <div class="why"><b>理由：</b>反応は不安定な変数であり、それに依存すると自己評価も連動して不安定になるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑤ 自己効力感（できる感）</h3>
+      <ul>
+        <li>「自分には目標を達成する力がある」という感覚</li>
+        <li>具体的な行動の積み重ねに基づく</li>
+      </ul>
+      <div class="why"><b>理由：</b>努力と結果という検証可能なプロセスに根ざすため、実態に即した安定性を持つから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑥ 向上心・成長への姿勢</h3>
+      <ul>
+        <li>今に満足しきらず課題に向き合い続ける姿勢</li>
+        <li>「まだ足りない」という感覚が成長の原動力になる</li>
+      </ul>
+      <div class="why"><b>理由：</b>満足しすぎると向上心が失われ、健全な不満が長期的な成長を支えるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑦ 自己肯定感の文化差</h3>
+      <ul>
+        <li>国際比較調査で日本人の自己肯定感は低く出やすい</li>
+        <li>自己主張・自己評価の表明方法は文化によって異なる</li>
+      </ul>
+      <div class="why"><b>理由：</b>数値の低さがそのまま「自信のなさ」を意味するとは限らず、単純な国際比較には注意が必要だから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>第1部：「自己肯定感」信仰はどこから来たのか</h3>
+      <ul>
+        <li>教育・ビジネス・SNSで急速に広まった背景を解説</li>
+        <li>低い自己肯定感がすべての問題の原因、という単純化への疑問</li>
+      </ul>
+      <div class="why"><b>理由：</b>ブームの出自を知ることで、なぜこの概念が過剰に神聖化されたのかが見えてくる。</div>
+    </div>
+    <div class="card">
+      <h3>第2部：「気分の高揚」と「本当の自己肯定感」の違い</h3>
+      <ul>
+        <li>褒められて上がる気分を自己肯定感と誤解する危険性</li>
+        <li>持続的・安定的なものこそが本来の自己肯定感</li>
+      </ul>
+      <div class="why"><b>理由：</b>この混同が、場当たり的な「褒めて伸ばす」教育への過信を生んでいる。</div>
+    </div>
+    <div class="card">
+      <h3>第3部：自己肯定感が高すぎることの弊害</h3>
+      <ul>
+        <li>実力とのギャップが生む対人摩擦・成長停止</li>
+        <li>「高ければ高いほど良い」という思い込みへの警鐘</li>
+      </ul>
+      <div class="why"><b>理由：</b>単純な思い込みが、むしろ危険な自己過信を助長するから。</div>
+    </div>
+    <div class="card">
+      <h3>第4部：SNS時代の承認欲求</h3>
+      <ul>
+        <li>「いいね」に依存する自己評価の不安定さ</li>
+        <li>承認欲求そのものは悪ではないという立場</li>
+      </ul>
+      <div class="why"><b>理由：</b>外部評価に軸を置く限り、自己肯定感は他人の反応に振り回され続けるから。</div>
+    </div>
+    <div class="card">
+      <h3>第5部：自己効力感という代替軸</h3>
+      <ul>
+        <li>自己肯定感を直接目指さず、自己効力感を積み上げる</li>
+        <li>結果として安定した自己肯定感が後からついてくる</li>
+      </ul>
+      <div class="why"><b>理由：</b>行動とその結果に根ざした自己効力感こそが、揺るがない自信の土台になるから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="card">
+      <h3>💡 「褒めて伸ばす」教育の現場</h3>
+      <ul>
+        <li>子どもを褒め続けると一時的な自己肯定感は上がる</li>
+        <li>実力が伴わないため、現実の失敗に直面すると深く傷つきやすい</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>褒める行為自体が目的化すると、むしろ脆弱な自己評価を作ってしまう。</div>
+    </div>
+    <div class="card">
+      <h3>💡 「いいね」の数に心が振られる人</h3>
+      <ul>
+        <li>反応が少ないだけで落ち込み、多いと高揚するサイクル</li>
+        <li>評価の軸が自分の外側に置かれている</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>評価の軸を外部に置くと、自己肯定感は常に不安定になる。</div>
+    </div>
+    <div class="card">
+      <h3>💡 自己評価だけが高く職場で浮く人</h3>
+      <ul>
+        <li>実力評価とのギャップに気づかない</li>
+        <li>周囲からのフィードバックを素直に受け取れない</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>自己肯定感の高さは、必ずしも円滑な対人関係や成果につながらない。</div>
+    </div>
+    <div class="card">
+      <h3>💡 国際比較調査における日本人の自己肯定感の低さ</h3>
+      <ul>
+        <li>「自分に満足している」と答える割合が他国より低く出る</li>
+        <li>単純に「自信がない」と結論づけられがち</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>自己表現の文化差や、満足しないことを成長の原動力とする価値観の反映でもあり、数値だけで判断するのは早計。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <blockquote>
+      認められることにとらわれる心の動きを、承認欲求の"呪縛"と呼ぶべきだという立場。
+      <span class="note">※原典の引用文が確認できなかったため要旨で代替</span>
+    </blockquote>
+    <blockquote>
+      ほめられて機嫌がよくなり、叱られて落ち込むという気分の波を、自己肯定感そのものだと思い込んでしまっている人が多いのではないか、という指摘。
+      <span class="note">※要旨</span>
+    </blockquote>
+    <blockquote>
+      自己肯定感の得点が低いこと自体は、必ずしも問題とは言えないという見方。
+      <span class="note">※要旨</span>
+    </blockquote>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="card">
+      <div class="action-item">
+        <div class="action-num">1</div>
+        <div class="action-body">
+          今日1日の中で「嬉しかったこと」を3つ書き出し、それが「褒められて嬉しかった」のか「自分で何かを達成できた」のかを分類する（約15分）。
+          <div class="goal">🎯 目的：自己肯定感と気分の高揚を区別する習慣をつける／期待効果：自分の自己評価がどちらの軸に依存しているかが可視化される。</div>
+        </div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">2</div>
+        <div class="action-body">
+          今日中に終えられる小さなタスクを1つ選び、実際に完了させてチェックする（約20分）。
+          <div class="goal">🎯 目的：自己効力感を具体的に積み上げる／期待効果：「やればできた」という実感が、根拠のある自信につながる。</div>
+        </div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">3</div>
+        <div class="action-body">
+          SNSを開く前に「いいね」の数を予想してから見て、実際の反応と自分の気分の変化をメモする（約15分）。
+          <div class="goal">🎯 目的：SNSへの依存度を見直す／期待効果：外部評価と自分の心の動きの連動に気づき、距離を置くきっかけになる。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>📚 books-summary daily-reading / 自己肯定感という呪縛（榎本博明）</footer>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
+      document.querySelectorAll('section.panel').forEach(function (p) { p.classList.remove('active'); });
+      tab.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      if (panel) panel.classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
