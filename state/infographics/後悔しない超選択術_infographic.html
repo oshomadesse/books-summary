@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ja">
+<!--
+  カラーパレット:
+  primary: #5B4FE8 (インディゴ)
+  secondary: #2BB3A3 (ティール)
+  accent: #FF8A5B (コーラルオレンジ)
+-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>後悔しない超選択術 インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#5B4FE8;
+    --primary-dark:#3F35B5;
+    --secondary:#2BB3A3;
+    --accent:#FF8A5B;
+    --bg:#F7F7FB;
+    --card:#FFFFFF;
+    --text:#232336;
+    --text-sub:#6B6B80;
+    --border:#E6E6F0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP",system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px 48px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--primary-dark) 60%, var(--secondary) 130%);
+    color:#fff;
+    padding:32px 16px 28px;
+    border-radius:0 0 24px 24px;
+    margin-bottom:20px;
+  }
+  header.hero .kicker{
+    font-size:13px;
+    opacity:.85;
+    letter-spacing:.05em;
+  }
+  header.hero h1{
+    font-size:26px;
+    margin:8px 0 4px;
+    line-height:1.4;
+  }
+  header.hero .author{
+    font-size:14px;
+    opacity:.9;
+  }
+  .why-how{
+    background:var(--card);
+    border-radius:16px;
+    padding:18px;
+    margin:-20px 0 20px;
+    box-shadow:0 6px 20px rgba(60,50,150,.12);
+    position:relative;
+    z-index:2;
+  }
+  .why-how h2{
+    font-size:14px;
+    color:var(--primary);
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{display:flex;flex-direction:column;gap:10px;}
+  .qa-item{
+    border-left:4px solid var(--secondary);
+    padding:6px 12px;
+    background:#F2FBF9;
+    border-radius:8px;
+  }
+  .qa-item.q{border-left-color:var(--accent);background:#FFF4ED;}
+  .qa-item .label{font-size:11px;font-weight:bold;color:var(--text-sub);}
+  .qa-item p{margin:4px 0 0;font-size:14px;}
+  .stat-badges{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .badge{
+    flex:1 1 90px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px;
+    text-align:center;
+  }
+  .badge .num{font-size:20px;font-weight:bold;color:var(--primary);}
+  .badge .cap{font-size:11px;color:var(--text-sub);}
+  .bar-wrap{margin-top:12px;}
+  .bar-row{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:12px;}
+  .bar-row .bar-label{width:92px;flex-shrink:0;color:var(--text-sub);}
+  .bar-track{flex:1;background:var(--border);border-radius:6px;height:14px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--secondary),var(--primary));}
+  .bar-val{width:34px;text-align:right;color:var(--text-sub);}
+
+  nav.tabs{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding:4px 0 10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card);
+    color:var(--text-sub);
+    border:1px solid var(--border);
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:13px;
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+    font-weight:bold;
+  }
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    color:var(--primary-dark);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card ul{margin:0;padding-left:1.1em;font-size:13.5px;}
+  .card li{margin-bottom:4px;}
+  .why-tag{
+    display:inline-block;
+    margin-top:8px;
+    font-size:12px;
+    background:#FFF4ED;
+    color:#B85C2E;
+    padding:4px 10px;
+    border-radius:8px;
+  }
+  .chapter-num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--secondary);
+    color:#fff;
+    font-size:12px;
+    margin-right:6px;
+    flex-shrink:0;
+  }
+  .quote-card{
+    border-left:5px solid var(--accent);
+    background:#FFF8F3;
+  }
+  .quote-card p.quote-text{
+    font-size:14px;
+    font-style:italic;
+    margin:0 0 8px;
+  }
+  .quote-card .quote-note{font-size:11.5px;color:var(--text-sub);}
+  .action-card{
+    border-left:5px solid var(--primary);
+  }
+  .action-card .meta{
+    display:flex;
+    gap:10px;
+    font-size:12px;
+    color:var(--text-sub);
+    margin-top:6px;
+    flex-wrap:wrap;
+  }
+  .action-card .meta span{background:var(--bg);padding:3px 8px;border-radius:6px;}
+  footer.note{
+    font-size:11.5px;
+    color:var(--text-sub);
+    text-align:center;
+    margin-top:24px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">📖 今日の一冊 ・ 自己啓発</div>
+    <h1>後悔しない超選択術</h1>
+    <div class="author">著: メンタリストDaiGo</div>
+  </header>
+
+  <div class="why-how">
+    <h2>🎯 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-item q">
+        <div class="label">❓ 問い（Why）</div>
+        <p>100%正しい選択などできないなら、何を目指して選べばいいのか？</p>
+      </div>
+      <div class="qa-item">
+        <div class="label">✅ 答え（How）</div>
+        <p>「最善」を追うのではなく「後悔しない選択」を目指す。意思決定スタイルを自覚し、準備・習慣・トレーニングで選ぶ力そのものを磨く。</p>
+      </div>
+      <div class="qa-item">
+        <div class="label">📊 根拠</div>
+        <p>新卒の3人に1人が離職し、結婚の3組に1組が離婚する——どれだけ情報を集めても未来は完全には予測できない、という不確実性の構造。</p>
+      </div>
+    </div>
+    <div class="stat-badges">
+      <div class="badge"><div class="num">5章</div><div class="cap">本書の構成</div></div>
+      <div class="badge"><div class="num">1/3</div><div class="cap">新卒の離職率</div></div>
+      <div class="badge"><div class="num">1/3</div><div class="cap">結婚の離婚率</div></div>
+    </div>
+    <div class="bar-wrap">
+      <div class="bar-row">
+        <div class="bar-label">熟慮型の後悔</div>
+        <div class="bar-track"><div class="bar-fill" style="width:35%"></div></div>
+        <div class="bar-val">小</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">直観型の後悔</div>
+        <div class="bar-track"><div class="bar-fill" style="width:80%"></div></div>
+        <div class="bar-val">大</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">💡 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">🗨️ 重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </nav>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>① 100%正しい選択は存在しない</h3>
+      <ul>
+        <li>未来の結果を完全に予測できる人はいない</li>
+        <li>新卒の3人に1人が離職、結婚の3組に1組が離婚</li>
+        <li>目指すのは「最善」ではなく「後悔しない選択」</li>
+      </ul>
+      <span class="why-tag">理由：完璧主義を捨てることで、選ぶこと自体への過度な恐怖が減るから</span>
+    </div>
+    <div class="card">
+      <h3>② 意思決定スタイルの自覚</h3>
+      <ul>
+        <li>論理的に比較検討する「合理的」タイプ</li>
+        <li>感覚・感情を重視する「直感的」タイプ</li>
+        <li>学術研究では熟慮型は後悔が小さく、直観型は後悔が大きい傾向</li>
+      </ul>
+      <span class="why-tag">理由：自分のクセを知らないと、同じ失敗パターンを繰り返すから</span>
+    </div>
+    <div class="card">
+      <h3>③ 10-10-10テクニック</h3>
+      <ul>
+        <li>ジャーナリストのスージー・ウェルチが提唱した時間軸思考法</li>
+        <li>「10分後」「10か月後」「10年後」の3つの時点で影響を想像する</li>
+        <li>今の感情だけに判断を支配されないようにする</li>
+      </ul>
+      <span class="why-tag">理由：直後の感情は強いが短命で、時間軸を広げると別の答えが見えるから</span>
+    </div>
+    <div class="card">
+      <h3>④ 埋没コストの罠</h3>
+      <ul>
+        <li>これまで費やした時間・お金・労力を惜しむ気持ちが判断を歪める</li>
+        <li>選択力を鈍らせる代表的な心理的な罠のひとつ</li>
+        <li>「これから」の損得だけで考え直す視点が必要</li>
+      </ul>
+      <span class="why-tag">理由：過去は取り戻せないのに、過去を理由に未来を縛ってしまうから</span>
+    </div>
+    <div class="card">
+      <h3>⑤ 選択を振り返る習慣</h3>
+      <ul>
+        <li>選んだ結果を振り返り、良かった点・改善点を評価する</li>
+        <li>振り返りの積み重ねが次の判断精度を上げる</li>
+        <li>結果だけでなく「決め方」自体を評価する</li>
+      </ul>
+      <span class="why-tag">理由：振り返らないと同じ意思決定の癖が固定化してしまうから</span>
+    </div>
+    <div class="card">
+      <h3>⑥ 根拠を言語化する</h3>
+      <ul>
+        <li>「なぜその選択をしたいのか」を言葉にして整理する</li>
+        <li>感情と理由を分けて考える助けになる</li>
+        <li>言語化できない選択は感情だけに流されやすい</li>
+      </ul>
+      <span class="why-tag">理由：言葉にすることで、思考の抜け漏れや矛盾に気づけるから</span>
+    </div>
+    <div class="card">
+      <h3>⑦ 選択肢を絞り込む準備</h3>
+      <ul>
+        <li>比較する選択肢の数そのものを事前に減らす</li>
+        <li>選択肢が多すぎると判断の質が落ちる（選択過多）</li>
+        <li>絞り込みは「準備」の段階で行う</li>
+      </ul>
+      <span class="why-tag">理由：選択肢が多いほど比較に使える集中力・時間は分散するから</span>
+    </div>
+    <div class="card">
+      <h3>⑧ 選択力はトレーニングで磨ける</h3>
+      <ul>
+        <li>選ぶ力は一度きりの才能ではなく、鍛えられるスキル</li>
+        <li>日々の小さな選択の積み重ねが土台になる</li>
+        <li>最終章では実践的なトレーニング方法が示される</li>
+      </ul>
+      <span class="why-tag">理由：小さな選択で練習しておけば、大きな決断の場でも応用できるから</span>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3><span class="chapter-num">1</span>選択の仕方にはスタイルがある</h3>
+      <ul>
+        <li>意思決定には複数のスタイル（合理的・直感的など）がある</li>
+        <li>合理的なスタイルほど後悔が少ない傾向が示される</li>
+        <li>まず自分の意思決定スタイルを知ることが出発点</li>
+      </ul>
+      <span class="why-tag">理由：自分の型を知らずに対策しても効果が出にくいから</span>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">2</span>「後悔しない選択」をするための準備</h3>
+      <ul>
+        <li>選択肢の数を事前に絞り込む工夫を紹介</li>
+        <li>情報を整理し、比較しやすい状態を作る</li>
+        <li>選ぶ前の下ごしらえが結果の質を左右する</li>
+      </ul>
+      <span class="why-tag">理由：準備不足のまま選ぶと、目の前の情報だけで即断してしまうから</span>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">3</span>「後悔しない選択」をするための習慣</h3>
+      <ul>
+        <li>10-10-10など、時間軸を広げて考える技法を日常に組み込む</li>
+        <li>選択後に結果を振り返る習慣づけを扱う</li>
+        <li>一度学んだ知識を「習慣」として定着させる段階</li>
+      </ul>
+      <span class="why-tag">理由：技法を知っているだけでは使いこなせず、習慣化が必要だから</span>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">4</span>選択力を鈍らせる5つの落とし穴</h3>
+      <ul>
+        <li>非合理な判断に陥りやすい心理的な罠を取り上げる</li>
+        <li>代表例として埋没コストの錯誤（これまでの費用や努力を惜しんで判断を歪める傾向）が挙げられる</li>
+        <li>※5項目すべての名称は、検索で確認できた公開情報の範囲では不明。本記事では確認できた代表例のみ記載</li>
+      </ul>
+      <span class="why-tag">理由：罠を知らないと、合理的に考えているつもりでも同じ失敗を繰り返すから</span>
+    </div>
+    <div class="card">
+      <h3><span class="chapter-num">5</span>「後悔しない選択」をするトレーニング</h3>
+      <ul>
+        <li>これまでの知識を実際の選択力として定着させる方法をまとめる</li>
+        <li>選ぶ力をスキルとして捉え、練習を重ねる発想</li>
+        <li>具体的なトレーニングの手順の詳細は公開情報の範囲では不明</li>
+      </ul>
+      <span class="why-tag">理由：知識だけでは行動は変わらず、練習による定着が必要だから</span>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="card">
+      <h3>💼 新卒入社の3人に1人が離職</h3>
+      <ul>
+        <li>背景：慎重に選んだはずの就職先でも、一定数は早期離職に至る</li>
+        <li>示唆：情報を尽くして選んでも「100%正しい選択」には届かない</li>
+      </ul>
+      <span class="why-tag">理由（この例が示すこと）：不確実性はどれだけ準備しても消えないという前提を、身近な数字で実感させる</span>
+    </div>
+    <div class="card">
+      <h3>💍 結婚した3組に1組が離婚</h3>
+      <ul>
+        <li>背景：人生で最も重大な選択の一つである結婚でも結果は分かれる</li>
+        <li>示唆：重大な選択ほど「完璧な正解」を求めがちだが、それ自体が非現実的</li>
+      </ul>
+      <span class="why-tag">理由（この例が示すこと）：「最善」より「後悔しない」を目指す本書の立場を、感情移入しやすい具体例で補強する</span>
+    </div>
+    <div class="card">
+      <h3>⏱️ 10-10-10による転職・大きな買い物の判断</h3>
+      <ul>
+        <li>背景：10分後の感情だけで判断すると、直後の興奮や不安に引っ張られやすい</li>
+        <li>示唆：10か月後・10年後まで視点を伸ばすと、同じ選択でも評価が変わることがある</li>
+      </ul>
+      <span class="why-tag">理由（この例が示すこと）：時間軸を変えるだけで判断材料が変わることを、実践しやすい形で示す</span>
+    </div>
+    <div class="card">
+      <h3>🧠 熟慮型と直観型の後悔の差（学術研究）</h3>
+      <ul>
+        <li>背景：意思決定スタイルの違いが、後で感じる後悔の大きさに影響するという研究結果がある</li>
+        <li>示唆：熟慮して決めた人ほど後悔が小さく、直感だけで決めた人ほど後悔が大きい傾向</li>
+      </ul>
+      <span class="why-tag">理由（この例が示すこと）：「スタイルを変える努力」には科学的な裏付けがあることを示す</span>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="card quote-card">
+      <p class="quote-text">「その選択で本当にいいですか？自分にとって都合がいいだけではありませんか？」</p>
+      <p class="quote-note">※要旨（出版社の書籍紹介文より。本書はこの問いかけから始まる）</p>
+    </div>
+    <div class="card quote-card">
+      <p class="quote-text">選択する力は、準備・習慣・トレーニングによって磨くことができる。</p>
+      <p class="quote-note">※要旨（出版社の書籍紹介文の内容を要約）</p>
+    </div>
+    <div class="card quote-card">
+      <p class="quote-text">最善の一手を探すのではなく、後悔しない一手を選ぶ。</p>
+      <p class="quote-note">※要旨（本書全体の立場を要約したもの。原文の直接引用ではない）</p>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="card action-card">
+      <h3>① 迷っている選択を「10-10-10」で書き出す</h3>
+      <ul>
+        <li>今迷っている事柄を1つ選び、10分後・10か月後・10年後にどう感じるかをそれぞれ1〜2行で書く</li>
+      </ul>
+      <div class="meta"><span>⏱️ 15分</span><span>🎯 目的：感情だけで即断しない練習</span><span>📈 効果：時間軸を広げた判断軸が1つ増える</span></div>
+    </div>
+    <div class="card action-card">
+      <h3>② 直近1か月の選択を1つ振り返る</h3>
+      <ul>
+        <li>うまくいった点・改善したい点をそれぞれ2つずつメモに書き出す</li>
+      </ul>
+      <div class="meta"><span>⏱️ 15分</span><span>🎯 目的：選択を振り返る習慣づけ</span><span>📈 効果：次の似た場面での判断精度が上がる</span></div>
+    </div>
+    <div class="card action-card">
+      <h3>③ 迷っている理由を3行で言語化する</h3>
+      <ul>
+        <li>「なぜその選択をしたいのか」を感情と理由に分けて3行で書く</li>
+      </ul>
+      <div class="meta"><span>⏱️ 20分</span><span>🎯 目的：埋没コストに引かれていないか自己点検</span><span>📈 効果：感情と根拠を分離した判断ができる</span></div>
+    </div>
+  </section>
+
+  <footer class="note">本インフォグラフィックは公開情報に基づくリサーチ要約です。未確認の点は本文中に「不明」と明記しています。</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs [role="tab"]');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      document.querySelectorAll('section.panel').forEach(function(p){ p.classList.remove('active'); });
+      tab.setAttribute('aria-selected','true');
+      document.getElementById(tab.getAttribute('aria-controls')).classList.add('active');
+    });
+  });
+})();
+</script>
+</body>
+</html>
