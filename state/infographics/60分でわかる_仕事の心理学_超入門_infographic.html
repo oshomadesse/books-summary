@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<!--
+  カラーパレット:
+  プライマリー: #2D5BFF (信頼感のあるブルー)
+  セカンダリー: #6C4CE0 (思考・心理を示すパープル)
+  アクセント: #FF8A3D (行動・アクションを示すオレンジ)
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>60分でわかる! 仕事の心理学 超入門 | インフォグラフィック</title>
+<style>
+  :root{
+    --primary:#2D5BFF;
+    --primary-dark:#1A3FCC;
+    --secondary:#6C4CE0;
+    --secondary-dark:#4E34A8;
+    --accent:#FF8A3D;
+    --bg:#F4F6FC;
+    --card-bg:#FFFFFF;
+    --text:#1E2233;
+    --text-sub:#5A5F73;
+    --border:#E3E6F2;
+    --shadow: 0 4px 16px rgba(45,91,255,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color:#fff;
+    padding:28px 20px 90px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"🧠💼🗂️";
+    position:absolute;
+    right:-10px;
+    bottom:-10px;
+    font-size:80px;
+    opacity:0.15;
+  }
+  .eyebrow{
+    font-size:13px;
+    letter-spacing:0.08em;
+    opacity:0.85;
+    font-weight:600;
+  }
+  h1{
+    margin:6px 0 4px;
+    font-size:26px;
+    line-height:1.4;
+  }
+  .meta{
+    font-size:14px;
+    opacity:0.9;
+  }
+
+  .summary-block{
+    margin:-70px 16px 0;
+    background:var(--card-bg);
+    border-radius:18px;
+    box-shadow: var(--shadow);
+    padding:20px;
+    position:relative;
+    z-index:2;
+  }
+  .summary-block h2{
+    font-size:15px;
+    color:var(--secondary);
+    margin:0 0 10px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .why-how{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .why-how .row{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background:var(--bg);
+    border-radius:12px;
+    padding:10px 12px;
+  }
+  .why-how .tag{
+    flex:0 0 auto;
+    font-size:12px;
+    font-weight:700;
+    color:#fff;
+    background:var(--primary);
+    border-radius:8px;
+    padding:3px 8px;
+    white-space:nowrap;
+  }
+  .why-how .row.how .tag{background:var(--accent);}
+  .why-how .row.why .tag{background:var(--secondary);}
+  .why-how p{margin:0;font-size:13.5px;}
+
+  nav.tabs{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    margin:20px 16px 0;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card-bg);
+    color:var(--text-sub);
+    font-size:13px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:linear-gradient(135deg, var(--primary), var(--secondary));
+    color:#fff;
+  }
+
+  main{
+    margin:16px 16px 0;
+  }
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+    box-shadow: var(--shadow);
+    border:1px solid var(--border);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:var(--primary-dark);
+  }
+  .card ul{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+  }
+  .card li{margin-bottom:6px;}
+  .reason{
+    margin-top:8px;
+    background:#FFF3E8;
+    border-left:3px solid var(--accent);
+    padding:6px 10px;
+    border-radius:8px;
+    font-size:12.5px;
+    color:#7A4A1E;
+  }
+  .part-badge{
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    color:#fff;
+    background:var(--secondary);
+    border-radius:6px;
+    padding:2px 8px;
+    margin-bottom:8px;
+  }
+
+  .stat-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:10px 0;
+  }
+  .stat-badge{
+    flex:1 1 120px;
+    background:linear-gradient(135deg, var(--primary), var(--secondary));
+    color:#fff;
+    border-radius:12px;
+    padding:10px 12px;
+    text-align:center;
+  }
+  .stat-badge .num{font-size:20px;font-weight:800;display:block;}
+  .stat-badge .label{font-size:11px;opacity:0.9;}
+
+  .bar{
+    background:var(--bg);
+    border-radius:8px;
+    overflow:hidden;
+    height:10px;
+    margin:6px 0 2px;
+  }
+  .bar>span{
+    display:block;height:100%;
+    background:linear-gradient(90deg, var(--primary), var(--accent));
+  }
+  .bar-label{font-size:12px;color:var(--text-sub);display:flex;justify-content:space-between;}
+
+  blockquote{
+    margin:0 0 12px;
+    padding:12px 14px;
+    background:#F0EDFB;
+    border-left:4px solid var(--secondary);
+    border-radius:10px;
+    font-size:13.5px;
+  }
+  blockquote .note{
+    display:block;
+    margin-top:6px;
+    font-size:11.5px;
+    color:var(--text-sub);
+  }
+
+  .action-item{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .action-item .num-badge{
+    flex:0 0 auto;
+    width:26px;height:26px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    font-weight:800;
+    font-size:13px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  footer{
+    margin:24px 16px 0;
+    text-align:center;
+    font-size:11.5px;
+    color:var(--text-sub);
+  }
+
+  @media (min-width:700px){
+    main{margin-left:auto;margin-right:auto;max-width:720px;}
+    nav.tabs{margin-left:auto;margin-right:auto;max-width:720px;}
+    .summary-block{margin-left:auto;margin-right:auto;max-width:720px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">📖 今日の一冊 ・ 心理学</div>
+  <h1>60分でわかる! 仕事の心理学 超入門</h1>
+  <div class="meta">著者: 青山編集室（監修: 宮本聡介） / 技術評論社・2025年</div>
+</header>
+
+<div class="summary-block">
+  <h2>🔑 要約：問い × 答え × 根拠</h2>
+  <div class="why-how">
+    <div class="row why">
+      <span class="tag">Why</span>
+      <p>なぜ仕事の心の悩みがなくならないのか？ → 自分や他者の判断には「脳のクセ（認知バイアス）」が常に働いているのに、それに気づかずに行動しているから。</p>
+    </div>
+    <div class="row how">
+      <span class="tag">How</span>
+      <p>どうすれば解消できるか？ → ①バイアスに気づく ②セルフコントロールを高める ③伝わるコミュニケーションを選ぶ ④部下・チームを病ませないマネジメントを型として持つ、の4ステップで対処する。</p>
+    </div>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📂 章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">💡 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">🗨️ 引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <!-- 主要概念の詳細 -->
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3>😎 ポジティブ・イリュージョン（自己を過信する心理）</h3>
+      <ul>
+        <li>多くの人は自分の能力・判断力・将来の見通しを実際より高く評価しがちである</li>
+        <li>自信があることは行動の原動力になる一方、過信は判断ミスの温床になる</li>
+        <li>Part1「認知バイアスに気づく」の最初（項目001）に置かれる、本書の出発点となる概念</li>
+      </ul>
+      <div class="reason">理由（なぜ重要か）: 自分の過信に気づかないと、他人からの指摘を「的外れ」と切り捨ててしまい、改善の機会を逃すため。</div>
+    </div>
+
+    <div class="card">
+      <h3>👥 内集団バイアス／エコーチェンバー</h3>
+      <ul>
+        <li>自分が属する集団（職場の派閥・同じ意見のグループ）を無意識に高く評価してしまう傾向</li>
+        <li>似た意見の人同士で固まると、同じ意見が反響して増幅され、視野が狭くなる（エコーチェンバー）</li>
+        <li>Part1で扱われる、組織内の対立や分断の背景にある心理</li>
+      </ul>
+      <div class="reason">理由（なぜ重要か）: チーム内の「内輪びいき」や部署間の対立の多くは、能力や利害の差ではなくこの認知バイアスが原因であるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧠 メタ認知</h3>
+      <ul>
+        <li>自分の考え方・感じ方そのものを、一歩引いて観察する力</li>
+        <li>Part2「セルフコントロール力を高める」の中核にある能力</li>
+        <li>感情に流されそうな場面で「今、自分は焦っている」と気づけるかどうかが分岐点になる</li>
+      </ul>
+      <div class="reason">理由（なぜ重要か）: メタ認知が働かないと、ストレスやイライラに振り回された行動を取りやすくなるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>📅 計画錯誤（プランニング・ファラシー）</h3>
+      <ul>
+        <li>タスクの所要時間や難易度を、実際よりも楽観的に見積もってしまう傾向</li>
+        <li>締切直前の残業や品質低下の多くはここに起因する</li>
+        <li>Part2で、やる気・ストレスの自己マネジメントと並んで扱われる</li>
+      </ul>
+      <div class="reason">理由（なぜ重要か）: 「今回は大丈夫」という感覚そのものがバイアスの産物であると知ることが、見積もり精度向上の第一歩になるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>🌊 フロー理論</h3>
+      <ul>
+        <li>課題の難易度と自分のスキルが釣り合った時に生まれる、高い集中状態を説明する理論</li>
+        <li>Part2のセルフコントロール文脈で、やる気を生み出す環境条件として紹介される</li>
+        <li>難しすぎず簡単すぎない課題設定がカギになる</li>
+      </ul>
+      <div class="reason">理由（なぜ重要か）: モチベーションを「気合い」ではなく「課題設計」の問題として扱えるようになるため。</div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 精緻化見込みモデル（説得の二つのルート）</h3>
+      <ul>
+        <li>説得は「中心的ルート（論理・根拠を精査して納得する）」と「周辺的ルート（印象・雰囲気で判断する）」の2経路で起こる</li>
+        <li>相手がその話題に詳しくない・関心が薄い場合は、周辺的ルート（見た目・イメージ）が効きやすい</li>
+        <li>Part3「コミュニケーションに強くなる」の項目047で紹介される</li>
+      </ul>
+      <div class="reason">理由（なぜ重要か）: 同じ提案でも「誰に・どう伝えるか」を変えるだけで、通る確率が変わることを示すため。</div>
+    </div>
+
+    <div class="card">
+      <h3>🏆 内的動機づけ と 外的動機づけ（報酬）</h3>
+      <ul>
+        <li>内的動機づけ＝その行動自体が楽しい・意味があると感じることで生まれるやる気</li>
+        <li>外的動機づけ＝報酬や評価など、外部からの働きかけで生まれるやる気</li>
+        <li>Part4「マネジメント力を高める」の冒頭（項目051）で、部下育成の土台として扱われる</li>
+      </ul>
+      <div class="reason">理由（なぜ重要か）: 報酬だけに頼るマネジメントは効果が長続きしにくく、チームを「病ませる」要因になりうるため。</div>
+    </div>
+
+  </section>
+
+  <!-- 各章の要約 -->
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+
+    <div class="card">
+      <span class="part-badge">Part1（項目001〜016）</span>
+      <h3>📂 認知バイアスに気づく ―脳のクセを知ると、行動の理由がわかる</h3>
+      <ul>
+        <li>自分の力への過信（ポジティブ・イリュージョン）から説き起こし、人間の判断がいかに偏りやすいかを示す</li>
+        <li>内集団バイアスやエコーチェンバーなど、集団内で視野が狭まる仕組みを解説</li>
+        <li>「自分の判断は中立だ」という前提そのものを問い直すパートになっている</li>
+      </ul>
+      <div class="reason">理由: 対策を学ぶ前に「自分も例外ではない」と認めることが、後続パートの実践効果を高める土台になるため。</div>
+    </div>
+
+    <div class="card">
+      <span class="part-badge">Part2（項目017〜031）</span>
+      <h3>📂 セルフコントロール力を高める ―やる気もストレスも、自分でマネジメントできる</h3>
+      <ul>
+        <li>メタ認知・計画錯誤・機能的固着・マインドワンダリング・フロー理論・孵化効果・選択的注意・認知負荷・マインドフルネスなどを扱う</li>
+        <li>「やる気」や「ストレス」を気合いの問題ではなく、認知・行動の仕組みとして捉え直す</li>
+        <li>集中力や発想のコンディションを整える具体的な視点を提供する</li>
+      </ul>
+      <div class="reason">理由: 他者より先に自分の心の動かし方を知っておくことが、以降のコミュニケーション・マネジメントの土台になるため。</div>
+    </div>
+
+    <div class="card">
+      <span class="part-badge">Part3（項目032〜047）</span>
+      <h3>📂 コミュニケーションに強くなる ―人間関係がよくなり、成果が上がる</h3>
+      <ul>
+        <li>気分一致効果（項目038）など、感情が対人認知に与える影響を解説</li>
+        <li>精緻化見込みモデル（項目047）で、相手の関心・知識度に応じた説得の使い分けを提示</li>
+        <li>人間関係の摩擦を減らし、伝わる・動かす伝え方へつなげるパート</li>
+      </ul>
+      <div class="reason">理由: 正しい主張でも伝え方を誤れば通らないという、仕事で最もつまずきやすい点を扱うため。</div>
+    </div>
+
+    <div class="card">
+      <span class="part-badge">Part4（項目051〜）</span>
+      <h3>📂 マネジメント力を高める ―結果を出すチームづくり、部下を病まずに育てる</h3>
+      <ul>
+        <li>内的動機づけと外的動機づけ（報酬）の違いから説き起こし、部下育成の土台を示す</li>
+        <li>「結果を出すチームづくり」と「部下を病ませない育成」を両立させる視点を提供する</li>
+        <li>詳細な項目構成はWeb上で全文確認できず、一部「不明」</li>
+      </ul>
+      <div class="reason">理由: 個人のセルフコントロールやコミュニケーションの知見を、チーム運営というより大きな単位に広げる締めのパートであるため。</div>
+    </div>
+
+  </section>
+
+  <!-- 具体例・ケーススタディ -->
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+
+    <div class="card">
+      <h3>💼 例1：見積もりが毎回甘くなるプロジェクト進行</h3>
+      <ul>
+        <li>背景: 「今回は余裕を持った」はずのスケジュールが、毎回終盤に圧縮されて残業が増える現象</li>
+        <li>これは計画錯誤（プランニング・ファラシー）の典型例で、過去の遅延実績よりも「今回は上手くいく」という楽観的な見通しを優先してしまうために起こる、とされる</li>
+      </ul>
+      <div class="reason">理由（この例が示すこと）: 「意志の弱さ」ではなく「見積もりの仕組み」の問題だと捉え直すことで、対策を精神論ではなくプロセス改善に向けられる。</div>
+    </div>
+
+    <div class="card">
+      <h3>🗣️ 例2：同じ提案が「相手」によって通る・通らない</h3>
+      <ul>
+        <li>背景: 専門性の高い相手には詳細データで説得できても、関心の薄い相手には同じ資料がまったく響かないという場面</li>
+        <li>精緻化見込みモデルに基づけば、関心・知識が高い相手には中心的ルート（論理・根拠）、関心が薄い相手には周辺的ルート（印象・見た目・ストーリー）が効きやすいと説明される</li>
+      </ul>
+      <div class="reason">理由（この例が示すこと）: 「資料の質」だけでなく「相手に応じた経路選択」が説得力を左右することを示す。</div>
+    </div>
+
+    <div class="card">
+      <h3>🏢 例3：派閥化した組織で起こる意思決定の偏り</h3>
+      <ul>
+        <li>背景: 似た意見のメンバーだけで集まる会議体では、反対意見が出ず、リスクの見落としが起きやすい</li>
+        <li>内集団バイアスとエコーチェンバーが組み合わさることで、集団全体の判断が実際より「正しい」と過大評価されやすくなる</li>
+      </ul>
+      <div class="reason">理由（この例が示すこと）: 多様な意見を意図的に集める仕組み（反対意見役を置くなど）の必要性を裏付ける。</div>
+    </div>
+
+    <div class="card">
+      <h3>🎮 例4：忙しいのに成果が出ない人と、そうでない人の違い</h3>
+      <ul>
+        <li>背景: 同じ業務量でも、集中状態（フロー）に入れる人と、常に通知やマルチタスクで認知負荷が高い人がいる</li>
+        <li>フロー理論・選択的注意・認知負荷の知見から、環境設計（通知を切る、課題の難易度を調整する）が生産性の差を生むと説明される</li>
+      </ul>
+      <div class="reason">理由（この例が示すこと）: 「頑張り」ではなく「環境・課題設計」が集中力を左右するという視点を与える。</div>
+    </div>
+
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+
+    <blockquote>
+      心を理解すれば、仕事はもっとラクになる。
+      <span class="note">※出版社の紹介文より（原典引用ではなく要旨）</span>
+    </blockquote>
+
+    <blockquote>
+      自分の力を過信する人が9割――だからこそ、まず自分の判断の偏りに気づくことが第一歩になる。
+      <span class="note">※目次項目001の見出し趣旨を要約（要旨）</span>
+    </blockquote>
+
+    <blockquote>
+      説得力のあるメッセージには、論理をじっくり検討してもらう「中心的ルート」と、印象や雰囲気で伝わる「周辺的ルート」の2つがある。
+      <span class="note">※精緻化見込みモデル（項目047）の趣旨を要約（要旨）</span>
+    </blockquote>
+
+    <blockquote>
+      本文中の直接引用（一字一句の原文）はWeb上で確認できなかったため、上記はいずれも目次・紹介文からの要旨です。正確な原文は書籍現物でご確認ください。
+      <span class="note">※捏造防止のための注記</span>
+    </blockquote>
+
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+
+    <div class="card">
+      <div class="action-item">
+        <span class="num-badge">1</span>
+        <div>
+          <h3 style="margin-top:0;">自信度セルフチェック（約15分）</h3>
+          <ul>
+            <li>今日下した判断・予測を1つ書き出し、「自信度」を0〜100%で自己採点する</li>
+            <li>同じ内容について同僚や上司に軽く意見を聞き、ズレを確認する</li>
+          </ul>
+          <div class="reason">目的: ポジティブ・イリュージョン（自己過信）に気づく訓練をする。<br>期待効果: 自分の判断の偏りを客観視できるようになり、過信による見落としを減らせる。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="action-item">
+        <span class="num-badge">2</span>
+        <div>
+          <h3 style="margin-top:0;">見積もりログをつける（約15〜20分）</h3>
+          <ul>
+            <li>直近で締切のあったタスクについて「最初の見積もり時間」と「実際にかかった時間」を1行でメモする</li>
+            <li>差が大きかった原因を一言で書き添える</li>
+          </ul>
+          <div class="reason">目的: 計画錯誤のパターンを自覚する。<br>期待効果: 次回以降の見積もり精度が上がり、締切前の過労やクオリティ低下を防げる。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="action-item">
+        <span class="num-badge">3</span>
+        <div>
+          <h3 style="margin-top:0;">説得ルートの事前設計（約20〜30分）</h3>
+          <ul>
+            <li>次に誰かへ提案・依頼する場面を1つ想定する</li>
+            <li>相手がその話題にどれだけ関心・知識を持っているかを考え、「論理重視（中心的ルート）」か「印象・ストーリー重視（周辺的ルート）」かを事前に選んでメモする</li>
+          </ul>
+          <div class="reason">目的: 精緻化見込みモデルを実際のコミュニケーションに応用する準備をする。<br>期待効果: 相手とのミスマッチを減らし、提案が通る確率を高められる。</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  📚 books-summary 日次読書サマリー自動生成システム<br>
+  出典: 各種書店・出版社公開情報（Web検索による確認情報のみ使用）
+</footer>
+
+<script>
+  (function(){
+    var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click', function(){
+        tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+        document.querySelectorAll('section.panel').forEach(function(p){ p.classList.remove('active'); });
+        tab.setAttribute('aria-selected','true');
+        var panel = document.getElementById(tab.getAttribute('aria-controls'));
+        if(panel){ panel.classList.add('active'); }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
