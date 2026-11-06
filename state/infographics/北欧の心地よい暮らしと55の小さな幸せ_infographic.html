@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北欧の心地よい暮らしと55の小さな幸せ | インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様コメント）
+  プライマリー: #2B4257（北欧の夜空・スレートネイビー）
+  セカンダリー: #D7C4A3（麻・サンドベージュ）
+  アクセント:   #C0504D（ファルーレッド／ダーラホースの赤）
+  グラデーション: linear-gradient(135deg, #2B4257, #3E5C73)
+-->
+<style>
+  :root{
+    --primary:#2B4257;
+    --primary-light:#3E5C73;
+    --secondary:#D7C4A3;
+    --secondary-light:#EFE6D4;
+    --accent:#C0504D;
+    --accent-light:#E0847F;
+    --bg:#F7F3EC;
+    --card-bg:#FFFFFF;
+    --text:#243238;
+    --text-soft:#5A6B72;
+    --radius:16px;
+    --shadow:0 4px 14px rgba(43,66,87,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP",system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary),var(--primary-light));
+    color:#fff;
+    padding:28px 20px 24px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"❄️ 🧶 ☕ 🌲 🕯️";
+    position:absolute;
+    bottom:-6px;right:14px;
+    font-size:22px;
+    opacity:.35;
+  }
+  header h1{
+    margin:0 0 6px;
+    font-size:clamp(20px,5vw,28px);
+    font-weight:800;
+  }
+  header p.sub{
+    margin:0;
+    font-size:14px;
+    opacity:.9;
+  }
+  header p.meta{
+    margin-top:10px;
+    font-size:12.5px;
+    opacity:.85;
+  }
+
+  .wrap{max-width:720px;margin:0 auto;padding:16px;}
+
+  /* ファーストビュー：Why & How ブロック */
+  .hero{
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:20px;
+    margin:16px 0 20px;
+    border-top:6px solid var(--accent);
+  }
+  .hero h2{
+    font-size:15px;
+    margin:0 0 10px;
+    color:var(--accent);
+    display:flex;align-items:center;gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    gap:12px;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+  }
+  .qa-box{
+    flex:1 1 140px;
+    background:var(--secondary-light);
+    border-radius:12px;
+    padding:12px;
+  }
+  .qa-box .label{
+    font-size:11px;
+    font-weight:700;
+    color:var(--primary);
+    margin-bottom:4px;
+  }
+  .qa-box .val{font-size:13px;}
+  .core-msg{
+    background:var(--primary);
+    color:#fff;
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:14px;
+    font-weight:600;
+  }
+
+  /* 数値バッジ */
+  .stat-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:14px 0 4px;
+  }
+  .stat-badge{
+    background:var(--secondary-light);
+    border-radius:10px;
+    padding:8px 12px;
+    text-align:center;
+    flex:1 1 90px;
+  }
+  .stat-badge .num{
+    font-size:18px;
+    font-weight:800;
+    color:var(--accent);
+    display:block;
+  }
+  .stat-badge .lab{font-size:10.5px;color:var(--text-soft);}
+
+  /* タブ */
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:10px 0 14px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tabs::-webkit-scrollbar{height:4px;}
+  .tab-btn{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:1.5px solid var(--secondary);
+    color:var(--text-soft);
+    border-radius:999px;
+    padding:9px 14px;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .15s ease;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+  .panel{display:none;}
+  .panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:16px;
+    margin-bottom:12px;
+    border-left:5px solid var(--primary);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    color:var(--primary);
+    display:flex;align-items:center;gap:6px;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;}
+  .card li{margin-bottom:5px;}
+  .why{
+    margin-top:10px;
+    background:var(--secondary-light);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:var(--text-soft);
+  }
+  .why b{color:var(--accent);}
+
+  .quote-card{
+    border-left:5px solid var(--accent);
+  }
+  .quote-card blockquote{
+    margin:0 0 6px;
+    font-size:14px;
+    font-style:italic;
+    color:var(--primary);
+    border-left:3px solid var(--secondary);
+    padding-left:10px;
+  }
+  .quote-tag{
+    font-size:11px;
+    background:var(--accent-light);
+    color:#fff;
+    padding:2px 8px;
+    border-radius:999px;
+    display:inline-block;
+    margin-bottom:6px;
+  }
+
+  .action-card{border-left:5px solid #4E8D7C;}
+  .action-card h3{color:#3C6F62;}
+  .action-meta{
+    display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:11.5px;
+  }
+  .action-meta span{
+    background:#E7F1EE;color:#3C6F62;border-radius:8px;padding:4px 8px;
+  }
+
+  .bar-wrap{margin:10px 0;}
+  .bar-label{font-size:12px;color:var(--text-soft);margin-bottom:3px;display:flex;justify-content:space-between;}
+  .bar-bg{background:var(--secondary-light);border-radius:8px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:8px;}
+
+  footer{
+    text-align:center;
+    font-size:11.5px;
+    color:var(--text-soft);
+    margin-top:24px;
+    padding:0 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🇸🇪 北欧の心地よい暮らしと55の小さな幸せ</h1>
+  <p class="sub">tanuko（著）／ KADOKAWA</p>
+  <p class="meta">スウェーデン在住YouTuber「猫と北欧暮らし」が綴る、ちょうどいい毎日の見つけ方</p>
+</header>
+
+<div class="wrap">
+
+  <!-- ファーストビュー Why&How -->
+  <div class="hero">
+    <h2>🔑 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-box">
+        <div class="label">❓ 問い（Why読む）</div>
+        <div class="val">特別な出来事も大きな買い物もなしに、日々の暮らしを心地よくする方法とは？</div>
+      </div>
+      <div class="qa-box">
+        <div class="label">💡 答え（How）</div>
+        <div class="val">「ラーゴム（多すぎず少なすぎず）」を軸に、小さな習慣・季節の行事・身近な道具に意識を向ける</div>
+      </div>
+    </div>
+    <div class="core-msg">
+      📣 核心的メッセージ：特別な物や出来事がなくても、季節のルーティンや「フィーカ」「ミューシグ」のような小さな習慣に意識を向けるだけで、暮らしは十分に心が満ちる。「ちょうどいい」を自分の基準で選ぶことが、北欧流の豊かさの根拠になる。
+    </div>
+    <div class="stat-row">
+      <div class="stat-badge"><span class="num">55</span><span class="lab">小さな幸せの数</span></div>
+      <div class="stat-badge"><span class="num">4</span><span class="lab">章構成</span></div>
+      <div class="stat-badge"><span class="num">144</span><span class="lab">ページ</span></div>
+      <div class="stat-badge"><span class="num">2023</span><span class="lab">発売年</span></div>
+    </div>
+  </div>
+
+  <!-- タブ -->
+  <div class="tabs" role="tablist" aria-label="コンテンツ切替">
+    <button class="tab-btn" role="tab" id="tab-concept" aria-selected="true" aria-controls="panel-concept" onclick="switchTab('concept')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-chapter" aria-selected="false" aria-controls="panel-chapter" onclick="switchTab('chapter')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-case" aria-selected="false" aria-controls="panel-case" onclick="switchTab('case')">🔎 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-quote" aria-selected="false" aria-controls="panel-quote" onclick="switchTab('quote')">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" id="tab-action" aria-selected="false" aria-controls="panel-action" onclick="switchTab('action')">✅ 今日のアクション</button>
+  </div>
+
+  <!-- 主要概念 -->
+  <section class="panel active" id="panel-concept" role="tabpanel" aria-labelledby="tab-concept">
+
+    <div class="card">
+      <h3>⚖️ ラーゴム（Lagom）</h3>
+      <ul>
+        <li>「多すぎず少なすぎず、ちょうどいい」を表すスウェーデン語</li>
+        <li>食事・仕事・人間関係・住まいなど生活全般に適用される価値観</li>
+        <li>厳格なルールではなく、状況に応じて柔らかく変化してよい指針</li>
+      </ul>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>少なすぎ</span><span>ちょうどいい</span><span>多すぎ</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:55%"></div></div>
+      </div>
+      <div class="why"><b>理由：</b>「足りるだけで満足する」姿勢が、本当に大切なことに使える時間と心の余白を生むから。</div>
+    </div>
+
+    <div class="card">
+      <h3>☕ フィーカ（Fika）</h3>
+      <ul>
+        <li>コーヒー・お菓子を囲んだ休憩と交流の習慣。一人のコーヒーブレイクとは異なり複数人が基本</li>
+        <li>17世紀、カフェに女性が入れなかった時代に家で人を招いたことが起源とされる</li>
+        <li>現代ではカフェインより「人とのつながり」を重視する儀式として定着</li>
+      </ul>
+      <div class="why"><b>理由：</b>効率ではなく関係性に時間を使うことが、長期的な心の満足度を支えるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🕯️ ミューシグ（Mysig）</h3>
+      <ul>
+        <li>「居心地がいい・心地よい・ほっとする」を表す形容詞。動詞mysa（満足げに微笑む）が語源</li>
+        <li>物理的な空間だけでなく、会話や森歩きなど状況全体にも使われる</li>
+        <li>デンマークの「ヒュッゲ」と似るが、より強い「今この瞬間で十分」という感覚を含むとされる</li>
+      </ul>
+      <div class="why"><b>理由：</b>「完璧」ではなく「心地よさ」を基準にすることで、生活のハードルが下がるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🌲 季節とのルーティン</h3>
+      <ul>
+        <li>朝の日光浴・ドリップコーヒーなど、毎日決まった小さな儀式を持つ</li>
+        <li>森での摘み草（クマニラなど旬の野草採集）で自然のリズムと暮らしを同調させる</li>
+        <li>新年の祝い方など、季節行事を日常に取り込む</li>
+      </ul>
+      <div class="why"><b>理由：</b>決まった習慣があることで、変化の多い日々にも安定した心地よさが生まれるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🎨 北欧デザインとの暮らし（リサ・ラーソン／クリッパン）</h3>
+      <ul>
+        <li>陶芸家リサ・ラーソンの作品など、長く愛せるデザインを生活に取り入れる</li>
+        <li>クリッパン（ウールブランケット等のブランド）のような上質な道具を日常使いする</li>
+        <li>「お気に入り」を厳選して持つことがラーゴムの実践にもつながる</li>
+      </ul>
+      <div class="why"><b>理由：</b>量より質を選ぶ姿勢が、物に振り回されない暮らしを支えるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧶 サーミブレスレット</h3>
+      <ul>
+        <li>北欧先住民サーミの文化に由来するお守り的な装身具</li>
+        <li>身につける物に文化的な意味・物語を持たせる北欧的な価値観の一例</li>
+      </ul>
+      <div class="why"><b>理由：</b>意味のある物を選ぶことが、「ちょうどいい」持ち物の基準になるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🍲 木曜日の豆スープ（Ärtsoppa）</h3>
+      <ul>
+        <li>スウェーデンで伝統的に木曜日に食べられる豆スープ</li>
+        <li>曜日ごとに決まった料理を持つことで献立を考える負担（決断疲れ）を減らす</li>
+      </ul>
+      <div class="why"><b>理由：</b>小さな「仕組み化」が、毎日の選択ストレスから生活を守るから。</div>
+    </div>
+
+  </section>
+
+  <!-- 各章の要約 -->
+  <section class="panel" id="panel-chapter" role="tabpanel" aria-labelledby="tab-chapter">
+    <div class="card">
+      <h3>1章：日々と季節のルーティン</h3>
+      <ul>
+        <li>朝の日光浴、ドリップコーヒーから始まる一日</li>
+        <li>季節ごとに変わる小さな習慣の紹介</li>
+      </ul>
+      <div class="why"><b>理由：</b>日々の「型」があることが、心地よさの土台になる。</div>
+    </div>
+    <div class="card">
+      <h3>2章：私の北欧暮らしのとっておき</h3>
+      <ul>
+        <li>リサ・ラーソンやクリッパンなど、お気に入りの道具を紹介</li>
+        <li>長く愛せる物を厳選して暮らす姿勢</li>
+      </ul>
+      <div class="why"><b>理由：</b>「好き」を基準に物を選ぶことが、ラーゴムの実践そのものになる。</div>
+    </div>
+    <div class="card">
+      <h3>3章：スウェーデンらしさを取り入れる</h3>
+      <ul>
+        <li>新年の祝い方、フィーカのお菓子文化などローカルな習慣</li>
+        <li>日本の暮らしにも取り入れやすい工夫として提示</li>
+      </ul>
+      <div class="why"><b>理由：</b>文化的な儀式を知ることで、自分の暮らしに合う形へ翻案できるから。</div>
+    </div>
+    <div class="card">
+      <h3>4章：より豊かに生きるための北欧流マインド</h3>
+      <ul>
+        <li>ラーゴムの実践、自分にとっての「ちょうどいい」暮らしの探し方</li>
+        <li>完璧ではなく心地よさを優先する生き方の総括</li>
+      </ul>
+      <div class="why"><b>理由：</b>最終章でマインド面に立ち返ることで、具体的な習慣が「考え方」として定着するから。</div>
+    </div>
+  </section>
+
+  <!-- 具体例 -->
+  <section class="panel" id="panel-case" role="tabpanel" aria-labelledby="tab-case">
+    <div class="card">
+      <h3>🥣 木曜日は豆スープの日</h3>
+      <ul>
+        <li>背景：スウェーデンで伝統的に木曜日に食べ継がれてきたärtsoppa（豆スープ）</li>
+        <li>示唆：曜日ごとの「決まりごと」を1つ持つだけで、献立の悩みが減る</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>完璧な計画より、ゆるい仕組みのほうが続けやすい。</div>
+    </div>
+    <div class="card">
+      <h3>☕ フィーカの歴史的背景</h3>
+      <ul>
+        <li>背景：17世紀、カフェに入れなかった女性たちが家に人を招いたことが起源とされる説</li>
+        <li>示唆：社会的な制約から生まれた習慣が、性別を越えて誰もが楽しむ文化に発展した</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「つながりの時間」を確保する工夫は、制約があっても作り出せる。</div>
+    </div>
+    <div class="card">
+      <h3>🌿 森でのクマニラ摘み</h3>
+      <ul>
+        <li>背景：季節ごとに森へ出かけ、旬の野草を自分の手で採取して料理に使う</li>
+        <li>示唆：自然のサイクルに暮らしを合わせることで、季節感が実感として得られる</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「買う」のではなく「採る」行為そのものが心地よさの体験になる。</div>
+    </div>
+    <div class="card">
+      <h3>🐈 猫と暮らす「ミューシグ」な部屋づくり</h3>
+      <ul>
+        <li>背景：洗える椅子カバーや猫も使えるブランケットを置くなどの工夫</li>
+        <li>示唆：「完璧なインテリア」ではなく「心地よさ」を優先する住まいの選び方</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>生活者（人も猫も）が心地よいことを基準にすると、無理のない部屋になる。</div>
+    </div>
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="panel" id="panel-quote" role="tabpanel" aria-labelledby="tab-quote">
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <blockquote>「ラーゴム」とは、多すぎず少なすぎず、ちょうどよい量で満足すること。それは厳格なルールではなく、状況に応じて変化してよい柔らかな指針である。</blockquote>
+      <div class="why">書籍紹介・文化解説記事の要旨に基づく（原文引用は確認できず「要旨」として記載）</div>
+    </div>
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <blockquote>フィーカは単なるコーヒー休憩ではなく、人とのつながりを育むための時間である。</blockquote>
+      <div class="why">スウェーデン文化解説記事の要旨に基づく（原文引用は確認できず「要旨」として記載）</div>
+    </div>
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <blockquote>「ミューシグ」は、物理的な空間だけでなく、会話や森歩きのような時間そのものにも使われる、「今この瞬間で十分」という感覚である。</blockquote>
+      <div class="why">スウェーデン語解説の要旨に基づく（原文引用は確認できず「要旨」として記載）</div>
+    </div>
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" id="panel-action" role="tabpanel" aria-labelledby="tab-action">
+    <div class="card action-card">
+      <h3>☕ 1. 「今日のフィーカ」を15分だけ実践する</h3>
+      <ul>
+        <li>お茶やコーヒーとお菓子を用意し、誰か（または自分一人でも）とゆっくり過ごす時間を作る</li>
+      </ul>
+      <div class="action-meta">
+        <span>🎯 目的：効率重視の休憩から「つながり」重視の休憩への切り替え</span>
+        <span>📈 効果：午後の集中力アップ・ストレス軽減</span>
+      </div>
+    </div>
+    <div class="card action-card">
+      <h3>🥣 2. 今週の「決まった日のメニュー」を1つ決める</h3>
+      <ul>
+        <li>木曜日の豆スープのように、曜日ごとに固定する簡単な料理を1つ書き出す</li>
+      </ul>
+      <div class="action-meta">
+        <span>🎯 目的：献立を考える決断疲れの軽減</span>
+        <span>📈 効果：選択ストレスの減少・生活リズムの安定</span>
+      </div>
+    </div>
+    <div class="card action-card">
+      <h3>⚖️ 3. 「ちょうどいい」を1つ書き出す</h3>
+      <ul>
+        <li>「多すぎる」「足りない」と感じているものを1つ選び、ラーゴムの視点で適量をメモする</li>
+      </ul>
+      <div class="action-meta">
+        <span>🎯 目的：現状を見直すきっかけを作る</span>
+        <span>📈 効果：無理な我慢や過剰消費からの解放感</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  📚 読書サマリー自動生成システム｜本インフォグラフィックはWeb公開情報に基づき生成されています
+</footer>
+
+<script>
+function switchTab(key){
+  var tabs=['concept','chapter','case','quote','action'];
+  tabs.forEach(function(k){
+    var btn=document.getElementById('tab-'+k);
+    var panel=document.getElementById('panel-'+k);
+    var active=(k===key);
+    btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    panel.classList.toggle('active', active);
+  });
+}
+</script>
+
+</body>
+</html>
