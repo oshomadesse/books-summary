@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>「やりたいこと」はなくてもいい。 | インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様コメント）
+  プライマリー: #2E4B5E（思考の静けさ・スレートブルー）
+  セカンダリー: #E8C97A（強みの種・育つ金色）
+  アクセント:   #D1603D（一歩を踏み出すテラコッタ）
+  グラデーション: linear-gradient(135deg, #2E4B5E, #3F6A80)
+-->
+<style>
+  :root{
+    --primary:#2E4B5E;
+    --primary-light:#3F6A80;
+    --secondary:#E8C97A;
+    --secondary-light:#FBF1DC;
+    --accent:#D1603D;
+    --accent-light:#E8977C;
+    --bg:#F7F4EE;
+    --card-bg:#FFFFFF;
+    --text:#26323A;
+    --text-soft:#5C6B72;
+    --radius:16px;
+    --shadow:0 4px 14px rgba(46,75,94,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP",system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--primary),var(--primary-light));
+    color:#fff;
+    padding:28px 20px 24px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"🌱 🧭 🔑 ⏳ 🌟";
+    position:absolute;
+    bottom:-6px;right:14px;
+    font-size:22px;
+    opacity:.35;
+  }
+  header h1{
+    margin:0 0 6px;
+    font-size:clamp(19px,5vw,27px);
+    font-weight:800;
+  }
+  header p.sub{
+    margin:0;
+    font-size:14px;
+    opacity:.9;
+  }
+  header p.meta{
+    margin-top:10px;
+    font-size:12.5px;
+    opacity:.85;
+  }
+
+  .wrap{max-width:720px;margin:0 auto;padding:16px;}
+
+  .hero{
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:20px;
+    margin:16px 0 20px;
+    border-top:6px solid var(--accent);
+  }
+  .hero h2{
+    font-size:15px;
+    margin:0 0 10px;
+    color:var(--accent);
+    display:flex;align-items:center;gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    gap:12px;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+  }
+  .qa-box{
+    flex:1 1 140px;
+    background:var(--secondary-light);
+    border-radius:12px;
+    padding:12px;
+  }
+  .qa-box .label{
+    font-size:11px;
+    font-weight:700;
+    color:var(--primary);
+    margin-bottom:4px;
+  }
+  .qa-box .val{font-size:13px;}
+  .core-msg{
+    background:var(--primary);
+    color:#fff;
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:14px;
+    font-weight:600;
+  }
+
+  .stat-row{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:14px 0 4px;
+  }
+  .stat-badge{
+    background:var(--secondary-light);
+    border-radius:10px;
+    padding:8px 12px;
+    text-align:center;
+    flex:1 1 90px;
+  }
+  .stat-badge .num{
+    font-size:18px;
+    font-weight:800;
+    color:var(--accent);
+    display:block;
+  }
+  .stat-badge .lab{font-size:10.5px;color:var(--text-soft);}
+
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:10px 0 14px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tabs::-webkit-scrollbar{height:4px;}
+  .tab-btn{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:1.5px solid var(--secondary);
+    color:var(--text-soft);
+    border-radius:999px;
+    padding:9px 14px;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .15s ease;
+  }
+  .tab-btn[aria-selected="true"]{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+  .panel{display:none;}
+  .panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:16px;
+    margin-bottom:12px;
+    border-left:5px solid var(--primary);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    color:var(--primary);
+    display:flex;align-items:center;gap:6px;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;}
+  .card li{margin-bottom:5px;}
+  .why{
+    margin-top:10px;
+    background:var(--secondary-light);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:12.5px;
+    color:var(--text-soft);
+  }
+  .why b{color:var(--accent);}
+
+  .quote-card{
+    border-left:5px solid var(--accent);
+  }
+  .quote-card blockquote{
+    margin:0 0 6px;
+    font-size:14px;
+    font-style:italic;
+    color:var(--primary);
+    border-left:3px solid var(--secondary);
+    padding-left:10px;
+  }
+  .quote-tag{
+    font-size:11px;
+    background:var(--accent-light);
+    color:#fff;
+    padding:2px 8px;
+    border-radius:999px;
+    display:inline-block;
+    margin-bottom:6px;
+  }
+
+  .action-card{border-left:5px solid #4E8D7C;}
+  .action-card h3{color:#3C6F62;}
+  .action-meta{
+    display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:11.5px;
+  }
+  .action-meta span{
+    background:#E7F1EE;color:#3C6F62;border-radius:8px;padding:4px 8px;
+  }
+
+  .bar-wrap{margin:10px 0;}
+  .bar-label{font-size:12px;color:var(--text-soft);margin-bottom:3px;display:flex;justify-content:space-between;}
+  .bar-bg{background:var(--secondary-light);border-radius:8px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:8px;}
+
+  footer{
+    text-align:center;
+    font-size:11.5px;
+    color:var(--text-soft);
+    margin-top:24px;
+    padding:0 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧭 「やりたいこと」はなくてもいい。</h1>
+  <p class="sub">しずかみちこ（著）／ ダイヤモンド社</p>
+  <p class="meta">目標がなくても、人生に迷わなくなる4つのステップ</p>
+</header>
+
+<div class="wrap">
+
+  <!-- ファーストビュー Why&How -->
+  <div class="hero">
+    <h2>🔑 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-box">
+        <div class="label">❓ 問い（Why読む）</div>
+        <div class="val">「やりたいこと」や「5年後の目標」が見つからない自分はダメなのか？</div>
+      </div>
+      <div class="qa-box">
+        <div class="label">💡 答え（How）</div>
+        <div class="val">無理に目標を探さず、他人と比較しない自分固有の「強み」に気づき育てる</div>
+      </div>
+    </div>
+    <div class="core-msg">
+      📣 核心的メッセージ：人生の歩み方には目標から逆算する「逆算型」と、日々の選択を積み重ねる「積上型」があり、どちらが優れているわけでもない。自分が「積上型」なら、無理に目標を探す代わりに、文脈によって価値が変わる自分の「強み」に気づき育てることで、迷いなく充実した人生を歩める。
+    </div>
+    <div class="stat-row">
+      <div class="stat-badge"><span class="num">4</span><span class="lab">実践ステップ</span></div>
+      <div class="stat-badge"><span class="num">約1000</span><span class="lab">人の相談実績</span></div>
+      <div class="stat-badge"><span class="num">8〜9割</span><span class="lab">積上型だった人の割合</span></div>
+      <div class="stat-badge"><span class="num">2025</span><span class="lab">発売年（7月）</span></div>
+    </div>
+  </div>
+
+  <!-- タブ -->
+  <div class="tabs" role="tablist" aria-label="コンテンツ切替">
+    <button class="tab-btn" role="tab" id="tab-concept" aria-selected="true" aria-controls="panel-concept" onclick="switchTab('concept')">🧩 主要概念</button>
+    <button class="tab-btn" role="tab" id="tab-chapter" aria-selected="false" aria-controls="panel-chapter" onclick="switchTab('chapter')">📖 各章の要約</button>
+    <button class="tab-btn" role="tab" id="tab-case" aria-selected="false" aria-controls="panel-case" onclick="switchTab('case')">🔎 具体例</button>
+    <button class="tab-btn" role="tab" id="tab-quote" aria-selected="false" aria-controls="panel-quote" onclick="switchTab('quote')">💬 重要な引用</button>
+    <button class="tab-btn" role="tab" id="tab-action" aria-selected="false" aria-controls="panel-action" onclick="switchTab('action')">✅ 今日のアクション</button>
+  </div>
+
+  <!-- 主要概念 -->
+  <section class="panel active" id="panel-concept" role="tabpanel" aria-labelledby="tab-concept">
+
+    <div class="card">
+      <h3>🧭 逆算型</h3>
+      <ul>
+        <li>目標をまず決め、そこから逆算して「今やるべきこと」を計画するタイプ</li>
+        <li>「5年後どうなりたいか」に明確に答えられる人が多い</li>
+        <li>ゴールが見えている方が力を発揮しやすい</li>
+      </ul>
+      <div class="why"><b>理由：</b>ゴールの設定が行動の優先順位を決める指針になるタイプだから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🌱 積上型</h3>
+      <ul>
+        <li>「夢」や「目標」を持とうとすると可能性が狭まり息苦しくなるタイプ</li>
+        <li>日々の小さな選択や出会いを積み重ねながら道を見つける</li>
+        <li>著者の相談者の8〜9割がこのタイプだったという</li>
+      </ul>
+      <div class="bar-wrap">
+        <div class="bar-label"><span>逆算型</span><span>比率イメージ</span><span>積上型</span></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:85%"></div></div>
+      </div>
+      <div class="why"><b>理由：</b>目標を強制されるとむしろ身動きが取れなくなる人が一定数いるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>💎 強み（ストレングス）</h3>
+      <ul>
+        <li>他人との比較で優劣が決まるものではない、自分固有の資質</li>
+        <li>高級レストランのシェフと町中華の料理人のように、求められる強みは文脈で変わる</li>
+        <li>初心者には、ベテランより最近覚えた人の方が的確に教えられることもある</li>
+      </ul>
+      <div class="why"><b>理由：</b>強みの価値は絶対的な序列ではなく、置かれた場によって決まるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🔁 クリフトンストレングス／ビリーフリセット心理学</h3>
+      <ul>
+        <li>著者はGallup認定ストレングスコーチとしてクリフトンストレングス理論を基盤にする</li>
+        <li>ビリーフリセット心理学で、行動を妨げる思い込み（ビリーフ）を書き換える</li>
+      </ul>
+      <div class="why"><b>理由：</b>強みに気づくだけでなく、それを邪魔する思い込みを外さないと活かせないから。</div>
+    </div>
+
+    <div class="card">
+      <h3>💰 4つの資産（時間・能力・お金・人脈）</h3>
+      <ul>
+        <li>人生を変えるリソースは時間・能力・お金・人脈の4つ</li>
+        <li>このうち自分で直接コントロールできるのは「時間」だけ</li>
+      </ul>
+      <div class="why"><b>理由：</b>コントロールできるものに意識を向けないと、行動が焦りだけで終わるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🌸 強みを育てる4ステップ</h3>
+      <ul>
+        <li>①世界を広げ挑戦する → ②強みの種に気づく → ③強みの芽を育てる → ④邪魔を取り除き花を咲かせる</li>
+        <li>目標を決めることではなく、プロセスを進めること自体がゴールになる</li>
+      </ul>
+      <div class="why"><b>理由：</b>積上型にとっては、ゴールより「育てる手順」があることが安心と推進力になるから。</div>
+    </div>
+
+  </section>
+
+  <!-- 各章の要約（疑似章） -->
+  <section class="panel" id="panel-chapter" role="tabpanel" aria-labelledby="tab-chapter">
+    <div class="card">
+      <h3>序章：「やりたいこと」が見つからないのは欠点ではない</h3>
+      <ul>
+        <li>「5年後どうなりたい？」に答えられなくても問題ない</li>
+        <li>著者自身、20代で「やりたいことを探さなければ」という強迫観念に駆られ7回転職した</li>
+        <li>1000人以上のコーチング経験から、8〜9割が「無理に探さなくていい人」だったと気づく</li>
+      </ul>
+      <div class="why"><b>理由：</b>読者の「自分だけがダメなのでは」という自己否定を最初に外すため。</div>
+    </div>
+    <div class="card">
+      <h3>第1章：「逆算型」と「積上型」——あなたはどっち？</h3>
+      <ul>
+        <li>目標から逆算するタイプと、積み重ねで進むタイプの2分類</li>
+        <li>どちらが優れているかではなく、自分の型を知ることが出発点</li>
+      </ul>
+      <div class="why"><b>理由：</b>自分に合わないやり方を続けることが、迷いと焦りの根本原因だから。</div>
+    </div>
+    <div class="card">
+      <h3>第2章：世界を広げ、強みの種に気づく</h3>
+      <ul>
+        <li>強みは比較ではなく文脈で価値が変わる（シェフと町中華の例）</li>
+        <li>まず行動範囲を広げ、新しい刺激に触れることが「種」を見つける第一歩</li>
+      </ul>
+      <div class="why"><b>理由：</b>強みは机の上で考えても見つからず、行動の中でしか発見できないから。</div>
+    </div>
+    <div class="card">
+      <h3>第3章：強みの芽を育て、邪魔を取り除く</h3>
+      <ul>
+        <li>気づいた強みを小さく試し、フィードバックを得て育てる</li>
+        <li>強みの発揮を妨げる思い込み（ビリーフ）を特定し、リセットする</li>
+        <li>自分でコントロールできる「時間」の使い方を強みに投資する</li>
+      </ul>
+      <div class="why"><b>理由：</b>強みは放置すれば育たず、意識的な時間配分と思い込みの修正が必要だから。</div>
+    </div>
+    <div class="card">
+      <h3>第4章：強みの花を咲かせ、迷わず生きる</h3>
+      <ul>
+        <li>強みを活かせる場を見つけ、小さな選択を積み重ねる</li>
+        <li>「やりたいこと」探しをやめることが、むしろ前進につながる</li>
+      </ul>
+      <div class="why"><b>理由：</b>ゴールではなく土台（強み）を持つことが、積上型にとっての安心と推進力になるから。</div>
+    </div>
+  </section>
+
+  <!-- 具体例 -->
+  <section class="panel" id="panel-case" role="tabpanel" aria-labelledby="tab-case">
+    <div class="card">
+      <h3>🔄 著者自身の7回の転職遍歴</h3>
+      <ul>
+        <li>背景：20代から「やりたいことを探さなければ」という強迫観念に駆られ、リクルートスタッフィングやレアジョブなど7社を渡り歩いた</li>
+        <li>示唆：「やりたいこと探し」自体が目的化すると、むしろ迷走を深めることがある</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>結局「やりたいこと」は見つからず、強みに目を向けたことで今の仕事（独立・コーチング）にたどり着いた。</div>
+    </div>
+    <div class="card">
+      <h3>👨‍🍳 シェフと町中華の料理人</h3>
+      <ul>
+        <li>背景：高級レストランのシェフと町中華の料理人では、求められる技術がそもそも違う</li>
+        <li>示唆：強みの価値は絶対的な序列ではなく、置かれた文脈によって決まる</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>初心者への指導では、長年のプロより最近習得したばかりの人の方が的確に教えられる場合もある。</div>
+    </div>
+    <div class="card">
+      <h3>📊 約1000人の強み相談の実例</h3>
+      <ul>
+        <li>背景：Gallup認定ストレングスコーチとして5年間で約1000人と向き合った</li>
+        <li>示唆：相談者の8〜9割が「本当は無理に目標を探さなくていい積上型」だった</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「やりたいことが見つからない」という悩みの多くは、本人のタイプに合わない方法論を当てはめていることが原因。</div>
+    </div>
+    <div class="card">
+      <h3>❓ 「5年後どうなりたいか」に答えられない人</h3>
+      <ul>
+        <li>背景：就職・転職の面接などで頻出するこの質問に答えられず自己否定に陥る人が多い</li>
+        <li>示唆：社会的に「正解」とされる逆算型の問いに無理に答えようとすることが、積上型の人を苦しめている</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>本書はこれに答えられないこと自体は問題ではないと位置づける。</div>
+    </div>
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="panel" id="panel-quote" role="tabpanel" aria-labelledby="tab-quote">
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <blockquote>「やりたいこと」や「目標」が見つからないのは、欠点ではなく、ただの「タイプ」の違いにすぎない。</blockquote>
+      <div class="why">出版社紹介・書評記事の要旨に基づく（原文引用は確認できず「要旨」として記載）</div>
+    </div>
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <blockquote>強みは他人と比較して決まるものではなく、置かれた文脈によって価値が変わる。</blockquote>
+      <div class="why">書評・ダイヤモンド・オンライン連載記事の要旨に基づく（原文引用は確認できず「要旨」として記載）</div>
+    </div>
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <blockquote>人生を変える4つの資産——時間・能力・お金・人脈——のうち、自分でコントロールできるのは「時間」だけだ。</blockquote>
+      <div class="why">書評記事の要旨に基づく（原文引用は確認できず「要旨」として記載）</div>
+    </div>
+    <div class="card quote-card">
+      <span class="quote-tag">要旨</span>
+      <blockquote>無理に「やりたいこと」を決めようとしないこと、そして出会いや偶然に開かれていることが、積上型にとっての鍵になる。</blockquote>
+      <div class="why">ダイヤモンド・オンライン連載記事の要旨に基づく（原文引用は確認できず「要旨」として記載）</div>
+    </div>
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" id="panel-action" role="tabpanel" aria-labelledby="tab-action">
+    <div class="card action-card">
+      <h3>🧭 1. 「逆算型か積上型か」セルフチェック（20分）</h3>
+      <ul>
+        <li>「5年後どうなりたいか」という問いに、焦りや息苦しさを感じるか、ワクワクするかを紙に書き出して確認する</li>
+      </ul>
+      <div class="action-meta">
+        <span>🎯 目的：自分がどちらのタイプかを把握し、無理な目標設定による自己否定をやめる土台を作る</span>
+        <span>📈 効果：「目標がない自分はダメ」という思い込みから解放され、自分に合った進み方を選べるようになる</span>
+      </div>
+    </div>
+    <div class="card action-card">
+      <h3>🌱 2. 強みの「種」探しメモ（25分）</h3>
+      <ul>
+        <li>直近1ヶ月で「ついやってしまったこと」「人に褒められたこと」を5つ書き出し、共通するパターンを探す</li>
+      </ul>
+      <div class="action-meta">
+        <span>🎯 目的：比較ではなく行動の中から自分固有の強みの種を見つける</span>
+        <span>📈 効果：強みの自覚が高まり、次の小さな挑戦を選びやすくなる</span>
+      </div>
+    </div>
+    <div class="card action-card">
+      <h3>⏳ 3. 時間の使い方の棚卸し（20分）</h3>
+      <ul>
+        <li>直近1週間のスケジュールを振り返り、「強みを育てる時間」と「やりたいこと探しに消耗した時間」を色分けする</li>
+      </ul>
+      <div class="action-meta">
+        <span>🎯 目的：4つの資産のうち唯一コントロールできる「時間」の配分を可視化する</span>
+        <span>📈 効果：無駄な「やりたいこと探し」への時間投資を減らし、強みを育てる行動に時間を再配分できる</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  📚 読書サマリー自動生成システム｜本インフォグラフィックはWeb公開情報に基づき生成されています
+</footer>
+
+<script>
+function switchTab(key){
+  var tabs=['concept','chapter','case','quote','action'];
+  tabs.forEach(function(k){
+    var btn=document.getElementById('tab-'+k);
+    var panel=document.getElementById('panel-'+k);
+    var active=(k===key);
+    btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    panel.classList.toggle('active', active);
+  });
+}
+</script>
+
+</body>
+</html>
