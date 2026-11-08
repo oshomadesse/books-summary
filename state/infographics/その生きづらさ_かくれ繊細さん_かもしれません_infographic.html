@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>その生きづらさ、「かくれ繊細さん」かもしれません | インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー:   #2C5F6F (深いティール - 内面・静けさ)
+  セカンダリー:   #E07A5F (珊瑚色 - 繊細さ・傷つきやすさ)
+  アクセント:     #F2CC8F (金色 - 隠れた才能・気づき)
+  背景グラデーション: linear-gradient(135deg, #2C5F6F 0%, #1B3A45 100%)
+-->
+<style>
+  :root {
+    --primary: #2C5F6F;
+    --secondary: #E07A5F;
+    --accent: #F2CC8F;
+    --bg: #F7F5F2;
+    --card-bg: #FFFFFF;
+    --text: #22312F;
+    --text-light: #6B7B78;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, #1B3A45 100%);
+    color: #fff;
+    padding: 28px 16px 24px;
+    text-align: center;
+  }
+  header .kicker {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: bold;
+  }
+  header h1 {
+    font-size: 22px;
+    margin: 8px 0 4px;
+  }
+  header .author {
+    font-size: 14px;
+    color: #DCEAE6;
+  }
+  .hero {
+    margin: -14px 12px 16px;
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(44,95,111,0.18);
+  }
+  .hero h2 {
+    font-size: 15px;
+    color: var(--secondary);
+    margin: 0 0 10px;
+  }
+  .qa-block { display: flex; flex-direction: column; gap: 10px; }
+  .qa-item {
+    border-left: 4px solid var(--accent);
+    padding: 6px 10px;
+    background: #FBF1E3;
+    border-radius: 0 8px 8px 0;
+    font-size: 13.5px;
+  }
+  .qa-item b { color: var(--primary); display: block; margin-bottom: 2px; font-size: 12px; }
+  nav.tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 6px;
+    padding: 0 12px 10px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+  nav.tabs button {
+    flex: 0 0 auto;
+    border: none;
+    background: #E3ECEA;
+    color: var(--primary);
+    padding: 9px 12px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  nav.tabs button[aria-selected="true"] {
+    background: var(--primary);
+    color: #fff;
+  }
+  main { padding: 4px 12px 40px; }
+  section.panel { display: none; }
+  section.panel.active { display: block; }
+  .card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(44,95,111,0.08);
+  }
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card ul { margin: 0; padding-left: 18px; font-size: 13.5px; }
+  .card ul li { margin-bottom: 4px; }
+  .why {
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: var(--text-light);
+    background: #EFF4F3;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .why b { color: var(--secondary); }
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+  .badge {
+    background: var(--secondary);
+    color: #fff;
+    font-size: 11.5px;
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+  .bar-wrap { margin: 10px 0; }
+  .bar-label { font-size: 12px; color: var(--text-light); margin-bottom: 3px; display:flex; justify-content: space-between;}
+  .bar-bg { background: #E3ECEA; border-radius: 6px; height: 10px; overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, var(--secondary), var(--accent)); }
+  blockquote {
+    border-left: 4px solid var(--secondary);
+    margin: 0 0 12px;
+    padding: 6px 12px;
+    font-size: 13.5px;
+    color: var(--text);
+    background: #F7F5F2;
+    border-radius: 0 8px 8px 0;
+  }
+  blockquote .note { display: block; font-size: 11px; color: var(--text-light); margin-top: 4px; }
+  .action-item { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; }
+  .action-num {
+    flex: 0 0 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: #2C5F6F; display: flex;
+    align-items: center; justify-content: center; font-size: 13px; font-weight: bold;
+  }
+  .action-body { font-size: 13.5px; }
+  .action-body .goal { color: var(--secondary); font-size: 12px; margin-top: 2px; }
+  footer { text-align:center; font-size: 11px; color: var(--text-light); padding: 10px 0 24px; }
+  @media (min-width: 700px) {
+    main { max-width: 760px; margin: 0 auto; }
+    .hero { max-width: 760px; margin: -14px auto 16px; }
+    nav.tabs { max-width: 760px; margin: 0 auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">📖 今日の一冊</div>
+  <h1>🧠 その生きづらさ、「かくれ繊細さん」かもしれません</h1>
+  <div class="author">時田ひさ子（著）/ フォレスト出版</div>
+</header>
+
+<div class="hero">
+  <h2>⚡ 要約：問い × 答え × 根拠</h2>
+  <div class="qa-block">
+    <div class="qa-item">
+      <b>❓ 問い</b>社交的で大胆、刺激を求めるのに、なぜ些細なことで深く傷つき、どっと疲れてしまうのか？
+    </div>
+    <div class="qa-item">
+      <b>✅ 答え</b>それは「かくれ繊細さん」(HSS型HSP)かもしれない。繊細で傷つきやすいHSPの気質を、刺激を求め外向的に振る舞うHSS(High Sensation Seeking)の気質が覆い隠しているため、本人も周囲もその生きづらさの正体に気づきにくい。
+    </div>
+    <div class="qa-item">
+      <b>📊 根拠</b>著者はHSS型HSP専門カウンセラーとして約2万時間のカウンセリングを重ね、その二面性のメカニズムと、弱点ではなく「才能のかたまり」として使いこなす具体的な方法を本書にまとめている。
+    </div>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🔑 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">💡 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">🗣️ 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>① HSS型HSP（かくれ繊細さん）とは</h3>
+      <ul>
+        <li>共感力が高く繊細で傷つきやすいHSPの側面を、外向性・社交性・積極性・好奇心旺盛さというHSS（High Sensation Seeking）の側面が覆い隠している人たち</li>
+        <li>外から見れば大胆で社交的なのに、内面は人並み以上に傷つきやすい</li>
+      </ul>
+      <div class="why"><b>理由：</b>外向的な振る舞いが繊細さを隠してしまうため、本人も周囲も「生きづらさ」の正体に気づかないまま苦しみ続けてしまうから。</div>
+    </div>
+
+    <div class="card">
+      <h3>② アクセルとブレーキを同時に踏む状態</h3>
+      <ul>
+        <li>刺激を求めて踏み込む力（HSS）と、刺激に敏感で慎重になる力（HSP）が同時に働く</li>
+        <li>刺激が少なければ退屈し、刺激が多ければ消耗する</li>
+      </ul>
+      <div class="badge-row">
+        <span class="badge">🚗 HSS：刺激を求める</span>
+        <span class="badge">🛑 HSP：刺激に敏感</span>
+      </div>
+      <div class="why"><b>理由：</b>相反する2つの力を同時に使うため、余計な力を使い、人より早く・深く疲れてしまうから。</div>
+    </div>
+
+    <div class="card">
+      <h3>③ 感受性の幅の広さ</h3>
+      <ul>
+        <li>「繊細さん」（HSP）よりもさらに感受性の振れ幅が広いとされる</li>
+        <li>この幅の広さこそが、後述する「才能」の源泉になる</li>
+      </ul>
+      <div class="why"><b>理由：</b>感受性が広いほど、物事を多角的に捉えたり他者の変化に気づいたりする力が強くなるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>④ 二面性への罪悪感</h3>
+      <ul>
+        <li>「外向的に振る舞える自分」と「人より傷つきやすい自分」の両方を抱え、どちらが本当の自分か分からず苦しむ</li>
+        <li>人知れず自己矛盾に悩んでしまう</li>
+      </ul>
+      <div class="why"><b>理由：</b>二面性があることを「おかしい」と自分を責めてしまい、気質への理解が進まないまま生きづらさが固定化するから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑤ 引き受けすぎる傾向</h3>
+      <ul>
+        <li>気配りができ、先見性やアイデアが豊富なため、周囲から頼られやすい</li>
+        <li>頼られる嬉しさの反面、断れずに引き受けすぎて疲れてしまう</li>
+      </ul>
+      <div class="why"><b>理由：</b>長所そのものが過剰な負担を引き寄せる構造になっているため、本人が疲労の原因に気づきにくいから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑥ 一人になった時の脱力</h3>
+      <ul>
+        <li>人と接している間は気を張り続け、適応のためにエネルギーを使う</li>
+        <li>一人になった瞬間にどっと疲れが出て、表情がなくなることがある</li>
+      </ul>
+      <div class="why"><b>理由：</b>外向的な振る舞いの裏で繊細さがフル稼働しているため、気を抜ける一人の時間に反動が出るから。</div>
+    </div>
+
+    <div class="card">
+      <h3>⑦ 「才能のかたまり」という再定義</h3>
+      <ul>
+        <li>人間関係づくり・仕事での気配り・人を見抜く力・直感・常識を守る力・バランスをとる力など、幅広い強みを持つ</li>
+        <li>生きづらさの正体を知ることが、弱点から才能への転換の出発点になる</li>
+      </ul>
+      <div class="why"><b>理由：</b>気質を正しく理解しない限り、これらの強みは評価軸に乗りにくく、自分でも気づけないままになってしまうから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>第1章：その生きづらさ、「かくれ繊細さん」かもしれません</h3>
+      <ul>
+        <li>どれだけ調べても生きづらさの理由が分からなかった経緯</li>
+        <li>かくれ繊細さんが生まれながらに持つ「はみ出した感受性」を紹介</li>
+      </ul>
+      <div class="why"><b>理由：</b>「気の持ち方」の問題だと思い込んでいた生きづらさが、実は気質由来だと分かることが、自己理解の第一歩になるから。</div>
+    </div>
+    <div class="card">
+      <h3>第2章：「かくれ繊細さん」が秘めている才能</h3>
+      <ul>
+        <li>人間関係づくり、仕事での気配りや先見性、人を見抜く力、直感、常識を守る力、バランスをとる力など多くの才能を持つことを解説</li>
+      </ul>
+      <div class="why"><b>理由：</b>生きづらさの裏側にある強みを言語化することで、気質を弱点としてではなく資産として使えるようになるから。</div>
+    </div>
+    <div class="card">
+      <h3>第3章：「かくれ繊細さん」が自己肯定感を高め、幸せになる方法</h3>
+      <ul>
+        <li>二面性に対する罪悪感を解消し、自己肯定感を育てる具体的な視点を提示</li>
+      </ul>
+      <div class="why"><b>理由：</b>自分を責める癖のある気質だからこそ、意識的に自己肯定感を育てる工夫が必要だから。</div>
+    </div>
+    <div class="card">
+      <h3>第4章：「かくれ繊細さん」と仕事とお金</h3>
+      <ul>
+        <li>引き受けすぎる傾向や、評価されにくい強みとの付き合い方を仕事・お金の面から解説</li>
+      </ul>
+      <div class="why"><b>理由：</b>気質に合わない働き方を続けると消耗が蓄積するため、特性を踏まえた仕事選び・働き方の工夫が欠かせないから。</div>
+    </div>
+    <div class="card">
+      <h3>第5章：「かくれ繊細さん」と人間関係</h3>
+      <ul>
+        <li>気を張り続けてしまう対人関係での疲れやすさと、その向き合い方を解説</li>
+      </ul>
+      <div class="why"><b>理由：</b>人間関係は刺激と気疲れの両方が最も集中する場面であり、気質に合った距離感をつかむことが生きやすさに直結するから。</div>
+    </div>
+    <div class="card">
+      <h3>第6章以降</h3>
+      <ul>
+        <li>公開されている目次情報からは、第6章以降の章立てを確認できなかった</li>
+      </ul>
+      <div class="why"><b>理由：</b>Web上で確認できない内容を断定的に書くことは避けたいため、ここは「不明」と明記する。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="card">
+      <h3>💡 仕事を任されて嬉しい反面、引き受けすぎて疲れてしまう</h3>
+      <ul>
+        <li>先見性やアイデアがあり、人への気配りもできるため、周囲から頼られやすい</li>
+        <li>頼られる嬉しさから断りづらく、気づかないうちに負担が積み重なる</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>長所そのものが過剰な引き受けを招く構造になっているため、「頼られること」と「抱え込みすぎること」を本人が意識的に区別する必要がある。</div>
+    </div>
+    <div class="card">
+      <h3>💡 一人になった途端にどっと疲れが出て、表情がなくなる</h3>
+      <ul>
+        <li>人と接している間は刺激に適応するため、気を張り続けている</li>
+        <li>一人になり気を抜いた瞬間に、それまでの消耗が一気に表に出る</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>一人の時間は単なる自由時間ではなく、気質に合わせて消耗を回復させるための必要な時間として確保すべきだと分かる。</div>
+    </div>
+    <div class="card">
+      <h3>💡 大胆で社交的に見える人が、些細な一言で深く傷つく</h3>
+      <ul>
+        <li>HSSの外向的な側面が前面に出ているため、周囲はHSPの繊細さに気づきにくい</li>
+        <li>本人も「なぜこんなことで傷つくのか」と自分を疑問に思ってしまう</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>「元気そうに見えるから大丈夫」という周囲の誤解が、かくれ繊細さんの孤立感や自己否定感を強めてしまう。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <blockquote>
+      共感能力が高く繊細で傷つきやすい側面（HSP）を、外向性、社交性、積極性、好奇心旺盛さという別の側面（HSS：High Sensation Seeking）によって表面化しないようカバーしている人たち。それが「かくれ繊細さん」である、という著者の定義。
+      <span class="note">※出版社紹介文に基づく要旨</span>
+    </blockquote>
+    <blockquote>
+      かくれ繊細さんは、繊細さんと同様に、非繊細さんより「感受性の幅が広い」存在であり、それは弱点ではなく才能のかたまりだという立場。
+      <span class="note">※要旨</span>
+    </blockquote>
+    <blockquote>
+      仕事を任されるとうれしい反面、引き受けすぎて疲れてしまう――という、かくれ繊細さんに特徴的な傾向についての指摘。
+      <span class="note">※要旨</span>
+    </blockquote>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="card">
+      <div class="action-item">
+        <div class="action-num">1</div>
+        <div class="action-body">
+          今日1日を振り返り、「外向的・大胆に振る舞った場面」と「些細なことで傷ついた・疲れた場面」をそれぞれ1つずつ書き出す（約15分）。
+          <div class="goal">🎯 目的：自分の中の二面性を言語化する／期待効果：「なぜ疲れるのか分からない」状態から「構造的な理由がある」という理解への転換。</div>
+        </div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">2</div>
+        <div class="action-body">
+          今抱えている依頼・頼まれごとを1つ選び、「断る／減らす／誰かに任せる」のどれが可能かをメモに書き出す（約20分）。
+          <div class="goal">🎯 目的：引き受けすぎる傾向への具体的な対策の第一歩を作る／期待効果：過剰な疲労が積み重なる前に負担を可視化し、減らす行動につなげる。</div>
+        </div>
+      </div>
+      <div class="action-item">
+        <div class="action-num">3</div>
+        <div class="action-body">
+          予定表に「一人で何も予定を入れない30分」を確保し、実際にその時間を取る（約30分）。
+          <div class="goal">🎯 目的：気を張り続けた反動の脱力を前提にケアする／期待効果：消耗の蓄積を防ぎ、翌日以降のパフォーマンスを安定させる。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>📚 books-summary daily-reading / その生きづらさ、「かくれ繊細さん」かもしれません（時田ひさ子）</footer>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
+      document.querySelectorAll('section.panel').forEach(function (p) { p.classList.remove('active'); });
+      tab.setAttribute('aria-selected', 'true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      if (panel) panel.classList.add('active');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
