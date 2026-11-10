@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>超ミニマル主義 | 読書インフォグラフィック</title>
+<!--
+  カラーパレット（本インフォグラフィック専用）
+  Primary:   #1E6F5C (深緑 - 自然・自給自足を象徴)
+  Secondary: #F4A259 (アンバー - 軽さ・温かみ)
+  Accent:    #2E86AB (青 - 集中・思考)
+  Gradient:  linear-gradient(135deg, #1E6F5C, #2E86AB)
+-->
+<style>
+  :root{
+    --primary:#1E6F5C;
+    --primary-dark:#154d40;
+    --secondary:#F4A259;
+    --accent:#2E86AB;
+    --bg:#F7F7F2;
+    --card:#FFFFFF;
+    --text:#222222;
+    --sub:#5B5B5B;
+    --border:#E4E4DD;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:16px;}
+  header.hero{
+    background:linear-gradient(135deg, var(--primary), var(--accent));
+    color:#fff;
+    border-radius:var(--radius);
+    padding:24px 20px;
+    margin-bottom:16px;
+  }
+  header.hero .cat{
+    display:inline-block;
+    background:rgba(255,255,255,0.22);
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:0.8rem;
+    margin-bottom:10px;
+  }
+  header.hero h1{
+    margin:0 0 6px;
+    font-size:1.6rem;
+    line-height:1.4;
+  }
+  header.hero .author{
+    font-size:0.95rem;
+    opacity:0.9;
+    margin-bottom:14px;
+  }
+  .why-how{
+    background:rgba(255,255,255,0.14);
+    border-radius:10px;
+    padding:14px;
+    margin-top:10px;
+  }
+  .why-how .row{margin-bottom:10px;}
+  .why-how .row:last-child{margin-bottom:0;}
+  .why-how .label{
+    font-weight:700;
+    font-size:0.8rem;
+    letter-spacing:0.05em;
+    opacity:0.85;
+    display:block;
+    margin-bottom:4px;
+  }
+  .why-how .val{font-size:0.98rem;}
+
+  .stats-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:14px;
+  }
+  .badge{
+    background:#fff;
+    color:var(--primary-dark);
+    border-radius:10px;
+    padding:8px 12px;
+    font-size:0.82rem;
+    font-weight:700;
+    flex:1 1 auto;
+    text-align:center;
+    min-width:90px;
+  }
+  .badge .num{display:block;font-size:1.3rem;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin-bottom:14px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    padding:10px 14px;
+    border-radius:999px;
+    font-size:0.85rem;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+
+  section.panel{display:none;}
+  section.panel.active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:1.02rem;
+    color:var(--primary-dark);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card ul{margin:0 0 10px 0;padding-left:1.1em;}
+  .card li{margin-bottom:4px;font-size:0.92rem;}
+  .why{
+    background:#F0F7F4;
+    border-left:4px solid var(--secondary);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:0.85rem;
+    color:var(--sub);
+  }
+  .why b{color:var(--primary-dark);}
+
+  .quote-card{
+    background:linear-gradient(135deg,#1E6F5C0f,#2E86AB0f);
+    border:1px dashed var(--accent);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .quote-card .mark{
+    font-size:0.72rem;
+    display:inline-block;
+    background:var(--secondary);
+    color:#fff;
+    padding:2px 8px;
+    border-radius:6px;
+    margin-bottom:8px;
+  }
+  .quote-card p{
+    font-size:0.98rem;
+    font-style:italic;
+    margin:0 0 6px;
+  }
+  .quote-card .note{font-size:0.82rem;color:var(--sub);}
+
+  .action-card{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .action-num{
+    background:var(--secondary);
+    color:#fff;
+    font-weight:800;
+    border-radius:50%;
+    width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;
+    flex:0 0 30px;
+  }
+  .meter{
+    height:8px;
+    background:var(--border);
+    border-radius:6px;
+    overflow:hidden;
+    margin-top:6px;
+  }
+  .meter > span{
+    display:block;
+    height:100%;
+    background:linear-gradient(90deg,var(--primary),var(--accent));
+  }
+
+  footer{
+    text-align:center;
+    font-size:0.75rem;
+    color:var(--sub);
+    padding:20px 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="cat">🏷️ ライフスタイル</span>
+    <h1>🧠 超ミニマル主義</h1>
+    <div class="author">👤 四角大輔</div>
+
+    <div class="why-how">
+      <div class="row">
+        <span class="label">❓ 問い（Why）</span>
+        <span class="val">モノも情報もタスクも増え続ける時代に、本当に大切なことへ集中する時間とエネルギーをどう確保するか？</span>
+      </div>
+      <div class="row">
+        <span class="label">💡 答え（How）</span>
+        <span class="val">持ち物だけでなく、情報・スケジュール・タスク・思考と習慣まで「軽量化」し、浮いた余白を大切なことへ全投入する。</span>
+      </div>
+      <div class="row">
+        <span class="label">📌 根拠</span>
+        <span class="val">著者自身がミリオンヒットを連発した多忙な会社員生活から、2010年にニュージーランドの湖畔の森へ移住し自給自足に近い暮らしへ転換。軽量化の実践を自ら体現している。</span>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="badge"><span class="num">9</span>軽量化の対象領域</div>
+      <div class="badge"><span class="num">8</span>装備セレクトの極意</div>
+      <div class="badge"><span class="num">2010</span>年 NZ移住</div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切替">
+    <button role="tab" id="tab-concept" aria-controls="panel-concept" aria-selected="true">🧩 主要概念</button>
+    <button role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false">📖 各章の要約</button>
+    <button role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">🔍 具体例</button>
+    <button role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false">💬 重要な引用</button>
+    <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false">✅ 今日のアクション</button>
+  </nav>
+
+  <section class="panel active" id="panel-concept" role="tabpanel" aria-labelledby="tab-concept">
+
+    <div class="card">
+      <h3>🪶 超ミニマル主義</h3>
+      <ul>
+        <li>モノの削減だけでなく、仕事術・装備・情報・スケジュール・タスク・思考と習慣・体とストレス・人間関係・働き方の9領域すべてを軽くする統合的な哲学</li>
+        <li>登山のように「最小限の装備で長く快適に進む」発想を日常全般へ拡張</li>
+        <li>軽量化そのものが目的ではなく、浮いた時間とエネルギーを大切なことへ再投資するための手段</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>モノだけ減らす一般的なミニマリズムでは、情報過多・タスク過多の負荷は残ったままになる。生活全体を軽くしないと本当の余白は生まれない。</div>
+    </div>
+
+    <div class="card">
+      <h3>🎒 装備セレクト8つの極意</h3>
+      <ul>
+        <li>財布・カバン・書類・名刺・ウエア・スーツ・アウター・靴などの持ち物を選ぶ基準</li>
+        <li>軽さ、コンパクトさ、多機能性、収納性、耐久性、手入れのしやすさなどが判断軸</li>
+        <li>サコッシュやカラビナの活用、小銭を持たないなど小さな工夫の積み重ねを重視</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>持ち物選びの基準を一度明確にしておくと、毎回の購入・所持判断にかかる意思決定コストがなくなる。</div>
+    </div>
+
+    <div class="card">
+      <h3>🗂️ スケジュールの軽量化</h3>
+      <ul>
+        <li>夕方・夜・朝・1日・平日・1か月・1年・未来という時間の単位ごとに余白をつくる</li>
+        <li>アポを15分単位で区切り、隙間時間を可視化する</li>
+        <li>ルーティンも「予定」として予約し、確保する</li>
+      </ul>
+      <div class="meter"><span style="width:70%"></span></div>
+      <div class="why"><b>理由（なぜ重要か）：</b>時間を単に減らすのではなく単位を細かくすることで、使える余白が見えるようになる。</div>
+    </div>
+
+    <div class="card">
+      <h3>📋 タスクの軽量化</h3>
+      <ul>
+        <li>マルチタスクをやめ、頭の中を軽くする</li>
+        <li>自分が担えるタスク量を把握する</li>
+        <li>TO DOリストを手放し、本当にやりたいことを書く「ドリームリスト」へ置き換える</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>「処理すべきこと」を並べるリストは不安を増やしやすい。「やりたいこと」基準に変えると行動の原動力が変わる。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧠 思考と習慣の軽量化</h3>
+      <ul>
+        <li>1日の最重要事項を1つだけ決める「ハイライト思考」</li>
+        <li>デバイスとアプリを絞る「ワンデバイス・ワンアプリ」</li>
+        <li>やりたくない仕事をゲーム化する発想、移動式ワークスタイルの提案</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）：</b>選択肢や切替の多さそのものが脳のエネルギーを消耗させるため、思考の型を先に決めておくことが軽量化になる。</div>
+    </div>
+
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+
+    <div class="card">
+      <h3>STEP1｜プロローグ</h3>
+      <ul>
+        <li>情報過多・タスク過多の時代に、身軽さが生存戦略になるという問題提起</li>
+      </ul>
+      <div class="why"><b>理由：</b>軽量化がなぜ「今」必要なのかの土台を示す章。</div>
+    </div>
+
+    <div class="card">
+      <h3>STEP2｜超ミニマル主義とは</h3>
+      <ul>
+        <li>一般的なミニマリズム（モノを減らす）との違いを明確化</li>
+        <li>対象を仕事術・装備・ワークスペース・スケジュール・タスク・思考と習慣・体とストレス・人間関係・働き方の9領域に拡張</li>
+      </ul>
+      <div class="why"><b>理由：</b>本書の射程がどこまで広いかを定義し、以降の各章の読み方を決める章。</div>
+    </div>
+
+    <div class="card">
+      <h3>STEP3｜装備とモノの軽量化</h3>
+      <ul>
+        <li>財布・カバン・書類・名刺・ウエア・スーツ・アウター・靴などの選び方</li>
+        <li>「装備セレクト8つの極意」を提示</li>
+      </ul>
+      <div class="why"><b>理由：</b>最も具体的で実行しやすい入口として、持ち物レベルから軽量化を体感させる章。</div>
+    </div>
+
+    <div class="card">
+      <h3>STEP4｜情報とワークスペースの軽量化</h3>
+      <ul>
+        <li>仕事机・デスクトップ・スマホ・パソコン・データ・部屋を軽くする方法</li>
+      </ul>
+      <div class="why"><b>理由：</b>物理的な持ち物だけでなく、デジタル環境の負荷も同じ発想で整理できることを示す章。</div>
+    </div>
+
+    <div class="card">
+      <h3>STEP5｜スケジュールの軽量化</h3>
+      <ul>
+        <li>夕方・夜・朝・1日・平日・1か月・1年・未来という単位ごとの軽量化</li>
+        <li>15分単位でアポを切る、ルーティンも予定として確保する</li>
+      </ul>
+      <div class="why"><b>理由：</b>時間という最も有限な資源をどう軽くするかを、具体的な時間単位で分解して示す章。</div>
+    </div>
+
+    <div class="card">
+      <h3>STEP6｜タスクの軽量化</h3>
+      <ul>
+        <li>マルチタスクの放棄、頭の中を軽くする、担えるタスク量の把握</li>
+        <li>TO DOリストを手放し「ドリームリスト」へ、集中力を高める方法</li>
+      </ul>
+      <div class="why"><b>理由：</b>タスク管理を「処理」から「本当にやりたいこと」中心へ転換させる、本書の思想が最も表れる章。</div>
+    </div>
+
+    <div class="card">
+      <h3>STEP7｜思考と習慣の軽量化</h3>
+      <ul>
+        <li>やりたくない仕事をゲームに変える、ワンデバイス・ワンアプリ、ミニマル主義メモ術</li>
+        <li>ハイライト思考、一点突破ヒットの法則、小さなイノベーションの起こし方、移動式ワークスタイルのすすめ</li>
+      </ul>
+      <div class="why"><b>理由：</b>習慣や思考のクセという最も変えにくい部分にまで軽量化を適用する、本書の到達点となる章。</div>
+    </div>
+
+    <div class="card">
+      <h3>エピローグ</h3>
+      <ul>
+        <li>軽量化の先にある、本当に大切なことへの集中と自由な生き方の提示</li>
+      </ul>
+      <div class="why"><b>理由：</b>軽量化はゴールではなく手段であることを締めで再確認させる章。</div>
+    </div>
+
+  </section>
+
+  <section class="panel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+
+    <div class="card">
+      <h3>🏞️ ① ミリオンヒット製作者からニュージーランドの森へ</h3>
+      <ul>
+        <li>背景：著者はレコード会社プロデューサーとしてミリオンヒットを10回記録する多忙な会社員生活を送っていた</li>
+        <li>転機：2010年、ニュージーランドの湖畔の森へ移住し、自給自足に近い暮らしへ転換</li>
+        <li>結果：モノと情報を減らすことで、自然の中でも成果を出し続けられることを自ら実証した</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>「軽さ」は都会の便利さを捨てることではなく、場所にとらわれない自由を得るための手段になる。</div>
+    </div>
+
+    <div class="card">
+      <h3>🎒 ② サコッシュ・カラビナ・小銭を持たない暮らし</h3>
+      <ul>
+        <li>背景：日常の持ち物を「軽さ・多機能性・耐久性」の基準で絞り込む実践</li>
+        <li>具体：鍵やカードをカラビナでまとめ、サコッシュで必要最小限を持ち歩き、小銭を持たずに決済する</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>小さな摩擦の削減が積み重なって、1日の意思決定の負荷全体を下げる。</div>
+    </div>
+
+    <div class="card">
+      <h3>⏱️ ③ 15分単位のアポ・スケジューリング</h3>
+      <ul>
+        <li>背景：一般的な30分・1時間刻みの予定管理では隙間時間が見えにくい</li>
+        <li>具体：アポを15分単位で区切り、空いた時間を可視化・活用する</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>時間の軽量化は「量を減らす」だけでなく「単位を小さくして自由度を上げる」ことでも実現できる。</div>
+    </div>
+
+    <div class="card">
+      <h3>📝 ④ TO DOリストからドリームリストへ</h3>
+      <ul>
+        <li>背景：やるべきことを並べるTO DOリストは、処理し切れない不安を増やしやすい</li>
+        <li>具体：本当にやりたいことだけを書く「ドリームリスト」に置き換える</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）：</b>タスク管理の目的を「漏れなく処理する」ことから「大切なことに時間を使う」ことへ転換できる。</div>
+    </div>
+
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+
+    <div class="quote-card">
+      <span class="mark">要旨</span>
+      <p>「ミニマリズムは持ち物を減らすことがゴールではなく、減らした先に生まれる自由な時間とエネルギーを、本当に大切なことへ使うための手段である」</p>
+      <div class="note">原典の直接引用はWeb上で確認できなかったため、複数の書評・要約記事の内容を要約した要旨です。</div>
+    </div>
+
+    <div class="quote-card">
+      <span class="mark">要旨</span>
+      <p>「最小限の装備で長く快適に進む」という登山的発想を、仕事や暮らし全般に適用する——それが超ミニマル主義の基本姿勢である</p>
+      <div class="note">書評・紹介文に基づく要旨です。</div>
+    </div>
+
+    <div class="quote-card">
+      <span class="mark">要旨</span>
+      <p>本書は単なる「物を減らす本」ではなく、情報・タスク・空間・スケジュールまで含めて「心と行動を軽くする」ための実用的な自己啓発書である</p>
+      <div class="note">読者レビューの傾向をまとめた要旨です。</div>
+    </div>
+
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+
+    <div class="card action-card">
+      <div class="action-num">1</div>
+      <div>
+        <h3 style="margin-top:0;">👛 財布・カバンの中身を8つの極意で仕分ける</h3>
+        <ul>
+          <li>所要時間：約15分</li>
+          <li>目的：装備セレクトの基準（軽さ・多機能性・耐久性・手入れのしやすさ）を体感する</li>
+          <li>期待効果：「なんとなく持っている物」が減り、持ち物選びの判断基準が明確になる</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">2</div>
+      <div>
+        <h3 style="margin-top:0;">📝 1行だけの「ドリームリスト」をつくる</h3>
+        <ul>
+          <li>所要時間：約15分</li>
+          <li>目的：TO DOリスト中心の思考から、やりたいこと中心の思考への切り替えを体験する</li>
+          <li>期待効果：作業に追われる感覚から、やりたいことへ向かう感覚への切り替えが起きる</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card action-card">
+      <div class="action-num">3</div>
+      <div>
+        <h3 style="margin-top:0;">🗓️ 明日の予定を15分単位で区切り直す</h3>
+        <ul>
+          <li>所要時間：20〜30分</li>
+          <li>目的：スケジュールの軽量化手法を試し、隙間時間の在り処を可視化する</li>
+          <li>期待効果：「忙しい」と感じていた一日にも、実は使える隙間時間があることに気づける</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>📚 読書サマリー自動生成システム（books-summary） ・ 本ページは要約・紹介目的で生成されています</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('nav.tabs button'));
+  var panels = {
+    'tab-concept': document.getElementById('panel-concept'),
+    'tab-chapters': document.getElementById('panel-chapters'),
+    'tab-cases': document.getElementById('panel-cases'),
+    'tab-quotes': document.getElementById('panel-quotes'),
+    'tab-actions': document.getElementById('panel-actions')
+  };
+  function select(id){
+    tabs.forEach(function(t){
+      var active = t.id === id;
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    Object.keys(panels).forEach(function(key){
+      var panel = panels[key];
+      if(key === id){
+        panel.hidden = false;
+        panel.classList.add('active');
+      } else {
+        panel.hidden = true;
+        panel.classList.remove('active');
+      }
+    });
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ select(t.id); });
+  });
+})();
+</script>
+</body>
+</html>
