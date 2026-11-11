@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>死ぬこと以外かすり傷 | インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー: #FF4E50 (情熱・挑戦の赤)
+  セカンダリー: #1A1A2E (夜の決意を表す濃紺)
+  アクセント: #FFC93C (熱狂を示す黄)
+  グラデーション: linear-gradient(135deg, #FF4E50, #F9D423)
+-->
+<style>
+  :root{
+    --primary:#FF4E50;
+    --secondary:#1A1A2E;
+    --accent:#FFC93C;
+    --bg:#101018;
+    --card-bg:#1C1C2B;
+    --text:#F4F4F8;
+    --text-dim:#B8B8C8;
+    --border:rgba(255,255,255,0.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Hiragino Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    padding-bottom:40px;
+  }
+  header{
+    background:linear-gradient(135deg, var(--primary), #F9D423);
+    padding:28px 20px 24px;
+    text-align:center;
+    color:#1A1A2E;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"🩹";
+    position:absolute;
+    font-size:120px;
+    opacity:0.15;
+    right:-20px;
+    top:-20px;
+  }
+  header h1{
+    font-size:1.6rem;
+    font-weight:800;
+    margin-bottom:6px;
+    position:relative;
+  }
+  header p.sub{
+    font-size:0.9rem;
+    font-weight:600;
+    opacity:0.85;
+    position:relative;
+  }
+  .meta-row{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:14px;
+    position:relative;
+  }
+  .meta-badge{
+    background:rgba(26,26,46,0.85);
+    color:#fff;
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:0.78rem;
+    font-weight:600;
+  }
+
+  .hero{
+    margin:18px 16px;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+  }
+  .hero h2{
+    font-size:1rem;
+    color:var(--accent);
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-block{display:flex;flex-direction:column;gap:14px;}
+  .qa-item{
+    background:rgba(255,255,255,0.03);
+    border-left:3px solid var(--primary);
+    border-radius:8px;
+    padding:12px 14px;
+  }
+  .qa-item .label{font-size:0.72rem;color:var(--text-dim);font-weight:700;letter-spacing:0.05em;margin-bottom:4px;}
+  .qa-item .content{font-size:0.92rem;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin:0 16px 14px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    color:var(--text-dim);
+    border:1px solid var(--border);
+    padding:9px 14px;
+    border-radius:22px;
+    font-size:0.8rem;
+    font-weight:700;
+    white-space:nowrap;
+    cursor:pointer;
+    transition:all .2s;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:linear-gradient(135deg, var(--primary), var(--accent));
+    color:#1A1A2E;
+    border-color:transparent;
+  }
+
+  main{margin:0 16px;}
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    font-size:0.98rem;
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:#fff;
+  }
+  .card ul{padding-left:18px;}
+  .card li{font-size:0.86rem;margin-bottom:4px;color:var(--text-dim);}
+  .why{
+    margin-top:10px;
+    background:rgba(255,201,60,0.1);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:0.8rem;
+    color:var(--accent);
+  }
+  .why b{color:#fff;}
+
+  .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+  .num-badge{
+    background:var(--secondary);
+    border:1px solid var(--primary);
+    border-radius:10px;
+    padding:6px 10px;
+    font-size:0.75rem;
+    font-weight:700;
+    color:var(--accent);
+  }
+  .bar-wrap{margin-top:10px;}
+  .bar-label{font-size:0.75rem;color:var(--text-dim);display:flex;justify-content:space-between;margin-bottom:3px;}
+  .bar-bg{background:rgba(255,255,255,0.08);border-radius:6px;height:8px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:6px;}
+
+  .quote-card{
+    border-left:4px solid var(--accent);
+    font-style:italic;
+    font-size:0.88rem;
+  }
+  .quote-card .tag{
+    display:inline-block;
+    margin-top:8px;
+    font-size:0.68rem;
+    background:rgba(255,255,255,0.08);
+    padding:2px 8px;
+    border-radius:10px;
+    font-style:normal;
+    color:var(--text-dim);
+  }
+
+  .action-card{border-left:4px solid #4ADE80;}
+  .action-card .goal{font-size:0.78rem;color:#4ADE80;margin-top:6px;}
+  .action-card .effect{font-size:0.78rem;color:var(--text-dim);margin-top:2px;}
+
+  .related{margin:16px 16px 0;}
+  .related h3{font-size:0.95rem;margin-bottom:10px;color:var(--accent);}
+  .related-item{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px 12px;
+    font-size:0.82rem;
+    margin-bottom:8px;
+    color:var(--text-dim);
+  }
+  .related-item b{color:#fff;}
+
+  footer{
+    text-align:center;
+    color:var(--text-dim);
+    font-size:0.7rem;
+    margin-top:30px;
+    padding:0 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🩹 死ぬこと以外かすり傷</h1>
+  <p class="sub">著者: 箕輪厚介</p>
+  <div class="meta-row">
+    <span class="meta-badge">🏷️ 自己啓発</span>
+    <span class="meta-badge">📖 幻冬舎編集者の挑戦論</span>
+  </div>
+</header>
+
+<div class="hero">
+  <h2>⚡ 要約：問い × 答え × 根拠</h2>
+  <div class="qa-block">
+    <div class="qa-item">
+      <div class="label">❓ 問い（Why）</div>
+      <div class="content">なぜ多くの人は「やりたいこと」を目の前にしても一歩を踏み出せないのか？</div>
+    </div>
+    <div class="qa-item">
+      <div class="label">✅ 答え（How）</div>
+      <div class="content">死ぬこと以外の失敗は全部「かすり傷」に過ぎないと腹をくくり、来た機会を損得抜きで全力で打ち返し続けること。</div>
+    </div>
+    <div class="qa-item">
+      <div class="label">📎 根拠</div>
+      <div class="content">著者自身、内定先の倒産という挫折から就職浪人を経て編集者になり、堀江貴文『多動力』や前田裕二『人生の勝算』など数十万部ヒットを連発。安全を捨てた先に実績が生まれたという自分自身の半生がその裏付けになっている。</div>
+    </div>
+  </div>
+</div>
+
+<nav class="tabs" role="tablist" aria-label="コンテンツ切替">
+  <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧩 主要概念</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📘 章の要約</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-examples" id="tab-examples">💡 具体例</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+  <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+</nav>
+
+<main>
+
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🩹 かすり傷思考</h3>
+      <ul>
+        <li>死ぬこと以外の失敗・恥・損失は、時間が経てば取り返しがつくという前提に立つ</li>
+        <li>リスクを「命に関わるか／関わらないか」の2択で測ると、挑戦の心理的コストが一気に下がる</li>
+        <li>完璧な準備より「とりあえず動く」ことを優先する行動原理</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>多くの挑戦が止まる本当の理由は「失敗の大きさ」を過大評価していることにあり、この思考はその過大評価を矯正するフレームになる。</div>
+    </div>
+    <div class="card">
+      <h3>⚾ 来た球を全力で打ち返す</h3>
+      <ul>
+        <li>目の前に来た依頼・誘い・チャンスを、メリット計算より先に受け止める</li>
+        <li>損得を考えすぎると、機会そのものを逃す</li>
+        <li>著者自身の社外活動や副業的な動きも「修行」という位置づけで説明される</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>機会は事前に価値を証明してくれないため、受けてから意味を見出す姿勢がないと縁もキャリアも広がらない。</div>
+    </div>
+    <div class="card">
+      <h3>🔥 熱狂</h3>
+      <ul>
+        <li>中途半端に関わるのではなく、のめり込むほど本気で取り組む状態</li>
+        <li>熱量の高さそのものが人を動かし、信頼や次の機会を呼ぶという考え方</li>
+        <li>後年、著者自身が「熱狂は続かない」と自己修正している点も合わせて読みたい</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>本書の最大の推進力であり同時に最大の論点。鼓舞としての強さと、持続可能性の限界を両方知っておく必要がある。</div>
+    </div>
+    <div class="card">
+      <h3>🚫 予定調和の破壊</h3>
+      <ul>
+        <li>安全で無難な選択肢をあえて避け、不確実性のある場所に自分を置く</li>
+        <li>「こうなるはず」という予測可能な道を歩まないことがキャリアの差を生む、という主張</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>予定調和を壊す行動は短期的には不安が大きいが、本書はその不安こそが成長の兆候だと位置づけている。</div>
+    </div>
+    <div class="card">
+      <h3>📝 ブログ的に売る（編集者としての実践論）</h3>
+      <ul>
+        <li>本の内容そのものだけでなく、作り手の熱量や制作過程を発信して共感を集める</li>
+        <li>堀江貴文『多動力』『前田裕二『人生の勝算』』などのヒットを支えた手法として語られる</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>個人の発信力が収益や機会に直結する時代において、「過程を見せる」ことが信頼構築の近道になるという実務知だから。</div>
+    </div>
+    <div class="card">
+      <h3>🏠 箕輪編集室（コミュニティという熱狂の器）</h3>
+      <ul>
+        <li>月額課金制のオンラインサロンを自ら主宰し、ファンと共に発信・制作を行う</li>
+        <li>個人の熱狂を一人で終わらせず、コミュニティとして広げる仕組み</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>「かすり傷思考」や「熱狂」が、個人の気合いだけでなく仕組み化された事業にもなり得ることを示す実例だから。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>📘 論点1：挫折からのキャリア再起（疑似章）</h3>
+      <ul>
+        <li>内定先の倒産という予期しない挫折からキャリアが始まった経緯</li>
+        <li>就職浪人を経て双葉社に入社し、広告営業から編集へ移る転機</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>著者の「かすり傷思考」が理論ではなく実体験から生まれたことを示す土台の論点。</div>
+    </div>
+    <div class="card">
+      <h3>📘 論点2：全力で打ち返した仕事の実績（疑似章）</h3>
+      <ul>
+        <li>堀江貴文『多動力』、前田裕二『人生の勝算』など大型ヒットの編集を担当</li>
+        <li>来た仕事・依頼を選り好みせず引き受け続けたことが実績につながった過程</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>「来た球を打ち返す」という抽象的な行動原理を、具体的な成果と結びつけて理解できる。</div>
+    </div>
+    <div class="card">
+      <h3>📘 論点3：熱狂を広げる仕組み（疑似章）</h3>
+      <ul>
+        <li>オンラインサロン「箕輪編集室」の運営による、個人の熱狂を事業化する発想</li>
+        <li>SNS時代の自己発信が、本の販促や新しい仕事につながる循環</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>熱狂は気合いの話ではなく、仕組みに乗せることで持続・拡大できるという実務的な視点を補う。</div>
+    </div>
+    <div class="card">
+      <h3>📘 論点4：後年の自己修正（補足・『かすり傷も痛かった』より）</h3>
+      <ul>
+        <li>著者は続編的な位置づけの『かすり傷も痛かった』で、本書の主張を自ら見直したと語っている</li>
+        <li>「やりたいことがなくても良い」「熱狂し続けることには限界がある」という視点が加わった</li>
+      </ul>
+      <div class="why"><b>なぜ重要か：</b>本書を鵜呑みにせず、著者自身の軌道修正も含めて読むことで、挑戦論の限界も見えてくる。</div>
+    </div>
+    <div class="badge-row">
+      <span class="num-badge">📈 発行部数 14万部超</span>
+      <span class="num-badge">📅 2018年8月刊行</span>
+      <span class="num-badge">🏢 マガジンハウス</span>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="card">
+      <h3>💼 内定先の倒産からの再起</h3>
+      <ul>
+        <li>背景：早稲田大学卒業後、沖縄のリゾート施設に内定していたが入社前に倒産</li>
+        <li>その後、就職浪人を経て双葉社へ入社し、広告営業からキャリアを開始</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>予期しない失敗（＝かすり傷）があっても、キャリアはそこで終わらないという本書の前提を体現している。</div>
+    </div>
+    <div class="card">
+      <h3>📚 堀江貴文『多動力』・前田裕二『人生の勝算』のヒット</h3>
+      <ul>
+        <li>背景：幻冬舎で数々のベストセラーを編集し、いずれも20万部超のヒットに</li>
+        <li>来た仕事・人との縁を全力で受け止め続けた結果として語られている</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>「来た球を全力で打ち返す」という行動原理が、実際の実績に結びついた具体例になっている。</div>
+    </div>
+    <div class="card">
+      <h3>🏠 オンラインサロン「箕輪編集室」</h3>
+      <ul>
+        <li>背景：月額課金制のファンコミュニティを自ら主宰</li>
+        <li>熱量のある発信とコミュニティ運営を、個人のキャリア戦略として実践</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>熱狂は個人の内面だけでなく、仕組み化すれば事業にもなり得ることを示す。</div>
+    </div>
+    <div class="card">
+      <h3>🔄 続編『かすり傷も痛かった』での自己否定</h3>
+      <ul>
+        <li>背景：本書刊行後、著者自身が前作の内容に「赤入れ」する形で続編を執筆</li>
+        <li>「熱狂せよ」という主張を見直し、休息やバランスの必要性を語るようになった</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>著者自身が変化を恐れず自説を修正する姿勢こそ、本書の「予定調和を壊す」思想の延長線上にある。</div>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="card quote-card">
+      <p>「死ぬこと以外は全部かすり傷」という考え方に立てば、失敗や恥は本質的には大きなリスクではなく、恐れずに挑戦していいという発想になる。</p>
+      <span class="tag">要旨（原典の直接引用は確認できず、複数の書評・紹介記事の記述にもとづく要約）</span>
+    </div>
+    <div class="card quote-card">
+      <p>来た仕事や誘いに対して、メリットを計算する前に全力で応える姿勢こそが、結果的にキャリアの機会を広げてきたという著者の姿勢。</p>
+      <span class="tag">要旨（インタビュー記事等の紹介内容にもとづく要約）</span>
+    </div>
+    <div class="card quote-card">
+      <p>後年、著者は本書の主張について「やりたいことをやれ、と煽ったが、やりたいことがなくてもいい」と語り、熱狂を全肯定する姿勢からの変化を認めている。</p>
+      <span class="tag">要旨（続編『かすり傷も痛かった』に関する著者インタビューの紹介内容にもとづく要約）</span>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="card action-card">
+      <h3>1️⃣ 「来た球」をひとつ打ち返す</h3>
+      <ul>
+        <li>今日来た小さな依頼・誘い・連絡を1つ選び、損得を考える前に「やる」と即答してみる（15分）</li>
+      </ul>
+      <div class="goal">🎯 目的：損得判断で機会を逃す癖にブレーキをかける</div>
+      <div class="effect">📈 期待効果：新しい視点・縁・小さな成功体験の獲得</div>
+    </div>
+    <div class="card action-card">
+      <h3>2️⃣ 「かすり傷リスト」を書く</h3>
+      <ul>
+        <li>今やりたいが足踏みしている挑戦を1つ挙げ、最悪の結果が本当に「死ぬこと」に匹敵するかを書き出す（15分）</li>
+      </ul>
+      <div class="goal">🎯 目的：リスクの過大評価を可視化して小さくする</div>
+      <div class="effect">📈 期待効果：行動への心理的ハードルが下がる</div>
+    </div>
+    <div class="card action-card">
+      <h3>3️⃣ 自分の「熱量」を言語化する</h3>
+      <ul>
+        <li>今興味がある物事について、なぜ惹かれるのかを300字程度で書いてみる（20〜30分）</li>
+      </ul>
+      <div class="goal">🎯 目的：「熱狂」の源を自分の言葉で捉え直す</div>
+      <div class="effect">📈 期待効果：発信や行動の優先順位が明確になる</div>
+    </div>
+  </section>
+
+</main>
+
+<div class="related">
+  <h3>📚 関連書籍</h3>
+  <div class="related-item"><b>かすり傷も痛かった（箕輪厚介）</b>：本書の主張を著者自身が見直した続編的内容。対比して読むと思想の変化がわかる。</div>
+  <div class="related-item"><b>多動力（堀江貴文）</b>：著者が編集を手がけたヒット作で、「とにかく動く」という本書と同じ行動原理を共有する。</div>
+  <div class="related-item"><b>人生の勝算（前田裕二）</b>：著者編集の代表作。熱狂とコミュニティ形成というテーマが本書と重なる。</div>
+  <div class="related-item"><b>嫌われる勇気（岸見一郎・古賀史健）</b>：他者の評価より自分の決断を優先する思想が、本書の挑戦論と響き合う。</div>
+  <div class="related-item"><b>GRITやり抜く力（アンジェラ・ダックワース）</b>：困難に直面しても継続する力という観点から、本書の「熱狂し続ける」姿勢と比較できる。</div>
+</div>
+
+<footer>
+  📖 本インフォグラフィックはWeb上で確認できた情報をもとに生成。確認できない詳細は「不明」または「要旨」と明記しています。
+</footer>
+
+<script>
+  (function(){
+    var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+    var panels = {
+      'tab-concepts':'panel-concepts',
+      'tab-chapters':'panel-chapters',
+      'tab-examples':'panel-examples',
+      'tab-quotes':'panel-quotes',
+      'tab-actions':'panel-actions'
+    };
+    tabs.forEach(function(tab){
+      tab.addEventListener('click', function(){
+        tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+        Object.values(panels).forEach(function(id){
+          var el = document.getElementById(id);
+          el.classList.remove('active');
+        });
+        tab.setAttribute('aria-selected','true');
+        document.getElementById(panels[tab.id]).classList.add('active');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
