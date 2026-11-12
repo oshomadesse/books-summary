@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>脳は平気で嘘をつく｜インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様）
+  Primary:   #22254B (深い藍色 — 脳・信頼感)
+  Secondary: #FF6B5B (コーラル — 嘘・誤解の警告色)
+  Accent:    #2DD4BF (ティール — 気づき・メタ認知)
+-->
+<style>
+  :root{
+    --primary:#22254B;
+    --primary-2:#3a3f7a;
+    --secondary:#FF6B5B;
+    --secondary-2:#ff8a7c;
+    --accent:#2DD4BF;
+    --accent-2:#6ee7d8;
+    --bg:#f5f6fb;
+    --card:#ffffff;
+    --text:#1f2133;
+    --text-soft:#555a74;
+    --border:#e3e5f0;
+    --shadow:0 4px 16px rgba(34,37,75,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px 56px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--primary-2) 100%);
+    color:#fff;
+    padding:36px 20px 44px;
+    border-radius:0 0 28px 28px;
+    margin-bottom:24px;
+  }
+  .hero-inner{max-width:860px;margin:0 auto;}
+  .kicker{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:.08em;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.3);
+    border-radius:999px;
+    padding:4px 12px;
+    margin-bottom:14px;
+  }
+  h1.title{font-size:22px;margin:0 0 6px;font-weight:700;line-height:1.5;}
+  .subtitle{font-size:13px;color:#cfd3f0;margin:0 0 20px;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;margin-bottom:22px;}
+  .meta-pill{background:rgba(255,255,255,0.12);border-radius:999px;padding:4px 10px;}
+
+  .qca{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.22);
+    border-radius:16px;
+    padding:18px;
+    display:grid;
+    gap:12px;
+  }
+  .qca .row{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;}
+  .qca .ico{font-size:18px;line-height:1.4;}
+  .qca .label{font-size:11px;letter-spacing:.06em;color:var(--accent-2);font-weight:700;display:block;margin-bottom:2px;}
+  .qca .val{font-size:14px;color:#fff;}
+
+  nav.tabs{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding:4px 2px 12px;
+    margin-bottom:18px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text-soft);
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .15s ease;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .card h3{margin:0 0 10px;font-size:15px;color:var(--primary);display:flex;align-items:center;gap:8px;}
+  .card h3 .num{
+    background:var(--accent);color:#06302b;font-size:12px;font-weight:800;
+    width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+  }
+  .card ul{margin:0;padding-left:0;list-style:none;}
+  .card li{
+    position:relative;padding-left:18px;margin-bottom:6px;font-size:13.5px;color:var(--text);
+  }
+  .card li::before{content:"・";position:absolute;left:0;color:var(--secondary);font-weight:700;}
+  .why{
+    margin-top:10px;
+    background:#fff3f1;
+    border-left:3px solid var(--secondary);
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:12.5px;
+    color:#8a3326;
+  }
+  .why b{color:var(--secondary);}
+
+  .stat-row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px;}
+  .badge{
+    background:linear-gradient(135deg,var(--accent) 0%, var(--accent-2) 100%);
+    color:#06302b;font-weight:800;font-size:13px;
+    padding:6px 12px;border-radius:10px;
+  }
+
+  blockquote{
+    margin:0 0 14px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--primary);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:13.5px;
+    box-shadow:var(--shadow);
+  }
+  blockquote .note{display:block;margin-top:8px;font-size:11.5px;color:var(--text-soft);}
+
+  .action-card{
+    display:flex;gap:12px;align-items:flex-start;
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:16px;margin-bottom:12px;box-shadow:var(--shadow);
+  }
+  .action-check{
+    flex:0 0 auto;width:28px;height:28px;border-radius:50%;
+    background:var(--secondary);color:#fff;font-weight:800;font-size:13px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .action-card h4{margin:0 0 4px;font-size:14px;color:var(--primary);}
+  .action-card p{margin:0;font-size:13px;color:var(--text-soft);}
+  .action-card .tag{display:inline-block;font-size:11px;background:#eef0fb;color:var(--primary);border-radius:999px;padding:2px 9px;margin-bottom:6px;}
+
+  .related-card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);
+  }
+  .related-card .b{font-weight:700;font-size:13.5px;color:var(--primary);}
+  .related-card .a{font-size:12px;color:var(--text-soft);margin-bottom:4px;}
+  .related-card .r{font-size:13px;color:var(--text);}
+
+  footer{
+    text-align:center;font-size:11px;color:var(--text-soft);margin-top:32px;
+  }
+  @media (min-width:640px){
+    h1.title{font-size:26px;}
+    .card{padding:22px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-inner">
+      <span class="kicker">📚 今日の一冊 ｜ 心理学</span>
+      <h1 class="title">脳は平気で嘘をつく</h1>
+      <p class="subtitle">「嘘」と「誤解」の心理学入門　著：植木理恵</p>
+      <div class="meta-row">
+        <span class="meta-pill">🏷️ 心理学</span>
+        <span class="meta-pill">⏱️ 読了想定 約15分</span>
+        <span class="meta-pill">🧠 脳科学 × 対人心理</span>
+      </div>
+
+      <div class="qca" role="group" aria-label="要約：問いと答えと根拠">
+        <div class="row">
+          <span class="ico">❓</span>
+          <div><span class="label">問い（Why）</span><span class="val">なぜ私たちは、見た目や仕草だけで人を判断し、簡単に誤解し合ってしまうのか？</span></div>
+        </div>
+        <div class="row">
+          <span class="ico">💡</span>
+          <div><span class="label">答え（How）</span><span class="val">脳は「正確な記録装置」ではなく「省エネのための判断装置」。見た目・第一印象・仕草といった表層的な手がかりに頼る性質があるから。</span></div>
+        </div>
+        <div class="row">
+          <span class="ico">🧩</span>
+          <div><span class="label">根拠</span><span class="val">ハロー効果による外見バイアス、記憶の再構成（虚偽記憶）、仕草と嘘の関係への過信など、脳の仕組みに基づく複数の心理現象が本書で紹介されている。</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+    <button role="tab" id="tab-concept" aria-selected="true" aria-controls="panel-concept" onclick="switchTab('concept')">🧠 主要概念</button>
+    <button role="tab" id="tab-chapter" aria-selected="false" aria-controls="panel-chapter" onclick="switchTab('chapter')">📖 各章の要約</button>
+    <button role="tab" id="tab-example" aria-selected="false" aria-controls="panel-example" onclick="switchTab('example')">🔍 具体例</button>
+    <button role="tab" id="tab-quote" aria-selected="false" aria-controls="panel-quote" onclick="switchTab('quote')">💬 重要な引用</button>
+    <button role="tab" id="tab-action" aria-selected="false" aria-controls="panel-action" onclick="switchTab('action')">✅ 今日のアクション</button>
+  </nav>
+
+  <!-- 主要概念の詳細 -->
+  <section class="panel active" id="panel-concept" role="tabpanel" aria-labelledby="tab-concept">
+    <div class="card">
+      <h3><span class="num">1</span>ハロー効果（外見バイアス）</h3>
+      <ul>
+        <li>見た目の良い人物は、能力や誠実さまで高く評価されやすい</li>
+        <li>採用面接・交渉・初対面の信頼判断に強く影響する</li>
+        <li>本人の実力とは無関係に、評価が「見た目」に乗っ取られる</li>
+      </ul>
+      <div class="why"><b>理由：</b>無意識に働くバイアスのため、自覚しないと判断の軸が常にブレてしまう。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">2</span>脳の省エネ（認知的節約）志向</h3>
+      <ul>
+        <li>すべてを精密処理するとエネルギー消費が大きい</li>
+        <li>脳はパターンやステレオタイプで「それなりに正しそうな」答えを素早く出す</li>
+        <li>直感的な納得感と実際の正確さは別物</li>
+      </ul>
+      <div class="why"><b>理由：</b>重要な判断ほど、直感をそのまま信じず一度立ち止まる価値がある。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">3</span>記憶の再構成・虚偽記憶</h3>
+      <ul>
+        <li>記憶は固定の録画ではなく、思い出すたびに再構成される</li>
+        <li>現在の感情や期待に合わせて都合よく書き換えられることがある</li>
+        <li>「はっきり覚えている」という確信の強さは正確さを保証しない</li>
+      </ul>
+      <div class="why"><b>理由：</b>自分の記憶への過信そのものが、誤解や対立の火種になりうる。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">4</span>しぐさと嘘の関係への過信</h3>
+      <ul>
+        <li>視線をそらす・そわそわするなどは「嘘のサイン」と広く信じられている</li>
+        <li>科学的な裏付けは乏しいとされる</li>
+        <li>仕草だけで嘘つきと決めつけるのは危険</li>
+      </ul>
+      <div class="why"><b>理由：</b>安易な「嘘の見抜き方」に頼ると、無実の人を誤って疑ってしまう。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">5</span>第一印象の誤解とその修復</h3>
+      <ul>
+        <li>第一印象は強い影響力を持つが、固定されたものではない</li>
+        <li>意識的な行動の積み重ねで評価は修復できる</li>
+        <li>「悪い第一印象＝終わり」ではない</li>
+      </ul>
+      <div class="why"><b>理由：</b>修復の手段を知っているかどうかで、人間関係の結果が変わる。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">6</span>メタ認知</h3>
+      <ul>
+        <li>自分の思考・感情・判断そのものを一歩引いて観察する力</li>
+        <li>直感的判断を過信せず、検証するための土台になる</li>
+        <li>特にリーダー・意思決定者に求められる能力</li>
+      </ul>
+      <div class="why"><b>理由：</b>自分の判断のクセを把握していないと、同じ誤解を繰り返してしまう。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">7</span>集団心理の落とし穴</h3>
+      <ul>
+        <li>集団の中では同調圧力・多数派の空気に流されやすい</li>
+        <li>個人では避けられる誤判断を、集団としては避けられなくなることがある</li>
+        <li>リーダーの気づきが組織全体の判断の質を左右する</li>
+      </ul>
+      <div class="why"><b>理由：</b>気づかないまま放置すると、組織全体が同じ嘘や誤解に飲み込まれる。</div>
+    </div>
+  </section>
+
+  <!-- 各章の要約 -->
+  <section class="panel" id="panel-chapter" role="tabpanel" aria-labelledby="tab-chapter">
+    <div class="card">
+      <h3><span class="num">1</span>見た目に惑わされる脳 — ハロー効果と外見バイアス</h3>
+      <ul>
+        <li>美人・イケメンへの好意的評価が、能力評価まで引き上げてしまう</li>
+        <li>外見で得をする人・損をする人の構造を解説</li>
+      </ul>
+      <div class="why"><b>理由：</b>見た目の影響は無意識に働くため、自覚がないと判断がブレる。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">2</span>脳はなぜ節約したがるのか — 記憶と思考の仕組み</h3>
+      <ul>
+        <li>脳は精密処理を避け、パターンと近道を好む</li>
+        <li>記憶は録画ではなく都合よく再構成される</li>
+      </ul>
+      <div class="why"><b>理由：</b>「覚えている」という確信の強さと正確さは別物であることを知っておく必要がある。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">3</span>仕草で嘘は見抜けるか</h3>
+      <ul>
+        <li>視線や体の動きを嘘のサインとする通説を検証</li>
+        <li>科学的根拠の乏しさと過信のリスクを指摘</li>
+      </ul>
+      <div class="why"><b>理由：</b>安易な「嘘の見抜き方」への依存は、誤った疑いを生む。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">4</span>第一印象の誤解をどう修復するか</h3>
+      <ul>
+        <li>第一印象は強いが固定ではなく、修復可能</li>
+        <li>誤解を解くための具体的な行動パターンを紹介</li>
+      </ul>
+      <div class="why"><b>理由：</b>第一印象の悪さをあきらめず、関係を立て直す方法を知っているかが結果を左右する。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">5</span>リーダーに必要なメタ認知と集団心理の罠</h3>
+      <ul>
+        <li>メタ認知能力が意思決定の質を左右する</li>
+        <li>集団の同調圧力が判断を歪めるメカニズムを解説</li>
+      </ul>
+      <div class="why"><b>理由：</b>リーダーが自分と集団の判断のクセを把握していないと、全員が同じ誤解に飲み込まれる。</div>
+    </div>
+  </section>
+
+  <!-- 具体例・ケーススタディ -->
+  <section class="panel" id="panel-example" role="tabpanel" aria-labelledby="tab-example">
+    <div class="card">
+      <h3><span class="num">1</span>採用面接でのハロー効果</h3>
+      <ul>
+        <li>外見の良い応募者は、実務能力まで高く見積もられがちな企業の採用現場</li>
+        <li>評価基準が曖昧なほど、見た目の影響は強く出る</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>評価基準を事前に明文化し、見た目の印象と実力評価を分離する仕組みが必要になる。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">2</span>目撃証言における記憶の書き換え</h3>
+      <ul>
+        <li>出来事は正確に録画されるわけではなく、後から得た情報や期待に合わせて記憶が修正されることがある</li>
+        <li>心理学領域で広く指摘される現象</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>「はっきり覚えている」という自信の強さは、記憶の正確さを保証しない。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">3</span>第一印象が悪かった新人が信頼を取り戻すケース</h3>
+      <ul>
+        <li>最初の印象で低く評価された人物が、地道な行動の積み重ねで評価を覆す</li>
+        <li>職場でよく見られる「誤解の修復」の一例</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>第一印象の悪さは固定的な評価ではなく、修復可能な出発点にすぎない。</div>
+    </div>
+
+    <div class="stat-row">
+      <span class="badge">🧠 判断の近道 多用</span>
+      <span class="badge">👀 外見バイアス 強</span>
+      <span class="badge">🔁 記憶 再構成型</span>
+    </div>
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="panel" id="panel-quote" role="tabpanel" aria-labelledby="tab-quote">
+    <blockquote>
+      人の脳は「正確に記録する装置」ではなく「効率よく生き延びるための装置」であり、見た目や仕草といった表層的な手がかりに頼って判断してしまう性質がある。
+      <span class="note">※要旨（出典：本書の内容紹介をもとに要約。原文の直接引用は未確認）</span>
+    </blockquote>
+    <blockquote>
+      仕草から嘘を見抜けるという通説には、十分な科学的根拠があるとは言いがたい。
+      <span class="note">※要旨（出典：本書の内容紹介をもとに要約。原文の直接引用は未確認）</span>
+    </blockquote>
+    <blockquote>
+      第一印象による誤解は、固定された結論ではなく、行動によって修復できるものである。
+      <span class="note">※要旨（出典：本書の内容紹介をもとに要約。原文の直接引用は未確認）</span>
+    </blockquote>
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" id="panel-action" role="tabpanel" aria-labelledby="tab-action">
+    <div class="action-card">
+      <div class="action-check">1</div>
+      <div>
+        <span class="tag">⏱️ 約15分</span>
+        <h4>「見た目で得した／損した」判断の棚卸し</h4>
+        <p><b>目的：</b>直近1週間で、見た目や第一印象だけで人を評価した場面を1つ書き出す。<br><b>期待効果：</b>ハロー効果が自分の判断にも働いていることを具体的に自覚できる。</p>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-check">2</div>
+      <div>
+        <span class="tag">⏱️ 約20分</span>
+        <h4>しぐさ観察メモ</h4>
+        <p><b>目的：</b>身近な人との会話で「嘘のサイン」だと思い込んでいたしぐさを1つ選び、本当に嘘と関係があるか冷静に検証する。<br><b>期待効果：</b>仕草への過信を減らし、相手を安易に疑うリスクを下げる。</p>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-check">3</div>
+      <div>
+        <span class="tag">⏱️ 約30分</span>
+        <h4>メタ認知チェックリストづくり</h4>
+        <p><b>目的：</b>重要な判断の前に自問する質問（例：「これは直感か根拠か」「集団の空気に流されていないか」）をリスト化する。<br><b>期待効果：</b>次に判断を迫られたとき、立ち止まって検証する習慣の土台ができる。</p>
+      </div>
+    </div>
+  </section>
+
+  <h3 style="font-size:14px;color:var(--primary);margin:28px 0 10px;">📚 関連書籍</h3>
+  <div class="related-card">
+    <div class="b">影響力の武器</div>
+    <div class="a">ロバート・B・チャルディーニ</div>
+    <div class="r">人が心理的トリガーに流されて判断・同意してしまう仕組みを解説し、本書の「脳のクセ」論と相互補完的。</div>
+  </div>
+  <div class="related-card">
+    <div class="b">サブリミナル・マインド 潜在無意識の驚くべき働き</div>
+    <div class="a">レナード・ムロディナウ</div>
+    <div class="r">無意識が判断や記憶をどう歪めるかを掘り下げ、本書の記憶捏造の議論と直結する。</div>
+  </div>
+  <div class="related-card">
+    <div class="b">間違いだらけの選択</div>
+    <div class="a">キャロル・タヴリス, エリオット・アロンソン</div>
+    <div class="r">自己正当化が記憶や判断をどう書き換えるかを扱い、本書の「誤解の修復」テーマと重なる。</div>
+  </div>
+  <div class="related-card">
+    <div class="b">錯覚の科学</div>
+    <div class="a">ダニエル・シモンズ, クリストファー・チャブリス</div>
+    <div class="r">直感的な自信と実際の正確さのギャップを実証的に示し、本書の第一印象論を補強する。</div>
+  </div>
+
+  <footer>📖 daily-reading routine ｜ Books-2026-11-13</footer>
+</div>
+
+<script>
+  function switchTab(name){
+    var tabs = ['concept','chapter','example','quote','action'];
+    tabs.forEach(function(t){
+      var btn = document.getElementById('tab-'+t);
+      var panel = document.getElementById('panel-'+t);
+      var active = (t === name);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+      if(active){ panel.classList.add('active'); } else { panel.classList.remove('active'); }
+    });
+  }
+</script>
+</body>
+</html>
