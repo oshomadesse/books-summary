@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人を動かす｜インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様）
+  Primary:   #1B3A4B (深い藍緑 — 信頼・リーダーシップ)
+  Secondary: #E8871E (温かいアンバー — 説得・人間関係の温度)
+  Accent:    #4CAF93 (グリーン — 行動・成長)
+-->
+<style>
+  :root{
+    --primary:#1B3A4B;
+    --primary-2:#2d5a70;
+    --secondary:#E8871E;
+    --secondary-2:#f3a957;
+    --accent:#4CAF93;
+    --accent-2:#8fd8c0;
+    --bg:#f5f7f6;
+    --card:#ffffff;
+    --text:#1f2733;
+    --text-soft:#5a6470;
+    --border:#e2e8e6;
+    --shadow:0 4px 16px rgba(27,58,75,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px 56px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--primary-2) 100%);
+    color:#fff;
+    padding:36px 20px 44px;
+    border-radius:0 0 28px 28px;
+    margin-bottom:24px;
+  }
+  .hero-inner{max-width:860px;margin:0 auto;}
+  .kicker{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:.08em;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.3);
+    border-radius:999px;
+    padding:4px 12px;
+    margin-bottom:14px;
+  }
+  h1.title{font-size:22px;margin:0 0 6px;font-weight:700;line-height:1.5;}
+  .subtitle{font-size:13px;color:#cfe3df;margin:0 0 20px;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;margin-bottom:22px;}
+  .meta-pill{background:rgba(255,255,255,0.12);border-radius:999px;padding:4px 10px;}
+
+  .qca{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.22);
+    border-radius:16px;
+    padding:18px;
+    display:grid;
+    gap:12px;
+  }
+  .qca .row{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;}
+  .qca .ico{font-size:18px;line-height:1.4;}
+  .qca .label{font-size:11px;letter-spacing:.06em;color:var(--accent-2);font-weight:700;display:block;margin-bottom:2px;}
+  .qca .val{font-size:14px;color:#fff;}
+
+  nav.tabs{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding:4px 2px 12px;
+    margin-bottom:18px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text-soft);
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .15s ease;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .card h3{margin:0 0 10px;font-size:15px;color:var(--primary);display:flex;align-items:center;gap:8px;}
+  .card h3 .num{
+    background:var(--accent);color:#06302b;font-size:12px;font-weight:800;
+    width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+  }
+  .card ul{margin:0;padding-left:0;list-style:none;}
+  .card li{
+    position:relative;padding-left:18px;margin-bottom:6px;font-size:13.5px;color:var(--text);
+  }
+  .card li::before{content:"・";position:absolute;left:0;color:var(--secondary);font-weight:700;}
+  .why{
+    margin-top:10px;
+    background:#fff5ea;
+    border-left:3px solid var(--secondary);
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:12.5px;
+    color:#8a5213;
+  }
+  .why b{color:var(--secondary);}
+
+  .stat-row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px;}
+  .badge{
+    background:linear-gradient(135deg,var(--accent) 0%, var(--accent-2) 100%);
+    color:#06302b;font-weight:800;font-size:13px;
+    padding:6px 12px;border-radius:10px;
+  }
+
+  blockquote{
+    margin:0 0 14px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--primary);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:13.5px;
+    box-shadow:var(--shadow);
+  }
+  blockquote .note{display:block;margin-top:8px;font-size:11.5px;color:var(--text-soft);}
+
+  .action-card{
+    display:flex;gap:12px;align-items:flex-start;
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:16px;margin-bottom:12px;box-shadow:var(--shadow);
+  }
+  .action-check{
+    flex:0 0 auto;width:28px;height:28px;border-radius:50%;
+    background:var(--secondary);color:#fff;font-weight:800;font-size:13px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .action-card h4{margin:0 0 4px;font-size:14px;color:var(--primary);}
+  .action-card p{margin:0;font-size:13px;color:var(--text-soft);}
+  .action-card .tag{display:inline-block;font-size:11px;background:#eaf3f0;color:var(--primary);border-radius:999px;padding:2px 9px;margin-bottom:6px;}
+
+  .related-card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);
+  }
+  .related-card .b{font-weight:700;font-size:13.5px;color:var(--primary);}
+  .related-card .a{font-size:12px;color:var(--text-soft);margin-bottom:4px;}
+  .related-card .r{font-size:13px;color:var(--text);}
+
+  footer{
+    text-align:center;font-size:11px;color:var(--text-soft);margin-top:32px;
+  }
+  @media (min-width:640px){
+    h1.title{font-size:26px;}
+    .card{padding:22px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-inner">
+      <span class="kicker">📚 今日の一冊 ｜ ビジネス</span>
+      <h1 class="title">人を動かす</h1>
+      <p class="subtitle">著：デール・カーネギー（訳：山口博／創元社）</p>
+      <div class="meta-row">
+        <span class="meta-pill">🏷️ ビジネス</span>
+        <span class="meta-pill">⏱️ 読了想定 約15分</span>
+        <span class="meta-pill">🤝 人間関係 × リーダーシップ</span>
+      </div>
+
+      <div class="qca" role="group" aria-label="要約：問いと答えと根拠">
+        <div class="row">
+          <span class="ico">❓</span>
+          <div><span class="label">問い（Why）</span><span class="val">批判や命令で人を正そうとしても、なぜ相手は変わらず、むしろ反発するのか？</span></div>
+        </div>
+        <div class="row">
+          <span class="ico">💡</span>
+          <div><span class="label">答え（How）</span><span class="val">人は誰しも「自分は重要だ」と感じたい欲求を持つ。批判でその欲求を傷つけるのではなく、相手の立場に立ち、自己重要感を満たしながら「自分で動きたい」と思わせることが人を動かす唯一の方法である。</span></div>
+        </div>
+        <div class="row">
+          <span class="ico">🧩</span>
+          <div><span class="label">根拠</span><span class="val">「人を動かす三原則」「人に好かれる六原則」「人を説得する十二原則」「人を変える九原則」の全30原則を、1936年の初版以来、改訂を重ねながら実例とともに提示している。</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+    <button role="tab" id="tab-concept" aria-selected="true" aria-controls="panel-concept" onclick="switchTab('concept')">🧠 主要概念</button>
+    <button role="tab" id="tab-chapter" aria-selected="false" aria-controls="panel-chapter" onclick="switchTab('chapter')">📖 各章の要約</button>
+    <button role="tab" id="tab-example" aria-selected="false" aria-controls="panel-example" onclick="switchTab('example')">🔍 具体例</button>
+    <button role="tab" id="tab-quote" aria-selected="false" aria-controls="panel-quote" onclick="switchTab('quote')">💬 重要な引用</button>
+    <button role="tab" id="tab-action" aria-selected="false" aria-controls="panel-action" onclick="switchTab('action')">✅ 今日のアクション</button>
+  </nav>
+
+  <!-- 主要概念の詳細 -->
+  <section class="panel active" id="panel-concept" role="tabpanel" aria-labelledby="tab-concept">
+    <div class="card">
+      <h3><span class="num">1</span>自己重要感（相手に重要感を持たせる）</h3>
+      <ul>
+        <li>誰もが「自分は重要な存在だ」と感じたい欲求を持っている</li>
+        <li>これを満たすことが、人に好かれ、人を動かす根幹の原理とされる</li>
+        <li>お世辞ではなく、相手の良い点を具体的に認めることが前提</li>
+      </ul>
+      <div class="why"><b>理由：</b>この欲求を満たさない限り、どんな説得技術も表面的な効果しか持たない。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">2</span>批判・非難をしない</h3>
+      <ul>
+        <li>批判は相手の自尊心を傷つけ、反発と恨みを生むだけで行動は変わらない</li>
+        <li>他人を矯正するより自分を直す方がよほど得で、危険も少ないとされる</li>
+        <li>「人を動かす三原則」の第一に置かれる考え方</li>
+      </ul>
+      <div class="why"><b>理由：</b>正しい指摘でも、相手の面目を潰せば協力ではなく抵抗を引き出してしまう。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">3</span>相手に純粋な関心を寄せる</h3>
+      <ul>
+        <li>自分への関心を持たせるより、自分が相手に関心を持つ方が早く信頼を得られる</li>
+        <li>「人に好かれる六原則」の最初に置かれる原則</li>
+        <li>質問を重ねて相手の関心事を知ることが具体的な実践になる</li>
+      </ul>
+      <div class="why"><b>理由：</b>関心を向けられた相手は心を開き、こちらの話にも耳を傾けやすくなる。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">4</span>聞き役にまわる</h3>
+      <ul>
+        <li>自分が話すより、相手に話させる方が好意と信頼を生む</li>
+        <li>話し上手と評価される人の多くは、実は聞き上手である</li>
+        <li>「人に好かれる六原則」の一つ</li>
+      </ul>
+      <div class="why"><b>理由：</b>人は自分の話を聞いてくれる相手に心を開き、説得されやすくなる。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">5</span>議論を避ける</h3>
+      <ul>
+        <li>議論に勝っても相手の意見は変わらず、関係だけが悪化する</li>
+        <li>「人を説得する十二原則」の第一に置かれる</li>
+        <li>意見が一致している点を見つけ、強調しながら話を進める</li>
+      </ul>
+      <div class="why"><b>理由：</b>勝ち負けの構図を作ると、相手は事実より感情で反発するようになる。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">6</span>相手に自分で思いつかせる</h3>
+      <ul>
+        <li>人は他人に押し付けられた意見より、自分で思いついた意見を大切にする</li>
+        <li>暗示を与えて相手自身に結論を出させる技術</li>
+        <li>「人を説得する十二原則」の一つ</li>
+      </ul>
+      <div class="why"><b>理由：</b>自分で出した結論には納得感と実行への主体性が伴う。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">7</span>まずほめる・命令をしない</h3>
+      <ul>
+        <li>批判の前にまずほめることで、相手は受け入れやすくなる</li>
+        <li>一方的な命令ではなく、意見を求めて自主性を持たせる</li>
+        <li>「人を変える九原則」の中心的な考え方</li>
+      </ul>
+      <div class="why"><b>理由：</b>痛みを和らげてから本題に入り、相手の自主性を尊重するほど協力が得られる。</div>
+    </div>
+  </section>
+
+  <!-- 各章の要約 -->
+  <section class="panel" id="panel-chapter" role="tabpanel" aria-labelledby="tab-chapter">
+    <div class="card">
+      <h3><span class="num">1</span>Part1 人を動かす三原則</h3>
+      <ul>
+        <li>批判も非難もしない、苦情も言わない</li>
+        <li>率直で、誠実な評価を与える（お世辞ではない承認）</li>
+        <li>強い欲求を起こさせる（相手の好むものを問題にする）</li>
+      </ul>
+      <div class="why"><b>理由：</b>全30原則の土台にあたる基本姿勢であり、以降の原則はすべてこの延長にある。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">2</span>Part2 人に好かれる六原則</h3>
+      <ul>
+        <li>誠実な関心を寄せる、笑顔を絶やさない、名前を覚える</li>
+        <li>聞き役にまわる、関心事を話題にする、重要感を持たせる</li>
+      </ul>
+      <div class="why"><b>理由：</b>信頼関係という土台がなければ、説得も変化の働きかけも効果を持たない。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">3</span>Part3 人を説得する十二原則</h3>
+      <ul>
+        <li>議論を避ける、誤りを指摘しない、誤りを認める、穏やかに話す</li>
+        <li>イエスと答えやすい質問から入る、相手にしゃべらせる、思いつかせる</li>
+        <li>相手の立場に立つ、同情を寄せる、美しい心情に呼びかける、演出を工夫する、競争心を刺激する</li>
+      </ul>
+      <div class="why"><b>理由：</b>正面から正しさを主張するより、相手の心理の流れに沿う方が結果的に動かせる。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">4</span>Part4 人を変える九原則</h3>
+      <ul>
+        <li>まずほめる、遠まわしに注意を与える、自分の過ちを話す</li>
+        <li>命令をしない、顔をつぶさない、わずかなことでもほめる</li>
+        <li>期待をかける、激励する、喜んで協力させる</li>
+      </ul>
+      <div class="why"><b>理由：</b>部下・家族・相手の行動を変えたいときほど、自尊心を守る順序が結果を分ける。</div>
+    </div>
+  </section>
+
+  <!-- 具体例・ケーススタディ -->
+  <section class="panel" id="panel-example" role="tabpanel" aria-labelledby="tab-example">
+    <div class="card">
+      <h3><span class="num">1</span>ホテル支配人との賃料交渉</h3>
+      <ul>
+        <li>講演会場の賃料値上げに抗議したカーネギーに対し、支配人は一方的な3倍要求ではなく「5割増しではどうか」と提案し、合意に至った逸話として紹介される</li>
+        <li>相手（支配人）側の収益事情も踏まえた折り合いの付け方が描かれる</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>相手の立場・利益を踏まえて話すほど、対立ではなく合意に近づきやすい。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">2</span>パーティーで植物学者の話を聞き続けた話</h3>
+      <ul>
+        <li>カーネギー自身はほとんど発言せず、ただ興味津々に相手の専門分野の話に耳を傾け続けた</li>
+        <li>結果として、相手から「大変話の面白い人」と評価された逸話として紹介される</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>「聞き役にまわる」原則は、話す技術以上に強い好印象を生む。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">3</span>「まずほめる」＝歯医者の麻酔というたとえ</h3>
+      <ul>
+        <li>批判の前にまずほめることは、歯医者が治療の前に麻酔を使うのと同じだとたとえられる</li>
+        <li>痛み（批判）を和らげてから本題に入ることの効果を説明する比喩</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>伝える順序を変えるだけで、同じ指摘でも受け止められ方が大きく変わる。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">4</span>売上目標を一方的に命じない上司の例</h3>
+      <ul>
+        <li>「とにかく売上を伸ばせ」と叱咤するのではなく、「どうすればこの目標を達成できるだろうか」と問いかける</li>
+        <li>意見を求めることで部下に自主性を持たせ、一緒に対策を考える形にする</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>命令より問いかけの方が、相手の主体的な実行意欲を引き出せる。</div>
+    </div>
+
+    <div class="stat-row">
+      <span class="badge">📘 全30原則</span>
+      <span class="badge">🌍 世界的ベストセラー</span>
+      <span class="badge">📅 1936年初版</span>
+    </div>
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="panel" id="panel-quote" role="tabpanel" aria-labelledby="tab-quote">
+    <blockquote>
+      他人を矯正するよりも、自分を直すほうがよほど得であり、危険も少ない。
+      <span class="note">※要旨（出典：本書に関する書評・解説記事をもとに要約。原文の直接引用は未確認）</span>
+    </blockquote>
+    <blockquote>
+      人は、他人から押し付けられた意見よりも、自分で思いついた意見をはるかに大切にする。
+      <span class="note">※要旨（出典：本書に関する書評・解説記事をもとに要約。原文の直接引用は未確認）</span>
+    </blockquote>
+    <blockquote>
+      相手を間違っていると言うと、その人は劣った気持ちになり、プライドが傷つく。事実がどれほど正しくても、相手は勝ち誇った側に反感を抱く。
+      <span class="note">※要旨（出典：本書の英語解説記事をもとに要約。原文の直接引用は未確認）</span>
+    </blockquote>
+    <blockquote>
+      人に指示を与える際には、一方的に上から命令するのではなく、意見を求め、相手に自主性を持たせることが肝要である。
+      <span class="note">※要旨（出典：本書に関する解説記事をもとに要約。原文の直接引用は未確認）</span>
+    </blockquote>
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" id="panel-action" role="tabpanel" aria-labelledby="tab-action">
+    <div class="action-card">
+      <div class="action-check">1</div>
+      <div>
+        <span class="tag">⏱️ 約15分</span>
+        <h4>質問3つ、自分の話はゼロ</h4>
+        <p><b>目的：</b>今日話す1人に、自分の話をする前にまず3つ質問をして、相手の話に心から関心を持って聞く。<br><b>期待効果：</b>「相手に純粋な関心を寄せる」原則を体感し、短時間で信頼関係の芽が生まれる。</p>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-check">2</div>
+      <div>
+        <span class="tag">⏱️ 約15分</span>
+        <h4>「ほめ→指摘」の順番を1回試す</h4>
+        <p><b>目的：</b>誰かを注意したくなった場面で、まず具体的に1つほめてから指摘する順序に変える。<br><b>期待効果：</b>批判の痛みを和らげ、相手が防御的にならず改善に向きやすくなる。</p>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-check">3</div>
+      <div>
+        <span class="tag">⏱️ 約20分</span>
+        <h4>命令を質問に言い換える</h4>
+        <p><b>目的：</b>誰かに頼みごとをするとき、命令形ではなく「どうしたらいいと思う？」と質問形に変えて意見を求める。<br><b>期待効果：</b>相手の自主性・自己重要感が満たされ、協力度と実行意欲が上がる。</p>
+      </div>
+    </div>
+  </section>
+
+  <h3 style="font-size:14px;color:var(--primary);margin:28px 0 10px;">📚 関連書籍</h3>
+  <div class="related-card">
+    <div class="b">影響力の武器 なぜ、人は動かされるのか</div>
+    <div class="a">ロバート・B・チャルディーニ</div>
+    <div class="r">本書の経験的な人間関係の知恵を、社会心理学の実証研究として裏付ける一冊。返報性・社会的証明など6原則が「人に好かれる」原則と響き合う。</div>
+  </div>
+  <div class="related-card">
+    <div class="b">GIVE &amp; TAKE 「与える人」こそ成功する時代</div>
+    <div class="a">アダム・グラント</div>
+    <div class="r">見返りを求めず与える姿勢が長期的な信頼と影響力を生むという主張が、本書の「相手の重要感を満たす」考え方と重なる。</div>
+  </div>
+  <div class="related-card">
+    <div class="b">ネゴシエーションの心理学</div>
+    <div class="a">クリス・ヴォス</div>
+    <div class="r">元FBI交渉人による「相手の話をとことん聞く」技術を扱い、本書の「聞き役にまわる」「相手の立場に立つ」原則の実践編といえる。</div>
+  </div>
+  <div class="related-card">
+    <div class="b">ハーバード流交渉術</div>
+    <div class="a">ロジャー・フィッシャー、ウィリアム・ユーリー</div>
+    <div class="r">立場でなく利害に目を向ける交渉理論で、本書のホテル支配人の逸話が示す「相手の利益を踏まえる」発想と同じ方向を向く。</div>
+  </div>
+
+  <footer>📖 daily-reading routine ｜ Books-2026-11-14</footer>
+</div>
+
+<script>
+  function switchTab(name){
+    var tabs = ['concept','chapter','example','quote','action'];
+    tabs.forEach(function(t){
+      var btn = document.getElementById('tab-'+t);
+      var panel = document.getElementById('panel-'+t);
+      var active = (t === name);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+      if(active){ panel.classList.add('active'); } else { panel.classList.remove('active'); }
+    });
+  }
+</script>
+</body>
+</html>
