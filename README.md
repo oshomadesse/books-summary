@@ -68,7 +68,7 @@ Judgementは Edge上の条件分岐であり Node ではない。
 
 ```mermaid
 flowchart TD
-    %% この図はHumanがグラフを監視する唯一の場所。Node・Edge・Loop・State変更時は同じpushで必ず更新する（.claude/rules/docs-sync.md）。
+    %% この図はHumanがグラフを監視する唯一の場所。Node・Edge・Loop・State変更時は同じpushで必ず更新する（~/.claude/rules/docs-sync.md）。
     Start([Start: 毎朝7:00 JST クラウドRoutine起動]):::startend --> G{Judgement: books_read.jsonに今日のdateあり?}:::judgement
     G -->|あり・生成済み| EndSkip([End: 何もせず終了]):::startend
     G -->|なし| A["Agent: 選書→Deep Research→図解HTML→ノート生成<br>.claude/skills/daily-reading/SKILL.md"]:::agent
