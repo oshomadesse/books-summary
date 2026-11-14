@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自分の時間を取り戻そう｜インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様）
+  Primary:   #2C5F6F (深いティール — 落ち着いた時間感覚・判断軸)
+  Secondary: #E8A33D (ウォームアンバー — ゆとり・生産性の温度)
+  Accent:    #6FBF8B (グリーン — 行動・習慣化)
+-->
+<style>
+  :root{
+    --primary:#2C5F6F;
+    --primary-2:#3f7e92;
+    --secondary:#E8A33D;
+    --secondary-2:#f1bd6c;
+    --accent:#6FBF8B;
+    --accent-2:#a7dcbd;
+    --bg:#f5f8f7;
+    --card:#ffffff;
+    --text:#1f2733;
+    --text-soft:#5a6470;
+    --border:#e2e8e6;
+    --shadow:0 4px 16px rgba(44,95,111,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px 56px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%, var(--primary-2) 100%);
+    color:#fff;
+    padding:36px 20px 44px;
+    border-radius:0 0 28px 28px;
+    margin-bottom:24px;
+  }
+  .hero-inner{max-width:860px;margin:0 auto;}
+  .kicker{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:.08em;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.3);
+    border-radius:999px;
+    padding:4px 12px;
+    margin-bottom:14px;
+  }
+  h1.title{font-size:22px;margin:0 0 6px;font-weight:700;line-height:1.5;}
+  .subtitle{font-size:13px;color:#cfe7e1;margin:0 0 20px;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;margin-bottom:22px;}
+  .meta-pill{background:rgba(255,255,255,0.12);border-radius:999px;padding:4px 10px;}
+
+  .qca{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.22);
+    border-radius:16px;
+    padding:18px;
+    display:grid;
+    gap:12px;
+  }
+  .qca .row{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;}
+  .qca .ico{font-size:18px;line-height:1.4;}
+  .qca .label{font-size:11px;letter-spacing:.06em;color:var(--accent-2);font-weight:700;display:block;margin-bottom:2px;}
+  .qca .val{font-size:14px;color:#fff;}
+
+  nav.tabs{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding:4px 2px 12px;
+    margin-bottom:18px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text-soft);
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .15s ease;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    border-color:var(--primary);
+    color:#fff;
+  }
+
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .card h3{margin:0 0 10px;font-size:15px;color:var(--primary);display:flex;align-items:center;gap:8px;}
+  .card h3 .num{
+    background:var(--accent);color:#063625;font-size:12px;font-weight:800;
+    width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+  }
+  .card ul{margin:0;padding-left:0;list-style:none;}
+  .card li{
+    position:relative;padding-left:18px;margin-bottom:6px;font-size:13.5px;color:var(--text);
+  }
+  .card li::before{content:"・";position:absolute;left:0;color:var(--secondary);font-weight:700;}
+  .why{
+    margin-top:10px;
+    background:#fff6ea;
+    border-left:3px solid var(--secondary);
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:12.5px;
+    color:#8a5e13;
+  }
+  .why b{color:var(--secondary);}
+
+  .stat-row{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px;}
+  .badge{
+    background:linear-gradient(135deg,var(--accent) 0%, var(--accent-2) 100%);
+    color:#063625;font-weight:800;font-size:13px;
+    padding:6px 12px;border-radius:10px;
+  }
+  .meter{background:#eef3f2;border-radius:999px;height:10px;overflow:hidden;margin-top:6px;}
+  .meter > span{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));}
+  .meter-label{font-size:11.5px;color:var(--text-soft);margin-top:4px;display:flex;justify-content:space-between;}
+
+  blockquote{
+    margin:0 0 14px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--primary);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:13.5px;
+    box-shadow:var(--shadow);
+  }
+  blockquote .note{display:block;margin-top:8px;font-size:11.5px;color:var(--text-soft);}
+
+  .action-card{
+    display:flex;gap:12px;align-items:flex-start;
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    padding:16px;margin-bottom:12px;box-shadow:var(--shadow);
+  }
+  .action-check{
+    flex:0 0 auto;width:28px;height:28px;border-radius:50%;
+    background:var(--secondary);color:#fff;font-weight:800;font-size:13px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .action-card h4{margin:0 0 4px;font-size:14px;color:var(--primary);}
+  .action-card p{margin:0;font-size:13px;color:var(--text-soft);}
+  .action-card .tag{display:inline-block;font-size:11px;background:#e9f3f1;color:var(--primary);border-radius:999px;padding:2px 9px;margin-bottom:6px;}
+
+  .related-card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);
+  }
+  .related-card .b{font-weight:700;font-size:13.5px;color:var(--primary);}
+  .related-card .a{font-size:12px;color:var(--text-soft);margin-bottom:4px;}
+  .related-card .r{font-size:13px;color:var(--text);}
+
+  footer{
+    text-align:center;font-size:11px;color:var(--text-soft);margin-top:32px;
+  }
+  @media (min-width:640px){
+    h1.title{font-size:26px;}
+    .card{padding:22px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="hero-inner">
+      <span class="kicker">📚 今日の一冊 ｜ ライフスタイル</span>
+      <h1 class="title">自分の時間を取り戻そう</h1>
+      <p class="subtitle">著：ちきりん（ダイヤモンド社）／副題：ゆとりも成功も手に入れられるたった1つの考え方</p>
+      <div class="meta-row">
+        <span class="meta-pill">🏷️ ライフスタイル</span>
+        <span class="meta-pill">⏱️ 読了想定 約15分</span>
+        <span class="meta-pill">⏳ 生産性 × 時間の主権</span>
+      </div>
+
+      <div class="qca" role="group" aria-label="要約：問いと答えと根拠">
+        <div class="row">
+          <span class="ico">❓</span>
+          <div><span class="label">問い（Why）</span><span class="val">なぜ多くの人は「成果を増やす」ことばかり考え、長時間労働から抜け出せないのか？</span></div>
+        </div>
+        <div class="row">
+          <span class="ico">💡</span>
+          <div><span class="label">答え（How）</span><span class="val">生産性＝成果÷投入資源と捉え、先に投入する時間・労力の上限を決めてしまう。分母（インプット）を強制的に減らせば、工夫と優先順位づけが生まれ、ゆとりと成果を両立できる。</span></div>
+        </div>
+        <div class="row">
+          <span class="ico">🧩</span>
+          <div><span class="label">根拠</span><span class="val">「全部やる必要はない」宣言、時間の家計簿、休暇予定の先取り確定など、インプット制約を先に設ける具体策と、人生ステージごとに希少資源が変わるという考え方で裏づける。</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切り替え">
+    <button role="tab" id="tab-concept" aria-selected="true" aria-controls="panel-concept" onclick="switchTab('concept')">🧠 主要概念</button>
+    <button role="tab" id="tab-chapter" aria-selected="false" aria-controls="panel-chapter" onclick="switchTab('chapter')">📖 各章の要約</button>
+    <button role="tab" id="tab-example" aria-selected="false" aria-controls="panel-example" onclick="switchTab('example')">🔍 具体例</button>
+    <button role="tab" id="tab-quote" aria-selected="false" aria-controls="panel-quote" onclick="switchTab('quote')">💬 重要な引用</button>
+    <button role="tab" id="tab-action" aria-selected="false" aria-controls="panel-action" onclick="switchTab('action')">✅ 今日のアクション</button>
+  </nav>
+
+  <!-- 主要概念の詳細 -->
+  <section class="panel active" id="panel-concept" role="tabpanel" aria-labelledby="tab-concept">
+    <div class="card">
+      <h3><span class="num">1</span>生産性＝アウトプット÷インプット</h3>
+      <ul>
+        <li>仕事の良し悪しを「成果」だけでなく「何を投入したか」で測る考え方</li>
+        <li>多くの人は分子（成果）にしか注目せず、分母（投入資源）を減らす発想がない</li>
+        <li>著者は生産性を単なる業務スキルではなく、人生の価値観・判断軸として位置づける</li>
+      </ul>
+      <div class="meter"><span style="width:80%"></span></div>
+      <div class="meter-label"><span>成果への意識</span><span>高い</span></div>
+      <div class="why"><b>理由：</b>分母を軽視すると、どれだけ成果を上げても長時間労働から抜け出せない。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">2</span>インプット制約先行型アプローチ</h3>
+      <ul>
+        <li>先に投入時間・労力の上限を決めてしまう発想の転換</li>
+        <li>制約があることで、工夫や取捨選択が強制的に生まれる</li>
+        <li>「時間が余っているから使う」のではなく「枠を決めてから収める」順序にする</li>
+      </ul>
+      <div class="why"><b>理由：</b>時間を無制限に明け渡す限り、仕事は際限なく膨らんでいくため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">3</span>時間の家計簿</h3>
+      <ul>
+        <li>お金の家計簿と同じように、1日・1週間の時間の使い方を記録・可視化する手法</li>
+        <li>何にどれだけ時間を使っているかを「見える化」することが出発点になる</li>
+        <li>無駄な時間の使い方に気づき、改善の優先順位をつけられるようになる</li>
+      </ul>
+      <div class="why"><b>理由：</b>人は自分の時間の使い方を実際より正確に把握していないことが多い。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">4</span>「全部やる必要はない」宣言</h3>
+      <ul>
+        <li>すべてのタスク・役割を完璧にやろうとする思い込みを捨てる</li>
+        <li>優先度の低いものは意図的に「やめる」「手放す」判断をする</li>
+        <li>まず自分に対して「全部やる必要はない」と明言することが第一歩</li>
+      </ul>
+      <div class="why"><b>理由：</b>責任感の強さが、却って生産性を下げる要因になり得るため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">5</span>希少資源の人生ステージ別シフト</h3>
+      <ul>
+        <li>「何が自分にとって希少か」は年齢やキャリアのステージで変化する</li>
+        <li>学生時代はお金が希少で時間は余っているが、社会人になると立場が逆転しやすい</li>
+        <li>資源配分の基準を定期的に見直す必要がある</li>
+      </ul>
+      <div class="why"><b>理由：</b>昔からの習慣をそのまま続けることが、実は非効率になっている場合があるため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">6</span>休暇・予定の先取り確定</h3>
+      <ul>
+        <li>休む日や私生活の予定を先にスケジュールへ入れてしまう</li>
+        <li>仕事の時間を「残った時間」ではなく「決められた枠」として扱う</li>
+        <li>仕事優先ではなく、生活優先でカレンダーを組む発想の転換</li>
+      </ul>
+      <div class="why"><b>理由：</b>仕事を先に埋めると、私生活の時間は常に後回しになってしまうため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="num">7</span>「頑張る場所」を絞る</h3>
+      <ul>
+        <li>すべての仕事・役割に同じ熱量で取り組まない</li>
+        <li>自分が本当に力を注ぐべき領域を選び、他は最低限の労力で済ませる</li>
+        <li>力の配分にも優先順位をつける判断力が求められる</li>
+      </ul>
+      <div class="why"><b>理由：</b>どこにでも全力を注ぐと、本当に重要な場面で力が残らなくなるため。</div>
+    </div>
+  </section>
+
+  <!-- 各章の要約 -->
+  <section class="panel" id="panel-chapter" role="tabpanel" aria-labelledby="tab-chapter">
+    <div class="card">
+      <h3><span class="num">1</span>問題提起：忙しすぎる人たち</h3>
+      <ul>
+        <li>仕事に追われ「忙しすぎる」日常を送る複数の人物像を提示</li>
+        <li>長時間労働が当たり前になっている日本の職場の構造的な問題を浮き彫りにする</li>
+      </ul>
+      <div class="why"><b>理由：</b>まず「忙しさ」を当然のものとせず、問題として認識させることが出発点になるため。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">2</span>生産性とは何か</h3>
+      <ul>
+        <li>生産性を「アウトプット÷インプット」という式で定義</li>
+        <li>多くの人が成果の最大化ばかり考え、投入資源を減らす発想を持っていないことを指摘</li>
+      </ul>
+      <div class="why"><b>理由：</b>定義を共有しないと「生産性を上げる」の意味が人によってズレてしまうため。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">3</span>生産性を上げる方法①：投入時間を先に制限する</h3>
+      <ul>
+        <li>1日の労働時間に上限を設け、休暇予定を先に確定させる</li>
+        <li>「インプットを強制的に減らす」ことで創意工夫が生まれる具体的な方法を紹介</li>
+      </ul>
+      <div class="why"><b>理由：</b>制約がなければ、人は時間が許す限り仕事を広げてしまうため。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">4</span>生産性を上げる方法②：やめる技術</h3>
+      <ul>
+        <li>「全部やる必要はない」と自分に宣言し、優先度の低い業務や役割を手放す</li>
+        <li>時間の家計簿をつけて無駄を可視化する方法を解説</li>
+      </ul>
+      <div class="why"><b>理由：</b>増やす発想だけでは資源は有限なので、減らす判断が不可欠になるため。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">5</span>人生ステージと希少資源</h3>
+      <ul>
+        <li>学生時代と社会人になった後では「希少な資源」が変わることを説明</li>
+        <li>お金よりも時間を優先すべき場面がいつ訪れるかを考えるよう促す</li>
+      </ul>
+      <div class="why"><b>理由：</b>資源配分の基準を見直さないまま同じ習慣を続けると非効率になるため。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">6</span>ゆとりと成果の両立</h3>
+      <ul>
+        <li>生産性を高める目的は単に楽をすることではない</li>
+        <li>ゆとりを生み出しながら、本当に重要な成果に集中するためだと結論づける</li>
+      </ul>
+      <div class="why"><b>理由：</b>生産性向上の最終目標を取り違えると、節約自体が目的化してしまうため。</div>
+    </div>
+  </section>
+
+  <!-- 具体例・ケーススタディ -->
+  <section class="panel" id="panel-example" role="tabpanel" aria-labelledby="tab-example">
+    <div class="card">
+      <h3><span class="num">1</span>超多忙なワーキングマザーの例</h3>
+      <ul>
+        <li>家事・育児・仕事を全て完璧にこなそうとして疲弊している女性を例に紹介</li>
+        <li>「必ずしも自分がやらなくてもよいこと」を手放すことの重要性を示す</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>「全部自分でやる」という思い込みを外すだけで、投入時間を減らせる余地が大きいことがわかる。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">2</span>タクシーとUberの比較</h3>
+      <ul>
+        <li>同じ「移動する」というアウトプットを得るための呼び出しの手間や待ち時間を対比</li>
+        <li>テクノロジーが投入資源の構造を変える例として紹介される</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>「当たり前の手段」を疑うことが生産性向上の第一歩になる。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">3</span>海外旅行の計画における資源配分の変化</h3>
+      <ul>
+        <li>学生時代はお金が乏しいため時間をかけて格安航空券を探す合理性がある</li>
+        <li>社会人になり収入が増えると、同じ行動がむしろ非合理になる</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>自分にとって本当に希少な資源が年齢やキャリアによって変わることが具体的にわかる。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">4</span>朝型での作業集中の例</h3>
+      <ul>
+        <li>夜に睡眠を削って作業するより、朝の短時間に集中して取り組む方が良いという読者の実践例</li>
+        <li>翌日のパフォーマンスを損なわずに成果を出せたと紹介される</li>
+      </ul>
+      <div class="why"><b>この例が示すこと：</b>「時間を増やす」のではなく「使う時間帯を変える」工夫で生産性が上がる。</div>
+    </div>
+
+    <div class="stat-row">
+      <span class="badge">📘 2016年11月刊行</span>
+      <span class="badge">🏢 ダイヤモンド社</span>
+      <span class="badge">📊 生産性＝成果÷投入資源</span>
+    </div>
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="panel" id="panel-quote" role="tabpanel" aria-labelledby="tab-quote">
+    <blockquote>
+      生産性とは、単なる仕事のスキルではなく、何に自分の時間とエネルギーを使うかを決めるための価値観・判断軸である。
+      <span class="note">※要旨（出典：出版社の紹介文・書評記事をもとに要約。原文の直接引用は未確認）</span>
+    </blockquote>
+    <blockquote>
+      全部を自分でやる必要はない、と自分に対してはっきり宣言することが、生産性向上の出発点になる。
+      <span class="note">※要旨（出典：書評・読書記録記事をもとに要約。原文の直接引用は未確認）</span>
+    </blockquote>
+    <blockquote>
+      分母である投入資源（時間・お金・労力）を強制的に減らせば、必然的に生産性は高まる。
+      <span class="note">※要旨（出典：読書ブログによる本書の内容紹介をもとに要約。原文の直接引用は未確認）</span>
+    </blockquote>
+    <blockquote>
+      本当の勝ち組とは、いい会社に入った人や収入の高い人ではなく、自分が本当にやりたいことがわかった人である。
+      <span class="note">※要旨（出典：著者ちきりん氏の関連インタビュー記事をもとに要約。原文の直接引用は未確認）</span>
+    </blockquote>
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" id="panel-action" role="tabpanel" aria-labelledby="tab-action">
+    <div class="action-card">
+      <div class="action-check">1</div>
+      <div>
+        <span class="tag">⏱️ 約15分</span>
+        <h4>「時間の家計簿」をつけてみる</h4>
+        <p><b>目的：</b>今日1日、何にどれだけ時間を使ったかをメモして可視化する。<br><b>期待効果：</b>時間の使い方の「無駄」が見え、次に手放すべきタスクの優先順位がつかめる。</p>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-check">2</div>
+      <div>
+        <span class="tag">⏱️ 約10分</span>
+        <h4>「やめられること」を1つ書き出す</h4>
+        <p><b>目的：</b>今担っている仕事・役割の中で「本当は自分がやらなくてもよいもの」を1つ選び、誰に委ねられるか、あるいはやめられるかを考える。<br><b>期待効果：</b>投入時間を減らす最初の一歩が具体的に見えるようになる。</p>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-check">3</div>
+      <div>
+        <span class="tag">⏱️ 約20分</span>
+        <h4>来月の休暇予定を1つ先に確定する</h4>
+        <p><b>目的：</b>カレンダーを開き、来月の休みや私的な予定を1つ先に確定して入れてしまう。<br><b>期待効果：</b>仕事の時間を「残った時間」ではなく「決められた枠」として扱う習慣づけにつながる。</p>
+      </div>
+    </div>
+  </section>
+
+  <h3 style="font-size:14px;color:var(--primary);margin:28px 0 10px;">📚 関連書籍</h3>
+  <div class="related-card">
+    <div class="b">マーケット感覚を身につけよう</div>
+    <div class="a">ちきりん</div>
+    <div class="r">同著者による、自分の判断軸で市場価値を見極める力を説く一冊。本書の「自分の価値観で時間を配分する」発想と直結する。</div>
+  </div>
+  <div class="related-card">
+    <div class="b">自分の意見で生きていこう</div>
+    <div class="a">ちきりん</div>
+    <div class="r">同著者。他人の評価や意見に自分の判断を委ねず、自分の基準で生きる姿勢という点で、本書の時間の主権という思想と共通する。</div>
+  </div>
+  <div class="related-card">
+    <div class="b">エッセンシャル思考</div>
+    <div class="a">グレッグ・マキューン</div>
+    <div class="r">「本当に重要なことだけに集中し、その他を捨てる」という本質志向は、本書の「全部やる必要はない」という主張と直接重なる。</div>
+  </div>
+  <div class="related-card">
+    <div class="b">デジタル・ミニマリズム</div>
+    <div class="a">カル・ニューポート</div>
+    <div class="r">時間という希少資源をテクノロジーから主体的に守るという論点が、本書の時間管理の思想と共通する。</div>
+  </div>
+  <div class="related-card">
+    <div class="b">週4時間だけ働く。</div>
+    <div class="a">ティモシー・フェリス</div>
+    <div class="r">労働時間そのものを制限してアウトプットを最大化するという発想が、本書のインプット制約先行型アプローチと一致する。</div>
+  </div>
+
+  <footer>📖 daily-reading routine ｜ Books-2026-11-15</footer>
+</div>
+
+<script>
+  function switchTab(name){
+    var tabs = ['concept','chapter','example','quote','action'];
+    tabs.forEach(function(t){
+      var btn = document.getElementById('tab-'+t);
+      var panel = document.getElementById('panel-'+t);
+      var active = (t === name);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+      if(active){ panel.classList.add('active'); } else { panel.classList.remove('active'); }
+    });
+  }
+</script>
+</body>
+</html>
