@@ -1,0 +1,128 @@
+name: pr-test
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    timeout-minutes: 20
+    env:
+      TZ: Asia/Tokyo
+      PYTHONUTF8: "1"
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install CI dependencies
+        shell: bash
+        run: |
+          if [[ -f requirements-ci.txt ]]; then
+            python3 -m pip install -r requirements-ci.txt
+          fi
+      - name: リポ固有の準備
+        shell: bash
+        run: |
+          if git ls-files --error-unmatch -- .github/ci-setup.sh > /dev/null 2>&1; then
+            bash .github/ci-setup.sh
+          fi
+      - name: JS の CI 対象を検出
+        id: detect-js
+        shell: bash
+        run: |
+          has_ci=false
+          while IFS= read -r -d '' file; do
+            case "$file" in
+              node_modules/*|*/node_modules/*) continue ;;
+            esac
+            case "${file##*/}" in
+              package.json) ;;
+              *) continue ;;
+            esac
+            if python3 -c 'import json, sys; sys.exit(0 if "ci" in (json.load(open(sys.argv[1], encoding="utf-8")).get("scripts") or {}) else 1)' "$file"; then
+              has_ci=true
+              break
+            fi
+          done < <(git ls-files -z)
+          printf 'has_ci=%s\n' "$has_ci" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@v4
+        if: steps.detect-js.outputs.has_ci == 'true'
+        with:
+          node-version: "22"
+      - name: テスト実行
+        shell: bash
+        working-directory: ${{ github.workspace }}
+        run: |
+          python_total=0
+          shell_total=0
+          js_total=0
+          python_failed=()
+          shell_failed=()
+          js_failed=()
+          while IFS= read -r -d '' file; do
+            case "$file" in
+              node_modules/*|*/node_modules/*) continue ;;
+            esac
+            case "${file##*/}" in
+              test_*.py)
+                python_total=$((python_total + 1))
+                printf '\nPython 実行: %s\n' "$file"
+                if PYTHONPATH=. python3 "$file" < /dev/null; then
+                  :
+                else
+                  python_failed+=("$file")
+                fi
+                ;;
+              *.test.sh)
+                shell_total=$((shell_total + 1))
+                printf '\nシェル 実行: %s\n' "$file"
+                if bash "$file" < /dev/null; then
+                  :
+                else
+                  shell_failed+=("$file")
+                fi
+                ;;
+              package.json)
+                if python3 -c 'import json, sys; sys.exit(0 if "ci" in (json.load(open(sys.argv[1], encoding="utf-8")).get("scripts") or {}) else 1)' "$file"; then
+                  js_total=$((js_total + 1))
+                  printf '\nJS 実行: %s\n' "$file"
+                  if (cd -- "$(dirname -- "$file")" && npm ci && npm run ci) < /dev/null; then
+                    :
+                  else
+                    js_failed+=("$file")
+                  fi
+                fi
+                ;;
+            esac
+          done < <(git ls-files -z)
+
+          printf '\nPython %d本中 %d本失敗 / シェル %d本中 %d本失敗 / JS %d件中 %d件失敗\n' \
+            "$python_total" "${#python_failed[@]}" \
+            "$shell_total" "${#shell_failed[@]}" \
+            "$js_total" "${#js_failed[@]}"
+          if (( python_total + shell_total + js_total == 0 )); then
+            printf 'テストなし\n'
+            exit 0
+          fi
+          if (( ${#python_failed[@]} > 0 )); then
+            printf 'Python 失敗: %s\n' "${python_failed[@]}"
+          fi
+          if (( ${#shell_failed[@]} > 0 )); then
+            printf 'シェル 失敗: %s\n' "${shell_failed[@]}"
+          fi
+          if (( ${#js_failed[@]} > 0 )); then
+            printf 'JS 失敗: %s\n' "${js_failed[@]}"
+          fi
+          if (( ${#python_failed[@]} + ${#shell_failed[@]} + ${#js_failed[@]} > 0 )); then
+            exit 1
+          fi
