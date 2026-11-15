@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>影響力の武器［新版］ 人を動かす七つの原理 | インフォグラフィック</title>
+<!--
+  カラーパレット:
+  プライマリー: #B91C1C (レッド) → グラデーション #DC2626
+  セカンダリー: #1E3A8A (ネイビー)
+  アクセント:   #F59E0B (アンバー)
+  背景:         #FAF9F7 / カード: #FFFFFF / テキスト: #1F2937
+-->
+<style>
+  :root{
+    --primary:#B91C1C;
+    --primary2:#DC2626;
+    --secondary:#1E3A8A;
+    --accent:#F59E0B;
+    --bg:#FAF9F7;
+    --card:#FFFFFF;
+    --text:#1F2937;
+    --muted:#6B7280;
+    --border:#E5E7EB;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:16px 16px 48px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary),var(--primary2) 55%,var(--secondary));
+    color:#fff;
+    border-radius:16px;
+    padding:24px 20px;
+    margin-bottom:16px;
+    box-shadow:0 8px 24px rgba(185,28,28,.25);
+  }
+  header.hero .cat{
+    display:inline-block;
+    background:rgba(255,255,255,.2);
+    padding:4px 10px;
+    border-radius:999px;
+    font-size:.75rem;
+    margin-bottom:10px;
+  }
+  header.hero h1{font-size:1.35rem;margin:0 0 6px;}
+  header.hero .author{font-size:.85rem;opacity:.9;margin:0;}
+
+  .why-how{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:6px solid var(--accent);
+    border-radius:12px;
+    padding:16px;
+    margin-bottom:16px;
+  }
+  .why-how h2{font-size:.95rem;margin:0 0 10px;color:var(--primary);}
+  .why-how .row{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
+  .why-how .tag{
+    flex:0 0 auto;
+    font-size:.7rem;
+    font-weight:700;
+    color:#fff;
+    background:var(--secondary);
+    padding:3px 8px;
+    border-radius:6px;
+    white-space:nowrap;
+  }
+  .why-how .row:nth-child(2) .tag{background:var(--primary);}
+  .why-how .row:nth-child(3) .tag{background:var(--accent);}
+  .why-how p{margin:0;font-size:.88rem;}
+
+  .stats{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .stat-badge{
+    flex:1 1 140px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:12px;
+    text-align:center;
+  }
+  .stat-badge .num{font-size:1.5rem;font-weight:800;color:var(--primary);}
+  .stat-badge .label{font-size:.72rem;color:var(--muted);}
+  .bar{height:10px;border-radius:999px;background:var(--border);overflow:hidden;margin-top:6px;}
+  .bar>span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--secondary));}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin-bottom:14px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    padding:9px 14px;
+    border-radius:999px;
+    font-size:.82rem;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+    font-weight:700;
+  }
+
+  section[role="tabpanel"]{display:none;}
+  section[role="tabpanel"].active{display:block;}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .card h3{margin:0 0 8px;font-size:1rem;color:var(--primary);display:flex;align-items:center;gap:6px;}
+  .card ul{margin:0 0 8px;padding-left:1.1em;font-size:.88rem;}
+  .card ul li{margin-bottom:4px;}
+  .why{
+    font-size:.78rem;
+    background:#FEF2F2;
+    color:var(--primary);
+    border-radius:8px;
+    padding:8px 10px;
+    margin-top:6px;
+  }
+  .why b{color:var(--primary);}
+
+  blockquote{
+    margin:0 0 10px;
+    padding:12px 14px;
+    background:#EFF6FF;
+    border-left:5px solid var(--secondary);
+    border-radius:10px;
+    font-size:.9rem;
+  }
+  blockquote .note{display:block;margin-top:6px;font-size:.76rem;color:var(--muted);}
+
+  .action{display:flex;gap:10px;align-items:flex-start;}
+  .action .n{
+    flex:0 0 28px;
+    height:28px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    font-weight:800;
+    font-size:.85rem;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .action p{margin:2px 0 0;font-size:.85rem;}
+  .action .meta{font-size:.74rem;color:var(--muted);margin-top:4px;}
+
+  footer{text-align:center;font-size:.72rem;color:var(--muted);margin-top:20px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="cat">🏷️ 心理学</span>
+    <h1>🧠 影響力の武器［新版］ 人を動かす七つの原理</h1>
+    <p class="author">👤 ロバート・B・チャルディーニ（監訳: 社会行動研究会）</p>
+  </header>
+
+  <div class="why-how">
+    <h2>⚡ 要約 = 問い × 答え × 根拠</h2>
+    <div class="row"><span class="tag">問い</span><p>なぜ人は、よく考えれば断れるはずの依頼や勧誘に「つい」承諾してしまうのか？</p></div>
+    <div class="row"><span class="tag">答え</span><p>人の承諾行動は「返報性」「コミットメントと一貫性」「社会的証明」「好意」「権威」「希少性」「一体性」という7つの心理的原理に、ほぼ自動的に反応して起こる。</p></div>
+    <div class="row"><span class="tag">根拠</span><p>著者は実験心理学の知見に加え、セールス・勧誘・宗教団体などの「承諾プロ」の現場に潜入して集めた実例から、各原理が働く仕組みを体系化している。</p></div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-badge">
+      <div class="num">7</div>
+      <div class="label">影響力の原理</div>
+      <div class="bar"><span style="width:100%"></span></div>
+    </div>
+    <div class="stat-badge">
+      <div class="num">600頁+</div>
+      <div class="label">新版の総ページ数</div>
+      <div class="bar"><span style="width:85%"></span></div>
+    </div>
+    <div class="stat-badge">
+      <div class="num">2023年</div>
+      <div class="label">新版（第7原理追加）刊行</div>
+      <div class="bar"><span style="width:60%"></span></div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button role="tab" id="tab-concept" aria-controls="panel-concept" aria-selected="true">💡 主要概念</button>
+    <button role="tab" id="tab-chapter" aria-controls="panel-chapter" aria-selected="false">📖 各章の要約</button>
+    <button role="tab" id="tab-example" aria-controls="panel-example" aria-selected="false">🧪 具体例</button>
+    <button role="tab" id="tab-quote" aria-controls="panel-quote" aria-selected="false">💬 重要な引用</button>
+    <button role="tab" id="tab-action" aria-controls="panel-action" aria-selected="false">✅ 今日のアクション</button>
+  </nav>
+
+  <section role="tabpanel" id="panel-concept" aria-labelledby="tab-concept" class="active">
+    <div class="card">
+      <h3>🎁 返報性</h3>
+      <ul>
+        <li>何かを与えられると、同等のものを返さなければという心理的負債感を抱く</li>
+        <li>試食・無料サンプル・ちょっとした親切が、後の購買や承諾のハードルを下げる</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）:</b> 人類に深く根づいた互恵関係の規範であり、意識せず「借りを返す」行動を取らされやすい。</div>
+    </div>
+    <div class="card">
+      <h3>🔗 コミットメントと一貫性</h3>
+      <ul>
+        <li>一度小さな約束や意思表示をすると、それと一貫した行動を取り続けたくなる</li>
+        <li>「一貫した人」であろうとする心理が、後の大きな要求への承諾を誘発する</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）:</b> 小さな「はい」を積み重ねさせる手口（フット・イン・ザ・ドア）の土台になる原理。</div>
+    </div>
+    <div class="card">
+      <h3>👥 社会的証明</h3>
+      <ul>
+        <li>何が正しい・適切かを、他の人々の行動を基準に判断してしまう</li>
+        <li>不確実な状況や、自分と似た人の行動を見たときほど影響されやすい</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）:</b> 「みんなやっている」という情報だけで、個人の判断基準が置き換わってしまう。</div>
+    </div>
+    <div class="card">
+      <h3>💛 好意</h3>
+      <ul>
+        <li>外見的魅力・類似性・賛辞・接触頻度の高さが好意を生み、承諾を促す</li>
+        <li>好意を持つ相手からの依頼は、内容を精査せず受け入れやすくなる</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）:</b> 「誰が言うか」が「何を言うか」より判断に影響してしまう典型例。</div>
+    </div>
+    <div class="card">
+      <h3>🎓 権威</h3>
+      <ul>
+        <li>肩書き・服装・専門家らしい振る舞いなど「権威の象徴」に対して服従的に反応する</li>
+        <li>内容の妥当性を検証せず、権威者の指示をそのまま受け入れてしまう</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）:</b> ミルグラムの服従実験が示すように、権威への反応は個人の良識を上回ることがある。</div>
+    </div>
+    <div class="card">
+      <h3>⏳ 希少性</h3>
+      <ul>
+        <li>数量限定・期間限定など「手に入りにくさ」が、対象の価値を高く感じさせる</li>
+        <li>自由な選択肢が制限されると感じると、逆にその対象を強く欲しくなる（心理的リアクタンス）</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）:</b> 「残り〇個」「本日限定」といった訴求が効くメカニズムそのもの。</div>
+    </div>
+    <div class="card">
+      <h3>🫂 一体性（新版で追加された第7の原理）</h3>
+      <ul>
+        <li>「私たち」という共通の帰属意識（家族・地域・チームなど）を持つ相手の依頼は通りやすい</li>
+        <li>共に活動すること自体が、一体感と信頼を生み出す</li>
+      </ul>
+      <div class="why"><b>理由（なぜ重要か）:</b> 旧来の6原理では説明しきれなかった「内集団への同調」を補う、新版最大の更新点。</div>
+    </div>
+  </section>
+
+  <section role="tabpanel" id="panel-chapter" aria-labelledby="tab-chapter" hidden>
+    <div class="card">
+      <h3>第1章: 影響力の武器とは</h3>
+      <ul>
+        <li>人は複雑な判断を避け、単純な手がかり（カチッ・サー）だけで自動的に反応することがある</li>
+        <li>この自動反応を利用する「承諾誘導の専門家」の存在を導入として提示</li>
+      </ul>
+      <div class="why"><b>理由:</b> 以降の7原理すべてに共通する「自動反応」というメカニズムの土台を説明する章。</div>
+    </div>
+    <div class="card">
+      <h3>第2章: 返報性</h3>
+      <ul>
+        <li>与えられた恩義を返そうとする規範の強さと、その規範を利用した誘導手法を解説</li>
+      </ul>
+      <div class="why"><b>理由:</b> 日常のビジネス接客からマーケティングまで、最も応用範囲の広い原理を扱う。</div>
+    </div>
+    <div class="card">
+      <h3>第3章: コミットメントと一貫性</h3>
+      <ul>
+        <li>小さな約束への署名・発言が、後の大きな要求の承諾につながる流れを説明</li>
+      </ul>
+      <div class="why"><b>理由:</b> 「一貫した自分」でいたいという自己像の防衛心理を解き明かす。</div>
+    </div>
+    <div class="card">
+      <h3>第4章: 社会的証明</h3>
+      <ul>
+        <li>他者の行動を判断基準にしてしまう傾向と、不確実な状況での増幅効果を解説</li>
+      </ul>
+      <div class="why"><b>理由:</b> 群衆心理・口コミ・レビュー評価が行動に与える影響の理論的背景を示す。</div>
+    </div>
+    <div class="card">
+      <h3>第5章: 好意</h3>
+      <ul>
+        <li>魅力・類似性・賛辞・協同作業が好意を生み出し、承諾率を上げる仕組みを解説</li>
+      </ul>
+      <div class="why"><b>理由:</b> セールスや交渉における「信頼関係づくり」の心理的裏付けとなる。</div>
+    </div>
+    <div class="card">
+      <h3>第6章: 権威</h3>
+      <ul>
+        <li>肩書き・服装・専門性の「象徴」が服従を引き出す仕組みをミルグラム実験などを交えて解説</li>
+      </ul>
+      <div class="why"><b>理由:</b> 権威への無批判な服従が、倫理的・実務的に危険な結果を招く場合があることを示す。</div>
+    </div>
+    <div class="card">
+      <h3>第7章: 希少性</h3>
+      <ul>
+        <li>数量・期間の制限が欲求を強める心理的リアクタンスの仕組みを解説</li>
+      </ul>
+      <div class="why"><b>理由:</b> 「限定」訴求への耐性をつけるための理論的理解を提供する。</div>
+    </div>
+    <div class="card">
+      <h3>第8章: 一体性（新版で追加）</h3>
+      <ul>
+        <li>家族・地域・民族など「私たち」という帰属意識、共同作業が生む一体感を解説</li>
+      </ul>
+      <div class="why"><b>理由:</b> SNS時代のコミュニティ・ファンダム心理を理解する上で特に重要性が増している章。</div>
+    </div>
+    <div class="card">
+      <h3>最終章: 自動化された影響力への対処</h3>
+      <ul>
+        <li>各原理に対する「かすかな違和感」を手がかりに、不当な誘導から身を守る方法を提示</li>
+      </ul>
+      <div class="why"><b>理由:</b> 本書を「使われる側」ではなく「見抜く側」として読むための実践的な締め。</div>
+    </div>
+  </section>
+
+  <section role="tabpanel" id="panel-example" aria-labelledby="tab-example" hidden>
+    <div class="card">
+      <h3>🍪 試食販売と返報性</h3>
+      <ul>
+        <li>背景: スーパーなどの試食コーナーで無料サンプルを受け取った客の行動を観察</li>
+        <li>何かを「与えられた」という感覚が、何も言われていなくても購買という形での「お返し」を促す</li>
+        <li>小さな無償提供が、金銭を伴う行動につながる典型例として紹介される</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）:</b> 恩義を返す規範は、相手の意図を知っていても働いてしまうほど強力である。</div>
+    </div>
+    <div class="card">
+      <h3>⚡ ミルグラムの服従実験と権威</h3>
+      <ul>
+        <li>背景: 実験者（権威者役）の指示のもと、参加者が他者に電気ショックを与える役を担う実験</li>
+        <li>多くの参加者が、強い指示的な権威者の存在のもとで、想定を超える強度まで指示に従い続けた</li>
+        <li>結果は専門家の事前予測を大きく上回り、権威の影響力の強さを示した</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）:</b> 権威の象徴があるだけで、個人の良識的な判断が覆されることがある。</div>
+    </div>
+    <div class="card">
+      <h3>🛒 「残り〇点」表示と希少性</h3>
+      <ul>
+        <li>背景: ECサイトや店頭での「数量限定」「残りわずか」といった訴求表現</li>
+        <li>入手できる数や時間が制限されていると感じるだけで、対象への欲求が増幅される</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）:</b> 商品の価値自体は変わらなくても、入手の制限という情報だけで評価が上がってしまう。</div>
+    </div>
+    <div class="card">
+      <h3>👫 不確実な状況での社会的証明</h3>
+      <ul>
+        <li>背景: 緊急時や判断基準が曖昧な場面で、人は周囲の反応を手がかりに行動を決めやすい</li>
+        <li>周りが動かないと自分も動かず、周りが一斉に動くと自分も合わせて動いてしまう</li>
+      </ul>
+      <div class="why"><b>理由（この例が示すこと）:</b> 状況が不確実なほど、他者の行動が「正しさ」の代理指標として重みを増す。</div>
+    </div>
+  </section>
+
+  <section role="tabpanel" id="panel-quote" aria-labelledby="tab-quote" hidden>
+    <blockquote>
+      人は複雑な判断を一つひとつ検討する余裕がないとき、単純な一つの特徴（引き金）だけを手がかりに、ほぼ自動的に反応してしまう。
+      <span class="note">※要旨（本書全体を通じて語られる「カチッ・サー」の自動反応メカニズムについての要約。原典の直接引用は未確認のため要旨として記載）</span>
+    </blockquote>
+    <blockquote>
+      与えられた恩義は返さなければならないという規範は、人間社会に深く根づいているため、受け取る側の意図に関わらず働いてしまう。
+      <span class="note">※要旨（返報性の原理についての本書の主張の要約）</span>
+    </blockquote>
+    <blockquote>
+      手に入りにくいものほど価値があるように見えてしまうのは、自由な選択肢が制限されることへの心理的な反発（リアクタンス）が働くためである。
+      <span class="note">※要旨（希少性の原理についての本書の説明の要約）</span>
+    </blockquote>
+  </section>
+
+  <section role="tabpanel" id="panel-action" aria-labelledby="tab-action" hidden>
+    <div class="card">
+      <div class="action">
+        <span class="n">1</span>
+        <div>
+          <h3 style="margin:0;">「なぜ欲しいと思ったか」を1つ棚卸しする</h3>
+          <p>直近で「限定」「残りわずか」「口コミで話題」などに惹かれて検討・購入した物や誘いを1つ思い出し、どの原理（希少性・社会的証明など）が働いていたかを書き出す。</p>
+          <div class="meta">🎯 目的: 自分の判断に働いた影響力の原理を自覚する／⏱ 約15分／💡 期待効果: 次に似た訴求を見たとき、冷静に一歩引いて判断できる</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="action">
+        <span class="n">2</span>
+        <div>
+          <h3 style="margin:0;">小さな依頼への返答を1つ見直す</h3>
+          <p>直前に受けた小さな親切・好意（おごり・手伝いなど）を1つ思い出し、それに対して「借りを返さなければ」という気持ちだけで行動していないかを確認する。</p>
+          <div class="meta">🎯 目的: 返報性に無自覚に動かされていないかを点検する／⏱ 約15分／💡 期待効果: 恩義と要求を分けて考えられるようになる</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="action">
+        <span class="n">3</span>
+        <div>
+          <h3 style="margin:0;">「誰が言ったか」より「何を言ったか」で判断する練習</h3>
+          <p>今日受け取った情報や依頼（SNS・ニュース・職場の指示など）を1つ選び、発信者の肩書きや権威を一旦外して、内容だけで妥当かどうかを紙に書いて検討する。</p>
+          <div class="meta">🎯 目的: 権威に対する無批判な服従傾向を自覚し、距離を取る練習をする／⏱ 約20分／💡 期待効果: 権威の象徴に流されず、内容そのものを評価できるようになる</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>📚 books-summary / 自動生成インフォグラフィック</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('nav.tabs button'));
+  var panels = {
+    'tab-concept':'panel-concept',
+    'tab-chapter':'panel-chapter',
+    'tab-example':'panel-example',
+    'tab-quote':'panel-quote',
+    'tab-action':'panel-action'
+  };
+  function select(id){
+    tabs.forEach(function(t){
+      var isSel = t.id === id;
+      t.setAttribute('aria-selected', isSel ? 'true' : 'false');
+      var panel = document.getElementById(panels[t.id]);
+      if(isSel){
+        panel.classList.add('active');
+        panel.removeAttribute('hidden');
+      } else {
+        panel.classList.remove('active');
+        panel.setAttribute('hidden','');
+      }
+    });
+  }
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ select(t.id); });
+  });
+})();
+</script>
+</body>
+</html>
