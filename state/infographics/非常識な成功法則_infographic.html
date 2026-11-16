@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>非常識な成功法則 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #ff6b35（情熱オレンジ）, セカンダリー #c81d52（闘争レッド）, アクセント #ffd23f（成功ゴールド） -->
+<style>
+  :root{
+    --primary:#ff6b35;
+    --secondary:#c81d52;
+    --accent:#ffd23f;
+    --text-dark:#2b2118;
+    --text-light:#7a6a5c;
+    --bg-light:#fff8f2;
+    --white:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    line-height:1.7;
+    color:var(--text-dark);
+    background:linear-gradient(135deg,var(--bg-light) 0%,#fdeee0 100%);
+    min-height:100vh;
+  }
+  .container{max-width:1100px;margin:0 auto;padding:16px;}
+  .header{
+    text-align:center;
+    padding:32px 18px;
+    background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);
+    border-radius:20px;
+    color:#fff;
+    box-shadow:0 10px 30px rgba(200,29,82,0.3);
+    margin-bottom:24px;
+  }
+  .header h1{font-size:clamp(1.6rem,5vw,2.4rem);font-weight:800;margin-bottom:8px;}
+  .header .author{font-size:1rem;opacity:.92;}
+  .badge-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:18px;}
+  .badge{background:rgba(255,255,255,.22);backdrop-filter:blur(6px);padding:8px 14px;border-radius:12px;font-size:.85rem;}
+
+  .hero{
+    background:var(--white);
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:24px;
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
+    border-top:6px solid var(--accent);
+  }
+  .hero h2{font-size:1.1rem;color:var(--secondary);margin-bottom:14px;}
+  .qa-row{display:flex;flex-direction:column;gap:12px;}
+  .qa-item{display:flex;gap:10px;align-items:flex-start;}
+  .qa-tag{flex:0 0 auto;font-weight:700;font-size:.85rem;padding:4px 10px;border-radius:8px;color:#fff;white-space:nowrap;}
+  .qa-tag.q{background:var(--primary);}
+  .qa-tag.a{background:var(--secondary);}
+  .qa-tag.w{background:#7a6a5c;}
+  .qa-text{font-size:.95rem;}
+
+  .stat-block{display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;}
+  .stat{flex:1 1 140px;background:var(--bg-light);border-radius:12px;padding:12px;text-align:center;}
+  .stat-num{font-size:1.6rem;font-weight:800;color:var(--secondary);display:block;}
+  .stat-label{font-size:.78rem;color:var(--text-light);}
+
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    background:var(--white);
+    border-radius:14px;
+    padding:6px;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+    margin-bottom:20px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-button{
+    flex:1 1 auto;
+    white-space:nowrap;
+    background:none;
+    border:none;
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:.85rem;
+    font-weight:700;
+    color:var(--text-light);
+    cursor:pointer;
+  }
+  .tab-button[aria-selected="true"]{
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#fff;
+  }
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  .card{
+    background:var(--white);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,.06);
+    border-left:5px solid var(--primary);
+  }
+  .card h3{font-size:1rem;color:var(--secondary);margin-bottom:8px;}
+  .card ul{padding-left:1.1em;}
+  .card li{margin-bottom:6px;font-size:.92rem;}
+  .why{
+    margin-top:10px;
+    background:#fff4e8;
+    border-radius:10px;
+    padding:8px 12px;
+    font-size:.85rem;
+    color:#8a5a2a;
+  }
+  .why strong{color:var(--secondary);}
+
+  .quote-card{
+    background:linear-gradient(135deg,#fff,#fff6ec);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:14px;
+    border-left:5px solid var(--accent);
+    box-shadow:0 4px 14px rgba(0,0,0,.05);
+  }
+  .quote-text{font-size:1rem;font-weight:700;color:var(--text-dark);margin-bottom:6px;}
+  .quote-note{font-size:.82rem;color:var(--text-light);}
+  .quote-note .flag{color:var(--secondary);font-weight:700;}
+
+  .action-card{
+    background:var(--white);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:0 6px 18px rgba(0,0,0,.06);
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 auto;
+    width:34px;height:34px;border-radius:50%;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;
+  }
+  .action-body h3{font-size:.95rem;margin-bottom:6px;}
+  .action-meta{font-size:.82rem;color:var(--text-light);margin-top:4px;}
+
+  .bar-chart{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+  .bar-row{display:flex;align-items:center;gap:8px;font-size:.82rem;}
+  .bar-label{flex:0 0 120px;color:var(--text-light);}
+  .bar-track{flex:1;background:#f1e4d8;border-radius:8px;height:14px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+
+  .related-card{
+    background:var(--white);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:10px;
+    border-left:4px solid var(--secondary);
+    font-size:.88rem;
+  }
+
+  footer{text-align:center;font-size:.78rem;color:var(--text-light);padding:24px 0 8px;}
+
+  @media (max-width:480px){
+    .qa-item{flex-direction:column;}
+    .stat-block{gap:10px;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>非常識な成功法則</h1>
+    <div class="author">神田昌典</div>
+    <div class="badge-row">
+      <span class="badge">🏷️ 自己啓発</span>
+      <span class="badge">📅 初版2002年刊・2011年新装版</span>
+      <span class="badge">📈 25万部超のロング・ベストセラー</span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h2>⚡ 要約 = 問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-item">
+        <span class="qa-tag q">問い</span>
+        <span class="qa-text">「ポジティブ思考」「努力」「人脈」だけでは報われないのはなぜか？</span>
+      </div>
+      <div class="qa-item">
+        <span class="qa-tag a">答え</span>
+        <span class="qa-text">嫉妬・怒り・劣等感といった「悪の感情」を否定せず、行動のエネルギーに変換すること。目標を無意識に刷り込み、情報収集と顧客選別を「非常識」なやり方で徹底する。</span>
+      </div>
+      <div class="qa-item">
+        <span class="qa-tag w">根拠</span>
+        <span class="qa-text">著者自身が外資系企業のサラリーマンから独立し、日本にダイレクトマーケティングを紹介して成功した実体験と、25万部を超えて読み継がれてきたロングセラーとしての実証。</span>
+      </div>
+    </div>
+    <div class="stat-block">
+      <div class="stat"><span class="stat-num">8</span><span class="stat-label">成功の習慣（原題副題）</span></div>
+      <div class="stat"><span class="stat-num">25万+</span><span class="stat-label">発行部数</span></div>
+      <div class="stat"><span class="stat-num">37歳</span><span class="stat-label">著者が本書を書いた年齢</span></div>
+      <div class="stat"><span class="stat-num">2002→2011</span><span class="stat-label">刊行→新装版</span></div>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+    <button class="tab-button" role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true" onclick="switchTab('concepts')">主要概念</button>
+    <button class="tab-button" role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false" onclick="switchTab('chapters')">各章の要約</button>
+    <button class="tab-button" role="tab" id="tab-examples" aria-controls="panel-examples" aria-selected="false" onclick="switchTab('examples')">具体例</button>
+    <button class="tab-button" role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false" onclick="switchTab('quotes')">重要な引用</button>
+    <button class="tab-button" role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false" onclick="switchTab('actions')">今日のアクション</button>
+  </div>
+
+  <div id="panel-concepts" class="tab-panel active" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>😠 悪の感情をエネルギーに変える</h3>
+      <ul>
+        <li>嫉妬・怒り・劣等感を否定せず、そのまま行動の燃料にする</li>
+        <li>「綺麗事」の成功談ではなく、成功前の「尖っていた時期」に注目する</li>
+        <li>感情を抑え込むより、向ける先を変える発想</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>ポジティブ思考だけに頼ると負の感情を抑圧し、むしろ行動力を失うから。</div>
+    </div>
+    <div class="card">
+      <h3>🚫 やりたくないことから逆算する</h3>
+      <ul>
+        <li>「やりたいこと探し」ではなく、先に「やりたくないこと」を書き出す</li>
+        <li>除外法によって、本当に進みたい方向が浮かび上がる</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>やりたいことは曖昧でも、やりたくないことは感覚的にはっきり分かることが多いから。</div>
+    </div>
+    <div class="card">
+      <h3>✍️ 自己暗示（目標を紙に書く）</h3>
+      <ul>
+        <li>目標を紙に書き、繰り返し眺める習慣をつける</li>
+        <li>意識的な努力の前に、無意識レベルで目標へのアンテナを立てる</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>無意識が情報を取捨選択する仕組みを使うと、意志力に依存せず行動が変わるから。</div>
+    </div>
+    <div class="card">
+      <h3>🎭 自分に都合のいい肩書きを持つ</h3>
+      <ul>
+        <li>実力以上に見える肩書きを先に名乗る</li>
+        <li>肩書きにふさわしい自己像・行動が後から追いついてくる</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>「ラベル」が自己認識と周囲の期待を先に動かし、本人の行動を引き上げるから。</div>
+    </div>
+    <div class="card">
+      <h3>📚 非常識的情報獲得術</h3>
+      <ul>
+        <li>「本・人・テープ（音声）」の3メディアから集中的に学ぶ</li>
+        <li>質の高い出会いと情報源を優先して選び抜く</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>情報と人との出会いの質が、成長スピードそのものを決めるから。</div>
+    </div>
+    <div class="card">
+      <h3>🦗 殿様バッタのセールス（客を選ぶ売り方）</h3>
+      <ul>
+        <li>「付き合いたくない客」を先に明確にする</li>
+        <li>価格競争を避け、少数の優良顧客との深い関係に集中する</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>全員に売ろうとすると価格競争と疲弊を招き、利益も信頼も失うから。</div>
+    </div>
+    <div class="card">
+      <h3>💌 ダイレクトマーケティングの発想</h3>
+      <ul>
+        <li>反応率やデータをもとに、感情に訴えるコピーで行動を促す</li>
+        <li>理屈ではなく感情が意思決定を動かすという前提に立つ</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>人は論理より感情で動くため、訴求の設計がビジネスの成果を左右するから。</div>
+    </div>
+  </div>
+
+  <div id="panel-chapters" class="tab-panel" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>序章｜成功は「悪」の感情から始まる</h3>
+      <ul><li>嫉妬・怒り・劣等感といった負の感情を否定せず、成功への出発点として捉え直す</li></ul>
+      <div class="why"><strong>理由：</strong>感情を敵視せず味方にする発想の転換が、以降の全習慣の土台になる。</div>
+    </div>
+    <div class="card">
+      <h3>第1の習慣｜やりたくないことを見つける</h3>
+      <ul><li>やりたいことではなく、やりたくないことを先に明確化する</li></ul>
+      <div class="why"><strong>理由：</strong>除外法で選択肢を絞ることで、進むべき方向が自然に見えてくる。</div>
+    </div>
+    <div class="card">
+      <h3>第2の習慣｜自分にかける催眠術（自己暗示）</h3>
+      <ul><li>目標を紙に書き、繰り返し目にすることで無意識に刷り込む</li></ul>
+      <div class="why"><strong>理由：</strong>意志力に頼らず、無意識の情報フィルターを目標仕様に書き換える。</div>
+    </div>
+    <div class="card">
+      <h3>第3の習慣｜自分に都合のいい肩書きを持つ</h3>
+      <ul><li>実力より少し大きい肩書きを先に名乗り、自己像を引き上げる</li></ul>
+      <div class="why"><strong>理由：</strong>肩書きが先に行動と評価の基準を作り、本人がそれに追いつく。</div>
+    </div>
+    <div class="card">
+      <h3>第4の習慣｜非常識的情報獲得術</h3>
+      <ul><li>本・人・テープ（音声）との出会いを通じて効率よく学ぶ</li></ul>
+      <div class="why"><strong>理由：</strong>情報源の質を上げることが、思考と行動の質を上げる最短経路になる。</div>
+    </div>
+    <div class="card">
+      <h3>第5の習慣｜殿様バッタのセールス</h3>
+      <ul><li>付き合いたくない客を明確化し、少数の優良客に集中する売り方</li></ul>
+      <div class="why"><strong>理由：</strong>客を選ぶことで価格競争から脱し、利益と信頼を両立できる。</div>
+    </div>
+    <div class="card">
+      <h3>第6〜8の習慣</h3>
+      <ul><li>副題「お金と自由をもたらす8つの習慣」の通り全8習慣構成だが、第6〜8の習慣の具体的な見出し・内容はWeb検索で確認できなかったため「不明」とする</li></ul>
+      <div class="why"><strong>理由：</strong>捏造を避け、確認できた範囲のみを正確に伝えるため。</div>
+    </div>
+  </div>
+
+  <div id="panel-examples" class="tab-panel" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="card">
+      <h3>① 著者自身の非常識な転身</h3>
+      <ul>
+        <li><strong>背景：</strong>37歳の神田氏が外資系企業のサラリーマンから独立し、米国のダイレクトマーケティングを日本に紹介した</li>
+        <li><strong>示唆（この例が示すこと）：</strong>常識的なキャリアパスを外れた選択でも、実践と検証を重ねれば十分な成果につながる</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>② 封筒を開けてもらう工夫（ティーザーコピー／グラバー）</h3>
+      <ul>
+        <li><strong>背景：</strong>ダイレクトメールは封筒の表面に続きを読みたくなるコピー（ティーザーコピー）を入れたり、同封物（グラバー）で開封を促す手法が重視される</li>
+        <li><strong>示唆（この例が示すこと）：</strong>どれだけ良い提案でも「最初の接触」で捨てられれば意味がない。入口の設計が成果を左右する</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>③ 「付き合いたくない客」を明確化する実践</h3>
+      <ul>
+        <li><strong>背景：</strong>価格だけで比較してくる客や無理な要求をしてくる客との取引を断り、少数の良質な顧客に集中するビジネスモデルを提示</li>
+        <li><strong>示唆（この例が示すこと）：</strong>全員に好かれようとする売り方は疲弊を招く。「断る」ことが長期的な成功につながる</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="panel-quotes" class="tab-panel" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote-card">
+      <div class="quote-text">「成功は『悪』の感情から始まる」</div>
+      <div class="quote-note"><span class="flag">※要旨</span>：妬みや怒り、劣等感といった負の感情を否定せず、それをバネにして行動することが成功の出発点になるという考え方。出版社紹介文の見出し表現で、本文の正確な原文は確認できなかった。</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">「まずはやりたくないことを探せ」</div>
+      <div class="quote-note"><span class="flag">※要旨</span>：やりたいことが分からなくても、やりたくないことを除外していけば自然と進むべき方向が見えてくるという考え方。</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">「嫌な客には頭を下げるな」</div>
+      <div class="quote-note"><span class="flag">※要旨</span>：売り手が買い手に無条件で媚びる必要はなく、価値観の合わない客との関係は切ってよいという、セールスに関する非常識な主張。</div>
+    </div>
+    <div class="bar-chart">
+      <div class="bar-row"><span class="bar-label">確認できた習慣</span><div class="bar-track"><div class="bar-fill" style="width:62%"></div></div><span>5/8章</span></div>
+      <div class="bar-row"><span class="bar-label">未確認（不明）</span><div class="bar-track"><div class="bar-fill" style="width:38%;background:linear-gradient(90deg,#d8cabb,#b8a690)"></div></div><span>3/8章</span></div>
+    </div>
+  </div>
+
+  <div id="panel-actions" class="tab-panel" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <h3>「やりたくないことリスト」を10個書き出す（15分）</h3>
+        <div class="action-meta"><strong>目的：</strong>感情的な抵抗を可視化し、逆算で本当にやりたい方向を見つける。</div>
+        <div class="action-meta"><strong>期待効果：</strong>進むべきでない選択肢が減り、意思決定の迷いが軽くなる。</div>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <h3>目標を1枚の紙に手書きし、スマホのロック画面裏か鏡に貼る（15分）</h3>
+        <div class="action-meta"><strong>目的：</strong>目標を無意識レベルまで刷り込む「自己暗示」を実践する。</div>
+        <div class="action-meta"><strong>期待効果：</strong>目標に関連する情報や機会に自然と気づきやすくなる。</div>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <h3>「嫌だけど付き合っている」人間関係・取引先を1つ選び、距離を置く方法をメモする（30分）</h3>
+        <div class="action-meta"><strong>目的：</strong>「殿様バッタのセールス」の発想を人間関係に応用し、エネルギーを消耗する関係を見直す。</div>
+        <div class="action-meta"><strong>期待効果：</strong>限られた時間と気力を、本当に大切な相手や仕事に再配分できる。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related-card">📚 関連書籍：思考は現実化する（ナポレオン・ヒル）／金持ち父さん貧乏父さん（ロバート・キヨサキ）／人を動かす（デール・カーネギー）／稼ぐ言葉の法則（神田昌典・衣田順一）／成功者の告白（神田昌典）</div>
+
+  <footer>📖 読書サマリー自動生成システム｜本インフォグラフィックはWeb検索で確認できた情報のみに基づいて作成しています</footer>
+</div>
+
+<script>
+function switchTab(name){
+  var tabs = ['concepts','chapters','examples','quotes','actions'];
+  tabs.forEach(function(t){
+    document.getElementById('panel-'+t).classList.toggle('active', t===name);
+    document.getElementById('tab-'+t).setAttribute('aria-selected', t===name ? 'true' : 'false');
+  });
+}
+</script>
+</body>
+</html>
