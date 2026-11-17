@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>経営戦略全史 | インフォグラフィック</title>
+<!--
+  カラーパレット
+  プライマリー: #1E3A5F (紺・ポジショニング派=市場を見る眼)
+  セカンダリー: #C9962F (金・100年の歴史の重み)
+  アクセント:   #2E8B74 (緑・ケイパビリティ派=内なる成長)
+  グラデーション: linear-gradient(135deg, #1E3A5F, #2E8B74)
+-->
+<style>
+  :root{
+    --primary:#1E3A5F;
+    --primary-light:#2C5282;
+    --secondary:#C9962F;
+    --secondary-light:#E0B94F;
+    --accent:#2E8B74;
+    --accent-light:#4FB49A;
+    --bg:#F7F5EF;
+    --card:#FFFFFF;
+    --ink:#1F2630;
+    --sub:#5A6472;
+    --line:#E4E0D6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Noto Sans JP",-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:16px 16px 48px;}
+
+  header.hero{
+    background:linear-gradient(135deg,var(--primary),var(--accent));
+    color:#fff;
+    padding:28px 20px 24px;
+    border-radius:0 0 20px 20px;
+    text-align:center;
+  }
+  header.hero .kicker{
+    font-size:13px;
+    letter-spacing:.1em;
+    opacity:.85;
+  }
+  header.hero h1{
+    font-size:26px;
+    margin:8px 0 4px;
+    font-weight:800;
+  }
+  header.hero .meta{font-size:14px;opacity:.9;}
+
+  .whyhow{
+    background:var(--card);
+    margin:-22px 0 20px;
+    border-radius:16px;
+    box-shadow:0 6px 18px rgba(30,58,95,.15);
+    padding:18px;
+    position:relative;
+    z-index:2;
+  }
+  .whyhow h2{
+    font-size:14px;
+    color:var(--secondary);
+    letter-spacing:.08em;
+    margin:0 0 10px;
+  }
+  .qa{display:flex;flex-direction:column;gap:10px;}
+  .qa .row{display:flex;gap:10px;align-items:flex-start;}
+  .qa .tag{
+    flex:0 0 auto;
+    font-size:12px;
+    font-weight:700;
+    color:#fff;
+    background:var(--primary);
+    border-radius:8px;
+    padding:3px 8px;
+    white-space:nowrap;
+  }
+  .qa .row.answer .tag{background:var(--accent);}
+  .qa .row.why .tag{background:var(--secondary);}
+  .qa p{margin:0;font-size:14.5px;}
+
+  .badge-row{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    margin:16px 0 20px;
+    padding-bottom:4px;
+  }
+  .badge{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:10px 14px;
+    text-align:center;
+    min-width:92px;
+  }
+  .badge .num{font-size:20px;font-weight:800;color:var(--primary);}
+  .badge .label{font-size:11px;color:var(--sub);margin-top:2px;}
+
+  nav.tabs{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    margin-bottom:16px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    border:none;
+    background:var(--card);
+    color:var(--sub);
+    font-size:13px;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    border:1px solid var(--line);
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+
+  section.panel{display:none;}
+  section.panel.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:12px;
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:16px;
+    color:var(--primary);
+    display:flex;
+    gap:6px;
+    align-items:center;
+  }
+  .card ul{margin:0;padding-left:1.1em;font-size:14px;}
+  .card li{margin-bottom:4px;}
+  .why-line{
+    margin-top:10px;
+    font-size:12.5px;
+    color:var(--accent);
+    background:#EAF6F1;
+    border-radius:8px;
+    padding:6px 10px;
+    font-weight:700;
+  }
+  .chip{
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    color:#fff;
+    background:var(--secondary);
+    border-radius:6px;
+    padding:2px 8px;
+    margin-right:6px;
+  }
+
+  .bars{margin-top:10px;}
+  .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+  .bar-row .bl{font-size:12px;width:92px;flex:0 0 auto;color:var(--sub);}
+  .bar-track{flex:1;background:#EDEAE0;border-radius:6px;height:14px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:6px;}
+  .bar-row .bv{font-size:12px;width:48px;text-align:right;color:var(--ink);font-weight:700;}
+
+  .quote{
+    border-left:4px solid var(--secondary);
+    background:#FBF6EA;
+    padding:12px 14px;
+    border-radius:0 10px 10px 0;
+    margin-bottom:12px;
+    font-size:14px;
+  }
+  .quote .src{font-size:12px;color:var(--sub);margin-top:6px;}
+
+  .action{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:12px;
+    border-radius:12px;
+    background:var(--card);
+    border:1px solid var(--line);
+    margin-bottom:10px;
+  }
+  .action .num-badge{
+    flex:0 0 auto;
+    width:28px;height:28px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;
+    font-size:13px;
+  }
+  .action .body p{margin:2px 0;font-size:13.5px;}
+  .action .body .effect{color:var(--accent);font-weight:700;}
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--sub);
+    margin-top:28px;
+  }
+
+  @media (min-width:600px){
+    header.hero h1{font-size:30px;}
+    .card h3{font-size:17px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">📚 今日の一冊 ・ ビジネス</div>
+    <h1>経営戦略全史</h1>
+    <div class="meta">著者：三谷宏治</div>
+  </header>
+
+  <div class="whyhow">
+    <h2>🔎 要約 — Why &amp; How</h2>
+    <div class="qa">
+      <div class="row question">
+        <span class="tag">問い</span>
+        <p>100年分の経営戦略論は数十も流派があって混乱する。結局どれを信じればいいのか？</p>
+      </div>
+      <div class="row answer">
+        <span class="tag">答え</span>
+        <p>すべては「外で勝つ」ポジショニング派と「内で勝つ」ケイパビリティ派の二大潮流に整理できる。どちらか一方だけでは企業は機能不全に陥る。</p>
+      </div>
+      <div class="row why">
+        <span class="tag">根拠</span>
+        <p>テイラー〜メイヨーから始まり、ポーターの市場分析とバーニーらの内部資源論が80年代を境に主導権を交代し、21世紀はアダプティブ戦略として両派が統合されてきた歴史がそれを示す。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="badge-row">
+    <div class="badge"><div class="num">約100年</div><div class="label">対象期間</div></div>
+    <div class="badge"><div class="num">90+</div><div class="label">戦略コンセプト</div></div>
+    <div class="badge"><div class="num">7+補</div><div class="label">章構成</div></div>
+    <div class="badge"><div class="num">3.7倍</div><div class="label">テイラーの改善効果</div></div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切替">
+    <button role="tab" id="tab-concepts" aria-selected="true" aria-controls="panel-concepts">🧩 主要概念</button>
+    <button role="tab" id="tab-chapters" aria-selected="false" aria-controls="panel-chapters" tabindex="-1">📖 各章の要約</button>
+    <button role="tab" id="tab-examples" aria-selected="false" aria-controls="panel-examples" tabindex="-1">💡 具体例</button>
+    <button role="tab" id="tab-quotes" aria-selected="false" aria-controls="panel-quotes" tabindex="-1">🗣️ 重要な引用</button>
+    <button role="tab" id="tab-actions" aria-selected="false" aria-controls="panel-actions" tabindex="-1">✅ 今日のアクション</button>
+  </nav>
+
+  <!-- 主要概念 -->
+  <section class="panel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3>⚙️ 科学的管理法（テイラー）</h3>
+      <ul>
+        <li>労使対立と作業員の怠業が常態化した工場・鉱山を、実験と計測で改善しようとした源流理論。</li>
+        <li>「最善の一つの方法」を見つけ、ムダな動作を排除することで生産性を定量的に高める。</li>
+        <li>近代マネジメントの出発点となった、数字と効率を重視する系譜の祖。</li>
+      </ul>
+      <div class="why-line">理由（なぜ重要か）：以後100年続く「分析して最適解を探す」経営思考の原型だから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🤝 人間関係論（メイヨー）</h3>
+      <ul>
+        <li>テイラーの効率重視に対し、職場の人間関係・感情・モチベーションが生産性を左右すると示した。</li>
+        <li>「定量的分析」と「人間的議論」という経営史の二大潮流のうち、後者の起点。</li>
+        <li>のちの組織論・リーダーシップ論の土台になった。</li>
+      </ul>
+      <div class="why-line">理由（なぜ重要か）：人を動かす経営は数字だけでは成立しないという視点を経営学に持ち込んだから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🎯 ポジショニング派</h3>
+      <ul>
+        <li>外部環境（市場・競合）を重視し、儲かる市場で有利な立場を取れば勝てると考える。</li>
+        <li>代表はマイケル・ポーター。5フォース分析やSWOT分析などの分析ツールを生んだ。</li>
+        <li>1960年代に始まり、1980年代までは経営戦略論の主流だった。</li>
+      </ul>
+      <div class="why-line">理由（なぜ重要か）：「どの戦場を選ぶか」という問いを体系化し、今も戦略立案の基本動作になっているから。</div>
+    </div>
+
+    <div class="card">
+      <h3>💪 ケイパビリティ派</h3>
+      <ul>
+        <li>自社の内部資源・組織能力を重視し、自社の強みがある領域で戦えば勝てると考える。</li>
+        <li>代表はジェイ・バーニー（資源ベース論）。コアコンピタンスやVRIOの発想につながる。</li>
+        <li>1980年代以降、ポジショニング派に代わって優勢になった。</li>
+      </ul>
+      <div class="why-line">理由（なぜ重要か）：外部環境が激変する時代、模倣されにくい「自社らしさ」が競争優位の源泉になるから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🌀 破壊的イノベーション（クリステンセン）</h3>
+      <ul>
+        <li>優良企業ほど既存顧客の声に応えすぎて、安価で粗い新技術に足元から崩される現象。</li>
+        <li>ケイパビリティ派の発展系として、組織の「強み」が「弱み」に反転する逆説を示す。</li>
+        <li>21世紀の経営環境を語る章の重要な補強理論。</li>
+      </ul>
+      <div class="why-line">理由（なぜ重要か）：成功企業が失敗するメカニズムを説明し、現代の新規事業論の基礎になっているから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🧭 アダプティブ戦略</h3>
+      <ul>
+        <li>市場分析（ポジショニング）と組織能力（ケイパビリティ）のどちらか一方ではなく、状況に応じて組み合わせる21世紀型の統合アプローチ。</li>
+        <li>ミンツバーグの「戦略サファリ」が挙げる10流派も、結局はこの2派に集約できると整理される。</li>
+        <li>変化の速い環境では「正解の戦略」より「学習しながら適応する戦略」が求められる。</li>
+      </ul>
+      <div class="why-line">理由（なぜ重要か）：本書最大の結論であり、現代の経営者が歴史から得るべき実践的な羅針盤だから。</div>
+    </div>
+
+  </section>
+
+  <!-- 各章の要約 -->
+  <section class="panel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+
+    <div class="card">
+      <h3><span class="chip">第1章</span>近代マネジメントの源流</h3>
+      <ul>
+        <li>テイラーの科学的管理法とメイヨーの人間関係論から経営学の歴史が始まる。</li>
+        <li>「定量的分析」と「人間的議論」という2本の川がここで分岐する。</li>
+      </ul>
+      <div class="why-line">理由：この2本の流れが、のちのポジショニング派・ケイパビリティ派双方の遠い祖先になるため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="chip">第2章</span>近代マネジメントの成立</h3>
+      <ul>
+        <li>ファヨルらによる組織運営の体系化で、経営を「管理する対象」として扱う土台ができる。</li>
+        <li>ドラッカーやチャンドラーら、近代経営学の礎を築いた論者が登場する。</li>
+      </ul>
+      <div class="why-line">理由：ここで経営学が「学問」として自立し、以後の戦略論の舞台が整うため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="chip">第3章</span>ポジショニング派の発展</h3>
+      <ul>
+        <li>アンゾフの成長戦略、ポーターの5フォース分析・SWOT分析など市場重視の理論が花開く。</li>
+        <li>1960〜80年代、経営戦略論の主流を形成した。</li>
+      </ul>
+      <div class="why-line">理由：「どこで戦うか」を論理的に選ぶ方法が、企業の戦略立案を初めて体系化したため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="chip">第4章</span>ケイパビリティ派の展開</h3>
+      <ul>
+        <li>バーニーの資源ベース論など、自社の内部資源・強みを戦略の起点に置く理論が台頭。</li>
+        <li>1980年代以降、ポジショニング派に代わって優勢に。</li>
+      </ul>
+      <div class="why-line">理由：外部環境の予測が難しくなるほど、「自社の強み」という不変の軸が重視されるようになるため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="chip">第5章</span>両派の統合</h3>
+      <ul>
+        <li>ポジショニングかケイパビリティかの二択ではなく、両方を併用する流れが生まれる。</li>
+        <li>互いに「相手の理論だけでは企業はダメになる」という実証研究も紹介される。</li>
+      </ul>
+      <div class="why-line">理由：現実の経営は市場分析と自社分析のどちらも欠かせないことが、学術的にも裏付けられたため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="chip">第6章</span>21世紀の経営環境と戦略論</h3>
+      <ul>
+        <li>クリステンセンの破壊的イノベーションなど、変化の速い環境に対応する理論が登場。</li>
+        <li>優良企業ほど新興勢力に足元を崩されるメカニズムが語られる。</li>
+      </ul>
+      <div class="why-line">理由：デジタル化・グローバル化で環境変化が加速し、従来理論の前提が崩れ始めたため。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="chip">第7章</span>アダプティブ戦略</h3>
+      <ul>
+        <li>市場分析と組織能力を状況に応じて組み合わせ、学習しながら戦略を更新していく考え方。</li>
+        <li>ミンツバーグの10流派も最終的にはこの枠組みに集約されると整理される。</li>
+      </ul>
+      <div class="why-line">理由：これが本書の到達点であり、現代の経営者への最終的な処方箋だから。</div>
+    </div>
+
+    <div class="card">
+      <h3><span class="chip">補章</span>全体を俯瞰するフレームワーク</h3>
+      <ul>
+        <li>90以上のコンセプトを1枚の地図として見返せるよう、俯瞰図として整理する。</li>
+        <li>自社の状況がどの流派・時代の理論に近いかを診断する使い方ができる。</li>
+      </ul>
+      <div class="why-line">理由：歴史を知識として終わらせず、実務での「使えるフレームワーク」に変換するための章だから。</div>
+    </div>
+
+  </section>
+
+  <!-- 具体例 -->
+  <section class="panel" id="panel-examples" role="tabpanel" aria-labelledby="tab-examples" hidden>
+
+    <div class="card">
+      <h3>🪨 テイラーのショベル作業研究</h3>
+      <ul>
+        <li>労使対立と怠業が広がる鉱山・工場で、ショベルの動作そのものを研究・最適化。</li>
+        <li>結果として生産性が3.7倍に向上したと伝えられる。</li>
+      </ul>
+      <div class="bars">
+        <div class="bar-row">
+          <div class="bl">改善前</div>
+          <div class="bar-track"><div class="bar-fill" style="width:27%;background:var(--secondary-light);"></div></div>
+          <div class="bv">1.0x</div>
+        </div>
+        <div class="bar-row">
+          <div class="bl">改善後</div>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--primary);"></div></div>
+          <div class="bv">3.7x</div>
+        </div>
+      </div>
+      <div class="why-line">理由（この例が示すこと）：経営改善は精神論ではなく、観察と計測から始まることを証明した最初期の事例だから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🏔️ ポーターの5フォース分析</h3>
+      <ul>
+        <li>「新規参入の脅威」「代替品の脅威」「買い手・売り手の交渉力」「既存競合の脅威」の5つで業界の魅力度を分析する。</li>
+        <li>儲かりやすい市場構造を見極めてから戦うべき場所を選ぶ、ポジショニング派の代表的な実践ツール。</li>
+      </ul>
+      <div class="why-line">理由（この例が示すこと）：感覚ではなく構造で「勝てる市場」を判断する方法を具体化したから。</div>
+    </div>
+
+    <div class="card">
+      <h3>💾 クリステンセンの破壊的イノベーション</h3>
+      <ul>
+        <li>優良企業ほど既存の優良顧客の声に応えようとし、性能は低いが安価な新技術・新興企業の台頭を見過ごす。</li>
+        <li>結果として業界のリーダーが新興勢力に市場を奪われる現象が繰り返し起きる。</li>
+      </ul>
+      <div class="why-line">理由（この例が示すこと）：「強み」であったはずの顧客志向が、環境が変わると「弱み」に反転することを示したから。</div>
+    </div>
+
+    <div class="card">
+      <h3>🗺️ ミンツバーグ「戦略サファリ」の10流派の整理</h3>
+      <ul>
+        <li>経営戦略論は細分化すると10の流派に分かれるとされていたが、本書はこれを「ポジショニング派」「ケイパビリティ派」の2つに再整理した。</li>
+      </ul>
+      <div class="why-line">理由（この例が示すこと）：複雑に見える理論群も、大きな軸で捉え直せば実務で使いやすくなることを示す例だから。</div>
+    </div>
+
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="panel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+
+    <div class="quote">
+      要旨：経営戦略論の歴史は、1960年代に始まったポジショニング派が1980年代まで優勢を占め、それ以降はケイパビリティ派が優勢になった、という大きな流れで捉えられる。
+      <div class="src">— 本書の基本的な見取り図（要旨）</div>
+    </div>
+
+    <div class="quote">
+      要旨：ポジショニング派は外部環境を重視し、儲かる市場で儲かる立場を取れば勝てると論じる。ケイパビリティ派は内部環境を重視し、自社に強みがある領域で戦えば勝てると論じる。両派は互いに、相手の戦略論だけでは企業は立ち行かなくなるという研究成果を示している。
+      <div class="src">— 二大潮流の対立構造（要旨）</div>
+    </div>
+
+    <div class="quote">
+      要旨：戦略は一つのパターンに固定できるものではなく、状況に応じて複数の理論・流派を組み合わせて使うべきである。
+      <div class="src">— ミンツバーグの考え方の紹介（要旨）</div>
+    </div>
+
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="panel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+
+    <div class="action">
+      <div class="num-badge">1</div>
+      <div class="body">
+        <p><strong>⏱️ 15分｜自分の仕事を2つの視点で書き出す</strong></p>
+        <p>紙に「外部環境（市場・競合・チャンスがある場所）」と「内部資源（自分の強み・得意分野）」を分けて、今の仕事や案件をそれぞれ5分ずつ書き出す。</p>
+        <p>目的：ポジショニング思考とケイパビリティ思考を自分ごとで体感する。</p>
+        <p class="effect">期待効果：自分がどちらの視点に偏りがちかが明確になり、抜けている視点を補える。</p>
+      </div>
+    </div>
+
+    <div class="action">
+      <div class="num-badge">2</div>
+      <div class="body">
+        <p><strong>⏱️ 10分｜ミニ5フォース分析をやってみる</strong></p>
+        <p>自分の業界・職種について「新規参入」「代替手段」「交渉力を持つ相手」「既存の競合」を1行ずつメモする。</p>
+        <p>目的：ポジショニング派の基本ツールを小さく体験する。</p>
+        <p class="effect">期待効果：自分の市場での立ち位置や、見落としていたリスクに気づける。</p>
+      </div>
+    </div>
+
+    <div class="action">
+      <div class="num-badge">3</div>
+      <div class="body">
+        <p><strong>⏱️ 15分｜自分の「コアコンピタンス」を3つ言語化する</strong></p>
+        <p>他の人には簡単に真似できない、自分や自分のチームの強みを3つ書き出し、それを今の仕事にどう活かせているか1行ずつ添える。</p>
+        <p>目的：ケイパビリティ派の発想を自分の強み発見に応用する。</p>
+        <p class="effect">期待効果：市場環境が変わっても揺らがない、自分の競争優位の軸を自覚できる。</p>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>📚 Daily Reading Summary ・ 経営戦略全史（三谷宏治）</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){
+        t.setAttribute('aria-selected','false');
+        t.setAttribute('tabindex','-1');
+        var p = document.getElementById(t.getAttribute('aria-controls'));
+        p.classList.remove('active');
+        p.setAttribute('hidden','');
+      });
+      tab.setAttribute('aria-selected','true');
+      tab.setAttribute('tabindex','0');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      panel.classList.add('active');
+      panel.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+</body>
+</html>
