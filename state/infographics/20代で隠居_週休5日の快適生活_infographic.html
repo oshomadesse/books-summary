@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20代で隠居 週休5日の快適生活 - インフォグラフィック</title>
+<!-- カラーパレット: プライマリー #4d7c6f（抹茶グリーン）, セカンダリー #2f4a42（深緑）, アクセント #d4a84a（陽だまりゴールド） -->
+<style>
+  :root{
+    --primary:#4d7c6f;
+    --secondary:#2f4a42;
+    --accent:#d4a84a;
+    --text-dark:#263230;
+    --text-light:#71837e;
+    --bg-light:#f5f8f6;
+    --white:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    line-height:1.7;
+    color:var(--text-dark);
+    background:linear-gradient(135deg,var(--bg-light) 0%,#e9f0ea 100%);
+    min-height:100vh;
+  }
+  .container{max-width:1100px;margin:0 auto;padding:16px;}
+  .header{
+    text-align:center;
+    padding:32px 18px;
+    background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);
+    border-radius:20px;
+    color:#fff;
+    box-shadow:0 10px 30px rgba(47,74,66,0.3);
+    margin-bottom:24px;
+  }
+  .header h1{font-size:clamp(1.4rem,5vw,2.2rem);font-weight:800;margin-bottom:8px;}
+  .header .author{font-size:1rem;opacity:.92;}
+  .badge-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:18px;}
+  .badge{background:rgba(255,255,255,.22);backdrop-filter:blur(6px);padding:8px 14px;border-radius:12px;font-size:.85rem;}
+
+  .hero{
+    background:var(--white);
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:24px;
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
+    border-top:6px solid var(--accent);
+  }
+  .hero h2{font-size:1.1rem;color:var(--secondary);margin-bottom:14px;}
+  .qa-row{display:flex;flex-direction:column;gap:12px;}
+  .qa-item{display:flex;gap:10px;align-items:flex-start;}
+  .qa-tag{flex:0 0 auto;font-weight:700;font-size:.85rem;padding:4px 10px;border-radius:8px;color:#fff;white-space:nowrap;}
+  .qa-tag.q{background:var(--primary);}
+  .qa-tag.a{background:var(--secondary);}
+  .qa-tag.w{background:#71837e;}
+  .qa-text{font-size:.95rem;}
+
+  .stat-block{display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;}
+  .stat{flex:1 1 140px;background:var(--bg-light);border-radius:12px;padding:12px;text-align:center;}
+  .stat-num{font-size:1.5rem;font-weight:800;color:var(--secondary);display:block;}
+  .stat-label{font-size:.78rem;color:var(--text-light);}
+
+  .tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    background:var(--white);
+    border-radius:14px;
+    padding:6px;
+    box-shadow:0 5px 18px rgba(0,0,0,.08);
+    margin-bottom:20px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tab-button{
+    flex:1 1 auto;
+    white-space:nowrap;
+    background:none;
+    border:none;
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:.85rem;
+    font-weight:700;
+    color:var(--text-light);
+    cursor:pointer;
+  }
+  .tab-button[aria-selected="true"]{
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#fff;
+  }
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  .card{
+    background:var(--white);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,.06);
+    border-left:5px solid var(--primary);
+  }
+  .card h3{font-size:1rem;color:var(--secondary);margin-bottom:8px;}
+  .card ul{padding-left:1.1em;}
+  .card li{margin-bottom:6px;font-size:.92rem;}
+  .why{
+    margin-top:10px;
+    background:#eef5f0;
+    border-radius:10px;
+    padding:8px 12px;
+    font-size:.85rem;
+    color:#2f5c4c;
+  }
+  .why strong{color:var(--secondary);}
+
+  .quote-card{
+    background:linear-gradient(135deg,#fff,#fbf6e9);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:14px;
+    border-left:5px solid var(--accent);
+    box-shadow:0 4px 14px rgba(0,0,0,.05);
+  }
+  .quote-text{font-size:1rem;font-weight:700;color:var(--text-dark);margin-bottom:6px;}
+  .quote-note{font-size:.82rem;color:var(--text-light);}
+  .quote-note .flag{color:var(--secondary);font-weight:700;}
+
+  .action-card{
+    background:var(--white);
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:0 6px 18px rgba(0,0,0,.06);
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+  }
+  .action-num{
+    flex:0 0 auto;
+    width:34px;height:34px;border-radius:50%;
+    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;
+  }
+  .action-body h3{font-size:.95rem;margin-bottom:6px;}
+  .action-meta{font-size:.82rem;color:var(--text-light);margin-top:4px;}
+
+  .bar-chart{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+  .bar-row{display:flex;align-items:center;gap:8px;font-size:.82rem;}
+  .bar-label{flex:0 0 120px;color:var(--text-light);}
+  .bar-track{flex:1;background:#e2ebe4;border-radius:8px;height:14px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--primary),var(--accent));}
+
+  .related-card{
+    background:var(--white);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:10px;
+    border-left:4px solid var(--secondary);
+    font-size:.88rem;
+  }
+
+  footer{text-align:center;font-size:.78rem;color:var(--text-light);padding:24px 0 8px;}
+
+  @media (max-width:480px){
+    .qa-item{flex-direction:column;}
+    .stat-block{gap:10px;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>20代で隠居 週休5日の快適生活</h1>
+    <div class="author">大原扁理</div>
+    <div class="badge-row">
+      <span class="badge">🏷️ ライフスタイル</span>
+      <span class="badge">📅 2015年4月刊（K&amp;Bパブリッシャーズ）</span>
+      <span class="badge">📖 文庫版『思い立ったら隠居』（ちくま文庫・2020）</span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h2>⚡ 要約 = 問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-item">
+        <span class="qa-tag q">問い</span>
+        <span class="qa-text">お金がなければ、人は本当に生きていけないのか？働き続けなければ、暮らしは成り立たないのか？</span>
+      </div>
+      <div class="qa-item">
+        <span class="qa-tag a">答え</span>
+        <span class="qa-text">消費・労働・社会とのつながりを必要最低限にまで削る「隠居」という生き方を自分で選べば、年収100万円以下・貯金30万円前後でも十分に満たされた暮らしができる。週2日だけ働き、残り5日を自分の時間に使うことで、お金よりも時間とこころの自由を手に入れられる。</span>
+      </div>
+      <div class="qa-item">
+        <span class="qa-tag w">根拠</span>
+        <span class="qa-text">著者自身が25歳から31歳までの6年間、東京で実際に週2日労働・月の生活費6〜7万円という暮らしを続けた実体験。その後も台湾移住や続編の刊行を通じて、同じ生き方を異なる土地で再現し続けている。</span>
+      </div>
+    </div>
+    <div class="stat-block">
+      <div class="stat"><span class="stat-num">6年</span><span class="stat-label">東京での隠居生活期間（25〜31歳）</span></div>
+      <div class="stat"><span class="stat-num">週2日</span><span class="stat-label">労働日数（残り5日は隠居）</span></div>
+      <div class="stat"><span class="stat-num">100万円</span><span class="stat-label">年収のおおよその上限</span></div>
+      <div class="stat"><span class="stat-num">6〜7万円</span><span class="stat-label">月の生活費の目安（東京時代）</span></div>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="インフォグラフィックのタブ">
+    <button class="tab-button" role="tab" id="tab-concepts" aria-controls="panel-concepts" aria-selected="true" onclick="switchTab('concepts')">主要概念</button>
+    <button class="tab-button" role="tab" id="tab-chapters" aria-controls="panel-chapters" aria-selected="false" onclick="switchTab('chapters')">各章の要約</button>
+    <button class="tab-button" role="tab" id="tab-examples" aria-controls="panel-examples" aria-selected="false" onclick="switchTab('examples')">具体例</button>
+    <button class="tab-button" role="tab" id="tab-quotes" aria-controls="panel-quotes" aria-selected="false" onclick="switchTab('quotes')">重要な引用</button>
+    <button class="tab-button" role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false" onclick="switchTab('actions')">今日のアクション</button>
+  </div>
+
+  <div id="panel-concepts" class="tab-panel active" role="tabpanel" aria-labelledby="tab-concepts">
+    <div class="card">
+      <h3>🏠 隠居の定義</h3>
+      <ul>
+        <li>「消費、労働、社会とのつながりを必要最低限にして暮らす」こと（著者自身の定義）</li>
+        <li>年齢や「引退」とは無関係に、20代からでも選べる生き方として提示される</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>隠居を特別な属性ではなく、誰でも選べる暮らし方の一つとして再定義しているから。</div>
+    </div>
+    <div class="card">
+      <h3>📅 週休5日・週2日労働</h3>
+      <ul>
+        <li>介護の仕事を週2日だけ担当し、残り5日を自分の時間として確保</li>
+        <li>収入の最大化より、使える時間の最大化を優先する発想</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>働く日数を減らすこと自体が目的ではなく、時間の使い方の自由度を上げる手段だと分かるから。</div>
+    </div>
+    <div class="card">
+      <h3>💴 年収100万円以下・貯金30万円前後</h3>
+      <ul>
+        <li>多くの貯金や高い収入がなくても暮らしは成立するという実例</li>
+        <li>臨時収入（翻訳・ライター仕事）は貯金や小さな贅沢に回す</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>「お金がないと不安」という前提そのものを、実体験によって問い直しているから。</div>
+    </div>
+    <div class="card">
+      <h3>🌏 お金は世界全体で循環するもの</h3>
+      <ul>
+        <li>お金を「自分だけが所有するもの」ではなく、世界全体で循環しているものと捉える</li>
+        <li>この捉え方に変わったことで気持ちが楽になったと語る</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>所有という発想を手放すことが、お金への不安そのものを和らげるから。</div>
+    </div>
+    <div class="card">
+      <h3>🍚 隠居食</h3>
+      <ul>
+        <li>忙しいと食事がおろそかになるが、ヒマになると自然と食への興味が湧く</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>時間の余裕が暮らしの質、特に食生活に直接影響することを示すから。</div>
+    </div>
+    <div class="card">
+      <h3>🚶 携帯電話なし・徒歩と自転車移動</h3>
+      <ul>
+        <li>固定費を減らすため携帯電話を持たず、移動は徒歩か自転車が基本</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>情報と移動の速度を落とすこと自体が、隠居生活の心地よさを支えているから。</div>
+    </div>
+    <div class="card">
+      <h3>🧘 3年間のひきこもり経験</h3>
+      <ul>
+        <li>隠居に至る前段階として3年間ひきこもった経験があり、「口が退化しはじめる」ほど人と話さなくなった時期も描かれる</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>隠居は思いつきの選択ではなく、自己観察の期間を経て選び取られたものだと分かるから。</div>
+    </div>
+    <div class="card">
+      <h3>🔄 臨時収入の使い方</h3>
+      <ul>
+        <li>友人から受けた翻訳・ライター仕事の収入は、貯金や日帰り温泉などの費用にあてる</li>
+      </ul>
+      <div class="why"><strong>なぜ重要か：</strong>「増やす」より「使い道を先に決めておく」ことで、臨時のお金に振り回されず心の余裕を保てるから。</div>
+    </div>
+  </div>
+
+  <div id="panel-chapters" class="tab-panel" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3>第1章｜隠居って、こんな感じ</h3>
+      <ul><li>一日の過ごし方や「隠居とは何か」という定義を紹介。週2日だけ働き、残り5日は何もしない生活の実態を描く</li></ul>
+      <div class="why"><strong>理由：</strong>抽象的な「隠居」のイメージを具体的な一日の時間の使い方で示すことで、読者が自分にも可能かを判断できるから。</div>
+    </div>
+    <div class="card">
+      <h3>第2章｜隠居食のこと</h3>
+      <ul><li>忙しいと食事がおろそかになりがちだが、ヒマになると自然と食への興味が湧いてくるという体験を紹介</li></ul>
+      <div class="why"><strong>理由：</strong>時間の余裕が暮らしの質を直接左右することを示す具体例だから。</div>
+    </div>
+    <div class="card">
+      <h3>第3章｜隠居に至るまで</h3>
+      <ul><li>3年間のひきこもり生活や、口が退化しはじめると感じた経験など、隠居生活に至る前段階の試行錯誤を描く</li></ul>
+      <div class="why"><strong>理由：</strong>著者の隠居が思いつきではなく、自己観察期間を経て選び取られたものだと分かるから。</div>
+    </div>
+    <div class="card">
+      <h3>第4章｜隠居あれこれ</h3>
+      <ul><li>「お金がないと生きていけないのか」という社会の思い込みへの疑問や、ホームレスの人に会いに行った経験など、隠居生活を支える価値観を語る</li></ul>
+      <div class="why"><strong>理由：</strong>お金や労働に対する社会的な「常識」を問い直す、本書の思想的な核心部分だから。</div>
+    </div>
+  </div>
+
+  <div id="panel-examples" class="tab-panel" role="tabpanel" aria-labelledby="tab-examples">
+    <div class="card">
+      <h3>① 月7万円の家賃と労働への違和感</h3>
+      <ul>
+        <li><strong>背景：</strong>東京でシェアハウスの四畳半に住み、月7万円の家賃を払うためだけに働き続けることに疑問を持ったのが隠居のきっかけ</li>
+        <li><strong>示唆（この例が示すこと）：</strong>固定費、特に住居費を見直すことが、働き方そのものを見直す入り口になる</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>② 週2日労働・週5日休みという時間配分</h3>
+      <ul>
+        <li><strong>背景：</strong>介護の仕事を週2日だけ担当し、残り5日を自分の時間として確保する生活リズムを実践</li>
+        <li><strong>示唆（この例が示すこと）：</strong>収入を最大化するより、使える時間を最大化する方が満足度につながる場合がある</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>③ 臨時収入の扱い方</h3>
+      <ul>
+        <li><strong>背景：</strong>友人から受けた翻訳やライターの仕事で得た臨時収入は、貯金に回したり日帰り温泉に行く費用にしたりしていた</li>
+        <li><strong>示唆（この例が示すこと）：</strong>「使い道を決めておく」ことで、臨時のお金に振り回されず心の余裕を保てる</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>④ 台湾への移住という実験</h3>
+      <ul>
+        <li><strong>背景：</strong>東京での隠居生活が海外でも成立するかを確かめたくなり、ワーキングホリデービザで2016年秋に台湾へ移住</li>
+        <li><strong>示唆（この例が示すこと）：</strong>「隠居」という生き方は特定の土地に縛られた特殊事情ではなく、どこでも再現できる考え方として示されている</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="panel-quotes" class="tab-panel" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote-card">
+      <div class="quote-text">「消費、労働、社会とのつながりを必要最低限にして暮らす」</div>
+      <div class="quote-note"><span class="flag">※要旨</span>：著者が「隠居」を自分なりに定義した言葉として複数のインタビュー記事で紹介されている。本文の正確な表記までは一次資料で確認できなかったため要旨として扱う。</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">「自分がお金を所有しているんじゃなく、世界全体でお金を所有しているんだと思うようになったら、気持ちが楽になった」</div>
+      <div class="quote-note"><span class="flag">※要旨</span>：お金との向き合い方についての著者発言として、インタビュー記事で紹介されている。</div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text">「月7万円の家賃を払うために働き続けることがつらかった」</div>
+      <div class="quote-note"><span class="flag">※要旨</span>：隠居という生き方を選んだきっかけについて、著者がインタビューで語った内容。</div>
+    </div>
+    <div class="bar-chart" aria-label="1週間の労働日と隠居日の割合">
+      <div class="bar-row"><span class="bar-label">労働日</span><div class="bar-track"><div class="bar-fill" style="width:29%"></div></div><span>週2日</span></div>
+      <div class="bar-row"><span class="bar-label">隠居日（休み）</span><div class="bar-track"><div class="bar-fill" style="width:71%;background:linear-gradient(90deg,#2f4a42,#d4a84a)"></div></div><span>週5日</span></div>
+    </div>
+  </div>
+
+  <div id="panel-actions" class="tab-panel" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="action-card">
+      <div class="action-num">1</div>
+      <div class="action-body">
+        <h3>今月の固定費（家賃・携帯代・サブスクなど）を全部書き出し、「本当に必要か」を1つずつチェックする（20分）</h3>
+        <div class="action-meta"><strong>目的：</strong>月7万円の家賃に疑問を持った著者のように、自分の固定費の中身を可視化する。</div>
+        <div class="action-meta"><strong>期待効果：</strong>削れる固定費が見つかり、働く時間を減らせる余地が具体的に分かる。</div>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">2</div>
+      <div class="action-body">
+        <h3>「週2日だけ働くとしたら、残り5日をどう過ごすか」を紙に書き出してみる（15分）</h3>
+        <div class="action-meta"><strong>目的：</strong>労働時間を減らした先の生活イメージを具体化する。</div>
+        <div class="action-meta"><strong>期待効果：</strong>「働かない時間」への漠然とした不安が、過ごし方の具体案に変わる。</div>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">3</div>
+      <div class="action-body">
+        <h3>今日は移動を徒歩か自転車に切り替え、スマホを見る回数を意識的に減らしてみる（30分〜）</h3>
+        <div class="action-meta"><strong>目的：</strong>携帯電話を持たず徒歩・自転車移動だった著者の暮らし方を疑似体験する。</div>
+        <div class="action-meta"><strong>期待効果：</strong>情報と移動のスピードを落とすことで、普段気づかない時間の余白に気づける。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related-card">📚 関連書籍：週4時間だけ働く。（ティモシー・フェリス）／ウォールデン 森の生活（ヘンリー・デイヴィッド・ソロー）／自分の時間を取り戻そう（ちきりん）／限りある時間の使い方（オリバー・バークマン）／デジタル・ミニマリズム（カル・ニューポート）</div>
+
+  <footer>📖 読書サマリー自動生成システム｜本インフォグラフィックはWeb検索で確認できた情報のみに基づいて作成しています</footer>
+</div>
+
+<script>
+function switchTab(name){
+  var tabs = ['concepts','chapters','examples','quotes','actions'];
+  tabs.forEach(function(t){
+    document.getElementById('panel-'+t).classList.toggle('active', t===name);
+    document.getElementById('tab-'+t).setAttribute('aria-selected', t===name ? 'true' : 'false');
+  });
+}
+</script>
+</body>
+</html>
