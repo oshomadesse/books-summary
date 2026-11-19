@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>頭に来てもアホとは戦うな! — 読書インフォグラフィック</title>
+<!--
+  カラーパレット（確定仕様コメント）
+  - プライマリー: #1F3A5F（深い紺＝冷静さ・戦略）
+  - セカンダリー: #D9480F（燃えるオレンジ＝頭に来る怒り）
+  - アクセント: #FFB703（金＝知恵・処世術）
+  グラデーション: linear-gradient(135deg, #1F3A5F 0%, #2C5282 100%)
+-->
+<style>
+  :root{
+    --primary:#1F3A5F;
+    --primary-light:#2C5282;
+    --secondary:#D9480F;
+    --accent:#FFB703;
+    --bg:#F7F5F0;
+    --card:#FFFFFF;
+    --text:#222733;
+    --text-sub:#5A5F6B;
+    --border:#E4E0D8;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 16px 48px;}
+  header.hero{
+    background:linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color:#fff;
+    padding:36px 16px 28px;
+    border-radius:0 0 28px 28px;
+    margin-bottom:20px;
+  }
+  header.hero .cat{
+    display:inline-block;
+    background:var(--accent);
+    color:#3a2c00;
+    font-weight:700;
+    font-size:0.8rem;
+    padding:4px 12px;
+    border-radius:999px;
+    margin-bottom:12px;
+  }
+  header.hero h1{
+    font-size:1.5rem;
+    margin:0 0 8px;
+    line-height:1.4;
+  }
+  header.hero .author{
+    font-size:0.95rem;
+    opacity:0.9;
+  }
+  .stats-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:18px 0 0;
+  }
+  .stat-badge{
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.3);
+    border-radius:12px;
+    padding:8px 12px;
+    font-size:0.78rem;
+    flex:1 1 130px;
+    text-align:center;
+  }
+  .stat-badge .num{
+    display:block;
+    font-size:1.15rem;
+    font-weight:800;
+    color:var(--accent);
+  }
+  .hero-why{
+    background:var(--card);
+    border:2px solid var(--accent);
+    border-radius:var(--radius);
+    padding:18px;
+    margin-bottom:24px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+  }
+  .hero-why h2{
+    font-size:1rem;
+    margin:0 0 12px;
+    color:var(--primary);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .why-grid{display:grid;gap:10px;}
+  .why-item{
+    background:var(--bg);
+    border-left:4px solid var(--secondary);
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:0.88rem;
+  }
+  .why-item b{color:var(--primary);display:block;margin-bottom:3px;font-size:0.8rem;}
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin-bottom:18px;
+    padding-bottom:4px;
+    -webkit-overflow-scrolling:touch;
+  }
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+    font-size:0.82rem;
+    font-weight:700;
+    padding:10px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+  section.tabpanel{display:none;}
+  section.tabpanel.active{display:block;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:0 1px 6px rgba(0,0,0,0.04);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:1rem;
+    color:var(--primary);
+    display:flex;
+    gap:6px;
+    align-items:center;
+  }
+  .card ul{margin:8px 0 0;padding-left:1.2em;font-size:0.9rem;}
+  .card li{margin-bottom:4px;}
+  .why-tag{
+    display:inline-block;
+    margin-top:10px;
+    background:#FFF3DE;
+    color:#7A4E00;
+    border-radius:8px;
+    padding:6px 10px;
+    font-size:0.8rem;
+    font-weight:700;
+  }
+  .meter{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:6px 0;
+    font-size:0.82rem;
+  }
+  .meter .bar{
+    flex:1;
+    height:10px;
+    background:var(--border);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .meter .fill{
+    height:100%;
+    background:linear-gradient(90deg, var(--secondary), var(--accent));
+  }
+  blockquote{
+    margin:0 0 14px;
+    padding:14px 16px;
+    background:#FFF8EC;
+    border-left:4px solid var(--accent);
+    border-radius:8px;
+    font-size:0.92rem;
+    font-style:italic;
+  }
+  blockquote .src{
+    display:block;
+    margin-top:8px;
+    font-style:normal;
+    font-size:0.78rem;
+    color:var(--text-sub);
+  }
+  .note-caveat{
+    font-size:0.78rem;
+    color:var(--text-sub);
+    background:#F0F0ED;
+    border-radius:8px;
+    padding:8px 10px;
+    margin-bottom:12px;
+  }
+  .action-step{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+  }
+  .action-step .n{
+    flex:0 0 28px;
+    height:28px;
+    border-radius:50%;
+    background:var(--secondary);
+    color:#fff;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:0.85rem;
+  }
+  .related-item{font-size:0.9rem;margin-bottom:10px;}
+  .related-item b{color:var(--primary);}
+  footer{
+    text-align:center;
+    font-size:0.75rem;
+    color:var(--text-sub);
+    margin-top:30px;
+  }
+  @media (min-width:700px){
+    header.hero h1{font-size:1.9rem;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="cat">🏷️ 自己啓発</span>
+    <h1>🧠 頭に来てもアホとは戦うな!</h1>
+    <div class="author">👤 田村耕太郎</div>
+    <div class="stats-row">
+      <div class="stat-badge"><span class="num">41万部+</span>発行部数（2018年6月末時点）</div>
+      <div class="stat-badge"><span class="num">85万部+</span>シリーズ累計（続編刊行時の紹介）</div>
+      <div class="stat-badge"><span class="num">2018年</span>朝日新聞出版より刊行</div>
+      <div class="stat-badge"><span class="num">5つ</span>「戦いやすい人」の特徴</div>
+    </div>
+  </header>
+
+  <div class="hero-why">
+    <h2>⚡ 要約＝問い×答え×根拠（Why &amp; How）</h2>
+    <div class="why-grid">
+      <div class="why-item">
+        <b>❓ 問い</b>
+        理不尽に自分を攻撃してくる「アホ」にどう向き合えば、人生の時間とエネルギーを無駄にせずに済むのか？
+      </div>
+      <div class="why-item">
+        <b>✅ 答え</b>
+        正面から戦わない。反応しない・受け流す・相手の力を利用する・味方につけるという「戦わずに勝つ」戦略を選び、限られた資源を自分の目標に使う。
+      </div>
+      <div class="why-item">
+        <b>📐 根拠（Why）</b>
+        時間・エネルギー・タイミングは一度しかない人生を謳歌するための有限の財産であり、アホとの消耗戦はこの財産をもっとも非効率に浪費する行為だから。著者自身が「アホと戦う最低のアホ」だった経験から得た教訓として語られている。
+      </div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="インフォグラフィックのセクション">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🔑 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 各章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">💡 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">💬 重要な引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </nav>
+
+  <!-- 主要概念の詳細 -->
+  <section class="tabpanel active" id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts">
+
+    <div class="card">
+      <h3>🙅 「アホ」の定義</h3>
+      <ul>
+        <li>成果や成長に関係なく、意味なく他人に干渉し足を引っ張る人物を指す機能的な分類。</li>
+        <li>知性の優劣の話ではなく、「理不尽に絡んでくる人」という役割に注目した呼び名。</li>
+      </ul>
+      <span class="why-tag">理由: 相手を「人格」として全否定するのではなく「対処すべき現象」として捉え直すことで、冷静な戦略思考が可能になる。</span>
+    </div>
+
+    <div class="card">
+      <h3>⏳ 時間・エネルギー・タイミングの経済学</h3>
+      <ul>
+        <li>時間・エネルギー・タイミングは、たった一度の人生を謳歌するための「限られた財産」。</li>
+        <li>アホとの消耗戦は、この財産をもっとも非効率に浪費する行為とされる。</li>
+      </ul>
+      <div class="meter"><span>⏱️ アホとの戦いに投資する価値</span></div>
+      <div class="meter">
+        <span>低</span><div class="bar"><div class="fill" style="width:12%"></div></div><span>高</span>
+      </div>
+      <span class="why-tag">理由: 資源を「有限」と捉えるだけで、無意味な衝突への投資判断が自然とシビアになる。</span>
+    </div>
+
+    <div class="card">
+      <h3>⚔️ 「戦わずに戦う」（Don't fight every battle）</h3>
+      <ul>
+        <li>すべての戦いに挑むのではなく、挑むべき戦いを選別するという考え方。</li>
+        <li>孫子の非戦論を現代の人間関係・組織論に翻訳した発想がベースとされる。</li>
+      </ul>
+      <span class="why-tag">理由: 「戦わない」＝「負け」ではなく、戦いの土俵そのものを選ぶ主導権を自分が握れるから。</span>
+    </div>
+
+    <div class="card">
+      <h3>🎯 無駄な戦いをしやすい人の5つの特徴</h3>
+      <ul>
+        <li>正義感が強い</li>
+        <li>自信過剰</li>
+        <li>責任感が強い</li>
+        <li>プライドが高い</li>
+        <li>おせっかい</li>
+      </ul>
+      <span class="why-tag">理由: これらは一般に「美徳」とされる性質だが、アホに狙われやすい機能的な弱点にもなり得る、という逆説が示される。</span>
+    </div>
+
+    <div class="card">
+      <h3>🧘 即座に反応しない／一歩引いた視点</h3>
+      <ul>
+        <li>挑発に即座に反応せず、感情を見せないことで相手の攻撃を無力化する。</li>
+        <li>自分を一歩外側から観察するような視点（いわゆる「幽体離脱」的な捉え方）を持つ。</li>
+      </ul>
+      <span class="why-tag">理由: 感情的な反応そのものがアホにとっての「エサ」になるため、反応を断つことが最も効果的な防御になる。</span>
+    </div>
+
+    <div class="card">
+      <h3>🥋 相手の力を利用する（柔道・合気道の比喩）</h3>
+      <ul>
+        <li>力と力でぶつかるのではなく、相手の勢いを利用して自分に有利な体勢に持ち込む。</li>
+        <li>苦手な相手ほど、徹底的に「利用する」対象として捉え直す発想。</li>
+      </ul>
+      <span class="why-tag">理由: 正面衝突を避けつつ、相手の攻撃性そのものを自分の目的達成のための力に変換できる。</span>
+    </div>
+
+    <div class="card">
+      <h3>👑 マキャベリ的な人間観察と権力闘争の処世術</h3>
+      <ul>
+        <li>著者は「孫子」と「君主論」を自身の二大バイブルと位置づけている。</li>
+        <li>君主論的な、冷静で現実的な人間観察・権力構造の読み方を人間関係に応用する。</li>
+      </ul>
+      <span class="why-tag">理由: 理想論ではなく「人は実際どう動くか」を前提に対処を考えることで、現実的に効果のある行動を選べる。</span>
+    </div>
+
+    <div class="card">
+      <h3>🤝 アホを味方につける・利用する発想</h3>
+      <ul>
+        <li>敵視するのではなく、巻き込んで利用するという発想への転換。</li>
+        <li>続編『賢者の反撃編』では「時として戦うことに意義がある」という発展的な結論も示される。</li>
+      </ul>
+      <span class="why-tag">理由: 「排除」ではなく「活用」を選べると、消耗を避けながら局面を進められる選択肢が増える。</span>
+    </div>
+
+  </section>
+
+  <!-- 各章の要約 -->
+  <section class="tabpanel" id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters" hidden>
+    <div class="note-caveat">
+      ⚠️ 原著（朝日新聞出版、2018年）の正確な章タイトル・章立てはWeb上では確認できませんでした（不明）。以下はコミック版『まんがでわかる 頭に来てもアホとは戦うな!』で確認できた章構成をもとにした疑似章立てです。原著本文の章割りとは異なる可能性があります。
+    </div>
+
+    <div class="card">
+      <h3>🎬 序章: アホと戦うのは人生の無駄</h3>
+      <ul>
+        <li>著者自身が「アホと戦う最低のアホ」だった過去を告白し、本書全体の問題提起を行う。</li>
+        <li>政治家・組織人として消耗戦を繰り返した経験が執筆の出発点になっている。</li>
+      </ul>
+      <span class="why-tag">理由: 著者自身の失敗談から始めることで、読者が「自分も同じ」と感じやすい導入になっている。</span>
+    </div>
+
+    <div class="card">
+      <h3>🏆 第1章: 成功者はなぜ戦わないのか?</h3>
+      <ul>
+        <li>時間・エネルギー・タイミングという有限資源の観点から、成功者が消耗戦を避ける理由を説く。</li>
+        <li>無駄な戦いをしやすい人の5つの特徴（正義感・自信過剰・責任感・プライド・おせっかい）が示される。</li>
+      </ul>
+      <span class="why-tag">理由: 「なぜ戦わないほうが得か」を先に腹落ちさせることで、以降の具体的テクニックが受け入れやすくなる。</span>
+    </div>
+
+    <div class="card">
+      <h3>🛡️ 第2章: アホにはやられたフリを!</h3>
+      <ul>
+        <li>即座に反応しない、感情を見せないことで相手の攻撃を無力化する技術。</li>
+        <li>挑発に乗らず「こたえていない」様子を見せるのが最も効果的だとされる。</li>
+      </ul>
+      <span class="why-tag">理由: 反応こそがアホの「エサ」であり、それを断つだけで多くの攻撃が自然に終息する。</span>
+    </div>
+
+    <div class="card">
+      <h3>🥋 第3章: アホと上手に付き合いなさい!</h3>
+      <ul>
+        <li>相手にせず受け流す、柔道・合気道のように相手の力を利用する対処法。</li>
+        <li>真正面からの反論ではなく、力の方向を逸らす発想が中心。</li>
+      </ul>
+      <span class="why-tag">理由: 「勝つ」ことより「消耗しない」ことを優先した方が、長期的には目的達成に近づく。</span>
+    </div>
+
+    <div class="card">
+      <h3>🤝 第4章: アホを味方につけてこそ!</h3>
+      <ul>
+        <li>敵視せず取り込み、利用するという発想への転換。</li>
+        <li>君主論的な人間観察・権力構造の理解が応用される。</li>
+      </ul>
+      <span class="why-tag">理由: 排除より活用のほうが、選べる手段の幅が広がり、結果的に有利になりやすい。</span>
+    </div>
+
+    <div class="card">
+      <h3>🚪 第5章: アホに左右されずに自分の人生を取り戻せ!</h3>
+      <ul>
+        <li>人生の目的に集中し、アホに人生の主導権を渡さないという結論。</li>
+        <li>時間・エネルギー・タイミングを自分の目標のために使い直すという本書全体のまとめ。</li>
+      </ul>
+      <span class="why-tag">理由: 最終的な狙いは「アホへの対処法」自体ではなく、浮いた時間とエネルギーを自分の人生に再投資することにある。</span>
+    </div>
+  </section>
+
+  <!-- 具体例 -->
+  <section class="tabpanel" id="panel-cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+
+    <div class="card">
+      <h3>1️⃣ 著者自身の政治家・組織人時代の経験</h3>
+      <p>著者は新聞社社長や参議院議員として活動する中で、組織内・政治の世界の「アホ」と正面から戦い、多くの時間とエネルギーを消耗した経験を振り返っている。その後、シンガポールへ拠点を移す際に、それまでの消耗戦がいかに非効率だったかに気づいたという。</p>
+      <span class="why-tag">理由（この例が示すこと）: どれだけ能力や実績があっても、消耗戦に時間を使えば本来の目標達成が遅れることを、著者自身の失敗として示している。</span>
+    </div>
+
+    <div class="card">
+      <h3>2️⃣ 会議で理由なく発言に難癖をつけられる場面</h3>
+      <p>職場の会議で、なぜか自分の発言だけに理由のない反論やいちゃもんがつく、という多くの人が経験する理不尽な場面が例として挙げられている。</p>
+      <span class="why-tag">理由（この例が示すこと）: 理不尽な攻撃に正面から言い返すのではなく、相手にせず受け流すことで、本来の議題にエネルギーを使えるようになることを示している。</span>
+    </div>
+
+    <div class="card">
+      <h3>3️⃣ 柔道・合気道の比喩</h3>
+      <p>力と力でぶつかり合うのではなく、相手の勢いをそのまま利用して自分に有利な体勢に持ち込む、という武道の考え方がビジネスや人間関係の対処法として応用されている。</p>
+      <span class="why-tag">理由（この例が示すこと）: 正面衝突を避けながら、相手の攻撃性そのものを自分に有利な結果へ転換する発想の転換を示している。</span>
+    </div>
+
+    <div class="card">
+      <h3>4️⃣ 続編『賢者の反撃編』における発展的なケース</h3>
+      <p>2023年刊行の続編では、「時として戦うことに意義がある」という、前作と一見矛盾する結論が示される。ここでの「アホ」は、自分の時代さえよければいいと考える権力者として位置づけられ、政治・社会・組織といったより大きな構造の中の存在として扱われている。</p>
+      <span class="why-tag">理由（この例が示すこと）: 「戦わない」が常に正解ではなく、相手の種類や状況によって「戦うべき場面」を見極める判断力も必要であることを示している。</span>
+    </div>
+
+  </section>
+
+  <!-- 重要な引用 -->
+  <section class="tabpanel" id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes" hidden>
+    <div class="note-caveat">
+      ⚠️ 書籍本文からの原文引用はWeb上で確認できなかったため、要旨で代替しています（該当箇所には「要旨」と明記）。
+    </div>
+
+    <blockquote>
+      "Don't fight every battle."（すべての戦いに挑むな。向かうべき戦いを選べ）
+      <span class="src">— 著者が好きな言葉として紹介されている一句</span>
+    </blockquote>
+
+    <blockquote>
+      要旨: 時間・エネルギー・タイミングは、一度しかない人生を思い切り謳歌するための限られた財産であり、無駄遣いしてはいけない。
+      <span class="src">— 本書の中心的な主張（要旨）</span>
+    </blockquote>
+
+    <blockquote>
+      要旨: 自分自身も、かつては「アホと戦う最低のアホ」だった。
+      <span class="src">— 著者による自己言及的な反省（要旨）</span>
+    </blockquote>
+  </section>
+
+  <!-- 今日のアクション -->
+  <section class="tabpanel" id="panel-actions" role="tabpanel" aria-labelledby="tab-actions" hidden>
+
+    <div class="card">
+      <div class="action-step">
+        <div class="n">1</div>
+        <div>
+          <h3 style="margin-top:0">🗒️ 「戦う価値」チェックを1回やる</h3>
+          <p>今日、誰かの理不尽な言動にイラッとした瞬間を1つ思い出し、「これは戦う価値のある戦いか？」と自問して紙やメモに書き出す。</p>
+          <p><b>目的:</b> 感情的な反応と戦略的な判断を分離する練習をすること。<br><b>期待効果:</b> 無意味な衝突に使う時間とエネルギーを事前に減らせる。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="action-step">
+        <div class="n">2</div>
+        <div>
+          <h3 style="margin-top:0">🌬️ 「受け流す」を1回だけ試す</h3>
+          <p>直近でストレスになっている人間関係を1つ選び、即答や反論をせず「ふーん」と受け流すなど、相手にしない対応を1回だけ実践してみる。</p>
+          <p><b>目的:</b> 感情的に反応しない対応を実際に体で練習すること。<br><b>期待効果:</b> 相手の挑発に乗らないことで、自分が消耗しない経験を積める。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="action-step">
+        <div class="n">3</div>
+        <div>
+          <h3 style="margin-top:0">⏱️ 今日の「アホ消耗時間」を概算する</h3>
+          <p>今日1日を振り返り、理不尽な相手への対応やイライラに使った時間がおよそ何分あったかをざっくり見積もってメモする。</p>
+          <p><b>目的:</b> 無自覚な時間・エネルギーの消耗を可視化すること。<br><b>期待効果:</b> 次回以降、同じ消耗を避けるための判断材料が手に入る。</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    📚 books-summary 自動生成インフォグラフィック / 出典: Web検索による公開情報（書評・インタビュー記事等）
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs [role="tab"]');
+  var panels = document.querySelectorAll('section.tabpanel');
+  tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      tabs.forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      panels.forEach(function(p){ p.classList.remove('active'); p.setAttribute('hidden',''); });
+      tab.setAttribute('aria-selected','true');
+      var panel = document.getElementById(tab.getAttribute('aria-controls'));
+      panel.classList.add('active');
+      panel.removeAttribute('hidden');
+    });
+  });
+})();
+</script>
+</body>
+</html>
