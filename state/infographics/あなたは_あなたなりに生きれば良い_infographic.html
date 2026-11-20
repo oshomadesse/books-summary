@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>あなたは、あなたなりに生きれば良い。| インフォグラフィック</title>
+<!--
+  カラーパレット（本文中で使用）
+  プライマリー: #5B4B8A （深い紫 — 無意識・内面の静けさ）
+  セカンダリー: #E8A87C （温かみのあるアプリコット — 自己受容・安心）
+  アクセント: #2F9E8F （落ち着いたティール — 気づき・行動）
+  グラデーション: linear-gradient(135deg, #5B4B8A 0%, #2F9E8F 100%)
+-->
+<style>
+  :root{
+    --primary:#5B4B8A;
+    --primary-dark:#3E3362;
+    --secondary:#E8A87C;
+    --accent:#2F9E8F;
+    --bg:#F7F4FB;
+    --card-bg:#FFFFFF;
+    --text:#2A2438;
+    --text-sub:#6B6478;
+    --border:#E3DCF0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px 48px;}
+  header.hero{
+    background:linear-gradient(135deg,var(--primary) 0%,var(--accent) 100%);
+    color:#fff;
+    padding:28px 16px 32px;
+    text-align:center;
+  }
+  header.hero .kicker{
+    font-size:13px;
+    letter-spacing:.08em;
+    opacity:.85;
+    margin-bottom:8px;
+  }
+  header.hero h1{
+    font-size:22px;
+    margin:0 0 6px;
+    line-height:1.5;
+  }
+  header.hero .author{
+    font-size:14px;
+    opacity:.9;
+  }
+  .badge-row{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .badge{
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.4);
+    border-radius:999px;
+    padding:4px 12px;
+    font-size:12px;
+  }
+  /* ファーストビュー: Why & How */
+  .why-how{
+    margin:-18px 0 20px;
+    background:var(--card-bg);
+    border-radius:16px;
+    box-shadow:0 8px 24px rgba(91,75,138,.15);
+    padding:18px;
+    position:relative;
+    z-index:2;
+  }
+  .why-how h2{
+    font-size:15px;
+    color:var(--primary);
+    margin:0 0 12px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .qa-row{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .qa-item{
+    border-left:4px solid var(--accent);
+    padding:8px 12px;
+    background:var(--bg);
+    border-radius:0 8px 8px 0;
+  }
+  .qa-item .label{
+    font-size:11px;
+    font-weight:bold;
+    color:var(--accent);
+    letter-spacing:.05em;
+  }
+  .qa-item.q{border-left-color:var(--secondary);}
+  .qa-item.q .label{color:#B5703F;}
+  .qa-item p{margin:4px 0 0;font-size:14px;}
+
+  nav.tabs{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    margin-bottom:16px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  nav.tabs::-webkit-scrollbar{display:none;}
+  nav.tabs button{
+    flex:0 0 auto;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    color:var(--text-sub);
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:bold;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  nav.tabs button[aria-selected="true"]{
+    background:var(--primary);
+    color:#fff;
+    border-color:var(--primary);
+  }
+  section[role="tabpanel"]{display:none;}
+  section[role="tabpanel"].active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .card{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:0 2px 8px rgba(91,75,138,.06);
+  }
+  .card h3{
+    margin:0 0 8px;
+    font-size:15px;
+    color:var(--primary-dark);
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+  }
+  .card h3 .num{
+    background:var(--primary);
+    color:#fff;
+    border-radius:50%;
+    width:22px;height:22px;
+    flex:0 0 22px;
+    font-size:12px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card ul{margin:0;padding-left:18px;font-size:13.5px;}
+  .card li{margin-bottom:4px;}
+  .why-box{
+    margin-top:10px;
+    background:#FBF3EC;
+    border-left:4px solid var(--secondary);
+    padding:8px 10px;
+    font-size:12.5px;
+    border-radius:0 8px 8px 0;
+    color:#6B4A2A;
+  }
+  .why-box b{color:#B5703F;}
+
+  .quote-card{
+    border-left:4px solid var(--primary);
+    padding:14px 16px;
+    background:#F3F0FA;
+    border-radius:0 10px 10px 0;
+    margin-bottom:12px;
+    font-size:14px;
+  }
+  .quote-card .tag{
+    display:inline-block;
+    font-size:11px;
+    background:var(--primary);
+    color:#fff;
+    padding:2px 8px;
+    border-radius:999px;
+    margin-bottom:8px;
+  }
+
+  .action-card{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+  }
+  .action-card .check{
+    flex:0 0 26px;
+    height:26px;
+    width:26px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+    margin-top:2px;
+  }
+  .action-card .body p{margin:2px 0;font-size:13px;}
+  .action-card .body .meta{color:var(--text-sub);font-size:12px;}
+
+  .stat-row{
+    display:flex;
+    gap:10px;
+    margin:10px 0 4px;
+    flex-wrap:wrap;
+  }
+  .stat{
+    flex:1 1 90px;
+    background:var(--bg);
+    border-radius:10px;
+    padding:10px;
+    text-align:center;
+  }
+  .stat .n{font-size:20px;font-weight:bold;color:var(--primary);}
+  .stat .l{font-size:11px;color:var(--text-sub);}
+
+  footer{
+    text-align:center;
+    font-size:11px;
+    color:var(--text-sub);
+    margin-top:24px;
+  }
+  @media (min-width:600px){
+    header.hero h1{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="kicker">📚 今日読むべき本 ・ 心理学</div>
+  <h1>あなたは、あなたなりに生きれば良い。</h1>
+  <div class="author">加藤諦三（三笠書房）</div>
+  <div class="badge-row">
+    <span class="badge">🧠 自己肯定感</span>
+    <span class="badge">🔍 無意識</span>
+    <span class="badge">💢 未処理の怒り</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="why-how">
+    <h2>🧩 要約：問い × 答え × 根拠</h2>
+    <div class="qa-row">
+      <div class="qa-item q">
+        <div class="label">Q. 問い</div>
+        <p>気を使いすぎて疲れる、小さな失敗から立ち直れない——この「生きづらさ」の原因は何なのか？</p>
+      </div>
+      <div class="qa-item">
+        <div class="label">A. 答え</div>
+        <p>原因は性格ではなく、本人が自覚していない「無意識の内なる障害」にある。それに気づき認めることで道が拓ける。</p>
+      </div>
+      <div class="qa-item">
+        <div class="label">Why. 根拠</div>
+        <p>意識では「苦しみたくない」と思っていても、無意識では苦しみにしがみつき続けている人が多い（要旨）。この無意識の矛盾を見つけない限り、表面的な「前向き」努力は空回りする。</p>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="n">12</div><div class="l">自己肯定感のヒント</div></div>
+      <div class="stat"><div class="n">208</div><div class="l">ページ</div></div>
+      <div class="stat"><div class="n">2020</div><div class="l">刊行年</div></div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist" aria-label="コンテンツ切替">
+    <button role="tab" aria-selected="true" aria-controls="panel-concepts" id="tab-concepts">🧠 主要概念</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-chapters" id="tab-chapters">📖 章の要約</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-cases" id="tab-cases">💡 具体例</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-quotes" id="tab-quotes">✒️ 引用</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-actions" id="tab-actions">✅ 今日のアクション</button>
+  </nav>
+
+  <section id="panel-concepts" role="tabpanel" aria-labelledby="tab-concepts" class="active">
+    <div class="card">
+      <h3><span class="num">1</span>内なる障害</h3>
+      <ul>
+        <li>生きづらさの根にある、本人が自覚していない無意識の問題。</li>
+        <li>表面的な性格の欠点ではなく、心の奥の構造として捉える。</li>
+      </ul>
+      <div class="why-box"><b>なぜ重要か：</b>表面的な対処では解決せず、まずこの存在に気づくことが回復の出発点になるから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">2</span>無意識への気づき</h3>
+      <ul>
+        <li>自分の感情や行動の裏にある、無意識の動機を意識化すること。</li>
+        <li>「なぜそうなるのか」を突き詰める姿勢が鍵。</li>
+      </ul>
+      <div class="why-box"><b>なぜ重要か：</b>気づかない限り、同じ苦しみのパターンを繰り返し選び続けてしまうから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">3</span>苦しみへの固着</h3>
+      <ul>
+        <li>意識では楽になりたいのに、無意識では苦しみを手放さない心理。</li>
+      </ul>
+      <div class="why-box"><b>なぜ重要か：</b>この矛盾を理解しないと「前向きになろう」という努力が空回りするから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">4</span>他人の人生を生きる</h3>
+      <ul>
+        <li>自分の基準ではなく、他人の評価や期待に沿って生きてしまう状態。</li>
+      </ul>
+      <div class="why-box"><b>なぜ重要か：</b>「気を使いすぎて疲れる」という悩みの根本原因の一つになるから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">5</span>未処理の怒り</h3>
+      <ul>
+        <li>自覚されずに溜め込まれた怒りの感情。</li>
+      </ul>
+      <div class="why-box"><b>なぜ重要か：</b>この怒りに正直に向き合うことが、前進のエネルギーへの転換点になるから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">6</span>自己肯定感</h3>
+      <ul>
+        <li>ありのままの自分を認め、受け入れる感覚。</li>
+      </ul>
+      <div class="why-box"><b>なぜ重要か：</b>他人軸ではなく自分軸で生きるための土台になるから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">7</span>変えられるもの／変えられないもの</h3>
+      <ul>
+        <li>自分の力で変えられる事柄と、変えられない事柄を区別する視点。</li>
+      </ul>
+      <div class="why-box"><b>なぜ重要か：</b>変えられないことに悩み続けるのをやめ、エネルギーの使い先を切り替えられるから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">8</span>好奇心を持って自分を見る</h3>
+      <ul>
+        <li>自分を批判するのではなく、観察者のように興味を持って見る態度。</li>
+      </ul>
+      <div class="why-box"><b>なぜ重要か：</b>自己批判は変化を妨げるが、好奇心は気づきと受容を促すから。</div>
+    </div>
+  </section>
+
+  <section id="panel-chapters" role="tabpanel" aria-labelledby="tab-chapters">
+    <div class="card">
+      <h3><span class="num">1</span>なぜ、あなたはいつまでも「変われない」のか？</h3>
+      <ul>
+        <li>不幸な状況を外側のせいにしがちだが、実は無意識のうちに自分でその状況を選び続けている面がある。</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>この無意識の選択に気づかない限り、変化は始まらないから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">2</span>なぜ、「他人の人生」を生きてしまうのか？</h3>
+      <ul>
+        <li>他人の期待に応えることを優先し続けると、自分自身の価値観や欲求が見えなくなっていく。</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>「気を使いすぎて疲れる」状態の背景には、他人軸での生き方があるから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">3</span>なぜ、「前向きに生きられない」のか？</h3>
+      <ul>
+        <li>心の奥にある未処理の「怒り」に向き合わないままだと、エネルギーが前進ではなく自己抑制に使われてしまう。</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>怒りを見つけ認めることが、前へ進む力への転換点になるから。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">4</span>生きづらさの典型パターン（小さな失敗から立ち直れない等）</h3>
+      <ul>
+        <li>公開されている紹介文では、対象読者として「気を使いすぎて疲れる」「他人の何気ない一言が気にかかる」「小さな失敗から立ち直るのに時間がかかる」という3つの悩みのタイプが挙げられている。</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>これらは別々の問題ではなく、同じ「内なる障害」が形を変えて表れたものと本書は位置づけている。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">5</span>自己肯定感を取り戻すための12のヒント</h3>
+      <ul>
+        <li>本書全体は、自己肯定感を高めるための12のヒントという構成で展開される（各ヒントの個別の見出しは公開情報からは確認できず、具体的な内容は「不明」）。</li>
+      </ul>
+      <div class="why-box"><b>理由：</b>無意識の構造に気づくための手がかりを段階的に示すことで、実践可能な回復の道筋を提示しているから。</div>
+    </div>
+  </section>
+
+  <section id="panel-cases" role="tabpanel" aria-labelledby="tab-cases">
+    <div class="card">
+      <h3><span class="num">1</span>気を使いすぎて疲れてしまう人</h3>
+      <ul>
+        <li>背景：周囲の反応を常に先読みし、自分の感情より他人の都合を優先してしまう。</li>
+      </ul>
+      <div class="why-box"><b>この例が示すこと：</b>疲労の原因は体力ではなく、「他人の人生」を生きていることにある可能性を示す。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">2</span>他人の何気ない一言が気にかかって離れない人</h3>
+      <ul>
+        <li>背景：悪意のない発言を何度も思い出し、自分への評価として受け取ってしまう。</li>
+      </ul>
+      <div class="why-box"><b>この例が示すこと：</b>自己肯定感が弱いと、外部の小さな言葉が内なる障害を刺激しやすいことを示す。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">3</span>小さな失敗から立ち直るのに時間がかかる人</h3>
+      <ul>
+        <li>背景：失敗そのものより、「また失敗した自分」への自己否定に時間を費やしてしまう。</li>
+      </ul>
+      <div class="why-box"><b>この例が示すこと：</b>失敗への反応の重さは、出来事の大きさではなく内面の自己肯定感の強さに比例することを示す。</div>
+    </div>
+    <div class="card">
+      <h3><span class="num">4</span>読者の受け止め方の違い</h3>
+      <ul>
+        <li>背景：公開レビューでは「同じ悩みを持つ人には救いになる」という声と、「心理的に健康な人にはピンとこない」という声の両方が見られる。</li>
+      </ul>
+      <div class="why-box"><b>この例が示すこと：</b>本書は万人向けの一般論ではなく、特定の「生きづらさ」の自覚がある人に向けて深く効く本であることを示す。</div>
+    </div>
+  </section>
+
+  <section id="panel-quotes" role="tabpanel" aria-labelledby="tab-quotes">
+    <div class="quote-card">
+      <span class="tag">要旨</span>
+      <p>「意識レベルでは『苦しみたくない』と思っていても、無意識レベルでは苦しみにしがみついている人はとても多い。」</p>
+    </div>
+    <div class="quote-card">
+      <span class="tag">要旨</span>
+      <p>生きづらさの原因は、すべてその人の「無意識にある何か」＝「内なる障害」にある。本書はその「本当の自分」を肯定するための一冊として紹介されている。</p>
+    </div>
+    <p style="font-size:12.5px;color:var(--text-sub);">※原典からの直接引用は公開情報からは確認できなかったため、出版社・書店の紹介文に基づく要旨として記載しています。</p>
+  </section>
+
+  <section id="panel-actions" role="tabpanel" aria-labelledby="tab-actions">
+    <div class="card action-card">
+      <div class="check">1</div>
+      <div class="body">
+        <p><b>「気を使いすぎて疲れた」場面を1つ書き出し、そこで本当は誰の期待に応えようとしていたかを自問する</b></p>
+        <p class="meta">⏱ 15分 ／ 目的：他人の人生を生きるパターンに気づく</p>
+        <p class="meta">📈 期待効果：自分の本当の欲求と、他人への配慮を区別できるようになる</p>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="check">2</div>
+      <div class="body">
+        <p><b>直近でイライラ・怒りを感じた出来事を1つ選び、なかったことにせず「何に怒ったのか」を具体的に書き出す</b></p>
+        <p class="meta">⏱ 20分 ／ 目的：未処理の怒りを意識化する</p>
+        <p class="meta">📈 期待効果：怒りのエネルギーを前向きな行動へ転換するきっかけが生まれる</p>
+      </div>
+    </div>
+    <div class="card action-card">
+      <div class="check">3</div>
+      <div class="body">
+        <p><b>「変えられないこと」と「変えられること」を3つずつリストにし、今日使う時間を「変えられること」だけに決める</b></p>
+        <p class="meta">⏱ 15分 ／ 目的：悩みへの意識の使い方を切り替える</p>
+        <p class="meta">📈 期待効果：コントロールできない不安への消耗を減らし、行動への集中力が上がる</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>📚 06_Books 自動生成インフォグラフィック（Claude Routine）</footer>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('nav.tabs button[role="tab"]');
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(b){
+        b.setAttribute('aria-selected', 'false');
+        var panel = document.getElementById(b.getAttribute('aria-controls'));
+        if(panel){ panel.classList.remove('active'); }
+      });
+      btn.setAttribute('aria-selected', 'true');
+      var activePanel = document.getElementById(btn.getAttribute('aria-controls'));
+      if(activePanel){ activePanel.classList.add('active'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
